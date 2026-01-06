@@ -62,7 +62,6 @@ This project is built using excellent open-source libraries. We'd like to thank 
 
 - **[Tailwind CSS](https://github.com/tailwindlabs/tailwindcss)** - Utility-first CSS framework for rapid UI development
 - **[Radix UI](https://github.com/radix-ui/primitives)** - Unstyled, accessible UI primitives for building high-quality design systems
-- **[shadcn/ui](https://github.com/shadcn-ui/ui)** - Beautifully designed components built with Radix UI and Tailwind CSS
 
 ### Component Libraries
 
@@ -77,6 +76,13 @@ This project is built using excellent open-source libraries. We'd like to thank 
 ### Drag & Drop
 
 - **[@hello-pangea/dnd](https://github.com/hello-pangea/dnd)** - React Drag and Drop library
+
+## Inspired From
+
+This project draws inspiration from these excellent design systems and component libraries:
+
+- **[Bootstrap](https://getbootstrap.com/)** - The most popular HTML, CSS, and JS library in the world
+- **[shadcn/ui](https://github.com/shadcn-ui/ui)** - Beautifully designed components built with Radix UI and Tailwind CSS
 
 ## License
 
