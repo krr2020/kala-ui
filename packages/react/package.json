@@ -1,0 +1,388 @@
+{
+  "name": "@kala-ui/react",
+  "version": "0.0.1-beta.0",
+  "type": "module",
+  "description": "Accessible, customizable React component library built with Radix UI primitives and Tailwind CSS",
+  "keywords": ["react", "ui", "components", "radix", "tailwind", "accessible", "design-system"],
+  "author": "Kala UI",
+  "license": "MIT",
+  "homepage": "https://github.com/your-org/kala-ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/kala-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/kala-ui/issues"
+  },
+  "exports": {
+    "./styles": {
+      "default": "./src/styles/globals.css"
+    },
+    "./config/tailwind-base": {
+      "types": "./src/config/tailwind-base.ts",
+      "default": "./src/config/tailwind-base.ts"
+    },
+    "./accordion": {
+      "types": "./src/components/accordion/index.ts",
+      "default": "./src/components/accordion/index.ts"
+    },
+    "./alert": {
+      "types": "./src/components/alert/index.ts",
+      "default": "./src/components/alert/index.ts"
+    },
+    "./alert-dialog": {
+      "types": "./src/components/alert-dialog/index.ts",
+      "default": "./src/components/alert-dialog/index.ts"
+    },
+    "./avatar": {
+      "types": "./src/components/avatar/index.ts",
+      "default": "./src/components/avatar/index.ts"
+    },
+    "./badge": {
+      "types": "./src/components/badge/index.ts",
+      "default": "./src/components/badge/index.ts"
+    },
+    "./banner": {
+      "types": "./src/components/banner/index.ts",
+      "default": "./src/components/banner/index.ts"
+    },
+    "./button": {
+      "types": "./src/components/button/index.ts",
+      "default": "./src/components/button/index.ts"
+    },
+    "./calendar": {
+      "types": "./src/components/calendar/index.ts",
+      "default": "./src/components/calendar/index.ts"
+    },
+    "./command": {
+      "types": "./src/components/command/index.ts",
+      "default": "./src/components/command/index.ts"
+    },
+    "./combobox": {
+      "types": "./src/components/combobox/index.ts",
+      "default": "./src/components/combobox/index.ts"
+    },
+    "./charts": {
+      "types": "./src/components/charts/index.ts",
+      "default": "./src/components/charts/index.ts"
+    },
+    "./checkbox": {
+      "types": "./src/components/checkbox/index.ts",
+      "default": "./src/components/checkbox/index.ts"
+    },
+    "./date-picker": {
+      "types": "./src/components/date-picker/index.ts",
+      "default": "./src/components/date-picker/index.ts"
+    },
+    "./dialog": {
+      "types": "./src/components/dialog/index.ts",
+      "default": "./src/components/dialog/index.ts"
+    },
+    "./drawer": {
+      "types": "./src/components/drawer/index.ts",
+      "default": "./src/components/drawer/index.ts"
+    },
+    "./dropdown-menu": {
+      "types": "./src/components/dropdown-menu/index.ts",
+      "default": "./src/components/dropdown-menu/index.ts"
+    },
+    "./empty-state": {
+      "types": "./src/components/empty-state/index.ts",
+      "default": "./src/components/empty-state/index.ts"
+    },
+    "./field": {
+      "types": "./src/components/field/index.ts",
+      "default": "./src/components/field/index.ts"
+    },
+    "./file-upload": {
+      "types": "./src/components/file-upload/index.ts",
+      "default": "./src/components/file-upload/index.ts"
+    },
+    "./footer": {
+      "types": "./src/components/footer/index.ts",
+      "default": "./src/components/footer/index.ts"
+    },
+    "./header": {
+      "types": "./src/components/header/index.ts",
+      "default": "./src/components/header/index.ts"
+    },
+    "./input": {
+      "types": "./src/components/input/index.ts",
+      "default": "./src/components/input/index.ts"
+    },
+    "./input-group": {
+      "types": "./src/components/input-group/index.ts",
+      "default": "./src/components/input-group/index.ts"
+    },
+    "./input-otp": {
+      "types": "./src/components/input-otp/index.ts",
+      "default": "./src/components/input-otp/index.ts"
+    },
+    "./label": {
+      "types": "./src/components/label/index.ts",
+      "default": "./src/components/label/index.ts"
+    },
+    "./list": {
+      "types": "./src/components/list/index.ts",
+      "default": "./src/components/list/index.ts"
+    },
+    "./navigation": {
+      "types": "./src/components/navigation/index.ts",
+      "default": "./src/components/navigation/index.ts"
+    },
+    "./dnd": {
+      "types": "./src/components/dnd/index.ts",
+      "default": "./src/components/dnd/index.ts"
+    },
+    "./menubar": {
+      "types": "./src/components/menubar/index.ts",
+      "default": "./src/components/menubar/index.ts"
+    },
+    "./navigation-menu": {
+      "types": "./src/components/navigation-menu/index.ts",
+      "default": "./src/components/navigation-menu/index.ts"
+    },
+    "./page-transition": {
+      "types": "./src/components/page-transition/index.ts",
+      "default": "./src/components/page-transition/index.ts"
+    },
+    "./pagination": {
+      "types": "./src/components/pagination/index.ts",
+      "default": "./src/components/pagination/index.ts"
+    },
+    "./steps": {
+      "types": "./src/components/steps/index.ts",
+      "default": "./src/components/steps/index.ts"
+    },
+    "./slider": {
+      "types": "./src/components/slider/index.ts",
+      "default": "./src/components/slider/index.ts"
+    },
+    "./toast": {
+      "types": "./src/components/toast/index.ts",
+      "default": "./src/components/toast/index.ts"
+    },
+    "./popover": {
+      "types": "./src/components/popover/index.ts",
+      "default": "./src/components/popover/index.ts"
+    },
+    "./progress": {
+      "types": "./src/components/progress/index.ts",
+      "default": "./src/components/progress/index.ts"
+    },
+    "./radio-group": {
+      "types": "./src/components/radio-group/index.ts",
+      "default": "./src/components/radio-group/index.ts"
+    },
+    "./resizable": {
+      "types": "./src/components/resizable/index.ts",
+      "default": "./src/components/resizable/index.ts"
+    },
+    "./select": {
+      "types": "./src/components/select/index.ts",
+      "default": "./src/components/select/index.ts"
+    },
+    "./separator": {
+      "types": "./src/components/separator/index.ts",
+      "default": "./src/components/separator/index.ts"
+    },
+    "./scroll-area": {
+      "types": "./src/components/scroll-area/index.ts",
+      "default": "./src/components/scroll-area/index.ts"
+    },
+    "./skeleton": {
+      "types": "./src/components/skeleton/index.ts",
+      "default": "./src/components/skeleton/index.ts"
+    },
+    "./skeleton-fade": {
+      "types": "./src/components/skeleton-fade/index.ts",
+      "default": "./src/components/skeleton-fade/index.ts"
+    },
+    "./skip-to-content": {
+      "types": "./src/components/skip-to-content/index.ts",
+      "default": "./src/components/skip-to-content/index.ts"
+    },
+    "./social-login-button": {
+      "types": "./src/components/social-login-button/index.ts",
+      "default": "./src/components/social-login-button/index.ts"
+    },
+    "./social-login-buttons": {
+      "types": "./src/components/social-login-buttons/index.ts",
+      "default": "./src/components/social-login-buttons/index.ts"
+    },
+    "./sparkline-chart": {
+      "types": "./src/components/sparkline-chart/index.ts",
+      "default": "./src/components/sparkline-chart/index.ts"
+    },
+    "./spinner": {
+      "types": "./src/components/spinner/index.ts",
+      "default": "./src/components/spinner/index.ts"
+    },
+    "./switch": {
+      "types": "./src/components/switch/index.ts",
+      "default": "./src/components/switch/index.ts"
+    },
+    "./table": {
+      "types": "./src/components/table/index.ts",
+      "default": "./src/components/table/index.ts"
+    },
+    "./table-skeleton": {
+      "types": "./src/components/table-skeleton/index.ts",
+      "default": "./src/components/table-skeleton/index.ts"
+    },
+    "./data-table": {
+      "types": "./src/components/data-table/index.ts",
+      "default": "./src/components/data-table/index.ts"
+    },
+    "./tabs": {
+      "types": "./src/components/tabs/index.ts",
+      "default": "./src/components/tabs/index.ts"
+    },
+    "./tag-input": {
+      "types": "./src/components/tag-input/index.ts",
+      "default": "./src/components/tag-input/index.ts"
+    },
+    "./textarea": {
+      "types": "./src/components/textarea/index.ts",
+      "default": "./src/components/textarea/index.ts"
+    },
+    "./tooltip": {
+      "types": "./src/components/tooltip/index.ts",
+      "default": "./src/components/tooltip/index.ts"
+    },
+    "./toggle": {
+      "types": "./src/components/toggle/index.ts",
+      "default": "./src/components/toggle/index.ts"
+    },
+    "./password-strength-indicator": {
+      "types": "./src/components/password-strength-indicator/index.ts",
+      "default": "./src/components/password-strength-indicator/index.ts"
+    },
+    "./card": {
+      "types": "./src/components/card/index.ts",
+      "default": "./src/components/card/index.ts"
+    },
+    "./metric-card": {
+      "types": "./src/components/metric-card/index.ts",
+      "default": "./src/components/metric-card/index.ts"
+    },
+    "./multi-select": {
+      "types": "./src/components/multi-select/index.ts",
+      "default": "./src/components/multi-select/index.ts"
+    },
+    "./sidebar": {
+      "types": "./src/components/sidebar/index.ts",
+      "default": "./src/components/sidebar/index.ts"
+    },
+    "./breadcrumbs": {
+      "types": "./src/components/breadcrumbs/index.ts",
+      "default": "./src/components/breadcrumbs/index.ts"
+    },
+    "./user-menu-dropdown": {
+      "types": "./src/components/user-menu-dropdown/index.ts",
+      "default": "./src/components/user-menu-dropdown/index.ts"
+    },
+    "./session-card": {
+      "types": "./src/components/session-card/index.ts",
+      "default": "./src/components/session-card/index.ts"
+    },
+    "./loading": {
+      "types": "./src/components/loading/index.ts",
+      "default": "./src/components/loading/index.ts"
+    },
+    "./error-boundary": {
+      "types": "./src/components/error-boundary/index.ts",
+      "default": "./src/components/error-boundary/index.ts"
+    },
+    "./lib/utils": {
+      "types": "./src/lib/utils.ts",
+      "default": "./src/lib/utils.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "type-check": "tsc --noEmit",
+    "lint": "biome lint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "peerDependencies": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "dependencies": {
+    "@hello-pangea/dnd": "18.0.1",
+    "@radix-ui/react-accordion": "1.2.12",
+    "@radix-ui/react-alert-dialog": "1.1.15",
+    "@radix-ui/react-avatar": "1.1.11",
+    "@radix-ui/react-checkbox": "1.3.3",
+    "@radix-ui/react-collapsible": "1.1.12",
+    "@radix-ui/react-dialog": "1.1.15",
+    "@radix-ui/react-dropdown-menu": "2.1.16",
+    "@radix-ui/react-hover-card": "1.1.15",
+    "@radix-ui/react-label": "2.1.8",
+    "@radix-ui/react-menubar": "1.1.16",
+    "@radix-ui/react-navigation-menu": "1.2.14",
+    "@radix-ui/react-popover": "1.1.15",
+    "@radix-ui/react-progress": "1.1.8",
+    "@radix-ui/react-radio-group": "1.3.8",
+    "@radix-ui/react-scroll-area": "1.2.10",
+    "@radix-ui/react-select": "2.2.6",
+    "@radix-ui/react-separator": "1.1.8",
+    "@radix-ui/react-slider": "1.3.6",
+    "@radix-ui/react-slot": "1.2.4",
+    "@radix-ui/react-switch": "1.2.6",
+    "@radix-ui/react-tabs": "1.1.13",
+    "@radix-ui/react-toggle": "1.1.10",
+    "@radix-ui/react-tooltip": "1.2.8",
+    "@kala-ui/design-tokens": "workspace:^",
+    "apexcharts": "4.7.0",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "cmdk": "1.1.1",
+    "date-fns": "4.1.0",
+    "framer-motion": "12.23.26",
+    "input-otp": "1.4.2",
+    "lucide-react": "0.561.0",
+    "react-apexcharts": "1.9.0",
+    "react-day-picker": "9.13.0",
+    "react-resizable-panels": "3.0.6",
+    "simple-icons": "16.3.0",
+    "sonner": "2.0.7",
+    "tailwind-merge": "3.4.0",
+    "vaul": "1.1.2"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "8.5.1",
+    "@storybook/addon-interactions": "8.5.1",
+    "@storybook/addon-links": "8.5.1",
+    "@storybook/blocks": "8.5.1",
+    "@storybook/react": "8.5.1",
+    "@storybook/react-vite": "8.5.1",
+    "@storybook/test": "8.5.1",
+    "@tailwindcss/postcss": "4.1.18",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.0",
+    "@testing-library/user-event": "14.6.1",
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.2",
+    "@vitest/coverage-v8": "2.0.5",
+    "autoprefixer": "10.4.23",
+    "jsdom": "27.2.0",
+    "postcss": "8.5.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "storybook": "8.5.1",
+    "tailwindcss": "4.1.18",
+    "tailwindcss-animate": "1.0.7",
+    "tslib": "2.8.1",
+    "typescript": "5.9.3",
+    "vite": "5.4.21",
+    "vitest": "2.0.5"
+  }
+}

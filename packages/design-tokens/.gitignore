@@ -1,0 +1,28 @@
+# Dependencies
+node_modules
+.pnpm-store
+.yarn/*
+!.yarn/patches
+
+# Build outputs
+dist
+.turbo
+
+# Development
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Misc
+.DS_Store
+*.log

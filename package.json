@@ -1,0 +1,27 @@
+{
+  "name": "kala-ui",
+  "private": true,
+  "description": "Kala UI - A React component library with design tokens",
+  "license": "MIT",
+  "author": "Kala UI",
+  "scripts": {
+    "dev": "pnpm --filter @kala-ui/react dev",
+    "build": "pnpm --filter \"./packages/**\" build",
+    "build:tokens": "pnpm --filter @kala-ui/design-tokens build",
+    "build:react": "pnpm --filter @kala-ui/react build",
+    "type-check": "pnpm --filter \"./packages/**\" type-check",
+    "lint": "pnpm --filter \"./packages/**\" lint",
+    "test": "pnpm --filter @kala-ui/react test",
+    "test:watch": "pnpm --filter @kala-ui/react test:watch",
+    "test:coverage": "pnpm --filter @kala-ui/react test:coverage",
+    "storybook": "pnpm --filter @kala-ui/react storybook",
+    "build-storybook": "pnpm --filter @kala-ui/react build-storybook"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

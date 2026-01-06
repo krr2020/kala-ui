@@ -1,0 +1,333 @@
+# @kala-ui/react
+
+Reusable React UI components library built with Radix UI and Tailwind CSS. This package provides all the foundational UI components used across the Next.js web application and Storybook documentation.
+
+## Overview
+
+This package contains:
+- **40+ React Components**: Buttons, inputs, dialogs, dropdowns, and more
+- **Radix UI Primitives**: Accessible, unstyled component primitives
+- **Tailwind CSS Styling**: Utility-first CSS framework with design tokens
+- **TypeScript**: Fully typed components with strict mode
+- **Storybook**: Interactive component documentation and visual testing
+- **Testing**: Comprehensive test coverage with Vitest and Testing Library
+
+## Installation & Usage
+
+### NPM Installation
+
+Install the package from npm:
+
+```bash
+npm install @kala-ui/react
+```
+
+Or using pnpm:
+
+```bash
+pnpm add @kala-ui/react
+```
+
+Or using yarn:
+
+```bash
+yarn add @kala-ui/react
+```
+
+Then import components:
+
+```tsx
+import { Button } from '@kala-ui/react/button';
+import { Input } from '@kala-ui/react/input';
+import { Dialog } from '@kala-ui/react/dialog';
+
+function MyComponent() {
+  return (
+    <Dialog>
+      <Input placeholder="Enter text" />
+      <Button>Submit</Button>
+    </Dialog>
+  );
+}
+```
+
+### Available Components
+
+**Form Controls**
+- `button`, `input`, `textarea`, `checkbox`, `switch`, `select`, `radio-group`, `label`, `field`
+
+Import from:
+
+```tsx
+import { Button } from '@kala-ui/react/button';
+import { Input } from '@kala-ui/react/input';
+import { Field } from '@kala-ui/react/field';
+```
+
+**Layout**
+- `header`, `footer`, `navigation`, `sidebar`, `card`, `separator`, `tabs`, `accordion`
+
+Import from:
+
+```tsx
+import { Header } from '@kala-ui/react/header';
+import { Card } from '@kala-ui/react/card';
+import { Tabs } from '@kala-ui/react/tabs';
+```
+
+**Feedback**
+- `alert`, `alert-dialog`, `dialog`, `tooltip`, `popover`, `banner`, `spinner`, `skeleton`
+
+Import from:
+
+```tsx
+import { Alert } from '@kala-ui/react/alert';
+import { Dialog } from '@kala-ui/react/dialog';
+import { Spinner } from '@kala-ui/react/spinner';
+```
+
+**Data Display**
+- `avatar`, `badge`, `table`, `breadcrumbs`
+
+Import from:
+
+```tsx
+import { Avatar } from '@kala-ui/react/avatar';
+import { Badge } from '@kala-ui/react/badge';
+import { Table } from '@kala-ui/react/table';
+```
+
+**Advanced**
+- `dropdown-menu`, `user-menu-dropdown`, `social-login-button`, `password-strength-indicator`, `session-card`
+
+Import from:
+
+```tsx
+import { DropdownMenu } from '@kala-ui/react/dropdown-menu';
+import { SocialLoginButton } from '@kala-ui/react/social-login-button';
+```
+
+**Utilities**
+
+Import utilities:
+
+```tsx
+import { cn } from '@kala-ui/react/lib/utils';
+```
+
+**Styles**
+
+Global styles:
+
+```css
+import '@kala-ui/react/styles';
+```
+
+**Layout**
+- `header`, `footer`, `navigation`, `sidebar`, `card`, `separator`, `tabs`, `accordion`
+
+**Feedback**
+- `alert`, `alert-dialog`, `dialog`, `tooltip`, `popover`, `banner`, `spinner`, `skeleton`
+
+**Data Display**
+- `avatar`, `badge`, `table`, `breadcrumbs`
+
+**Advanced**
+- `dropdown-menu`, `user-menu-dropdown`, `social-login-button`, `password-strength-indicator`, `session-card`
+
+**Utilities**
+- `lib/utils` - Utility functions (cn, etc.)
+
+**Styles**
+- `styles` - Global CSS and Tailwind configuration
+
+See [`docs/STORYBOOK.md`](../../docs/STORYBOOK.md) for detailed component documentation.
+
+## Development
+
+### Running Storybook
+
+Start the development server to view and test components interactively:
+
+```bash
+# From workspace root
+pnpm --filter @repo/ui storybook
+
+# Or from packages/ui
+pnpm storybook
+```
+
+This starts Storybook at http://localhost:6006
+
+### Building Storybook
+
+Build a static version for deployment:
+
+```bash
+pnpm --filter @repo/ui build-storybook
+```
+
+Output is in `storybook-static/` directory.
+
+## Scripts
+
+| Script | Description |
+|--------|-------------|
+| `pnpm storybook` | Run Storybook dev server on port 6006 |
+| `pnpm build-storybook` | Build static Storybook for production |
+| `pnpm test` | Run all component tests once |
+| `pnpm test:watch` | Run tests in watch mode |
+| `pnpm test:coverage` | Generate test coverage report |
+| `pnpm type-check` | Run TypeScript type checking |
+| `pnpm lint` | Run Biome linter |
+| `pnpm build` | type-check only (no build output) |
+
+## CI/CD Integration
+
+Storybook is built and validated in the CI pipeline:
+
+- **Workflow:** `.github/workflows/ci.yml` (storybook job)
+- **Triggers:** Pull requests and pushes to main branch
+- **Build Time:** ~2-4 minutes with cache
+- **Artifacts:** Static build available for 7 days
+
+The Storybook build must pass for PRs to be merged. This ensures component stories don't break.
+
+### Testing Before Push
+
+Before pushing changes, verify locally:
+
+```bash
+# Run same checks as CI
+pnpm type-check
+pnpm lint
+pnpm test
+pnpm build-storybook
+```
+
+Or use the full validation command:
+
+```bash
+pnpm validate:all
+```
+
+## Adding New Components
+
+1. **Create component directory**:
+   ```bash
+   packages/ui/src/components/my-component/
+   ├── index.ts              # Public exports
+   ├── my-component.tsx      # Component implementation
+   ├── my-component.test.tsx # Tests
+   └── my-component.stories.tsx # Storybook story
+   ```
+
+2. **Implement component** with:
+   - TypeScript for type safety
+   - React 19 features (use client/server as needed)
+   - Tailwind CSS classes for styling
+   - Radix UI primitives where applicable
+   - `cn()` utility for class merging
+
+3. **Write tests**:
+   - Use Vitest + Testing Library
+   - Test rendering, interactions, accessibility
+   - Aim for >80% coverage
+
+4. **Create Storybook story**:
+   - Document all component variants
+   - Add interactive controls for props
+   - Include usage examples
+   - See [`docs/STORYBOOK.md`](../../docs/STORYBOOK.md) for guidelines
+
+5. **Add package export** in `package.json`:
+   ```json
+   {
+     "exports": {
+       "./my-component": {
+         "types": "./src/components/my-component/index.ts",
+         "default": "./src/components/my-component/index.ts"
+       }
+     }
+   }
+   ```
+
+6. **Run validation**:
+   ```bash
+   pnpm type-check  # Check types
+   pnpm lint        # Check code style
+   pnpm test        # Run tests
+   pnpm storybook   # Verify story appears
+   ```
+
+## Package Structure
+
+```
+packages/ui/
+├── .storybook/          # Storybook configuration
+│   ├── main.ts          # Addons, builders, features
+│   └── preview.tsx      # Global decorators, parameters
+├── src/
+│   ├── components/      # All React components
+│   │   └── [component]/
+│   │       ├── index.ts              # Exports
+│   │       ├── [component].tsx       # Implementation
+│   │       ├── [component].test.tsx  # Tests
+│   │       └── [component].stories.tsx # Story
+│   ├── hooks/           # Shared React hooks
+│   ├── lib/             # Utility functions
+│   └── styles/          # Global styles, Tailwind CSS
+├── package.json         # Exports, scripts, dependencies
+├── tsconfig.json        # TypeScript config
+├── tailwind.config.ts   # Tailwind CSS config
+└── vitest.config.ts     # Vitest config
+```
+
+## Technologies
+
+- **React 19**: UI framework
+- **Radix UI**: Accessible component primitives
+- **Tailwind CSS**: Utility-first CSS framework
+- **TypeScript**: Type safety with strict mode
+- **Storybook 8**: Component development and documentation
+- **Vitest**: Fast unit testing
+- **Testing Library**: React component testing
+
+## Documentation
+
+- **Main Storybook Guide**: [`docs/STORYBOOK.md`](../../docs/STORYBOOK.md)
+- **Architecture**: [`docs/ARCHITECTURE.md`](../../docs/ARCHITECTURE.md)
+- **Testing**: [`docs/TESTING.md`](../../docs/TESTING.md)
+- **Development Workflow**: [`docs/DEVELOPMENT.md`](../../docs/DEVELOPMENT.md)
+
+## Related Packages
+
+- `@kala-ui/design-tokens` - Design system tokens
+
+## Credits
+
+This component library is built using excellent open-source libraries. We'd like to thank the following projects:
+
+### Core Dependencies
+
+- **[Tailwind CSS](https://github.com/tailwindlabs/tailwindcss)** - Utility-first CSS framework for rapid UI development
+- **[Radix UI](https://github.com/radix-ui/primitives)** - Unstyled, accessible UI primitives for building high-quality design systems
+- **[shadcn/ui](https://github.com/shadcn-ui/ui)** - Beautifully designed components built with Radix UI and Tailwind CSS
+
+### Component Libraries
+
+- **[Vaul](https://github.com/emilkowalski/vaul)** - Drawer component with accessible primitives
+- **[Sonner](https://github.com/emilkowalski/sonner)** - Opinionated toast component for React
+- **[cmdk](https://github.com/pacocoursey/cmdk)** - Fast, composable command menu component for React
+
+### Data Visualization
+
+- **[ApexCharts](https://github.com/apexcharts/apexcharts.js)** - Modern and interactive JavaScript charts
+
+### Drag & Drop
+
+- **[@hello-pangea/dnd](https://github.com/hello-pangea/dnd)** - React Drag and Drop library
+
+---
+
+For detailed component usage, props, and examples, see the [Storybook documentation](../../docs/STORYBOOK.md) or run `pnpm storybook`.

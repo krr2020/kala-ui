@@ -1,0 +1,45 @@
+# Dependencies
+node_modules
+.pnpm-store
+.yarn/*
+!.yarn/patches
+
+# Testing
+coverage
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Documentation
+*.stories.ts
+*.stories.tsx
+*.stories.js
+*.stories.jsx
+.storybook
+storybook-static
+
+# Build outputs
+dist
+.turbo
+.next
+out
+
+# Development
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Misc
+.DS_Store
+*.log
