@@ -4,6 +4,7 @@
   "description": "Kala UI - A React component library with design tokens",
   "license": "MIT",
   "author": "Kala UI",
+  "homepage": "https://krr2020.com/kala-ui",
   "scripts": {
     "dev": "pnpm --filter @kala-ui/react dev",
     "build": "pnpm --filter \"./packages/**\" build",

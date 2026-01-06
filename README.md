@@ -19,6 +19,12 @@ pnpm install
 pnpm add @kala-ui/react
 ```
 
+## Documentation
+
+📚 **[View Storybook Documentation](https://krr2020.com/kala-ui)**
+
+Interactive component documentation with live examples, props, and usage guides.
+
 ## Usage
 
 ```tsx

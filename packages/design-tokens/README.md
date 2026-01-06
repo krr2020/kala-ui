@@ -42,6 +42,10 @@ This package is part of the monorepo and is already available in all workspace p
 pnpm add @kala-ui/design-tokens
 ```
 
+## Documentation
+
+📚 **[View Full Documentation](https://krr2020.com/kala-ui)** - Complete component library and design system documentation
+
 ## Usage
 
 ### Import All Tokens

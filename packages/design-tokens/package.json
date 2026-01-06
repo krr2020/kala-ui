@@ -3,51 +3,72 @@
   "version": "0.0.1-beta.0",
   "type": "module",
   "description": "Design system tokens for Kala UI - colors, spacing, typography, shadows, breakpoints, and transitions",
-  "keywords": ["design-tokens", "design-system", "tokens", "css", "tailwind", "colors", "spacing", "typography"],
+  "keywords": [
+    "design-tokens",
+    "design-system",
+    "tokens",
+    "css",
+    "tailwind",
+    "colors",
+    "spacing",
+    "typography"
+  ],
   "author": "Kala UI",
   "license": "MIT",
-  "homepage": "https://github.com/your-org/kala-ui#readme",
+  "homepage": "https://krr2020.com/kala-ui",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/kala-ui.git"
+    "url": "git+https://github.com/krr2020/kala-ui.git",
+    "directory": "packages/design-tokens"
   },
   "bugs": {
-    "url": "https://github.com/your-org/kala-ui/issues"
+    "url": "https://github.com/krr2020/kala-ui/issues"
   },
   "exports": {
     ".": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
     "./breakpoints": {
-      "types": "./src/breakpoints.ts",
-      "default": "./src/breakpoints.ts"
+      "types": "./dist/breakpoints.d.ts",
+      "default": "./dist/breakpoints.js"
     },
     "./colors": {
-      "types": "./src/colors.ts",
-      "default": "./src/colors.ts"
+      "types": "./dist/colors.d.ts",
+      "default": "./dist/colors.js"
     },
     "./shadows": {
-      "types": "./src/shadows.ts",
-      "default": "./src/shadows.ts"
+      "types": "./dist/shadows.d.ts",
+      "default": "./dist/shadows.js"
     },
     "./spacing": {
-      "types": "./src/spacing.ts",
-      "default": "./src/spacing.ts"
+      "types": "./dist/spacing.d.ts",
+      "default": "./dist/spacing.js"
     },
     "./transitions": {
-      "types": "./src/transitions.ts",
-      "default": "./src/transitions.ts"
+      "types": "./dist/transitions.d.ts",
+      "default": "./dist/transitions.js"
     },
     "./typography": {
-      "types": "./src/typography.ts",
-      "default": "./src/typography.ts"
+      "types": "./dist/typography.d.ts",
+      "default": "./dist/typography.js"
     }
   },
   "scripts": {
-    "build": "tsc --noEmit",
+    "build": "tsc",
     "type-check": "tsc --noEmit",
     "lint": "biome lint ."
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
     "@types/node": "24.10.1",
