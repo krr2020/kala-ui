@@ -1,6 +1,6 @@
 {
   "name": "@kala-ui/react",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1-beta.1",
   "type": "module",
   "description": "65+ accessible React components built with Radix UI and Tailwind CSS. Includes DataTable with server-side support, charts, drag-and-drop, and comprehensive form controls.",
   "keywords": [
@@ -340,7 +340,7 @@
     "@dnd-kit/modifiers": "^9.0.0",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
-    "@kala-ui/design-tokens": "workspace:^",
+    "@kala-ui/design-tokens": "0.0.1-beta.1",
     "@radix-ui/react-accordion": "~1.2.12",
     "@radix-ui/react-alert-dialog": "~1.1.15",
     "@radix-ui/react-aspect-ratio": "~1.1.8",

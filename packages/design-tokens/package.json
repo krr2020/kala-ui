@@ -1,6 +1,6 @@
 {
   "name": "@kala-ui/design-tokens",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1-beta.1",
   "type": "module",
   "description": "Design system tokens for Kala UI - colors, spacing, typography, shadows, breakpoints, and transitions",
   "keywords": [
