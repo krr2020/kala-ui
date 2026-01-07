@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useCallbackRef } from "../utils";
 
 export interface UseIntervalOptions {
@@ -43,20 +43,20 @@ export function useInterval(
 	const intervalRef = useRef<number | null>(null);
 	const activeRef = useRef(false);
 
-	const start = () => {
+	const start = useCallback(() => {
 		if (!activeRef.current) {
 			activeRef.current = true;
 			intervalRef.current = window.setInterval(fnRef, interval);
 		}
-	};
+	}, [fnRef, interval]);
 
-	const stop = () => {
+	const stop = useCallback(() => {
 		if (activeRef.current && intervalRef.current !== null) {
 			activeRef.current = false;
 			window.clearInterval(intervalRef.current);
 			intervalRef.current = null;
 		}
-	};
+	}, []);
 
 	const toggle = () => {
 		if (activeRef.current) {
@@ -71,8 +71,7 @@ export function useInterval(
 			start();
 		}
 		return stop;
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [interval, autoInvoke]);
+	}, [autoInvoke, start, stop]);
 
 	return { start, stop, toggle, active: activeRef.current };
 }

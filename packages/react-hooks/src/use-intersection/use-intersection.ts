@@ -7,7 +7,7 @@ export interface UseIntersectionOptions extends IntersectionObserverInit {
 
 export interface UseIntersectionReturnValue {
 	/** Ref to attach to element */
-	ref: React.RefObject<any>;
+	ref: React.RefObject<HTMLElement>;
 	/** Intersection observer entry */
 	entry: IntersectionObserverEntry | null;
 }
@@ -33,9 +33,14 @@ export interface UseIntersectionReturnValue {
 export function useIntersection(
 	options: UseIntersectionOptions = {},
 ): UseIntersectionReturnValue {
-	const { disconnectOnIntersect = false, ...observerOptions } = options;
+	const {
+		disconnectOnIntersect = false,
+		threshold,
+		root,
+		rootMargin,
+	} = options;
 	const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null);
-	const ref = useRef<any>(null);
+	const ref = useRef<HTMLElement>(null);
 	const observerRef = useRef<IntersectionObserver | null>(null);
 
 	useEffect(() => {
@@ -45,17 +50,20 @@ export function useIntersection(
 			observerRef.current.disconnect();
 		}
 
-		observerRef.current = new IntersectionObserver(([newEntry]) => {
-			setEntry(newEntry);
+		observerRef.current = new IntersectionObserver(
+			([newEntry]) => {
+				setEntry(newEntry);
 
-			if (
-				disconnectOnIntersect &&
-				newEntry.isIntersecting &&
-				observerRef.current
-			) {
-				observerRef.current.disconnect();
-			}
-		}, observerOptions);
+				if (
+					disconnectOnIntersect &&
+					newEntry.isIntersecting &&
+					observerRef.current
+				) {
+					observerRef.current.disconnect();
+				}
+			},
+			{ threshold, root, rootMargin },
+		);
 
 		observerRef.current.observe(ref.current);
 
@@ -64,12 +72,7 @@ export function useIntersection(
 				observerRef.current.disconnect();
 			}
 		};
-	}, [
-		disconnectOnIntersect,
-		observerOptions.threshold,
-		observerOptions.root,
-		observerOptions.rootMargin,
-	]);
+	}, [disconnectOnIntersect, threshold, root, rootMargin]);
 
 	return { ref, entry };
 }

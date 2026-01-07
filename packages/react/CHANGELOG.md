@@ -6,11 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **DataTable**: Server-side data fetching support with callbacks
+  - `onSortChange` callback for server-side sorting
+  - `onFilterChange` callback for server-side filtering
+  - `pagination.onChange` callback for server-side pagination
+  - `searchable.onChange` callback for server-side search
+  - Pagination now respects `pagination.total` prop for accurate page counts
+  - New Storybook example: "Server-Side Data Fetching"
+  - Updated documentation with server-side examples
+
 ### 0.1.0 - 2025-01-06
 
 #### Added
 - Initial release of Kala UI React component library
-- 40+ accessible components built with Radix UI primitives
+- 65+ accessible components built with Radix UI primitives
 - Tailwind CSS integration with design tokens
 - Full TypeScript support
 - Storybook documentation

@@ -1,11 +1,11 @@
 # @kala-ui/react
 
-Reusable React UI components library built with Radix UI and Tailwind CSS. This package provides all the foundational UI components used across the Next.js web application and Storybook documentation.
+Comprehensive React UI component library built with Radix UI and Tailwind CSS. This package provides 65+ production-ready, accessible components for building modern web applications.
 
 ## Overview
 
 This package contains:
-- **40+ React Components**: Buttons, inputs, dialogs, dropdowns, and more
+- **65+ React Components**: Buttons, inputs, dialogs, dropdowns, data tables, charts, and more
 - **Radix UI Primitives**: Accessible, unstyled component primitives
 - **Tailwind CSS Styling**: Utility-first CSS framework with design tokens
 - **TypeScript**: Fully typed components with strict mode
@@ -87,7 +87,7 @@ import { Spinner } from '@kala-ui/react/spinner';
 ```
 
 **Data Display**
-- `avatar`, `badge`, `table`, `breadcrumbs`
+- `avatar`, `badge`, `table`, `data-table`, `breadcrumbs`, `charts`, `metric-card`
 
 Import from:
 
@@ -95,6 +95,8 @@ Import from:
 import { Avatar } from '@kala-ui/react/avatar';
 import { Badge } from '@kala-ui/react/badge';
 import { Table } from '@kala-ui/react/table';
+import { DataTable } from '@kala-ui/react/data-table';
+import { AreaChart, LineChart, BarChart } from '@kala-ui/react/charts';
 ```
 
 **Advanced**
@@ -123,25 +125,24 @@ Global styles:
 import '@kala-ui/react/styles';
 ```
 
-**Layout**
-- `header`, `footer`, `navigation`, `sidebar`, `card`, `separator`, `tabs`, `accordion`
+## Key Components
 
-**Feedback**
-- `alert`, `alert-dialog`, `dialog`, `tooltip`, `popover`, `banner`, `spinner`, `skeleton`
+**DataTable** - Advanced data table with server-side support
+- Sorting, filtering, searching, pagination
+- Row selection and bulk actions
+- Server-side callbacks for large datasets (10,000+ records)
+- See [data-table README](./src/components/data-table/README.md) for details
 
-**Data Display**
-- `avatar`, `badge`, `table`, `breadcrumbs`
+**Charts** - Data visualization components
+- Area, Bar, Line, Donut, Pie, Radial Bar charts
+- Built with ApexCharts
+- Dark mode support
 
-**Advanced**
-- `dropdown-menu`, `user-menu-dropdown`, `social-login-button`, `password-strength-indicator`, `session-card`
+**DND** - Drag and drop components
+- Sortable lists and grids
+- Built with @hello-pangea/dnd
 
-**Utilities**
-- `lib/utils` - Utility functions (cn, etc.)
-
-**Styles**
-- `styles` - Global CSS and Tailwind configuration
-
-See [`docs/STORYBOOK.md`](../../docs/STORYBOOK.md) for detailed component documentation.
+See the [Storybook documentation](https://krr2020.com/kala-ui) for complete component catalog.
 
 ## Development
 

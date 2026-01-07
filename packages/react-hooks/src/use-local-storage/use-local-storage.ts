@@ -39,7 +39,7 @@ function createStorageHook(storageType: "localStorage" | "sessionStorage") {
 				console.warn(`Error reading ${storageType} key "${key}":`, error);
 				return defaultValue as T;
 			}
-		}, [key, defaultValue, deserialize]);
+		}, [key, defaultValue, deserialize, storageType]);
 
 		const [storedValue, setStoredValue] = useState<T>(
 			getInitialValueInEffect ? (defaultValue as T) : getStorageValue(),
@@ -66,7 +66,7 @@ function createStorageHook(storageType: "localStorage" | "sessionStorage") {
 					console.warn(`Error setting ${storageType} key "${key}":`, error);
 				}
 			},
-			[key, serialize, storedValue],
+			[key, serialize, storedValue, storageType],
 		);
 
 		const removeValue = useCallback(() => {
@@ -79,7 +79,7 @@ function createStorageHook(storageType: "localStorage" | "sessionStorage") {
 			} catch (error) {
 				console.warn(`Error removing ${storageType} key "${key}":`, error);
 			}
-		}, [key, defaultValue]);
+		}, [key, defaultValue, storageType]);
 
 		// Listen for changes from other tabs/windows
 		useEffect(() => {
@@ -102,7 +102,7 @@ function createStorageHook(storageType: "localStorage" | "sessionStorage") {
 
 			window.addEventListener("storage", handleStorageChange);
 			return () => window.removeEventListener("storage", handleStorageChange);
-		}, [key, deserialize]);
+		}, [key, deserialize, storageType]);
 
 		return [storedValue, setValue, removeValue];
 	};

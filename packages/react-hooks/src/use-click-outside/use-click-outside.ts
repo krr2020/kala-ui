@@ -42,7 +42,7 @@ export function useClickOutside<T extends HTMLElement = HTMLElement>(
 
 			// Check if click was on any of the ignore nodes
 			for (const node of nodes) {
-				if (node && node.contains(target)) {
+				if (node?.contains(target)) {
 					return;
 				}
 			}

@@ -1,6 +1,6 @@
 {
   "name": "@kala-ui/react-hooks",
-  "version": "0.1.0",
+  "version": "0.0.1-beta.0",
   "type": "module",
   "description": "Collection of reusable React hooks for kala-ui",
   "main": "./dist/index.js",
@@ -15,7 +15,9 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "tsdown",
@@ -48,9 +50,19 @@
     "kala-ui",
     "react-hooks"
   ],
+  "author": "Kala UI",
   "license": "MIT",
+  "homepage": "https://krr2020.com/kala-ui",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kala-ui/kala-ui"
+    "url": "git+https://github.com/krr2020/kala-ui.git",
+    "directory": "packages/react-hooks"
+  },
+  "bugs": {
+    "url": "https://github.com/krr2020/kala-ui/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

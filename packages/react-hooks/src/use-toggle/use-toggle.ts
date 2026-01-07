@@ -17,7 +17,7 @@ import { useCallback, useState } from "react";
  * ```
  */
 export function useToggle<T = boolean>(
-	options: readonly [T, T] = [false, true] as any,
+	options: readonly [T, T] = [false, true] as readonly [T, T],
 ): [T, (value?: T) => void] {
 	const [[option1, option2]] = useState(options);
 	const [state, setState] = useState<T>(option1);
@@ -30,7 +30,7 @@ export function useToggle<T = boolean>(
 				setState((current) => (current === option1 ? option2 : option1));
 			}
 		},
-		[option1, option2],
+		[option1],
 	);
 
 	return [state, toggle];

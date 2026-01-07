@@ -1,6 +1,6 @@
 # DataTable Component
 
-A fully-featured, accessible data table component with sorting, filtering, search, pagination, and row selection.
+A fully-featured, accessible data table component with sorting, filtering, search, pagination, and row selection. Supports both client-side and server-side data fetching.
 
 ## Features
 
@@ -8,6 +8,7 @@ A fully-featured, accessible data table component with sorting, filtering, searc
 - ✅ **Filtering** - Multiple filter support with various operators
 - ✅ **Global Search** - Search across multiple columns
 - ✅ **Pagination** - Configurable page sizes and navigation
+- ✅ **Server-Side Support** - Callbacks for API-based data fetching
 - ✅ **Row Selection** - Single or multiple row selection with bulk actions
 - ✅ **Loading States** - Skeleton loaders for better UX
 - ✅ **Empty States** - Customizable empty state messages
@@ -25,6 +26,8 @@ The DataTable component is already included in the `@repo/ui` package.
 import { DataTable } from '@repo/ui/data-table';
 import type { ColumnDef } from '@repo/ui/data-table';
 ```
+
+> 💡 **Working with large datasets?** See [SERVER_SIDE_GUIDE.md](./SERVER_SIDE_GUIDE.md) for detailed instructions on using server-side pagination, sorting, and filtering.
 
 ## Basic Usage
 
@@ -95,6 +98,80 @@ function UsersTable() {
   }}
 />
 ```
+
+## Server-Side Data Fetching
+
+For large datasets (10,000+ records), use server-side pagination, sorting, and filtering with callbacks:
+
+```tsx
+function UsersTable() {
+  const [users, setUsers] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [sortConfig, setSortConfig] = useState<SortConfig<User> | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Fetch data whenever params change
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const response = await fetch(
+        `/api/users?page=${currentPage}&pageSize=${pageSize}` +
+        `&sort=${sortConfig?.key}&order=${sortConfig?.direction}` +
+        `&search=${searchQuery}`
+      );
+      const data = await response.json();
+      setUsers(data.items);
+      setTotalRecords(data.total);
+      setIsLoading(false);
+    };
+    fetchData();
+  }, [currentPage, pageSize, sortConfig, searchQuery]);
+
+  return (
+    <DataTable
+      data={users}
+      columns={columns}
+      isLoading={isLoading}
+      pagination={{
+        page: currentPage,
+        pageSize: pageSize,
+        total: totalRecords, // Total from API, not data.length
+        pageSizeOptions: [10, 20, 50, 100],
+        onChange: (page, size) => {
+          setCurrentPage(page);
+          setPageSize(size);
+        },
+      }}
+      searchable={{
+        placeholder: 'Search users...',
+        onChange: (query) => {
+          setSearchQuery(query);
+          setCurrentPage(1); // Reset to page 1 on search
+        },
+      }}
+      onSortChange={(sort) => {
+        setSortConfig(sort);
+        setCurrentPage(1); // Reset to page 1 on sort
+      }}
+      onFilterChange={(filters) => {
+        // Handle filter changes if needed
+        console.log('Filters:', filters);
+      }}
+    />
+  );
+}
+```
+
+**Key Points for Server-Side Mode:**
+- Pass only the current page's data to `data` prop (not all 10,000 records)
+- Set `pagination.total` to the total record count from your API
+- Use the `onChange` callback to update page/pageSize and refetch data
+- Use `onSortChange` to update sort state and refetch data
+- Use `searchable.onChange` to update search query and refetch data
+- DataTable handles UI state, you handle data fetching
 
 ## With Row Selection
 
@@ -405,6 +482,8 @@ export function AuditLogPage() {
 | `pagination` | `PaginationConfig \| boolean` | `false` | Enable pagination |
 | `defaultSort` | `SortConfig<TData>` | - | Initial sort configuration |
 | `defaultFilters` | `FilterConfig<TData>[]` | `[]` | Initial filters |
+| `onSortChange` | `(sort: SortConfig<TData> \| null) => void` | - | Callback when sort changes (for server-side) |
+| `onFilterChange` | `(filters: FilterConfig<TData>[]) => void` | - | Callback when filters change (for server-side) |
 | `selection` | `SelectionConfig<TData>` | - | Row selection config |
 | `bulkActions` | `BulkAction<TData>[]` | - | Bulk action buttons |
 | `isLoading` | `boolean` | `false` | Show loading state |
@@ -415,6 +494,26 @@ export function AuditLogPage() {
 | `striped` | `boolean` | `false` | Alternate row colors |
 | `stickyHeader` | `boolean` | `false` | Fixed header on scroll |
 | `ariaLabel` | `string` | - | Accessibility label |
+
+### PaginationConfig
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `page` | `number` | Required | Current page (1-indexed) |
+| `pageSize` | `number` | Required | Items per page |
+| `total` | `number` | Required | Total number of items |
+| `pageSizeOptions` | `number[]` | `[10, 20, 50, 100]` | Page size options |
+| `onChange` | `(page: number, pageSize: number) => void` | - | Callback when pagination changes (for server-side) |
+
+### SearchConfig
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `placeholder` | `string` | `'Search...'` | Search input placeholder |
+| `searchKeys` | `(keyof TData)[]` | All string columns | Keys to search in |
+| `debounce` | `number` | `300` | Debounce delay in ms |
+| `ariaLabel` | `string` | `'Search table'` | Accessibility label |
+| `onChange` | `(query: string) => void` | - | Callback when search changes (for server-side) |
 
 ### ColumnDef
 
@@ -447,8 +546,49 @@ The DataTable component follows WCAG 2.1 AA guidelines:
 1. **Memoize column definitions** outside component or with `useMemo`
 2. **Use `accessorKey`** instead of `cell` when possible (faster)
 3. **Paginate large datasets** (> 100 rows)
-4. **Debounce search** (built-in 300ms debounce)
-5. **Virtual scrolling** - Consider `react-virtual` for 1000+ rows
+4. **Use server-side mode** for datasets > 10,000 rows
+5. **Debounce search** (built-in 300ms debounce)
+6. **Virtual scrolling** - Consider `react-virtual` for 1000+ rows in client-side mode
+
+## Client-Side vs Server-Side
+
+### Client-Side Mode (Default)
+- All data loaded at once
+- Sorting, filtering, pagination happen in browser
+- Best for < 1,000 records
+- No API calls needed after initial load
+- Instant user interactions
+
+### Server-Side Mode
+- Only current page data loaded
+- Provide callbacks: `onChange`, `onSortChange`, `onFilterChange`, `searchable.onChange`
+- Make API calls when state changes
+- Best for > 10,000 records
+- Set `pagination.total` to API's total count (not `data.length`)
+- Pass only current page data to `data` prop
+
+Example comparison:
+
+```tsx
+// Client-Side (all 50,000 records in memory)
+<DataTable
+  data={all50000Records}  // ❌ Heavy memory usage
+  columns={columns}
+  pagination={true}
+/>
+
+// Server-Side (only 20 records in memory)
+<DataTable
+  data={currentPage20Records}  // ✅ Light memory usage
+  columns={columns}
+  pagination={{
+    page: currentPage,
+    pageSize: 20,
+    total: 50000,  // Total from API
+    onChange: (page, size) => fetchPage(page, size)
+  }}
+/>
+```
 
 ## TypeScript
 

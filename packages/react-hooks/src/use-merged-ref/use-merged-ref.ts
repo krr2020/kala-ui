@@ -17,7 +17,7 @@ import { assignRef, mergeRefs } from "../utils";
  * ```
  */
 export function useMergedRef<T>(...refs: React.ForwardedRef<T>[]) {
-	return useCallback(mergeRefs(...refs), refs);
+	return useCallback(mergeRefs(...refs), [...refs]);
 }
 
 export { assignRef, mergeRefs };

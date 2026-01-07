@@ -7,7 +7,8 @@ A modern React component library and design system built with Radix UI primitive
 This monorepo contains:
 
 - **[@kala-ui/design-tokens](./packages/design-tokens)** - Design system tokens (colors, spacing, typography, shadows, breakpoints, transitions)
-- **[@kala-ui/react](./packages/react)** - Reusable React UI components
+- **[@kala-ui/react](./packages/react)** - 65+ accessible React UI components
+- **[@kala-ui/react-hooks](./packages/react-hooks)** - 18+ essential React hooks
 
 ## Installation
 

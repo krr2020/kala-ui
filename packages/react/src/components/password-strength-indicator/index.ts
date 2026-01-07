@@ -1,1 +1,1 @@
-export { PasswordStrengthIndicator } from './password-strength-indicator';
+export { PasswordStrengthIndicator } from "./password-strength-indicator";

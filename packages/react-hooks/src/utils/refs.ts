@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from "react";
 /**
  * Creates a stable callback ref that always has the latest callback
  */
-export function useCallbackRef<T extends (...args: any[]) => any>(
+export function useCallbackRef<T extends (...args: unknown[]) => unknown>(
 	callback: T,
 ): T {
 	const callbackRef = useRef(callback);
@@ -28,6 +28,8 @@ export function assignRef<T>(ref: React.ForwardedRef<T>, value: T | null) {
 
 export function mergeRefs<T>(...refs: React.ForwardedRef<T>[]) {
 	return (node: T | null) => {
-		refs.forEach((ref) => assignRef(ref, node));
+		refs.forEach((ref) => {
+			assignRef(ref, node);
+		});
 	};
 }

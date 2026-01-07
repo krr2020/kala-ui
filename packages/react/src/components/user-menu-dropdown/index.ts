@@ -1,1 +1,4 @@
-export { UserMenuDropdown, type UserMenuDropdownProps } from './user-menu-dropdown';
+export {
+	UserMenuDropdown,
+	type UserMenuDropdownProps,
+} from "./user-menu-dropdown";

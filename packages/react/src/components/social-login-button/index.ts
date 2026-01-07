@@ -1,1 +1,4 @@
-export { SocialLoginButton, type SocialLoginButtonProps } from './social-login-button';
+export {
+	SocialLoginButton,
+	type SocialLoginButtonProps,
+} from "./social-login-button";

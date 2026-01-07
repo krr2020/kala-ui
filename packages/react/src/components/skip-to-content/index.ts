@@ -1,1 +1,1 @@
-export { SkipToContent, type SkipToContentProps } from './skip-to-content';
+export { SkipToContent, type SkipToContentProps } from "./skip-to-content";
