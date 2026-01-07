@@ -13,7 +13,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   NavigationMenuViewport,
-  navigationMenuTriggerStyle,
 } from '../navigation-menu';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../tabs';
 
@@ -125,7 +124,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
         ref={ref}
         data-comp="header"
         className={cn(
-          'w-full bg-background border-b sticky top-0 z-20',
+          'w-full bg-popover border-b sticky top-0 z-20 theme-popover',
           className,
         )}
         {...props}
@@ -188,8 +187,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                           <NavigationMenuLink
                             href={link.href}
                             className={cn(
-                              navigationMenuTriggerStyle,
-                              'text-sm lg:text-base',
+                              'px-4 py-2 text-sm lg:text-base',
                               link.active && 'text-primary',
                             )}
                             aria-current={link.active ? 'page' : undefined}
@@ -258,7 +256,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 
               {/* Mobile Navigation - Fixed positioned overlay */}
               <nav
-                className="fixed top-0 left-0 right-0 bottom-0 bg-white z-40 lg:hidden overflow-hidden flex flex-col"
+                className="fixed top-0 left-0 right-0 bottom-0 bg-popover z-40 lg:hidden overflow-hidden flex flex-col theme-popover"
                 aria-label="Mobile navigation"
               >
                 {/* Mobile Header with Close Button */}
@@ -309,7 +307,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                       {/* User Profile / Account Section */}
                       {userProfile ? (
                         <div className="border-b">
-                          <div className="px-4 py-4 flex items-center gap-3 bg-neutral-50">
+                          <div className="px-4 py-4 flex items-center gap-3 bg-muted">
                             {userProfile.avatar ? (
                               <img
                                 src={userProfile.avatar}
@@ -317,15 +315,15 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                                 className="w-10 h-10 rounded-full object-cover"
                               />
                             ) : (
-                              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-semibold">
+                              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
                                 {userProfile.name.charAt(0).toUpperCase()}
                               </div>
                             )}
                             <div className="flex flex-col min-w-0">
-                              <span className="text-sm font-medium text-neutral-900 truncate">
+                              <span className="text-sm font-medium text-foreground truncate">
                                 {userProfile.name}
                               </span>
-                              <span className="text-xs text-neutral-500 truncate">
+                              <span className="text-xs text-muted-foreground truncate">
                                 {userProfile.email}
                               </span>
                             </div>
@@ -340,10 +338,10 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                                   <a
                                     href={link.href}
                                     className={cn(
-                                      'flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-neutral-50',
+                                      'flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-accent',
                                       link.variant === 'danger'
-                                        ? 'text-red-600 hover:bg-red-50'
-                                        : 'text-neutral-700 hover:text-neutral-900',
+                                        ? 'text-destructive hover:bg-destructive/10'
+                                        : 'text-foreground hover:text-foreground',
                                     )}
                                     onClick={onMobileMenuToggle}
                                   >
@@ -354,10 +352,10 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                                   <button
                                     type="button"
                                     className={cn(
-                                      'w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-neutral-50 text-left',
+                                      'w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-accent text-left',
                                       link.variant === 'danger'
-                                        ? 'text-red-600 hover:bg-red-50'
-                                        : 'text-neutral-700 hover:text-neutral-900',
+                                        ? 'text-destructive hover:bg-destructive/10'
+                                        : 'text-foreground hover:text-foreground',
                                     )}
                                     onClick={() => {
                                       link.onClick?.();
@@ -374,7 +372,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                         </div>
                       ) : userMenu ? (
                         <div className="px-4 py-3 border-b">
-                          <div className="text-xs font-semibold text-neutral-500 uppercase mb-2">
+                          <div className="text-xs font-semibold text-muted-foreground uppercase mb-2">
                             Account
                           </div>
                           {userMenu}
@@ -389,10 +387,10 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                               <a
                                 href={link.href}
                                 className={cn(
-                                  'text-sm font-medium px-4 py-3 flex items-center justify-between transition-colors hover:bg-neutral-50 border-l-4',
+                                  'text-sm font-medium px-4 py-3 flex items-center justify-between transition-colors hover:bg-accent border-l-4',
                                   link.active
-                                    ? 'bg-primary-50 text-primary-600 border-primary-600'
-                                    : 'text-neutral-900 border-transparent hover:border-border',
+                                    ? 'bg-primary/10 text-primary border-primary'
+                                    : 'text-foreground border-transparent hover:border-border',
                                 )}
                                 aria-current={link.active ? 'page' : undefined}
                                 onClick={(e) => {
@@ -415,16 +413,16 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                                 )}
                               </a>
                               {link.children && expandedItems.has(link.label) && (
-                                <div className="bg-neutral-50 animate-in slide-in-from-top-2 duration-200">
+                                <div className="bg-muted animate-in slide-in-from-top-2 duration-200">
                                   {link.children.map((child) => (
                                     <a
                                       key={child.label}
                                       href={child.href}
                                       className={cn(
-                                        'block text-sm px-8 py-2.5 transition-colors hover:bg-neutral-100 border-l-4 border-transparent',
+                                        'block text-sm px-8 py-2.5 transition-colors hover:bg-accent border-l-4 border-transparent',
                                         child.active
-                                          ? 'text-primary-600 font-medium'
-                                          : 'text-neutral-600 hover:text-neutral-900',
+                                          ? 'text-primary font-medium'
+                                          : 'text-muted-foreground hover:text-foreground',
                                       )}
                                       onClick={onMobileMenuToggle}
                                     >
@@ -443,7 +441,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                       {mobileNotifications || notifications ? (
                         <div className="p-0">{mobileNotifications || notifications}</div>
                       ) : (
-                        <div className="flex flex-col items-center justify-center h-64 text-neutral-500">
+                        <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
                           <Bell className="w-12 h-12 mb-4 opacity-20" />
                           <p>No notifications</p>
                         </div>
@@ -455,7 +453,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                         {/* Theme & Language Settings */}
                         {(themeSwitcherMobile || languageSwitcherMobile) && (
                           <div className="p-4 space-y-6">
-                            <div className="text-xs font-semibold text-neutral-500 uppercase">
+                            <div className="text-xs font-semibold text-muted-foreground uppercase">
                               Preferences
                             </div>
                             <div className="flex flex-col gap-6">

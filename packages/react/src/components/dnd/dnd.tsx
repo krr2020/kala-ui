@@ -1,59 +1,38 @@
 /**
- * DnD Component - Drag and Drop primitives for @hello-pangea/dnd
- * Provides consistent wrappers for DragDropContext, Droppable, and Draggable
+ * DnD Component - Drag and Drop primitives for @dnd-kit/core
+ * Provides consistent wrappers for DndContext, Droppable, and Draggable
  */
 
 'use client';
 
 import type {
-  BeforeCapture,
-  DraggableLocation,
-  DraggableProvided,
-  DraggableRubric,
-  DraggableStateSnapshot,
-  DragStart,
-  DragUpdate,
-  DroppableProvided,
-  DroppableStateSnapshot,
-  DropResult,
-  DragDropContextProps as HelloPangeaDragDropContextProps,
-  DraggableProps as HelloPangeaDraggableProps,
-  DroppableProps as HelloPangeaDroppableProps,
-  ResponderProvided,
-} from '@hello-pangea/dnd';
+  DragEndEvent,
+  DragOverEvent,
+  DragStartEvent,
+  DraggableAttributes,
+  UniqueIdentifier,
+} from '@dnd-kit/core';
 import {
-  DragDropContext as HelloPangeaDragDropContext,
-  Draggable as HelloPangeaDraggable,
-  Droppable as HelloPangeaDroppable,
-} from '@hello-pangea/dnd';
+  DndContext as DndKitContext,
+  useDraggable,
+  useDroppable,
+  type DndContextProps as DndKitContextProps,
+} from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 import * as React from 'react';
 import { cn } from '../../lib/utils';
 
 // ============================================================================
-// DragDropContext
+// DndContext
 // ============================================================================
 
-export interface DragDropContextProps extends HelloPangeaDragDropContextProps {
+export interface DragDropContextProps extends DndKitContextProps {
   children: React.ReactNode;
 }
 
 const DragDropContext = React.forwardRef<HTMLDivElement, DragDropContextProps>(
   ({ children, ...props }, _ref) => {
-    const [enabled, setEnabled] = React.useState(false);
-
-    React.useEffect(() => {
-      const animation = requestAnimationFrame(() => setEnabled(true));
-      return () => {
-        cancelAnimationFrame(animation);
-        setEnabled(false);
-      };
-    }, []);
-
-    if (!enabled) {
-      return null;
-    }
-
-    return <HelloPangeaDragDropContext {...props}>{children}</HelloPangeaDragDropContext>;
+    return <DndKitContext {...props}>{children}</DndKitContext>;
   },
 );
 
@@ -63,39 +42,39 @@ DragDropContext.displayName = 'DragDropContext';
 // Droppable
 // ============================================================================
 
-export interface DroppableProps extends Omit<HelloPangeaDroppableProps, 'children'> {
+export interface DroppableProps {
+  id: UniqueIdentifier;
   children:
     | React.ReactNode
-    | ((provided: DroppableProvided, snapshot: DroppableStateSnapshot) => React.ReactNode);
+    | ((args: { isOver: boolean; setNodeRef: (node: HTMLElement | null) => void }) => React.ReactNode);
   className?: string;
+  disabled?: boolean;
 }
 
 const Droppable = React.forwardRef<HTMLDivElement, DroppableProps>(
-  ({ children, className, ...props }, ref) => {
-    return (
-      <HelloPangeaDroppable {...props}>
-        {(provided, snapshot) => {
-          const content = typeof children === 'function' ? children(provided, snapshot) : children;
+  ({ children, className, id, disabled = false, ...props }, ref) => {
+    const { isOver, setNodeRef } = useDroppable({
+      id,
+      disabled,
+    });
 
-          return (
-            <div
-              ref={(node) => {
-                provided.innerRef(node);
-                if (typeof ref === 'function') {
-                  ref(node);
-                } else if (ref) {
-                  ref.current = node;
-                }
-              }}
-              {...provided.droppableProps}
-              className={cn(className)}
-            >
-              {content}
-              {provided.placeholder}
-            </div>
-          );
+    const content = typeof children === 'function' ? children({ isOver, setNodeRef }) : children;
+
+    return (
+      <div
+        ref={(node) => {
+          setNodeRef(node);
+          if (typeof ref === 'function') {
+            ref(node);
+          } else if (ref) {
+            ref.current = node;
+          }
         }}
-      </HelloPangeaDroppable>
+        className={cn(className)}
+        {...props}
+      >
+        {content}
+      </div>
     );
   },
 );
@@ -106,39 +85,60 @@ Droppable.displayName = 'Droppable';
 // Draggable
 // ============================================================================
 
-export interface DraggableProps extends Omit<HelloPangeaDraggableProps, 'children'> {
+export interface DraggableProps {
+  id: UniqueIdentifier;
   children:
     | React.ReactNode
-    | ((provided: DraggableProvided, snapshot: DraggableStateSnapshot) => React.ReactNode);
+    | ((args: {
+        attributes: DraggableAttributes;
+        listeners: Record<string, Function> | undefined;
+        setNodeRef: (node: HTMLElement | null) => void;
+        transform: { x: number; y: number; scaleX: number; scaleY: number } | null;
+        isDragging: boolean;
+      }) => React.ReactNode);
   className?: string;
+  disabled?: boolean;
 }
 
 const Draggable = React.forwardRef<HTMLDivElement, DraggableProps>(
-  ({ children, className, ...props }, ref) => {
-    return (
-      <HelloPangeaDraggable {...props}>
-        {(provided, snapshot) => {
-          const content = typeof children === 'function' ? children(provided, snapshot) : children;
+  ({ children, className, id, disabled = false, ...props }, ref) => {
+    const {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
+      isDragging,
+    } = useDraggable({
+      id,
+      disabled,
+    });
 
-          return (
-            <div
-              ref={(node) => {
-                provided.innerRef(node);
-                if (typeof ref === 'function') {
-                  ref(node);
-                } else if (ref) {
-                  ref.current = node;
-                }
-              }}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              className={cn(className)}
-            >
-              {content}
-            </div>
-          );
+    const content = typeof children === 'function'
+      ? children({ attributes, listeners, setNodeRef, transform, isDragging })
+      : children;
+
+    const style = transform ? {
+      transform: CSS.Translate.toString(transform),
+    } : undefined;
+
+    return (
+      <div
+        ref={(node) => {
+          setNodeRef(node);
+          if (typeof ref === 'function') {
+            ref(node);
+          } else if (ref) {
+            ref.current = node;
+          }
         }}
-      </HelloPangeaDraggable>
+        style={style}
+        className={cn(className)}
+        {...attributes}
+        {...listeners}
+        {...props}
+      >
+        {content}
+      </div>
     );
   },
 );
@@ -153,17 +153,11 @@ export { DragDropContext, Droppable, Draggable };
 
 export type {
   // Context types
-  DropResult,
-  DragStart,
-  DragUpdate,
-  BeforeCapture,
-  ResponderProvided,
+  DragEndEvent as DropResult,
+  DragStartEvent as DragStart,
+  DragOverEvent as DragUpdate,
   // Droppable types
-  DroppableProvided,
-  DroppableStateSnapshot,
   // Draggable types
-  DraggableProvided,
-  DraggableStateSnapshot,
-  DraggableRubric,
-  DraggableLocation,
+  DraggableAttributes,
+  UniqueIdentifier,
 };

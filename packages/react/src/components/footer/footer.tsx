@@ -63,7 +63,7 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(
         ref={ref}
         data-comp="footer"
         className={cn(
-          'w-full bg-background text-muted-foreground border-t',
+          'w-full bg-muted text-muted-foreground border-t',
           className,
         )}
         {...props}

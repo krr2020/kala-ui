@@ -49,9 +49,9 @@ function AccordionItem({
     <AccordionPrimitive.Item
       data-slot="accordion-item"
       className={cn(
+        'bg-card',
         variant === 'default' && 'border-b last:border-b-0',
-        variant === 'bordered' && 'border rounded-md theme-card',
-        variant === 'filled' && 'border rounded-md overflow-hidden bg-card theme-card',
+        (variant === 'bordered' || variant === 'filled') && 'border rounded-md overflow-hidden',
         className,
       )}
       {...props}

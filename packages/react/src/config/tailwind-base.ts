@@ -92,7 +92,7 @@ export const baseConfig = {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
         },
-        separator: 'hsl(var(--separator, var(--border)))',
+        separator: 'hsl(var(--separator, var(--border)) / var(--border-alpha, 1))',
       },
       spacing: spacing,
       fontFamily: typography.fontFamily,

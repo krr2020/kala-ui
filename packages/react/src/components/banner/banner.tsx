@@ -68,7 +68,7 @@ export function Banner({
         <button
           type="button"
           onClick={onClose}
-          className="shrink-0 p-1 rounded hover:bg-black/10 transition-colors"
+          className="cursor-pointer shrink-0 p-1 rounded hover:bg-black/10 transition-colors"
           aria-label="Close banner"
         >
           <X className="w-4 h-4" />

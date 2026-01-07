@@ -12,7 +12,7 @@ export const badgeStyles = {
       warning: 'bg-warning text-warning-foreground [a&]:hover:bg-warning/80',
       info: 'bg-info text-info-foreground [a&]:hover:bg-info/80',
       light: 'bg-muted text-muted-foreground [a&]:hover:bg-muted/80',
-      dark: 'bg-foreground text-background [a&]:hover:bg-foreground/90',
+      dark: 'bg-foreground text-card [a&]:hover:bg-foreground/90',
       muted: 'bg-accent text-accent-foreground [a&]:hover:bg-accent/80',
       outline: 'border text-foreground [a&]:hover:bg-accent',
     },

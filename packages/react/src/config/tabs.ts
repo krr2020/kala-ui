@@ -23,7 +23,7 @@ export const tabsTriggerStyles = {
   variants: {
     variant: {
       default:
-        'rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm',
+        'rounded-md data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm',
       line: 'rounded-none border-b-2 border-transparent bg-transparent px-4 py-3 font-semibold text-muted-foreground shadow-none transition-colors data-[state=active]:text-foreground data-[state=active]:border-primary data-[state=active]:shadow-none hover:text-foreground',
       vertical:
         'justify-start rounded-md px-4 py-2 hover:bg-muted data-[state=active]:bg-muted data-[state=active]:text-foreground',

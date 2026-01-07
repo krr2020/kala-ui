@@ -12,10 +12,89 @@ import {
   tableRowStyles,
 } from '../../config/table';
 import { cn } from '../../lib/utils';
+import { Skeleton } from '../skeleton';
 
-function Table({ className, ...props }: React.ComponentProps<'table'>) {
+export interface TableProps extends React.ComponentProps<'table'> {
+  /**
+   * Show loading skeleton instead of content
+   */
+  isLoading?: boolean;
+  /**
+   * Number of skeleton rows to show when loading (default: 5)
+   */
+  loadingRows?: number;
+  /**
+   * Number of skeleton columns to show when loading (default: 4)
+   */
+  loadingColumns?: number;
+  /**
+   * Show actions column in skeleton (default: false)
+   */
+  loadingShowActions?: boolean;
+  /**
+   * Headers to show in skeleton (optional)
+   */
+  loadingHeaders?: string[];
+}
+
+function Table({ 
+  className, 
+  isLoading,
+  loadingRows = 5,
+  loadingColumns = 4,
+  loadingShowActions = false,
+  loadingHeaders,
+  ...props 
+}: TableProps) {
+  // Render skeleton state directly
+  if (isLoading) {
+    const totalColumns = loadingShowActions ? loadingColumns + 1 : loadingColumns;
+    const displayHeaders = loadingHeaders || Array(loadingColumns).fill('');
+
+    return (
+      <div className="bg-card border rounded-lg shadow-sm">
+        <table className={cn('w-full caption-bottom text-sm', className)}>
+          <thead className={cn(tableHeaderStyles.base)}>
+            <tr className={cn(tableRowStyles.base)}>
+              {displayHeaders.map((header, index) => (
+                <th key={`header-${header || index}-${crypto.randomUUID()}`} className={cn(tableHeadStyles.base)}>
+                  {header || <Skeleton className="h-4 w-24" />}
+                </th>
+              ))}
+              {loadingShowActions && (
+                <th key="actions-header" className={cn(tableHeadStyles.base)}>
+                  Actions
+                </th>
+              )}
+            </tr>
+          </thead>
+          <tbody className={cn(tableBodyStyles.base)}>
+            {Array.from({ length: loadingRows }).map(() => {
+              const rowId = crypto.randomUUID();
+              return (
+                <tr key={rowId} className={cn(tableRowStyles.base)}>
+                  {Array.from({ length: totalColumns }).map(() => {
+                    const cellId = crypto.randomUUID();
+                    return (
+                      <td key={cellId} className={cn(tableCellStyles.base)}>
+                        <Skeleton
+                          className="h-4"
+                          style={{ width: `${Math.floor(Math.random() * 40 + 60)}%` }}
+                        />
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
   return (
-    <div data-slot="table-container" className="relative w-full overflow-x-auto">
+    <div data-slot="table-container" className="relative w-full overflow-x-auto border rounded-lg bg-card theme-card">
       <table
         data-slot="table"
         className={cn('w-full caption-bottom text-sm', className)}

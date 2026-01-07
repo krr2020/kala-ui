@@ -5,8 +5,22 @@
 @layer base {
   /* Base body styles with background alpha support */
   body {
-    background-color: hsla(var(--background), var(--background-alpha, 1));
+    background-color: hsl(var(--background) / var(--background-alpha, 1));
     color: hsl(var(--foreground));
+    /* Mobile touch optimizations */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  /* Interactive elements - mobile touch optimizations */
+  button,
+  [role="button"],
+  a,
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"] {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   /* Light Theme */
@@ -29,8 +43,10 @@
     --destructive-foreground: 210 40% 98%;
     --border: 211 27% 81%;
     --border-alpha: 1;
+    --card-border-alpha: var(--border-alpha, 1);
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
+    --ring-offset-color: 0 0% 100%;
     --radius: 0.5rem;
 
     /* Shadow */
@@ -62,8 +78,8 @@
     --popover-foreground: 0 0% 9%;
     --primary: 0 0% 9%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary: 215 20.2% 65.1%;
+    --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
     --accent: 0 0% 96.1%;
@@ -72,8 +88,10 @@
     --destructive-foreground: 210 40% 98%;
     --border: 221 32% 43%;
     --border-alpha: 0.16;
+    --card-border-alpha: var(--border-alpha, 1);
     --input: 0 0% 89.8%;
     --ring: 0 0% 9%;
+    --ring-offset-color: 0 0% 100%;
     --shadow-color: 221 38% 15%;
     --shadow-alpha: 0.05;
     --shadow-spread: 10px;
@@ -90,12 +108,17 @@
 
   /* Accent Theme */
   .accent {
-    /* Only override bg, border, shadow - all other colors inherit from :root (Light theme) */
+    /* Only override bg, border alpha for cards, shadow - all other colors inherit from :root (Light theme) */
+    --background: 219 81% 49%;
     --background-alpha: 0.03;
     --card: 0 0% 100%; /* Solid white for light theme */
     --popover: 0 0% 100%; /* Solid white for light theme */
-    --border: 211 27% 81%;
-    --border-alpha: 0.3;
+    --muted: 220 14% 96%; /* Neutral gray for muted elements */
+    --muted-foreground: 220 9% 46%; /* Muted foreground */
+    --accent: 220 14% 96%; /* Neutral gray for hover states - no blue tint */
+    --accent-foreground: 224 71% 4%; /* Dark text on light accent */
+    --card-border-alpha: 0;
+    --ring-offset-color: 0 0% 100%;
     --shadow-color: 219 81% 49%;
     --shadow-alpha: 0.1;
     --shadow-spread: 25px;
@@ -121,8 +144,10 @@
     --destructive-foreground: 210 40% 98%;
     --border: 221 32% 43%;
     --border-alpha: 0.16;
+    --card-border-alpha: var(--border-alpha, 1);
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
+    --ring-offset-color: 219 33% 12%;
     --shadow-color: 221 38% 15%;
     --shadow-alpha: 0;
     --shadow-spread: 0px;
@@ -135,10 +160,12 @@
 
   /* Dark Accent Theme - applies when both dark and accent classes are present */
   .dark.accent {
+    --background: 224 76% 48%;
     --background-alpha: 0.05;
     --card: 219 31% 17%; /* Solid color for cards in dark accent theme */
     --popover: 219 31% 17%; /* Solid color for popovers in dark accent theme */
-    --border-alpha: 0.3;
+    --card-border-alpha: 0;
+    --ring-offset-color: 219 33% 12%;
     --shadow-color: 224 76% 48%;
     --shadow-alpha: 0.2;
     --shadow-spread: 25px;
@@ -164,8 +191,10 @@
     --destructive-foreground: 210 40% 98%;
     --border: 0 0% 0%;
     --border-alpha: 1;
+    --card-border-alpha: var(--border-alpha, 1);
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
+    --ring-offset-color: 0 0% 100%;
     --shadow-color: 0 0% 0%;
     --shadow-alpha: 0;
     --shadow-spread: 0px;
@@ -200,8 +229,10 @@
     --destructive-foreground: 210 40% 98%;
     --border: 0 0% 100%;
     --border-alpha: 1;
+    --card-border-alpha: var(--border-alpha, 1);
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
+    --ring-offset-color: 222.2 84% 4.9%;
     --shadow-color: 0 0% 0%;
     --shadow-alpha: 0;
     --shadow-spread: 0px;
@@ -214,32 +245,32 @@
 
   /* Theme-aware component styles */
   .theme-card {
-    background-color: hsl(var(--card)) !important;
-    border-color: hsl(var(--border) / var(--border-alpha)) !important;
+    background-color: hsl(var(--card));
+    border-color: hsl(var(--border) / var(--card-border-alpha, var(--border-alpha, 1)));
     box-shadow: 0 0 var(--shadow-spread) hsl(var(--shadow-color) / var(--shadow-alpha)) !important;
   }
 
   .theme-input,
   .theme-dropdown {
-    background-color: hsl(var(--background)) !important;
-    border-color: hsl(var(--border)) !important;
+    background-color: hsl(var(--card)) !important;
+    border-color: hsl(var(--border) / var(--border-alpha, 1)) !important;
   }
 
   .theme-popover {
     background-color: hsl(var(--popover)) !important;
-    border-color: hsl(var(--border)) !important;
+    border-color: hsl(var(--border) / var(--border-alpha, 1)) !important;
   }
 
-  /* Ensure all border utilities use theme-aware colors (solid, no alpha) */
+  /* Ensure all border utilities use theme-aware colors */
   * {
-    border-color: hsl(var(--border));
+    border-color: hsl(var(--border) / var(--border-alpha, 1));
   }
 }
 
 /* Focus ring utilities using standard CSS */
 .ring-standard {
   --tw-ring-offset-width: 2px;
-  --tw-ring-offset-color: hsl(var(--background));
+  --tw-ring-offset-color: hsl(var(--ring-offset-color));
   --tw-ring-color: hsl(var(--ring));
   outline: none;
   box-shadow: 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
@@ -248,7 +279,7 @@
 
 .ring-destructive {
   --tw-ring-offset-width: 2px;
-  --tw-ring-offset-color: hsl(var(--background));
+  --tw-ring-offset-color: hsl(var(--ring-offset-color));
   --tw-ring-color: hsl(var(--destructive));
   outline: none;
   box-shadow: 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
@@ -257,7 +288,7 @@
 
 .ring-success {
   --tw-ring-offset-width: 2px;
-  --tw-ring-offset-color: hsl(var(--background));
+  --tw-ring-offset-color: hsl(var(--ring-offset-color));
   --tw-ring-color: hsl(var(--success));
   outline: none;
   box-shadow: 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
@@ -270,7 +301,7 @@
 
 .focus-ring:focus-visible {
   --tw-ring-offset-width: 2px;
-  --tw-ring-offset-color: hsl(var(--background));
+  --tw-ring-offset-color: hsl(var(--ring-offset-color));
   --tw-ring-color: hsl(var(--ring));
   box-shadow: 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
               0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -282,7 +313,7 @@
 
 .focus-within-ring:focus-within {
   --tw-ring-offset-width: 2px;
-  --tw-ring-offset-color: hsl(var(--background));
+  --tw-ring-offset-color: hsl(var(--ring-offset-color));
   --tw-ring-color: hsl(var(--ring));
   box-shadow: 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
               0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -294,7 +325,7 @@
 
 .focus-ring-destructive:focus-visible {
   --tw-ring-offset-width: 2px;
-  --tw-ring-offset-color: hsl(var(--background));
+  --tw-ring-offset-color: hsl(var(--ring-offset-color));
   --tw-ring-color: hsl(var(--destructive));
   box-shadow: 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
               0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -306,7 +337,7 @@
 
 .focus-ring-success:focus-visible {
   --tw-ring-offset-width: 2px;
-  --tw-ring-offset-color: hsl(var(--background));
+  --tw-ring-offset-color: hsl(var(--ring-offset-color));
   --tw-ring-color: hsl(var(--success));
   box-shadow: 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
               0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -318,7 +349,7 @@
 
 .focus-within-ring-destructive:focus-within {
   --tw-ring-offset-width: 2px;
-  --tw-ring-offset-color: hsl(var(--background));
+  --tw-ring-offset-color: hsl(var(--ring-offset-color));
   --tw-ring-color: hsl(var(--destructive));
   box-shadow: 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
               0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -330,7 +361,7 @@
 
 .focus-visible-ring-success:focus-visible {
   --tw-ring-offset-width: 2px;
-  --tw-ring-offset-color: hsl(var(--background));
+  --tw-ring-offset-color: hsl(var(--ring-offset-color));
   --tw-ring-color: hsl(var(--success));
   box-shadow: 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
               0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);

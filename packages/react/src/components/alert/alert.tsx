@@ -86,7 +86,7 @@ function Alert({
         <button
           type="button"
           onClick={handleDismiss}
-          className="absolute right-2 top-2 rounded-md p-1 hover:bg-accent transition-colors"
+          className="cursor-pointer absolute right-2 top-2 rounded-md p-1 hover:bg-accent transition-colors"
           aria-label="Dismiss alert"
         >
           <X className="h-4 w-4" />

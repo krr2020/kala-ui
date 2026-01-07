@@ -1,5 +1,5 @@
 export const buttonStyles = {
-  base: 'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 focus-ring',
+  base: 'cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed focus-ring',
   variants: {
     variant: {
       default: 'bg-primary text-primary-foreground hover:bg-primary/90',
@@ -10,30 +10,30 @@ export const buttonStyles = {
       danger: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
       destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
       info: 'bg-info text-info-foreground hover:bg-info/80',
-      dark: 'bg-foreground text-background hover:bg-foreground/90',
+      dark: 'bg-foreground text-card hover:bg-foreground/90',
       light: 'bg-muted text-muted-foreground hover:bg-muted/80',
       muted: 'bg-accent text-accent-foreground hover:bg-accent/80',
       link: 'text-primary underline-offset-4 hover:underline',
       ghost: 'hover:bg-accent hover:text-accent-foreground',
-      outline: 'border bg-background hover:bg-accent hover:text-accent-foreground',
+      outline: 'border bg-card hover:bg-accent hover:text-accent-foreground',
       'outline-primary':
-        'border border-primary text-primary bg-transparent hover:bg-primary hover:text-primary-foreground',
+        'border border-primary text-primary bg-card hover:bg-primary hover:text-primary-foreground',
       'outline-secondary':
-        'border border-secondary text-secondary bg-transparent hover:bg-secondary hover:text-secondary-foreground',
+        'border border-secondary text-secondary bg-card hover:bg-secondary hover:text-secondary-foreground',
       'outline-success':
-        'border border-success text-success bg-transparent hover:bg-success hover:text-success-foreground',
+        'border border-success text-success bg-card hover:bg-success hover:text-success-foreground',
       'outline-warning':
-        'border border-warning text-warning bg-transparent hover:bg-warning hover:text-warning-foreground',
+        'border border-warning text-warning bg-card hover:bg-warning hover:text-warning-foreground',
       'outline-danger':
-        'border border-destructive text-destructive bg-transparent hover:bg-destructive hover:text-destructive-foreground',
+        'border border-destructive text-destructive bg-card hover:bg-destructive hover:text-destructive-foreground',
       'outline-info':
-        'border border-info text-info bg-transparent hover:bg-info hover:text-info-foreground',
+        'border border-info text-info bg-card hover:bg-info hover:text-info-foreground',
       'outline-dark':
-        'border border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background',
+        'border border-foreground text-foreground bg-card hover:bg-foreground hover:text-card',
       'outline-light':
-        'border text-muted-foreground bg-transparent hover:bg-muted hover:text-muted-foreground',
+        'border text-muted-foreground bg-card hover:bg-muted hover:text-muted-foreground',
       'outline-muted':
-        'border border-accent text-accent-foreground bg-transparent hover:bg-accent hover:text-accent-foreground',
+        'border border-accent text-accent-foreground bg-card hover:bg-accent hover:text-accent-foreground',
     },
     size: {
       default: 'h-10 px-4 py-2',

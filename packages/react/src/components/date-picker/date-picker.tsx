@@ -11,12 +11,13 @@ import { Popover, PopoverContent, PopoverTrigger } from '../popover';
 export interface DatePickerProps
   extends Omit<
     React.ComponentProps<typeof Calendar>,
-    'mode' | 'selected' | 'onSelect' | 'className' | 'required'
+    'mode' | 'selected' | 'onSelect' | 'className' | 'required' | 'disabled'
   > {
   date?: Date;
   onDateChange?: (date: Date | undefined) => void;
   placeholder?: string;
-  disabled?: boolean;
+  disabled?: React.ComponentProps<typeof Calendar>['disabled'];
+  buttonDisabled?: boolean;
   className?: string;
   buttonClassName?: string;
   formatStr?: string;
@@ -26,7 +27,8 @@ export function DatePicker({
   date,
   onDateChange,
   placeholder = 'Pick a date',
-  disabled = false,
+  disabled,
+  buttonDisabled = false,
   className,
   buttonClassName,
   formatStr = 'PPP',
@@ -42,7 +44,7 @@ export function DatePicker({
             !date && 'text-muted-foreground',
             buttonClassName,
           )}
-          disabled={disabled}
+          disabled={buttonDisabled}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {date ? format(date, formatStr) : <span>{placeholder}</span>}
@@ -54,6 +56,7 @@ export function DatePicker({
           selected={date}
           onSelect={onDateChange || (() => {})}
           required={false}
+          disabled={disabled}
           autoFocus
           // biome-ignore lint/suspicious/noExplicitAny: bypass complex union types
           {...(props as any)}
@@ -66,12 +69,13 @@ export function DatePicker({
 export interface DateRangePickerProps
   extends Omit<
     React.ComponentProps<typeof Calendar>,
-    'mode' | 'selected' | 'onSelect' | 'className' | 'defaultMonth' | 'numberOfMonths' | 'required'
+    'mode' | 'selected' | 'onSelect' | 'className' | 'defaultMonth' | 'numberOfMonths' | 'required' | 'disabled'
   > {
   dateRange?: DateRange;
   onDateRangeChange?: (range: DateRange | undefined) => void;
   placeholder?: string;
-  disabled?: boolean;
+  disabled?: React.ComponentProps<typeof Calendar>['disabled'];
+  buttonDisabled?: boolean;
   className?: string;
   buttonClassName?: string;
   formatStr?: string;
@@ -81,7 +85,8 @@ export function DateRangePicker({
   dateRange,
   onDateRangeChange,
   placeholder = 'Pick a date range',
-  disabled = false,
+  disabled,
+  buttonDisabled = false,
   className,
   buttonClassName,
   formatStr = 'LLL dd, y',
@@ -97,7 +102,7 @@ export function DateRangePicker({
             !dateRange && 'text-muted-foreground',
             buttonClassName,
           )}
-          disabled={disabled}
+          disabled={buttonDisabled}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {dateRange?.from ? (
@@ -120,6 +125,7 @@ export function DateRangePicker({
           selected={dateRange}
           onSelect={onDateRangeChange || (() => {})}
           numberOfMonths={2}
+          disabled={disabled}
           // biome-ignore lint/suspicious/noExplicitAny: bypass complex union types
           {...(props as any)}
         />

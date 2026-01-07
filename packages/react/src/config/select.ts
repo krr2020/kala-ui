@@ -1,5 +1,5 @@
 export const selectTriggerStyles = {
-  base: 'bg-background text-foreground data-placeholder:text-muted-foreground aria-invalid:ring-destructive/20 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground flex w-fit items-center justify-between gap-2 rounded-md border whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50 theme-input focus-ring *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4',
+  base: 'cursor-pointer bg-card text-foreground data-placeholder:text-muted-foreground aria-invalid:ring-destructive/20 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground flex w-fit items-center justify-between gap-2 rounded-md border whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50 theme-input focus-ring *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4',
   variants: {
     size: {
       default: 'h-10 px-3 py-2 text-sm',
@@ -27,7 +27,7 @@ export const selectLabelStyles = {
 };
 
 export const selectItemStyles = {
-  base: 'focus:bg-accent focus:text-accent-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2',
+  base: 'cursor-pointer focus:bg-accent focus:text-accent-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2',
 };
 
 export const selectSeparatorStyles = {

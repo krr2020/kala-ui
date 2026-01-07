@@ -24,7 +24,7 @@ function List({ className, divided = true, dense = false, ...props }: ListProps)
   return (
     <ul
       className={cn(
-        'flex flex-col bg-background rounded-lg border overflow-hidden theme-card',
+        'flex flex-col bg-card rounded-lg border overflow-hidden theme-card',
         divided && '[&>li:not(:last-child)]:border-b',
         dense ? 'gap-0' : 'gap-0',
         className,

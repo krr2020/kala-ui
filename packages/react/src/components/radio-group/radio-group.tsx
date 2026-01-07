@@ -60,7 +60,7 @@ const radioGroupItemVariants = cva(radioGroupItemStyles.base, {
 });
 
 const RadioGroup = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Root>,
+  React.ComponentRef<typeof RadioGroupPrimitive.Root>,
   RadioGroupProps
 >(({ className, variant = 'default', size = 'md', ...props }, ref) => {
   return (
@@ -78,7 +78,7 @@ const RadioGroup = React.forwardRef<
 RadioGroup.displayName = 'RadioGroup';
 
 const RadioGroupItem = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Item>,
+  React.ComponentRef<typeof RadioGroupPrimitive.Item>,
   RadioGroupItemProps
 >(({ className, label, description, error, children, ...props }, ref) => {
   const { variant = 'default', size = 'md' } = React.useContext(RadioGroupContext);

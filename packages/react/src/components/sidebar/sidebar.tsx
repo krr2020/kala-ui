@@ -102,7 +102,7 @@ export function Sidebar({
       <aside
         data-comp="sidebar"
         className={cn(
-          'fixed left-0 top-0 z-30 h-full w-64 bg-background border-r text-foreground transition-transform duration-300 ease-out flex flex-col',
+          'fixed left-0 top-0 z-30 h-full w-64 bg-popover border-r text-foreground transition-transform duration-300 ease-out flex flex-col theme-card',
           'md:translate-x-0 md:z-10',
           isOpen ? 'animate-slide-in-from-left' : '-translate-x-full',
           className,
