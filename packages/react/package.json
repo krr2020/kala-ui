@@ -1,6 +1,6 @@
 {
   "name": "@kala-ui/react",
-  "version": "0.0.1-beta.3",
+  "version": "0.0.1-beta.4",
   "type": "module",
   "description": "65+ accessible React components built with Radix UI and Tailwind CSS. Includes DataTable with server-side support, charts, drag-and-drop, and comprehensive form controls.",
   "keywords": [

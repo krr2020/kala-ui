@@ -99,6 +99,30 @@ import { DataTable } from '@kala-ui/react/data-table';
 import { AreaChart, LineChart, BarChart } from '@kala-ui/react/charts';
 ```
 
+**Notifications**
+- `toast` - Toast notification system with full Sonner API support
+
+Import from:
+
+```tsx
+import { toast, Toast } from '@kala-ui/react/toast';
+
+// Use the API
+toast.success('Success message');
+toast.error('Error message');
+toast.dismiss(toastId);
+
+// Use the component
+<Toast />
+
+// Promise-based toasts
+toast.promise(promise, {
+  loading: 'Loading...',
+  success: 'Success!',
+  error: 'Error',
+});
+```
+
 **Advanced**
 - `dropdown-menu`, `user-menu-dropdown`, `social-login-button`, `password-strength-indicator`, `session-card`
 
@@ -145,8 +169,8 @@ Or import in CSS files:
 - Dark mode support
 
 **DND** - Drag and drop components
-- Sortable lists and grids
-- Built with @hello-pangea/dnd
+- Sortable lists and grids with animations
+- Built with @dnd-kit/core
 
 See the [Storybook documentation](https://krr2020.com/kala-ui) for complete component catalog.
 
@@ -335,7 +359,7 @@ This component library is built using excellent open-source libraries. We'd like
 
 ### Drag & Drop
 
-- **[@hello-pangea/dnd](https://github.com/hello-pangea/dnd)** - React Drag and Drop library
+- **[@dnd-kit/core](https://github.com/clauderic/dnd-kit)** - Modern, lightweight drag and drop library for React
 
 ---
 

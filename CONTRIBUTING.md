@@ -326,7 +326,7 @@ Kala UI is built using excellent open-source libraries. We'd like to thank:
 - **[ApexCharts](https://github.com/apexcharts/apexcharts.js)** - Charts library
 
 ### Drag & Drop
-- **[@hello-pangea/dnd](https://github.com/hello-pangea/dnd)** - React Drag and Drop
+- **[@dnd-kit/core](https://github.com/clauderic/dnd-kit)** - Modern, lightweight drag and drop library for React
 
 ### Inspiration
 - **[Bootstrap](https://getbootstrap.com/)** - Popular UI framework

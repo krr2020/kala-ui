@@ -169,14 +169,15 @@ export function useTableState<TData>({
 	const hasPreviousPage = currentPage > 1;
 
 	const pageData = useMemo(() => {
-		// If manualTotal is provided, we assume data is already paginated (server-side)
-		if (manualTotal !== undefined) {
+		// If manualTotal AND onPaginationChange are provided, assume server-side pagination
+		// Otherwise, do client-side pagination
+		if (manualTotal !== undefined && onPaginationChange !== undefined) {
 			return sortedData;
 		}
 		const startIndex = (currentPage - 1) * pageSize;
 		const endIndex = startIndex + pageSize;
 		return sortedData.slice(startIndex, endIndex);
-	}, [sortedData, currentPage, pageSize, manualTotal]);
+	}, [sortedData, currentPage, pageSize, manualTotal, onPaginationChange]);
 
 	// Toggle sort
 	const toggleSort = useCallback((key: keyof TData) => {
