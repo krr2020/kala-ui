@@ -16,9 +16,12 @@
     "test:watch": "pnpm --filter @kala-ui/react test:watch",
     "test:coverage": "pnpm --filter @kala-ui/react test:coverage",
     "storybook": "pnpm --filter @kala-ui/react storybook",
-    "build-storybook": "pnpm --filter @kala-ui/react build-storybook"
+    "build-storybook": "pnpm --filter @kala-ui/react build-storybook",
+    "clean": "rimraf node_modules packages/*/node_modules packages/*/dist packages/*/coverage packages/*/.turbo packages/*/storybook-static packages/*/tsconfig.tsbuildinfo packages/*/.tsconfig.tsbuildinfo .turbo .tsconfig.tsbuildinfo"
   },
   "devDependencies": {
+    "postcss-cli": "^11.0.1",
+    "rimraf": "^6.0.1",
     "typescript": "~5.9.3"
   },
   "engines": {

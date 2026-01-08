@@ -20,13 +20,37 @@ pnpm install
 pnpm add @kala-ui/react
 ```
 
-## Documentation
+## Quick Start
 
-📚 **[View Storybook Documentation](https://krr2020.com/kala-ui)**
+### 1. Install the package
 
-Interactive component documentation with live examples, props, and usage guides.
+```bash
+npm install @kala-ui/react
+```
 
-## Usage
+### 2. Import global styles
+
+```tsx
+// In your main entry point (App.tsx, main.tsx, or index.tsx)
+import '@kala-ui/react/styles';
+```
+
+### 3. Configure Tailwind CSS
+
+```ts
+// tailwind.config.ts
+import tailwindConfig from '@kala-ui/react/config/tailwind-base';
+
+export default {
+  content: [
+    './src/**/*.{ts,tsx}',
+    './node_modules/@kala-ui/react/**/*.{ts,tsx}',
+  ],
+  ...tailwindConfig,
+};
+```
+
+### 4. Use components
 
 ```tsx
 import { Button } from '@kala-ui/react/button';
@@ -42,6 +66,43 @@ function App() {
 }
 ```
 
+## Theming
+
+Kala UI includes a built-in theming system with 6 themes: Light, Neutral, Accent, Dark, High Contrast Light, and High Contrast Dark.
+
+For detailed theming documentation, see [THEMING.md](./THEMING.md).
+
+### Basic usage
+
+```tsx
+import '@kala-ui/react/styles';
+
+function App() {
+  return (
+    <div className="dark"> {/* or 'neutral', 'accent', 'high-contrast-light', etc. */}
+      {/* Your app content */}
+    </div>
+  );
+}
+```
+
+### Using design tokens
+
+```tsx
+import { colors, spacing, typography, themes } from '@kala-ui/design-tokens';
+
+// Access design tokens programmatically
+const primaryColor = colors.primary;
+const padding = spacing.md;
+const fontSize = typography.text.lg;
+```
+
+## Documentation
+
+📚 **[View Storybook Documentation](https://krr2020.com/kala-ui)**
+
+Interactive component documentation with live examples, props, and usage guides.
+
 ## Development
 
 ```bash
@@ -54,6 +115,9 @@ pnpm type-check
 # Run linting
 pnpm lint
 
+# Fix linting issues
+pnpm lint:fix
+
 # Run tests
 pnpm test
 
@@ -61,35 +125,9 @@ pnpm test
 pnpm storybook
 ```
 
-## Credits
+## Contributing
 
-This project is built using excellent open-source libraries. We'd like to thank the following projects:
-
-### Core Dependencies
-
-- **[Tailwind CSS](https://github.com/tailwindlabs/tailwindcss)** - Utility-first CSS framework for rapid UI development
-- **[Radix UI](https://github.com/radix-ui/primitives)** - Unstyled, accessible UI primitives for building high-quality design systems
-
-### Component Libraries
-
-- **[Vaul](https://github.com/emilkowalski/vaul)** - Drawer component with accessible primitives
-- **[Sonner](https://github.com/emilkowalski/sonner)** - Opinionated toast component for React
-- **[cmdk](https://github.com/pacocoursey/cmdk)** - Fast, composable command menu component for React
-
-### Data Visualization
-
-- **[ApexCharts](https://github.com/apexcharts/apexcharts.js)** - Modern and interactive JavaScript charts
-
-### Drag & Drop
-
-- **[@hello-pangea/dnd](https://github.com/hello-pangea/dnd)** - React Drag and Drop library
-
-## Inspired From
-
-This project draws inspiration from these excellent design systems and component libraries:
-
-- **[Bootstrap](https://getbootstrap.com/)** - The most popular HTML, CSS, and JS library in the world
-- **[shadcn/ui](https://github.com/shadcn-ui/ui)** - Beautifully designed components built with Radix UI and Tailwind CSS
+Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute to this project.
 
 ## License
 

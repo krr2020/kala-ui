@@ -119,10 +119,16 @@ import { cn } from '@kala-ui/react/lib/utils';
 
 **Styles**
 
-Global styles:
+Import global styles in JavaScript/TypeScript files:
+
+```ts
+import '@kala-ui/react/styles';
+```
+
+Or import in CSS files:
 
 ```css
-import '@kala-ui/react/styles';
+@import '@kala-ui/react/styles';
 ```
 
 ## Key Components

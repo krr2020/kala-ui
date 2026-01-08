@@ -1,6 +1,6 @@
 {
   "name": "@kala-ui/react",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1-beta.2",
   "type": "module",
   "description": "65+ accessible React components built with Radix UI and Tailwind CSS. Includes DataTable with server-side support, charts, drag-and-drop, and comprehensive form controls.",
   "keywords": [
@@ -28,287 +28,287 @@
   },
   "exports": {
     "./styles": {
-      "default": "./src/styles/globals.css"
+      "default": "./dist/styles/globals.css"
     },
     "./config/tailwind-base": {
-      "types": "./dist/src/config/tailwind-base.d.ts",
-      "default": "./dist/src/config/tailwind-base.js"
+      "types": "./dist/config/tailwind-base.d.ts",
+      "default": "./dist/config/tailwind-base.js"
     },
     "./accordion": {
-      "types": "./dist/src/components/accordion/index.d.ts",
-      "default": "./dist/src/components/accordion/index.js"
+      "types": "./dist/components/accordion/index.d.ts",
+      "default": "./dist/components/accordion/index.js"
     },
     "./alert": {
-      "types": "./dist/src/components/alert/index.d.ts",
-      "default": "./dist/src/components/alert/index.js"
+      "types": "./dist/components/alert/index.d.ts",
+      "default": "./dist/components/alert/index.js"
     },
     "./alert-dialog": {
-      "types": "./dist/src/components/alert-dialog/index.d.ts",
-      "default": "./dist/src/components/alert-dialog/index.js"
+      "types": "./dist/components/alert-dialog/index.d.ts",
+      "default": "./dist/components/alert-dialog/index.js"
     },
     "./aspect-ratio": {
-      "types": "./dist/src/components/aspect-ratio/index.d.ts",
-      "default": "./dist/src/components/aspect-ratio/index.js"
+      "types": "./dist/components/aspect-ratio/index.d.ts",
+      "default": "./dist/components/aspect-ratio/index.js"
     },
     "./avatar": {
-      "types": "./dist/src/components/avatar/index.d.ts",
-      "default": "./dist/src/components/avatar/index.js"
+      "types": "./dist/components/avatar/index.d.ts",
+      "default": "./dist/components/avatar/index.js"
     },
     "./badge": {
-      "types": "./dist/src/components/badge/index.d.ts",
-      "default": "./dist/src/components/badge/index.js"
+      "types": "./dist/components/badge/index.d.ts",
+      "default": "./dist/components/badge/index.js"
     },
     "./banner": {
-      "types": "./dist/src/components/banner/index.d.ts",
-      "default": "./dist/src/components/banner/index.js"
+      "types": "./dist/components/banner/index.d.ts",
+      "default": "./dist/components/banner/index.js"
     },
     "./button": {
-      "types": "./dist/src/components/button/index.d.ts",
-      "default": "./dist/src/components/button/index.js"
+      "types": "./dist/components/button/index.d.ts",
+      "default": "./dist/components/button/index.js"
     },
     "./calendar": {
-      "types": "./dist/src/components/calendar/index.d.ts",
-      "default": "./dist/src/components/calendar/index.js"
+      "types": "./dist/components/calendar/index.d.ts",
+      "default": "./dist/components/calendar/index.js"
     },
     "./command": {
-      "types": "./dist/src/components/command/index.d.ts",
-      "default": "./dist/src/components/command/index.js"
+      "types": "./dist/components/command/index.d.ts",
+      "default": "./dist/components/command/index.js"
     },
     "./combobox": {
-      "types": "./dist/src/components/combobox/index.d.ts",
-      "default": "./dist/src/components/combobox/index.js"
+      "types": "./dist/components/combobox/index.d.ts",
+      "default": "./dist/components/combobox/index.js"
     },
     "./charts": {
-      "types": "./dist/src/components/charts/index.d.ts",
-      "default": "./dist/src/components/charts/index.js"
+      "types": "./dist/components/charts/index.d.ts",
+      "default": "./dist/components/charts/index.js"
     },
     "./checkbox": {
-      "types": "./dist/src/components/checkbox/index.d.ts",
-      "default": "./dist/src/components/checkbox/index.js"
+      "types": "./dist/components/checkbox/index.d.ts",
+      "default": "./dist/components/checkbox/index.js"
     },
     "./date-picker": {
-      "types": "./dist/src/components/date-picker/index.d.ts",
-      "default": "./dist/src/components/date-picker/index.js"
+      "types": "./dist/components/date-picker/index.d.ts",
+      "default": "./dist/components/date-picker/index.js"
     },
     "./dialog": {
-      "types": "./dist/src/components/dialog/index.d.ts",
-      "default": "./dist/src/components/dialog/index.js"
+      "types": "./dist/components/dialog/index.d.ts",
+      "default": "./dist/components/dialog/index.js"
     },
     "./drawer": {
-      "types": "./dist/src/components/drawer/index.d.ts",
-      "default": "./dist/src/components/drawer/index.js"
+      "types": "./dist/components/drawer/index.d.ts",
+      "default": "./dist/components/drawer/index.js"
     },
     "./dropdown-menu": {
-      "types": "./dist/src/components/dropdown-menu/index.d.ts",
-      "default": "./dist/src/components/dropdown-menu/index.js"
+      "types": "./dist/components/dropdown-menu/index.d.ts",
+      "default": "./dist/components/dropdown-menu/index.js"
     },
     "./empty-state": {
-      "types": "./dist/src/components/empty-state/index.d.ts",
-      "default": "./dist/src/components/empty-state/index.js"
+      "types": "./dist/components/empty-state/index.d.ts",
+      "default": "./dist/components/empty-state/index.js"
     },
     "./field": {
-      "types": "./dist/src/components/field/index.d.ts",
-      "default": "./dist/src/components/field/index.js"
+      "types": "./dist/components/field/index.d.ts",
+      "default": "./dist/components/field/index.js"
     },
     "./file-upload": {
-      "types": "./dist/src/components/file-upload/index.d.ts",
-      "default": "./dist/src/components/file-upload/index.js"
+      "types": "./dist/components/file-upload/index.d.ts",
+      "default": "./dist/components/file-upload/index.js"
     },
     "./footer": {
-      "types": "./dist/src/components/footer/index.d.ts",
-      "default": "./dist/src/components/footer/index.js"
+      "types": "./dist/components/footer/index.d.ts",
+      "default": "./dist/components/footer/index.js"
     },
     "./header": {
-      "types": "./dist/src/components/header/index.d.ts",
-      "default": "./dist/src/components/header/index.js"
+      "types": "./dist/components/header/index.d.ts",
+      "default": "./dist/components/header/index.js"
     },
     "./input": {
-      "types": "./dist/src/components/input/index.d.ts",
-      "default": "./dist/src/components/input/index.js"
+      "types": "./dist/components/input/index.d.ts",
+      "default": "./dist/components/input/index.js"
     },
     "./input-group": {
-      "types": "./dist/src/components/input-group/index.d.ts",
-      "default": "./dist/src/components/input-group/index.js"
+      "types": "./dist/components/input-group/index.d.ts",
+      "default": "./dist/components/input-group/index.js"
     },
     "./input-otp": {
-      "types": "./dist/src/components/input-otp/index.d.ts",
-      "default": "./dist/src/components/input-otp/index.js"
+      "types": "./dist/components/input-otp/index.d.ts",
+      "default": "./dist/components/input-otp/index.js"
     },
     "./label": {
-      "types": "./dist/src/components/label/index.d.ts",
-      "default": "./dist/src/components/label/index.js"
+      "types": "./dist/components/label/index.d.ts",
+      "default": "./dist/components/label/index.js"
     },
     "./list": {
-      "types": "./dist/src/components/list/index.d.ts",
-      "default": "./dist/src/components/list/index.js"
+      "types": "./dist/components/list/index.d.ts",
+      "default": "./dist/components/list/index.js"
     },
     "./navigation": {
-      "types": "./dist/src/components/navigation/index.d.ts",
-      "default": "./dist/src/components/navigation/index.js"
+      "types": "./dist/components/navigation/index.d.ts",
+      "default": "./dist/components/navigation/index.js"
     },
     "./dnd": {
-      "types": "./dist/src/components/dnd/index.d.ts",
-      "default": "./dist/src/components/dnd/index.js"
+      "types": "./dist/components/dnd/index.d.ts",
+      "default": "./dist/components/dnd/index.js"
     },
     "./menubar": {
-      "types": "./dist/src/components/menubar/index.d.ts",
-      "default": "./dist/src/components/menubar/index.js"
+      "types": "./dist/components/menubar/index.d.ts",
+      "default": "./dist/components/menubar/index.js"
     },
     "./navigation-menu": {
-      "types": "./dist/src/components/navigation-menu/index.d.ts",
-      "default": "./dist/src/components/navigation-menu/index.js"
+      "types": "./dist/components/navigation-menu/index.d.ts",
+      "default": "./dist/components/navigation-menu/index.js"
     },
     "./page-transition": {
-      "types": "./dist/src/components/page-transition/index.d.ts",
-      "default": "./dist/src/components/page-transition/index.js"
+      "types": "./dist/components/page-transition/index.d.ts",
+      "default": "./dist/components/page-transition/index.js"
     },
     "./pagination": {
-      "types": "./dist/src/components/pagination/index.d.ts",
-      "default": "./dist/src/components/pagination/index.js"
+      "types": "./dist/components/pagination/index.d.ts",
+      "default": "./dist/components/pagination/index.js"
     },
     "./steps": {
-      "types": "./dist/src/components/steps/index.d.ts",
-      "default": "./dist/src/components/steps/index.js"
+      "types": "./dist/components/steps/index.d.ts",
+      "default": "./dist/components/steps/index.js"
     },
     "./slider": {
-      "types": "./dist/src/components/slider/index.d.ts",
-      "default": "./dist/src/components/slider/index.js"
+      "types": "./dist/components/slider/index.d.ts",
+      "default": "./dist/components/slider/index.js"
     },
     "./toast": {
-      "types": "./dist/src/components/toast/index.d.ts",
-      "default": "./dist/src/components/toast/index.js"
+      "types": "./dist/components/toast/index.d.ts",
+      "default": "./dist/components/toast/index.js"
     },
     "./popover": {
-      "types": "./dist/src/components/popover/index.d.ts",
-      "default": "./dist/src/components/popover/index.js"
+      "types": "./dist/components/popover/index.d.ts",
+      "default": "./dist/components/popover/index.js"
     },
     "./progress": {
-      "types": "./dist/src/components/progress/index.d.ts",
-      "default": "./dist/src/components/progress/index.js"
+      "types": "./dist/components/progress/index.d.ts",
+      "default": "./dist/components/progress/index.js"
     },
     "./radio-group": {
-      "types": "./dist/src/components/radio-group/index.d.ts",
-      "default": "./dist/src/components/radio-group/index.js"
+      "types": "./dist/components/radio-group/index.d.ts",
+      "default": "./dist/components/radio-group/index.js"
     },
     "./resizable": {
-      "types": "./dist/src/components/resizable/index.d.ts",
-      "default": "./dist/src/components/resizable/index.js"
+      "types": "./dist/components/resizable/index.d.ts",
+      "default": "./dist/components/resizable/index.js"
     },
     "./select": {
-      "types": "./dist/src/components/select/index.d.ts",
-      "default": "./dist/src/components/select/index.js"
+      "types": "./dist/components/select/index.d.ts",
+      "default": "./dist/components/select/index.js"
     },
     "./separator": {
-      "types": "./dist/src/components/separator/index.d.ts",
-      "default": "./dist/src/components/separator/index.js"
+      "types": "./dist/components/separator/index.d.ts",
+      "default": "./dist/components/separator/index.js"
     },
     "./scroll-area": {
-      "types": "./dist/src/components/scroll-area/index.d.ts",
-      "default": "./dist/src/components/scroll-area/index.js"
+      "types": "./dist/components/scroll-area/index.d.ts",
+      "default": "./dist/components/scroll-area/index.js"
     },
     "./skeleton": {
-      "types": "./dist/src/components/skeleton/index.d.ts",
-      "default": "./dist/src/components/skeleton/index.js"
+      "types": "./dist/components/skeleton/index.d.ts",
+      "default": "./dist/components/skeleton/index.js"
     },
     "./skip-to-content": {
-      "types": "./dist/src/components/skip-to-content/index.d.ts",
-      "default": "./dist/src/components/skip-to-content/index.js"
+      "types": "./dist/components/skip-to-content/index.d.ts",
+      "default": "./dist/components/skip-to-content/index.js"
     },
     "./social-login-button": {
-      "types": "./dist/src/components/social-login-button/index.d.ts",
-      "default": "./dist/src/components/social-login-button/index.js"
+      "types": "./dist/components/social-login-button/index.d.ts",
+      "default": "./dist/components/social-login-button/index.js"
     },
     "./social-login-buttons": {
-      "types": "./dist/src/components/social-login-buttons/index.d.ts",
-      "default": "./dist/src/components/social-login-buttons/index.js"
+      "types": "./dist/components/social-login-buttons/index.d.ts",
+      "default": "./dist/components/social-login-buttons/index.js"
     },
     "./sparkline-chart": {
-      "types": "./dist/src/components/sparkline-chart/index.d.ts",
-      "default": "./dist/src/components/sparkline-chart/index.js"
+      "types": "./dist/components/sparkline-chart/index.d.ts",
+      "default": "./dist/components/sparkline-chart/index.js"
     },
     "./spinner": {
-      "types": "./dist/src/components/spinner/index.d.ts",
-      "default": "./dist/src/components/spinner/index.js"
+      "types": "./dist/components/spinner/index.d.ts",
+      "default": "./dist/components/spinner/index.js"
     },
     "./switch": {
-      "types": "./dist/src/components/switch/index.d.ts",
-      "default": "./dist/src/components/switch/index.js"
+      "types": "./dist/components/switch/index.d.ts",
+      "default": "./dist/components/switch/index.js"
     },
     "./table": {
-      "types": "./dist/src/components/table/index.d.ts",
-      "default": "./dist/src/components/table/index.js"
+      "types": "./dist/components/table/index.d.ts",
+      "default": "./dist/components/table/index.js"
     },
     "./data-table": {
-      "types": "./dist/src/components/data-table/index.d.ts",
-      "default": "./dist/src/components/data-table/index.js"
+      "types": "./dist/components/data-table/index.d.ts",
+      "default": "./dist/components/data-table/index.js"
     },
     "./tabs": {
-      "types": "./dist/src/components/tabs/index.d.ts",
-      "default": "./dist/src/components/tabs/index.js"
+      "types": "./dist/components/tabs/index.d.ts",
+      "default": "./dist/components/tabs/index.js"
     },
     "./tag-input": {
-      "types": "./dist/src/components/tag-input/index.d.ts",
-      "default": "./dist/src/components/tag-input/index.js"
+      "types": "./dist/components/tag-input/index.d.ts",
+      "default": "./dist/components/tag-input/index.js"
     },
     "./textarea": {
-      "types": "./dist/src/components/textarea/index.d.ts",
-      "default": "./dist/src/components/textarea/index.js"
+      "types": "./dist/components/textarea/index.d.ts",
+      "default": "./dist/components/textarea/index.js"
     },
     "./tooltip": {
-      "types": "./dist/src/components/tooltip/index.d.ts",
-      "default": "./dist/src/components/tooltip/index.js"
+      "types": "./dist/components/tooltip/index.d.ts",
+      "default": "./dist/components/tooltip/index.js"
     },
     "./toggle": {
-      "types": "./dist/src/components/toggle/index.d.ts",
-      "default": "./dist/src/components/toggle/index.js"
+      "types": "./dist/components/toggle/index.d.ts",
+      "default": "./dist/components/toggle/index.js"
     },
     "./password-strength-indicator": {
-      "types": "./dist/src/components/password-strength-indicator/index.d.ts",
-      "default": "./dist/src/components/password-strength-indicator/index.js"
+      "types": "./dist/components/password-strength-indicator/index.d.ts",
+      "default": "./dist/components/password-strength-indicator/index.js"
     },
     "./card": {
-      "types": "./dist/src/components/card/index.d.ts",
-      "default": "./dist/src/components/card/index.js"
+      "types": "./dist/components/card/index.d.ts",
+      "default": "./dist/components/card/index.js"
     },
     "./metric-card": {
-      "types": "./dist/src/components/metric-card/index.d.ts",
-      "default": "./dist/src/components/metric-card/index.js"
+      "types": "./dist/components/metric-card/index.d.ts",
+      "default": "./dist/components/metric-card/index.js"
     },
     "./multi-select": {
-      "types": "./dist/src/components/multi-select/index.d.ts",
-      "default": "./dist/src/components/multi-select/index.js"
+      "types": "./dist/components/multi-select/index.d.ts",
+      "default": "./dist/components/multi-select/index.js"
     },
     "./sidebar": {
-      "types": "./dist/src/components/sidebar/index.d.ts",
-      "default": "./dist/src/components/sidebar/index.js"
+      "types": "./dist/components/sidebar/index.d.ts",
+      "default": "./dist/components/sidebar/index.js"
     },
     "./breadcrumbs": {
-      "types": "./dist/src/components/breadcrumbs/index.d.ts",
-      "default": "./dist/src/components/breadcrumbs/index.js"
+      "types": "./dist/components/breadcrumbs/index.d.ts",
+      "default": "./dist/components/breadcrumbs/index.js"
     },
     "./user-menu-dropdown": {
-      "types": "./dist/src/components/user-menu-dropdown/index.d.ts",
-      "default": "./dist/src/components/user-menu-dropdown/index.js"
+      "types": "./dist/components/user-menu-dropdown/index.d.ts",
+      "default": "./dist/components/user-menu-dropdown/index.js"
     },
     "./session-card": {
-      "types": "./dist/src/components/session-card/index.d.ts",
-      "default": "./dist/src/components/session-card/index.js"
+      "types": "./dist/components/session-card/index.d.ts",
+      "default": "./dist/components/session-card/index.js"
     },
     "./loading": {
-      "types": "./dist/src/components/loading/index.d.ts",
-      "default": "./dist/src/components/loading/index.js"
+      "types": "./dist/components/loading/index.d.ts",
+      "default": "./dist/components/loading/index.js"
     },
     "./error-boundary": {
-      "types": "./dist/src/components/error-boundary/index.d.ts",
-      "default": "./dist/src/components/error-boundary/index.js"
+      "types": "./dist/components/error-boundary/index.d.ts",
+      "default": "./dist/components/error-boundary/index.js"
     },
     "./lib/utils": {
-      "types": "./dist/src/lib/utils.d.ts",
-      "default": "./dist/src/lib/utils.js"
+      "types": "./dist/lib/utils.d.ts",
+      "default": "./dist/lib/utils.js"
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && pnpm exec postcss src/styles/globals.css -o dist/styles/globals.css",
     "type-check": "tsc --noEmit",
     "lint": "biome lint .",
     "lint:fix": "biome lint . --write",

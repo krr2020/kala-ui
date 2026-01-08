@@ -22,6 +22,7 @@ dist
 
 # TypeScript
 tsconfig.tsbuildinfo
+.tsconfig.tsbuildinfo
 
 # Misc
 .DS_Store
