@@ -197,10 +197,4 @@ Combobox.displayName = "Combobox";
 
 export {
 	Combobox,
-	Command,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
 };
