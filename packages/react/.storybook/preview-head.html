@@ -1,0 +1,26 @@
+<style>
+  /* Ensure body fills the viewport and uses theme colors */
+  body {
+    background-color: hsl(var(--background) / var(--background-alpha, 1)) !important;
+    color: hsl(var(--foreground)) !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Ensure Storybook iframe is horizontally scrollable on small screens */
+  #storybook-root {
+    min-width: 100%;
+    overflow-x: auto;
+  }
+
+  /* Prevent layout shift and enable horizontal scrolling */
+  body {
+    overflow-x: auto !important;
+  }
+
+  /* Make sure story containers are scrollable */
+  .sb-show-main {
+    overflow-x: auto !important;
+  }
+</style>
