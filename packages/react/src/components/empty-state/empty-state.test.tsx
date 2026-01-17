@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
-import { Search, } from "lucide-react";
+import { Search } from "lucide-react";
 import { describe, expect, it, vi } from "vitest";
 import { EmptyState } from "./empty-state";
 
@@ -15,7 +15,9 @@ describe("EmptyState", () => {
 			render(
 				<EmptyState title="No data" description="There is no data available" />,
 			);
-			expect(screen.getByText("There is no data available")).toBeInTheDocument();
+			expect(
+				screen.getByText("There is no data available"),
+			).toBeInTheDocument();
 		});
 
 		it("does not render description when not provided", () => {
@@ -27,14 +29,20 @@ describe("EmptyState", () => {
 
 	describe("Icons", () => {
 		it("renders with custom LucideIcon", () => {
-			const { container } = render(<EmptyState title="No data" icon={Search} />);
+			const { container } = render(
+				<EmptyState title="No data" icon={Search} />,
+			);
 			expect(container.querySelector("svg")).toBeInTheDocument();
 		});
 
 		it("renders with custom string icon", () => {
-			const { container } = render(<EmptyState title="No data" icon="test-icon" />);
+			const { container } = render(
+				<EmptyState title="No data" icon="test-icon" />,
+			);
 			// The string icon is part of the className
-			const iconContainer = container.querySelector('[aria-hidden="true"] span');
+			const iconContainer = container.querySelector(
+				'[aria-hidden="true"] span',
+			);
 			expect(iconContainer).toBeInTheDocument();
 			expect(iconContainer).toHaveClass("test-icon");
 		});
@@ -153,17 +161,13 @@ describe("EmptyState", () => {
 		});
 
 		it("renders with sm size", () => {
-			const { container } = render(
-				<EmptyState title="No data" size="sm" />,
-			);
+			const { container } = render(<EmptyState title="No data" size="sm" />);
 			expect(container.firstChild).toHaveClass("min-h-[150px]");
 			expect(container.firstChild).toHaveClass("p-4");
 		});
 
 		it("renders with lg size", () => {
-			const { container } = render(
-				<EmptyState title="No data" size="lg" />,
-			);
+			const { container } = render(<EmptyState title="No data" size="lg" />);
 			expect(container.firstChild).toHaveClass("min-h-[500px]");
 		});
 	});
@@ -226,7 +230,9 @@ describe("EmptyState", () => {
 	describe("Accessibility", () => {
 		it("has proper data-comp attribute", () => {
 			const { container } = render(<EmptyState title="No data" />);
-			expect(container.querySelector('[data-comp="empty-state"]')).toBeInTheDocument();
+			expect(
+				container.querySelector('[data-comp="empty-state"]'),
+			).toBeInTheDocument();
 		});
 
 		it("icon is hidden from screen readers", () => {

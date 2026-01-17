@@ -10,8 +10,8 @@ import { Button } from "../button";
 import { Checkbox } from "../checkbox";
 import { FieldLabel } from "../field";
 import { Input } from "../input";
-import { Skeleton } from "../skeleton";
 import { Select, SelectTrigger, SelectValue } from "../select";
+import { Skeleton } from "../skeleton";
 import {
 	TableBody,
 	TableCell,
@@ -94,7 +94,12 @@ export function DataTableSkeleton<TData = unknown>({
 					{showBulkActions && (
 						<div className="flex items-center gap-2 flex-wrap min-h-[36px]">
 							<span className="text-sm text-muted-foreground">0 selected</span>
-							<Button variant="outline" size="sm" disabled className="opacity-50">
+							<Button
+								variant="outline"
+								size="sm"
+								disabled
+								className="opacity-50"
+							>
 								Edit
 							</Button>
 							<Button
@@ -154,16 +159,13 @@ export function DataTableSkeleton<TData = unknown>({
 					className={cn(
 						"overflow-auto relative",
 						showPagination ? "rounded-t-lg" : "rounded-lg",
-						stickyFooter
-							? "flex-1 min-h-0 max-h-[70vh]"
-							: "max-h-[600px]",
+						stickyFooter ? "flex-1 min-h-0 max-h-[70vh]" : "max-h-[600px]",
 					)}
 				>
 					<table className="w-full border-separate border-spacing-0 caption-bottom text-sm">
 						<TableHeader
 							className={cn(
-								stickyHeader &&
-									"sticky top-0 z-1 bg-muted/95 backdrop-blur-sm",
+								stickyHeader && "sticky top-0 z-1 bg-muted/95 backdrop-blur-sm",
 								"[&_tr]:border-0",
 							)}
 						>
@@ -205,10 +207,8 @@ export function DataTableSkeleton<TData = unknown>({
 											<div
 												className={cn(
 													"flex items-center gap-1",
-													column.align === "center" &&
-														"justify-center",
-													column.align === "right" &&
-														"justify-end",
+													column.align === "center" && "justify-center",
+													column.align === "right" && "justify-end",
 												)}
 											>
 												{/* Skeleton for column header or filter icon */}
@@ -231,10 +231,7 @@ export function DataTableSkeleton<TData = unknown>({
 								const isLastRow = rowIndex === rows - 1;
 
 								return (
-									<TableRow
-										key={rowIndex}
-										className={cn("border-0")}
-									>
+									<TableRow key={rowIndex} className={cn("border-0")}>
 										{/* Selection cell */}
 										{showSelection && (
 											<TableCell>
@@ -251,13 +248,9 @@ export function DataTableSkeleton<TData = unknown>({
 												<TableCell
 													key={column.id}
 													className={cn(
-														column.align ===
-															"center" &&
-															"text-center",
-														column.align === "right" &&
-															"text-right",
-														column.hideOnMobile &&
-															"hidden md:table-cell",
+														column.align === "center" && "text-center",
+														column.align === "right" && "text-right",
+														column.hideOnMobile && "hidden md:table-cell",
 														!isLastRow && "border-b",
 													)}
 												>
@@ -278,8 +271,7 @@ export function DataTableSkeleton<TData = unknown>({
 				<div
 					className={cn(
 						"flex flex-col sm:flex-row items-center justify-between gap-4 bg-background px-4 py-3 rounded-b-lg theme-card border-x border-b",
-						stickyFooter &&
-							"sticky bottom-0 z-1 shadow-xl bg-background",
+						stickyFooter && "sticky bottom-0 z-1 shadow-xl bg-background",
 					)}
 				>
 					<div className="flex items-center gap-2 text-sm text-muted-foreground">

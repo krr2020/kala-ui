@@ -1,6 +1,4 @@
 export {
-	generatePagination,
-	type PageItem,
 	Pagination,
 	PaginationContent,
 	type PaginationContentProps,

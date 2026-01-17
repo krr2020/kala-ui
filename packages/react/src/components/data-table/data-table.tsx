@@ -18,6 +18,7 @@
 
 "use client";
 
+import { useDisclosure } from "@kala-ui/react-hooks";
 import {
 	ArrowDown,
 	ArrowUp,
@@ -31,10 +32,11 @@ import {
 import { useCallback, useMemo, useRef, useState } from "react";
 import { cn } from "../../lib/utils";
 import { Badge } from "../badge";
+import { Box } from "../box";
 import { Button } from "../button";
 import { Checkbox } from "../checkbox";
 import { EmptyState } from "../empty-state";
-import { FieldLabel } from "../field";
+import { Flex } from "../flex";
 import { Input } from "../input";
 import {
 	Select,
@@ -43,6 +45,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "../select";
+import { Stack } from "../stack";
 import {
 	TableBody,
 	TableCell,
@@ -51,9 +54,14 @@ import {
 	TableHeader,
 	TableRow,
 } from "../table";
+import { Text } from "../text";
 import { ColumnHeaderFilter } from "./column-header-filter";
+import type {
+	DataTableProps,
+	PaginationConfig,
+	SearchConfig,
+} from "./data-table.types";
 import { DataTableSkeleton } from "./data-table-skeleton";
-import type { DataTableProps, PaginationConfig, SearchConfig } from "./data-table.types";
 import { useTableState } from "./useTableState";
 
 /**
@@ -160,7 +168,7 @@ export function DataTable<TData>({
 
 	// Scroll container ref for scroll-to-top/bottom buttons
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
-	const [showScrollButtons, setShowScrollButtons] = useState(false);
+	const [showScrollButtons, { set: setShowScrollButtons }] = useDisclosure(false);
 
 	// Handle scroll event to show/hide scroll buttons
 	const handleScroll = useCallback(() => {
@@ -169,7 +177,7 @@ export function DataTable<TData>({
 				scrollContainerRef.current;
 			setShowScrollButtons(scrollHeight > clientHeight && scrollTop > 100);
 		}
-	}, []);
+	}, [setShowScrollButtons]);
 
 	// Scroll to top/bottom functions
 	const scrollToTop = useCallback(() => {
@@ -299,7 +307,7 @@ export function DataTable<TData>({
 		if (data.length === 0 && !searchQuery && !forceShow) return null;
 
 		return (
-			<div className="flex-1 max-w-sm">
+			<Box className="flex-1 max-w-sm">
 				<Input
 					type="search"
 					placeholder={searchConfig.placeholder}
@@ -321,7 +329,7 @@ export function DataTable<TData>({
 					}
 					aria-label={searchConfig.ariaLabel}
 				/>
-			</div>
+			</Box>
 		);
 	};
 
@@ -329,7 +337,7 @@ export function DataTable<TData>({
 	if (isLoading) {
 		// Use custom skeleton if provided
 		if (skeleton) {
-			return <div className={cn("space-y-4", className)}>{skeleton}</div>;
+			return <Stack gap={4} className={className}>{skeleton}</Stack>;
 		}
 
 		// Use skeletonConfig if provided, otherwise fall back to legacy loadingConfig
@@ -342,7 +350,7 @@ export function DataTable<TData>({
 		const skeletonRows = skeletonConfig?.rows ?? loadingConfig?.rows ?? 5;
 
 		return (
-			<div className={cn("space-y-4", className)}>
+			<Stack gap={4} className={className}>
 				<DataTableSkeleton<TData>
 					rows={skeletonRows}
 					columns={columns}
@@ -354,7 +362,7 @@ export function DataTable<TData>({
 					stickyHeader={stickyHeader}
 					stickyFooter={stickyFooter}
 				/>
-			</div>
+			</Stack>
 		);
 	}
 
@@ -370,7 +378,7 @@ export function DataTable<TData>({
 		const emptyConfig = { ...defaultEmptyState, ...emptyState };
 
 		return (
-			<div className={cn("space-y-4", className)}>
+			<Stack gap={4} className={className}>
 				{renderSearchInput()}
 				<EmptyState
 					title={emptyConfig.title}
@@ -378,36 +386,36 @@ export function DataTable<TData>({
 					{...(emptyConfig.icon && { icon: emptyConfig.icon })}
 					{...(emptyConfig.action && { action: emptyConfig.action })}
 				/>
-			</div>
+			</Stack>
 		);
 	}
 
 	return (
-		<section
+		<Stack
 			className={cn(
-				"flex flex-col",
 				stickyFooter ? "h-full min-h-0" : "",
 				className,
 			)}
 			aria-label={ariaLabel}
+			role={ariaLabel ? "region" : undefined}
 		>
 			{/* Search and Bulk Actions */}
 			{(searchConfig || bulkActions) && (
-				<div
-					className={cn(
-						"flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4",
-						stickyFooter && "shrink-0",
-					)}
+				<Flex
+					align="center"
+					justify="between"
+					gap={4}
+					className={cn("mb-4 flex-wrap", stickyFooter && "shrink-0")}
 				>
 					{/* Search */}
 					{renderSearchInput()}
 
 					{/* Bulk Actions - Always visible to prevent CLS */}
 					{bulkActions && (
-						<div className="flex items-center gap-2 flex-wrap min-h-[36px]">
-							<span className="text-sm text-muted-foreground">
+						<Flex align="center" gap={2} className="flex-wrap min-h-[36px]">
+							<Text size="sm" className="text-muted-foreground">
 								{selectedIds.size} selected
-							</span>
+							</Text>
 							{bulkActions.map((action) => (
 								<Button
 									key={action.id}
@@ -423,20 +431,19 @@ export function DataTable<TData>({
 									{action.label}
 								</Button>
 							))}
-						</div>
+						</Flex>
 					)}
-				</div>
+				</Flex>
 			)}
 
 			{/* Active Filters Chips */}
 			{filterableColumns && filterConfigs.length > 0 && (
-				<div
-					className={cn(
-						"flex flex-wrap items-center gap-2 mb-4",
-						stickyFooter && "shrink-0",
-					)}
+				<Flex
+					align="center"
+					gap={2}
+					className={cn("mb-4 flex-wrap", stickyFooter && "shrink-0")}
 				>
-					<span className="text-sm text-muted-foreground">Active filters:</span>
+					<Text size="sm" className="text-muted-foreground">Active filters:</Text>
 					{filterConfigs.map((filter) => {
 						const column = filterableColumns.find(
 							(fc) => fc.key === filter.key,
@@ -453,9 +460,9 @@ export function DataTable<TData>({
 								variant="secondary"
 								className="gap-1.5 pl-2 pr-1 py-1 bg-primary/10 text-primary border-primary/20"
 							>
-								<span className="text-xs font-medium">
+								<Text size="xs" weight="medium">
 									{column.label}: {String(value)}
-								</span>
+								</Text>
 								<Button
 									variant="ghost"
 									size="sm"
@@ -489,11 +496,11 @@ export function DataTable<TData>({
 					>
 						Clear all
 					</Button>
-				</div>
+				</Flex>
 			)}
 
 			{/* Table Container */}
-			<div
+			<Box
 				className={cn(
 					"border relative overflow-hidden theme-card",
 					stickyFooter && paginationConfig ? "flex-1 min-h-0" : "",
@@ -501,7 +508,7 @@ export function DataTable<TData>({
 					paginationConfig ? "rounded-t-lg border-b-0" : "rounded-lg",
 				)}
 			>
-				<div
+				<Box
 					ref={scrollContainerRef}
 					onScroll={handleScroll}
 					className={cn(
@@ -582,9 +589,10 @@ export function DataTable<TData>({
 													: "none"
 											}
 										>
-											<div
+											<Flex
+												align="center"
+												gap={1}
 												className={cn(
-													"flex items-center gap-1",
 													column.align === "center" && "justify-center",
 													column.align === "right" && "justify-end",
 												)}
@@ -624,9 +632,9 @@ export function DataTable<TData>({
 														)}
 													</Button>
 												) : (
-													<span className="font-semibold text-muted-foreground">
+													<Text weight="semibold" className="text-muted-foreground">
 														{column.header}
-													</span>
+													</Text>
 												)}
 												{filterColumn && (
 													<ColumnHeaderFilter
@@ -636,7 +644,7 @@ export function DataTable<TData>({
 														onFilterRemove={removeFilter}
 													/>
 												)}
-											</div>
+											</Flex>
 										</TableHead>
 									);
 								})}
@@ -680,7 +688,7 @@ export function DataTable<TData>({
 											<TableCell
 												className={cn(
 													(!isLastRow || (!!paginationConfig && !footer)) &&
-														"border-b",
+													"border-b",
 												)}
 											>
 												<Checkbox
@@ -710,7 +718,7 @@ export function DataTable<TData>({
 														column.hideOnMobile && "hidden md:table-cell",
 														compact && "py-2",
 														(!isLastRow || (!!paginationConfig && !footer)) &&
-															"border-b",
+														"border-b",
 													)}
 												>
 													{column.cell
@@ -732,14 +740,13 @@ export function DataTable<TData>({
 								className={cn(
 									"bg-muted border-t",
 									stickyFooter &&
-										"sticky bottom-0 z-40 shadow-[0_-1px_0_0_hsl(var(--border))] backdrop-blur-sm bg-muted/95",
+									"sticky bottom-0 z-40 shadow-[0_-1px_0_0_hsl(var(--border))] backdrop-blur-sm bg-muted/95",
 								)}
 							>
 								<TableRow>
 									{/* Selection column */}
 									{selection?.enabled && (
-										<TableHead
-											className="w-12">
+										<TableHead className="w-12">
 											<Checkbox
 												checked={
 													isAllSelected
@@ -763,9 +770,10 @@ export function DataTable<TData>({
 												stickyFooter && "",
 											)}
 										>
-											<div
+											<Flex
+												align="center"
+												gap={2}
 												className={cn(
-													"flex items-center gap-2",
 													column.align === "center" && "justify-center",
 													column.align === "right" && "justify-end",
 												)}
@@ -778,7 +786,7 @@ export function DataTable<TData>({
 														onClick={() =>
 															toggleSort(
 																column.accessorKey ||
-																	(column.id as keyof TData),
+																(column.id as keyof TData),
 															)
 														}
 														aria-label={`Sort by ${column.header}`}
@@ -799,9 +807,9 @@ export function DataTable<TData>({
 															))}
 													</Button>
 												) : (
-													<span className="font-medium">{column.header}</span>
+													<Text weight="medium">{column.header}</Text>
 												)}
-											</div>
+											</Flex>
 										</TableHead>
 									))}
 								</TableRow>
@@ -823,107 +831,119 @@ export function DataTable<TData>({
 							</TableFooter>
 						)}
 					</table>
-				</div>
+				</Box>
 
-				{/* Scroll to Top/Bottom Buttons */}
 				{showScrollButtons && (
-					<div className="absolute right-4 bottom-4 flex flex-col gap-2 z-2">
+					<Flex gap={2} className="absolute bottom-4 right-4 z-10">
 						<Button
-							variant="outline"
-							size="sm"
+							variant="secondary"
+							size="icon"
 							onClick={scrollToTop}
-							className="h-8 w-8 p-0 rounded-full shadow-lg bg-background theme-card"
+							className="rounded-full shadow-lg h-9 w-9 bg-background/80 backdrop-blur-sm border-border-strong/20"
 							aria-label="Scroll to top"
 						>
-							<ArrowUp className="h-4 w-4" aria-hidden="true" />
+							<ArrowUp className="h-4 w-4" />
 						</Button>
 						<Button
-							variant="outline"
-							size="sm"
+							variant="secondary"
+							size="icon"
 							onClick={scrollToBottom}
-							className="h-8 w-8 p-0 rounded-full shadow-lg bg-background theme-card"
+							className="rounded-full shadow-lg h-9 w-9 bg-background/80 backdrop-blur-sm border-border-strong/20"
 							aria-label="Scroll to bottom"
 						>
-							<ArrowDown className="h-4 w-4" aria-hidden="true" />
+							<ArrowDown className="h-4 w-4" />
 						</Button>
-					</div>
+					</Flex>
 				)}
-			</div>
+			</Box>
 
-			{/* Pagination - Always show if pagination is enabled */}
+			{/* Pagination */}
 			{paginationConfig && (
-				<div
+				<Flex
+					align="center"
+					justify="between"
 					className={cn(
-						"flex flex-col sm:flex-row items-center justify-between gap-4 bg-background px-4 py-3 rounded-b-lg theme-card",
-						bordered ? "border-x-2 border-b-2" : "border-x border-b",
-						stickyFooter &&
-							"sticky bottom-0 z-1 shadow-xl bg-background",
+						"px-4 py-3 border rounded-b-lg bg-muted/30",
+						stickyFooter && "shrink-0",
 					)}
 				>
-					<div className="flex items-center gap-2 text-sm text-muted-foreground">
-						<span>
-							Showing {(currentPage - 1) * currentPageSize + 1} to{" "}
-							{Math.min(currentPage * currentPageSize, paginationConfig.total)}{" "}
-							of {paginationConfig.total} results
-						</span>
-					</div>
+					<Flex align="center" gap={4}>
+						<Text size="sm" className="text-muted-foreground whitespace-nowrap">
+							Showing{" "}
+							<Text as="span" weight="medium" className="text-foreground inline">
+								{Math.min(
+									(paginationConfig.page - 1) * paginationConfig.pageSize + 1,
+									paginationConfig.total,
+								)}
+							</Text>{" "}
+							to{" "}
+							<Text as="span" weight="medium" className="text-foreground inline">
+								{Math.min(
+									paginationConfig.page * paginationConfig.pageSize,
+									paginationConfig.total,
+								)}
+							</Text>{" "}
+							of{" "}
+							<Text as="span" weight="medium" className="text-foreground inline">
+								{paginationConfig.total}
+							</Text>{" "}
+							results
+						</Text>
 
-					<div className="flex items-center gap-2">
-						{/* Page size selector */}
 						{paginationConfig.pageSizeOptions && (
-							<div className="flex items-center gap-2">
-								<FieldLabel
-									htmlFor="page-size"
-									className="text-sm text-muted-foreground mb-0"
-								>
-									Rows per page:
-								</FieldLabel>
+							<Flex align="center" gap={2}>
+								<Text size="sm" className="text-muted-foreground whitespace-nowrap">
+									Rows per page
+								</Text>
 								<Select
-									value={String(currentPageSize)}
+									value={String(paginationConfig.pageSize)}
 									onValueChange={(value) => setPageSize(Number(value))}
 								>
-									<SelectTrigger className="w-20 h-9 text-foreground">
-										<SelectValue />
+									<SelectTrigger className="h-8 w-[70px]">
+										<SelectValue placeholder={String(paginationConfig.pageSize)} />
 									</SelectTrigger>
-									<SelectContent>
-										{paginationConfig.pageSizeOptions.map((size) => (
-											<SelectItem key={size} value={String(size)}>
-												{size}
+									<SelectContent side="top">
+										{paginationConfig.pageSizeOptions.map((option) => (
+											<SelectItem key={option} value={String(option)}>
+												{option}
 											</SelectItem>
 										))}
 									</SelectContent>
 								</Select>
-							</div>
+							</Flex>
 						)}
+					</Flex>
 
-						{/* Page navigation */}
-						<div className="flex items-center gap-1">
-							<Button
-								variant="outline"
-								size="sm"
-								onClick={previousPage}
-								disabled={!hasPreviousPage}
-								aria-label="Go to previous page"
-							>
-								<ChevronLeft className="h-4 w-4" aria-hidden="true" />
-							</Button>
-							<span className="text-sm text-muted-foreground px-2">
-								Page {currentPage} of {totalPages}
-							</span>
-							<Button
-								variant="outline"
-								size="sm"
-								onClick={nextPage}
-								disabled={!hasNextPage}
-								aria-label="Go to next page"
-							>
-								<ChevronRight className="h-4 w-4" aria-hidden="true" />
-							</Button>
-						</div>
-					</div>
-				</div>
+					<Flex align="center" gap={2}>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={previousPage}
+							disabled={!hasPreviousPage}
+							className="h-8 w-8 p-0"
+						>
+							<ChevronLeft className="h-4 w-4" />
+							<Box as="span" className="sr-only">Previous page</Box>
+						</Button>
+						<Flex align="center" gap={1}>
+							<Text size="sm" weight="medium">
+								Page {paginationConfig.page} of {totalPages}
+							</Text>
+						</Flex>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={nextPage}
+							disabled={!hasNextPage}
+							className="h-8 w-8 p-0"
+						>
+							<ChevronRight className="h-4 w-4" />
+							<Box as="span" className="sr-only">Next page</Box>
+						</Button>
+					</Flex>
+				</Flex>
 			)}
-		</section>
+		</Stack>
 	);
 }
 

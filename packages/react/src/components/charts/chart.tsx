@@ -6,8 +6,8 @@
 import type { Props } from "react-apexcharts";
 import ReactApexChart from "react-apexcharts";
 import { cn } from "../../lib/utils";
-import { ChartSkeleton } from "./chart-skeleton";
 import type { ChartSkeletonConfig } from "./chart.types";
+import { ChartSkeleton } from "./chart-skeleton";
 
 export interface ChartProps extends Props {
 	className?: string;

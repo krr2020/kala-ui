@@ -1,6 +1,6 @@
 {
 	"name": "@kala-ui/react-hooks",
-	"version": "0.0.1-beta.1",
+	"version": "0.0.1-beta.2",
 	"type": "module",
 	"description": "Collection of reusable React hooks for kala-ui",
 	"main": "./dist/index.cjs",
@@ -24,6 +24,7 @@
 		"dev": "tsdown --watch",
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
+		"lint:fix-unsafe": "biome check --write --unsafe .",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"test:coverage": "vitest run --coverage"

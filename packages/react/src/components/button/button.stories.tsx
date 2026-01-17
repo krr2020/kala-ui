@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
-import { Skeleton } from "../skeleton/skeleton";
+import { Box } from "../box";
+import { Flex } from "../flex";
+import { Stack } from "../stack";
+import { Skeleton } from "../skeleton";
 import { Button } from "./button";
 
 const meta: Meta<typeof Button> = {
@@ -69,8 +72,8 @@ export const Default: Story = {
 
 export const Variants: Story = {
 	render: (args) => (
-		<div className="flex flex-col gap-4">
-			<div className="flex flex-wrap gap-2">
+		<Stack gap={4}>
+			<Flex wrap="wrap" gap={2}>
 				<Button {...args} variant="primary">
 					Primary
 				</Button>
@@ -101,15 +104,15 @@ export const Variants: Story = {
 				<Button {...args} variant="ghost">
 					Ghost
 				</Button>
-			</div>
-		</div>
+			</Flex>
+		</Stack>
 	),
 };
 
 export const OutlineVariants: Story = {
 	render: (args) => (
-		<div className="flex flex-col gap-4">
-			<div className="flex flex-wrap gap-2">
+		<Stack gap={4}>
+			<Flex wrap="wrap" gap={2}>
 				<Button {...args} variant="outline">
 					Default Outline
 				</Button>
@@ -137,14 +140,14 @@ export const OutlineVariants: Story = {
 				<Button {...args} variant="outline-dark">
 					Dark
 				</Button>
-			</div>
-		</div>
+			</Flex>
+		</Stack>
 	),
 };
 
 export const Sizes: Story = {
 	render: (args) => (
-		<div className="flex items-center gap-2">
+		<Flex align="center" gap={2}>
 			<Button {...args} size="xs">
 				Extra Small
 			</Button>
@@ -158,15 +161,17 @@ export const Sizes: Story = {
 				Large
 			</Button>
 			<Button {...args} size="icon">
-				<span className="h-4 w-4">🚀</span>
+				<Box as="span" className="h-4 w-4">
+					🚀
+				</Box>
 			</Button>
-		</div>
+		</Flex>
 	),
 };
 
 export const States: Story = {
 	render: (args) => (
-		<div className="flex flex-wrap gap-2">
+		<Flex wrap="wrap" gap={2}>
 			<Button {...args}>Normal</Button>
 			<Button {...args} disabled>
 				Disabled
@@ -174,18 +179,18 @@ export const States: Story = {
 			<Button {...args} isLoading>
 				Loading
 			</Button>
-		</div>
+		</Flex>
 	),
 };
 
 export const Shapes: Story = {
 	render: (args) => (
-		<div className="flex flex-wrap gap-2">
+		<Flex wrap="wrap" gap={2}>
 			<Button {...args}>Default</Button>
 			<Button {...args} rounded>
 				Rounded Pill
 			</Button>
-		</div>
+		</Flex>
 	),
 };
 
@@ -201,18 +206,18 @@ export const FullWidth: Story = {
 
 export const LoadingSkeleton: Story = {
 	render: () => (
-		<div className="flex flex-wrap gap-2">
+		<Flex wrap="wrap" gap={2}>
 			<Skeleton className="h-10 w-24 rounded-md" />
 			<Skeleton className="h-10 w-32 rounded-md" />
 			<Skeleton className="h-10 w-28 rounded-md" />
-		</div>
+		</Flex>
 	),
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for buttons while content is loading.",
+				story:
+					"Loading skeleton placeholders for buttons while content is loading.",
 			},
 		},
 	},
 };
-

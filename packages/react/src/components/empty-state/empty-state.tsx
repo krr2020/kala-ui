@@ -3,8 +3,8 @@ import { Inbox, type LucideIcon } from "lucide-react";
 import type * as React from "react";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
-import { EmptyStateSkeleton } from "./empty-state-skeleton";
 import type { EmptyStateSkeletonConfig } from "../skeleton/skeleton.types";
+import { EmptyStateSkeleton } from "./empty-state-skeleton";
 
 const emptyStateVariants = cva(
 	"flex flex-col items-center justify-center rounded-lg border p-8 text-center animate-in fade-in-50",

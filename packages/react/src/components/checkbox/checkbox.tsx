@@ -5,7 +5,7 @@ import { Check, Minus } from "lucide-react";
 
 import { checkboxIndicatorStyles, checkboxStyles } from "../../config/checkbox";
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import type { CheckboxProps } from "./checkbox.types";
 
 function Checkbox({ className, isLoading = false, ...props }: CheckboxProps) {

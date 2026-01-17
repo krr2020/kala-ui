@@ -10,7 +10,9 @@ import { getChartColors, getThemeAwareChartOptions } from "./theme-utils";
  * Get default chart options that match our design system
  * @param theme - Optional theme override, otherwise detects from DOM
  */
-export function getDefaultChartOptions(theme?: "light" | "dark" | "neutral" | "accent"): ApexOptions {
+export function getDefaultChartOptions(
+	theme?: "light" | "dark" | "neutral" | "accent",
+): ApexOptions {
 	const themeColors = getChartColors(theme);
 	const themeOptions = getThemeAwareChartOptions(theme);
 

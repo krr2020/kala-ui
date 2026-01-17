@@ -60,7 +60,7 @@ describe("Steps", () => {
 		it("highlights current step", () => {
 			render(<Steps currentStep={2} items={mockSteps} />);
 
-			const step2 = screen.getByText("Step 2").closest("div");
+			const step2 = screen.getByText("Step 2");
 			expect(step2).not.toBeNull();
 			expect(step2).toHaveClass("text-primary");
 		});

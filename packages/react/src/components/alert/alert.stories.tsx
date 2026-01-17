@@ -5,7 +5,11 @@ import {
 	CheckCircle2,
 	Info as InfoIcon,
 } from "lucide-react";
-import { Skeleton } from "../skeleton/skeleton";
+import { Box } from "../box";
+import { Flex } from "../flex";
+import { Stack } from "../stack";
+import { Text } from "../text";
+import { Skeleton } from "../skeleton";
 import { Alert, AlertDescription, AlertTitle } from "./alert";
 
 const meta = {
@@ -23,7 +27,7 @@ type Story = StoryObj<typeof meta>;
 // Default Style (light background)
 export const DefaultStyle: Story = {
 	render: () => (
-		<div className="flex flex-col gap-4 w-[600px]">
+		<Flex direction="column" gap={4} className="w-[600px]">
 			<Alert variant="primary">
 				<AlertDescription>
 					A simple primary alert—check it out!
@@ -50,14 +54,14 @@ export const DefaultStyle: Story = {
 			<Alert variant="info">
 				<AlertDescription>A simple info alert—check it out!</AlertDescription>
 			</Alert>
-		</div>
+		</Flex>
 	),
 };
 
 // Outline Style
 export const OutlineStyle: Story = {
 	render: () => (
-		<div className="flex flex-col gap-4 w-[600px]">
+		<Flex direction="column" gap={4} className="w-[600px]">
 			<Alert variant="primary" style="outline">
 				<AlertDescription>
 					An outline primary alert—check it out!
@@ -86,14 +90,14 @@ export const OutlineStyle: Story = {
 			<Alert variant="info" style="outline">
 				<AlertDescription>An outline info alert—check it out!</AlertDescription>
 			</Alert>
-		</div>
+		</Flex>
 	),
 };
 
 // Solid Style
 export const SolidStyle: Story = {
 	render: () => (
-		<div className="flex flex-col gap-4 w-[600px]">
+		<Flex direction="column" gap={4} className="w-[600px]">
 			<Alert variant="primary" style="solid">
 				<AlertDescription>A solid primary alert—check it out!</AlertDescription>
 			</Alert>
@@ -114,14 +118,14 @@ export const SolidStyle: Story = {
 			<Alert variant="info" style="solid">
 				<AlertDescription>A solid info alert—check it out!</AlertDescription>
 			</Alert>
-		</div>
+		</Flex>
 	),
 };
 
 // With Icons
 export const WithIcons: Story = {
 	render: () => (
-		<div className="flex flex-col gap-4 w-[600px]">
+		<Flex direction="column" gap={4} className="w-[600px]">
 			<Alert variant="primary">
 				<InfoIcon />
 				<AlertDescription>
@@ -146,7 +150,7 @@ export const WithIcons: Story = {
 					A danger alert with icon—check it out!
 				</AlertDescription>
 			</Alert>
-		</div>
+		</Flex>
 	),
 };
 
@@ -171,9 +175,13 @@ export const WithLink: Story = {
 		<Alert variant="primary" className="w-[600px]">
 			<AlertDescription>
 				A simple primary alert with{" "}
-				<a href="/" className="font-semibold underline hover:no-underline">
+				<Box
+					as="a"
+					href="/"
+					className="font-semibold underline hover:no-underline"
+				>
 					an example link
-				</a>
+				</Box>
 				. Give it a click if you like.
 			</AlertDescription>
 		</Alert>
@@ -183,7 +191,7 @@ export const WithLink: Story = {
 // Dismissable Alerts
 export const Dismissable: Story = {
 	render: () => (
-		<div className="flex flex-col gap-4 w-[600px]">
+		<Flex direction="column" gap={4} className="w-[600px]">
 			<Alert variant="success" dismissable>
 				<CheckCircle2 />
 				<AlertTitle>Success</AlertTitle>
@@ -217,7 +225,7 @@ export const Dismissable: Story = {
 					There was a problem processing your request.
 				</AlertDescription>
 			</Alert>
-		</div>
+		</Flex>
 	),
 };
 
@@ -228,35 +236,38 @@ export const ComplexAlert: Story = {
 			<InfoIcon />
 			<AlertTitle>Information</AlertTitle>
 			<AlertDescription>
-				<p className="mb-2">
-					This is an informational message with multiple paragraphs. The first
-					paragraph provides the main context.
-				</p>
-				<p>
-					Whenever you need to, be sure to properly structure your content to
-					keep things nice and tidy.
-				</p>
+				<Stack gap={2}>
+					<Text>
+						This is an informational message with multiple paragraphs. The first
+						paragraph provides the main context.
+					</Text>
+					<Text>
+						Whenever you need to, be sure to properly structure your content to
+						keep things nice and tidy.
+					</Text>
+				</Stack>
 			</AlertDescription>
 		</Alert>
 	),
 };
 export const LoadingSkeleton: Story = {
 	render: () => (
-		<div className="w-full max-w-md space-y-4">
-			<div className="flex gap-3 p-4 border rounded-lg">
+		<Stack gap={4} className="w-full max-w-md">
+			<Flex gap={3} className="p-4 border rounded-lg">
 				<Skeleton className="h-5 w-5 rounded-full flex-shrink-0" />
-				<div className="flex-1 space-y-2">
+				<Stack gap={2} className="flex-1">
 					<Skeleton className="h-5 w-32" />
 					<Skeleton className="h-4 w-full" />
 					<Skeleton className="h-4 w-3/4" />
-				</div>
-			</div>
-		</div>
+				</Stack>
+			</Flex>
+		</Stack>
 	),
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for alerts while content is loading.",
+				story:
+					"Loading skeleton placeholders for alerts while content is loading.",
 			},
 		},
 	},

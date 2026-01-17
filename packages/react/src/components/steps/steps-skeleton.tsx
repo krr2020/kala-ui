@@ -7,7 +7,7 @@
 
 import { Fragment } from "react";
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 
 export interface StepsSkeletonConfig {
 	/**

@@ -157,13 +157,7 @@ describe("MetricCard", () => {
 
 	it("should forward ref", () => {
 		const ref = { current: null } as unknown as React.RefObject<HTMLDivElement>;
-		render(
-			<MetricCard
-				ref={ref}
-				title="Users"
-				value={100}
-			/>,
-		);
+		render(<MetricCard ref={ref} title="Users" value={100} />);
 
 		expect(ref.current).toBeTruthy();
 	});
@@ -194,7 +188,9 @@ describe("MetricCard", () => {
 		const value = 1234567;
 		render(<MetricCard title="Revenue" value={value} />);
 
-		const srText = screen.getByText(new RegExp(`Revenue: ${value.toLocaleString()}`, "i"));
+		const srText = screen.getByText(
+			new RegExp(`Revenue: ${value.toLocaleString()}`, "i"),
+		);
 		expect(srText).toHaveClass("sr-only");
 	});
 

@@ -25,13 +25,17 @@ describe("StepsSkeleton", () => {
 
 	it("should render default 4 steps", () => {
 		const { container } = render(<StepsSkeleton />);
-		const stepIndicators = container.querySelectorAll(".h-10.w-10.rounded-full");
+		const stepIndicators = container.querySelectorAll(
+			".h-10.w-10.rounded-full",
+		);
 		expect(stepIndicators).toHaveLength(4);
 	});
 
 	it("should render correct number of steps", () => {
 		const { container } = render(<StepsSkeleton stepCount={3} />);
-		const stepIndicators = container.querySelectorAll(".h-10.w-10.rounded-full");
+		const stepIndicators = container.querySelectorAll(
+			".h-10.w-10.rounded-full",
+		);
 		expect(stepIndicators).toHaveLength(3);
 	});
 
@@ -44,7 +48,9 @@ describe("StepsSkeleton", () => {
 
 	it("should hide labels when showLabels is false", () => {
 		const { container } = render(<StepsSkeleton showLabels={false} />);
-		const stepContainers = container.querySelectorAll("[data-testid='steps-skeleton'] > *");
+		const stepContainers = container.querySelectorAll(
+			"[data-testid='steps-skeleton'] > *",
+		);
 		// Should only have steps and connectors, no label containers
 		stepContainers.forEach((step) => {
 			const labelContainer = step.querySelector("div:not(.h-10)");

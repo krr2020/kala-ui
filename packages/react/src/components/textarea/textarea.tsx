@@ -1,5 +1,5 @@
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import type { TextareaProps } from "./textarea.types";
 
 function Textarea({

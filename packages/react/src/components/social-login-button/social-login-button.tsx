@@ -73,32 +73,32 @@ const providerConfig = {
 	google: {
 		icon: siGoogle,
 		label: "Google",
-		color: "hover:bg-[#4285F4] hover:text-white hover:border-[#4285F4]",
+		color: "hover:bg-brand-google hover:text-white hover:border-brand-google",
 	},
 	github: {
 		icon: siGithub,
 		label: "GitHub",
-		color: "hover:bg-[#181717] hover:text-white hover:border-[#181717]",
+		color: "hover:bg-brand-github hover:text-white hover:border-brand-github",
 	},
 	facebook: {
 		icon: siFacebook,
 		label: "Facebook",
-		color: "hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2]",
+		color: "hover:bg-brand-facebook hover:text-white hover:border-brand-facebook",
 	},
 	twitter: {
 		icon: siX,
 		label: "X",
-		color: "hover:bg-black hover:text-white hover:border-black",
+		color: "hover:bg-brand-twitter hover:text-white hover:border-brand-twitter",
 	},
 	x: {
 		icon: siX,
 		label: "X",
-		color: "hover:bg-black hover:text-white hover:border-black",
+		color: "hover:bg-brand-twitter hover:text-white hover:border-brand-twitter",
 	},
 	linkedin: {
 		icon: null, // Custom component used instead
 		label: "LinkedIn",
-		color: "hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2]",
+		color: "hover:bg-brand-linkedin hover:text-white hover:border-brand-linkedin",
 	},
 } as const;
 

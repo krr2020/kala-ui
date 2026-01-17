@@ -6,7 +6,7 @@
  */
 
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 
 export interface SidebarSkeletonConfig {
 	/**
@@ -93,9 +93,7 @@ export function SidebarSkeleton({
 				{Array.from({ length: sectionCount }).map((_, sectionIndex) => (
 					<div key={sectionIndex} className="mb-6 last:mb-0">
 						{/* Section label */}
-						{!collapsed && (
-							<Skeleton className="h-3 w-20 mb-2 mx-3" />
-						)}
+						{!collapsed && <Skeleton className="h-3 w-20 mb-2 mx-3" />}
 
 						{/* Section items */}
 						<div className="space-y-2">

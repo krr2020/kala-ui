@@ -180,41 +180,50 @@ export function useTableState<TData>({
 	}, [sortedData, currentPage, pageSize, manualTotal, onPaginationChange]);
 
 	// Toggle sort
-	const toggleSort = useCallback((key: keyof TData) => {
-		setSortConfig((prev) => {
-			let newSort: SortConfig<TData> | null;
-			if (!prev || prev.key !== key) {
-				newSort = { key, direction: "asc" };
-			} else if (prev.direction === "asc") {
-				newSort = { key, direction: "desc" };
-			} else {
-				newSort = null; // Clear sort
-			}
-			onSortChange?.(newSort);
-			return newSort;
-		});
-		setCurrentPage(1); // Reset to first page when sorting changes
-	}, [onSortChange]);
+	const toggleSort = useCallback(
+		(key: keyof TData) => {
+			setSortConfig((prev) => {
+				let newSort: SortConfig<TData> | null;
+				if (!prev || prev.key !== key) {
+					newSort = { key, direction: "asc" };
+				} else if (prev.direction === "asc") {
+					newSort = { key, direction: "desc" };
+				} else {
+					newSort = null; // Clear sort
+				}
+				onSortChange?.(newSort);
+				return newSort;
+			});
+			setCurrentPage(1); // Reset to first page when sorting changes
+		},
+		[onSortChange],
+	);
 
 	// Filter management
-	const setFilter = useCallback((filter: FilterConfig<TData>) => {
-		setFilterConfigs((prev) => {
-			const filtered = prev.filter((f) => f.key !== filter.key);
-			const newFilters = [...filtered, filter];
-			onFilterChange?.(newFilters);
-			return newFilters;
-		});
-		setCurrentPage(1); // Reset to first page when filter changes
-	}, [onFilterChange]);
+	const setFilter = useCallback(
+		(filter: FilterConfig<TData>) => {
+			setFilterConfigs((prev) => {
+				const filtered = prev.filter((f) => f.key !== filter.key);
+				const newFilters = [...filtered, filter];
+				onFilterChange?.(newFilters);
+				return newFilters;
+			});
+			setCurrentPage(1); // Reset to first page when filter changes
+		},
+		[onFilterChange],
+	);
 
-	const removeFilter = useCallback((key: keyof TData) => {
-		setFilterConfigs((prev) => {
-			const newFilters = prev.filter((f) => f.key !== key);
-			onFilterChange?.(newFilters);
-			return newFilters;
-		});
-		setCurrentPage(1);
-	}, [onFilterChange]);
+	const removeFilter = useCallback(
+		(key: keyof TData) => {
+			setFilterConfigs((prev) => {
+				const newFilters = prev.filter((f) => f.key !== key);
+				onFilterChange?.(newFilters);
+				return newFilters;
+			});
+			setCurrentPage(1);
+		},
+		[onFilterChange],
+	);
 
 	const clearFilters = useCallback(() => {
 		setFilterConfigs([]);
@@ -223,11 +232,14 @@ export function useTableState<TData>({
 	}, [onFilterChange]);
 
 	// Search management
-	const handleSetSearchQuery = useCallback((query: string) => {
-		setSearchQuery(query);
-		onSearchChange?.(query);
-		setCurrentPage(1); // Reset to first page when search changes
-	}, [onSearchChange]);
+	const handleSetSearchQuery = useCallback(
+		(query: string) => {
+			setSearchQuery(query);
+			onSearchChange?.(query);
+			setCurrentPage(1); // Reset to first page when search changes
+		},
+		[onSearchChange],
+	);
 
 	// Pagination navigation
 	const nextPage = useCallback(() => {
@@ -251,11 +263,14 @@ export function useTableState<TData>({
 	}, [hasPreviousPage, pageSize, onPaginationChange]);
 
 	// Page size change
-	const handleSetPageSize = useCallback((size: number) => {
-		setPageSize(size);
-		setCurrentPage(1); // Reset to first page when page size changes
-		onPaginationChange?.(1, size);
-	}, [onPaginationChange]);
+	const handleSetPageSize = useCallback(
+		(size: number) => {
+			setPageSize(size);
+			setCurrentPage(1); // Reset to first page when page size changes
+			onPaginationChange?.(1, size);
+		},
+		[onPaginationChange],
+	);
 
 	return {
 		processedData: sortedData,

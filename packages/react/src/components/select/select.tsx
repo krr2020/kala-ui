@@ -13,7 +13,7 @@ import {
 	selectTriggerStyles,
 } from "../../config/select";
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 
 function Select(
 	props: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root>,

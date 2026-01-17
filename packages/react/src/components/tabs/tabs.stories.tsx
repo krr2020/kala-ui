@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "../button/button";
-import { Skeleton } from "../skeleton/skeleton";
+import { Button } from "../button";
 import {
 	Card,
 	CardContent,
@@ -8,9 +7,10 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "../card/card";
-import { Input } from "../input/input";
-import { Label } from "../label/label";
+} from "../card";
+import { Input } from "../input";
+import { Label } from "../label";
+import { Skeleton } from "../skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 
 const meta = {

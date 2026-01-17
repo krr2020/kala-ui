@@ -1,5 +1,6 @@
 "use client";
 
+import { useDisclosure } from "@kala-ui/react-hooks";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import * as React from "react";
@@ -13,6 +14,8 @@ import {
 	CommandItem,
 	CommandList,
 } from "../../primitives/command";
+import { Button } from "../button";
+import { Text } from "../text";
 
 // ============================================================================
 // Combobox
@@ -88,7 +91,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 		},
 		ref,
 	) => {
-		const [open, setOpen] = React.useState(false);
+		const [open, { set: setOpen }] = useDisclosure(false);
 		const [search, setSearch] = React.useState("");
 
 		const selectedOption = options.find((option) => option.value === value);
@@ -96,38 +99,26 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 		return (
 			<PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
 				<PopoverPrimitive.Trigger asChild>
-					<button
+					<Button
 						ref={ref}
-						type="button"
+						variant="outline"
 						role="combobox"
 						aria-expanded={open}
-						aria-disabled={disabled}
 						disabled={disabled}
 						className={cn(
-							"flex w-full items-center justify-between rounded-md border bg-background px-3 py-2 text-sm transition-colors theme-input",
-							"hover:bg-accent hover:text-accent-foreground",
-							"focus-ring",
-							"disabled:pointer-events-none disabled:opacity-50",
-							{
-								"h-8 px-2 py-1 text-xs": size === "sm",
-								"h-10": size === "default",
-							},
+							"w-full justify-between font-normal",
+							size === "sm" ? "h-8 px-3 text-xs" : "h-10 px-4",
+							!value && "text-muted-foreground",
 							className,
 						)}
 					>
-						<span
-							className={cn(
-								"truncate",
-								!selectedOption && "text-muted-foreground",
-							)}
+						<Text
+							className={cn("truncate", matchTriggerWidth && "flex-1 text-left")}
 						>
 							{selectedOption ? selectedOption.label : placeholder}
-						</span>
-						<ChevronsUpDown
-							className="ml-2 size-4 shrink-0 opacity-50"
-							aria-hidden="true"
-						/>
-					</button>
+						</Text>
+						<ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+					</Button>
 				</PopoverPrimitive.Trigger>
 				<PopoverPrimitive.Portal>
 					<PopoverPrimitive.Content
@@ -145,6 +136,18 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 								"rounded-lg border bg-popover text-popover-foreground theme-dropdown",
 								matchTriggerWidth ? "w-full" : "min-w-[200px]",
 							)}
+							filter={(value, search) => {
+								const option = options.find((opt) => opt.value === value);
+								const label = option?.label ?? "";
+								const searchLower = search.toLowerCase();
+								if (
+									value.toLowerCase().includes(searchLower) ||
+									label.toLowerCase().includes(searchLower)
+								) {
+									return 1;
+								}
+								return 0;
+							}}
 						>
 							<CommandInput
 								placeholder={searchPlaceholder}
@@ -157,7 +160,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 									{options.map((option) => (
 										<CommandItem
 											key={option.value}
-											value={option.label}
+											value={option.value}
 											disabled={option.disabled ?? false}
 											onSelect={() => {
 												const newValue =
@@ -174,14 +177,14 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 												)}
 												aria-hidden="true"
 											/>
-											<span
+											<Text
 												className={cn(
 													!matchTriggerWidth && "truncate",
 													"text-foreground",
 												)}
 											>
 												{option.label}
-											</span>
+											</Text>
 										</CommandItem>
 									))}
 								</CommandGroup>
@@ -195,6 +198,4 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 );
 Combobox.displayName = "Combobox";
 
-export {
-	Combobox,
-};
+export { Combobox };

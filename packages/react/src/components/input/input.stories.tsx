@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
 import { Mail, Search, User } from "lucide-react";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import { Input } from "./input";
 
 const meta: Meta<typeof Input> = {
@@ -148,7 +148,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for input fields while form is loading.",
+				story:
+					"Loading skeleton placeholders for input fields while form is loading.",
 			},
 		},
 	},

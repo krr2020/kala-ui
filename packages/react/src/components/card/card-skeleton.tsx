@@ -6,9 +6,9 @@
  */
 
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
-import { SkeletonText } from "../skeleton/skeleton-patterns";
+import { Skeleton } from "../skeleton";
 import type { CardSkeletonConfig } from "../skeleton/skeleton.types";
+import { SkeletonText } from "../skeleton/skeleton-patterns";
 
 export interface CardSkeletonProps extends CardSkeletonConfig {
 	/**
@@ -44,10 +44,7 @@ export function CardSkeleton({
 	return (
 		<div
 			data-testid={dataTestId || "card-skeleton"}
-			className={cn(
-				"rounded-md border bg-card overflow-hidden",
-				className,
-			)}
+			className={cn("rounded-md border bg-card overflow-hidden", className)}
 		>
 			{/* Render based on variant */}
 			{variant === "default" && (
@@ -95,7 +92,9 @@ export function CardSkeleton({
 				/>
 			)}
 
-			{variant === "minimal" && <MinimalCardSkeleton contentRows={contentRows} />}
+			{variant === "minimal" && (
+				<MinimalCardSkeleton contentRows={contentRows} />
+			)}
 		</div>
 	);
 }

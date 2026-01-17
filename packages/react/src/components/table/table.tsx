@@ -1,8 +1,6 @@
 "use client";
 
 import type * as React from "react";
-
-import { Skeleton } from "../skeleton/skeleton";
 import {
 	tableBodyStyles,
 	tableCaptionStyles,
@@ -13,6 +11,8 @@ import {
 	tableRowStyles,
 } from "../../config/table";
 import { cn } from "../../lib/utils";
+import { Box } from "../box";
+import { Skeleton } from "../skeleton";
 import type { TableSkeletonConfig } from "./table.types";
 
 // Table Skeleton component (defined inline to avoid circular dependencies)
@@ -24,7 +24,7 @@ function TableSkeleton({
 	showCheckboxes = false,
 }: TableSkeletonConfig) {
 	return (
-		<div className="relative w-full overflow-x-auto border rounded-lg bg-card theme-card">
+		<Box className="relative w-full overflow-x-auto border rounded-lg bg-card theme-card">
 			<table className="w-full caption-bottom text-sm">
 				{headers ? (
 					<thead className="border-b bg-muted/50">
@@ -69,7 +69,10 @@ function TableSkeleton({
 				)}
 				<tbody className={tableBodyStyles.base}>
 					{Array.from({ length: rows }).map((_, rowIndex) => (
-						<tr key={rowIndex} className="border-b transition-colors hover:bg-muted/50">
+						<tr
+							key={rowIndex}
+							className="border-b transition-colors hover:bg-muted/50"
+						>
 							{showCheckboxes && (
 								<td className="w-10 px-4 py-3">
 									<Skeleton className="h-4 w-4" />
@@ -89,7 +92,7 @@ function TableSkeleton({
 					))}
 				</tbody>
 			</table>
-		</div>
+		</Box>
 	);
 }
 
@@ -154,7 +157,7 @@ function Table({
 	}
 
 	return (
-		<div
+		<Box
 			data-slot="table-container"
 			className="relative w-full overflow-x-auto border rounded-lg bg-card theme-card"
 		>
@@ -163,7 +166,7 @@ function Table({
 				className={cn("w-full caption-bottom text-sm", className)}
 				{...props}
 			/>
-		</div>
+		</Box>
 	);
 }
 

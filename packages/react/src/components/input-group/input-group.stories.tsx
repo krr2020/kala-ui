@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { ChevronDown, Copy, Search, User } from "lucide-react";
 import { Button } from "../button";
 import { Checkbox } from "../checkbox";
-import { Skeleton } from "../skeleton/skeleton";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -18,6 +17,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "../select";
+import { Skeleton } from "../skeleton";
 import { Textarea } from "../textarea";
 import { InputGroup, InputGroupText } from "./input-group";
 

@@ -5,7 +5,10 @@ import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { Box } from "../box";
 import { buttonVariants } from "../button";
+import { Heading } from "../heading";
+import { Text } from "../text";
 
 function AlertDialog({
 	...props
@@ -69,7 +72,7 @@ function AlertDialogHeader({
 	...props
 }: React.ComponentProps<"div">) {
 	return (
-		<div
+		<Box
 			data-slot="alert-dialog-header"
 			className={cn("flex flex-col gap-1.5 px-6 py-4 border-b", className)}
 			{...props}
@@ -82,7 +85,7 @@ function AlertDialogFooter({
 	...props
 }: React.ComponentProps<"div">) {
 	return (
-		<div
+		<Box
 			data-slot="alert-dialog-footer"
 			className={cn(
 				"flex flex-col-reverse gap-2 sm:flex-row sm:justify-end px-6 py-4 border-t bg-muted/50 rounded-b-lg",
@@ -98,14 +101,16 @@ function AlertDialogTitle({
 	...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Title>) {
 	return (
-		<AlertDialogPrimitive.Title
-			data-slot="alert-dialog-title"
-			className={cn(
-				"text-lg font-semibold leading-none tracking-tight text-foreground",
-				className,
-			)}
-			{...props}
-		/>
+		<AlertDialogPrimitive.Title asChild data-slot="alert-dialog-title">
+			<Heading
+				level={3}
+				className={cn(
+					"text-lg font-semibold leading-none tracking-tight text-foreground",
+					className,
+				)}
+				{...props}
+			/>
+		</AlertDialogPrimitive.Title>
 	);
 }
 
@@ -115,16 +120,20 @@ function AlertDialogDescription({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Description>) {
 	return (
 		<AlertDialogPrimitive.Description
+			asChild
 			data-slot="alert-dialog-description"
-			className={cn("text-sm leading-relaxed text-muted-foreground", className)}
-			{...props}
-		/>
+		>
+			<Text
+				className={cn("text-sm leading-relaxed text-muted-foreground", className)}
+				{...props}
+			/>
+		</AlertDialogPrimitive.Description>
 	);
 }
 
 function AlertDialogBody({ className, ...props }: React.ComponentProps<"div">) {
 	return (
-		<div
+		<Box
 			data-slot="alert-dialog-body"
 			className={cn("flex-1 overflow-y-auto px-6 py-4 min-h-0", className)}
 			{...props}

@@ -4,7 +4,7 @@ import * as SwitchPrimitive from "@radix-ui/react-switch";
 
 import { switchStyles, switchThumbStyles } from "../../config/switch";
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import type { SwitchProps } from "./switch.types";
 
 function Switch({ className, isLoading = false, ...props }: SwitchProps) {

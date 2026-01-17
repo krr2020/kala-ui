@@ -1,10 +1,14 @@
 "use client";
 
+import { useMounted, useScrollLock } from "@kala-ui/react-hooks";
 import { Bell, ChevronDown, Menu, Settings, X } from "lucide-react";
 import * as React from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../../lib/utils";
+import { Box } from "../box";
 import { Button } from "../button";
+import { Flex } from "../flex";
+import { List } from "../list";
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -14,13 +18,15 @@ import {
 	NavigationMenuTrigger,
 	NavigationMenuViewport,
 } from "../navigation-menu";
+import { Stack } from "../stack";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../tabs";
+import { Text } from "../text";
 
-export interface NavLink {
+export interface HeaderNavLink {
 	label: string;
 	href: string;
 	active?: boolean;
-	children?: NavLink[];
+	children?: HeaderNavLink[];
 }
 
 export interface UserProfileLink {
@@ -43,7 +49,7 @@ export interface UserProfile {
 
 export interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
 	logo?: React.ReactNode;
-	navLinks?: NavLink[];
+	navLinks?: HeaderNavLink[];
 	userMenu?: React.ReactNode;
 	userProfile?: UserProfile;
 	searchBar?: React.ReactNode;
@@ -80,33 +86,8 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 		},
 		ref,
 	) => {
-		// Lock body scroll when mobile menu is open
-		React.useEffect(() => {
-			if (isMobileMenuOpen) {
-				// Calculate scrollbar width
-				const scrollbarWidth =
-					window.innerWidth - document.documentElement.clientWidth;
-				document.body.style.setProperty(
-					"--removed-body-scroll-bar-size",
-					`${scrollbarWidth}px`,
-				);
-				document.body.setAttribute("data-scroll-locked", "1");
-			} else {
-				document.body.removeAttribute("data-scroll-locked");
-				document.body.style.removeProperty("--removed-body-scroll-bar-size");
-			}
-
-			// Cleanup on unmount
-			return () => {
-				document.body.removeAttribute("data-scroll-locked");
-				document.body.style.removeProperty("--removed-body-scroll-bar-size");
-			};
-		}, [isMobileMenuOpen]);
-
-		const [mounted, setMounted] = React.useState(false);
-		React.useEffect(() => {
-			setMounted(true);
-		}, []);
+		useScrollLock(!!isMobileMenuOpen);
+		const mounted = useMounted();
 
 		// Track expanded mobile menu items
 		const [expandedItems, setExpandedItems] = React.useState<Set<string>>(
@@ -126,7 +107,8 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 		};
 
 		return (
-			<header
+			<Box
+				as="header"
 				ref={ref}
 				data-comp="header"
 				className={cn(
@@ -135,21 +117,23 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 				)}
 				{...props}
 			>
-				<div className="container mx-auto px-3 sm:px-4 lg:px-6 xl:px-8">
-					<div className="flex items-center justify-between h-14 sm:h-16 gap-2 sm:gap-4">
+				<Box className="container mx-auto px-3 sm:px-4 lg:px-6 xl:px-8">
+					<Flex align="center" justify="between" className="h-14 sm:h-16 gap-2 sm:gap-4">
 						{/* Logo */}
-						<div className="shrink-0 min-w-0 max-w-[120px] sm:max-w-none">
+						<Box className="shrink-0 min-w-0 max-w-[120px] sm:max-w-none">
 							{logo}
-						</div>
+						</Box>
 
 						{/* Desktop Navigation - centered for default, left-aligned for dashboard */}
-						<div
+						<Flex
+							align="center"
+							gap={variant === "default" ? 3 : 6}
 							className={cn(
-								"hidden lg:flex items-center gap-3 lg:gap-6",
+								"hidden lg:flex",
 								variant === "default" ? "flex-1" : "",
 							)}
 						>
-							<div
+							<Box
 								className={cn("flex", variant === "default" ? "mx-auto" : "")}
 							>
 								<NavigationMenu>
@@ -167,34 +151,38 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 															{link.label}
 														</NavigationMenuTrigger>
 														<NavigationMenuContent>
-															<ul
-																className={cn(
-																	"py-2",
-																	link.children.length <= 3
-																		? "w-[220px]"
-																		: "w-[440px] grid grid-cols-2",
-																)}
-															>
-																{link.children.map((child) => (
-																	<li key={child.href}>
-																		<NavigationMenuLink asChild>
-																			<a
-																				href={child.href}
-																				className={cn(
-																					"block px-4 py-2.5 text-sm font-normal no-underline outline-none transition-colors",
-																					"text-foreground",
-																					"hover:bg-accent hover:text-accent-foreground",
-																					"focus:bg-accent focus:text-accent-foreground",
-																					child.active &&
+															<Box className="py-2">
+																<List
+																	divided={false}
+																	className={cn(
+																		"bg-transparent border-none",
+																		link.children.length <= 3
+																			? "w-[220px]"
+																			: "w-[440px] grid grid-cols-2",
+																	)}
+																>
+																	{link.children.map((child) => (
+																		<Box as="li" key={child.href}>
+																			<NavigationMenuLink asChild>
+																				<Box
+																					as="a"
+																					href={child.href}
+																					className={cn(
+																						"block px-4 py-2.5 text-sm font-normal no-underline outline-none transition-colors",
+																						"text-foreground",
+																						"hover:bg-accent hover:text-accent-foreground",
+																						"focus:bg-accent focus:text-accent-foreground",
+																						child.active &&
 																						"text-primary bg-primary/10",
-																				)}
-																			>
-																				{child.label}
-																			</a>
-																		</NavigationMenuLink>
-																	</li>
-																))}
-															</ul>
+																					)}
+																				>
+																					{child.label}
+																				</Box>
+																			</NavigationMenuLink>
+																		</Box>
+																	))}
+																</List>
+															</Box>
 														</NavigationMenuContent>
 													</>
 												) : (
@@ -215,33 +203,33 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 
 									<NavigationMenuViewport />
 								</NavigationMenu>
-							</div>
-						</div>
+							</Box>
+						</Flex>
 
-						{/* Right Side: Search, Language, Theme, Notifications, User Menu */}
-						<div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3 shrink-0">
+						{/* Right side actions */}
+						<Flex align="center" gap={1.5} className="sm:gap-2 lg:gap-3 shrink-0">
 							{/* Search Bar (Desktop) */}
 							{searchBar && (
-								<div className="hidden lg:block w-48 xl:w-64">{searchBar}</div>
+								<Box className="hidden lg:block w-48 xl:w-64">{searchBar}</Box>
 							)}
 
 							{/* Language Switcher (Desktop) */}
 							{languageSwitcher && (
-								<div className="hidden lg:block">{languageSwitcher}</div>
+								<Box className="hidden lg:block">{languageSwitcher}</Box>
 							)}
 
 							{/* Theme Switcher (Desktop) */}
 							{themeSwitcher && (
-								<div className="hidden lg:block">{themeSwitcher}</div>
+								<Box className="hidden lg:block">{themeSwitcher}</Box>
 							)}
 
 							{/* Notifications (Desktop) */}
 							{notifications && (
-								<div className="hidden lg:block">{notifications}</div>
+								<Box className="hidden lg:block">{notifications}</Box>
 							)}
 
 							{/* User Menu (Desktop) - show on larger tablets and up */}
-							{userMenu && <div className="hidden lg:block">{userMenu}</div>}
+							{userMenu && <Box className="hidden lg:block">{userMenu}</Box>}
 
 							{/* Mobile Menu Toggle */}
 							{onMobileMenuToggle && (
@@ -260,9 +248,9 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 									)}
 								</Button>
 							)}
-						</div>
-					</div>
-				</div>
+						</Flex>
+					</Flex>
+				</Box>
 
 				{/* Mobile Menu - Rendered via Portal to escape parent stacking contexts */}
 				{isMobileMenuOpen &&
@@ -270,22 +258,23 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 					createPortal(
 						<>
 							{/* Mobile Menu Backdrop Overlay */}
-							<div
+							<Box
 								className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
 								onClick={onMobileMenuToggle}
 								aria-hidden="true"
 							/>
 
 							{/* Mobile Navigation - Fixed positioned overlay */}
-							<nav
+							<Box
+								as="nav"
 								className="fixed top-0 left-0 right-0 bottom-0 bg-popover z-40 lg:hidden overflow-hidden flex flex-col theme-popover"
 								aria-label="Mobile navigation"
 							>
 								{/* Mobile Header with Close Button */}
-								<div className="flex items-center justify-between px-4 h-14 sm:h-16 border-b shrink-0">
-									<div className="shrink-0 min-w-0 max-w-[120px] sm:max-w-none">
+								<Flex align="center" justify="between" className="px-4 h-14 sm:h-16 border-b shrink-0">
+									<Box className="shrink-0 min-w-0 max-w-[120px] sm:max-w-none">
 										{logo}
-									</div>
+									</Box>
 									<Button
 										variant="ghost"
 										size="icon"
@@ -295,74 +284,76 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 									>
 										<X className="w-5 h-5 sm:w-6 sm:h-6" />
 									</Button>
-								</div>
+								</Flex>
 
 								<Tabs
 									defaultValue="menu"
 									className="flex flex-col flex-1 overflow-hidden"
 								>
-									<div className="px-4 py-2 border-b shrink-0">
+									<Box className="px-4 py-2 border-b shrink-0">
 										<TabsList className="w-full grid grid-cols-3">
 											<TabsTrigger value="menu">
-												<span className="flex items-center gap-2">
+												<Flex align="center" gap={2}>
 													<Menu className="w-4 h-4" />
-													<span>Menu</span>
-												</span>
+													<Text>Menu</Text>
+												</Flex>
 											</TabsTrigger>
 											<TabsTrigger value="notifications">
-												<span className="flex items-center gap-2">
+												<Flex align="center" gap={2}>
 													<Bell className="w-4 h-4" />
-													<span>Alerts</span>
-												</span>
+													<Text>Alerts</Text>
+												</Flex>
 											</TabsTrigger>
 											<TabsTrigger value="preferences">
-												<span className="flex items-center gap-2">
+												<Flex align="center" gap={2}>
 													<Settings className="w-4 h-4" />
-													<span>Preferences</span>
-												</span>
+													<Text>Preferences</Text>
+												</Flex>
 											</TabsTrigger>
 										</TabsList>
-									</div>
+									</Box>
 
-									<div className="flex-1 overflow-y-auto">
+									<Box className="flex-1 overflow-y-auto">
 										<TabsContent value="menu" className="mt-0 h-full">
 											{/* Mobile Search */}
 											{searchBar && (
-												<div className="px-4 py-3 border-b">{searchBar}</div>
+												<Box className="px-4 py-3 border-b">{searchBar}</Box>
 											)}
 
 											{/* User Profile / Account Section */}
 											{userProfile ? (
-												<div className="border-b">
-													<div className="px-4 py-4 flex items-center gap-3 bg-muted">
+												<Box className="border-b">
+													<Flex align="center" gap={3} className="px-4 py-4 bg-muted">
 														{userProfile.avatar ? (
-															<img
+															<Box
+																as="img"
 																src={userProfile.avatar}
 																alt={userProfile.name}
 																className="w-10 h-10 rounded-full object-cover"
 															/>
 														) : (
-															<div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
+															<Flex align="center" justify="center" className="w-10 h-10 rounded-full bg-primary/10 text-primary font-semibold">
 																{userProfile.name.charAt(0).toUpperCase()}
-															</div>
+															</Flex>
 														)}
-														<div className="flex flex-col min-w-0">
-															<span className="text-sm font-medium text-foreground truncate">
+														<Stack gap={0} className="min-w-0">
+															<Text size="sm" weight="medium" className="truncate">
 																{userProfile.name}
-															</span>
-															<span className="text-xs text-muted-foreground truncate">
+															</Text>
+															<Text size="xs" className="text-muted-foreground truncate">
 																{userProfile.email}
-															</span>
-														</div>
-													</div>
-													<div className="py-2">
+															</Text>
+														</Stack>
+													</Flex>
+													<Box className="py-2">
 														{userProfile.links.map((link, index) => (
 															<React.Fragment key={link.label}>
 																{link.divider && index > 0 && (
-																	<div className="my-2 border-t" />
+																	<Box className="my-2 border-t" />
 																)}
 																{link.href ? (
-																	<a
+																	<Box
+																		as="a"
 																		href={link.href}
 																		className={cn(
 																			"flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-accent",
@@ -373,17 +364,17 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 																		onClick={onMobileMenuToggle}
 																	>
 																		{link.icon && (
-																			<span className="w-4 h-4">
+																			<Box as="span" className="w-4 h-4">
 																				{link.icon}
-																			</span>
+																			</Box>
 																		)}
 																		{link.label}
-																	</a>
+																	</Box>
 																) : (
-																	<button
-																		type="button"
+																	<Button
+																		variant="ghost"
 																		className={cn(
-																			"w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-accent text-left",
+																			"w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-accent text-left justify-start font-normal h-auto rounded-none",
 																			link.variant === "danger"
 																				? "text-destructive hover:bg-destructive/10"
 																				: "text-foreground hover:text-foreground",
@@ -394,32 +385,33 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 																		}}
 																	>
 																		{link.icon && (
-																			<span className="w-4 h-4">
+																			<Box as="span" className="w-4 h-4">
 																				{link.icon}
-																			</span>
+																			</Box>
 																		)}
 																		{link.label}
-																	</button>
+																	</Button>
 																)}
 															</React.Fragment>
 														))}
-													</div>
-												</div>
+													</Box>
+												</Box>
 											) : userMenu ? (
-												<div className="px-4 py-3 border-b">
-													<div className="text-xs font-semibold text-muted-foreground uppercase mb-2">
+												<Box className="px-4 py-3 border-b">
+													<Text size="xs" weight="semibold" className="text-muted-foreground uppercase mb-2">
 														Account
-													</div>
+													</Text>
 													{userMenu}
-												</div>
+												</Box>
 											) : null}
 
 											{/* Mobile Nav Links */}
-											<div className="py-2">
+											<Box className="py-2">
 												{navLinks.map((link) => (
 													<React.Fragment key={link.label}>
-														<div className="flex flex-col">
-															<a
+														<Flex direction="column">
+															<Box
+																as="a"
 																href={link.href}
 																className={cn(
 																	"text-sm font-medium px-4 py-3 flex items-center justify-between transition-colors hover:bg-accent border-l-4",
@@ -428,7 +420,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 																		: "text-foreground border-transparent hover:border-border",
 																)}
 																aria-current={link.active ? "page" : undefined}
-																onClick={(e) => {
+																onClick={(e: React.MouseEvent) => {
 																	if (link.children || link.href === "#") {
 																		e.preventDefault();
 																		toggleExpanded(link.label);
@@ -448,12 +440,13 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 																		)}
 																	/>
 																)}
-															</a>
+															</Box>
 															{link.children &&
 																expandedItems.has(link.label) && (
-																	<div className="bg-muted animate-in slide-in-from-top-2 duration-200">
+																	<Box className="bg-muted animate-in slide-in-from-top-2 duration-200">
 																		{link.children.map((child) => (
-																			<a
+																			<Box
+																				as="a"
 																				key={child.label}
 																				href={child.href}
 																				className={cn(
@@ -465,60 +458,60 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 																				onClick={onMobileMenuToggle}
 																			>
 																				{child.label}
-																			</a>
+																			</Box>
 																		))}
-																	</div>
+																	</Box>
 																)}
-														</div>
+														</Flex>
 													</React.Fragment>
 												))}
-											</div>
+											</Box>
 										</TabsContent>
 
 										<TabsContent value="notifications" className="mt-0 h-full">
 											{mobileNotifications || notifications ? (
-												<div className="p-0">
+												<Box className="p-0">
 													{mobileNotifications || notifications}
-												</div>
+												</Box>
 											) : (
-												<div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
+												<Flex direction="column" align="center" justify="center" className="h-64 text-muted-foreground">
 													<Bell className="w-12 h-12 mb-4 opacity-20" />
-													<p>No notifications</p>
-												</div>
+													<Text>No notifications</Text>
+												</Flex>
 											)}
 										</TabsContent>
 
 										<TabsContent value="preferences" className="mt-0 h-full">
-											<div className="flex flex-col">
+											<Flex direction="column">
 												{/* Theme & Language Settings */}
 												{(themeSwitcherMobile || languageSwitcherMobile) && (
-													<div className="p-4 space-y-6">
-														<div className="text-xs font-semibold text-muted-foreground uppercase">
+													<Stack gap={6} className="p-4">
+														<Text size="xs" weight="semibold" className="text-muted-foreground uppercase">
 															Preferences
-														</div>
-														<div className="flex flex-col gap-6">
+														</Text>
+														<Stack gap={6}>
 															{themeSwitcherMobile && (
-																<div className="w-full">
+																<Box className="w-full">
 																	{themeSwitcherMobile}
-																</div>
+																</Box>
 															)}
 															{languageSwitcherMobile && (
-																<div className="w-full">
+																<Box className="w-full">
 																	{languageSwitcherMobile}
-																</div>
+																</Box>
 															)}
-														</div>
-													</div>
+														</Stack>
+													</Stack>
 												)}
-											</div>
+											</Flex>
 										</TabsContent>
-									</div>
+									</Box>
 								</Tabs>
-							</nav>
+							</Box>
 						</>,
 						document.body,
 					)}
-			</header>
+			</Box>
 		);
 	},
 );

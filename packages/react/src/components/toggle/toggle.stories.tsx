@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Bold, BookmarkIcon, Italic, Underline } from "lucide-react";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import { Toggle } from "./toggle";
 
 const meta = {
@@ -88,7 +88,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for toggle buttons while loading.",
+				story:
+					"Loading skeleton placeholders for toggle buttons while loading.",
 			},
 		},
 	},

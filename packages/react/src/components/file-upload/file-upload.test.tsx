@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { FileUpload } from "./file-upload";
@@ -35,7 +35,9 @@ describe("FileUpload", () => {
 				<FileUpload onFileSelect={handleFileSelect} />,
 			);
 
-			const file = new File(["dummy content"], "test.png", { type: "image/png" });
+			const file = new File(["dummy content"], "test.png", {
+				type: "image/png",
+			});
 			const input = container.querySelector('input[type="file"]');
 
 			expect(input).toBeInTheDocument();
@@ -179,7 +181,9 @@ describe("FileUpload", () => {
 
 	describe("Selected File Display", () => {
 		it("displays selected file", () => {
-			const file = new File(["dummy content"], "test.png", { type: "image/png" });
+			const file = new File(["dummy content"], "test.png", {
+				type: "image/png",
+			});
 			render(<FileUpload value={file} />);
 			expect(screen.getByText("test.png")).toBeInTheDocument();
 		});
@@ -205,7 +209,9 @@ describe("FileUpload", () => {
 
 	describe("Progress Bar", () => {
 		it("displays progress bar", () => {
-			const file = new File(["dummy content"], "test.png", { type: "image/png" });
+			const file = new File(["dummy content"], "test.png", {
+				type: "image/png",
+			});
 			const { container } = render(<FileUpload value={file} progress={50} />);
 
 			const progressBar = container.querySelector(
@@ -215,7 +221,9 @@ describe("FileUpload", () => {
 		});
 
 		it("displays 0% progress", () => {
-			const file = new File(["dummy content"], "test.png", { type: "image/png" });
+			const file = new File(["dummy content"], "test.png", {
+				type: "image/png",
+			});
 			const { container } = render(<FileUpload value={file} progress={0} />);
 
 			const progressBar = container.querySelector(
@@ -225,7 +233,9 @@ describe("FileUpload", () => {
 		});
 
 		it("displays 100% progress", () => {
-			const file = new File(["dummy content"], "test.png", { type: "image/png" });
+			const file = new File(["dummy content"], "test.png", {
+				type: "image/png",
+			});
 			const { container } = render(<FileUpload value={file} progress={100} />);
 
 			const progressBar = container.querySelector(
@@ -235,7 +245,9 @@ describe("FileUpload", () => {
 		});
 
 		it("clamps progress above 100% to 100%", () => {
-			const file = new File(["dummy content"], "test.png", { type: "image/png" });
+			const file = new File(["dummy content"], "test.png", {
+				type: "image/png",
+			});
 			const { container } = render(<FileUpload value={file} progress={150} />);
 
 			const progressBar = container.querySelector(
@@ -245,7 +257,9 @@ describe("FileUpload", () => {
 		});
 
 		it("clamps progress below 0% to 0%", () => {
-			const file = new File(["dummy content"], "test.png", { type: "image/png" });
+			const file = new File(["dummy content"], "test.png", {
+				type: "image/png",
+			});
 			const { container } = render(<FileUpload value={file} progress={-50} />);
 
 			const progressBar = container.querySelector(
@@ -255,7 +269,9 @@ describe("FileUpload", () => {
 		});
 
 		it("does not display progress bar when progress is undefined", () => {
-			const file = new File(["dummy content"], "test.png", { type: "image/png" });
+			const file = new File(["dummy content"], "test.png", {
+				type: "image/png",
+			});
 			const { container } = render(<FileUpload value={file} />);
 
 			const progressBar = container.querySelector('[class*="bg-primary"]');
@@ -266,7 +282,9 @@ describe("FileUpload", () => {
 	describe("Clear Functionality", () => {
 		it("handles clear", async () => {
 			const handleClear = vi.fn();
-			const file = new File(["dummy content"], "test.png", { type: "image/png" });
+			const file = new File(["dummy content"], "test.png", {
+				type: "image/png",
+			});
 			render(<FileUpload value={file} onClear={handleClear} />);
 
 			const clearButton = screen.getByRole("button");
@@ -276,7 +294,9 @@ describe("FileUpload", () => {
 
 		it("does not show clear button when disabled", () => {
 			const handleClear = vi.fn();
-			const file = new File(["dummy content"], "test.png", { type: "image/png" });
+			const file = new File(["dummy content"], "test.png", {
+				type: "image/png",
+			});
 			render(<FileUpload value={file} onClear={handleClear} disabled />);
 
 			// Clear button should not be present when disabled
@@ -285,7 +305,9 @@ describe("FileUpload", () => {
 		});
 
 		it("does not show clear button when onClear is not provided", () => {
-			const file = new File(["dummy content"], "test.png", { type: "image/png" });
+			const file = new File(["dummy content"], "test.png", {
+				type: "image/png",
+			});
 			render(<FileUpload value={file} />);
 
 			const buttons = screen.queryAllByRole("button");
@@ -323,9 +345,7 @@ describe("FileUpload", () => {
 
 		it("does not open file dialog when disabled", async () => {
 			const handleFileSelect = vi.fn();
-			render(
-				<FileUpload disabled onFileSelect={handleFileSelect} />,
-			);
+			render(<FileUpload disabled onFileSelect={handleFileSelect} />);
 
 			const button = screen.getByRole("button");
 			await userEvent.click(button);

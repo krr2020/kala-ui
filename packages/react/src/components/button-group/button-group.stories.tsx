@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { ChevronDown, Minus, Plus } from "lucide-react";
 import { Button } from "../button";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import {
 	ButtonGroup,
 	ButtonGroupSeparator,

@@ -25,13 +25,17 @@ describe("NavigationSkeleton", () => {
 
 	it("should render correct number of items", () => {
 		const { container } = render(<NavigationSkeleton itemCount={3} />);
-		const items = container.querySelectorAll("[data-testid='navigation-skeleton'] > div");
+		const items = container.querySelectorAll(
+			"[data-testid='navigation-skeleton'] > div",
+		);
 		expect(items).toHaveLength(3);
 	});
 
 	it("should render default 5 items", () => {
 		const { container } = render(<NavigationSkeleton />);
-		const items = container.querySelectorAll("[data-testid='navigation-skeleton'] > div");
+		const items = container.querySelectorAll(
+			"[data-testid='navigation-skeleton'] > div",
+		);
 		expect(items).toHaveLength(5);
 	});
 

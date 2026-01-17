@@ -9,8 +9,8 @@ export {
 	CardImageOverlay,
 	CardMarker,
 	type CardMarkerProps,
+	type CardProps,
 	CardSubtitle,
 	CardTitle,
-	type CardProps,
 } from "./card";
 export { CardSkeleton } from "./card-skeleton";

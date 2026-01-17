@@ -1,6 +1,6 @@
-import type * as React from "react";
-import type { badgeVariants } from "../badge/badge";
 import type { VariantProps } from "class-variance-authority";
+import type * as React from "react";
+import type { badgeVariants } from "../badge";
 import type { ListSkeletonConfig } from "../skeleton/skeleton.types";
 
 export interface ListProps extends React.HTMLAttributes<HTMLUListElement> {

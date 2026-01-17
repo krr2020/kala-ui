@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 
 const meta = {
@@ -231,7 +231,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for avatars in various sizes while images are loading.",
+				story:
+					"Loading skeleton placeholders for avatars in various sizes while images are loading.",
 			},
 		},
 	},

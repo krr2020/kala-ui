@@ -1,8 +1,8 @@
+import { usePagination } from "@kala-ui/react-hooks";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import {
-	generatePagination,
 	Pagination,
 	PaginationContent,
 	PaginationEllipsis,
@@ -13,7 +13,7 @@ import {
 } from "./pagination";
 
 const meta = {
-	title: "Navigation/Pagination",
+	title: "Components/Pagination",
 	component: Pagination,
 	parameters: {
 		layout: "centered",
@@ -23,6 +23,23 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+// Helper to adapt usePagination range to story format
+function usePaginationItems(currentPage: number, totalPages: number) {
+	const { range } = usePagination({
+		total: totalPages,
+		page: currentPage,
+		siblings: 1,
+		boundaries: 1,
+	});
+
+	return range.map((item, index) => {
+		if (item === "dots") {
+			return { key: `dots-${index}`, type: "ellipsis" } as const;
+		}
+		return { key: item, type: "page", page: item } as const;
+	});
+}
 
 // ============================================================================
 // Basic Example
@@ -214,6 +231,63 @@ export const Sizes: Story = {
 };
 
 // ============================================================================
+// Dynamic (Using Hook Range)
+// ============================================================================
+
+export const Dynamic: Story = {
+	render: () => {
+		const [page, setPage] = useState(1);
+		const total = 10;
+
+		return (
+			<Pagination total={total} page={page} onChange={setPage}>
+				<PaginationContent>
+					<PaginationItem>
+						<PaginationPrevious />
+					</PaginationItem>
+
+					<PaginationItem>
+						<PaginationLink page={1} isActive={page === 1}>
+							1
+						</PaginationLink>
+					</PaginationItem>
+
+					{page > 3 && (
+						<PaginationItem>
+							<PaginationEllipsis />
+						</PaginationItem>
+					)}
+
+					{page > 2 && page < total - 1 && (
+						<PaginationItem>
+							<PaginationLink page={page} isActive>
+								{page}
+							</PaginationLink>
+						</PaginationItem>
+					)}
+
+					{page < total - 2 && (
+						<PaginationItem>
+							<PaginationEllipsis />
+						</PaginationItem>
+					)}
+
+					<PaginationItem>
+						<PaginationLink page={total} isActive={page === total}>
+							{total}
+						</PaginationLink>
+					</PaginationItem>
+
+					<PaginationItem>
+						<PaginationNext />
+					</PaginationItem>
+				</PaginationContent>
+			</Pagination>
+		);
+	},
+};
+
+// ============================================================================
 // Visual Variants
 // ============================================================================
 
@@ -369,8 +443,7 @@ export const Interactive: Story = {
 	render: () => {
 		const [currentPage, setCurrentPage] = useState(5);
 		const totalPages = 10;
-
-		const pages = generatePagination(currentPage, totalPages);
+		const pages = usePaginationItems(currentPage, totalPages);
 
 		return (
 			<div className="space-y-4">
@@ -450,7 +523,7 @@ export const WithResultsSummary: Story = {
 		const startItem = (currentPage - 1) * itemsPerPage + 1;
 		const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
-		const pages = generatePagination(currentPage, totalPages);
+		const pages = usePaginationItems(currentPage, totalPages);
 
 		return (
 			<div className="w-full max-w-3xl space-y-4 rounded-lg border bg-card text-card-foreground p-6 theme-card">
@@ -536,7 +609,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for pagination controls while loading.",
+				story:
+					"Loading skeleton placeholders for pagination controls while loading.",
 			},
 		},
 	},

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import { Combobox, type ComboboxOption } from "./combobox";
 
 const meta = {
@@ -296,7 +296,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholder for combobox fields while loading.",
+				story:
+					"Loading skeleton placeholder for combobox fields while loading.",
 			},
 		},
 	},

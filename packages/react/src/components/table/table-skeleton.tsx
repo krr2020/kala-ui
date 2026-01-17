@@ -4,7 +4,6 @@
  * to prevent Cumulative Layout Shift (CLS)
  */
 
-import { cn } from "../../lib/utils";
 import {
 	tableBodyStyles,
 	tableCellStyles,
@@ -12,6 +11,7 @@ import {
 	tableHeadStyles,
 	tableRowStyles,
 } from "../../config/table";
+import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton";
 
 export interface TableSkeletonProps {
@@ -71,10 +71,22 @@ export function TableSkeleton({
 			<table data-slot="table" className="w-full caption-bottom text-sm">
 				<thead
 					data-slot="table-header"
-					className={cn(tableHeaderStyles.base, "bg-muted/50", stickyHeader && "sticky top-0 z-1")}
+					className={cn(
+						tableHeaderStyles.base,
+						"bg-muted/50",
+						stickyHeader && "sticky top-0 z-1",
+					)}
 				>
-					<tr data-slot="table-row" className={cn(tableRowStyles.base, "border-0")}>
-						{showCheckboxes && <th data-slot="table-head" className={cn(tableHeadStyles.base, "w-12")} />}
+					<tr
+						data-slot="table-row"
+						className={cn(tableRowStyles.base, "border-0")}
+					>
+						{showCheckboxes && (
+							<th
+								data-slot="table-head"
+								className={cn(tableHeadStyles.base, "w-12")}
+							/>
+						)}
 						{displayHeaders.map((header, index) => (
 							<th
 								data-slot="table-head"
@@ -85,14 +97,26 @@ export function TableSkeleton({
 								{header || <Skeleton className="h-4 w-24" />}
 							</th>
 						))}
-						{showActions && <th data-slot="table-head" className={tableHeadStyles.base} key="actions-header">Actions</th>}
+						{showActions && (
+							<th
+								data-slot="table-head"
+								className={tableHeadStyles.base}
+								key="actions-header"
+							>
+								Actions
+							</th>
+						)}
 					</tr>
 				</thead>
 				<tbody data-slot="table-body" className={tableBodyStyles.base}>
 					{Array.from({ length: rows }).map(() => {
 						const rowId = crypto.randomUUID();
 						return (
-							<tr key={rowId} data-slot="table-row" className={cn(tableRowStyles.base, "border-0")}>
+							<tr
+								key={rowId}
+								data-slot="table-row"
+								className={cn(tableRowStyles.base, "border-0")}
+							>
 								{showCheckboxes && (
 									<td data-slot="table-cell" className={tableCellStyles.base}>
 										<Skeleton className="h-4 w-4 rounded" />
@@ -101,7 +125,11 @@ export function TableSkeleton({
 								{Array.from({ length: columns }).map((_, colIndex) => {
 									const cellId = crypto.randomUUID();
 									return (
-										<td key={cellId} data-slot="table-cell" className={tableCellStyles.base}>
+										<td
+											key={cellId}
+											data-slot="table-cell"
+											className={tableCellStyles.base}
+										>
 											<Skeleton
 												className="h-4"
 												style={{ width: getCellWidth(colIndex) || "100%" }}

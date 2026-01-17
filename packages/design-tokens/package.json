@@ -1,78 +1,80 @@
 {
-  "name": "@kala-ui/design-tokens",
-  "version": "0.0.1-beta.1",
-  "type": "module",
-  "description": "Design system tokens for Kala UI - colors, spacing, typography, shadows, breakpoints, and transitions",
-  "keywords": [
-    "design-tokens",
-    "design-system",
-    "tokens",
-    "css",
-    "tailwind",
-    "colors",
-    "spacing",
-    "typography"
-  ],
-  "author": "Kala UI",
-  "license": "MIT",
-  "homepage": "https://krr2020.com/kala-ui",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/krr2020/kala-ui.git",
-    "directory": "packages/design-tokens"
-  },
-  "bugs": {
-    "url": "https://github.com/krr2020/kala-ui/issues"
-  },
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
-    "./breakpoints": {
-      "types": "./dist/breakpoints.d.ts",
-      "default": "./dist/breakpoints.js"
-    },
-    "./colors": {
-      "types": "./dist/colors.d.ts",
-      "default": "./dist/colors.js"
-    },
-    "./shadows": {
-      "types": "./dist/shadows.d.ts",
-      "default": "./dist/shadows.js"
-    },
-    "./spacing": {
-      "types": "./dist/spacing.d.ts",
-      "default": "./dist/spacing.js"
-    },
-    "./transitions": {
-      "types": "./dist/transitions.d.ts",
-      "default": "./dist/transitions.js"
-    },
-    "./typography": {
-      "types": "./dist/typography.d.ts",
-      "default": "./dist/typography.js"
-    }
-  },
-  "scripts": {
-    "build": "tsc",
-    "type-check": "tsc --noEmit",
-    "lint": "biome lint ."
-  },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE",
-    "CHANGELOG.md"
-  ],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "devDependencies": {
-    "@types/node": "~24.10.1",
-    "typescript": "~5.9.3"
-  }
+	"name": "@kala-ui/design-tokens",
+	"version": "0.0.1-beta.2",
+	"type": "module",
+	"description": "Design system tokens for Kala UI - colors, spacing, typography, shadows, breakpoints, and transitions",
+	"keywords": [
+		"design-tokens",
+		"design-system",
+		"tokens",
+		"css",
+		"tailwind",
+		"colors",
+		"spacing",
+		"typography"
+	],
+	"author": "Kala UI",
+	"license": "MIT",
+	"homepage": "https://krr2020.com/kala-ui",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/krr2020/kala-ui.git",
+		"directory": "packages/design-tokens"
+	},
+	"bugs": {
+		"url": "https://github.com/krr2020/kala-ui/issues"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./breakpoints": {
+			"types": "./dist/breakpoints.d.ts",
+			"default": "./dist/breakpoints.js"
+		},
+		"./colors": {
+			"types": "./dist/colors.d.ts",
+			"default": "./dist/colors.js"
+		},
+		"./shadows": {
+			"types": "./dist/shadows.d.ts",
+			"default": "./dist/shadows.js"
+		},
+		"./spacing": {
+			"types": "./dist/spacing.d.ts",
+			"default": "./dist/spacing.js"
+		},
+		"./transitions": {
+			"types": "./dist/transitions.d.ts",
+			"default": "./dist/transitions.js"
+		},
+		"./typography": {
+			"types": "./dist/typography.d.ts",
+			"default": "./dist/typography.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc",
+		"type-check": "tsc --noEmit",
+		"lint": "biome lint .",
+		"lint:fix": "biome lint . --write",
+		"lint:fix-unsafe": "biome lint . --write --unsafe"
+	},
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE",
+		"CHANGELOG.md"
+	],
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org/"
+	},
+	"devDependencies": {
+		"@types/node": "~24.10.1",
+		"typescript": "~5.9.3"
+	}
 }

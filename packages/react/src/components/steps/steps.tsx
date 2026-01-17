@@ -2,6 +2,8 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Check } from "lucide-react";
 import * as React from "react";
 import { cn } from "../../lib/utils";
+import { Box } from "../box";
+import { Text } from "../text";
 
 const stepsVariants = cva("flex w-full", {
 	variants: {
@@ -23,7 +25,7 @@ export interface StepItem {
 
 export interface StepsProps
 	extends React.HTMLAttributes<HTMLDivElement>,
-		VariantProps<typeof stepsVariants> {
+	VariantProps<typeof stepsVariants> {
 	currentStep: number;
 	items: StepItem[];
 	onStepClick?: (step: number) => void;
@@ -48,7 +50,7 @@ const Steps = React.forwardRef<HTMLDivElement, StepsProps>(
 		ref,
 	) => {
 		return (
-			<div
+			<Box
 				ref={ref}
 				className={cn(stepsVariants({ orientation }), className)}
 				{...props}
@@ -61,7 +63,7 @@ const Steps = React.forwardRef<HTMLDivElement, StepsProps>(
 					const isClickable = !!onStepClick;
 
 					return (
-						<div
+						<Box
 							key={step.title}
 							className={cn(
 								"group relative flex",
@@ -74,36 +76,37 @@ const Steps = React.forwardRef<HTMLDivElement, StepsProps>(
 							{!isLast && showLine && (
 								<>
 									{orientation === "horizontal" && (
-										<div className="absolute top-4 left-1/2 w-full h-[2px] -translate-y-1/2 bg-separator">
-											<div
+										<Box className="absolute top-4 left-1/2 w-full h-[2px] -translate-y-1/2 bg-separator">
+											<Box
 												className={cn(
 													"h-full bg-primary transition-all duration-500 ease-in-out",
 													isCompleted ? "w-full" : "w-0",
 												)}
 											/>
-										</div>
+										</Box>
 									)}
 									{orientation === "vertical" && (
-										<div className="absolute top-8 left-4 h-[calc(100%-32px)] w-[2px] -translate-x-1/2 bg-separator">
-											<div
+										<Box className="absolute top-8 left-4 h-[calc(100%-32px)] w-[2px] -translate-x-1/2 bg-separator">
+											<Box
 												className={cn(
 													"w-full bg-primary transition-all duration-500 ease-in-out",
 													isCompleted ? "h-full" : "h-0",
 												)}
 											/>
-										</div>
+										</Box>
 									)}
 								</>
 							)}
 
-							<div
+							<Box
 								className={cn(
 									"flex items-center",
 									orientation === "vertical" ? "flex-row" : "flex-col w-full",
 								)}
 							>
 								{/* Circle Indicator */}
-								<button
+								<Box
+									as="button"
 									type="button"
 									className={cn(
 										"relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all duration-300",
@@ -122,35 +125,36 @@ const Steps = React.forwardRef<HTMLDivElement, StepsProps>(
 									) : (
 										step.icon || stepNumber
 									)}
-								</button>
+								</Box>
 
 								{/* Content */}
-								<div
+								<Box
 									className={cn(
 										orientation === "vertical"
 											? "ml-4"
 											: "mt-2 text-center px-2",
 									)}
 								>
-									<div
+									<Text
+										size="sm"
+										weight="medium"
 										className={cn(
-											"text-sm font-medium",
 											isActive ? "text-primary" : "text-foreground",
 										)}
 									>
 										{step.title}
-									</div>
+									</Text>
 									{step.description && (
-										<div className="text-xs text-muted-foreground mt-0.5">
+										<Text size="xs" className="text-muted-foreground mt-0.5">
 											{step.description}
-										</div>
+										</Text>
 									)}
-								</div>
-							</div>
-						</div>
+								</Box>
+							</Box>
+						</Box>
 					);
 				})}
-			</div>
+			</Box>
 		);
 	},
 );

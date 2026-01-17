@@ -1,9 +1,9 @@
 import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "../../lib/utils";
-import { Badge, type badgeVariants } from "../badge/badge";
-import { ListSkeleton } from "./list-skeleton";
+import { Badge, type badgeVariants } from "../badge";
 import type { ListSkeletonConfig } from "../skeleton/skeleton.types";
+import { ListSkeleton } from "./list-skeleton";
 
 // ===========================
 // List Container

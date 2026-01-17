@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import { Separator } from "./separator";
 
 const meta = {
@@ -69,7 +69,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders with separators while content is loading.",
+				story:
+					"Loading skeleton placeholders with separators while content is loading.",
 			},
 		},
 	},

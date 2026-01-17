@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import { Breadcrumbs } from "./breadcrumbs";
 
 const meta: Meta<typeof Breadcrumbs> = {
@@ -114,7 +114,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for breadcrumb items while loading.",
+				story:
+					"Loading skeleton placeholders for breadcrumb items while loading.",
 			},
 		},
 	},

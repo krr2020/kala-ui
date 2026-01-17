@@ -7,6 +7,8 @@ export interface UseDisclosureHandlers {
 	close: () => void;
 	/** Toggle handler */
 	toggle: () => void;
+	/** Set state handler */
+	set: (value: boolean) => void;
 }
 
 export type UseDisclosureReturnValue = [boolean, UseDisclosureHandlers];
@@ -39,6 +41,7 @@ export function useDisclosure(
 	const open = useCallback(() => setOpened(true), []);
 	const close = useCallback(() => setOpened(false), []);
 	const toggle = useCallback(() => setOpened((o) => !o), []);
+	const set = useCallback((value: boolean) => setOpened(value), []);
 
-	return [opened, { open, close, toggle }];
+	return [opened, { open, close, toggle, set }];
 }

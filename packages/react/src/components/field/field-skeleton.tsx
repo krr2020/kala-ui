@@ -6,7 +6,7 @@
  */
 
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import type { FieldSkeletonConfig } from "../skeleton/skeleton.types";
 
 export interface FieldSkeletonProps extends FieldSkeletonConfig {

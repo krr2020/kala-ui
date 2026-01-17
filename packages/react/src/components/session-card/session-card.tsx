@@ -15,8 +15,8 @@ import {
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
 import { Card, CardContent, CardHeader } from "../card";
-import { SessionCardSkeleton } from "./session-card-skeleton";
 import type { SessionCardSkeletonConfig } from "../skeleton/skeleton.types";
+import { SessionCardSkeleton } from "./session-card-skeleton";
 
 export interface SessionData {
 	id: string;
@@ -94,17 +94,12 @@ export function SessionCard({
 	if (isLoading) {
 		if (skeleton) {
 			return (
-				<Card
-					data-comp="session-card"
-					className={cn("relative", className)}
-				>
+				<Card data-comp="session-card" className={cn("relative", className)}>
 					{skeleton}
 				</Card>
 			);
 		}
-		return (
-			<SessionCardSkeleton className={className} {...skeletonConfig} />
-		);
+		return <SessionCardSkeleton className={className} {...skeletonConfig} />;
 	}
 
 	const DeviceIcon = getDeviceIcon(session.device);

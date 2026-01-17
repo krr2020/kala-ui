@@ -13,6 +13,7 @@
 import { Command as CommandPrimitive } from "cmdk";
 import * as React from "react";
 import { cn } from "../../lib/utils";
+import { Flex } from "../../components/flex";
 
 // ============================================================================
 // Command
@@ -41,8 +42,9 @@ const CommandInput = React.forwardRef<
 	React.ComponentRef<typeof CommandPrimitive.Input>,
 	React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-	<div
-		className="flex items-center border-b border-separator px-3"
+	<Flex
+		align="center"
+		className="border-b border-separator px-3"
 		cmdk-input-wrapper=""
 	>
 		<CommandPrimitive.Input
@@ -53,7 +55,7 @@ const CommandInput = React.forwardRef<
 			)}
 			{...props}
 		/>
-	</div>
+	</Flex>
 ));
 CommandInput.displayName = CommandPrimitive.Input.displayName;
 

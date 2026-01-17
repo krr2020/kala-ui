@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
 import { Label } from "../label";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import { Switch } from "./switch";
 
 const meta = {
@@ -76,7 +76,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for switch toggles while loading.",
+				story:
+					"Loading skeleton placeholders for switch toggles while loading.",
 			},
 		},
 	},

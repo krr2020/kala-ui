@@ -1,8 +1,8 @@
 import * as React from "react";
 import { cn } from "../../lib/utils";
 import { Card } from "../card";
-import { MetricCardSkeleton } from "./metric-card-skeleton";
 import type { MetricCardSkeletonConfig } from "../skeleton/skeleton.types";
+import { MetricCardSkeleton } from "./metric-card-skeleton";
 
 export interface MetricCardProps
 	extends Omit<React.ComponentProps<"div">, "title"> {
@@ -56,12 +56,7 @@ const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
 					</Card>
 				);
 			}
-			return (
-				<MetricCardSkeleton
-					className={className}
-					{...skeletonConfig}
-				/>
-			);
+			return <MetricCardSkeleton className={className} {...skeletonConfig} />;
 		}
 
 		const getChangeColor = (changeValue: number) => {

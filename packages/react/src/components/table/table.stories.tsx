@@ -1,8 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Badge } from "../badge";
+import { Box } from "../box";
 import { Button } from "../button";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
+import { Stack } from "../stack";
+import { Text } from "../text";
 import {
 	Table,
 	TableBody,
@@ -383,15 +386,15 @@ export const Hoverable: Story = {
 						<TableCell className="font-medium">{user.name}</TableCell>
 						<TableCell>{user.email}</TableCell>
 						<TableCell>
-							<span
-								className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-									user.status === "Active"
-										? "bg-success/10 text-success"
-										: "bg-muted text-muted-foreground"
-								}`}
+							<Text
+								as="span"
+								className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${user.status === "Active"
+									? "bg-success/10 text-success"
+									: "bg-muted text-muted-foreground"
+									}`}
 							>
 								{user.status}
-							</span>
+							</Text>
 						</TableCell>
 					</TableRow>
 				))}
@@ -405,7 +408,7 @@ export const Hoverable: Story = {
  */
 export const Responsive: Story = {
 	render: () => (
-		<div className="w-full max-w-4xl">
+		<Box className="w-full max-w-4xl">
 			<Table>
 				<TableHeader>
 					<TableRow>
@@ -455,7 +458,7 @@ export const Responsive: Story = {
 					))}
 				</TableBody>
 			</Table>
-		</div>
+		</Box>
 	),
 };
 
@@ -537,7 +540,7 @@ export const CenterAligned: Story = {
  */
 export const BackgroundExample: Story = {
 	render: () => (
-		<div className="p-6 bg-card rounded-lg border">
+		<Box className="p-6 bg-card rounded-lg border">
 			<Table>
 				<TableHeader>
 					<TableRow>
@@ -574,7 +577,7 @@ export const BackgroundExample: Story = {
 					</TableRow>
 				</TableBody>
 			</Table>
-		</div>
+		</Box>
 	),
 };
 
@@ -600,12 +603,12 @@ export const ScrollableWithManyRows: Story = {
 		const rows = generateRows(50);
 
 		return (
-			<div className="space-y-4">
-				<div className="text-sm text-muted-foreground">
+			<Stack gap={4}>
+				<Text size="sm" className="text-muted-foreground">
 					This table has 50 rows with a maximum height of 600px and vertical
 					scrolling.
-				</div>
-				<div className="max-h-[600px] overflow-y-auto rounded-lg border">
+				</Text>
+				<Box className="max-h-[600px] overflow-y-auto rounded-lg border">
 					<Table>
 						<TableHeader className="sticky top-0 bg-card z-10">
 							<TableRow>
@@ -640,8 +643,8 @@ export const ScrollableWithManyRows: Story = {
 							))}
 						</TableBody>
 					</Table>
-				</div>
-			</div>
+				</Box>
+			</Stack>
 		);
 	},
 };
@@ -694,12 +697,12 @@ export const LoadingState: Story = {
 		];
 
 		return (
-			<div>
-				<div className="mb-4">
+			<Box>
+				<Box className="mb-4">
 					<Button onClick={() => setIsLoading(!isLoading)}>
 						{isLoading ? "Show Data" : "Show Loading"}
 					</Button>
-				</div>
+				</Box>
 				<Table
 					isLoading={isLoading}
 					loadingRows={3}
@@ -725,39 +728,56 @@ export const LoadingState: Story = {
 						))}
 					</TableBody>
 				</Table>
-			</div>
+			</Box>
 		);
 	},
 };
 export const LoadingSkeleton: Story = {
 	render: () => (
-		<div className="w-full">
+		<Box className="w-full">
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead><Skeleton className="h-4 w-16" /></TableHead>
-						<TableHead><Skeleton className="h-4 w-24" /></TableHead>
-						<TableHead><Skeleton className="h-4 w-32" /></TableHead>
-						<TableHead><Skeleton className="h-4 w-20" /></TableHead>
+						<TableHead>
+							<Skeleton className="h-4 w-16" />
+						</TableHead>
+						<TableHead>
+							<Skeleton className="h-4 w-24" />
+						</TableHead>
+						<TableHead>
+							<Skeleton className="h-4 w-32" />
+						</TableHead>
+						<TableHead>
+							<Skeleton className="h-4 w-20" />
+						</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
 					{Array.from({ length: 5 }).map((_, i) => (
 						<TableRow key={i}>
-							<TableCell><Skeleton className="h-4 w-12" /></TableCell>
-							<TableCell><Skeleton className="h-4 w-32" /></TableCell>
-							<TableCell><Skeleton className="h-4 w-40" /></TableCell>
-							<TableCell><Skeleton className="h-4 w-24" /></TableCell>
+							<TableCell>
+								<Skeleton className="h-4 w-12" />
+							</TableCell>
+							<TableCell>
+								<Skeleton className="h-4 w-32" />
+							</TableCell>
+							<TableCell>
+								<Skeleton className="h-4 w-40" />
+							</TableCell>
+							<TableCell>
+								<Skeleton className="h-4 w-24" />
+							</TableCell>
 						</TableRow>
 					))}
 				</TableBody>
 			</Table>
-		</div>
+		</Box>
 	),
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for table rows while data is loading.",
+				story:
+					"Loading skeleton placeholders for table rows while data is loading.",
 			},
 		},
 	},

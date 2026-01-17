@@ -4,7 +4,7 @@ import * as React from "react";
 import { Button } from "../button";
 import { Input } from "../input";
 import { Label } from "../label";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import {
 	Popover,
 	PopoverBody,
@@ -425,13 +425,12 @@ export const DismissibleFocus: Story = {
 	},
 };
 export const LoadingSkeleton: Story = {
-	render: () => (
-		<Skeleton className="h-10 w-32 rounded-md" />
-	),
+	render: () => <Skeleton className="h-10 w-32 rounded-md" />,
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholder for popover trigger while loading.",
+				story:
+					"Loading skeleton placeholder for popover trigger while loading.",
 			},
 		},
 	},

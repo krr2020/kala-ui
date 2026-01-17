@@ -25,10 +25,7 @@ describe("ResizablePanelGroup", () => {
 				'[data-slot="resizable-panel-group"]',
 			);
 			expect(group).toBeInTheDocument();
-			expect(group).toHaveAttribute(
-				"data-panel-group-direction",
-				"horizontal",
-			);
+			expect(group).toHaveAttribute("data-panel-group-direction", "horizontal");
 		});
 
 		it("should render with vertical direction", () => {
@@ -42,10 +39,7 @@ describe("ResizablePanelGroup", () => {
 			const group = container.querySelector(
 				'[data-slot="resizable-panel-group"]',
 			);
-			expect(group).toHaveAttribute(
-				"data-panel-group-direction",
-				"vertical",
-			);
+			expect(group).toHaveAttribute("data-panel-group-direction", "vertical");
 		});
 
 		it("should apply correct flex classes for horizontal direction", () => {
@@ -78,10 +72,7 @@ describe("ResizablePanelGroup", () => {
 	describe("Props and Styling", () => {
 		it("should apply custom className", () => {
 			const { container } = render(
-				<ResizablePanelGroup
-					direction="horizontal"
-					className="custom-class"
-				>
+				<ResizablePanelGroup direction="horizontal" className="custom-class">
 					<ResizablePanel>Panel 1</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
@@ -93,10 +84,7 @@ describe("ResizablePanelGroup", () => {
 
 		it("should accept autoSaveId prop", () => {
 			const { container } = render(
-				<ResizablePanelGroup
-					direction="horizontal"
-					autoSaveId="test-layout"
-				>
+				<ResizablePanelGroup direction="horizontal" autoSaveId="test-layout">
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
@@ -110,10 +98,7 @@ describe("ResizablePanelGroup", () => {
 
 		it("should accept keyboardResizeBy prop", () => {
 			const { container } = render(
-				<ResizablePanelGroup
-					direction="horizontal"
-					keyboardResizeBy={5}
-				>
+				<ResizablePanelGroup direction="horizontal" keyboardResizeBy={5}>
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
@@ -189,14 +174,10 @@ describe("ResizablePanel", () => {
 		it("should apply custom className", () => {
 			const { container } = render(
 				<ResizablePanelGroup direction="horizontal">
-					<ResizablePanel className="custom-panel">
-						Panel 1
-					</ResizablePanel>
+					<ResizablePanel className="custom-panel">Panel 1</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector(
-				'[data-slot="resizable-panel"]',
-			);
+			const panel = container.querySelector('[data-slot="resizable-panel"]');
 			expect(panel).toHaveClass("custom-panel");
 		});
 
@@ -206,9 +187,7 @@ describe("ResizablePanel", () => {
 					<ResizablePanel>Panel 1</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector(
-				'[data-slot="resizable-panel"]',
-			);
+			const panel = container.querySelector('[data-slot="resizable-panel"]');
 			expect(panel).toHaveClass("relative");
 		});
 
@@ -218,9 +197,7 @@ describe("ResizablePanel", () => {
 					<ResizablePanel id="test-panel">Panel 1</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector(
-				'[data-slot="resizable-panel"]',
-			);
+			const panel = container.querySelector('[data-slot="resizable-panel"]');
 			expect(panel).toHaveAttribute("id", "test-panel");
 		});
 	});
@@ -248,9 +225,7 @@ describe("ResizablePanel", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector(
-				'[data-slot="resizable-panel"]',
-			);
+			const panel = container.querySelector('[data-slot="resizable-panel"]');
 			expect(panel).toBeInTheDocument();
 		});
 
@@ -262,9 +237,7 @@ describe("ResizablePanel", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector(
-				'[data-slot="resizable-panel"]',
-			);
+			const panel = container.querySelector('[data-slot="resizable-panel"]');
 			expect(panel).toBeInTheDocument();
 		});
 
@@ -278,9 +251,7 @@ describe("ResizablePanel", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector(
-				'[data-slot="resizable-panel"]',
-			);
+			const panel = container.querySelector('[data-slot="resizable-panel"]');
 			expect(panel).toBeInTheDocument();
 		});
 
@@ -294,9 +265,7 @@ describe("ResizablePanel", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector(
-				'[data-slot="resizable-panel"]',
-			);
+			const panel = container.querySelector('[data-slot="resizable-panel"]');
 			expect(panel).toBeInTheDocument();
 		});
 	});
@@ -310,9 +279,7 @@ describe("ResizablePanel", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector(
-				'[data-slot="resizable-panel"]',
-			);
+			const panel = container.querySelector('[data-slot="resizable-panel"]');
 			expect(panel).toBeInTheDocument();
 		});
 
@@ -327,9 +294,7 @@ describe("ResizablePanel", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector(
-				'[data-slot="resizable-panel"]',
-			);
+			const panel = container.querySelector('[data-slot="resizable-panel"]');
 			expect(panel).toBeInTheDocument();
 		});
 
@@ -344,9 +309,7 @@ describe("ResizablePanel", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector(
-				'[data-slot="resizable-panel"]',
-			);
+			const panel = container.querySelector('[data-slot="resizable-panel"]');
 			expect(panel).toBeInTheDocument();
 		});
 
@@ -366,9 +329,7 @@ describe("ResizablePanel", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector(
-				'[data-slot="resizable-panel"]',
-			);
+			const panel = container.querySelector('[data-slot="resizable-panel"]');
 			expect(panel).toBeInTheDocument();
 		});
 	});
@@ -384,9 +345,7 @@ describe("ResizableHandle", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const handle = container.querySelector(
-				'[data-slot="resizable-handle"]',
-			);
+			const handle = container.querySelector('[data-slot="resizable-handle"]');
 			expect(handle).toBeInTheDocument();
 		});
 
@@ -416,9 +375,7 @@ describe("ResizableHandle", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const handle = container.querySelector(
-				'[data-slot="resizable-handle"]',
-			);
+			const handle = container.querySelector('[data-slot="resizable-handle"]');
 			const svg = handle?.querySelector("svg");
 			expect(svg).not.toBeInTheDocument();
 		});
@@ -431,9 +388,7 @@ describe("ResizableHandle", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const handle = container.querySelector(
-				'[data-slot="resizable-handle"]',
-			);
+			const handle = container.querySelector('[data-slot="resizable-handle"]');
 			const svg = handle?.querySelector("svg");
 			expect(svg).toBeInTheDocument();
 		});
@@ -446,12 +401,10 @@ describe("ResizableHandle", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const handle = container.querySelector(
-				'[data-slot="resizable-handle"]',
-			);
+			const handle = container.querySelector('[data-slot="resizable-handle"]');
 			const svg = handle?.querySelector("svg");
 			expect(svg).toHaveClass(
-				'data-[panel-group-direction=vertical]:rotate-90',
+				"data-[panel-group-direction=vertical]:rotate-90",
 			);
 		});
 
@@ -463,9 +416,7 @@ describe("ResizableHandle", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const handle = container.querySelector(
-				'[data-slot="resizable-handle"]',
-			);
+			const handle = container.querySelector('[data-slot="resizable-handle"]');
 			const svg = handle?.querySelector("svg");
 			expect(svg).toHaveAttribute("aria-hidden", "true");
 		});
@@ -480,9 +431,7 @@ describe("ResizableHandle", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const handle = container.querySelector(
-				'[data-slot="resizable-handle"]',
-			);
+			const handle = container.querySelector('[data-slot="resizable-handle"]');
 			expect(handle).toHaveClass("custom-handle");
 		});
 
@@ -494,9 +443,7 @@ describe("ResizableHandle", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const handle = container.querySelector(
-				'[data-slot="resizable-handle"]',
-			);
+			const handle = container.querySelector('[data-slot="resizable-handle"]');
 			expect(handle).toHaveAttribute("id", "test-handle");
 		});
 
@@ -508,9 +455,7 @@ describe("ResizableHandle", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const handle = container.querySelector(
-				'[data-slot="resizable-handle"]',
-			);
+			const handle = container.querySelector('[data-slot="resizable-handle"]');
 			expect(handle).toBeInTheDocument();
 			// The disabled state is handled by library
 		});
@@ -526,9 +471,7 @@ describe("ResizableHandle", () => {
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const handle = container.querySelector(
-				'[data-slot="resizable-handle"]',
-			);
+			const handle = container.querySelector('[data-slot="resizable-handle"]');
 			expect(handle).toBeInTheDocument();
 		});
 	});
@@ -548,9 +491,7 @@ describe("Imperative Panel API", () => {
 		}
 
 		const { container } = render(<TestComponent />);
-		const panel = container.querySelector(
-			'[data-slot="resizable-panel"]',
-		);
+		const panel = container.querySelector('[data-slot="resizable-panel"]');
 		expect(panel).toBeInTheDocument();
 	});
 
@@ -588,9 +529,7 @@ describe("Imperative Panel API", () => {
 		}
 
 		const { container } = render(<TestComponent />);
-		const panels = container.querySelectorAll(
-			'[data-slot="resizable-panel"]',
-		);
+		const panels = container.querySelectorAll('[data-slot="resizable-panel"]');
 		expect(panels).toHaveLength(2);
 	});
 });
@@ -679,19 +618,14 @@ describe("Accessibility", () => {
 				<ResizablePanel>Panel 2</ResizablePanel>
 			</ResizablePanelGroup>,
 		);
-		const handle = container.querySelector(
-			'[data-slot="resizable-handle"]',
-		);
+		const handle = container.querySelector('[data-slot="resizable-handle"]');
 		// react-resizable-panels handles accessibility attributes
 		expect(handle).toBeInTheDocument();
 	});
 
 	it("should support keyboard resize with keyboardResizeBy prop", () => {
 		const { container } = render(
-			<ResizablePanelGroup
-				direction="horizontal"
-				keyboardResizeBy={5}
-			>
+			<ResizablePanelGroup direction="horizontal" keyboardResizeBy={5}>
 				<ResizablePanel>Panel 1</ResizablePanel>
 				<ResizableHandle />
 				<ResizablePanel>Panel 2</ResizablePanel>
@@ -711,9 +645,7 @@ describe("Accessibility", () => {
 				<ResizablePanel>Panel 2</ResizablePanel>
 			</ResizablePanelGroup>,
 		);
-		const handle = container.querySelector(
-			'[data-slot="resizable-handle"]',
-		);
+		const handle = container.querySelector('[data-slot="resizable-handle"]');
 		expect(handle).toHaveClass("focus-ring");
 	});
 
@@ -725,9 +657,7 @@ describe("Accessibility", () => {
 				<ResizablePanel>Panel 2</ResizablePanel>
 			</ResizablePanelGroup>,
 		);
-		const handle = container.querySelector(
-			'[data-slot="resizable-handle"]',
-		);
+		const handle = container.querySelector('[data-slot="resizable-handle"]');
 		expect(handle).toHaveClass("bg-separator");
 	});
 });
@@ -739,9 +669,7 @@ describe("Edge Cases", () => {
 				<ResizablePanel></ResizablePanel>
 			</ResizablePanelGroup>,
 		);
-		const panel = document.querySelector(
-			'[data-slot="resizable-panel"]',
-		);
+		const panel = document.querySelector('[data-slot="resizable-panel"]');
 		expect(panel).toBeInTheDocument();
 	});
 
@@ -760,12 +688,10 @@ describe("Edge Cases", () => {
 	it("should handle panel with only whitespace content", () => {
 		render(
 			<ResizablePanelGroup direction="horizontal">
-				<ResizablePanel>   </ResizablePanel>
+				<ResizablePanel> </ResizablePanel>
 			</ResizablePanelGroup>,
 		);
-		const panel = document.querySelector(
-			'[data-slot="resizable-panel"]',
-		);
+		const panel = document.querySelector('[data-slot="resizable-panel"]');
 		expect(panel).toBeInTheDocument();
 	});
 
@@ -777,9 +703,7 @@ describe("Edge Cases", () => {
 				<ResizablePanel>Panel 2</ResizablePanel>
 			</ResizablePanelGroup>,
 		);
-		const panels = container.querySelectorAll(
-			'[data-slot="resizable-panel"]',
-		);
+		const panels = container.querySelectorAll('[data-slot="resizable-panel"]');
 		expect(panels).toHaveLength(2);
 	});
 
@@ -791,9 +715,7 @@ describe("Edge Cases", () => {
 				<ResizablePanel defaultSize={0}>Panel 2</ResizablePanel>
 			</ResizablePanelGroup>,
 		);
-		const panels = container.querySelectorAll(
-			'[data-slot="resizable-panel"]',
-		);
+		const panels = container.querySelectorAll('[data-slot="resizable-panel"]');
 		expect(panels).toHaveLength(2);
 	});
 });

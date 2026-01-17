@@ -246,7 +246,9 @@ describe("TagInput", () => {
 	});
 
 	it("should forward ref", () => {
-		const ref = { current: null } as unknown as React.RefObject<HTMLInputElement>;
+		const ref = {
+			current: null,
+		} as unknown as React.RefObject<HTMLInputElement>;
 		render(<TagInput ref={ref} />);
 
 		expect(ref.current).toBeTruthy();

@@ -11,8 +11,8 @@ import {
 	User,
 	UserPlus,
 } from "lucide-react";
-import { Skeleton } from "../skeleton/skeleton";
 import { Button } from "../button";
+import { Skeleton } from "../skeleton";
 import {
 	List,
 	ListItem,
@@ -476,7 +476,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for list items while data is loading.",
+				story:
+					"Loading skeleton placeholders for list items while data is loading.",
 			},
 		},
 	},

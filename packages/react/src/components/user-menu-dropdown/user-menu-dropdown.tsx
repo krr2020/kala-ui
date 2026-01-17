@@ -11,7 +11,7 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "../dropdown-menu/dropdown-menu";
+} from "../dropdown-menu";
 
 export interface UserMenuDropdownProps {
 	/**

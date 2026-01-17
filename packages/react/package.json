@@ -1,6 +1,6 @@
 {
 	"name": "@kala-ui/react",
-	"version": "0.0.1-beta.7",
+	"version": "0.0.1-beta.8",
 	"type": "module",
 	"description": "65+ accessible React components built with Radix UI and Tailwind CSS. Includes DataTable with server-side support, charts, drag-and-drop, and comprehensive form controls.",
 	"keywords": [
@@ -50,6 +50,10 @@
 			"types": "./dist/components/alert-dialog/index.d.ts",
 			"default": "./dist/components/alert-dialog/index.js"
 		},
+		"./app-shell": {
+			"types": "./dist/components/app-shell/index.d.ts",
+			"default": "./dist/components/app-shell/index.js"
+		},
 		"./aspect-ratio": {
 			"types": "./dist/components/aspect-ratio/index.d.ts",
 			"default": "./dist/components/aspect-ratio/index.js"
@@ -66,21 +70,13 @@
 			"types": "./dist/components/banner/index.d.ts",
 			"default": "./dist/components/banner/index.js"
 		},
-		"./button": {
-			"types": "./dist/components/button/index.d.ts",
-			"default": "./dist/components/button/index.js"
+		"./box": {
+			"types": "./dist/components/box/index.d.ts",
+			"default": "./dist/components/box/index.js"
 		},
 		"./calendar": {
 			"types": "./dist/components/calendar/index.d.ts",
 			"default": "./dist/components/calendar/index.js"
-		},
-		"./command": {
-			"types": "./dist/components/command/index.d.ts",
-			"default": "./dist/components/command/index.js"
-		},
-		"./combobox": {
-			"types": "./dist/components/combobox/index.d.ts",
-			"default": "./dist/components/combobox/index.js"
 		},
 		"./charts": {
 			"types": "./dist/components/charts/index.d.ts",
@@ -89,6 +85,22 @@
 		"./checkbox": {
 			"types": "./dist/components/checkbox/index.d.ts",
 			"default": "./dist/components/checkbox/index.js"
+		},
+		"./code": {
+			"types": "./dist/components/code/index.d.ts",
+			"default": "./dist/components/code/index.js"
+		},
+		"./collapse": {
+			"types": "./dist/components/collapse/index.d.ts",
+			"default": "./dist/components/collapse/index.js"
+		},
+		"./color-input": {
+			"types": "./dist/components/color-input/index.d.ts",
+			"default": "./dist/components/color-input/index.js"
+		},
+		"./combobox": {
+			"types": "./dist/components/combobox/index.d.ts",
+			"default": "./dist/components/combobox/index.js"
 		},
 		"./date-picker": {
 			"types": "./dist/components/date-picker/index.d.ts",
@@ -122,9 +134,17 @@
 			"types": "./dist/components/footer/index.d.ts",
 			"default": "./dist/components/footer/index.js"
 		},
+		"./grid": {
+			"types": "./dist/components/grid/index.d.ts",
+			"default": "./dist/components/grid/index.js"
+		},
 		"./header": {
 			"types": "./dist/components/header/index.d.ts",
 			"default": "./dist/components/header/index.js"
+		},
+		"./indicator": {
+			"types": "./dist/components/indicator/index.d.ts",
+			"default": "./dist/components/indicator/index.js"
 		},
 		"./input": {
 			"types": "./dist/components/input/index.d.ts",
@@ -138,6 +158,10 @@
 			"types": "./dist/components/input-otp/index.d.ts",
 			"default": "./dist/components/input-otp/index.js"
 		},
+		"./kbd": {
+			"types": "./dist/components/kbd/index.d.ts",
+			"default": "./dist/components/kbd/index.js"
+		},
 		"./label": {
 			"types": "./dist/components/label/index.d.ts",
 			"default": "./dist/components/label/index.js"
@@ -145,10 +169,6 @@
 		"./list": {
 			"types": "./dist/components/list/index.d.ts",
 			"default": "./dist/components/list/index.js"
-		},
-		"./navigation": {
-			"types": "./dist/components/navigation/index.d.ts",
-			"default": "./dist/components/navigation/index.js"
 		},
 		"./dnd": {
 			"types": "./dist/components/dnd/index.d.ts",
@@ -162,6 +182,18 @@
 			"types": "./dist/components/navigation-menu/index.d.ts",
 			"default": "./dist/components/navigation-menu/index.js"
 		},
+		"./nav-link": {
+			"types": "./dist/components/nav-link/index.d.ts",
+			"default": "./dist/components/nav-link/index.js"
+		},
+		"./number-input": {
+			"types": "./dist/components/number-input/index.d.ts",
+			"default": "./dist/components/number-input/index.js"
+		},
+		"./overlay": {
+			"types": "./dist/components/overlay/index.d.ts",
+			"default": "./dist/components/overlay/index.js"
+		},
 		"./page-transition": {
 			"types": "./dist/components/page-transition/index.d.ts",
 			"default": "./dist/components/page-transition/index.js"
@@ -170,6 +202,10 @@
 			"types": "./dist/components/pagination/index.d.ts",
 			"default": "./dist/components/pagination/index.js"
 		},
+		"./paper": {
+			"types": "./dist/components/paper/index.d.ts",
+			"default": "./dist/components/paper/index.js"
+		},
 		"./steps": {
 			"types": "./dist/components/steps/index.d.ts",
 			"default": "./dist/components/steps/index.js"
@@ -177,10 +213,6 @@
 		"./slider": {
 			"types": "./dist/components/slider/index.d.ts",
 			"default": "./dist/components/slider/index.js"
-		},
-		"./toast": {
-			"types": "./dist/components/toast/index.d.ts",
-			"default": "./dist/components/toast/index.js"
 		},
 		"./popover": {
 			"types": "./dist/components/popover/index.d.ts",
@@ -198,9 +230,9 @@
 			"types": "./dist/components/resizable/index.d.ts",
 			"default": "./dist/components/resizable/index.js"
 		},
-		"./stack": {
-			"types": "./dist/components/stack/index.d.ts",
-			"default": "./dist/components/stack/index.js"
+		"./ring-progress": {
+			"types": "./dist/components/ring-progress/index.d.ts",
+			"default": "./dist/components/ring-progress/index.js"
 		},
 		"./text": {
 			"types": "./dist/components/text/index.d.ts",
@@ -238,6 +270,10 @@
 			"types": "./dist/components/scroll-area/index.d.ts",
 			"default": "./dist/components/scroll-area/index.js"
 		},
+		"./segmented-control": {
+			"types": "./dist/components/segmented-control/index.d.ts",
+			"default": "./dist/components/segmented-control/index.js"
+		},
 		"./skeleton": {
 			"types": "./dist/components/skeleton/index.d.ts",
 			"default": "./dist/components/skeleton/index.js"
@@ -257,6 +293,14 @@
 		"./sparkline-chart": {
 			"types": "./dist/components/sparkline-chart/index.d.ts",
 			"default": "./dist/components/sparkline-chart/index.js"
+		},
+		"./spoiler": {
+			"types": "./dist/components/spoiler/index.d.ts",
+			"default": "./dist/components/spoiler/index.js"
+		},
+		"./stack": {
+			"types": "./dist/components/stack/index.d.ts",
+			"default": "./dist/components/stack/index.js"
 		},
 		"./spinner": {
 			"types": "./dist/components/spinner/index.d.ts",
@@ -286,6 +330,14 @@
 			"types": "./dist/components/textarea/index.d.ts",
 			"default": "./dist/components/textarea/index.js"
 		},
+		"./timeline": {
+			"types": "./dist/components/timeline/index.d.ts",
+			"default": "./dist/components/timeline/index.js"
+		},
+		"./toast": {
+			"types": "./dist/components/toast/index.d.ts",
+			"default": "./dist/components/toast/index.js"
+		},
 		"./tooltip": {
 			"types": "./dist/components/tooltip/index.d.ts",
 			"default": "./dist/components/tooltip/index.js"
@@ -302,6 +354,14 @@
 			"types": "./dist/components/card/index.d.ts",
 			"default": "./dist/components/card/index.js"
 		},
+		"./center": {
+			"types": "./dist/components/center/index.d.ts",
+			"default": "./dist/components/center/index.js"
+		},
+		"./command": {
+			"types": "./dist/components/command/index.d.ts",
+			"default": "./dist/components/command/index.js"
+		},
 		"./metric-card": {
 			"types": "./dist/components/metric-card/index.d.ts",
 			"default": "./dist/components/metric-card/index.js"
@@ -310,6 +370,10 @@
 			"types": "./dist/components/multi-select/index.d.ts",
 			"default": "./dist/components/multi-select/index.js"
 		},
+		"./navigation": {
+			"types": "./dist/components/navigation/index.d.ts",
+			"default": "./dist/components/navigation/index.js"
+		},
 		"./sidebar": {
 			"types": "./dist/components/sidebar/index.d.ts",
 			"default": "./dist/components/sidebar/index.js"
@@ -317,6 +381,14 @@
 		"./breadcrumbs": {
 			"types": "./dist/components/breadcrumbs/index.d.ts",
 			"default": "./dist/components/breadcrumbs/index.js"
+		},
+		"./burger": {
+			"types": "./dist/components/burger/index.d.ts",
+			"default": "./dist/components/burger/index.js"
+		},
+		"./button": {
+			"types": "./dist/components/button/index.d.ts",
+			"default": "./dist/components/button/index.js"
 		},
 		"./user-menu-dropdown": {
 			"types": "./dist/components/user-menu-dropdown/index.d.ts",
@@ -329,6 +401,10 @@
 		"./loading": {
 			"types": "./dist/components/loading/index.d.ts",
 			"default": "./dist/components/loading/index.js"
+		},
+		"./loading-overlay": {
+			"types": "./dist/components/loading-overlay/index.d.ts",
+			"default": "./dist/components/loading-overlay/index.js"
 		},
 		"./error-boundary": {
 			"types": "./dist/components/error-boundary/index.d.ts",
@@ -372,7 +448,8 @@
 		"@dnd-kit/modifiers": "^9.0.0",
 		"@dnd-kit/sortable": "^10.0.0",
 		"@dnd-kit/utilities": "^3.2.2",
-		"@kala-ui/design-tokens": "0.0.1-beta.1",
+		"@kala-ui/design-tokens": "0.0.1-beta.2",
+		"@kala-ui/react-hooks": "0.0.1-beta.2",
 		"@radix-ui/react-accordion": "~1.2.12",
 		"@radix-ui/react-alert-dialog": "~1.1.15",
 		"@radix-ui/react-aspect-ratio": "~1.1.8",

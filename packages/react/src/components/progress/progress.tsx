@@ -3,7 +3,7 @@
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 import * as React from "react";
 import { cn } from "../../lib/utils";
-import type { ProgressProps, ProgressBarProps } from "./progress.types";
+import type { ProgressBarProps, ProgressProps } from "./progress.types";
 
 type ProgressColor = "default" | "success" | "info" | "warning" | "destructive";
 type ProgressSize = "sm" | "md" | "lg";

@@ -6,10 +6,9 @@
  */
 
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
-import { SkeletonCircle } from "../skeleton/skeleton-patterns";
-import { SkeletonButton } from "../skeleton/skeleton-patterns";
+import { Skeleton } from "../skeleton";
 import type { EmptyStateSkeletonConfig } from "../skeleton/skeleton.types";
+import { SkeletonButton, SkeletonCircle } from "../skeleton/skeleton-patterns";
 
 export interface EmptyStateSkeletonProps extends EmptyStateSkeletonConfig {
 	/**

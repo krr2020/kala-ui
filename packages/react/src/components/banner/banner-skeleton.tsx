@@ -6,9 +6,9 @@
  */
 
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
-import { SkeletonCircle } from "../skeleton/skeleton-patterns";
+import { Skeleton } from "../skeleton";
 import type { BannerSkeletonConfig } from "../skeleton/skeleton.types";
+import { SkeletonCircle } from "../skeleton/skeleton-patterns";
 
 export interface BannerSkeletonProps extends BannerSkeletonConfig {
 	/**

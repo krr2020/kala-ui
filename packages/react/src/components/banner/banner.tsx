@@ -13,8 +13,8 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 import type * as React from "react";
 import { cn } from "../../lib/utils";
-import { BannerSkeleton } from "./banner-skeleton";
 import type { BannerSkeletonConfig } from "../skeleton/skeleton.types";
+import { BannerSkeleton } from "./banner-skeleton";
 
 const bannerVariants = cva(
 	"w-full z-50 px-4 py-3 text-sm font-medium flex items-center justify-between gap-4",

@@ -10,8 +10,8 @@ import { useMemo } from "react";
 import { cn } from "../../lib/utils";
 import { Chart } from "./chart";
 import type { RadialBarChartProps } from "./chart.types";
-import { getDefaultChartOptions } from "./utils";
 import { useThemeAwareChart } from "./use-theme-aware-chart";
+import { getDefaultChartOptions } from "./utils";
 
 export function RadialBarChart({
 	series,

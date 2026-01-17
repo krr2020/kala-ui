@@ -4,7 +4,7 @@ import type * as React from "react";
 
 import { badgeStyles } from "../../config/badge";
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 
 const badgeVariants = cva(badgeStyles.base, {
 	variants: badgeStyles.variants,
@@ -19,7 +19,10 @@ function Badge({
 	isLoading = false,
 	...props
 }: React.ComponentProps<"span"> &
-	VariantProps<typeof badgeVariants> & { asChild?: boolean; isLoading?: boolean }) {
+	VariantProps<typeof badgeVariants> & {
+		asChild?: boolean;
+		isLoading?: boolean;
+	}) {
 	if (isLoading) {
 		return (
 			<Skeleton

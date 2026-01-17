@@ -1,5 +1,5 @@
 import type { DateRange } from "react-day-picker";
-import type { Calendar } from "../calendar/calendar";
+import type { Calendar } from "../calendar";
 
 export interface DatePickerProps
 	extends Omit<

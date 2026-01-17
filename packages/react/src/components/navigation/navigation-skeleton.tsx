@@ -6,7 +6,7 @@
  */
 
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 
 export interface NavigationSkeletonConfig {
 	/**
@@ -109,7 +109,10 @@ export function NavigationSkeleton({
 			{nested && orientation === "vertical" && (
 				<div className="ml-8 space-y-2">
 					{Array.from({ length: 2 }).map((_, i) => (
-						<div key={`nested-${i}`} className="flex items-center gap-3 px-3 py-2">
+						<div
+							key={`nested-${i}`}
+							className="flex items-center gap-3 px-3 py-2"
+						>
 							{showIcons && <Skeleton className="h-4 w-4 flex-shrink-0" />}
 							<Skeleton className="h-4 w-20" />
 						</div>

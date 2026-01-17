@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Separator } from "../separator/separator";
+import { Separator } from "../separator";
 import { ScrollArea, ScrollBar } from "./scroll-area";
 
 const meta = {

@@ -5,11 +5,11 @@
  * Provides zero-CLS skeleton state that matches actual alert layout.
  */
 
-import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
-import { SkeletonCircle } from "../skeleton/skeleton-patterns";
 import { alertStyles } from "../../config/alert";
+import { cn } from "../../lib/utils";
+import { Skeleton } from "../skeleton";
 import type { AlertSkeletonConfig } from "../skeleton/skeleton.types";
+import { SkeletonCircle } from "../skeleton/skeleton-patterns";
 
 export interface AlertSkeletonProps extends AlertSkeletonConfig {
 	/**
@@ -44,7 +44,10 @@ export function AlertSkeleton({
 			role="alert"
 			className={cn(
 				alertStyles.base,
-				variant && alertStyles.compoundVariants?.find(v => v.variant === variant && v.style === 'default')?.className,
+				variant &&
+					alertStyles.compoundVariants?.find(
+						(v) => v.variant === variant && v.style === "default",
+					)?.className,
 				className,
 			)}
 		>

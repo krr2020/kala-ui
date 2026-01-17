@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Label } from "../label";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import { Textarea } from "./textarea";
 
 const meta = {
@@ -66,7 +66,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for textarea fields while loading.",
+				story:
+					"Loading skeleton placeholders for textarea fields while loading.",
 			},
 		},
 	},

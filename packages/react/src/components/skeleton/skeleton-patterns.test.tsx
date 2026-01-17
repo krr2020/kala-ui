@@ -15,13 +15,17 @@ describe("Skeleton Patterns", () => {
 	describe("SkeletonText", () => {
 		it("renders with default 3 lines", () => {
 			const { container } = render(<SkeletonText />);
-			const skeletons = container.querySelectorAll('[data-testid^="skeleton-text-line-"]');
+			const skeletons = container.querySelectorAll(
+				'[data-testid^="skeleton-text-line-"]',
+			);
 			expect(skeletons).toHaveLength(3);
 		});
 
 		it("renders with custom line count", () => {
 			const { container } = render(<SkeletonText lines={5} />);
-			const skeletons = container.querySelectorAll('[data-testid^="skeleton-text-line-"]');
+			const skeletons = container.querySelectorAll(
+				'[data-testid^="skeleton-text-line-"]',
+			);
 			expect(skeletons).toHaveLength(5);
 		});
 
@@ -152,19 +156,25 @@ describe("Skeleton Patterns", () => {
 		it("renders with default 2 paragraphs", () => {
 			const { container } = render(<SkeletonParagraph />);
 			// Each paragraph should have a data-testid pattern
-			const skeletons = container.querySelectorAll('[data-testid^="skeleton-text-line-"]');
+			const skeletons = container.querySelectorAll(
+				'[data-testid^="skeleton-text-line-"]',
+			);
 			expect(skeletons.length).toBeGreaterThan(0);
 		});
 
 		it("renders with custom paragraph count", () => {
 			const { container } = render(<SkeletonParagraph paragraphs={3} />);
-			const skeletons = container.querySelectorAll('[data-testid^="skeleton-text-line-"]');
+			const skeletons = container.querySelectorAll(
+				'[data-testid^="skeleton-text-line-"]',
+			);
 			expect(skeletons.length).toBeGreaterThan(0);
 		});
 
 		it("renders with custom line counts per paragraph", () => {
 			const { container } = render(<SkeletonParagraph lines={[2, 4, 3]} />);
-			const skeletons = container.querySelectorAll('[data-testid^="skeleton-text-line-"]');
+			const skeletons = container.querySelectorAll(
+				'[data-testid^="skeleton-text-line-"]',
+			);
 			// Should have 2 + 4 + 3 = 9 lines total
 			expect(skeletons.length).toBe(9);
 		});
@@ -181,14 +191,18 @@ describe("Skeleton Patterns", () => {
 	describe("SkeletonHeader", () => {
 		it("renders header with title and subtitle", () => {
 			const { container } = render(<SkeletonHeader />);
-			const skeletons = container.querySelectorAll('[data-testid^="skeleton-text-line-"]');
+			const skeletons = container.querySelectorAll(
+				'[data-testid^="skeleton-text-line-"]',
+			);
 			// Should have title and subtitle (2 lines)
 			expect(skeletons.length).toBe(2);
 		});
 
 		it("renders header with only title", () => {
 			const { container } = render(<SkeletonHeader showSubtitle={false} />);
-			const skeletons = container.querySelectorAll('[data-testid^="skeleton-text-line-"]');
+			const skeletons = container.querySelectorAll(
+				'[data-testid^="skeleton-text-line-"]',
+			);
 			// Should have only title (1 line)
 			expect(skeletons.length).toBe(1);
 		});

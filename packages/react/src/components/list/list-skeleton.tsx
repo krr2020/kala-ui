@@ -6,9 +6,9 @@
  */
 
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
-import { SkeletonAvatar, SkeletonCircle } from "../skeleton/skeleton-patterns";
+import { Skeleton } from "../skeleton";
 import type { ListSkeletonConfig } from "../skeleton/skeleton.types";
+import { SkeletonAvatar, SkeletonCircle } from "../skeleton/skeleton-patterns";
 
 export interface ListSkeletonProps extends ListSkeletonConfig {
 	/**
@@ -61,7 +61,9 @@ export function ListSkeleton({
 					{variant === "withAvatar" && <AvatarListItemSkeleton dense={dense} />}
 					{variant === "withIcon" && <IconListItemSkeleton dense={dense} />}
 					{variant === "withBadge" && <BadgeListItemSkeleton dense={dense} />}
-					{variant === "multiLine" && <MultiLineListItemSkeleton dense={dense} />}
+					{variant === "multiLine" && (
+						<MultiLineListItemSkeleton dense={dense} />
+					)}
 				</li>
 			))}
 		</ul>

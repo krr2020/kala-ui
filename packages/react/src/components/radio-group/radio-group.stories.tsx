@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 import { Button } from "../button";
 import { Label } from "../label";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import { RadioGroup, RadioGroupItem } from "./radio-group";
 
 const meta = {
@@ -366,7 +366,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for radio group options while loading.",
+				story:
+					"Loading skeleton placeholders for radio group options while loading.",
 			},
 		},
 	},

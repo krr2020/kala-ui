@@ -6,14 +6,19 @@
 "use client";
 
 import { Filter, X } from "lucide-react";
-import { useState } from "react";
+import * as React from "react";
 
+import { useDisclosure } from "@kala-ui/react-hooks";
 import { Badge } from "../badge";
 import { Button } from "../button";
 import { Checkbox } from "../checkbox";
+import { Flex } from "../flex";
+import { Heading } from "../heading";
 import { Input } from "../input";
 import { Label } from "../label";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
+import { Stack } from "../stack";
+import { Text } from "../text";
 import type { FilterableColumn, FilterConfig } from "./data-table.types";
 
 interface ColumnHeaderFilterProps<TData> {
@@ -29,8 +34,8 @@ export function ColumnHeaderFilter<TData>({
 	onFilterChange,
 	onFilterRemove,
 }: ColumnHeaderFilterProps<TData>) {
-	const [open, setOpen] = useState(false);
-	const [textValue, setTextValue] = useState("");
+	const [open, { set: setOpen }] = useDisclosure(false);
+	const [textValue, setTextValue] = React.useState("");
 
 	const activeFilter = activeFilters.find((f) => f.key === column.key);
 	const filterValue = activeFilter?.value;
@@ -97,19 +102,21 @@ export function ColumnHeaderFilter<TData>({
 					{hasActiveFilter ? (
 						<Badge
 							variant="default"
-							className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px] bg-primary"
+							className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px]"
 						>
-							{activeCount || 1}
+							<Text size="xs" weight="bold" className="text-primary-foreground">
+								{column.type === "text" ? "1" : activeCount}
+							</Text>
 						</Badge>
 					) : null}
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-64 p-3" align="start">
-				<div className="space-y-3">
-					<div className="flex items-center justify-between">
-						<h4 className="font-medium text-sm text-foreground">
+				<Stack gap={3}>
+					<Flex align="center" justify="between">
+						<Heading size="h6" weight="medium" className="text-sm">
 							Filter by {column.label}
-						</h4>
+						</Heading>
 						{hasActiveFilter ? (
 							<Button
 								variant="ghost"
@@ -121,16 +128,17 @@ export function ColumnHeaderFilter<TData>({
 								Clear
 							</Button>
 						) : null}
-					</div>
+					</Flex>
 
 					{column.type === "select" && column.options ? (
-						<div className="space-y-2 max-h-[300px] overflow-y-auto">
+						<Stack gap={2} className="max-h-[300px] overflow-y-auto">
 							{column.options.map((option) => {
 								const isChecked = selectedValues.includes(option.value);
 								return (
-									<div
+									<Flex
 										key={option.value}
-										className="flex items-center space-x-2"
+										align="center"
+										gap={2}
 									>
 										<Checkbox
 											id={`${String(column.key)}-${option.value}`}
@@ -145,12 +153,12 @@ export function ColumnHeaderFilter<TData>({
 										>
 											{option.label}
 										</Label>
-									</div>
+									</Flex>
 								);
 							})}
-						</div>
+						</Stack>
 					) : (
-						<div className="space-y-2">
+						<Stack gap={2}>
 							<Input
 								type="text"
 								placeholder={column.placeholder || `Filter by ${column.label}`}
@@ -166,9 +174,9 @@ export function ColumnHeaderFilter<TData>({
 							<Button onClick={handleTextApply} className="w-full" size="sm">
 								Apply
 							</Button>
-						</div>
+						</Stack>
 					)}
-				</div>
+				</Stack>
 			</PopoverContent>
 		</Popover>
 	);

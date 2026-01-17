@@ -1,3 +1,4 @@
+import { useDisclosure, useHotkeys } from "@kala-ui/react-hooks";
 import type { Meta, StoryObj } from "@storybook/react";
 import {
 	Calculator,
@@ -7,7 +8,10 @@ import {
 	Smile,
 	User,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Box } from "../box";
+import { Stack } from "../stack";
+import { Text } from "../text";
 import {
 	Command,
 	CommandDialog,
@@ -47,32 +51,32 @@ export const Default: Story = {
 				<CommandGroup heading="Suggestions">
 					<CommandItem>
 						<Calendar className="mr-2 h-4 w-4" />
-						<span>Calendar</span>
+						<Text as="span">Calendar</Text>
 					</CommandItem>
 					<CommandItem>
 						<Smile className="mr-2 h-4 w-4" />
-						<span>Search Emoji</span>
+						<Text as="span">Search Emoji</Text>
 					</CommandItem>
 					<CommandItem>
 						<Calculator className="mr-2 h-4 w-4" />
-						<span>Calculator</span>
+						<Text as="span">Calculator</Text>
 					</CommandItem>
 				</CommandGroup>
 				<CommandSeparator />
 				<CommandGroup heading="Settings">
 					<CommandItem>
 						<User className="mr-2 h-4 w-4" />
-						<span>Profile</span>
+						<Text as="span">Profile</Text>
 						<CommandShortcut>⌘P</CommandShortcut>
 					</CommandItem>
 					<CommandItem>
 						<CreditCard className="mr-2 h-4 w-4" />
-						<span>Billing</span>
+						<Text as="span">Billing</Text>
 						<CommandShortcut>⌘B</CommandShortcut>
 					</CommandItem>
 					<CommandItem>
 						<Settings className="mr-2 h-4 w-4" />
-						<span>Settings</span>
+						<Text as="span">Settings</Text>
 						<CommandShortcut>⌘S</CommandShortcut>
 					</CommandItem>
 				</CommandGroup>
@@ -83,35 +87,18 @@ export const Default: Story = {
 
 export const WithDialog: Story = {
 	render: () => {
-		const [open, setOpen] = useState(false);
+		const [open, { toggle, set: setOpen }] = useDisclosure(false);
 
-		useEffect(() => {
-			const down = (e: KeyboardEvent) => {
-				if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-					e.preventDefault();
-					setOpen((open) => !open);
-				}
-			};
-
-			document.addEventListener("keydown", down);
-			return () => document.removeEventListener("keydown", down);
-		}, []);
+		useHotkeys([["mod+K", toggle, { preventDefault: true }]]);
 
 		return (
-			<>
-				<p className="text-sm text-muted-foreground mb-4">
+			<Stack gap={2}>
+				<Text size="sm" className="text-muted-foreground">
 					Press{" "}
 					<kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-						<span className="text-xs">⌘</span>K
+						<Text as="span" className="text-xs">⌘</Text>K
 					</kbd>
-				</p>
-				<button
-					type="button"
-					onClick={() => setOpen(true)}
-					className="rounded-md border px-4 py-2 text-sm hover:bg-accent"
-				>
-					Open Command Menu
-				</button>
+				</Text>
 				<CommandDialog open={open} onOpenChange={setOpen}>
 					<CommandInput placeholder="Type a command or search..." />
 					<CommandList>
@@ -119,38 +106,38 @@ export const WithDialog: Story = {
 						<CommandGroup heading="Suggestions">
 							<CommandItem>
 								<Calendar className="mr-2 h-4 w-4" />
-								<span>Calendar</span>
+								<Text as="span">Calendar</Text>
 							</CommandItem>
 							<CommandItem>
 								<Smile className="mr-2 h-4 w-4" />
-								<span>Search Emoji</span>
+								<Text as="span">Search Emoji</Text>
 							</CommandItem>
 							<CommandItem>
 								<Calculator className="mr-2 h-4 w-4" />
-								<span>Calculator</span>
+								<Text as="span">Calculator</Text>
 							</CommandItem>
 						</CommandGroup>
 						<CommandSeparator />
 						<CommandGroup heading="Settings">
 							<CommandItem>
 								<User className="mr-2 h-4 w-4" />
-								<span>Profile</span>
+								<Text as="span">Profile</Text>
 								<CommandShortcut>⌘P</CommandShortcut>
 							</CommandItem>
 							<CommandItem>
 								<CreditCard className="mr-2 h-4 w-4" />
-								<span>Billing</span>
+								<Text as="span">Billing</Text>
 								<CommandShortcut>⌘B</CommandShortcut>
 							</CommandItem>
 							<CommandItem>
 								<Settings className="mr-2 h-4 w-4" />
-								<span>Settings</span>
+								<Text as="span">Settings</Text>
 								<CommandShortcut>⌘S</CommandShortcut>
 							</CommandItem>
 						</CommandGroup>
 					</CommandList>
 				</CommandDialog>
-			</>
+			</Stack>
 		);
 	},
 };
@@ -183,35 +170,35 @@ export const MultipleGroups: Story = {
 				<CommandEmpty>No results found.</CommandEmpty>
 				<CommandGroup heading="Files">
 					<CommandItem>
-						<span>Document.pdf</span>
+						<Text as="span">Document.pdf</Text>
 					</CommandItem>
 					<CommandItem>
-						<span>Presentation.pptx</span>
+						<Text as="span">Presentation.pptx</Text>
 					</CommandItem>
 					<CommandItem>
-						<span>Spreadsheet.xlsx</span>
+						<Text as="span">Spreadsheet.xlsx</Text>
 					</CommandItem>
 				</CommandGroup>
 				<CommandSeparator />
 				<CommandGroup heading="Folders">
 					<CommandItem>
-						<span>Downloads</span>
+						<Text as="span">Downloads</Text>
 					</CommandItem>
 					<CommandItem>
-						<span>Documents</span>
+						<Text as="span">Documents</Text>
 					</CommandItem>
 					<CommandItem>
-						<span>Pictures</span>
+						<Text as="span">Pictures</Text>
 					</CommandItem>
 				</CommandGroup>
 				<CommandSeparator />
 				<CommandGroup heading="Actions">
 					<CommandItem>
-						<span>New File</span>
+						<Text as="span">New File</Text>
 						<CommandShortcut>⌘N</CommandShortcut>
 					</CommandItem>
 					<CommandItem>
-						<span>New Folder</span>
+						<Text as="span">New Folder</Text>
 						<CommandShortcut>⇧⌘N</CommandShortcut>
 					</CommandItem>
 				</CommandGroup>
@@ -225,7 +212,7 @@ export const WithOnSelect: Story = {
 		const [value, setValue] = useState("");
 
 		return (
-			<div>
+			<Box>
 				<Command className="rounded-lg border shadow-md">
 					<CommandInput placeholder="Select an option..." />
 					<CommandList>
@@ -244,11 +231,11 @@ export const WithOnSelect: Story = {
 					</CommandList>
 				</Command>
 				{value && (
-					<p className="mt-4 text-sm text-muted-foreground">
+					<Text className="mt-4 text-sm text-muted-foreground">
 						Selected: {value}
-					</p>
+					</Text>
 				)}
-			</div>
+			</Box>
 		);
 	},
 };
@@ -287,12 +274,12 @@ export const EmptyState: Story = {
 			<CommandInput placeholder="Search..." />
 			<CommandList>
 				<CommandEmpty>
-					<div className="py-6 text-center">
-						<p className="text-sm text-muted-foreground">No results found.</p>
-						<p className="mt-2 text-xs text-muted-foreground">
+					<Box className="py-6 text-center">
+						<Text className="text-sm text-muted-foreground">No results found.</Text>
+						<Text className="mt-2 text-xs text-muted-foreground">
 							Try searching for something else.
-						</p>
-					</div>
+						</Text>
+					</Box>
 				</CommandEmpty>
 			</CommandList>
 		</Command>
@@ -308,22 +295,22 @@ export const WithIcons: Story = {
 				<CommandGroup heading="Applications">
 					<CommandItem>
 						<Calendar className="mr-2 h-4 w-4" />
-						<span>Calendar</span>
+						<Text as="span">Calendar</Text>
 						<CommandShortcut>⌘1</CommandShortcut>
 					</CommandItem>
 					<CommandItem>
 						<Calculator className="mr-2 h-4 w-4" />
-						<span>Calculator</span>
+						<Text as="span">Calculator</Text>
 						<CommandShortcut>⌘2</CommandShortcut>
 					</CommandItem>
 					<CommandItem>
 						<Settings className="mr-2 h-4 w-4" />
-						<span>Settings</span>
+						<Text as="span">Settings</Text>
 						<CommandShortcut>⌘3</CommandShortcut>
 					</CommandItem>
 					<CommandItem>
 						<User className="mr-2 h-4 w-4" />
-						<span>Profile</span>
+						<Text as="span">Profile</Text>
 						<CommandShortcut>⌘4</CommandShortcut>
 					</CommandItem>
 				</CommandGroup>

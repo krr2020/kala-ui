@@ -14,7 +14,7 @@ import { Eye, EyeOff } from "lucide-react";
 import * as React from "react";
 import { inputStyles } from "../../config/input";
 import { cn } from "../../lib/utils";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import type { InputProps } from "./input.types";
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(

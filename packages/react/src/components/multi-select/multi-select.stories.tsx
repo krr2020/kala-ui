@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import { MultiSelect, type MultiSelectOption } from "./multi-select";
 
 const meta = {
@@ -506,7 +506,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholder for multi-select fields while loading.",
+				story:
+					"Loading skeleton placeholder for multi-select fields while loading.",
 			},
 		},
 	},

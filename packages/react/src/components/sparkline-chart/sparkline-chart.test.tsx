@@ -66,7 +66,7 @@ describe("SparklineChart", () => {
 		const options = JSON.parse(
 			getByTestId("chart-options").textContent || "{}",
 		);
-		expect(options.colors).toEqual(["#3B82F6"]);
+		expect(options.colors[0].toLowerCase()).toEqual("#3b82f6");
 	});
 
 	it("should apply custom color", () => {

@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { Box } from "../box";
 
 const accordionVariants = cva("w-full", {
 	variants: {
@@ -55,7 +56,7 @@ function AccordionItem({
 				"bg-card",
 				variant === "default" && "border-b last:border-b-0",
 				(variant === "bordered" || variant === "filled") &&
-					"border rounded-md overflow-hidden",
+				"border rounded-md overflow-hidden",
 				className,
 			)}
 			{...props}
@@ -76,11 +77,11 @@ function AccordionTrigger({
 				className={cn(
 					"flex flex-1 items-center justify-between gap-3 text-left font-semibold transition-all outline-none disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
 					variant === "default" &&
-						"py-4 text-base text-foreground hover:text-primary focus-visible:text-primary",
+					"py-4 text-base text-foreground hover:text-primary focus-visible:text-primary",
 					variant === "bordered" &&
-						"py-3.5 px-4 text-[15px] text-foreground hover:text-primary data-[state=open]:text-primary data-[state=open]:bg-accent focus-ring rounded-t-md",
+					"py-3.5 px-4 text-[15px] text-foreground hover:text-primary data-[state=open]:text-primary data-[state=open]:bg-accent focus-ring rounded-t-md",
 					variant === "filled" &&
-						"py-3.5 px-4 text-[15px] text-foreground hover:bg-accent data-[state=open]:bg-primary data-[state=open]:text-primary-foreground focus-ring",
+					"py-3.5 px-4 text-[15px] text-foreground hover:bg-accent data-[state=open]:bg-primary data-[state=open]:text-primary-foreground focus-ring",
 					className,
 				)}
 				{...props}
@@ -104,7 +105,7 @@ function AccordionContent({
 			className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden"
 			{...props}
 		>
-			<div
+			<Box
 				className={cn(
 					"text-sm text-foreground leading-relaxed",
 					variant === "default" && "pb-4 pt-1",
@@ -114,7 +115,7 @@ function AccordionContent({
 				)}
 			>
 				{children}
-			</div>
+			</Box>
 		</AccordionPrimitive.Content>
 	);
 }

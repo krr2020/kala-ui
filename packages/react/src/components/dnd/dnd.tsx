@@ -6,55 +6,54 @@
 "use client";
 
 import type {
-	DragEndEvent,
-	DraggableAttributes,
-	DragOverEvent,
-	DragStartEvent,
-	UniqueIdentifier,
-	DraggableSyntheticListeners,
-	DndContextProps as DndKitContextProps,
 	Active,
-	Over,
 	Collision,
 	CollisionDetection,
+	DndContextProps as DndKitContextProps,
+	DragEndEvent,
+	DraggableAttributes,
+	DraggableSyntheticListeners,
+	DragOverEvent,
+	DragStartEvent,
+	Modifier,
+	Over,
 	PointerActivationConstraint,
+	UniqueIdentifier,
 } from "@dnd-kit/core";
-
 import {
-	DndContext as DndKitContext,
-	useDraggable,
-	useDroppable,
-	DragOverlay,
 	closestCenter,
 	closestCorners,
-	rectIntersection,
-	pointerWithin,
+	DndContext as DndKitContext,
+	DragOverlay,
 	KeyboardSensor,
 	PointerSensor,
+	pointerWithin,
+	rectIntersection,
 	TouchSensor,
+	useDraggable,
+	useDroppable,
 	useSensor,
 	useSensors,
 } from "@dnd-kit/core";
 import {
-	SortableContext as SortableContextKit,
-	useSortable,
-	sortableKeyboardCoordinates,
-	verticalListSortingStrategy,
+	restrictToFirstScrollableAncestor,
+	restrictToHorizontalAxis,
+	restrictToParentElement,
+	restrictToVerticalAxis,
+	restrictToWindowEdges,
+} from "@dnd-kit/modifiers";
+import {
 	horizontalListSortingStrategy,
 	rectSortingStrategy,
 	rectSwappingStrategy,
+	SortableContext as SortableContextKit,
 	type SortingStrategy,
+	sortableKeyboardCoordinates,
+	useSortable,
+	verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import {
-	restrictToHorizontalAxis,
-	restrictToVerticalAxis,
-	restrictToWindowEdges,
-	restrictToParentElement,
-	restrictToFirstScrollableAncestor,
-} from "@dnd-kit/modifiers";
-import type { Modifier } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
 import type { Transform } from "@dnd-kit/utilities";
+import { CSS } from "@dnd-kit/utilities";
 import * as React from "react";
 import { cn } from "../../lib/utils";
 
@@ -113,7 +112,10 @@ export interface UseDragDropSensorsOptions {
 }
 
 function createDragDropSensors(options: UseDragDropSensorsOptions = {}) {
-	const { activationConstraint, keyboardCoordinateGetter = sortableKeyboardCoordinates } = options;
+	const {
+		activationConstraint,
+		keyboardCoordinateGetter = sortableKeyboardCoordinates,
+	} = options;
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -134,14 +136,18 @@ function createDragDropSensors(options: UseDragDropSensorsOptions = {}) {
 // DndContext
 // ============================================================================
 
-export interface DragDropContextProps extends Omit<DndKitContextProps, 'sensors'> {
+export interface DragDropContextProps
+	extends Omit<DndKitContextProps, "sensors"> {
 	children: React.ReactNode;
 	sensors?: ReturnType<typeof createDragDropSensors>;
 	useSensors?: UseDragDropSensorsOptions;
 }
 
 const DragDropContext = React.forwardRef<HTMLDivElement, DragDropContextProps>(
-	({ children, sensors: sensorsProp, useSensors: useSensorsOptions, ...props }, _ref) => {
+	(
+		{ children, sensors: sensorsProp, useSensors: useSensorsOptions, ...props },
+		_ref,
+	) => {
 		const defaultSensors = createDragDropSensors(useSensorsOptions);
 		const sensors = sensorsProp ?? defaultSensors;
 
@@ -285,7 +291,10 @@ export interface SortableContextProps {
 const SortableContext = React.forwardRef<HTMLDivElement, SortableContextProps>(
 	({ children, items, strategy = verticalListSortingStrategy }, _ref) => {
 		const itemIds = React.useMemo(
-			() => items.map((item) => (typeof item === "object" && "id" in item ? item.id : item)),
+			() =>
+				items.map((item) =>
+					typeof item === "object" && "id" in item ? item.id : item,
+				),
 			[items],
 		);
 
@@ -323,7 +332,10 @@ export interface SortableItemProps {
 }
 
 const SortableItem = React.forwardRef<HTMLDivElement, SortableItemProps>(
-	({ children, className, id, disabled = false, handle = false, ...props }, ref) => {
+	(
+		{ children, className, id, disabled = false, handle = false, ...props },
+		ref,
+	) => {
 		const {
 			attributes,
 			listeners,
@@ -349,7 +361,7 @@ const SortableItem = React.forwardRef<HTMLDivElement, SortableItemProps>(
 						isDragging,
 						isSorting,
 						isOver,
-				  })
+					})
 				: children;
 
 		const style: React.CSSProperties = {
@@ -387,7 +399,9 @@ SortableItem.displayName = "SortableItem";
 // ============================================================================
 
 export interface SortableHandleProps {
-	children: React.ReactNode | ((listeners: SyntheticListenerMap | undefined) => React.ReactNode);
+	children:
+		| React.ReactNode
+		| ((listeners: SyntheticListenerMap | undefined) => React.ReactNode);
 	className?: string;
 }
 
@@ -395,7 +409,8 @@ const SortableHandle = React.forwardRef<HTMLDivElement, SortableHandleProps>(
 	({ children, className, ...props }, ref) => {
 		const { attributes, listeners } = useSortable({ id: "" });
 
-		const content = typeof children === "function" ? children(listeners) : children;
+		const content =
+			typeof children === "function" ? children(listeners) : children;
 
 		return (
 			<div
@@ -426,15 +441,16 @@ export interface DragOverlayComponentProps {
 	} | null;
 }
 
-const DragOverlayComponent = React.forwardRef<HTMLDivElement, DragOverlayComponentProps>(
-	({ children, className, dropAnimation, ...props }, _ref) => {
-		return (
-			<DragOverlay dropAnimation={dropAnimation} {...props}>
-				{children ? <div className={cn(className)}>{children}</div> : null}
-			</DragOverlay>
-		);
-	},
-);
+const DragOverlayComponent = React.forwardRef<
+	HTMLDivElement,
+	DragOverlayComponentProps
+>(({ children, className, dropAnimation, ...props }, _ref) => {
+	return (
+		<DragOverlay dropAnimation={dropAnimation} {...props}>
+			{children ? <div className={cn(className)}>{children}</div> : null}
+		</DragOverlay>
+	);
+});
 
 DragOverlayComponent.displayName = "DragOverlayComponent";
 

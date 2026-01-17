@@ -9,6 +9,7 @@
 import type { ApexOptions } from "apexcharts";
 import { cn } from "../../lib/utils";
 import { Chart } from "../charts/chart";
+import { useThemeAwareChart } from "../charts";
 
 export interface SparklineChartProps {
 	/**
@@ -68,7 +69,7 @@ export interface SparklineChartProps {
 export function SparklineChart({
 	data,
 	type = "line",
-	color = "#3B82F6",
+	color,
 	width = "100%",
 	height = 64,
 	tooltip = false,
@@ -78,6 +79,9 @@ export function SparklineChart({
 	animated = true,
 	interactive = false,
 }: SparklineChartProps) {
+	const { colors: themeColors, theme } = useThemeAwareChart();
+	const chartColor = color || themeColors.primary[0];
+
 	const options: ApexOptions = {
 		chart: {
 			type,
@@ -95,6 +99,7 @@ export function SparklineChart({
 				enabled: false,
 			},
 		},
+		colors: [chartColor],
 		states: {
 			hover: {
 				filter: {
@@ -121,26 +126,25 @@ export function SparklineChart({
 					stops: [0, 100],
 					...(gradientFrom &&
 						gradientTo && {
-							colorStops: [
-								{
-									offset: 0,
-									color: gradientFrom,
-									opacity: 0.7,
-								},
-								{
-									offset: 100,
-									color: gradientTo,
-									opacity: 0.1,
-								},
-							],
-						}),
+						colorStops: [
+							{
+								offset: 0,
+								color: gradientFrom,
+								opacity: 0.7,
+							},
+							{
+								offset: 100,
+								color: gradientTo,
+								opacity: 0.1,
+							},
+						],
+					}),
 				},
 			}),
 		},
-		colors: [color],
 		tooltip: {
 			enabled: tooltip,
-			theme: "dark",
+			theme: theme === "dark" || theme === "accent" ? "dark" : "light",
 			x: {
 				show: false,
 			},

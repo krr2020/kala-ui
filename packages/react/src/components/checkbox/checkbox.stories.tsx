@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
+import { Box } from "../box";
+import { Flex } from "../flex";
 import { Label } from "../label";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
+import { Stack } from "../stack";
+import { Text } from "../text";
 import { Checkbox } from "./checkbox";
 
 const meta = {
@@ -28,195 +32,217 @@ type Story = StoryObj<typeof meta>;
 // All States Showcase
 export const AllStates: Story = {
 	render: () => (
-		<div className="flex flex-col gap-4">
-			<div className="flex items-center gap-4">
-				<div className="w-40 text-sm font-medium">Unchecked:</div>
+		<Stack gap={4}>
+			<Flex align="center" gap={4}>
+				<Text size="sm" weight="medium" className="w-40">
+					Unchecked:
+				</Text>
 				<Checkbox aria-label="Unchecked checkbox" />
-			</div>
-			<div className="flex items-center gap-4">
-				<div className="w-40 text-sm font-medium">Checked:</div>
+			</Flex>
+			<Flex align="center" gap={4}>
+				<Text size="sm" weight="medium" className="w-40">
+					Checked:
+				</Text>
 				<Checkbox defaultChecked aria-label="Checked checkbox" />
-			</div>
-			<div className="flex items-center gap-4">
-				<div className="w-40 text-sm font-medium">Indeterminate:</div>
+			</Flex>
+			<Flex align="center" gap={4}>
+				<Text size="sm" weight="medium" className="w-40">
+					Indeterminate:
+				</Text>
 				<Checkbox checked="indeterminate" aria-label="Indeterminate checkbox" />
-			</div>
-			<div className="flex items-center gap-4">
-				<div className="w-40 text-sm font-medium">Disabled:</div>
+			</Flex>
+			<Flex align="center" gap={4}>
+				<Text size="sm" weight="medium" className="w-40">
+					Disabled:
+				</Text>
 				<Checkbox disabled aria-label="Disabled unchecked checkbox" />
-			</div>
-			<div className="flex items-center gap-4">
-				<div className="w-40 text-sm font-medium">Disabled Checked:</div>
+			</Flex>
+			<Flex align="center" gap={4}>
+				<Text size="sm" weight="medium" className="w-40">
+					Disabled Checked:
+				</Text>
 				<Checkbox
 					disabled
 					defaultChecked
 					aria-label="Disabled checked checkbox"
 				/>
-			</div>
-			<div className="flex items-center gap-4">
-				<div className="w-40 text-sm font-medium">Disabled Indeterminate:</div>
+			</Flex>
+			<Flex align="center" gap={4}>
+				<Text size="sm" weight="medium" className="w-40">
+					Disabled Indeterminate:
+				</Text>
 				<Checkbox
 					disabled
 					checked="indeterminate"
 					aria-label="Disabled indeterminate checkbox"
 				/>
-			</div>
-		</div>
+			</Flex>
+		</Stack>
 	),
 };
 
 // With Labels and Descriptions
 export const WithLabels: Story = {
 	render: () => (
-		<div className="flex flex-col gap-6">
-			<div className="flex items-center gap-2">
+		<Stack gap={6}>
+			<Flex align="center" gap={2}>
 				<Checkbox id="simple-label" />
 				<Label htmlFor="simple-label">Accept terms and conditions</Label>
-			</div>
-			<div className="flex items-start gap-3">
+			</Flex>
+			<Flex align="start" gap={3}>
 				<Checkbox id="with-description" defaultChecked />
-				<div className="grid gap-1.5">
+				<Box className="grid gap-1.5">
 					<Label htmlFor="with-description">Enable notifications</Label>
-					<p className="text-sm text-muted-foreground">
+					<Text size="sm" className="text-muted-foreground">
 						You can enable or disable notifications at any time in your
 						settings.
-					</p>
-				</div>
-			</div>
+					</Text>
+				</Box>
+			</Flex>
 			<Label
 				htmlFor="interactive-card"
 				className="flex cursor-pointer items-start gap-3 rounded-lg border border-input p-4 transition-all hover:bg-accent hover:text-accent-foreground has-aria-checked:border-primary has-aria-checked:bg-primary/10 h-auto"
 			>
 				<Checkbox id="interactive-card" defaultChecked />
-				<div className="grid gap-1.5">
-					<p className="text-sm font-medium leading-none">Marketing emails</p>
-					<p className="text-sm text-muted-foreground">
+				<Box className="grid gap-1.5">
+					<Text size="sm" weight="medium" className="leading-none">
+						Marketing emails
+					</Text>
+					<Text size="sm" className="text-muted-foreground">
 						Receive emails about new products, features, and updates.
-					</p>
-				</div>
+					</Text>
+				</Box>
 			</Label>
-		</div>
+		</Stack>
 	),
 };
 
 // Multiple Options and Layouts
 export const MultipleOptions: Story = {
 	render: () => (
-		<div className="flex flex-col gap-8">
+		<Stack gap={8}>
 			{/* Vertical List */}
-			<div>
-				<h4 className="mb-3 text-sm font-semibold">Vertical Layout</h4>
-				<div className="flex flex-col gap-3">
-					<div className="flex items-center gap-2">
+			<Box>
+				<Text weight="semibold" size="sm" className="mb-3">
+					Vertical Layout
+				</Text>
+				<Stack gap={3}>
+					<Flex align="center" gap={2}>
 						<Checkbox id="option1" defaultChecked />
 						<Label htmlFor="option1">Option 1</Label>
-					</div>
-					<div className="flex items-center gap-2">
+					</Flex>
+					<Flex align="center" gap={2}>
 						<Checkbox id="option2" />
 						<Label htmlFor="option2">Option 2</Label>
-					</div>
-					<div className="flex items-center gap-2">
+					</Flex>
+					<Flex align="center" gap={2}>
 						<Checkbox id="option3" defaultChecked />
 						<Label htmlFor="option3">Option 3</Label>
-					</div>
-					<div className="flex items-center gap-2">
+					</Flex>
+					<Flex align="center" gap={2}>
 						<Checkbox id="option4" disabled />
 						<Label htmlFor="option4" className="text-muted-foreground">
 							Disabled option
 						</Label>
-					</div>
-				</div>
-			</div>
+					</Flex>
+				</Stack>
+			</Box>
 
 			{/* Inline Layout */}
-			<div>
-				<h4 className="mb-3 text-sm font-semibold">Inline Layout</h4>
-				<div className="flex flex-wrap items-center gap-4">
-					<div className="flex items-center gap-2">
+			<Box>
+				<Text weight="semibold" size="sm" className="mb-3">
+					Inline Layout
+				</Text>
+				<Flex wrap="wrap" align="center" gap={4}>
+					<Flex align="center" gap={2}>
 						<Checkbox id="inline1" defaultChecked />
 						<Label htmlFor="inline1">Option A</Label>
-					</div>
-					<div className="flex items-center gap-2">
+					</Flex>
+					<Flex align="center" gap={2}>
 						<Checkbox id="inline2" />
 						<Label htmlFor="inline2">Option B</Label>
-					</div>
-					<div className="flex items-center gap-2">
+					</Flex>
+					<Flex align="center" gap={2}>
 						<Checkbox id="inline3" defaultChecked />
 						<Label htmlFor="inline3">Option C</Label>
-					</div>
-					<div className="flex items-center gap-2">
+					</Flex>
+					<Flex align="center" gap={2}>
 						<Checkbox id="inline4" />
 						<Label htmlFor="inline4">Option D</Label>
-					</div>
-				</div>
-			</div>
-		</div>
+					</Flex>
+				</Flex>
+			</Box>
+		</Stack>
 	),
 };
 
 // Form Examples
 export const FormExamples: Story = {
 	render: () => (
-		<div className="flex gap-6">
+		<Flex gap={6}>
 			{/* Simple List */}
-			<div className="w-72 rounded-md border p-4">
-				<h4 className="mb-4 text-base font-semibold">
+			<Box className="w-72 rounded-md border p-4">
+				<Text weight="semibold" className="mb-4 text-base">
 					Notification Preferences
-				</h4>
-				<div className="flex flex-col gap-3">
-					<div className="flex items-center gap-2">
+				</Text>
+				<Stack gap={3}>
+					<Flex align="center" gap={2}>
 						<Checkbox id="email-pref" defaultChecked />
 						<Label htmlFor="email-pref">Email notifications</Label>
-					</div>
-					<div className="flex items-center gap-2">
+					</Flex>
+					<Flex align="center" gap={2}>
 						<Checkbox id="push-pref" defaultChecked />
 						<Label htmlFor="push-pref">Push notifications</Label>
-					</div>
-					<div className="flex items-center gap-2">
+					</Flex>
+					<Flex align="center" gap={2}>
 						<Checkbox id="sms-pref" />
 						<Label htmlFor="sms-pref">SMS notifications</Label>
-					</div>
-					<div className="flex items-center gap-2">
+					</Flex>
+					<Flex align="center" gap={2}>
 						<Checkbox id="marketing-pref" />
 						<Label htmlFor="marketing-pref">Marketing emails</Label>
-					</div>
-				</div>
-			</div>
+					</Flex>
+				</Stack>
+			</Box>
 
 			{/* Grouped Form */}
-			<div className="w-80 space-y-6">
-				<div>
-					<h4 className="mb-3 text-sm font-semibold">Account Settings</h4>
-					<div className="space-y-3">
-						<div className="flex items-center gap-2">
+			<Stack gap={6} className="w-80">
+				<Box>
+					<Text weight="semibold" size="sm" className="mb-3">
+						Account Settings
+					</Text>
+					<Stack gap={3}>
+						<Flex align="center" gap={2}>
 							<Checkbox id="public-profile" />
 							<Label htmlFor="public-profile">Make profile public</Label>
-						</div>
-						<div className="flex items-center gap-2">
+						</Flex>
+						<Flex align="center" gap={2}>
 							<Checkbox id="show-email" />
 							<Label htmlFor="show-email">Show email address</Label>
-						</div>
-						<div className="flex items-center gap-2">
+						</Flex>
+						<Flex align="center" gap={2}>
 							<Checkbox id="searchable" defaultChecked />
 							<Label htmlFor="searchable">Searchable by others</Label>
-						</div>
-					</div>
-				</div>
-				<div>
-					<h4 className="mb-3 text-sm font-semibold">Privacy</h4>
-					<div className="space-y-3">
-						<div className="flex items-center gap-2">
+						</Flex>
+					</Stack>
+				</Box>
+				<Box>
+					<Text weight="semibold" size="sm" className="mb-3">
+						Privacy
+					</Text>
+					<Stack gap={3}>
+						<Flex align="center" gap={2}>
 							<Checkbox id="analytics" defaultChecked />
 							<Label htmlFor="analytics">Analytics cookies</Label>
-						</div>
-						<div className="flex items-center gap-2">
+						</Flex>
+						<Flex align="center" gap={2}>
 							<Checkbox id="cookies" />
 							<Label htmlFor="cookies">Marketing cookies</Label>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+						</Flex>
+					</Stack>
+				</Box>
+			</Stack>
+		</Flex>
 	),
 };
 
@@ -247,8 +273,8 @@ export const SelectAllInteractive: Story = {
 		};
 
 		return (
-			<div className="w-80 rounded-md border p-4">
-				<div className="mb-4 flex items-center gap-2 border-b pb-3">
+			<Box className="w-80 rounded-md border p-4">
+				<Flex align="center" gap={2} className="mb-4 border-b pb-3">
 					<Checkbox
 						id="select-all"
 						checked={allChecked ? true : someChecked ? "indeterminate" : false}
@@ -264,10 +290,10 @@ export const SelectAllInteractive: Story = {
 					<Label htmlFor="select-all" className="font-semibold">
 						Select All ({checkedCount}/{items.length})
 					</Label>
-				</div>
-				<div className="flex flex-col gap-3">
+				</Flex>
+				<Stack gap={3}>
 					{items.map((item) => (
-						<div key={item.id} className="flex items-center gap-2">
+						<Flex key={item.id} align="center" gap={2}>
 							<Checkbox
 								id={`item-${item.id}`}
 								checked={item.checked}
@@ -275,34 +301,35 @@ export const SelectAllInteractive: Story = {
 								aria-label={`${item.checked ? "Deselect" : "Select"} ${item.label}`}
 							/>
 							<Label htmlFor={`item-${item.id}`}>{item.label}</Label>
-						</div>
+						</Flex>
 					))}
-				</div>
-			</div>
+				</Stack>
+			</Box>
 		);
 	},
 };
 export const LoadingSkeleton: Story = {
 	render: () => (
-		<div className="space-y-3">
-			<div className="flex items-center gap-2">
+		<Stack gap={3}>
+			<Flex align="center" gap={2}>
 				<Skeleton className="h-4 w-4 rounded" />
 				<Skeleton className="h-4 w-32" />
-			</div>
-			<div className="flex items-center gap-2">
+			</Flex>
+			<Flex align="center" gap={2}>
 				<Skeleton className="h-4 w-4 rounded" />
 				<Skeleton className="h-4 w-40" />
-			</div>
-			<div className="flex items-center gap-2">
+			</Flex>
+			<Flex align="center" gap={2}>
 				<Skeleton className="h-4 w-4 rounded" />
 				<Skeleton className="h-4 w-36" />
-			</div>
-		</div>
+			</Flex>
+		</Stack>
 	),
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for checkbox options while loading.",
+				story:
+					"Loading skeleton placeholders for checkbox options while loading.",
 			},
 		},
 	},

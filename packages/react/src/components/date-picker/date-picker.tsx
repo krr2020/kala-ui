@@ -4,10 +4,10 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import type { DateRange } from "react-day-picker";
 import { cn } from "../../lib/utils";
-import { Button } from "../button/button";
-import { Calendar } from "../calendar/calendar";
+import { Button } from "../button";
+import { Calendar } from "../calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 
 export interface DatePickerProps
 	extends Omit<

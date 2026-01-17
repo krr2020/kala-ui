@@ -1,9 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import {
-	FieldGroupSkeleton,
-	FormSkeleton,
-} from "./form-skeleton";
+import { FieldGroupSkeleton, FormSkeleton } from "./form-skeleton";
 
 describe("FormSkeleton", () => {
 	describe("Basic Rendering", () => {
@@ -49,9 +46,7 @@ describe("FormSkeleton", () => {
 	describe("Submit Button", () => {
 		it("does not show submit button by default", () => {
 			const { container } = render(
-				<FormSkeleton
-					fields={[{ type: "input", label: true }]}
-				/>,
+				<FormSkeleton fields={[{ type: "input", label: true }]} />,
 			);
 			const submitButton = container.querySelector(".col-span-full");
 			expect(submitButton).not.toBeInTheDocument();
@@ -75,9 +70,7 @@ describe("FormSkeleton", () => {
 					showSubmitButton={true}
 				/>,
 			);
-			const button = container.querySelector(
-				".col-span-full .h-10.w-32",
-			);
+			const button = container.querySelector(".col-span-full .h-10.w-32");
 			expect(button).toBeInTheDocument();
 		});
 	});
@@ -134,71 +127,43 @@ describe("FormSkeleton", () => {
 
 	describe("Field Types", () => {
 		it("renders input field skeleton", () => {
-			render(
-				<FormSkeleton
-					fields={[{ type: "input", label: true }]}
-				/>,
-			);
+			render(<FormSkeleton fields={[{ type: "input", label: true }]} />);
 			const formSkeleton = screen.getByTestId("form-skeleton");
 			expect(formSkeleton).toBeInTheDocument();
 		});
 
 		it("renders textarea field skeleton", () => {
-			render(
-				<FormSkeleton
-					fields={[{ type: "textarea", label: true }]}
-				/>,
-			);
+			render(<FormSkeleton fields={[{ type: "textarea", label: true }]} />);
 			const formSkeleton = screen.getByTestId("form-skeleton");
 			expect(formSkeleton).toBeInTheDocument();
 		});
 
 		it("renders select field skeleton", () => {
-			render(
-				<FormSkeleton
-					fields={[{ type: "select", label: true }]}
-				/>,
-			);
+			render(<FormSkeleton fields={[{ type: "select", label: true }]} />);
 			const formSkeleton = screen.getByTestId("form-skeleton");
 			expect(formSkeleton).toBeInTheDocument();
 		});
 
 		it("renders checkbox field skeleton", () => {
-			render(
-				<FormSkeleton
-					fields={[{ type: "checkbox", label: true }]}
-				/>,
-			);
+			render(<FormSkeleton fields={[{ type: "checkbox", label: true }]} />);
 			const formSkeleton = screen.getByTestId("form-skeleton");
 			expect(formSkeleton).toBeInTheDocument();
 		});
 
 		it("renders radio field skeleton", () => {
-			render(
-				<FormSkeleton
-					fields={[{ type: "radio", label: true }]}
-				/>,
-			);
+			render(<FormSkeleton fields={[{ type: "radio", label: true }]} />);
 			const formSkeleton = screen.getByTestId("form-skeleton");
 			expect(formSkeleton).toBeInTheDocument();
 		});
 
 		it("renders date field skeleton", () => {
-			render(
-				<FormSkeleton
-					fields={[{ type: "date", label: true }]}
-				/>,
-			);
+			render(<FormSkeleton fields={[{ type: "date", label: true }]} />);
 			const formSkeleton = screen.getByTestId("form-skeleton");
 			expect(formSkeleton).toBeInTheDocument();
 		});
 
 		it("renders file field skeleton", () => {
-			render(
-				<FormSkeleton
-					fields={[{ type: "file", label: true }]}
-				/>,
-			);
+			render(<FormSkeleton fields={[{ type: "file", label: true }]} />);
 			const formSkeleton = screen.getByTestId("form-skeleton");
 			expect(formSkeleton).toBeInTheDocument();
 		});
@@ -206,21 +171,13 @@ describe("FormSkeleton", () => {
 
 	describe("Field Configurations", () => {
 		it("renders field with label", () => {
-			render(
-				<FormSkeleton
-					fields={[{ type: "input", label: true }]}
-				/>,
-			);
+			render(<FormSkeleton fields={[{ type: "input", label: true }]} />);
 			const formSkeleton = screen.getByTestId("form-skeleton");
 			expect(formSkeleton).toBeInTheDocument();
 		});
 
 		it("renders field without label", () => {
-			render(
-				<FormSkeleton
-					fields={[{ type: "input", label: false }]}
-				/>,
-			);
+			render(<FormSkeleton fields={[{ type: "input", label: false }]} />);
 			const formSkeleton = screen.getByTestId("form-skeleton");
 			expect(formSkeleton).toBeInTheDocument();
 		});
@@ -248,9 +205,7 @@ describe("FormSkeleton", () => {
 		it("renders field with custom control height", () => {
 			render(
 				<FormSkeleton
-					fields={[
-						{ type: "input", label: true, controlHeight: "5rem" },
-					]}
+					fields={[{ type: "input", label: true, controlHeight: "5rem" }]}
 				/>,
 			);
 			const formSkeleton = screen.getByTestId("form-skeleton");
@@ -391,9 +346,7 @@ describe("FieldGroupSkeleton", () => {
 		});
 
 		it("renders field group with no label", () => {
-			render(
-				<FieldGroupSkeleton fieldCount={4} showGroupLabel={false} />,
-			);
+			render(<FieldGroupSkeleton fieldCount={4} showGroupLabel={false} />);
 			const fieldGroup = screen.getByTestId("field-group-skeleton");
 			expect(fieldGroup).toBeInTheDocument();
 		});

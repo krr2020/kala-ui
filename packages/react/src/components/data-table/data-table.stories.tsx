@@ -3,8 +3,8 @@
  * Essential examples demonstrating DataTable features
  */
 
-import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import React from "react";
 import { Badge } from "../badge";
 import { Button } from "../button";
 import { DataTable } from "./data-table";
@@ -873,14 +873,19 @@ export const ServerSideDataFetching: Story = {
 						Server-Side Mode
 					</h3>
 					<p className="text-sm text-blue-700 dark:text-blue-300 mb-2">
-						The table calls your callbacks when pagination, sorting, filtering, or
-						search changes. You can then fetch fresh data from your API.
+						The table calls your callbacks when pagination, sorting, filtering,
+						or search changes. You can then fetch fresh data from your API.
 					</p>
 					<div className="text-xs text-blue-600 dark:text-blue-400 space-y-1">
 						<div>Current Page: {currentPage}</div>
 						<div>Page Size: {pageSize}</div>
 						<div>Total Records: {totalRecords}</div>
-						<div>Sort: {sortConfig ? `${String(sortConfig.key)} (${sortConfig.direction})` : "None"}</div>
+						<div>
+							Sort:{" "}
+							{sortConfig
+								? `${String(sortConfig.key)} (${sortConfig.direction})`
+								: "None"}
+						</div>
 						<div>Search: {searchQuery || "None"}</div>
 					</div>
 				</div>

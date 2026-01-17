@@ -68,38 +68,50 @@ describe("EmptyStateSkeleton", () => {
 	describe("Layout", () => {
 		it("has centered layout", () => {
 			const { container } = render(<EmptyStateSkeleton />);
-			const skeleton = container.querySelector('[data-testid="empty-state-skeleton"]');
+			const skeleton = container.querySelector(
+				'[data-testid="empty-state-skeleton"]',
+			);
 			expect(skeleton).toHaveClass("items-center");
 			expect(skeleton).toHaveClass("justify-center");
 		});
 
 		it("has flex column layout", () => {
 			const { container } = render(<EmptyStateSkeleton />);
-			const skeleton = container.querySelector('[data-testid="empty-state-skeleton"]');
+			const skeleton = container.querySelector(
+				'[data-testid="empty-state-skeleton"]',
+			);
 			expect(skeleton).toHaveClass("flex-col");
 		});
 
 		it("has rounded corners", () => {
 			const { container } = render(<EmptyStateSkeleton />);
-			const skeleton = container.querySelector('[data-testid="empty-state-skeleton"]');
+			const skeleton = container.querySelector(
+				'[data-testid="empty-state-skeleton"]',
+			);
 			expect(skeleton).toHaveClass("rounded-lg");
 		});
 
 		it("has border", () => {
 			const { container } = render(<EmptyStateSkeleton />);
-			const skeleton = container.querySelector('[data-testid="empty-state-skeleton"]');
+			const skeleton = container.querySelector(
+				'[data-testid="empty-state-skeleton"]',
+			);
 			expect(skeleton).toHaveClass("border");
 		});
 
 		it("has padding", () => {
 			const { container } = render(<EmptyStateSkeleton />);
-			const skeleton = container.querySelector('[data-testid="empty-state-skeleton"]');
+			const skeleton = container.querySelector(
+				'[data-testid="empty-state-skeleton"]',
+			);
 			expect(skeleton).toHaveClass("p-8");
 		});
 
 		it("has text-center", () => {
 			const { container } = render(<EmptyStateSkeleton />);
-			const skeleton = container.querySelector('[data-testid="empty-state-skeleton"]');
+			const skeleton = container.querySelector(
+				'[data-testid="empty-state-skeleton"]',
+			);
 			expect(skeleton).toHaveClass("text-center");
 		});
 	});
@@ -130,7 +142,9 @@ describe("EmptyStateSkeleton", () => {
 	describe("Skeleton Elements", () => {
 		it("icon skeleton has correct size", () => {
 			const { container } = render(<EmptyStateSkeleton />);
-			const skeletonCircle = container.querySelector('[style*="width: 2.5rem"]');
+			const skeletonCircle = container.querySelector(
+				'[style*="width: 2.5rem"]',
+			);
 			expect(skeletonCircle).toBeInTheDocument();
 		});
 

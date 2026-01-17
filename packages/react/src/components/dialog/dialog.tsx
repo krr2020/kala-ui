@@ -4,6 +4,8 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import type * as React from "react";
 import { cn } from "../../lib/utils";
+import { Box } from "../box";
+import { Text } from "../text";
 
 function Dialog({
 	...props
@@ -84,7 +86,9 @@ function DialogContent({
 						)}
 					>
 						<X className="size-5" aria-hidden="true" />
-						<span className="sr-only">Close</span>
+						<Text as="span" className="sr-only">
+							Close
+						</Text>
 					</DialogPrimitive.Close>
 				)}
 			</DialogPrimitive.Content>
@@ -94,7 +98,7 @@ function DialogContent({
 
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
 	return (
-		<div
+		<Box
 			data-slot="dialog-header"
 			className={cn("flex flex-col gap-1.5 px-6 py-4 border-b", className)}
 			{...props}
@@ -104,7 +108,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
 
 function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
 	return (
-		<div
+		<Box
 			data-slot="dialog-footer"
 			className={cn(
 				"flex flex-col-reverse gap-2 sm:flex-row sm:justify-end px-6 py-4 border-t bg-muted/50 rounded-b-lg",
@@ -153,7 +157,7 @@ function DialogDescription({
 }
 function DialogBody({ className, ...props }: React.ComponentProps<"div">) {
 	return (
-		<div
+		<Box
 			data-slot="dialog-body"
 			className={cn("flex-1 overflow-y-auto px-6 py-4 min-h-0", className)}
 			{...props}

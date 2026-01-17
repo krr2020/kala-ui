@@ -33,7 +33,14 @@ interface AvatarProps
 	isLoading?: boolean;
 }
 
-function Avatar({ className, size, shape, status, isLoading, ...props }: AvatarProps) {
+function Avatar({
+	className,
+	size,
+	shape,
+	status,
+	isLoading,
+	...props
+}: AvatarProps) {
 	// Show loading skeleton
 	if (isLoading) {
 		const sizeMap: Record<string, string> = {

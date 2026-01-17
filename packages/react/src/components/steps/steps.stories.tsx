@@ -8,6 +8,7 @@ import {
 	User,
 } from "lucide-react";
 import * as React from "react";
+import { Box } from "../box";
 import { Button } from "../button";
 import {
 	Card,
@@ -17,9 +18,12 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../card";
+import { Flex } from "../flex";
 import { Input } from "../input";
 import { Label } from "../label";
 import { RadioGroup, RadioGroupItem } from "../radio-group";
+import { Stack } from "../stack";
+import { Text } from "../text";
 import { Steps } from "./steps";
 
 const meta: Meta<typeof Steps> = {
@@ -156,7 +160,7 @@ export const FullFlow = () => {
 	};
 
 	return (
-		<div className="w-[600px] max-w-full">
+		<Box className="w-[600px] max-w-full">
 			<Steps currentStep={currentStep} items={flowItems} className="mb-8" />
 
 			<Card>
@@ -168,8 +172,8 @@ export const FullFlow = () => {
 				</CardHeader>
 				<CardContent>
 					{currentStep === 1 && (
-						<div className="space-y-4">
-							<div className="space-y-2">
+						<Stack gap={4}>
+							<Stack gap={2}>
 								<Label htmlFor="name">Name</Label>
 								<Input
 									id="name"
@@ -179,8 +183,8 @@ export const FullFlow = () => {
 										setFormData({ ...formData, name: e.target.value })
 									}
 								/>
-							</div>
-							<div className="space-y-2">
+							</Stack>
+							<Stack gap={2}>
 								<Label htmlFor="email">Email</Label>
 								<Input
 									id="email"
@@ -191,8 +195,8 @@ export const FullFlow = () => {
 										setFormData({ ...formData, email: e.target.value })
 									}
 								/>
-							</div>
-						</div>
+							</Stack>
+						</Stack>
 					)}
 					{currentStep === 2 && (
 						<RadioGroup
@@ -201,32 +205,36 @@ export const FullFlow = () => {
 							variant="cards"
 						>
 							<RadioGroupItem value="free" id="free">
-								<div className="flex items-center justify-between w-full">
-									<div>
-										<div className="text-sm font-medium">Free Plan</div>
-										<p className="text-sm text-muted-foreground">
+								<Flex align="center" justify="between" className="w-full">
+									<Box>
+										<Text size="sm" weight="medium">
+											Free Plan
+										</Text>
+										<Text size="sm" className="text-muted-foreground">
 											Basic features
-										</p>
-									</div>
-									<span className="font-bold">$0/mo</span>
-								</div>
+										</Text>
+									</Box>
+									<Text weight="bold">$0/mo</Text>
+								</Flex>
 							</RadioGroupItem>
 							<RadioGroupItem value="pro" id="pro">
-								<div className="flex items-center justify-between w-full">
-									<div>
-										<div className="text-sm font-medium">Pro Plan</div>
-										<p className="text-sm text-muted-foreground">
+								<Flex align="center" justify="between" className="w-full">
+									<Box>
+										<Text size="sm" weight="medium">
+											Pro Plan
+										</Text>
+										<Text size="sm" className="text-muted-foreground">
 											All features included
-										</p>
-									</div>
-									<span className="font-bold">$20/mo</span>
-								</div>
+										</Text>
+									</Box>
+									<Text weight="bold">$20/mo</Text>
+								</Flex>
 							</RadioGroupItem>
 						</RadioGroup>
 					)}
 					{currentStep === 3 && (
-						<div className="space-y-4">
-							<div className="space-y-2">
+						<Stack gap={4}>
+							<Stack gap={2}>
 								<Label htmlFor="card">Card Number</Label>
 								<Input
 									id="card"
@@ -236,27 +244,27 @@ export const FullFlow = () => {
 										setFormData({ ...formData, cardNumber: e.target.value })
 									}
 								/>
-							</div>
-						</div>
+							</Stack>
+						</Stack>
 					)}
 					{currentStep === 4 && (
-						<div className="space-y-4">
-							<div className="rounded-md bg-muted p-4">
-								<p>
+						<Stack gap={4}>
+							<Box className="rounded-md bg-muted p-4">
+								<Text>
 									<strong>Name:</strong> {formData.name || "Not set"}
-								</p>
-								<p>
+								</Text>
+								<Text>
 									<strong>Email:</strong> {formData.email || "Not set"}
-								</p>
-								<p>
+								</Text>
+								<Text>
 									<strong>Plan:</strong> {formData.plan}
-								</p>
-								<p>
+								</Text>
+								<Text>
 									<strong>Card:</strong> **** **** ****{" "}
 									{formData.cardNumber.slice(-4) || "****"}
-								</p>
-							</div>
-						</div>
+								</Text>
+							</Box>
+						</Stack>
 					)}
 				</CardContent>
 				<CardFooter className="flex justify-between">
@@ -276,7 +284,7 @@ export const FullFlow = () => {
 					</Button>
 				</CardFooter>
 			</Card>
-		</div>
+		</Box>
 	);
 };
 
@@ -325,14 +333,14 @@ export const VerticalFullFlow = () => {
 	};
 
 	return (
-		<div className="flex w-[800px] max-w-full gap-8">
-			<div className="w-64 shrink-0">
+		<Flex className="w-[800px] max-w-full" gap={8}>
+			<Box className="w-64 shrink-0">
 				<Steps
 					currentStep={currentStep}
 					items={flowItems}
 					orientation="vertical"
 				/>
-			</div>
+			</Box>
 
 			<Card className="flex-1">
 				<CardHeader>
@@ -343,8 +351,8 @@ export const VerticalFullFlow = () => {
 				</CardHeader>
 				<CardContent>
 					{currentStep === 1 && (
-						<div className="space-y-4">
-							<div className="space-y-2">
+						<Stack gap={4}>
+							<Stack gap={2}>
 								<Label htmlFor="v-name">Name</Label>
 								<Input
 									id="v-name"
@@ -354,8 +362,8 @@ export const VerticalFullFlow = () => {
 										setFormData({ ...formData, name: e.target.value })
 									}
 								/>
-							</div>
-							<div className="space-y-2">
+							</Stack>
+							<Stack gap={2}>
 								<Label htmlFor="v-email">Email</Label>
 								<Input
 									id="v-email"
@@ -366,8 +374,8 @@ export const VerticalFullFlow = () => {
 										setFormData({ ...formData, email: e.target.value })
 									}
 								/>
-							</div>
-						</div>
+							</Stack>
+						</Stack>
 					)}
 					{currentStep === 2 && (
 						<RadioGroup
@@ -376,32 +384,36 @@ export const VerticalFullFlow = () => {
 							variant="cards"
 						>
 							<RadioGroupItem value="free" id="v-free">
-								<div className="flex items-center justify-between w-full">
-									<div>
-										<div className="text-sm font-medium">Free Plan</div>
-										<p className="text-sm text-muted-foreground">
+								<Flex align="center" justify="between" className="w-full">
+									<Box>
+										<Text size="sm" weight="medium">
+											Free Plan
+										</Text>
+										<Text size="sm" className="text-muted-foreground">
 											Basic features
-										</p>
-									</div>
-									<span className="font-bold">$0/mo</span>
-								</div>
+										</Text>
+									</Box>
+									<Text weight="bold">$0/mo</Text>
+								</Flex>
 							</RadioGroupItem>
 							<RadioGroupItem value="pro" id="v-pro">
-								<div className="flex items-center justify-between w-full">
-									<div>
-										<div className="text-sm font-medium">Pro Plan</div>
-										<p className="text-sm text-muted-foreground">
+								<Flex align="center" justify="between" className="w-full">
+									<Box>
+										<Text size="sm" weight="medium">
+											Pro Plan
+										</Text>
+										<Text size="sm" className="text-muted-foreground">
 											All features included
-										</p>
-									</div>
-									<span className="font-bold">$20/mo</span>
-								</div>
+										</Text>
+									</Box>
+									<Text weight="bold">$20/mo</Text>
+								</Flex>
 							</RadioGroupItem>
 						</RadioGroup>
 					)}
 					{currentStep === 3 && (
-						<div className="space-y-4">
-							<div className="space-y-2">
+						<Stack gap={4}>
+							<Stack gap={2}>
 								<Label htmlFor="v-card">Card Number</Label>
 								<Input
 									id="v-card"
@@ -411,27 +423,27 @@ export const VerticalFullFlow = () => {
 										setFormData({ ...formData, cardNumber: e.target.value })
 									}
 								/>
-							</div>
-						</div>
+							</Stack>
+						</Stack>
 					)}
 					{currentStep === 4 && (
-						<div className="space-y-4">
-							<div className="rounded-md bg-muted p-4">
-								<p>
+						<Stack gap={4}>
+							<Box className="rounded-md bg-muted p-4">
+								<Text>
 									<strong>Name:</strong> {formData.name || "Not set"}
-								</p>
-								<p>
+								</Text>
+								<Text>
 									<strong>Email:</strong> {formData.email || "Not set"}
-								</p>
-								<p>
+								</Text>
+								<Text>
 									<strong>Plan:</strong> {formData.plan}
-								</p>
-								<p>
+								</Text>
+								<Text>
 									<strong>Card:</strong> **** **** ****{" "}
 									{formData.cardNumber.slice(-4) || "****"}
-								</p>
-							</div>
-						</div>
+								</Text>
+							</Box>
+						</Stack>
 					)}
 				</CardContent>
 				<CardFooter className="flex justify-between">
@@ -451,6 +463,6 @@ export const VerticalFullFlow = () => {
 					</Button>
 				</CardFooter>
 			</Card>
-		</div>
+		</Flex>
 	);
 };

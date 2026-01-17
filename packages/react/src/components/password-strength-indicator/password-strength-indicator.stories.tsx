@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Input } from "../input";
-import { Label } from "../label/label";
+import { Label } from "../label";
 import { PasswordStrengthIndicator } from "./password-strength-indicator";
 
 const meta = {

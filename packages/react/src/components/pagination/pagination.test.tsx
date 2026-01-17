@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import {
-	generatePagination,
 	Pagination,
 	PaginationContent,
 	PaginationEllipsis,
@@ -158,51 +157,4 @@ describe("Pagination", () => {
 	});
 });
 
-describe("generatePagination", () => {
-	it("shows all pages when total is small", () => {
-		const result = generatePagination(2, 5);
-		expect(result).toHaveLength(5);
-		expect(result.every((item) => item.type === "page")).toBe(true);
-	});
 
-	it("adds ellipsis for large page ranges", () => {
-		const result = generatePagination(5, 10);
-		const hasEllipsis = result.some((item) => item.type === "ellipsis");
-		expect(hasEllipsis).toBe(true);
-	});
-
-	it("always includes first and last page", () => {
-		const result = generatePagination(5, 10);
-		const pages = result
-			.filter((item) => item.type === "page")
-			.map((item) => item.page);
-		expect(pages).toContain(1);
-		expect(pages).toContain(10);
-	});
-
-	it("includes current page and siblings", () => {
-		const result = generatePagination(5, 10, 1);
-		const pages = result
-			.filter((item) => item.type === "page")
-			.map((item) => item.page);
-		expect(pages).toContain(4); // left sibling
-		expect(pages).toContain(5); // current
-		expect(pages).toContain(6); // right sibling
-	});
-
-	it("handles edge case at start", () => {
-		const result = generatePagination(1, 10);
-		const pages = result
-			.filter((item) => item.type === "page")
-			.map((item) => item.page);
-		expect(pages[0]).toBe(1);
-	});
-
-	it("handles edge case at end", () => {
-		const result = generatePagination(10, 10);
-		const pages = result
-			.filter((item) => item.type === "page")
-			.map((item) => item.page);
-		expect(pages[pages.length - 1]).toBe(10);
-	});
-});

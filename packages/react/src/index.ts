@@ -4,23 +4,29 @@
 export * from "./components/accordion";
 export * from "./components/alert";
 export * from "./components/alert-dialog";
+export * from "./components/app-shell";
 export * from "./components/aspect-ratio";
 export * from "./components/avatar";
 export * from "./components/badge";
 export * from "./components/banner";
+export * from "./components/box";
 export * from "./components/breadcrumbs";
+export * from "./components/burger";
 export * from "./components/button";
 export * from "./components/button-group";
 export * from "./components/calendar";
 export * from "./components/card";
+export * from "./components/center";
 export * from "./components/charts";
 export * from "./components/checkbox";
+export * from "./components/code";
+export * from "./components/collapse";
+export * from "./components/color-input";
 export * from "./components/combobox";
 export * from "./components/command";
 export * from "./components/container";
 export * from "./components/data-table";
 export * from "./components/date-picker";
-// export * from "./components/design-system"; // No index
 export * from "./components/dialog";
 export * from "./components/dnd";
 export * from "./components/drawer";
@@ -31,55 +37,60 @@ export * from "./components/field";
 export * from "./components/file-upload";
 export * from "./components/flex";
 export * from "./components/footer";
+export * from "./components/grid";
 export * from "./components/group";
 export * from "./components/header";
 export * from "./components/heading";
+export * from "./components/indicator";
 export * from "./components/input";
 export * from "./components/input-group";
 export * from "./components/input-otp";
+export * from "./components/kbd";
 export * from "./components/label";
 export * from "./components/list";
 export * from "./components/loading";
+export * from "./components/loading-overlay";
 export * from "./components/menubar";
 export * from "./components/metric-card";
 export * from "./components/multi-select";
+export * from "./components/nav-link";
 export * from "./components/navigation";
 export * from "./components/navigation-menu";
+export * from "./components/number-input";
+export * from "./components/overlay";
 export * from "./components/page-transition";
 export * from "./components/pagination";
+export * from "./components/paper";
 export * from "./components/password-strength-indicator";
 export * from "./components/popover";
 export * from "./components/progress";
 export * from "./components/radio-group";
 export * from "./components/resizable";
+export * from "./components/ring-progress";
 export * from "./components/scroll-area";
+export * from "./components/segmented-control";
 export * from "./components/select";
 export * from "./components/separator";
 export * from "./components/session-card";
 export * from "./components/sidebar";
-// export * from "./components/skeleton"; // Conflicts with others
+export * from "./components/skeleton";
+export * from "./components/skip-to-content";
 export * from "./components/slider";
 export * from "./components/social-login-button";
+export * from "./components/social-login-buttons";
 export * from "./components/sparkline-chart";
+export * from "./components/spinner";
+export * from "./components/spoiler";
 export * from "./components/stack";
+export * from "./components/steps";
 export * from "./components/switch";
 export * from "./components/table";
 export * from "./components/tabs";
 export * from "./components/tag-input";
 export * from "./components/text";
 export * from "./components/textarea";
+export * from "./components/timeline";
 export * from "./components/toast";
+export * from "./components/toggle";
 export * from "./components/tooltip";
 export * from "./components/user-menu-dropdown";
-
-// Export styles - but styles is a css file, not ts
-// export * from "./styles";
-
-// Export config - no index
-// export * from "./config";
-
-// Export lib - no index
-// export * from "./lib";
-
-// Export primitives - no index
-// export * from "./primitives";

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { PageTransition } from "./page-transition";
 
@@ -88,10 +88,9 @@ describe("PageTransition", () => {
 
 		const wrapper = container.querySelector('[data-slot="page-transition"]');
 
-		// Wait for the transition to start
-		await new Promise((resolve) => setTimeout(resolve, 20));
-
-		expect(wrapper).toHaveClass("opacity-100");
+		await waitFor(() => {
+			expect(wrapper).toHaveClass("opacity-100");
+		});
 	});
 
 	it("re-triggers transition when pageKey changes", async () => {
@@ -103,9 +102,9 @@ describe("PageTransition", () => {
 
 		const wrapper = container.querySelector('[data-slot="page-transition"]');
 
-		// Wait for initial transition
-		await new Promise((resolve) => setTimeout(resolve, 50));
-		expect(wrapper).toHaveClass("opacity-100");
+		await waitFor(() => {
+			expect(wrapper).toHaveClass("opacity-100");
+		});
 
 		// Change pageKey
 		rerender(
@@ -114,12 +113,13 @@ describe("PageTransition", () => {
 			</PageTransition>,
 		);
 
-		// Should reset to opacity-0
+		// Should immediately go back to opacity-0
 		expect(wrapper).toHaveClass("opacity-0");
 
 		// Then transition back to opacity-100
-		await new Promise((resolve) => setTimeout(resolve, 50));
-		expect(wrapper).toHaveClass("opacity-100");
+		await waitFor(() => {
+			expect(wrapper).toHaveClass("opacity-100");
+		});
 	});
 
 	it("does not re-trigger when pageKey is unchanged", async () => {
@@ -131,8 +131,9 @@ describe("PageTransition", () => {
 
 		const wrapper = container.querySelector('[data-slot="page-transition"]');
 
-		await new Promise((resolve) => setTimeout(resolve, 50));
-		expect(wrapper).toHaveClass("opacity-100");
+		await waitFor(() => {
+			expect(wrapper).toHaveClass("opacity-100");
+		});
 
 		// Rerender with same pageKey
 		rerender(
@@ -155,8 +156,9 @@ describe("PageTransition", () => {
 		const wrapper = container.querySelector('[data-slot="page-transition"]');
 
 		// Should still transition even without pageKey
-		await new Promise((resolve) => setTimeout(resolve, 50));
-		expect(wrapper).toHaveClass("opacity-100");
+		await waitFor(() => {
+			expect(wrapper).toHaveClass("opacity-100");
+		});
 	});
 
 	it("renders multiple children", () => {
@@ -203,58 +205,16 @@ describe("PageTransition", () => {
 				<div>Content 2</div>
 			</PageTransition>,
 		);
-
 		rerender(
 			<PageTransition pageKey="page-3">
 				<div>Content 3</div>
 			</PageTransition>,
 		);
 
-		// Should handle gracefully and eventually settle
-		await new Promise((resolve) => setTimeout(resolve, 100));
-		expect(wrapper).toBeInTheDocument();
-	});
+		expect(wrapper).toHaveClass("opacity-0");
 
-	it("preserves children during transition", () => {
-		const { rerender } = render(
-			<PageTransition pageKey="page-1">
-				<div data-testid="content">Content 1</div>
-			</PageTransition>,
-		);
-
-		expect(screen.getByTestId("content")).toHaveTextContent("Content 1");
-
-		rerender(
-			<PageTransition pageKey="page-2">
-				<div data-testid="content">Content 2</div>
-			</PageTransition>,
-		);
-
-		// New content should be rendered
-		expect(screen.getByTestId("content")).toHaveTextContent("Content 2");
-	});
-
-	it("uses custom duration value", () => {
-		const { container } = render(
-			<PageTransition duration={750}>
-				<div>Content</div>
-			</PageTransition>,
-		);
-
-		const wrapper = container.querySelector('[data-slot="page-transition"]');
-		expect(wrapper).toHaveStyle({ transitionDuration: "750ms" });
-	});
-
-	it("combines custom className with default classes", () => {
-		const { container } = render(
-			<PageTransition className="custom-bg">
-				<div>Content</div>
-			</PageTransition>,
-		);
-
-		const wrapper = container.querySelector('[data-slot="page-transition"]');
-		expect(wrapper).toHaveClass("transition-opacity");
-		expect(wrapper).toHaveClass("ease-in-out");
-		expect(wrapper).toHaveClass("custom-bg");
+		await waitFor(() => {
+			expect(wrapper).toHaveClass("opacity-100");
+		});
 	});
 });

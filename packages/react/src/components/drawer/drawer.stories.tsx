@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "../button";
 import { Input } from "../input";
 import { Label } from "../label";
-import { Skeleton } from "../skeleton/skeleton";
+import { Skeleton } from "../skeleton";
 import { Textarea } from "../textarea";
 import {
 	Drawer,
@@ -294,9 +294,7 @@ export const PositionExamples: Story = {
 	),
 };
 export const LoadingSkeleton: Story = {
-	render: () => (
-		<Skeleton className="h-10 w-32 rounded-md" />
-	),
+	render: () => <Skeleton className="h-10 w-32 rounded-md" />,
 	parameters: {
 		docs: {
 			description: {

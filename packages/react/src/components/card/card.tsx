@@ -1,8 +1,11 @@
 import * as React from "react";
 import { cardStyles } from "../../config/card";
 import { cn } from "../../lib/utils";
-import { CardSkeleton } from "./card-skeleton";
 import type { CardSkeletonConfig } from "../skeleton/skeleton.types";
+import { CardSkeleton } from "./card-skeleton";
+import { Box } from "../box";
+import { Heading } from "../heading";
+import { Text } from "../text";
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 	isLoading?: boolean;
@@ -12,24 +15,31 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
 	(
-		{ className, isLoading = false, skeletonConfig, skeleton, children, ...props },
+		{
+			className,
+			isLoading = false,
+			skeletonConfig,
+			skeleton,
+			children,
+			...props
+		},
 		ref,
 	) => {
 		if (isLoading) {
 			if (skeleton) {
 				return (
-					<div ref={ref} className={cn(cardStyles.base, className)}>
+					<Box ref={ref} className={cn(cardStyles.base, className)}>
 						{skeleton}
-					</div>
+					</Box>
 				);
 			}
 			return <CardSkeleton {...skeletonConfig} />;
 		}
 
 		return (
-			<div ref={ref} className={cn(cardStyles.base, className)} {...props}>
+			<Box ref={ref} className={cn(cardStyles.base, className)} {...props}>
 				{children}
-			</div>
+			</Box>
 		);
 	},
 );
@@ -40,49 +50,49 @@ function CardHeader({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-	return <div className={cn(cardStyles.header, className)} {...props} />;
+	return <Box className={cn(cardStyles.header, className)} {...props} />;
 }
 
 function CardTitle({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLHeadingElement>) {
-	return <h5 className={cn(cardStyles.title, className)} {...props} />;
+	return <Heading as="h5" className={cn(cardStyles.title, className)} {...props} />;
 }
 
 function CardSubtitle({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLHeadingElement>) {
-	return <h6 className={cn(cardStyles.subtitle, className)} {...props} />;
+	return <Heading as="h6" className={cn(cardStyles.subtitle, className)} {...props} />;
 }
 
 function CardDescription({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLParagraphElement>) {
-	return <p className={cn(cardStyles.description, className)} {...props} />;
+	return <Text className={cn(cardStyles.description, className)} {...props} />;
 }
 
 function CardAction({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-	return <div className={cn("ml-auto", className)} {...props} />;
+	return <Box className={cn("ml-auto", className)} {...props} />;
 }
 
 function CardContent({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-	return <div className={cn(cardStyles.content, className)} {...props} />;
+	return <Box className={cn(cardStyles.content, className)} {...props} />;
 }
 
 function CardFooter({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-	return <div className={cn(cardStyles.footer, className)} {...props} />;
+	return <Box className={cn(cardStyles.footer, className)} {...props} />;
 }
 
 function CardImage({
@@ -96,7 +106,7 @@ function CardImage({
 		);
 	}
 	return (
-		<img alt={alt} className={cn(cardStyles.image, className)} {...props} />
+		<Box as="img" alt={alt} className={cn(cardStyles.image, className)} {...props} />
 	);
 }
 
@@ -104,7 +114,7 @@ function CardImageOverlay({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-	return <div className={cn(cardStyles.overlay, className)} {...props} />;
+	return <Box className={cn(cardStyles.overlay, className)} {...props} />;
 }
 
 export interface CardMarkerProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -152,7 +162,7 @@ function CardMarker({
 	// Base marker styles
 	if (variant === "default") {
 		return (
-			<div
+			<Box
 				className={cn(
 					"absolute z-10 rounded px-2 py-1 text-xs font-semibold shadow-sm",
 					positionClasses[position],
@@ -162,14 +172,14 @@ function CardMarker({
 				{...props}
 			>
 				{children}
-			</div>
+			</Box>
 		);
 	}
 
 	// Icon marker - larger, rounded, typically just an icon
 	if (variant === "icon") {
 		return (
-			<div
+			<Box
 				className={cn(
 					"absolute z-10 flex h-10 w-10 items-center justify-center rounded-full shadow-lg",
 					position === "top-left" && "top-2 left-2",
@@ -182,7 +192,7 @@ function CardMarker({
 				{...props}
 			>
 				{children}
-			</div>
+			</Box>
 		);
 	}
 
@@ -192,28 +202,28 @@ function CardMarker({
 		const ribbonSide = position.endsWith("left") ? "left" : "right";
 
 		return (
-			<div
+			<Box
 				className={cn(
 					"absolute z-10 px-8 py-1 text-xs font-semibold shadow-lg",
 					ribbonPosition === "top" &&
-						ribbonSide === "left" &&
-						"top-3 -left-8 -rotate-45 origin-top-left",
+					ribbonSide === "left" &&
+					"top-3 -left-8 -rotate-45 origin-top-left",
 					ribbonPosition === "top" &&
-						ribbonSide === "right" &&
-						"top-3 -right-8 rotate-45 origin-top-right",
+					ribbonSide === "right" &&
+					"top-3 -right-8 rotate-45 origin-top-right",
 					ribbonPosition === "bottom" &&
-						ribbonSide === "left" &&
-						"bottom-3 -left-8 rotate-45 origin-bottom-left",
+					ribbonSide === "left" &&
+					"bottom-3 -left-8 rotate-45 origin-bottom-left",
 					ribbonPosition === "bottom" &&
-						ribbonSide === "right" &&
-						"bottom-3 -right-8 -rotate-45 origin-bottom-right",
+					ribbonSide === "right" &&
+					"bottom-3 -right-8 -rotate-45 origin-bottom-right",
 					colorClasses[color],
 					className,
 				)}
 				{...props}
 			>
 				{children}
-			</div>
+			</Box>
 		);
 	}
 

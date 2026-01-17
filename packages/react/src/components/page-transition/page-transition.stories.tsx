@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Button } from "../button/button";
+import { Button } from "../button";
 import { PageTransition } from "./page-transition";
 
 const meta = {

@@ -113,7 +113,9 @@ function getCurrentTheme(): "light" | "dark" | "neutral" | "accent" {
 /**
  * Get theme color scheme
  */
-function getThemeScheme(theme?: "light" | "dark" | "neutral" | "accent"): ThemeColorScheme {
+function getThemeScheme(
+	theme?: "light" | "dark" | "neutral" | "accent",
+): ThemeColorScheme {
 	const activeTheme = theme || getCurrentTheme();
 
 	switch (activeTheme) {

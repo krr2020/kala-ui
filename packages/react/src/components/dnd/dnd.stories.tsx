@@ -1,28 +1,22 @@
+import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
-import {
-	GripVertical,
-	Move3D,
-	Trash2,
-	Copy,
-	Edit,
-} from "lucide-react";
+import { Copy, Edit, GripVertical, Move3D, Trash2 } from "lucide-react";
 import { useState } from "react";
-import type { DragStartEvent, DragEndEvent } from "@dnd-kit/core";
-import { Card } from "../card";
 import { Badge } from "../badge";
 import { Button } from "../button";
+import { Card } from "../card";
+import type { UniqueIdentifier } from "./dnd";
 import {
+	collisionDetectionAlgorithms,
 	DragDropContext,
+	DragOverlayComponent,
+	modifiers,
 	SortableContext,
 	SortableItem,
-	DragOverlayComponent,
 	sortingStrategies,
-	modifiers,
-	collisionDetectionAlgorithms,
 	useDragDropSensors,
 } from "./dnd";
-import type { UniqueIdentifier } from "./dnd";
 
 const meta = {
 	title: "Utilities/DnD",
@@ -59,7 +53,8 @@ export const BasicSortableList: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "A simple vertical sortable list with smooth animations and visual feedback.",
+				story:
+					"A simple vertical sortable list with smooth animations and visual feedback.",
 			},
 		},
 	},
@@ -99,7 +94,13 @@ export const BasicSortableList: Story = {
 						<div className="space-y-2">
 							{items.map((item) => (
 								<SortableItem key={item.id} id={item.id}>
-									{({ isDragging, isSorting, listeners, attributes, setNodeRef }) => (
+									{({
+										isDragging,
+										isSorting,
+										listeners,
+										attributes,
+										setNodeRef,
+									}) => (
 										<div
 											ref={setNodeRef}
 											{...attributes}
@@ -179,11 +180,20 @@ export const HorizontalList: Story = {
 					onDragEnd={handleDragEnd}
 					modifiers={[modifiers.restrictToHorizontalAxis]}
 				>
-					<SortableContext items={items} strategy={sortingStrategies.horizontal}>
+					<SortableContext
+						items={items}
+						strategy={sortingStrategies.horizontal}
+					>
 						<div className="flex gap-3 overflow-x-auto pb-4">
 							{items.map((item) => (
 								<SortableItem key={item.id} id={item.id}>
-									{({ isDragging, isSorting, listeners, attributes, setNodeRef }) => (
+									{({
+										isDragging,
+										isSorting,
+										listeners,
+										attributes,
+										setNodeRef,
+									}) => (
 										<Card
 											ref={setNodeRef}
 											{...attributes}
@@ -235,7 +245,8 @@ export const MultipleContainers: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Kanban board with multiple columns. Drag items between columns.",
+				story:
+					"Kanban board with multiple columns. Drag items between columns.",
 			},
 		},
 	},
@@ -247,8 +258,16 @@ export const MultipleContainers: Story = {
 				{ id: "todo-3", content: "Create wireframes", priority: "low" },
 			],
 			inProgress: [
-				{ id: "progress-1", content: "Build component library", priority: "high" },
-				{ id: "progress-2", content: "Create API endpoints", priority: "medium" },
+				{
+					id: "progress-1",
+					content: "Build component library",
+					priority: "high",
+				},
+				{
+					id: "progress-2",
+					content: "Create API endpoints",
+					priority: "medium",
+				},
 			],
 			done: [
 				{ id: "done-1", content: "Setup project repository", priority: "high" },
@@ -357,11 +376,20 @@ export const MultipleContainers: Story = {
 													${isOver ? "bg-accent/50 ring-2 ring-primary" : ""}
 												`}
 											>
-												<SortableContext items={items} strategy={sortingStrategies.vertical}>
+												<SortableContext
+													items={items}
+													strategy={sortingStrategies.vertical}
+												>
 													<div className="space-y-2">
 														{items.map((item) => (
 															<SortableItem key={item.id} id={item.id}>
-																{({ isDragging, isSorting, listeners, attributes, setNodeRef }) => (
+																{({
+																	isDragging,
+																	isSorting,
+																	listeners,
+																	attributes,
+																	setNodeRef,
+																}) => (
 																	<Card
 																		ref={setNodeRef}
 																		{...attributes}
@@ -459,7 +487,13 @@ export const GridLayout: Story = {
 						<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
 							{items.map((item) => (
 								<SortableItem key={item.id} id={item.id}>
-									{({ isDragging, isSorting, listeners, attributes, setNodeRef }) => (
+									{({
+										isDragging,
+										isSorting,
+										listeners,
+										attributes,
+										setNodeRef,
+									}) => (
 										<Card
 											ref={setNodeRef}
 											{...attributes}
@@ -472,7 +506,9 @@ export const GridLayout: Story = {
 										>
 											<div className="h-full flex flex-col items-center justify-center p-4">
 												<GripVertical className="size-5 text-muted-foreground mb-2" />
-												<p className="font-medium text-center">{item.content}</p>
+												<p className="font-medium text-center">
+													{item.content}
+												</p>
 											</div>
 										</Card>
 									)}
@@ -956,7 +992,13 @@ export const WithActions: Story = {
 						<div className="space-y-2">
 							{items.map((item) => (
 								<SortableItem key={item.id} id={item.id}>
-									{({ isDragging, isSorting, listeners, attributes, setNodeRef }) => (
+									{({
+										isDragging,
+										isSorting,
+										listeners,
+										attributes,
+										setNodeRef,
+									}) => (
 										<Card
 											ref={setNodeRef}
 											{...attributes}

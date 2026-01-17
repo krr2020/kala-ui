@@ -6,10 +6,10 @@
 export { AreaChart } from "./area-chart";
 export { BarChart } from "./bar-chart";
 export { Chart, ChartSkeleton } from "./chart";
+export * from "./chart.types";
 export { DonutChart, PieChart } from "./donut-chart";
 export { LineChart } from "./line-chart";
 export { RadialBarChart } from "./radial-bar-chart";
-export * from "./chart.types";
-export * from "./utils";
 export * from "./theme-utils";
 export { useThemeAwareChart } from "./use-theme-aware-chart";
+export * from "./utils";

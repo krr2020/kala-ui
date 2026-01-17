@@ -13,7 +13,7 @@ import {
 } from "react-day-picker";
 
 import { cn } from "../../lib/utils";
-import { Button, buttonVariants } from "../button/button";
+import { Button, buttonVariants } from "../button";
 import { CalendarSkeleton } from "./calendar-skeleton";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {

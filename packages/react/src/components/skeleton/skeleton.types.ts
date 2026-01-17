@@ -91,12 +91,12 @@ export interface CardSkeletonConfig {
 	 * Card layout variant
 	 */
 	variant?:
-		| "default"
-		| "withImage"
-		| "withImageTop"
-		| "horizontal"
-		| "withFooter"
-		| "minimal";
+	| "default"
+	| "withImage"
+	| "withImageTop"
+	| "horizontal"
+	| "withFooter"
+	| "minimal";
 	/**
 	 * Show header in skeleton
 	 */
@@ -146,40 +146,6 @@ export interface ListSkeletonConfig {
 }
 
 /**
- * Table skeleton configuration
- */
-export interface TableSkeletonConfig extends BaseSkeletonConfig {
-	/**
-	 * Number of rows to display
-	 */
-	rows?: number;
-	/**
-	 * Number of columns
-	 */
-	columns?: number;
-	/**
-	 * Show action column
-	 */
-	showActions?: boolean;
-	/**
-	 * Column headers (optional, for matching actual headers)
-	 */
-	headers?: string[];
-	/**
-	 * Column widths (to match actual table and prevent CLS)
-	 */
-	columnWidths?: string[];
-	/**
-	 * Show checkbox column for selection
-	 */
-	showCheckboxes?: boolean;
-	/**
-	 * Enable sticky header
-	 */
-	stickyHeader?: boolean;
-}
-
-/**
  * Field skeleton configuration
  */
 export interface FieldSkeletonConfig {
@@ -203,233 +169,6 @@ export interface FieldSkeletonConfig {
 	 * Field variant
 	 */
 	variant?: "default" | "error";
-}
-
-/**
- * Navigation skeleton configuration
- */
-export interface NavigationSkeletonConfig extends BaseSkeletonConfig {
-	/**
-	 * Navigation orientation
-	 */
-	orientation?: "horizontal" | "vertical";
-	/**
-	 * Number of navigation items
-	 */
-	itemCount?: number;
-	/**
-	 * Show icon for each item
-	 */
-	showIcons?: boolean;
-	/**
-	 * Show badge indicators
-	 */
-	showBadges?: boolean;
-	/**
-	 * Show nested items
-	 */
-	nested?: boolean;
-}
-
-/**
- * Sidebar skeleton configuration
- */
-export interface SidebarSkeletonConfig extends BaseSkeletonConfig {
-	/**
-	 * Collapsed state
-	 */
-	collapsed?: boolean;
-	/**
-	 * Show header section
-	 */
-	showHeader?: boolean;
-	/**
-	 * Show footer section
-	 */
-	showFooter?: boolean;
-	/**
-	 * Number of navigation sections
-	 */
-	sectionCount?: number;
-	/**
-	 * Items per section
-	 */
-	itemsPerSection?: number;
-}
-
-/**
- * Header skeleton configuration
- */
-export interface HeaderSkeletonConfig extends BaseSkeletonConfig {
-	/**
-	 * Show navigation items
-	 */
-	showNavigation?: boolean;
-	/**
-	 * Number of navigation items
-	 */
-	navItemCount?: number;
-	/**
-	 * Show search input
-	 */
-	showSearch?: boolean;
-	/**
-	 * Show notifications button
-	 */
-	showNotifications?: boolean;
-	/**
-	 * Show user menu button
-	 */
-	showUserMenu?: boolean;
-}
-
-/**
- * Breadcrumbs skeleton configuration
- */
-export interface BreadcrumbsSkeletonConfig extends BaseSkeletonConfig {
-	/**
-	 * Number of breadcrumb levels
-	 */
-	depth?: number;
-	/**
-	 * Show home icon
-	 */
-	showHome?: boolean;
-	/**
-	 * Separator character
-	 */
-	separator?: string;
-}
-
-/**
- * Steps skeleton configuration
- */
-export interface StepsSkeletonConfig extends BaseSkeletonConfig {
-	/**
-	 * Number of steps
-	 */
-	stepCount?: number;
-	/**
-	 * Orientation of the stepper
-	 */
-	orientation?: "horizontal" | "vertical";
-	/**
-	 * Show step labels and descriptions
-	 */
-	showLabels?: boolean;
-}
-
-/**
- * Tabs skeleton configuration
- */
-export interface TabsSkeletonConfig {
-	/**
-	 * Number of tabs
-	 */
-	tabCount?: number;
-	/**
-	 * Tab variant style
-	 */
-	variant?: "default" | "pills" | "underline";
-	/**
-	 * Show tab content skeleton
-	 */
-	showContent?: boolean;
-	/**
-	 * Number of content rows
-	 */
-	contentRows?: number;
-}
-
-/**
- * Accordion skeleton configuration
- */
-export interface AccordionSkeletonConfig extends BaseSkeletonConfig {
-	/**
-	 * Number of accordion items
-	 */
-	itemCount?: number;
-	/**
-	 * Show expanded content
-	 */
-	defaultExpanded?: boolean;
-	/**
-	 * Number of content rows when expanded
-	 */
-	contentRows?: number;
-}
-
-/**
- * Calendar skeleton configuration
- */
-export interface CalendarSkeletonConfig extends BaseSkeletonConfig {
-	/**
-	 * Show month/year header
-	 */
-	showHeader?: boolean;
-	/**
-	 * Show day labels
-	 */
-	showDayLabels?: boolean;
-	/**
-	 * Number of weeks to show
-	 */
-	weekCount?: number;
-}
-
-/**
- * Pagination skeleton configuration
- */
-export interface PaginationSkeletonConfig extends BaseSkeletonConfig {
-	/**
-	 * Number of page buttons to show
-	 */
-	pageCount?: number;
-	/**
-	 * Show prev/next buttons
-	 */
-	showPrevNext?: boolean;
-	/**
-	 * Show info text
-	 */
-	showInfo?: boolean;
-}
-
-/**
- * Dialog skeleton configuration
- */
-export interface DialogSkeletonConfig extends BaseSkeletonConfig {
-	/**
-	 * Show dialog header
-	 */
-	showHeader?: boolean;
-	/**
-	 * Show dialog footer
-	 */
-	showFooter?: boolean;
-	/**
-	 * Number of content rows
-	 */
-	contentRows?: number;
-}
-
-/**
- * Drawer skeleton configuration (extends Dialog)
- */
-export interface DrawerSkeletonConfig extends DialogSkeletonConfig {}
-
-/**
- * Popover skeleton configuration
- */
-export interface PopoverSkeletonConfig extends BaseSkeletonConfig {
-	/**
-	 * Number of content rows
-	 */
-	contentRows?: number;
-	/**
-	 * Use compact spacing
-	 */
-	compact?: boolean;
 }
 
 /**
@@ -504,14 +243,14 @@ export interface AlertSkeletonConfig {
 	 * Alert variant
 	 */
 	variant?:
-		| "default"
-		| "primary"
-		| "secondary"
-		| "success"
-		| "danger"
-		| "destructive"
-		| "warning"
-		| "info";
+	| "default"
+	| "primary"
+	| "secondary"
+	| "success"
+	| "danger"
+	| "destructive"
+	| "warning"
+	| "info";
 	/**
 	 * Show icon in skeleton
 	 */

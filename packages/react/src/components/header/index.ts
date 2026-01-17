@@ -1,4 +1,4 @@
-export type { HeaderProps, NavLink } from "./header";
+export type { HeaderNavLink, HeaderProps } from "./header";
 export { Header } from "./header";
 export type {
 	HeaderSkeletonConfig,

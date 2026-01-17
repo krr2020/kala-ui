@@ -63,7 +63,9 @@ describe("Skeleton", () => {
 
 	describe("Forward Ref", () => {
 		it("should forward ref to div element", () => {
-			const ref = { current: null } as unknown as React.RefObject<HTMLDivElement>;
+			const ref = {
+				current: null,
+			} as unknown as React.RefObject<HTMLDivElement>;
 			render(<Skeleton ref={ref} />);
 			expect(ref.current).toBeInstanceOf(HTMLDivElement);
 		});

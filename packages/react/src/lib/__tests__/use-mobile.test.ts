@@ -1,4 +1,4 @@
-import { renderHook, act } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 import { useIsMobile } from "../use-mobile";
 
 describe("useIsMobile", () => {
@@ -258,14 +258,14 @@ describe("useIsMobile", () => {
 			{ width: 1920, expected: false, name: "large desktop" },
 		];
 
-		it.each(commonSizes)(
-			"should return $expected for $name ($width px)",
-			({ width, expected }) => {
-				vi.spyOn(window, "innerWidth", "get").mockReturnValue(width);
+		it.each(commonSizes)("should return $expected for $name ($width px)", ({
+			width,
+			expected,
+		}) => {
+			vi.spyOn(window, "innerWidth", "get").mockReturnValue(width);
 
-				const { result } = renderHook(() => useIsMobile());
-				expect(result.current).toBe(expected);
-			},
-		);
+			const { result } = renderHook(() => useIsMobile());
+			expect(result.current).toBe(expected);
+		});
 	});
 });

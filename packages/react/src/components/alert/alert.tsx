@@ -1,3 +1,4 @@
+import { useDisclosure } from "@kala-ui/react-hooks";
 import { cva } from "class-variance-authority";
 import {
 	AlertCircle,
@@ -10,8 +11,9 @@ import * as React from "react";
 
 import { alertStyles } from "../../config/alert";
 import { cn } from "../../lib/utils";
-import { AlertSkeleton } from "./alert-skeleton";
+import { Box } from "../box";
 import type { AlertProps } from "./alert.types";
+import { AlertSkeleton } from "./alert-skeleton";
 
 const alertVariants = cva(alertStyles.base, {
 	variants: alertStyles.variants,
@@ -42,12 +44,11 @@ function Alert({
 	skeleton,
 	...props
 }: AlertProps) {
-
-	const [isVisible, setIsVisible] = React.useState(true);
+	const [isVisible, { close }] = useDisclosure(true);
 	if (isLoading) {
 		if (skeleton) {
 			return (
-				<div
+				<Box
 					data-slot="alert"
 					className={cn(
 						alertVariants({ variant, style: alertStyle }),
@@ -56,7 +57,7 @@ function Alert({
 					{...props}
 				>
 					{skeleton}
-				</div>
+				</Box>
 			);
 		}
 		return (
@@ -70,7 +71,7 @@ function Alert({
 	}
 
 	const handleDismiss = () => {
-		setIsVisible(false);
+		close();
 		onDismiss?.();
 	};
 
@@ -100,7 +101,7 @@ function Alert({
 	});
 
 	return (
-		<div
+		<Box
 			data-slot="alert"
 			role="alert"
 			className={cn(
@@ -115,22 +116,23 @@ function Alert({
 			)}
 			{children}
 			{dismissable && (
-				<button
+				<Box
+					as="button"
 					type="button"
 					onClick={handleDismiss}
 					className="cursor-pointer absolute right-2 top-2 rounded-md p-1 hover:bg-accent transition-colors"
 					aria-label="Dismiss alert"
 				>
 					<X className="h-4 w-4" />
-				</button>
+				</Box>
 			)}
-		</div>
+		</Box>
 	);
 }
 
 function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
 	return (
-		<div
+		<Box
 			data-slot="alert-title"
 			className={cn(
 				"col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight",
@@ -146,7 +148,7 @@ function AlertDescription({
 	...props
 }: React.ComponentProps<"div">) {
 	return (
-		<div
+		<Box
 			data-slot="alert-description"
 			className={cn("col-start-2 text-sm [&_p]:leading-relaxed", className)}
 			{...props}

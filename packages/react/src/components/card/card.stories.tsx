@@ -691,7 +691,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholders for card content while data is loading.",
+				story:
+					"Loading skeleton placeholders for card content while data is loading.",
 			},
 		},
 	},

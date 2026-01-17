@@ -92,6 +92,7 @@ export const baseConfig = {
 					DEFAULT: "hsl(var(--destructive))",
 					foreground: "hsl(var(--destructive-foreground))",
 				},
+				brand: colors.brand,
 				separator:
 					"hsl(var(--separator, var(--border)) / var(--border-alpha, 1))",
 			},

@@ -1,12 +1,40 @@
+import { usePagination } from "@kala-ui/react-hooks";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import * as React from "react";
 import { cn } from "../../lib/utils";
+import { Box } from "../box";
+import { Flex } from "../flex";
+import { Text } from "../text";
 
 // ============================================================================
 // Pagination Root
 // ============================================================================
 
-export interface PaginationProps extends React.ComponentProps<"nav"> {
+export interface PaginationProps extends Omit<React.ComponentProps<"nav">, "onChange"> {
+	/**
+	 * Total amount of pages
+	 */
+	total?: number;
+	/**
+	 * Active page
+	 */
+	page?: number;
+	/**
+	 * Initial active page
+	 */
+	initialPage?: number;
+	/**
+	 * Siblings amount on left/right side of selected page
+	 */
+	siblings?: number;
+	/**
+	 * Amount of elements visible on left/right edges
+	 */
+	boundaries?: number;
+	/**
+	 * Callback fired after change of each page
+	 */
+	onChange?: (page: number) => void;
 	/**
 	 * ARIA label for the navigation
 	 * @default "Pagination"
@@ -17,15 +45,51 @@ export interface PaginationProps extends React.ComponentProps<"nav"> {
 function Pagination({
 	className,
 	"aria-label": ariaLabel = "Pagination",
+	total,
+	page,
+	initialPage,
+	siblings,
+	boundaries,
+	onChange,
+	children,
 	...props
 }: PaginationProps) {
+	const pagination = usePagination({
+		total: total || 0,
+		page,
+		initialPage,
+		siblings,
+		boundaries,
+		onChange,
+	});
+
 	return (
-		<nav
-			aria-label={ariaLabel}
-			className={cn("mx-auto flex w-full justify-center", className)}
-			{...props}
-		/>
+		<PaginationContext.Provider value={pagination}>
+			<Box
+				as="nav"
+				aria-label={ariaLabel}
+				className={cn("mx-auto flex w-full justify-center", className)}
+				{...props}
+			>
+				{children}
+			</Box>
+		</PaginationContext.Provider>
 	);
+}
+
+// ============================================================================
+// Pagination Context
+// ============================================================================
+
+type PaginationContextType = ReturnType<typeof usePagination>;
+
+const PaginationContext = React.createContext<PaginationContextType | null>(
+	null,
+);
+
+function usePaginationContext() {
+	const context = React.useContext(PaginationContext);
+	return context;
 }
 
 // ============================================================================
@@ -52,15 +116,16 @@ function PaginationContent({
 	...props
 }: PaginationContentProps) {
 	return (
-		<ul
-			className={cn(
-				"flex flex-row items-center",
-				spaced ? "gap-2" : "gap-1",
-				className,
-			)}
-			data-variant={variant}
-			{...props}
-		/>
+		<PaginationVariantContext.Provider value={variant}>
+			<Flex
+				as="ul"
+				align="center"
+				gap={spaced ? 2 : 1}
+				className={className}
+				data-variant={variant}
+				{...props}
+			/>
+		</PaginationVariantContext.Provider>
 	);
 }
 
@@ -69,14 +134,15 @@ function PaginationContent({
 // ============================================================================
 
 function PaginationItem({ className, ...props }: React.ComponentProps<"li">) {
-	return <li className={cn("", className)} {...props} />;
+	return <Box as="li" className={cn("", className)} {...props} />;
 }
 
 // ============================================================================
 // Pagination Link (Button or Anchor)
 // ============================================================================
 
-export interface PaginationLinkProps extends React.ComponentProps<"a"> {
+export interface PaginationLinkProps
+	extends Omit<React.ComponentProps<"button">, "onClick"> {
 	/**
 	 * Whether this page is currently active
 	 * @default false
@@ -92,6 +158,18 @@ export interface PaginationLinkProps extends React.ComponentProps<"a"> {
 	 * @default false
 	 */
 	isIconButton?: boolean;
+	/**
+	 * Page number to navigate to (if using as button)
+	 */
+	page?: number;
+	/**
+	 * Link href (if using as anchor)
+	 */
+	href?: string;
+	/**
+	 * On click handler
+	 */
+	onClick?: (e: React.MouseEvent) => void;
 }
 
 function PaginationLink({
@@ -100,9 +178,13 @@ function PaginationLink({
 	size = "default",
 	isIconButton = false,
 	children,
+	page,
+	href,
+	onClick,
 	...props
 }: PaginationLinkProps) {
 	const parentVariant = React.useContext(PaginationVariantContext) || "default";
+	const pagination = usePaginationContext();
 
 	const sizeClasses = {
 		sm: "h-8 min-w-8 text-xs",
@@ -111,7 +193,7 @@ function PaginationLink({
 	};
 
 	const baseClasses = cn(
-		"inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium transition-colors",
+		"inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium transition-colors cursor-pointer",
 		"focus-ring",
 		"disabled:pointer-events-none disabled:opacity-50",
 		"text-foreground",
@@ -124,35 +206,59 @@ function PaginationLink({
 		default: cn(
 			"hover:bg-accent hover:text-accent-foreground",
 			isActive &&
-				"bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
+			"bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
 		),
 		outline: cn(
 			"border border-input",
 			"hover:bg-accent hover:text-accent-foreground",
 			isActive &&
-				"border-primary bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
+			"border-primary bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
 		),
 		filled: cn(
 			"bg-muted hover:bg-accent hover:text-accent-foreground",
 			isActive &&
-				"bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
+			"bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
 		),
 		circle: cn(
 			"rounded-full",
 			"bg-muted hover:bg-accent hover:text-accent-foreground",
 			isActive &&
-				"bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
+			"bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
 		),
 	};
 
+	const handleClick = (e: React.MouseEvent) => {
+		if (page !== undefined && pagination) {
+			pagination.setPage(page);
+		}
+		onClick?.(e);
+	};
+
+	if (href) {
+		return (
+			<Box
+				as="a"
+				href={href}
+				aria-current={isActive ? "page" : undefined}
+				className={cn(baseClasses, variantClasses[parentVariant], className)}
+				{...props}
+			>
+				{children}
+			</Box>
+		);
+	}
+
 	return (
-		<a
+		<Box
+			as="button"
+			type="button"
 			aria-current={isActive ? "page" : undefined}
 			className={cn(baseClasses, variantClasses[parentVariant], className)}
+			onClick={handleClick}
 			{...props}
 		>
 			{children}
-		</a>
+		</Box>
 	);
 }
 
@@ -173,17 +279,27 @@ function PaginationPrevious({
 	className,
 	showLabel = true,
 	children,
+	onClick,
 	...props
 }: PaginationPreviousProps) {
+	const pagination = usePaginationContext();
+
+	const handleClick = (e: React.MouseEvent) => {
+		pagination?.previous();
+		onClick?.(e);
+	};
+
 	return (
 		<PaginationLink
 			aria-label="Go to previous page"
 			isIconButton={!showLabel}
 			className={cn("gap-1", className)}
+			onClick={handleClick}
+			disabled={pagination?.active === 1}
 			{...props}
 		>
 			<ChevronLeft className="h-4 w-4" />
-			{showLabel && <span>{children || "Previous"}</span>}
+			{showLabel && <Text as="span">{children || "Previous"}</Text>}
 		</PaginationLink>
 	);
 }
@@ -205,16 +321,28 @@ function PaginationNext({
 	className,
 	showLabel = true,
 	children,
+	onClick,
 	...props
 }: PaginationNextProps) {
+	const pagination = usePaginationContext();
+
+	const handleClick = (e: React.MouseEvent) => {
+		pagination?.next();
+		onClick?.(e);
+	};
+
 	return (
 		<PaginationLink
 			aria-label="Go to next page"
 			isIconButton={!showLabel}
 			className={cn("gap-1", className)}
+			onClick={handleClick}
+			disabled={
+				pagination ? pagination.active >= pagination.total : undefined
+			}
 			{...props}
 		>
-			{showLabel && <span>{children || "Next"}</span>}
+			{showLabel && <Text as="span">{children || "Next"}</Text>}
 			<ChevronRight className="h-4 w-4" />
 		</PaginationLink>
 	);
@@ -229,14 +357,17 @@ function PaginationEllipsis({
 	...props
 }: React.ComponentProps<"span">) {
 	return (
-		<span
+		<Flex
+			as="span"
+			align="center"
+			justify="center"
 			aria-hidden
-			className={cn("flex h-9 w-9 items-center justify-center", className)}
+			className={cn("h-9 w-9", className)}
 			{...props}
 		>
-			<MoreHorizontal className="h-4 w-4" />
-			<span className="sr-only">More pages</span>
-		</span>
+			<MoreHorizontal className="size-4" />
+			<Text className="sr-only">More pages</Text>
+		</Flex>
 	);
 }
 
@@ -247,106 +378,13 @@ function PaginationEllipsis({
 const PaginationVariantContext =
 	React.createContext<PaginationContentProps["variant"]>("default");
 
-function PaginationContentWithContext({
-	variant = "default",
-	...props
-}: PaginationContentProps) {
-	return (
-		<PaginationVariantContext.Provider value={variant}>
-			<PaginationContent variant={variant} {...props} />
-		</PaginationVariantContext.Provider>
-	);
-}
-
 // ============================================================================
-// Helper: Generate page numbers with ellipsis
+// Export components
 // ============================================================================
-
-export interface PageItem {
-	type: "page" | "ellipsis";
-	page?: number;
-	key: string;
-}
-
-/**
- * Generate page items with ellipsis for large page ranges
- *
- * @param currentPage - Current active page (1-indexed)
- * @param totalPages - Total number of pages
- * @param siblingCount - Number of siblings to show on each side of current page
- * @returns Array of page items to render
- *
- * @example
- * ```tsx
- * const items = generatePagination(5, 10, 1);
- * // Returns: [1, ellipsis, 4, 5, 6, ellipsis, 10]
- * ```
- */
-export function generatePagination(
-	currentPage: number,
-	totalPages: number,
-	siblingCount: number = 1,
-): PageItem[] {
-	// Always show first page, last page, current page, and siblings
-	const totalNumbers = siblingCount * 2 + 3; // siblings + current + first + last
-	const totalBlocks = totalNumbers + 2; // + 2 ellipsis
-
-	if (totalPages <= totalBlocks) {
-		// Show all pages if total is small
-		return Array.from({ length: totalPages }, (_, i) => ({
-			type: "page" as const,
-			page: i + 1,
-			key: `page-${i + 1}`,
-		}));
-	}
-
-	const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
-	const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPages);
-
-	const shouldShowLeftEllipsis = leftSiblingIndex > 2;
-	const shouldShowRightEllipsis = rightSiblingIndex < totalPages - 1;
-
-	const items: PageItem[] = [];
-
-	// First page
-	items.push({ type: "page", page: 1, key: "page-1" });
-
-	// Left ellipsis
-	if (shouldShowLeftEllipsis) {
-		items.push({ type: "ellipsis", key: "ellipsis-left" });
-	} else if (leftSiblingIndex === 2) {
-		items.push({ type: "page", page: 2, key: "page-2" });
-	}
-
-	// Middle pages (siblings + current)
-	for (let i = leftSiblingIndex; i <= rightSiblingIndex; i++) {
-		if (i !== 1 && i !== totalPages) {
-			items.push({ type: "page", page: i, key: `page-${i}` });
-		}
-	}
-
-	// Right ellipsis
-	if (shouldShowRightEllipsis) {
-		items.push({ type: "ellipsis", key: "ellipsis-right" });
-	} else if (rightSiblingIndex === totalPages - 1) {
-		items.push({
-			type: "page",
-			page: totalPages - 1,
-			key: `page-${totalPages - 1}`,
-		});
-	}
-
-	// Last page
-	if (totalPages > 1) {
-		items.push({ type: "page", page: totalPages, key: `page-${totalPages}` });
-	}
-
-	return items;
-}
 
 export {
 	Pagination,
-	PaginationContentWithContext as PaginationContent,
+	PaginationContent,
 	PaginationItem,
 	PaginationLink,
 	PaginationPrevious,

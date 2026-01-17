@@ -7,9 +7,9 @@
 
 import { cn } from "../../lib/utils";
 import { Card, CardContent, CardHeader } from "../card";
-import { Skeleton } from "../skeleton/skeleton";
-import { SkeletonCircle } from "../skeleton/skeleton-patterns";
+import { Skeleton } from "../skeleton";
 import type { SessionCardSkeletonConfig } from "../skeleton/skeleton.types";
+import { SkeletonCircle } from "../skeleton/skeleton-patterns";
 
 export interface SessionCardSkeletonProps extends SessionCardSkeletonConfig {
 	/**
@@ -55,9 +55,7 @@ export function SessionCardSkeleton({
 					{showBadge ? (
 						<Skeleton className="h-5 w-24 rounded-md" />
 					) : (
-						showRevokeButton && (
-							<Skeleton className="h-8 w-16 rounded-md" />
-						)
+						showRevokeButton && <Skeleton className="h-8 w-16 rounded-md" />
 					)}
 				</div>
 			</CardHeader>

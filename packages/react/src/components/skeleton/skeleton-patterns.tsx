@@ -187,7 +187,7 @@ export function SkeletonParagraph({
 }: SkeletonParagraphProps) {
 	// If lines array is provided, use its length as paragraph count
 	const effectiveParagraphs = lines ? lines.length : paragraphs;
-	
+
 	return (
 		<div className={cn("space-y-4", className)}>
 			{Array.from({ length: effectiveParagraphs }).map((_, paragraphIndex) => {

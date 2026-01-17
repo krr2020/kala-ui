@@ -10,7 +10,7 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "../card/card";
+} from "../card";
 import { SparklineChart } from "./sparkline-chart";
 
 const meta: Meta<typeof SparklineChart> = {
