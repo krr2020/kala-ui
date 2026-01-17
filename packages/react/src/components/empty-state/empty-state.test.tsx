@@ -1,9 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
-import { Inbox, Search, type LucideIcon } from "lucide-react";
+import { Search, } from "lucide-react";
 import { describe, expect, it, vi } from "vitest";
 import { EmptyState } from "./empty-state";
-import { EmptyStateSkeleton } from "./empty-state-skeleton";
 
 describe("EmptyState", () => {
 	describe("Basic Rendering", () => {
@@ -107,7 +106,7 @@ describe("EmptyState", () => {
 		});
 
 		it("renders with custom button variant", () => {
-			const { container } = render(
+			render(
 				<EmptyState
 					title="No data"
 					action={{
@@ -176,7 +175,7 @@ describe("EmptyState", () => {
 		});
 
 		it("renders custom skeleton when isLoading and skeleton prop provided", () => {
-			const { container } = render(
+			render(
 				<EmptyState
 					title="No data"
 					isLoading

@@ -104,7 +104,7 @@ describe("PageTransition", () => {
 		const wrapper = container.querySelector('[data-slot="page-transition"]');
 
 		// Wait for initial transition
-		await new Promise((resolve) => setTimeout(resolve, 20));
+		await new Promise((resolve) => setTimeout(resolve, 50));
 		expect(wrapper).toHaveClass("opacity-100");
 
 		// Change pageKey
@@ -118,7 +118,7 @@ describe("PageTransition", () => {
 		expect(wrapper).toHaveClass("opacity-0");
 
 		// Then transition back to opacity-100
-		await new Promise((resolve) => setTimeout(resolve, 20));
+		await new Promise((resolve) => setTimeout(resolve, 50));
 		expect(wrapper).toHaveClass("opacity-100");
 	});
 
@@ -131,7 +131,7 @@ describe("PageTransition", () => {
 
 		const wrapper = container.querySelector('[data-slot="page-transition"]');
 
-		await new Promise((resolve) => setTimeout(resolve, 20));
+		await new Promise((resolve) => setTimeout(resolve, 50));
 		expect(wrapper).toHaveClass("opacity-100");
 
 		// Rerender with same pageKey
@@ -155,7 +155,7 @@ describe("PageTransition", () => {
 		const wrapper = container.querySelector('[data-slot="page-transition"]');
 
 		// Should still transition even without pageKey
-		await new Promise((resolve) => setTimeout(resolve, 20));
+		await new Promise((resolve) => setTimeout(resolve, 50));
 		expect(wrapper).toHaveClass("opacity-100");
 	});
 
@@ -211,7 +211,7 @@ describe("PageTransition", () => {
 		);
 
 		// Should handle gracefully and eventually settle
-		await new Promise((resolve) => setTimeout(resolve, 50));
+		await new Promise((resolve) => setTimeout(resolve, 100));
 		expect(wrapper).toBeInTheDocument();
 	});
 

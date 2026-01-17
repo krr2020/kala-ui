@@ -7,13 +7,14 @@ describe("MetricCard", () => {
 		render(<MetricCard title="Total Users" value={1250} />);
 
 		expect(screen.getByText("Total Users")).toBeInTheDocument();
-		expect(screen.getByText("1,250")).toBeInTheDocument();
+		expect(screen.getByText((1250).toLocaleString())).toBeInTheDocument();
 	});
 
 	it("should format numeric values with locale string", () => {
-		render(<MetricCard title="Revenue" value={1234567} />);
+		const value = 1234567;
+		render(<MetricCard title="Revenue" value={value} />);
 
-		expect(screen.getByText("1,234,567")).toBeInTheDocument();
+		expect(screen.getByText(value.toLocaleString())).toBeInTheDocument();
 	});
 
 	it("should render string values without formatting", () => {
@@ -190,9 +191,10 @@ describe("MetricCard", () => {
 	});
 
 	it("should include screen reader text for value", () => {
-		render(<MetricCard title="Revenue" value={1234567} />);
+		const value = 1234567;
+		render(<MetricCard title="Revenue" value={value} />);
 
-		const srText = screen.getByText(/Revenue: 1,234,567/i);
+		const srText = screen.getByText(new RegExp(`Revenue: ${value.toLocaleString()}`, "i"));
 		expect(srText).toHaveClass("sr-only");
 	});
 

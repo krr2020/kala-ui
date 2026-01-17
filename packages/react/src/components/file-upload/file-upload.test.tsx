@@ -103,7 +103,7 @@ describe("FileUpload", () => {
 
 	describe("Drag and Drop", () => {
 		it("shows dragging state on drag over", () => {
-			const { container } = render(<FileUpload />);
+			render(<FileUpload />);
 			const button = screen.getByRole("button");
 
 			fireEvent.dragOver(button);
@@ -111,7 +111,7 @@ describe("FileUpload", () => {
 		});
 
 		it("removes dragging state on drag leave", () => {
-			const { container } = render(<FileUpload />);
+			render(<FileUpload />);
 			const button = screen.getByRole("button");
 
 			fireEvent.dragOver(button);
@@ -193,7 +193,7 @@ describe("FileUpload", () => {
 		});
 
 		it("displays file name with truncation when too long", () => {
-			const longName = "a".repeat(100) + ".png";
+			const longName = `${"a".repeat(100)}.png`;
 			const file = new File(["content"], longName, { type: "image/png" });
 			render(<FileUpload value={file} />);
 
@@ -323,7 +323,7 @@ describe("FileUpload", () => {
 
 		it("does not open file dialog when disabled", async () => {
 			const handleFileSelect = vi.fn();
-			const { container } = render(
+			render(
 				<FileUpload disabled onFileSelect={handleFileSelect} />,
 			);
 
@@ -343,7 +343,7 @@ describe("FileUpload", () => {
 
 	describe("Click to Upload", () => {
 		it("opens file dialog on click", async () => {
-			const inputRef = { current: { click: vi.fn() } };
+			const _inputRef = { current: { click: vi.fn() } };
 			const { container } = render(<FileUpload />);
 
 			// Get the input element and verify it exists

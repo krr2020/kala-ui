@@ -1,68 +1,68 @@
 {
-  "name": "@kala-ui/react-hooks",
-  "version": "0.0.1-beta.0",
-  "type": "module",
-  "description": "Collection of reusable React hooks for kala-ui",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    }
-  },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE",
-    "CHANGELOG.md"
-  ],
-  "scripts": {
-    "build": "tsdown",
-    "dev": "tsdown --watch",
-    "lint": "biome check .",
-    "lint:fix": "biome check --write .",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
-  },
-  "peerDependencies": {
-    "react": "~19.2.3",
-    "react-dom": "~19.2.3"
-  },
-  "devDependencies": {
-    "@testing-library/react": "~16.3.0",
-    "@types/react": "~19.2.7",
-    "@types/react-dom": "~19.2.3",
-    "jsdom": "~27.2.0",
-    "react": "~19.2.3",
-    "react-dom": "~19.2.3",
-    "tsdown": "~0.19.0-beta.3",
-    "typescript": "~5.9.3",
-    "vitest": "~2.1.9"
-  },
-  "keywords": [
-    "react",
-    "hooks",
-    "utilities",
-    "kala-ui",
-    "react-hooks"
-  ],
-  "author": "Kala UI",
-  "license": "MIT",
-  "homepage": "https://krr2020.com/kala-ui",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/krr2020/kala-ui.git",
-    "directory": "packages/react-hooks"
-  },
-  "bugs": {
-    "url": "https://github.com/krr2020/kala-ui/issues"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  }
+	"name": "@kala-ui/react-hooks",
+	"version": "0.0.1-beta.1",
+	"type": "module",
+	"description": "Collection of reusable React hooks for kala-ui",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.cjs"
+		}
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE",
+		"CHANGELOG.md"
+	],
+	"scripts": {
+		"build": "tsdown",
+		"dev": "tsdown --watch",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage"
+	},
+	"peerDependencies": {
+		"react": "~19.2.3",
+		"react-dom": "~19.2.3"
+	},
+	"devDependencies": {
+		"@testing-library/react": "~16.3.0",
+		"@types/react": "~19.2.7",
+		"@types/react-dom": "~19.2.3",
+		"jsdom": "^27.4.0",
+		"react": "~19.2.3",
+		"react-dom": "~19.2.3",
+		"tsdown": "~0.19.0-beta.3",
+		"typescript": "~5.9.3",
+		"vitest": "~2.1.9"
+	},
+	"keywords": [
+		"react",
+		"hooks",
+		"utilities",
+		"kala-ui",
+		"react-hooks"
+	],
+	"author": "Kala UI",
+	"license": "MIT",
+	"homepage": "https://krr2020.com/kala-ui",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/krr2020/kala-ui.git",
+		"directory": "packages/react-hooks"
+	},
+	"bugs": {
+		"url": "https://github.com/krr2020/kala-ui/issues"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org/"
+	}
 }

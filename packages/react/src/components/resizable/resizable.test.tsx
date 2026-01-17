@@ -174,7 +174,7 @@ describe("ResizablePanel", () => {
 						<div>
 							<h2>Title</h2>
 							<p>Content</p>
-							<button>Action</button>
+							<button type="button">Action</button>
 						</div>
 					</ResizablePanel>
 				</ResizablePanelGroup>,

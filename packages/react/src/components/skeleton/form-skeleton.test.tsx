@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest";
 import {
 	FieldGroupSkeleton,
 	FormSkeleton,
-	type FormSkeletonConfig,
 } from "./form-skeleton";
 
 describe("FormSkeleton", () => {
