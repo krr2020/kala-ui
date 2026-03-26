@@ -42,11 +42,11 @@ importers:
         specifier: ^3.2.2
         version: 3.2.2(react@19.2.3)
       '@kala-ui/design-tokens':
-        specifier: 0.0.1-beta.2
-        version: 0.0.1-beta.2
+        specifier: workspace:*
+        version: link:../design-tokens
       '@kala-ui/react-hooks':
-        specifier: 0.0.1-beta.2
-        version: 0.0.1-beta.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: workspace:*
+        version: link:../react-hooks
       '@radix-ui/react-accordion':
         specifier: ~1.2.12
         version: 1.2.12(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -873,15 +873,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
-
-  '@kala-ui/design-tokens@0.0.1-beta.2':
-    resolution: {integrity: sha512-xAN3+5SRtGGdTWau/8z44heXLyeWO9RGDAIWSIXMcXYtnwsU7utnlAsxg8PNzBtp5VG706S8vafKsgO/+cYdMw==}
-
-  '@kala-ui/react-hooks@0.0.1-beta.2':
-    resolution: {integrity: sha512-3QTMRqGcE0EM3V5E8xEGN8zbU/m9na0aDnbu2hz5IDUXxXDO+g3HKSahR7TJjXAi2sxVnDz68u1f4CWkv5ZRBg==}
-    peerDependencies:
-      react: ~19.2.3
-      react-dom: ~19.2.3
 
   '@mdx-js/react@3.1.1':
     resolution: {integrity: sha512-f++rKLQgUVYDAtECQ6fn/is15GkEH9+nZPM3MS0RcxVqoTfawHvDlSCH7JbMhAM6uJ32v3eXLvLmLvjGu7PTQw==}
@@ -4244,13 +4235,6 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
-
-  '@kala-ui/design-tokens@0.0.1-beta.2': {}
-
-  '@kala-ui/react-hooks@0.0.1-beta.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
-    dependencies:
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
 
   '@mdx-js/react@3.1.1(@types/react@19.2.7)(react@18.3.1)':
     dependencies:
