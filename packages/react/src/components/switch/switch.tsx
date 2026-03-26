@@ -7,13 +7,14 @@ import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton";
 import type { SwitchProps } from "./switch.types";
 
-function Switch({ className, isLoading = false, ...props }: SwitchProps) {
+function Switch({ className, isLoading = false, ref, ...props }: SwitchProps) {
 	if (isLoading) {
 		return <Skeleton className={cn("h-6 w-11 rounded-full", className)} />;
 	}
 
 	return (
 		<SwitchPrimitive.Root
+			ref={ref}
 			data-slot="switch"
 			className={cn(switchStyles.base, className)}
 			{...props}

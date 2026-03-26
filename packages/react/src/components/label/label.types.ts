@@ -4,7 +4,7 @@ import type * as React from "react";
 import type { labelVariants } from "./label";
 
 export interface LabelProps
-	extends Omit<React.ComponentProps<typeof LabelPrimitive.Root>, "ref">,
+	extends React.ComponentProps<typeof LabelPrimitive.Root>,
 		VariantProps<typeof labelVariants> {
 	required?: boolean;
 }

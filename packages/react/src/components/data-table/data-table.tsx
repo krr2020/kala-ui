@@ -863,8 +863,9 @@ export function DataTable<TData>({
 					align="center"
 					justify="between"
 					className={cn(
-						"px-4 py-3 border rounded-b-lg bg-muted/30",
-						stickyFooter && "shrink-0",
+						"flex flex-col sm:flex-row items-center justify-between gap-4 bg-background px-4 py-3 rounded-b-lg theme-card",
+						bordered ? "border-x-2 border-b-2" : "border-x border-b",
+						stickyFooter && "sticky bottom-0 z-1 shadow-xl bg-background",
 					)}
 				>
 					<Flex align="center" gap={4}>

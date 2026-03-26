@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { FileUpload } from "./file-upload";
@@ -363,7 +363,6 @@ describe("FileUpload", () => {
 
 	describe("Click to Upload", () => {
 		it("opens file dialog on click", async () => {
-			const _inputRef = { current: { click: vi.fn() } };
 			const { container } = render(<FileUpload />);
 
 			// Get the input element and verify it exists

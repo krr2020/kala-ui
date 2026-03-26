@@ -8,13 +8,19 @@ import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton";
 import type { CheckboxProps } from "./checkbox.types";
 
-function Checkbox({ className, isLoading = false, ...props }: CheckboxProps) {
+function Checkbox({
+	className,
+	isLoading = false,
+	ref,
+	...props
+}: CheckboxProps) {
 	if (isLoading) {
 		return <Skeleton className={cn("h-4 w-4 rounded", className)} />;
 	}
 
 	return (
 		<CheckboxPrimitive.Root
+			ref={ref}
 			data-slot="checkbox"
 			className={cn(checkboxStyles.base, className)}
 			{...props}

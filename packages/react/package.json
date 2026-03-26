@@ -62,6 +62,10 @@
 			"types": "./dist/components/avatar/index.d.ts",
 			"default": "./dist/components/avatar/index.js"
 		},
+		"./avatar-group": {
+			"types": "./dist/components/avatar-group/index.d.ts",
+			"default": "./dist/components/avatar-group/index.js"
+		},
 		"./badge": {
 			"types": "./dist/components/badge/index.d.ts",
 			"default": "./dist/components/badge/index.js"
@@ -98,9 +102,21 @@
 			"types": "./dist/components/color-input/index.d.ts",
 			"default": "./dist/components/color-input/index.js"
 		},
+		"./collapsible": {
+			"types": "./dist/components/collapsible/index.d.ts",
+			"default": "./dist/components/collapsible/index.js"
+		},
 		"./combobox": {
 			"types": "./dist/components/combobox/index.d.ts",
 			"default": "./dist/components/combobox/index.js"
+		},
+		"./context-menu": {
+			"types": "./dist/components/context-menu/index.d.ts",
+			"default": "./dist/components/context-menu/index.js"
+		},
+		"./copy-button": {
+			"types": "./dist/components/copy-button/index.d.ts",
+			"default": "./dist/components/copy-button/index.js"
 		},
 		"./date-picker": {
 			"types": "./dist/components/date-picker/index.d.ts",
@@ -141,6 +157,10 @@
 		"./header": {
 			"types": "./dist/components/header/index.d.ts",
 			"default": "./dist/components/header/index.js"
+		},
+		"./hover-card": {
+			"types": "./dist/components/hover-card/index.d.ts",
+			"default": "./dist/components/hover-card/index.js"
 		},
 		"./indicator": {
 			"types": "./dist/components/indicator/index.d.ts",
@@ -225,6 +245,10 @@
 		"./radio-group": {
 			"types": "./dist/components/radio-group/index.d.ts",
 			"default": "./dist/components/radio-group/index.js"
+		},
+		"./rating": {
+			"types": "./dist/components/rating/index.d.ts",
+			"default": "./dist/components/rating/index.js"
 		},
 		"./resizable": {
 			"types": "./dist/components/resizable/index.d.ts",
@@ -322,6 +346,10 @@
 			"types": "./dist/components/tabs/index.d.ts",
 			"default": "./dist/components/tabs/index.js"
 		},
+		"./tag": {
+			"types": "./dist/components/tag/index.d.ts",
+			"default": "./dist/components/tag/index.js"
+		},
 		"./tag-input": {
 			"types": "./dist/components/tag-input/index.d.ts",
 			"default": "./dist/components/tag-input/index.js"
@@ -329,6 +357,10 @@
 		"./textarea": {
 			"types": "./dist/components/textarea/index.d.ts",
 			"default": "./dist/components/textarea/index.js"
+		},
+		"./time-picker": {
+			"types": "./dist/components/time-picker/index.d.ts",
+			"default": "./dist/components/time-picker/index.js"
 		},
 		"./timeline": {
 			"types": "./dist/components/timeline/index.d.ts",
@@ -345,6 +377,18 @@
 		"./toggle": {
 			"types": "./dist/components/toggle/index.d.ts",
 			"default": "./dist/components/toggle/index.js"
+		},
+		"./toggle-group": {
+			"types": "./dist/components/toggle-group/index.d.ts",
+			"default": "./dist/components/toggle-group/index.js"
+		},
+		"./toolbar": {
+			"types": "./dist/components/toolbar/index.d.ts",
+			"default": "./dist/components/toolbar/index.js"
+		},
+		"./tree-view": {
+			"types": "./dist/components/tree-view/index.d.ts",
+			"default": "./dist/components/tree-view/index.js"
 		},
 		"./password-strength-indicator": {
 			"types": "./dist/components/password-strength-indicator/index.d.ts",
