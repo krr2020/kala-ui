@@ -3,182 +3,195 @@
  * Clean line charts for trends and time series data
  */
 
-"use client";
+'use client';
 
-import type { ApexOptions } from "apexcharts";
-import { useMemo } from "react";
-import { cn } from "../../lib/utils";
-import { Chart } from "./chart";
-import type { LineChartProps } from "./chart.types";
-import { useThemeAwareChart } from "./use-theme-aware-chart";
-import { getDefaultChartOptions } from "./utils";
+import type { ApexOptions } from 'apexcharts';
+import { useMemo } from 'react';
+import { cn } from '../../lib/utils';
+import { Chart, getTooltipTheme } from './chart';
+import type { LineChartProps } from './chart.types';
+import { useThemeAwareChart } from './use-theme-aware-chart';
+import { getDefaultChartOptions } from './utils';
+
+/**
+ * Check if series data is empty (no series or all series have empty data arrays)
+ */
+function isSeriesEmpty(series: { data: number[] | { y: number }[]; name: string }[]): boolean {
+  if (series.length === 0) return true;
+  return series.every((s) => !s.data || (Array.isArray(s.data) && s.data.length === 0));
+}
 
 export function LineChart({
-	series,
-	categories,
-	colors,
-	height = 350,
-	width = "100%",
-	className,
-	title,
-	subtitle,
-	toolbar = false,
-	animations = true,
-	curve = "smooth",
-	strokeWidth = 2,
-	markers = true,
-	yAxisLabel,
-	options: customOptions,
+  series,
+  categories,
+  colors,
+  height = 350,
+  width = '100%',
+  className,
+  title,
+  subtitle,
+  toolbar = false,
+  animations = true,
+  curve = 'smooth',
+  strokeWidth = 2,
+  markers = true,
+  yAxisLabel,
+  isLoading,
+  emptyMessage,
+  options: customOptions,
 }: LineChartProps) {
-	const { colors: themeColors } = useThemeAwareChart();
+  const { colors: themeColors } = useThemeAwareChart();
 
-	const chartOptions: ApexOptions = useMemo(() => {
-		const baseOptions = getDefaultChartOptions();
+  const isEmpty = !isLoading && isSeriesEmpty(series);
 
-		// Use theme-aware colors if not provided
-		const chartColors = colors || themeColors.mixed;
+  const chartOptions: ApexOptions = useMemo(() => {
+    const baseOptions = getDefaultChartOptions();
 
-		const options: ApexOptions = {
-			...baseOptions,
-			chart: {
-				...baseOptions.chart,
-				type: "line",
-				toolbar: {
-					show: toolbar,
-					tools: {
-						download: true,
-						selection: true,
-						zoom: true,
-						zoomin: true,
-						zoomout: true,
-						pan: true,
-						reset: true,
-					},
-				},
-				animations: {
-					enabled: animations,
-					speed: 800,
-				},
-			},
-			colors: chartColors,
-			dataLabels: {
-				enabled: false,
-			},
-			stroke: {
-				curve,
-				width: strokeWidth,
-			},
-			markers: {
-				size: markers ? 4 : 0,
-				strokeWidth: 2,
-				strokeOpacity: 0.9,
-				strokeColors: chartColors,
-				fillOpacity: 1,
-				hover: {
-					size: 6,
-				},
-			},
-			xaxis: {
-				categories,
-				labels: {
-					style: {
-						colors: "hsl(var(--muted-foreground))",
-						fontSize: "12px",
-					},
-				},
-				axisBorder: {
-					color: "hsl(var(--border))",
-				},
-				axisTicks: {
-					color: "hsl(var(--border))",
-				},
-			},
-			yaxis: {
-				...(yAxisLabel && {
-					title: {
-						text: yAxisLabel,
-						style: {
-							color: "hsl(var(--muted-foreground))",
-							fontSize: "12px",
-						},
-					},
-				}),
-				labels: {
-					style: {
-						colors: "hsl(var(--muted-foreground))",
-						fontSize: "12px",
-					},
-					formatter: (value: number) => value.toLocaleString(),
-				},
-			},
-			grid: {
-				borderColor: "hsl(var(--border))",
-				strokeDashArray: 3,
-			},
-			tooltip: {
-				theme: document.documentElement.classList.contains("dark")
-					? "dark"
-					: "light",
-				x: {
-					show: true,
-				},
-				y: {
-					formatter: (value: number) => value.toLocaleString(),
-				},
-			},
-			legend: {
-				position: "top",
-				horizontalAlign: "right",
-				labels: {
-					colors: "hsl(var(--foreground))",
-				},
-			},
-			...(title && {
-				title: {
-					text: title,
-					style: {
-						fontSize: "16px",
-						fontWeight: "600",
-						color: "hsl(var(--foreground))",
-					},
-				},
-			}),
-			...(subtitle && {
-				subtitle: {
-					text: subtitle,
-					style: {
-						fontSize: "12px",
-						color: "hsl(var(--muted-foreground))",
-					},
-				},
-			}),
-			...customOptions,
-		};
+    // Use theme-aware colors if not provided
+    const chartColors = colors || themeColors.mixed;
 
-		return options;
-	}, [
-		colors,
-		themeColors,
-		categories,
-		curve,
-		strokeWidth,
-		markers,
-		yAxisLabel,
-		toolbar,
-		animations,
-		title,
-		subtitle,
-		customOptions,
-	]);
+    const options: ApexOptions = {
+      ...baseOptions,
+      chart: {
+        ...baseOptions.chart,
+        type: 'line',
+        toolbar: {
+          show: toolbar,
+          tools: {
+            download: true,
+            selection: true,
+            zoom: true,
+            zoomin: true,
+            zoomout: true,
+            pan: true,
+            reset: true,
+          },
+        },
+        animations: {
+          enabled: animations,
+          speed: 800,
+        },
+      },
+      colors: chartColors,
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve,
+        width: strokeWidth,
+      },
+      markers: {
+        size: markers ? 4 : 0,
+        strokeWidth: 2,
+        strokeOpacity: 0.9,
+        strokeColors: chartColors,
+        fillOpacity: 1,
+        hover: {
+          size: 6,
+        },
+      },
+      xaxis: {
+        categories,
+        labels: {
+          style: {
+            colors: 'hsl(var(--muted-foreground))',
+            fontSize: '12px',
+          },
+        },
+        axisBorder: {
+          color: 'hsl(var(--border))',
+        },
+        axisTicks: {
+          color: 'hsl(var(--border))',
+        },
+      },
+      yaxis: {
+        ...(yAxisLabel && {
+          title: {
+            text: yAxisLabel,
+            style: {
+              color: 'hsl(var(--muted-foreground))',
+              fontSize: '12px',
+            },
+          },
+        }),
+        labels: {
+          style: {
+            colors: 'hsl(var(--muted-foreground))',
+            fontSize: '12px',
+          },
+          formatter: (value: number) => value.toLocaleString(),
+        },
+      },
+      grid: {
+        borderColor: 'hsl(var(--border))',
+        strokeDashArray: 3,
+      },
+      tooltip: {
+        theme: getTooltipTheme(),
+        x: {
+          show: true,
+        },
+        y: {
+          formatter: (value: number) => value.toLocaleString(),
+        },
+      },
+      legend: {
+        position: 'top',
+        horizontalAlign: 'right',
+        labels: {
+          colors: 'hsl(var(--foreground))',
+        },
+      },
+      ...(title && {
+        title: {
+          text: title,
+          style: {
+            fontSize: '16px',
+            fontWeight: '600',
+            color: 'hsl(var(--foreground))',
+          },
+        },
+      }),
+      ...(subtitle && {
+        subtitle: {
+          text: subtitle,
+          style: {
+            fontSize: '12px',
+            color: 'hsl(var(--muted-foreground))',
+          },
+        },
+      }),
+      ...customOptions,
+    };
 
-	return (
-		<Chart
-			className={cn("w-full", className)}
-			options={chartOptions}
-			series={series}
-			type="line"
-			height={height}
-			width={width}
-		/>
-	);
+    return options;
+  }, [
+    colors,
+    themeColors,
+    categories,
+    curve,
+    strokeWidth,
+    markers,
+    yAxisLabel,
+    toolbar,
+    animations,
+    title,
+    subtitle,
+    customOptions,
+  ]);
+
+  return (
+    <Chart
+      className={cn('w-full', className)}
+      options={chartOptions}
+      series={series}
+      type="line"
+      height={height}
+      width={width}
+      isLoading={isLoading}
+      isEmpty={isEmpty}
+      emptyMessage={emptyMessage}
+    />
+  );
 }
