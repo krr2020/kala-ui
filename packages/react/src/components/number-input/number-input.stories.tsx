@@ -1,17 +1,28 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { NumberInput } from "./number-input";
 
 const meta: Meta<typeof NumberInput> = {
-	title: "Components/NumberInput",
+	title: "Forms/NumberInput",
 	component: NumberInput,
+	parameters: {
+		layout: "centered",
+	},
 	tags: ["autodocs"],
+	args: {
+		onChange: fn(),
+	},
 	argTypes: {
+		size: {
+			control: "select",
+			options: ["default", "sm"],
+		},
+		hasError: { control: "boolean" },
+		disabled: { control: "boolean" },
+		isLoading: { control: "boolean" },
 		min: { control: "number" },
 		max: { control: "number" },
 		step: { control: "number" },
-		error: { control: "boolean" },
-		success: { control: "boolean" },
-		hideControls: { control: "boolean" },
 	},
 };
 
@@ -20,45 +31,57 @@ type Story = StoryObj<typeof NumberInput>;
 
 export const Default: Story = {
 	args: {
-		placeholder: "Enter a number",
+		defaultValue: 0,
+		className: "w-40",
 	},
 };
 
 export const WithMinMax: Story = {
 	args: {
-		placeholder: "Age (18-100)",
-		min: 18,
-		max: 100,
-		defaultValue: 25,
+		defaultValue: 5,
+		min: 0,
+		max: 10,
+		className: "w-40",
 	},
 };
 
 export const WithStep: Story = {
 	args: {
-		placeholder: "Step 0.5",
-		step: 0.5,
-		defaultValue: 1.5,
+		defaultValue: 0,
+		step: 5,
+		min: 0,
+		max: 100,
+		className: "w-40",
 	},
 };
 
-export const HiddenControls: Story = {
+export const Small: Story = {
 	args: {
-		placeholder: "No controls",
-		hideControls: true,
-		defaultValue: 10,
+		defaultValue: 1,
+		size: "sm",
+		className: "w-32",
 	},
 };
 
-export const WithError: Story = {
+export const ErrorState: Story = {
 	args: {
-		defaultValue: 100,
-		error: true,
+		defaultValue: 0,
+		hasError: true,
+		className: "w-40",
 	},
 };
 
 export const Disabled: Story = {
 	args: {
-		defaultValue: 50,
+		defaultValue: 5,
 		disabled: true,
+		className: "w-40",
+	},
+};
+
+export const Loading: Story = {
+	args: {
+		isLoading: true,
+		className: "w-40",
 	},
 };

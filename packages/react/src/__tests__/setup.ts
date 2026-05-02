@@ -7,6 +7,16 @@ afterEach(() => {
 	cleanup();
 });
 
+// Mock Clipboard API (not available in jsdom)
+Object.defineProperty(navigator, "clipboard", {
+	value: {
+		writeText: vi.fn().mockResolvedValue(undefined),
+		readText: vi.fn().mockResolvedValue(""),
+	},
+	writable: true,
+	configurable: true,
+});
+
 // Mock ResizeObserver for components that use it (Tooltip, Popover, etc.)
 global.ResizeObserver = class ResizeObserver {
 	observe() {}

@@ -6,6 +6,7 @@ function Textarea({
 	className,
 	isLoading = false,
 	rows,
+	ref,
 	...props
 }: TextareaProps) {
 	if (isLoading) {
@@ -19,6 +20,7 @@ function Textarea({
 
 	return (
 		<textarea
+			ref={ref}
 			data-slot="textarea"
 			rows={rows}
 			className={cn(

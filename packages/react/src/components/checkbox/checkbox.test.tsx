@@ -58,4 +58,17 @@ describe("Checkbox", () => {
 		);
 		expect(indicator).toBeInTheDocument();
 	});
+
+	it("should forward ref to the checkbox element", () => {
+		let ref: HTMLButtonElement | null = null;
+		render(
+			<Checkbox
+				ref={(el) => {
+					ref = el;
+				}}
+			/>,
+		);
+		expect(ref).not.toBeNull();
+		expect(ref).toBeInstanceOf(HTMLButtonElement);
+	});
 });

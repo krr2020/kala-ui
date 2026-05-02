@@ -1,47 +1,80 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Check, GitCommit, GitPullRequest, MessageSquare } from "lucide-react";
+import { CheckCircle, Clock, ShoppingBag, Truck, XCircle } from "lucide-react";
 import { Timeline, TimelineItem } from "./timeline";
 
 const meta: Meta<typeof Timeline> = {
-	title: "Components/Timeline",
+	title: "Display/Timeline",
 	component: Timeline,
-	tags: ["autodocs"],
-	argTypes: {
-		active: { control: "number" },
-		bulletSize: { control: "number" },
-		lineWidth: { control: "number" },
-		reverseActive: { control: "boolean" },
+	parameters: {
+		layout: "centered",
 	},
+	tags: ["autodocs"],
 };
 
 export default meta;
 type Story = StoryObj<typeof Timeline>;
 
 export const Default: Story = {
-	render: (args) => (
-		<Timeline active={1} {...args}>
-			<TimelineItem bullet={<GitCommit size={12} />} title="New Branch">
-				You created a new branch <b>fix/timeline</b>
-			</TimelineItem>
-			<TimelineItem bullet={<GitPullRequest size={12} />} title="Pull Request">
-				You created a pull request
-			</TimelineItem>
-			<TimelineItem bullet={<MessageSquare size={12} />} title="Code Review">
-				<b>Robert</b> commented on your changes
-			</TimelineItem>
-			<TimelineItem bullet={<Check size={12} />} title="Merged">
-				Pull request merged
-			</TimelineItem>
+	render: () => (
+		<Timeline className="w-[350px]">
+			<TimelineItem
+				title="Order placed"
+				description="Your order has been confirmed"
+				timestamp="Jan 1, 10:00 AM"
+				status="success"
+				icon={<CheckCircle />}
+			/>
+			<TimelineItem
+				title="Processing"
+				description="We're preparing your items"
+				timestamp="Jan 1, 11:30 AM"
+				status="default"
+				icon={<ShoppingBag />}
+			/>
+			<TimelineItem
+				title="Shipped"
+				description="Package is on its way"
+				timestamp="Jan 2, 9:00 AM"
+				icon={<Truck />}
+			/>
+			<TimelineItem
+				title="Estimated delivery"
+				description="Expected between 2–5 PM"
+				timestamp="Jan 3"
+				status="pending"
+				icon={<Clock />}
+			/>
 		</Timeline>
 	),
 };
 
-export const CustomBullets: Story = {
+export const WithStatuses: Story = {
 	render: () => (
-		<Timeline active={2} bulletSize={24} lineWidth={2}>
-			<TimelineItem title="Ordered 1">Order placed</TimelineItem>
-			<TimelineItem title="Ordered 2">Order shipped</TimelineItem>
-			<TimelineItem title="Ordered 3">Order delivered</TimelineItem>
+		<Timeline className="w-[320px]">
+			<TimelineItem
+				title="Completed"
+				status="success"
+				icon={<CheckCircle />}
+				timestamp="Done"
+			/>
+			<TimelineItem
+				title="Failed"
+				status="error"
+				icon={<XCircle />}
+				timestamp="2h ago"
+			/>
+			<TimelineItem title="Warning" status="warning" timestamp="1h ago" />
+			<TimelineItem title="Pending" status="pending" timestamp="Now" />
+		</Timeline>
+	),
+};
+
+export const Simple: Story = {
+	render: () => (
+		<Timeline className="w-[300px]">
+			<TimelineItem title="Account created" timestamp="March 2024" />
+			<TimelineItem title="First purchase" timestamp="April 2024" />
+			<TimelineItem title="Premium member" timestamp="May 2024" />
 		</Timeline>
 	),
 };

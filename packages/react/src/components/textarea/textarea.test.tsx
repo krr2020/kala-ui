@@ -54,4 +54,17 @@ describe("Textarea", () => {
 		const textarea = screen.getByRole("textbox");
 		expect(textarea).toHaveAttribute("readonly");
 	});
+
+	it("should forward ref to the textarea element", () => {
+		let ref: HTMLTextAreaElement | null = null;
+		render(
+			<Textarea
+				ref={(el) => {
+					ref = el;
+				}}
+			/>,
+		);
+		expect(ref).not.toBeNull();
+		expect(ref).toBeInstanceOf(HTMLTextAreaElement);
+	});
 });

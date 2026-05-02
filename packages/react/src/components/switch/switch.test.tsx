@@ -51,4 +51,17 @@ describe("Switch", () => {
 		const thumb = container.querySelector('[data-slot="switch-thumb"]');
 		expect(thumb).toBeInTheDocument();
 	});
+
+	it("should forward ref to the switch element", () => {
+		let ref: HTMLButtonElement | null = null;
+		render(
+			<Switch
+				ref={(el) => {
+					ref = el;
+				}}
+			/>,
+		);
+		expect(ref).not.toBeNull();
+		expect(ref).toBeInstanceOf(HTMLButtonElement);
+	});
 });
