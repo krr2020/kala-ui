@@ -64,7 +64,7 @@ const flexVariants = cva("flex", {
 
 export interface FlexProps
 	extends React.HTMLAttributes<HTMLElement>,
-	VariantProps<typeof flexVariants> {
+		VariantProps<typeof flexVariants> {
 	asChild?: boolean;
 	as?: React.ElementType;
 	// biome-ignore lint/suspicious/noExplicitAny: Support polymorphic props

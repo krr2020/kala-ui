@@ -388,10 +388,11 @@ export const Hoverable: Story = {
 						<TableCell>
 							<Text
 								as="span"
-								className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${user.status === "Active"
-									? "bg-success/10 text-success"
-									: "bg-muted text-muted-foreground"
-									}`}
+								className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+									user.status === "Active"
+										? "bg-success/10 text-success"
+										: "bg-muted text-muted-foreground"
+								}`}
 							>
 								{user.status}
 							</Text>

@@ -265,6 +265,8 @@ export interface DataTableProps<TData> {
 	caption?: string;
 	/** Table footer content */
 	footer?: ReactNode;
+	/** Extra content rendered in the toolbar row, next to the search input */
+	toolbarContent?: ReactNode;
 	/** Custom CSS class for table container */
 	className?: string;
 	/** ARIA label for the table */

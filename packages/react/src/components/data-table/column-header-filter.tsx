@@ -135,11 +135,7 @@ export function ColumnHeaderFilter<TData>({
 							{column.options.map((option) => {
 								const isChecked = selectedValues.includes(option.value);
 								return (
-									<Flex
-										key={option.value}
-										align="center"
-										gap={2}
-									>
+									<Flex key={option.value} align="center" gap={2}>
 										<Checkbox
 											id={`${String(column.key)}-${option.value}`}
 											checked={isChecked}

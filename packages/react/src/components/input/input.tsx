@@ -117,9 +117,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
 						{/* Custom suffix icon */}
 						{suffixIcon && (
-							<span className="pointer-events-none text-muted-foreground">
-								{suffixIcon}
-							</span>
+							<span className="text-muted-foreground">{suffixIcon}</span>
 						)}
 					</div>
 				)}

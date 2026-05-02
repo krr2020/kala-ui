@@ -156,5 +156,3 @@ describe("Pagination", () => {
 		expect(list).toHaveClass("gap-2");
 	});
 });
-
-

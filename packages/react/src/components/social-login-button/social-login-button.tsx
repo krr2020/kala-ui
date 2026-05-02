@@ -83,7 +83,8 @@ const providerConfig = {
 	facebook: {
 		icon: siFacebook,
 		label: "Facebook",
-		color: "hover:bg-brand-facebook hover:text-white hover:border-brand-facebook",
+		color:
+			"hover:bg-brand-facebook hover:text-white hover:border-brand-facebook",
 	},
 	twitter: {
 		icon: siX,
@@ -98,7 +99,8 @@ const providerConfig = {
 	linkedin: {
 		icon: null, // Custom component used instead
 		label: "LinkedIn",
-		color: "hover:bg-brand-linkedin hover:text-white hover:border-brand-linkedin",
+		color:
+			"hover:bg-brand-linkedin hover:text-white hover:border-brand-linkedin",
 	},
 } as const;
 

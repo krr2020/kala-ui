@@ -65,11 +65,7 @@ export const WithToggle: Story = {
 			>
 				<AppShell.Header>
 					<Flex align="center" gap={4} className="h-full px-4">
-						<Burger
-							opened={opened}
-							onClick={toggle}
-							className="lg:hidden"
-						/>
+						<Burger opened={opened} onClick={toggle} className="lg:hidden" />
 						<Heading size="h4">My App</Heading>
 					</Flex>
 				</AppShell.Header>

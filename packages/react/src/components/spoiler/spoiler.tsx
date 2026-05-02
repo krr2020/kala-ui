@@ -56,11 +56,7 @@ export const Spoiler = React.forwardRef<HTMLDivElement, SpoilerProps>(
 
 				{showButton && (
 					<Flex justify="center" className="mt-2">
-						<Button
-							variant="ghost"
-							size="sm"
-							onClick={toggleExpanded}
-						>
+						<Button variant="ghost" size="sm" onClick={toggleExpanded}>
 							{expanded ? hideLabel : showLabel}
 						</Button>
 					</Flex>

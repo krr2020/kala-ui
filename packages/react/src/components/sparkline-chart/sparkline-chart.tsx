@@ -126,19 +126,19 @@ export function SparklineChart({
 					stops: [0, 100],
 					...(gradientFrom &&
 						gradientTo && {
-						colorStops: [
-							{
-								offset: 0,
-								color: gradientFrom,
-								opacity: 0.7,
-							},
-							{
-								offset: 100,
-								color: gradientTo,
-								opacity: 0.1,
-							},
-						],
-					}),
+							colorStops: [
+								{
+									offset: 0,
+									color: gradientFrom,
+									opacity: 0.7,
+								},
+								{
+									offset: 100,
+									color: gradientTo,
+									opacity: 0.1,
+								},
+							],
+						}),
 				},
 			}),
 		},

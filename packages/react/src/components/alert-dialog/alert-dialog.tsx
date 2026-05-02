@@ -7,7 +7,6 @@ import type * as React from "react";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
 import { buttonVariants } from "../button";
-import { Heading } from "../heading";
 import { Text } from "../text";
 
 function AlertDialog({
@@ -101,16 +100,14 @@ function AlertDialogTitle({
 	...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Title>) {
 	return (
-		<AlertDialogPrimitive.Title asChild data-slot="alert-dialog-title">
-			<Heading
-				level={3}
-				className={cn(
-					"text-lg font-semibold leading-none tracking-tight text-foreground",
-					className,
-				)}
-				{...props}
-			/>
-		</AlertDialogPrimitive.Title>
+		<AlertDialogPrimitive.Title
+			data-slot="alert-dialog-title"
+			className={cn(
+				"text-lg font-semibold leading-none tracking-tight text-foreground",
+				className,
+			)}
+			{...props}
+		/>
 	);
 }
 
@@ -124,7 +121,10 @@ function AlertDialogDescription({
 			data-slot="alert-dialog-description"
 		>
 			<Text
-				className={cn("text-sm leading-relaxed text-muted-foreground", className)}
+				className={cn(
+					"text-sm leading-relaxed text-muted-foreground",
+					className,
+				)}
 				{...props}
 			/>
 		</AlertDialogPrimitive.Description>

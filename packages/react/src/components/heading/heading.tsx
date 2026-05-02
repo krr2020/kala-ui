@@ -34,7 +34,7 @@ const headingVariants = cva("font-bold tracking-tight text-foreground", {
 
 export interface HeadingProps
 	extends React.HTMLAttributes<HTMLElement>,
-	VariantProps<typeof headingVariants> {
+		VariantProps<typeof headingVariants> {
 	asChild?: boolean;
 	as?: React.ElementType;
 	// biome-ignore lint/suspicious/noExplicitAny: Support polymorphic props
@@ -44,7 +44,7 @@ export interface HeadingProps
 const Heading = React.forwardRef<HTMLElement, HeadingProps>(
 	({ className, size, align, weight, asChild = false, as, ...props }, ref) => {
 		const defaultTag = (size as React.ElementType) || "h2";
-		const Tag = asChild ? Slot : (as || defaultTag);
+		const Tag = asChild ? Slot : as || defaultTag;
 
 		return (
 			<Tag

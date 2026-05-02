@@ -67,8 +67,7 @@ const Tabs = React.forwardRef<
 			<TabsContext.Provider value={{ activeTab, setActiveTab, uniqueId }}>
 				<TabsPrimitive.Root
 					ref={ref}
-					{...(activeTab && { value: activeTab })}
-					{...(defaultValue && { defaultValue })}
+					value={activeTab}
 					onValueChange={setActiveTab}
 					orientation={orientation}
 					data-slot="tabs"

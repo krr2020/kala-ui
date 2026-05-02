@@ -91,12 +91,12 @@ export interface CardSkeletonConfig {
 	 * Card layout variant
 	 */
 	variant?:
-	| "default"
-	| "withImage"
-	| "withImageTop"
-	| "horizontal"
-	| "withFooter"
-	| "minimal";
+		| "default"
+		| "withImage"
+		| "withImageTop"
+		| "horizontal"
+		| "withFooter"
+		| "minimal";
 	/**
 	 * Show header in skeleton
 	 */
@@ -243,14 +243,14 @@ export interface AlertSkeletonConfig {
 	 * Alert variant
 	 */
 	variant?:
-	| "default"
-	| "primary"
-	| "secondary"
-	| "success"
-	| "danger"
-	| "destructive"
-	| "warning"
-	| "info";
+		| "default"
+		| "primary"
+		| "secondary"
+		| "success"
+		| "danger"
+		| "destructive"
+		| "warning"
+		| "info";
 	/**
 	 * Show icon in skeleton
 	 */

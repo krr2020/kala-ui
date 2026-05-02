@@ -118,7 +118,11 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 				{...props}
 			>
 				<Box className="container mx-auto px-3 sm:px-4 lg:px-6 xl:px-8">
-					<Flex align="center" justify="between" className="h-14 sm:h-16 gap-2 sm:gap-4">
+					<Flex
+						align="center"
+						justify="between"
+						className="h-14 sm:h-16 gap-2 sm:gap-4"
+					>
 						{/* Logo */}
 						<Box className="shrink-0 min-w-0 max-w-[120px] sm:max-w-none">
 							{logo}
@@ -173,7 +177,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 																						"hover:bg-accent hover:text-accent-foreground",
 																						"focus:bg-accent focus:text-accent-foreground",
 																						child.active &&
-																						"text-primary bg-primary/10",
+																							"text-primary bg-primary/10",
 																					)}
 																				>
 																					{child.label}
@@ -207,7 +211,11 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 						</Flex>
 
 						{/* Right side actions */}
-						<Flex align="center" gap={1.5} className="sm:gap-2 lg:gap-3 shrink-0">
+						<Flex
+							align="center"
+							gap={1.5}
+							className="sm:gap-2 lg:gap-3 shrink-0"
+						>
 							{/* Search Bar (Desktop) */}
 							{searchBar && (
 								<Box className="hidden lg:block w-48 xl:w-64">{searchBar}</Box>
@@ -271,7 +279,11 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 								aria-label="Mobile navigation"
 							>
 								{/* Mobile Header with Close Button */}
-								<Flex align="center" justify="between" className="px-4 h-14 sm:h-16 border-b shrink-0">
+								<Flex
+									align="center"
+									justify="between"
+									className="px-4 h-14 sm:h-16 border-b shrink-0"
+								>
 									<Box className="shrink-0 min-w-0 max-w-[120px] sm:max-w-none">
 										{logo}
 									</Box>
@@ -323,7 +335,11 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 											{/* User Profile / Account Section */}
 											{userProfile ? (
 												<Box className="border-b">
-													<Flex align="center" gap={3} className="px-4 py-4 bg-muted">
+													<Flex
+														align="center"
+														gap={3}
+														className="px-4 py-4 bg-muted"
+													>
 														{userProfile.avatar ? (
 															<Box
 																as="img"
@@ -332,15 +348,26 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 																className="w-10 h-10 rounded-full object-cover"
 															/>
 														) : (
-															<Flex align="center" justify="center" className="w-10 h-10 rounded-full bg-primary/10 text-primary font-semibold">
+															<Flex
+																align="center"
+																justify="center"
+																className="w-10 h-10 rounded-full bg-primary/10 text-primary font-semibold"
+															>
 																{userProfile.name.charAt(0).toUpperCase()}
 															</Flex>
 														)}
 														<Stack gap={0} className="min-w-0">
-															<Text size="sm" weight="medium" className="truncate">
+															<Text
+																size="sm"
+																weight="medium"
+																className="truncate"
+															>
 																{userProfile.name}
 															</Text>
-															<Text size="xs" className="text-muted-foreground truncate">
+															<Text
+																size="xs"
+																className="text-muted-foreground truncate"
+															>
 																{userProfile.email}
 															</Text>
 														</Stack>
@@ -398,7 +425,11 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 												</Box>
 											) : userMenu ? (
 												<Box className="px-4 py-3 border-b">
-													<Text size="xs" weight="semibold" className="text-muted-foreground uppercase mb-2">
+													<Text
+														size="xs"
+														weight="semibold"
+														className="text-muted-foreground uppercase mb-2"
+													>
 														Account
 													</Text>
 													{userMenu}
@@ -474,7 +505,12 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 													{mobileNotifications || notifications}
 												</Box>
 											) : (
-												<Flex direction="column" align="center" justify="center" className="h-64 text-muted-foreground">
+												<Flex
+													direction="column"
+													align="center"
+													justify="center"
+													className="h-64 text-muted-foreground"
+												>
 													<Bell className="w-12 h-12 mb-4 opacity-20" />
 													<Text>No notifications</Text>
 												</Flex>
@@ -486,7 +522,11 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 												{/* Theme & Language Settings */}
 												{(themeSwitcherMobile || languageSwitcherMobile) && (
 													<Stack gap={6} className="p-4">
-														<Text size="xs" weight="semibold" className="text-muted-foreground uppercase">
+														<Text
+															size="xs"
+															weight="semibold"
+															className="text-muted-foreground uppercase"
+														>
 															Preferences
 														</Text>
 														<Stack gap={6}>

@@ -238,8 +238,12 @@ describe("DataTable", () => {
 			render(<DataTable data={mockUsers} columns={mockColumns} pagination />);
 
 			expect(screen.getByText(/page 1 of/i)).toBeInTheDocument();
-			expect(screen.getByRole("button", { name: /next page/i })).toBeInTheDocument();
-			expect(screen.getByRole("button", { name: /previous page/i })).toBeInTheDocument();
+			expect(
+				screen.getByRole("button", { name: /next page/i }),
+			).toBeInTheDocument();
+			expect(
+				screen.getByRole("button", { name: /previous page/i }),
+			).toBeInTheDocument();
 		});
 
 		it("paginates data correctly", () => {
@@ -298,7 +302,10 @@ describe("DataTable", () => {
 			);
 
 			expect(
-				screen.getByText((content) => content.includes("Showing") && content.includes("results")),
+				screen.getByText(
+					(content) =>
+						content.includes("Showing") && content.includes("results"),
+				),
 			).toBeInTheDocument();
 		});
 	});
@@ -333,7 +340,9 @@ describe("DataTable", () => {
 				/>,
 			);
 
-			expect(screen.getByRole("checkbox", { name: /select all rows/i })).toBeInTheDocument();
+			expect(
+				screen.getByRole("checkbox", { name: /select all rows/i }),
+			).toBeInTheDocument();
 		});
 
 		it("selects row when checkbox is clicked", async () => {
@@ -345,7 +354,9 @@ describe("DataTable", () => {
 				<DataTable data={mockUsers} columns={mockColumns} selection={config} />,
 			);
 
-			const checkboxes = screen.getAllByRole("checkbox", { name: /select row/i });
+			const checkboxes = screen.getAllByRole("checkbox", {
+				name: /select row/i,
+			});
 			await user.click(checkboxes[0] as HTMLElement);
 
 			expect(onSelectionChange).toHaveBeenCalled();
@@ -360,7 +371,9 @@ describe("DataTable", () => {
 				<DataTable data={mockUsers} columns={mockColumns} selection={config} />,
 			);
 
-			const selectAllCheckbox = screen.getByRole("checkbox", { name: /select all rows/i });
+			const selectAllCheckbox = screen.getByRole("checkbox", {
+				name: /select all rows/i,
+			});
 			await user.click(selectAllCheckbox);
 
 			expect(onSelectionChange).toHaveBeenCalled();
@@ -437,7 +450,9 @@ describe("DataTable", () => {
 			expect(nextButtons.length).toBeGreaterThan(0);
 			expect(nextButtons[0]).toBeInTheDocument();
 
-			const prevButtons = screen.getAllByRole("button", { name: /previous page/i });
+			const prevButtons = screen.getAllByRole("button", {
+				name: /previous page/i,
+			});
 			expect(prevButtons.length).toBeGreaterThan(0);
 			expect(prevButtons[0]).toBeInTheDocument();
 		});

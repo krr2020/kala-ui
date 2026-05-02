@@ -10,7 +10,8 @@ import { Text } from "../text";
 // Pagination Root
 // ============================================================================
 
-export interface PaginationProps extends Omit<React.ComponentProps<"nav">, "onChange"> {
+export interface PaginationProps
+	extends Omit<React.ComponentProps<"nav">, "onChange"> {
 	/**
 	 * Total amount of pages
 	 */
@@ -206,24 +207,24 @@ function PaginationLink({
 		default: cn(
 			"hover:bg-accent hover:text-accent-foreground",
 			isActive &&
-			"bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
+				"bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
 		),
 		outline: cn(
 			"border border-input",
 			"hover:bg-accent hover:text-accent-foreground",
 			isActive &&
-			"border-primary bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
+				"border-primary bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
 		),
 		filled: cn(
 			"bg-muted hover:bg-accent hover:text-accent-foreground",
 			isActive &&
-			"bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
+				"bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
 		),
 		circle: cn(
 			"rounded-full",
 			"bg-muted hover:bg-accent hover:text-accent-foreground",
 			isActive &&
-			"bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
+				"bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
 		),
 	};
 
@@ -337,9 +338,7 @@ function PaginationNext({
 			isIconButton={!showLabel}
 			className={cn("gap-1", className)}
 			onClick={handleClick}
-			disabled={
-				pagination ? pagination.active >= pagination.total : undefined
-			}
+			disabled={pagination ? pagination.active >= pagination.total : undefined}
 			{...props}
 		>
 			{showLabel && <Text as="span">{children || "Next"}</Text>}

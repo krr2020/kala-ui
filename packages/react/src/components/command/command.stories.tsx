@@ -96,7 +96,10 @@ export const WithDialog: Story = {
 				<Text size="sm" className="text-muted-foreground">
 					Press{" "}
 					<kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-						<Text as="span" className="text-xs">⌘</Text>K
+						<Text as="span" className="text-xs">
+							⌘
+						</Text>
+						K
 					</kbd>
 				</Text>
 				<CommandDialog open={open} onOpenChange={setOpen}>
@@ -275,7 +278,9 @@ export const EmptyState: Story = {
 			<CommandList>
 				<CommandEmpty>
 					<Box className="py-6 text-center">
-						<Text className="text-sm text-muted-foreground">No results found.</Text>
+						<Text className="text-sm text-muted-foreground">
+							No results found.
+						</Text>
 						<Text className="mt-2 text-xs text-muted-foreground">
 							Try searching for something else.
 						</Text>

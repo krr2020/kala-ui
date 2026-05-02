@@ -200,7 +200,7 @@ const AppShellAside = React.forwardRef<HTMLElement, AppShellAsideProps>(
 );
 AppShellAside.displayName = "AppShell.Aside";
 
-export interface AppShellMainProps extends React.HTMLAttributes<HTMLElement> { }
+export interface AppShellMainProps extends React.HTMLAttributes<HTMLElement> {}
 
 const AppShellMain = React.forwardRef<HTMLElement, AppShellMainProps>(
 	({ className, ...props }, ref) => {

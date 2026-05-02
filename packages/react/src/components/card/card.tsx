@@ -57,14 +57,22 @@ function CardTitle({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLHeadingElement>) {
-	return <Heading as="h5" className={cn(cardStyles.title, className)} {...props} />;
+	return (
+		<Heading as="h5" className={cn(cardStyles.title, className)} {...props} />
+	);
 }
 
 function CardSubtitle({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLHeadingElement>) {
-	return <Heading as="h6" className={cn(cardStyles.subtitle, className)} {...props} />;
+	return (
+		<Heading
+			as="h6"
+			className={cn(cardStyles.subtitle, className)}
+			{...props}
+		/>
+	);
 }
 
 function CardDescription({
@@ -106,7 +114,12 @@ function CardImage({
 		);
 	}
 	return (
-		<Box as="img" alt={alt} className={cn(cardStyles.image, className)} {...props} />
+		<Box
+			as="img"
+			alt={alt}
+			className={cn(cardStyles.image, className)}
+			{...props}
+		/>
 	);
 }
 
@@ -206,17 +219,17 @@ function CardMarker({
 				className={cn(
 					"absolute z-10 px-8 py-1 text-xs font-semibold shadow-lg",
 					ribbonPosition === "top" &&
-					ribbonSide === "left" &&
-					"top-3 -left-8 -rotate-45 origin-top-left",
+						ribbonSide === "left" &&
+						"top-3 -left-8 -rotate-45 origin-top-left",
 					ribbonPosition === "top" &&
-					ribbonSide === "right" &&
-					"top-3 -right-8 rotate-45 origin-top-right",
+						ribbonSide === "right" &&
+						"top-3 -right-8 rotate-45 origin-top-right",
 					ribbonPosition === "bottom" &&
-					ribbonSide === "left" &&
-					"bottom-3 -left-8 rotate-45 origin-bottom-left",
+						ribbonSide === "left" &&
+						"bottom-3 -left-8 rotate-45 origin-bottom-left",
 					ribbonPosition === "bottom" &&
-					ribbonSide === "right" &&
-					"bottom-3 -right-8 -rotate-45 origin-bottom-right",
+						ribbonSide === "right" &&
+						"bottom-3 -right-8 -rotate-45 origin-bottom-right",
 					colorClasses[color],
 					className,
 				)}

@@ -61,7 +61,7 @@ const textVariants = cva("text-foreground", {
 
 export interface TextProps
 	extends Omit<React.HTMLAttributes<HTMLElement>, "color">,
-	VariantProps<typeof textVariants> {
+		VariantProps<typeof textVariants> {
 	asChild?: boolean;
 	as?: React.ElementType;
 	// biome-ignore lint/suspicious/noExplicitAny: Support polymorphic props

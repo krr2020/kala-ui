@@ -25,7 +25,7 @@ export interface StepItem {
 
 export interface StepsProps
 	extends React.HTMLAttributes<HTMLDivElement>,
-	VariantProps<typeof stepsVariants> {
+		VariantProps<typeof stepsVariants> {
 	currentStep: number;
 	items: StepItem[];
 	onStepClick?: (step: number) => void;
