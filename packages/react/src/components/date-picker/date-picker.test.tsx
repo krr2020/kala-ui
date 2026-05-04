@@ -160,6 +160,23 @@ describe("DatePicker", () => {
 		const activeElement = document.activeElement;
 		expect(activeElement?.tagName).toBe("BUTTON");
 	});
+
+	it("renders loading skeleton when isLoading is true", () => {
+		render(<DatePicker isLoading />);
+		const skeleton = document.querySelector('[data-slot="skeleton"]');
+		expect(skeleton).toBeInTheDocument();
+	});
+
+	it("applies buttonClassName to loading skeleton", () => {
+		render(<DatePicker isLoading buttonClassName="skeleton-custom" />);
+		const skeleton = document.querySelector('[data-slot="skeleton"]');
+		expect(skeleton).toHaveClass("skeleton-custom");
+	});
+
+	it("does not render popover when isLoading", () => {
+		render(<DatePicker isLoading />);
+		expect(screen.queryByRole("button")).not.toBeInTheDocument();
+	});
 });
 
 describe("DateRangePicker", () => {
@@ -330,5 +347,22 @@ describe("DateRangePicker", () => {
 		// DateRangePicker has w-[300px], DatePicker has w-[280px]
 		expect(rangeButton).toHaveClass("w-[300px]");
 		expect(singleButton).toHaveClass("w-[280px]");
+	});
+
+	it("renders loading skeleton when isLoading is true", () => {
+		render(<DateRangePicker isLoading />);
+		const skeleton = document.querySelector('[data-slot="skeleton"]');
+		expect(skeleton).toBeInTheDocument();
+	});
+
+	it("applies buttonClassName to loading skeleton", () => {
+		render(<DateRangePicker isLoading buttonClassName="range-skel" />);
+		const skeleton = document.querySelector('[data-slot="skeleton"]');
+		expect(skeleton).toHaveClass("range-skel");
+	});
+
+	it("does not render popover when isLoading", () => {
+		render(<DateRangePicker isLoading />);
+		expect(screen.queryByRole("button")).not.toBeInTheDocument();
 	});
 });

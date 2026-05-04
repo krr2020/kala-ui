@@ -64,4 +64,36 @@ describe("Switch", () => {
 		expect(ref).not.toBeNull();
 		expect(ref).toBeInstanceOf(HTMLButtonElement);
 	});
+
+	it("should render skeleton when isLoading is true", () => {
+		const { container } = render(<Switch isLoading />);
+		const skeleton = container.querySelector('[data-slot="skeleton"]');
+		expect(skeleton).toBeInTheDocument();
+	});
+
+	it("should render skeleton with custom className when isLoading is true", () => {
+		const { container } = render(
+			<Switch isLoading className="loading-switch" />,
+		);
+		const skeleton = container.querySelector('[data-slot="skeleton"]');
+		expect(skeleton).toHaveClass("loading-switch");
+	});
+
+	it("should not render switch root when isLoading is true", () => {
+		const { container } = render(<Switch isLoading />);
+		const switchElement = container.querySelector('[data-slot="switch"]');
+		expect(switchElement).not.toBeInTheDocument();
+	});
+
+	it("should render switch root when isLoading is false (explicit)", () => {
+		const { container } = render(<Switch isLoading={false} />);
+		const switchElement = container.querySelector('[data-slot="switch"]');
+		expect(switchElement).toBeInTheDocument();
+	});
+
+	it("should render switch root when isLoading is not provided", () => {
+		const { container } = render(<Switch />);
+		const switchElement = container.querySelector('[data-slot="switch"]');
+		expect(switchElement).toBeInTheDocument();
+	});
 });

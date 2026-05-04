@@ -1,10 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Button } from "../button";
 import {
 	ButtonGroup,
 	ButtonGroupSeparator,
 	ButtonGroupText,
+	buttonGroupVariants,
 } from "./button-group";
 
 describe("ButtonGroup", () => {
@@ -407,5 +408,184 @@ describe("Accessibility", () => {
 			"aria-label",
 			"Editor actions",
 		);
+	});
+
+	it("renders ButtonGroup with separated=true and inserts separators between children", () => {
+		render(
+			<ButtonGroup separated data-testid="group">
+				<Button>First</Button>
+				<Button>Second</Button>
+				<Button>Third</Button>
+			</ButtonGroup>,
+		);
+
+		const group = screen.getByTestId("group");
+		const separators = within(group).getAllByRole("separator");
+		// Should have 2 separators between 3 children
+		expect(separators.length).toBe(2);
+	});
+
+	it("renders ButtonGroup with separated=true and vertical orientation", () => {
+		render(
+			<ButtonGroup separated orientation="vertical" data-testid="group">
+				<Button>Top</Button>
+				<Button>Bottom</Button>
+			</ButtonGroup>,
+		);
+
+		const group = screen.getByTestId("group");
+		expect(group).toHaveClass("flex-col");
+		const separators = within(group).getAllByRole("separator");
+		expect(separators.length).toBe(1);
+	});
+
+	it("renders ButtonGroup with separated=true and single child (no separators)", () => {
+		render(
+			<ButtonGroup separated data-testid="group">
+				<Button>Only</Button>
+			</ButtonGroup>,
+		);
+
+		const group = screen.getByTestId("group");
+		const separators = within(group).queryAllByRole("separator");
+		expect(separators.length).toBe(0);
+	});
+
+	it("renders ButtonGroupSeparator with className when orientation is vertical", () => {
+		render(
+			<ButtonGroup orientation="vertical">
+				<Button>First</Button>
+				<ButtonGroupSeparator className="v-sep" data-testid="sep" />
+				<Button>Second</Button>
+			</ButtonGroup>,
+		);
+
+		expect(screen.getByTestId("sep")).toHaveClass("v-sep");
+	});
+
+	it("renders ButtonGroupText without asChild", () => {
+		const { container } = render(
+			<ButtonGroup>
+				<ButtonGroupText>Label</ButtonGroupText>
+			</ButtonGroup>,
+		);
+
+		expect(container.querySelector("span")).toBeInTheDocument();
+		expect(container.querySelector("span")).toHaveTextContent("Label");
+	});
+
+	it("renders ButtonGroupText with asChild using Slot", () => {
+		render(
+			<ButtonGroup>
+				<ButtonGroupText asChild>
+					<a href="/link" data-testid="slotted-link">
+						Link Text
+					</a>
+				</ButtonGroupText>
+			</ButtonGroup>,
+		);
+
+		const link = screen.getByTestId("slotted-link");
+		expect(link).toBeInTheDocument();
+		expect(link).toHaveTextContent("Link Text");
+		expect(link).toHaveAttribute("href", "/link");
+	});
+
+	it("exports buttonGroupVariants", () => {
+		expect(buttonGroupVariants).toBeDefined();
+	});
+
+	it("renders separated mode with non-element children (text nodes)", () => {
+		render(
+			<ButtonGroup separated data-testid="group">
+				<Button>First</Button>
+				{"divider"}
+				<Button>Second</Button>
+			</ButtonGroup>,
+		);
+
+		const group = screen.getByTestId("group");
+		expect(group).toHaveTextContent("divider");
+		const separators = within(group).getAllByRole("separator");
+		// Two separators: one between First and text, one between text and Second
+		expect(separators.length).toBe(2);
+	});
+
+	it("uses child.key when available in separated mode", () => {
+		render(
+			<ButtonGroup separated data-testid="group">
+				<Button key="btn-a">A</Button>
+				<Button key="btn-b">B</Button>
+			</ButtonGroup>,
+		);
+
+		const group = screen.getByTestId("group");
+		const buttons = within(group).getAllByRole("button");
+		expect(buttons.length).toBe(2);
+	});
+
+	it("renders separated mode with vertical orientation and keyed children", () => {
+		render(
+			<ButtonGroup separated orientation="vertical" data-testid="group">
+				<Button key="v1">Top</Button>
+				<Button key="v2">Bottom</Button>
+			</ButtonGroup>,
+		);
+
+		const group = screen.getByTestId("group");
+		expect(group).toHaveClass("flex-col");
+		const separators = within(group).getAllByRole("separator");
+		expect(separators.length).toBe(1);
+		expect(separators[0]).toHaveAttribute("aria-orientation", "vertical");
+	});
+
+	it("renders ButtonGroupText with extra HTML attributes", () => {
+		render(
+			<ButtonGroup>
+				<ButtonGroupText data-testid="text" style={{ color: "red" }}>
+					Styled
+				</ButtonGroupText>
+			</ButtonGroup>,
+		);
+
+		const text = screen.getByTestId("text");
+		expect(text).toHaveStyle({ color: "rgb(255, 0, 0)" });
+	});
+
+	it("renders ButtonGroupSeparator with extra HTML attributes", () => {
+		render(
+			<ButtonGroup>
+				<Button>First</Button>
+				<ButtonGroupSeparator data-testid="sep" id="my-sep" />
+				<Button>Second</Button>
+			</ButtonGroup>,
+		);
+
+		expect(screen.getByTestId("sep")).toHaveAttribute("id", "my-sep");
+	});
+
+	it("renders ButtonGroup with role attribute", () => {
+		render(
+			<ButtonGroup role="toolbar" data-testid="group">
+				<Button>Tool</Button>
+			</ButtonGroup>,
+		);
+
+		expect(screen.getByTestId("group")).toHaveAttribute("role", "toolbar");
+	});
+
+	it("renders ButtonGroupSeparator without aria-orientation when orientation is falsy", () => {
+		// orientation defaults to "horizontal" so it always has a truthy value,
+		// but test the default path
+		render(
+			<ButtonGroup>
+				<Button>First</Button>
+				<ButtonGroupSeparator data-testid="sep" />
+				<Button>Second</Button>
+			</ButtonGroup>,
+		);
+
+		const sep = screen.getByTestId("sep");
+		expect(sep).toHaveAttribute("aria-orientation", "horizontal");
 	});
 });

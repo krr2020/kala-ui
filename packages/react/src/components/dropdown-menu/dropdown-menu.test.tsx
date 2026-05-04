@@ -6,11 +6,17 @@ import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
+	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
+	DropdownMenuPortal,
 	DropdownMenuRadioGroup,
 	DropdownMenuRadioItem,
 	DropdownMenuSeparator,
+	DropdownMenuShortcut,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "./dropdown-menu";
 
@@ -122,5 +128,173 @@ describe("DropdownMenu", () => {
 		await user.click(screen.getByText("Open Menu"));
 		expect(screen.getByText("Top")).toBeInTheDocument();
 		expect(screen.getByText("Bottom")).toBeInTheDocument();
+	});
+
+	it("should render menu group", async () => {
+		const user = userEvent.setup();
+
+		render(
+			<DropdownMenu>
+				<DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					<DropdownMenuGroup>
+						<DropdownMenuItem>Group Item 1</DropdownMenuItem>
+						<DropdownMenuItem>Group Item 2</DropdownMenuItem>
+					</DropdownMenuGroup>
+				</DropdownMenuContent>
+			</DropdownMenu>,
+		);
+
+		await user.click(screen.getByText("Open Menu"));
+		expect(
+			document.querySelector('[data-slot="dropdown-menu-group"]'),
+		).toBeInTheDocument();
+		expect(screen.getByText("Group Item 1")).toBeInTheDocument();
+	});
+
+	it("should render menu shortcut", async () => {
+		const user = userEvent.setup();
+
+		render(
+			<DropdownMenu>
+				<DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					<DropdownMenuItem>Save</DropdownMenuItem>
+					<DropdownMenuShortcut>Ctrl+S</DropdownMenuShortcut>
+				</DropdownMenuContent>
+			</DropdownMenu>,
+		);
+
+		await user.click(screen.getByText("Open Menu"));
+		expect(screen.getByText("Ctrl+S")).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="dropdown-menu-shortcut"]'),
+		).toBeInTheDocument();
+	});
+
+	it("should render menu item with inset prop", async () => {
+		const user = userEvent.setup();
+
+		render(
+			<DropdownMenu>
+				<DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					<DropdownMenuItem inset>Inset Item</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>,
+		);
+
+		await user.click(screen.getByText("Open Menu"));
+		expect(
+			document.querySelector('[data-inset="true"]'),
+		).toBeInTheDocument();
+	});
+
+	it("should render menu item with destructive variant", async () => {
+		const user = userEvent.setup();
+
+		render(
+			<DropdownMenu>
+				<DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					<DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>,
+		);
+
+		await user.click(screen.getByText("Open Menu"));
+		expect(
+			document.querySelector('[data-variant="destructive"]'),
+		).toBeInTheDocument();
+	});
+
+	it("should render label with inset prop", async () => {
+		const user = userEvent.setup();
+
+		render(
+			<DropdownMenu>
+				<DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					<DropdownMenuLabel inset>Inset Label</DropdownMenuLabel>
+				</DropdownMenuContent>
+			</DropdownMenu>,
+		);
+
+		await user.click(screen.getByText("Open Menu"));
+		const label = document.querySelector('[data-slot="dropdown-menu-label"]');
+		expect(label?.getAttribute("data-inset")).toBe("true");
+	});
+
+	it("should render content with custom sideOffset", async () => {
+		const user = userEvent.setup();
+
+		render(
+			<DropdownMenu>
+				<DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
+				<DropdownMenuContent sideOffset={8}>
+					<DropdownMenuItem>Item</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>,
+		);
+
+		await user.click(screen.getByText("Open Menu"));
+		expect(screen.getByText("Item")).toBeInTheDocument();
+	});
+
+	it("should render sub menu", async () => {
+		const user = userEvent.setup();
+
+		render(
+			<DropdownMenu>
+				<DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					<DropdownMenuSub>
+						<DropdownMenuSubTrigger>More Options</DropdownMenuSubTrigger>
+						<DropdownMenuSubContent>
+							<DropdownMenuItem>Sub Item</DropdownMenuItem>
+						</DropdownMenuSubContent>
+					</DropdownMenuSub>
+				</DropdownMenuContent>
+			</DropdownMenu>,
+		);
+
+		await user.click(screen.getByText("Open Menu"));
+		expect(
+			document.querySelector('[data-slot="dropdown-menu-sub-trigger"]'),
+		).toBeInTheDocument();
+	});
+
+	it("should render portal within dropdown menu", async () => {
+		const user = userEvent.setup();
+
+		render(
+			<DropdownMenu>
+				<DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
+				<DropdownMenuPortal>
+					<DropdownMenuContent>
+						<DropdownMenuItem>Portaled Item</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenuPortal>
+			</DropdownMenu>,
+		);
+
+		await user.click(screen.getByText("Open Menu"));
+		expect(screen.getByText("Portaled Item")).toBeInTheDocument();
+	});
+
+	it("should render menu item with custom className", async () => {
+		const user = userEvent.setup();
+
+		render(
+			<DropdownMenu>
+				<DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					<DropdownMenuItem className="custom-item">Styled</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>,
+		);
+
+		await user.click(screen.getByText("Open Menu"));
+		expect(document.querySelector(".custom-item")).toBeInTheDocument();
 	});
 });

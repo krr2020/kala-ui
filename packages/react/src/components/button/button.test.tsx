@@ -106,4 +106,59 @@ describe("Button", () => {
 		render(<Button ref={ref}>Button</Button>);
 		expect(ref).toHaveBeenCalled();
 	});
+
+	it("renders as child element when asChild is true", () => {
+		render(
+			<Button asChild>
+				<a href="/link">Link Button</a>
+			</Button>,
+		);
+		const link = screen.getByRole("link");
+		expect(link).toBeInTheDocument();
+		expect(link).toHaveTextContent("Link Button");
+	});
+
+	it("does not render loading spinner when asChild is true", () => {
+		render(
+			<Button asChild isLoading>
+				<a href="/link">Link</a>
+			</Button>,
+		);
+		const link = screen.getByRole("link");
+		expect(link.querySelector("svg.animate-spin")).not.toBeInTheDocument();
+	});
+
+	it("does not render as button when asChild is true", () => {
+		render(
+			<Button asChild>
+				<span>Not a button</span>
+			</Button>,
+		);
+		expect(screen.queryByRole("button")).not.toBeInTheDocument();
+		expect(screen.getByText("Not a button")).toBeInTheDocument();
+	});
+
+	it("applies fullWidth variant", () => {
+		render(<Button fullWidth>Full Width</Button>);
+		const button = screen.getByRole("button");
+		expect(button).toHaveClass("w-full");
+	});
+
+	it("applies rounded variant", () => {
+		render(<Button rounded>Rounded</Button>);
+		const button = screen.getByRole("button");
+		expect(button).toHaveClass("rounded-full");
+	});
+
+	it("sets aria-busy when isLoading is true", () => {
+		render(<Button isLoading>Busy</Button>);
+		const button = screen.getByRole("button");
+		expect(button).toHaveAttribute("aria-busy", "true");
+	});
+
+	it("does not set aria-busy when not loading", () => {
+		render(<Button>Not Busy</Button>);
+		const button = screen.getByRole("button");
+		expect(button).not.toHaveAttribute("aria-busy");
+	});
 });

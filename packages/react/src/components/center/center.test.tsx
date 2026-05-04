@@ -20,4 +20,20 @@ describe("Center", () => {
 		const center = screen.getByTestId("center");
 		expect(center).toHaveClass("inline-flex");
 	});
+
+	it("renders as Slot when asChild is true", () => {
+		const { container } = render(
+			<Center asChild>
+				<span data-testid="center-child">Child</span>
+			</Center>,
+		);
+		const child = screen.getByTestId("center-child");
+		expect(child).toHaveClass("flex", "items-center", "justify-center");
+		expect(container.querySelector("div")).toBeNull();
+	});
+
+	it("applies custom className", () => {
+		render(<Center className="custom-center">Content</Center>);
+		expect(screen.getByText("Content")).toHaveClass("custom-center");
+	});
 });

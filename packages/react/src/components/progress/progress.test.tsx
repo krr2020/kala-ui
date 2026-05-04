@@ -88,6 +88,27 @@ describe("Progress", () => {
 			expect(indicator).toHaveClass("bg-destructive");
 		});
 
+		it("should apply info color", () => {
+			const { container } = render(<Progress value={50} color="info" />);
+			const root = container.querySelector("[data-state]");
+			const indicator = root?.querySelector("div");
+			expect(indicator).toHaveClass("bg-info");
+		});
+
+		it("should apply warning color", () => {
+			const { container } = render(<Progress value={50} color="warning" />);
+			const root = container.querySelector("[data-state]");
+			const indicator = root?.querySelector("div");
+			expect(indicator).toHaveClass("bg-warning");
+		});
+
+		it("should apply destructive color", () => {
+			const { container } = render(<Progress value={50} color="destructive" />);
+			const root = container.querySelector("[data-state]");
+			const indicator = root?.querySelector("div");
+			expect(indicator).toHaveClass("bg-destructive");
+		});
+
 		it("should apply small size", () => {
 			const { container } = render(<Progress value={50} size="sm" />);
 			const root = container.querySelector('[role="progressbar"]');
@@ -122,9 +143,89 @@ describe("Progress", () => {
 			expect(indicator).toHaveClass("animate-progress-stripes");
 		});
 
+		it("should not animate when animated=true but striped=false", () => {
+			const { container } = render(<Progress value={50} animated />);
+			const root = container.querySelector("[data-state]");
+			const indicator = root?.querySelector("div");
+			expect(indicator).not.toHaveClass("animate-progress-stripes");
+		});
+
 		it("should not show label on small size", () => {
 			render(<Progress value={50} label="Loading" size="sm" />);
 			expect(screen.queryByText("Loading")).not.toBeInTheDocument();
+		});
+
+		it("should show label on medium size", () => {
+			render(<Progress value={50} label="Loading" size="md" />);
+			expect(screen.getByText("Loading")).toBeInTheDocument();
+		});
+
+		it("should show label on large size", () => {
+			render(<Progress value={50} label="Loading" size="lg" />);
+			expect(screen.getByText("Loading")).toBeInTheDocument();
+		});
+
+		it("should show value on medium size with showValue", () => {
+			render(<Progress value={42} showValue size="md" />);
+			expect(screen.getByText("42%")).toBeInTheDocument();
+		});
+
+		it("should show value on large size with showValue", () => {
+			render(<Progress value={42} showValue size="lg" />);
+			expect(screen.getByText("42%")).toBeInTheDocument();
+		});
+
+		it("should not show value on small size with showValue", () => {
+			render(<Progress value={42} showValue size="sm" />);
+			expect(screen.queryByText("42%")).not.toBeInTheDocument();
+		});
+
+		it("should show correct text color for success variant with showValue", () => {
+			render(<Progress value={50} showValue size="md" color="success" />);
+			const textSpan = screen.getByText("50%");
+			expect(textSpan).toHaveClass("text-success-foreground");
+		});
+
+		it("should show correct text color for info variant with showValue", () => {
+			render(<Progress value={50} showValue size="md" color="info" />);
+			const textSpan = screen.getByText("50%");
+			expect(textSpan).toHaveClass("text-info-foreground");
+		});
+
+		it("should show correct text color for warning variant with showValue", () => {
+			render(<Progress value={50} showValue size="md" color="warning" />);
+			const textSpan = screen.getByText("50%");
+			expect(textSpan).toHaveClass("text-warning-foreground");
+		});
+
+		it("should show correct text color for destructive variant with showValue", () => {
+			render(<Progress value={50} showValue size="md" color="destructive" />);
+			const textSpan = screen.getByText("50%");
+			expect(textSpan).toHaveClass("text-destructive-foreground");
+		});
+
+		it("should show correct text color for default variant with showValue", () => {
+			render(<Progress value={50} showValue size="md" color="default" />);
+			const textSpan = screen.getByText("50%");
+			expect(textSpan).toHaveClass("text-primary-foreground");
+		});
+
+		it("should not show label when label is empty string", () => {
+			render(<Progress value={50} label="" size="md" />);
+			// An empty string is falsy, so label || showValue falls through to showValue
+			expect(screen.queryByText("50%")).not.toBeInTheDocument();
+		});
+
+		it("should handle value of null as 0", () => {
+			render(<Progress value={null} />);
+			const progressbar = screen.getByRole("progressbar");
+			expect(progressbar).toHaveAttribute("aria-valuenow", "0");
+		});
+
+		it("should show label text when both label and showValue are provided", () => {
+			render(<Progress value={50} label="Custom" showValue size="md" />);
+			expect(screen.getByText("Custom")).toBeInTheDocument();
+			expect(screen.queryByText("50%")).not.toBeInTheDocument();
 		});
 	});
 
@@ -182,6 +283,12 @@ describe("ProgressBar", () => {
 			expect(bar).toHaveClass("bg-success");
 		});
 
+		it("should apply danger color mapped to destructive", () => {
+			const { container } = render(<ProgressBar value={50} color="danger" />);
+			const bar = container.querySelector('[role="progressbar"]');
+			expect(bar).toHaveClass("bg-destructive");
+		});
+
 		it("should apply striped pattern", () => {
 			const { container } = render(<ProgressBar value={50} striped />);
 			const bar = container.querySelector('[role="progressbar"]');
@@ -194,6 +301,58 @@ describe("ProgressBar", () => {
 			const { container } = render(<ProgressBar value={50} striped animated />);
 			const bar = container.querySelector('[role="progressbar"]');
 			expect(bar).toHaveClass("animate-progress-stripes");
+		});
+
+		it("should not animate without striped", () => {
+			const { container } = render(<ProgressBar value={50} animated />);
+			const bar = container.querySelector('[role="progressbar"]');
+			expect(bar).not.toHaveClass("animate-progress-stripes");
+		});
+
+		it("should accept custom className", () => {
+			const { container } = render(
+				<ProgressBar value={50} className="custom-bar" />,
+			);
+			const bar = container.querySelector('[role="progressbar"]');
+			expect(bar).toHaveClass("custom-bar");
+		});
+
+		it("should show correct text color for default variant with label", () => {
+			render(<ProgressBar value={50} label="Default" color="default" />);
+			const textSpan = screen.getByText("Default");
+			expect(textSpan).toHaveClass("text-primary-foreground");
+		});
+
+		it("should show correct text color for success variant with label", () => {
+			render(<ProgressBar value={50} label="Success" color="success" />);
+			const textSpan = screen.getByText("Success");
+			expect(textSpan).toHaveClass("text-success-foreground");
+		});
+
+		it("should show correct text color for info variant with label", () => {
+			render(<ProgressBar value={50} label="Info" color="info" />);
+			const textSpan = screen.getByText("Info");
+			expect(textSpan).toHaveClass("text-info-foreground");
+		});
+
+		it("should show correct text color for warning variant with label", () => {
+			render(<ProgressBar value={50} label="Warning" color="warning" />);
+			const textSpan = screen.getByText("Warning");
+			expect(textSpan).toHaveClass("text-warning-foreground");
+		});
+
+		it("should show correct text color for destructive variant with label", () => {
+			render(
+				<ProgressBar value={50} label="Destructive" color="destructive" />,
+			);
+			const textSpan = screen.getByText("Destructive");
+			expect(textSpan).toHaveClass("text-destructive-foreground");
+		});
+
+		it("should map danger color to destructive for label text color", () => {
+			render(<ProgressBar value={50} label="Danger" color="danger" />);
+			const textSpan = screen.getByText("Danger");
+			expect(textSpan).toHaveClass("text-destructive-foreground");
 		});
 	});
 });
@@ -243,6 +402,32 @@ describe("ProgressGroup", () => {
 			);
 			const group = container.querySelector('[role="presentation"]');
 			expect(group).toHaveClass("custom-group");
+		});
+
+		it("should apply sm size", () => {
+			const { container } = render(
+				<ProgressGroup size="sm">
+					<ProgressBar value={50} />
+				</ProgressGroup>,
+			);
+			const group = container.querySelector('[role="presentation"]');
+			expect(group).toHaveClass("h-1");
+		});
+
+		it("should apply md size", () => {
+			const { container } = render(
+				<ProgressGroup size="md">
+					<ProgressBar value={50} />
+				</ProgressGroup>,
+			);
+			const group = container.querySelector('[role="presentation"]');
+			expect(group).toHaveClass("h-2.5");
+		});
+
+		it("should render without children", () => {
+			const { container } = render(<ProgressGroup />);
+			const group = container.querySelector('[role="presentation"]');
+			expect(group).toBeInTheDocument();
 		});
 	});
 });

@@ -320,6 +320,41 @@ describe("Slider", () => {
 		});
 	});
 
+	describe("Loading State", () => {
+		it("renders loading skeleton when isLoading is true", () => {
+			const { container } = render(<Slider defaultValue={[50]} isLoading />);
+
+			expect(container.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+		});
+
+		it("applies custom className to loading skeleton", () => {
+			const { container } = render(
+				<Slider defaultValue={[50]} isLoading className="custom-loading" />,
+			);
+
+			expect(container.firstChild).toHaveClass("custom-loading");
+		});
+
+		it("renders normal slider when isLoading is false", () => {
+			const { container } = render(<Slider defaultValue={[50]} isLoading={false} />);
+
+			expect(container.querySelector('[role="slider"]')).toBeInTheDocument();
+		});
+
+		it("renders loading skeleton with no defaultValue when isLoading is true", () => {
+			const { container } = render(<Slider isLoading />);
+
+			expect(container.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+			expect(container.querySelector('[role="slider"]')).not.toBeInTheDocument();
+		});
+
+		it("renders loading skeleton with className when isLoading is true and no defaultValue", () => {
+			const { container } = render(<Slider isLoading className="skeleton-custom" />);
+
+			expect(container.firstChild).toHaveClass("skeleton-custom");
+		});
+	});
+
 	describe("HTML Attributes", () => {
 		it("forwards ref correctly", () => {
 			const ref = vi.fn();
@@ -388,6 +423,20 @@ describe("Slider", () => {
 
 			const slider = container.querySelector('[role="slider"]');
 			expect(slider).toHaveAttribute("aria-valuenow", "5000");
+		});
+
+		it("renders single thumb at 0 when no value or defaultValue is provided", () => {
+			const { container } = render(<Slider />);
+			const sliders = container.querySelectorAll('[role="slider"]');
+			expect(sliders.length).toBe(1);
+			expect(sliders[0]).toHaveAttribute("aria-valuenow", "0");
+		});
+
+		it("does not spread defaultValue or value when undefined", () => {
+			const { container } = render(<Slider />);
+			const root = container.firstChild as HTMLElement;
+			expect(root).not.toHaveAttribute("defaultValue");
+			expect(root).not.toHaveAttribute("value");
 		});
 	});
 });

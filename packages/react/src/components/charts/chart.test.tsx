@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { Chart } from "./chart";
+import { Chart, getTooltipTheme } from "./chart";
 
 // Mock react-apexcharts
 vi.mock("react-apexcharts", () => ({
@@ -162,5 +162,128 @@ describe("Chart", () => {
 		);
 
 		expect(screen.getByTestId("apex-chart")).toBeInTheDocument();
+	});
+
+	it("should show loading skeleton when isLoading is true", () => {
+		render(
+			<Chart options={mockOptions} series={mockSeries} type="line" isLoading />,
+		);
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
+		expect(screen.queryByTestId("apex-chart")).not.toBeInTheDocument();
+	});
+
+	it("should show loading skeleton with skeletonConfig when isLoading is true", () => {
+		render(
+			<Chart
+				options={mockOptions}
+				series={mockSeries}
+				type="line"
+				isLoading
+				skeletonConfig={{ height: 200, showLegend: false }}
+			/>,
+		);
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
+	});
+
+	it("should show custom skeleton when isLoading is true and skeleton is provided", () => {
+		render(
+			<Chart
+				options={mockOptions}
+				series={mockSeries}
+				type="line"
+				isLoading
+				skeleton={<div data-testid="custom-skeleton">Loading...</div>}
+			/>,
+		);
+		expect(screen.getByTestId("custom-skeleton")).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).not.toBeInTheDocument();
+	});
+
+	it("should show empty state when isEmpty is true", () => {
+		render(
+			<Chart options={mockOptions} series={mockSeries} type="line" isEmpty />,
+		);
+		expect(screen.getByText("No data available")).toBeInTheDocument();
+		expect(screen.queryByTestId("apex-chart")).not.toBeInTheDocument();
+	});
+
+	it("should show custom empty message when isEmpty is true", () => {
+		render(
+			<Chart
+				options={mockOptions}
+				series={mockSeries}
+				type="line"
+				isEmpty
+				emptyMessage="Nothing here"
+			/>,
+		);
+		expect(screen.getByText("Nothing here")).toBeInTheDocument();
+	});
+
+	it("should show empty state with default height when no height prop", () => {
+		render(<Chart options={mockOptions} series={mockSeries} type="line" isEmpty />);
+		const emptyState = screen.getByText("No data available").closest("div");
+		expect(emptyState).toHaveStyle({ height: "350px" });
+	});
+
+	it("should show empty state with height from height prop", () => {
+		render(
+			<Chart
+				options={mockOptions}
+				series={mockSeries}
+				type="line"
+				isEmpty
+				height={500}
+			/>,
+		);
+		const emptyState = screen.getByText("No data available").closest("div");
+		expect(emptyState).toHaveStyle({ height: "500px" });
+	});
+
+	it("should show empty state with height from skeletonConfig", () => {
+		render(
+			<Chart
+				options={mockOptions}
+				series={mockSeries}
+				type="line"
+				isEmpty
+				skeletonConfig={{ height: 250 }}
+			/>,
+		);
+		const emptyState = screen.getByText("No data available").closest("div");
+		expect(emptyState).toHaveStyle({ height: "250px" });
+	});
+
+	it("should apply className to empty state", () => {
+		render(
+			<Chart
+				options={mockOptions}
+				series={mockSeries}
+				type="line"
+				isEmpty
+				className="empty-class"
+			/>,
+		);
+		const emptyState = screen.getByText("No data available").closest("div");
+		expect(emptyState).toHaveClass("empty-class");
+	});
+});
+
+describe("getTooltipTheme", () => {
+	it("should return light when document has no dark class", () => {
+		document.documentElement.classList.remove("dark");
+		expect(getTooltipTheme()).toBe("light");
+	});
+
+	it("should return dark when document has dark class", () => {
+		document.documentElement.classList.add("dark");
+		expect(getTooltipTheme()).toBe("dark");
+		document.documentElement.classList.remove("dark");
 	});
 });

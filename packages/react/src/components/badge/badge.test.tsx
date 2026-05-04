@@ -85,4 +85,46 @@ describe("Badge", () => {
 		);
 		expect(screen.getByTestId("badge-icon")).toBeInTheDocument();
 	});
+
+	it("should render loading skeleton when isLoading is true", () => {
+		const { container } = render(<Badge isLoading>Loading</Badge>);
+		expect(container.querySelector('[class*="animate-pulse"]')).toBeInTheDocument();
+		expect(screen.queryByText("Loading")).not.toBeInTheDocument();
+	});
+
+	it("should render loading skeleton with custom className", () => {
+		const { container } = render(
+			<Badge isLoading className="custom-loading">Loading</Badge>,
+		);
+		const skeleton = container.querySelector('[class*="animate-pulse"]');
+		expect(skeleton?.className).toContain("custom-loading");
+	});
+
+	it("should render outline variant", () => {
+		const { container } = render(<Badge variant="outline">Outline</Badge>);
+		const badge = container.querySelector('[data-slot="badge"]');
+		expect(badge).toBeInTheDocument();
+	});
+
+	it("should render with default shape", () => {
+		const { container } = render(<Badge>Default Shape</Badge>);
+		const badge = container.querySelector('[data-slot="badge"]');
+		expect(badge).toBeInTheDocument();
+	});
+
+	it("should render with custom shape", () => {
+		const { container } = render(<Badge shape="square">Square</Badge>);
+		const badge = container.querySelector('[data-slot="badge"]');
+		expect(badge).toBeInTheDocument();
+	});
+
+	it("should render as span when asChild is false (default)", () => {
+		const { container } = render(<Badge>Span Badge</Badge>);
+		expect(container.querySelector("span[data-slot='badge']")).toBeInTheDocument();
+	});
+
+	it("should not render data-slot when isLoading", () => {
+		const { container } = render(<Badge isLoading>Hidden</Badge>);
+		expect(container.querySelector('[data-slot="badge"]')).toBeNull();
+	});
 });

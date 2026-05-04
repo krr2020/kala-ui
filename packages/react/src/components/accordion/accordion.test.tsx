@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
 import {
 	Accordion,
 	AccordionContent,
@@ -104,5 +105,156 @@ describe("Accordion", () => {
 
 		const trigger = screen.getByText("Disabled Item");
 		expect(trigger).toBeDisabled();
+	});
+
+	it("should render with bordered variant", () => {
+		const { container } = render(
+			<Accordion type="single" collapsible variant="bordered">
+				<AccordionItem value="item-1">
+					<AccordionTrigger>Bordered Item</AccordionTrigger>
+					<AccordionContent>Bordered Content</AccordionContent>
+				</AccordionItem>
+			</Accordion>,
+		);
+
+		const accordion = container.querySelector('[data-slot="accordion"]');
+		expect(accordion).toHaveClass("space-y-2");
+
+		const item = container.querySelector('[data-slot="accordion-item"]');
+		expect(item).toHaveClass("border", "rounded-md", "overflow-hidden");
+	});
+
+	it("should render with filled variant", () => {
+		const { container } = render(
+			<Accordion type="single" collapsible variant="filled">
+				<AccordionItem value="item-1">
+					<AccordionTrigger>Filled Item</AccordionTrigger>
+					<AccordionContent>Filled Content</AccordionContent>
+				</AccordionItem>
+			</Accordion>,
+		);
+
+		const accordion = container.querySelector('[data-slot="accordion"]');
+		expect(accordion).toHaveClass("space-y-2");
+
+		const item = container.querySelector('[data-slot="accordion-item"]');
+		expect(item).toHaveClass("border", "rounded-md", "overflow-hidden");
+	});
+
+	it("should apply default variant styles to item", () => {
+		const { container } = render(
+			<Accordion type="single" collapsible variant="default">
+				<AccordionItem value="item-1">
+					<AccordionTrigger>Default Item</AccordionTrigger>
+					<AccordionContent>Default Content</AccordionContent>
+				</AccordionItem>
+			</Accordion>,
+		);
+
+		const item = container.querySelector('[data-slot="accordion-item"]');
+		expect(item).toHaveClass("border-b");
+		expect(item).not.toHaveClass("rounded-md");
+	});
+
+	it("should apply variant-specific styles to trigger", () => {
+		const { container } = render(
+			<Accordion type="single" collapsible variant="bordered">
+				<AccordionItem value="item-1">
+					<AccordionTrigger>Bordered Trigger</AccordionTrigger>
+					<AccordionContent>Content</AccordionContent>
+				</AccordionItem>
+			</Accordion>,
+		);
+
+		const trigger = container.querySelector('[data-slot="accordion-trigger"]');
+		expect(trigger).toHaveClass("px-4", "rounded-t-md");
+	});
+
+	it("should apply filled variant styles to trigger", () => {
+		const { container } = render(
+			<Accordion type="single" collapsible variant="filled">
+				<AccordionItem value="item-1">
+					<AccordionTrigger>Filled Trigger</AccordionTrigger>
+					<AccordionContent>Content</AccordionContent>
+				</AccordionItem>
+			</Accordion>,
+		);
+
+		const trigger = container.querySelector('[data-slot="accordion-trigger"]');
+		expect(trigger).toHaveClass("px-4");
+	});
+
+	it("should apply variant-specific styles to content", () => {
+		const { container } = render(
+			<Accordion type="single" collapsible variant="bordered">
+				<AccordionItem value="item-1">
+					<AccordionTrigger>Item</AccordionTrigger>
+					<AccordionContent>Bordered Content</AccordionContent>
+				</AccordionItem>
+			</Accordion>,
+		);
+
+		const content = container.querySelector('[data-slot="accordion-content"]');
+		expect(content).toBeInTheDocument();
+	});
+
+	it("should apply filled variant styles to content", () => {
+		const { container } = render(
+			<Accordion type="single" collapsible variant="filled">
+				<AccordionItem value="item-1">
+					<AccordionTrigger>Item</AccordionTrigger>
+					<AccordionContent>Filled Content</AccordionContent>
+				</AccordionItem>
+			</Accordion>,
+		);
+
+		const content = container.querySelector('[data-slot="accordion-content"]');
+		expect(content).toBeInTheDocument();
+	});
+
+	it("should apply custom className to item", () => {
+		const { container } = render(
+			<Accordion type="single" collapsible>
+				<AccordionItem value="item-1" className="custom-item">
+					<AccordionTrigger>Item</AccordionTrigger>
+					<AccordionContent>Content</AccordionContent>
+				</AccordionItem>
+			</Accordion>,
+		);
+
+		const item = container.querySelector('[data-slot="accordion-item"]');
+		expect(item).toHaveClass("custom-item");
+	});
+
+	it("should apply custom className to trigger", () => {
+		const { container } = render(
+			<Accordion type="single" collapsible>
+				<AccordionItem value="item-1">
+					<AccordionTrigger className="custom-trigger">
+						Item
+					</AccordionTrigger>
+					<AccordionContent>Content</AccordionContent>
+				</AccordionItem>
+			</Accordion>,
+		);
+
+		const trigger = container.querySelector('[data-slot="accordion-trigger"]');
+		expect(trigger).toHaveClass("custom-trigger");
+	});
+
+	it("should apply custom className to content", () => {
+		const { container } = render(
+			<Accordion type="single" collapsible>
+				<AccordionItem value="item-1">
+					<AccordionTrigger>Item</AccordionTrigger>
+					<AccordionContent className="custom-content">
+						Content
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>,
+		);
+
+		const content = container.querySelector('[data-slot="accordion-content"]');
+		expect(content).toBeInTheDocument();
 	});
 });

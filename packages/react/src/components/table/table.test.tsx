@@ -111,6 +111,127 @@ describe("Table", () => {
 		expect(screen.getByText("Row 2")).toBeInTheDocument();
 		expect(screen.getByText("Row 3")).toBeInTheDocument();
 	});
+
+	it("should render loading skeleton when isLoading is true", () => {
+		const { container } = render(<Table isLoading />);
+		expect(container.querySelector('[class*="animate-pulse"]')).toBeInTheDocument();
+		expect(container.querySelector('table')).toBeInTheDocument();
+	});
+
+	it("should render loading skeleton with legacy props", () => {
+		const { container } = render(
+			<Table isLoading loadingRows={3} loadingColumns={2} />,
+		);
+		const rows = container.querySelectorAll("tbody tr");
+		expect(rows).toHaveLength(3);
+	});
+
+	it("should render custom skeleton when isLoading and skeleton prop provided", () => {
+		render(
+			<Table isLoading skeleton={<div data-testid="custom-skeleton">Loading...</div>} />,
+		);
+		expect(screen.getByTestId("custom-skeleton")).toBeInTheDocument();
+	});
+
+	it("should render loading skeleton with skeletonConfig", () => {
+		const { container } = render(
+			<Table isLoading skeletonConfig={{ rows: 7, columns: 5 }} />,
+		);
+		const rows = container.querySelectorAll("tbody tr");
+		expect(rows).toHaveLength(7);
+	});
+
+	it("should render loading skeleton with loadingHeaders", () => {
+		const { container } = render(
+			<Table
+				isLoading
+				loadingHeaders={["Col1", "Col2", "Col3"]}
+				loadingColumns={3}
+			/>,
+		);
+		// Inline TableSkeleton renders skeleton placeholders in headers
+		const headerCells = container.querySelectorAll("thead th");
+		expect(headerCells).toHaveLength(3);
+	});
+
+	it("should render loading skeleton with loadingShowActions", () => {
+		const { container } = render(
+			<Table isLoading loadingShowActions loadingColumns={3} />,
+		);
+		// Inline TableSkeleton renders skeleton placeholder for actions column
+		const firstRowCells = container.querySelectorAll("tbody tr:first-child td");
+		expect(firstRowCells).toHaveLength(4); // 3 + 1 actions column
+	});
+
+	it("should render data-slot attributes", () => {
+		const { container } = render(
+			<Table>
+				<TableHeader>
+					<TableRow>
+						<TableHead>H</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					<TableRow>
+						<TableCell>C</TableCell>
+					</TableRow>
+				</TableBody>
+				<TableFooter>
+					<TableRow>
+						<TableCell>F</TableCell>
+					</TableRow>
+				</TableFooter>
+				<TableCaption>Cap</TableCaption>
+			</Table>,
+		);
+		expect(container.querySelector('[data-slot="table-container"]')).toBeInTheDocument();
+		expect(container.querySelector('[data-slot="table"]')).toBeInTheDocument();
+		expect(container.querySelector('[data-slot="table-header"]')).toBeInTheDocument();
+		expect(container.querySelector('[data-slot="table-body"]')).toBeInTheDocument();
+		expect(container.querySelector('[data-slot="table-row"]')).toBeInTheDocument();
+		expect(container.querySelector('[data-slot="table-head"]')).toBeInTheDocument();
+		expect(container.querySelector('[data-slot="table-cell"]')).toBeInTheDocument();
+		expect(container.querySelector('[data-slot="table-footer"]')).toBeInTheDocument();
+		expect(container.querySelector('[data-slot="table-caption"]')).toBeInTheDocument();
+	});
+
+	it("should apply custom className to sub-components", () => {
+		const { container } = render(
+			<Table>
+				<TableHeader className="header-cls">
+					<TableRow>
+						<TableHead className="head-cls">H</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody className="body-cls">
+					<TableRow className="row-cls">
+						<TableCell className="cell-cls">C</TableCell>
+					</TableRow>
+				</TableBody>
+				<TableFooter className="footer-cls">
+					<TableRow>
+						<TableCell>F</TableCell>
+					</TableRow>
+				</TableFooter>
+				<TableCaption className="caption-cls">Cap</TableCaption>
+			</Table>,
+		);
+		expect(container.querySelector('.header-cls')).toBeInTheDocument();
+		expect(container.querySelector('.head-cls')).toBeInTheDocument();
+		expect(container.querySelector('.body-cls')).toBeInTheDocument();
+		expect(container.querySelector('.row-cls')).toBeInTheDocument();
+		expect(container.querySelector('.cell-cls')).toBeInTheDocument();
+		expect(container.querySelector('.footer-cls')).toBeInTheDocument();
+		expect(container.querySelector('.caption-cls')).toBeInTheDocument();
+	});
+
+	it("should render Table.Skeleton via compound component", () => {
+		const { container } = render(
+			<Table.Skeleton rows={4} columns={3} />,
+		);
+		const rows = container.querySelectorAll("tbody tr");
+		expect(rows).toHaveLength(4);
+	});
 });
 
 describe("TableSkeleton", () => {

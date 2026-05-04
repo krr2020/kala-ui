@@ -37,7 +37,7 @@ describe("AvatarGroup", () => {
 	it("should default max to 4", () => {
 		render(<AvatarGroup avatars={avatars} />);
 
-		// 5 avatars with max 4 → +1 overflow
+		// 5 avatars with max 4 -> +1 overflow
 		expect(screen.getByText("+1")).toBeInTheDocument();
 	});
 
@@ -77,5 +77,58 @@ describe("AvatarGroup", () => {
 		render(<AvatarGroup avatars={withImages} />);
 		expect(screen.getByText("AL")).toBeInTheDocument();
 		expect(screen.getByText("BO")).toBeInTheDocument();
+	});
+
+	it("should render avatars without tooltips when showTooltip is false", () => {
+		render(<AvatarGroup avatars={avatars.slice(0, 2)} showTooltip={false} />);
+
+		expect(screen.getByText("AB")).toBeInTheDocument();
+		expect(screen.getByText("CD")).toBeInTheDocument();
+	});
+
+	it("should render avatars with tooltips when showTooltip is true (default)", () => {
+		render(<AvatarGroup avatars={avatars.slice(0, 2)} showTooltip />);
+
+		expect(screen.getByText("AB")).toBeInTheDocument();
+		expect(screen.getByText("CD")).toBeInTheDocument();
+	});
+
+	it("should render avatar without src (no image element)", () => {
+		const noSrc = [
+			{ fallback: "NS" },
+		];
+
+		render(<AvatarGroup avatars={noSrc} />);
+		expect(screen.getByText("NS")).toBeInTheDocument();
+	});
+
+	it("should render avatar without alt (uses fallback for tooltip)", () => {
+		const noAlt = [
+			{ src: "https://example.com/a.jpg", fallback: "NA" },
+		];
+
+		render(<AvatarGroup avatars={noAlt} />);
+		expect(screen.getByText("NA")).toBeInTheDocument();
+	});
+
+	it("should render with different sizes", () => {
+		render(<AvatarGroup avatars={avatars.slice(0, 2)} size="sm" />);
+		expect(screen.getByText("AB")).toBeInTheDocument();
+	});
+
+	it("should render with lg size", () => {
+		render(<AvatarGroup avatars={avatars.slice(0, 2)} size="lg" />);
+		expect(screen.getByText("AB")).toBeInTheDocument();
+	});
+
+	it("should render with empty avatars array", () => {
+		render(<AvatarGroup avatars={[]} />);
+		expect(screen.queryByText(/^\+/)).toBeNull();
+	});
+
+	it("should render overflow avatar with correct count when max is 1", () => {
+		render(<AvatarGroup avatars={avatars} max={1} />);
+		expect(screen.getByText("AB")).toBeInTheDocument();
+		expect(screen.getByText("+4")).toBeInTheDocument();
 	});
 });

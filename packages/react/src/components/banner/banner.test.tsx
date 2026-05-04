@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { Banner } from "./banner";
+import { Banner, bannerVariants } from "./banner";
 
 describe("Banner", () => {
 	it("should render banner with children", () => {
@@ -104,5 +104,50 @@ describe("Banner", () => {
 		);
 		expect(screen.getByText("First")).toBeInTheDocument();
 		expect(screen.getByText("Second")).toBeInTheDocument();
+	});
+
+	// NEW TESTS BELOW
+
+	it("should render with role='status'", () => {
+		render(<Banner role="status">Status banner</Banner>);
+		const banner = screen.getByRole("status");
+		expect(banner).toBeInTheDocument();
+	});
+
+	it("should render with aria-live='polite'", () => {
+		render(<Banner aria-live="polite">Polite banner</Banner>);
+		const banner = screen.getByRole("banner");
+		expect(banner).toHaveAttribute("aria-live", "polite");
+	});
+
+	it("should render with isLoading and custom skeleton", () => {
+		render(
+			<Banner
+				isLoading
+				skeleton={<div data-testid="custom-skel">Loading</div>}
+			>
+				Content
+			</Banner>,
+		);
+		expect(screen.getByTestId("custom-skel")).toBeInTheDocument();
+		expect(screen.queryByText("Content")).not.toBeInTheDocument();
+	});
+
+	it("should render with isLoading and skeletonConfig (uses BannerSkeleton)", () => {
+		render(
+			<Banner isLoading skeletonConfig={{ variant: "warning" }}>
+				Content
+			</Banner>,
+		);
+		expect(screen.queryByText("Content")).not.toBeInTheDocument();
+	});
+
+	it("should render with isLoading and no skeleton props (uses default BannerSkeleton)", () => {
+		render(<Banner isLoading>Content</Banner>);
+		expect(screen.queryByText("Content")).not.toBeInTheDocument();
+	});
+
+	it("should export bannerVariants", () => {
+		expect(bannerVariants).toBeDefined();
 	});
 });
