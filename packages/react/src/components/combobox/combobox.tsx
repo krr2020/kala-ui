@@ -89,8 +89,6 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 		const selectedOption = options.find((o) => o.value === value);
 		const displayLabel = selectedOption?.label ?? selectedLabel ?? placeholder;
 
-		// In async mode, suppress stale options when the search input is empty
-		// so that reopening always shows a clean state instead of previous results.
 		const visibleOptions = isAsync && search.length === 0 ? [] : options;
 
 		const handleSearchChange = (val: string) => {
@@ -106,8 +104,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 			}
 		};
 
-		const handleClear = (e: React.MouseEvent) => {
-			e.stopPropagation();
+		const handleClear = () => {
 			onValueChange?.("");
 		};
 
@@ -137,14 +134,19 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 						</Text>
 						<span className="ml-2 flex items-center gap-1 shrink-0">
 							{clearable && value && (
-								<button
-									type="button"
+								// biome-ignore lint/a11y/useSemanticElements: <button> inside PopoverTrigger causes nested button hydration error
+								<span
+									role="button"
 									aria-label="Clear selection"
+									tabIndex={0}
 									onClick={handleClear}
-									className="opacity-50 hover:opacity-100 rounded-sm hover:bg-accent p-0.5"
+									onKeyDown={(e) => {
+										if (e.key === "Enter" || e.key === " ") handleClear();
+									}}
+									className="opacity-50 hover:opacity-100 rounded-sm hover:bg-accent p-0.5 cursor-pointer"
 								>
 									<X className="size-3" />
-								</button>
+								</span>
 							)}
 							<ChevronsUpDown className="size-4 opacity-50" />
 						</span>
