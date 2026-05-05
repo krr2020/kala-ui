@@ -69,7 +69,7 @@ function Pagination({
 			<Box
 				as="nav"
 				aria-label={ariaLabel}
-				className={cn("mx-auto flex w-full justify-center", className)}
+				className={cn("mx-auto flex w-full flex-wrap justify-center", className)}
 				{...props}
 			>
 				{children}
@@ -121,6 +121,8 @@ function PaginationContent({
 			<Flex
 				as="ul"
 				align="center"
+				justify="center"
+				wrap="wrap"
 				gap={spaced ? 2 : 1}
 				className={className}
 				data-variant={variant}

@@ -270,15 +270,15 @@ export function DataTableSkeleton<TData = unknown>({
 			{showPagination && (
 				<div
 					className={cn(
-						"flex flex-col sm:flex-row items-center justify-between gap-4 bg-background px-4 py-3 rounded-b-lg theme-card border-x border-b",
+						"flex flex-col gap-3 sm:flex-row sm:gap-0 items-center sm:justify-between bg-background px-4 py-3 rounded-b-lg theme-card border-x border-b",
 						stickyFooter && "sticky bottom-0 z-1 shadow-xl bg-background",
 					)}
 				>
-					<div className="flex items-center gap-2 text-sm text-muted-foreground">
-						<Skeleton className="h-4 w-48" />
-					</div>
+					<div className="flex items-center justify-between gap-4 w-full sm:w-auto">
+						<div className="flex items-center gap-2 text-sm text-muted-foreground">
+							<Skeleton className="h-4 w-48" />
+						</div>
 
-					<div className="flex items-center gap-2">
 						{/* Page size selector */}
 						<div className="flex items-center gap-2">
 							<FieldLabel
@@ -293,29 +293,29 @@ export function DataTableSkeleton<TData = unknown>({
 								</SelectTrigger>
 							</Select>
 						</div>
+					</div>
 
-						{/* Page navigation */}
-						<div className="flex items-center gap-1">
-							<Button
-								variant="outline"
-								size="sm"
-								disabled
-								className="opacity-50"
-							>
-								<Skeleton className="h-4 w-4" />
-							</Button>
-							<span className="text-sm text-muted-foreground px-2">
-								<Skeleton className="h-4 w-16 inline-block" />
-							</span>
-							<Button
-								variant="outline"
-								size="sm"
-								disabled
-								className="opacity-50"
-							>
-								<Skeleton className="h-4 w-4" />
-							</Button>
-						</div>
+					{/* Page navigation */}
+					<div className="flex items-center justify-center gap-1 flex-wrap">
+						<Button
+							variant="outline"
+							size="sm"
+							disabled
+							className="opacity-50"
+						>
+							<Skeleton className="h-4 w-4" />
+						</Button>
+						<span className="text-sm text-muted-foreground px-2">
+							<Skeleton className="h-4 w-16 inline-block" />
+						</span>
+						<Button
+							variant="outline"
+							size="sm"
+							disabled
+							className="opacity-50"
+						>
+							<Skeleton className="h-4 w-4" />
+						</Button>
 					</div>
 				</div>
 			)}

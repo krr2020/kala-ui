@@ -1,5 +1,5 @@
 export const tabsListStyles = {
-	base: "inline-flex items-center rounded-lg text-muted-foreground relative",
+	base: "flex items-center rounded-lg text-muted-foreground relative",
 	variants: {
 		variant: {
 			default: "bg-muted p-1 h-10",

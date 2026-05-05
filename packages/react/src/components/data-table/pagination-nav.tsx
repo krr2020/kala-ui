@@ -31,16 +31,17 @@ export function PaginationNav({
 	onPreviousPage,
 	onNextPage,
 }: PaginationNavProps) {
+	// Use fewer siblings on small screens to reduce button count
 	const { range } = usePagination({
 		total: totalPages,
 		page: currentPage,
-		siblings: 1,
+		siblings: 0,
 		boundaries: 1,
 		onChange: onPageChange,
 	});
 
 	return (
-		<Flex align="center" gap={1}>
+		<Flex align="center" justify="center" wrap="wrap" gap={1}>
 			<Button
 				variant="outline"
 				size="sm"

@@ -27,7 +27,7 @@ export interface ComboboxOption {
 export interface ComboboxProps {
 	options: ComboboxOption[];
 	value?: string;
-	onValueChange?: (value: string) => void;
+	onValueChange?: (value: string) => boolean | void;
 	/** @default "Select option..." */
 	placeholder?: string;
 	/** @default "Search..." */
@@ -118,7 +118,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 						aria-expanded={open}
 						disabled={disabled}
 						className={cn(
-							"w-full justify-between font-normal",
+							"w-full justify-between font-normal overflow-hidden",
 							size === "sm" ? "h-8 px-3 text-xs" : "h-10 px-4",
 							!value && "text-muted-foreground",
 							className,
@@ -126,7 +126,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 					>
 						<Text
 							className={cn(
-								"truncate",
+								"truncate min-w-0",
 								matchTriggerWidth && "flex-1 text-left",
 							)}
 						>
@@ -188,7 +188,10 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 								value={search}
 								onValueChange={handleSearchChange}
 							/>
-							<CommandList className="max-h-[300px] overflow-y-auto scrollbar-hide">
+							<CommandList
+								className="max-h-[300px] overflow-y-auto"
+								onWheel={(e) => e.stopPropagation()}
+							>
 								<CommandEmpty>{emptyText}</CommandEmpty>
 								<CommandGroup>
 									{visibleOptions.map((option, index) => (
@@ -197,10 +200,10 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 												value={option.value}
 												disabled={option.disabled ?? false}
 												onSelect={() => {
-													onValueChange?.(
+													const keepOpen = onValueChange?.(
 														option.value === value ? "" : option.value,
 													);
-													handleOpenChange(false);
+													if (!keepOpen) handleOpenChange(false);
 												}}
 												className={renderOption ? "py-2" : undefined}
 											>
@@ -219,7 +222,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 														/>
 														<Text
 															className={cn(
-																!matchTriggerWidth && "truncate",
+																!matchTriggerWidth && "truncate min-w-0",
 																"text-foreground",
 															)}
 														>

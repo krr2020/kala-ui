@@ -556,12 +556,12 @@ export function DataTable<TData>({
 							align="center"
 							justify="between"
 							className={cn(
-								"px-4 py-3 border rounded-b-lg bg-muted/30",
+								"flex-col gap-3 sm:flex-row sm:gap-0 px-4 py-3 border rounded-b-lg bg-muted/30",
 								stickyFooter && "shrink-0",
 							)}
 						>
-							<Flex align="center" gap={4}>
-								<Text as="span" className="text-foreground inline">
+							<Flex align="center" justify="between" gap={4} className="w-full sm:w-auto" wrap="wrap">
+								<Text as="span" className="text-foreground whitespace-nowrap">
 									{Math.min(
 										(paginationConfig.page - 1) * paginationConfig.pageSize + 1,
 										paginationConfig.total,
@@ -575,7 +575,7 @@ export function DataTable<TData>({
 									<Text
 										as="span"
 										weight="medium"
-										className="text-foreground inline"
+										className="text-foreground"
 									>
 										{paginationConfig.total}
 									</Text>
