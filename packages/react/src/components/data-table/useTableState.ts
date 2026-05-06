@@ -193,13 +193,21 @@ export function useTableState<TData>({
 				} else {
 					newSort = null; // Clear sort
 				}
-				onSortChange?.(newSort);
 				return newSort;
 			});
 			setCurrentPage(1); // Reset to first page when sorting changes
 		},
-		[onSortChange],
+		[],
 	);
+
+	// Notify parent of sort changes after render (avoids setState-during-render)
+	const prevSortRef = useRef<SortConfig<TData> | null>(defaultSort ?? null);
+	useEffect(() => {
+		if (sortConfig !== prevSortRef.current) {
+			prevSortRef.current = sortConfig;
+			onSortChange?.(sortConfig);
+		}
+	});
 
 	// Filter management
 	const setFilter = useCallback(

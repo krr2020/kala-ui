@@ -12,7 +12,6 @@ import { Button } from "../button";
 import { Checkbox } from "../checkbox";
 import { Flex } from "../flex";
 import { TableHead, TableHeader, TableRow } from "../table";
-import { Text } from "../text";
 import { ColumnHeaderFilter } from "./column-header-filter";
 import type {
 	ColumnDef,
@@ -128,7 +127,7 @@ export function DataTableHeaderRow<TData>({
 										onClick={() =>
 											onToggleSort(column.accessorKey as keyof TData)
 										}
-										className="-ml-3 h-8 data-[state=open]:bg-accent hover:bg-accent font-semibold text-foreground hover:text-accent-foreground"
+										className="-ml-3 h-8 data-[state=open]:bg-accent hover:bg-accent text-foreground hover:text-accent-foreground"
 										aria-label={
 											column.ariaLabel
 												? `Sort by ${column.ariaLabel}`
@@ -156,9 +155,9 @@ export function DataTableHeaderRow<TData>({
 										)}
 									</Button>
 								) : (
-									<Text weight="semibold" className="text-muted-foreground">
+									<span className="text-xs normal-case tracking-normal text-muted-foreground">
 										{column.header}
-									</Text>
+									</span>
 								)}
 								{filterColumn && (
 									<ColumnHeaderFilter
