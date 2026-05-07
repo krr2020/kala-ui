@@ -215,41 +215,60 @@ export function useTableState<TData>({
 	useEffect(() => {
 		if (sortConfig !== prevSortRef.current) {
 			prevSortRef.current = sortConfig;
-			onSortChange?.(sortConfig);
+			const cb = onSortChange;
+			if (cb) queueMicrotask(() => cb(sortConfig));
+		}
+	});
+
+	// Notify parent of filter changes after render (avoids setState-during-render)
+	const prevFilterRef = useRef<FilterConfig<TData>[]>(defaultFilters);
+	useEffect(() => {
+		if (filterConfigs !== prevFilterRef.current) {
+			prevFilterRef.current = filterConfigs;
+			const cb = onFilterChange;
+			if (cb) queueMicrotask(() => cb(filterConfigs));
+		}
+	});
+
+	// Notify parent of search changes after render (avoids setState-during-render)
+	const prevSearchRef = useRef("");
+	useEffect(() => {
+		if (searchQuery !== prevSearchRef.current) {
+			prevSearchRef.current = searchQuery;
+			const cb = onSearchChange;
+			if (cb) queueMicrotask(() => cb(searchQuery));
+		}
+	});
+
+	// Notify parent of pagination changes after render (avoids setState-during-render)
+	const prevPaginationRef = useRef({ page: 1, pageSize: initialPageSize });
+	useEffect(() => {
+		const prev = prevPaginationRef.current;
+		if (currentPage !== prev.page || pageSize !== prev.pageSize) {
+			prevPaginationRef.current = { page: currentPage, pageSize };
+			const cb = onPaginationChange;
+			if (cb) queueMicrotask(() => cb(currentPage, pageSize));
 		}
 	});
 
 	// Filter management
-	const setFilter = useCallback(
-		(filter: FilterConfig<TData>) => {
-			setFilterConfigs((prev) => {
-				const filtered = prev.filter((f) => f.key !== filter.key);
-				const newFilters = [...filtered, filter];
-				onFilterChange?.(newFilters);
-				return newFilters;
-			});
-			setCurrentPage(1); // Reset to first page when filter changes
-		},
-		[onFilterChange],
-	);
+	const setFilter = useCallback((filter: FilterConfig<TData>) => {
+		setFilterConfigs((prev) => {
+			const filtered = prev.filter((f) => f.key !== filter.key);
+			return [...filtered, filter];
+		});
+		setCurrentPage(1);
+	}, []);
 
-	const removeFilter = useCallback(
-		(key: keyof TData) => {
-			setFilterConfigs((prev) => {
-				const newFilters = prev.filter((f) => f.key !== key);
-				onFilterChange?.(newFilters);
-				return newFilters;
-			});
-			setCurrentPage(1);
-		},
-		[onFilterChange],
-	);
+	const removeFilter = useCallback((key: keyof TData) => {
+		setFilterConfigs((prev) => prev.filter((f) => f.key !== key));
+		setCurrentPage(1);
+	}, []);
 
 	const clearFilters = useCallback(() => {
 		setFilterConfigs([]);
-		onFilterChange?.([]);
 		setCurrentPage(1);
-	}, [onFilterChange]);
+	}, []);
 
 	// Extract debounce ms from searchConfig
 	const debounceMs = useMemo(() => {
@@ -267,14 +286,12 @@ export function useTableState<TData>({
 			if (debounceMs > 0) {
 				searchDebounceRef.current = setTimeout(() => {
 					setCurrentPage(1);
-					onSearchChange?.(query);
 				}, debounceMs);
 			} else {
 				setCurrentPage(1);
-				onSearchChange?.(query);
 			}
 		},
-		[onSearchChange, debounceMs],
+		[debounceMs],
 	);
 
 	// Set current page and notify server-side listener
@@ -285,11 +302,10 @@ export function useTableState<TData>({
 					typeof pageOrUpdater === "function"
 						? pageOrUpdater(prev)
 						: pageOrUpdater;
-				onPaginationChange?.(newPage, pageSize);
 				return newPage;
 			});
 		},
-		[onPaginationChange, pageSize],
+		[],
 	);
 
 	// Pagination navigation
@@ -305,15 +321,11 @@ export function useTableState<TData>({
 		}
 	}, [hasPreviousPage, handleSetCurrentPage]);
 
-	// Page size change
-	const handleSetPageSize = useCallback(
-		(size: number) => {
-			setPageSize(size);
-			setCurrentPage(1); // Reset to first page when page size changes
-			onPaginationChange?.(1, size);
-		},
-		[onPaginationChange],
-	);
+	// Page size change — reset page without direct callback
+	const handleSetPageSize = useCallback((size: number) => {
+		setPageSize(size);
+		setCurrentPage(1);
+	}, []);
 
 	return {
 		processedData: sortedData,
