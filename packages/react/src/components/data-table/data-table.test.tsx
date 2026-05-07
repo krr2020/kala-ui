@@ -463,7 +463,7 @@ describe("DataTable", () => {
 			const searchInput = screen.getByRole("textbox");
 			await user.type(searchInput, "nonexistent");
 
-			const emptyMessages = screen.getAllByText(/no results found/i);
+			const emptyMessages = screen.getAllByText(/no results match/i);
 			expect(emptyMessages.length).toBeGreaterThan(0);
 		});
 
@@ -1330,7 +1330,7 @@ describe("DataTable", () => {
 			const searchInput = screen.getByRole("textbox");
 			await user.type(searchInput, "nonexistent");
 
-			const emptyMessages = screen.getAllByText(/no results found/i);
+			const emptyMessages = screen.getAllByText(/no results match/i);
 			expect(emptyMessages.length).toBeGreaterThan(0);
 		});
 

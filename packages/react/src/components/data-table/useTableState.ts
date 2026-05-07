@@ -100,6 +100,9 @@ export function useTableState<TData>({
 
 				switch (filter.operator) {
 					case "equals":
+						if (typeof value === "boolean") {
+							return value === (filterValue === "true" || filterValue === true);
+						}
 						return value === filterValue;
 					case "contains":
 						return String(value)
@@ -114,6 +117,13 @@ export function useTableState<TData>({
 							.toLowerCase()
 							.endsWith(String(filterValue).toLowerCase());
 					case "in":
+						if (typeof value === "boolean") {
+							const strVal = String(value);
+							return (
+								Array.isArray(filterValue) &&
+								filterValue.some((v) => v === strVal || v === value)
+							);
+						}
 						return Array.isArray(filterValue) && filterValue.includes(value);
 					default:
 						return true;
