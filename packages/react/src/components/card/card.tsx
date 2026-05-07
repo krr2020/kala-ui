@@ -58,7 +58,7 @@ function CardTitle({
 	...props
 }: React.HTMLAttributes<HTMLHeadingElement>) {
 	return (
-		<Heading as="h5" className={cn(cardStyles.title, className)} {...props} />
+		<Heading as="h5" size="h6" className={cn(cardStyles.title, className)} {...props} />
 	);
 }
 
