@@ -460,7 +460,7 @@
 		}
 	},
 	"scripts": {
-		"build": "tsc && pnpm exec postcss src/styles/globals.css -o dist/styles/globals.css",
+		"build": "tsc && node scripts/add-js-extensions.js && pnpm exec postcss src/styles/globals.css -o dist/styles/globals.css",
 		"type-check": "tsc --noEmit",
 		"lint": "biome lint .",
 		"lint:fix": "biome lint . --write",

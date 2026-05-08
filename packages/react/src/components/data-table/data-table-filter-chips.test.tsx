@@ -31,7 +31,7 @@ describe("DataTableFilterChips", () => {
 		expect(container.innerHTML).toBe("");
 	});
 
-	it("renders chips for single-value filters", () => {
+it("renders chips for single-value filters (no matching option – shows raw value)", () => {
 		const filterConfigs: FilterConfig<TestRow>[] = [
 			{ key: "status", operator: "equals", value: "active" },
 		];
@@ -42,7 +42,25 @@ describe("DataTableFilterChips", () => {
 			/>,
 		);
 		expect(screen.getByText(/Active filters/)).toBeInTheDocument();
-		expect(screen.getByText("Status: active")).toBeInTheDocument();
+		expect(screen.getByText("active")).toBeInTheDocument();
+	});
+
+	it("renders option labels when options match", () => {
+		const columnsWithLabels: FilterableColumn<TestRow>[] = [
+			{ key: "status", label: "Status", type: "select", options: [{ label: "Active", value: "active" }, { label: "Pending", value: "pending" }] },
+		];
+		const filterConfigs: FilterConfig<TestRow>[] = [
+			{ key: "status", operator: "equals", value: "active" },
+		];
+		render(
+			<DataTableFilterChips<TestRow>
+				{...baseProps}
+				filterableColumns={columnsWithLabels}
+				filterConfigs={filterConfigs}
+			/>,
+		);
+		expect(screen.getByText("Active")).toBeInTheDocument();
+		expect(screen.queryByText("active")).not.toBeInTheDocument();
 	});
 
 	it("renders chips for multi-value (array) filters", () => {
@@ -55,8 +73,8 @@ describe("DataTableFilterChips", () => {
 				filterConfigs={filterConfigs}
 			/>,
 		);
-		expect(screen.getByText("Role: admin")).toBeInTheDocument();
-		expect(screen.getByText("Role: user")).toBeInTheDocument();
+		expect(screen.getByText("admin")).toBeInTheDocument();
+		expect(screen.getByText("user")).toBeInTheDocument();
 	});
 
 	it("calls onRemoveFilter when removing single-value filter", async () => {
@@ -72,7 +90,7 @@ describe("DataTableFilterChips", () => {
 		);
 
 		const removeBtn = screen.getByRole("button", {
-			name: "Remove Status filter: active",
+			name: "Remove active",
 		});
 		await user.click(removeBtn);
 		expect(baseProps.onRemoveFilter).toHaveBeenCalledWith("status");
@@ -91,7 +109,7 @@ describe("DataTableFilterChips", () => {
 		);
 
 		const removeBtn = screen.getByRole("button", {
-			name: "Remove Role filter: admin",
+			name: "Remove admin",
 		});
 		await user.click(removeBtn);
 		expect(baseProps.onSetFilter).toHaveBeenCalledWith({
@@ -143,10 +161,10 @@ describe("DataTableFilterChips", () => {
 			/>,
 		);
 		expect(
-			screen.getByRole("button", { name: "Remove Status filter: active" }),
+			screen.getByRole("button", { name: "Remove active" }),
 		).toBeInTheDocument();
 		expect(
-			screen.getByRole("button", { name: "Remove Status filter: pending" }),
+			screen.getByRole("button", { name: "Remove pending" }),
 		).toBeInTheDocument();
 	});
 });

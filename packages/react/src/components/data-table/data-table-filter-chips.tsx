@@ -43,6 +43,12 @@ export function DataTableFilterChips<TData>({
 					? filter.value
 					: [filter.value];
 
+				const findLabel = (val: unknown): string => {
+					const strVal = String(val);
+					const option = column.options?.find((o) => o.value === strVal);
+					return option?.label ?? strVal;
+				};
+
 				return filterValueArray.map((value, idx) => (
 					<Badge
 						key={`${String(filter.key)}-${value}-${idx}`}
@@ -50,7 +56,7 @@ export function DataTableFilterChips<TData>({
 						className="gap-1.5 pl-2 pr-1 py-1 bg-primary/10 text-primary border-primary/20"
 					>
 						<Text size="xs" weight="medium">
-							{column.label}: {String(value)}
+							{column.label}: {findLabel(value)}
 						</Text>
 						<Button
 							variant="ghost"
@@ -68,7 +74,7 @@ export function DataTableFilterChips<TData>({
 								}
 							}}
 							className="h-4 w-4 p-0 hover:bg-primary/20 rounded-sm"
-							aria-label={`Remove ${column.label} filter: ${String(value)}`}
+							aria-label={`Remove ${findLabel(value)}`}
 						>
 							<X className="h-3 w-3" />
 						</Button>
