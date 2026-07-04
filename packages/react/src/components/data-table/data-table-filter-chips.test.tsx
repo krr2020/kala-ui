@@ -42,7 +42,10 @@ it("renders chips for single-value filters (no matching option – shows raw val
 			/>,
 		);
 		expect(screen.getByText(/Active filters/)).toBeInTheDocument();
-		expect(screen.getByText("active")).toBeInTheDocument();
+		// Chip renders "Status: active" (column label + raw value when no option
+		// matches). Match the value substring; the label is asserted separately
+		// by the option-labels test below.
+		expect(screen.getByText(/Status: active/)).toBeInTheDocument();
 	});
 
 	it("renders option labels when options match", () => {
@@ -59,8 +62,9 @@ it("renders chips for single-value filters (no matching option – shows raw val
 				filterConfigs={filterConfigs}
 			/>,
 		);
-		expect(screen.getByText("Active")).toBeInTheDocument();
-		expect(screen.queryByText("active")).not.toBeInTheDocument();
+		// Option matched → chip renders the human label "Active" not the raw "active".
+		expect(screen.getByText(/Status: Active/)).toBeInTheDocument();
+		expect(screen.queryByText(/active/)).not.toBeInTheDocument();
 	});
 
 	it("renders chips for multi-value (array) filters", () => {
@@ -73,8 +77,9 @@ it("renders chips for single-value filters (no matching option – shows raw val
 				filterConfigs={filterConfigs}
 			/>,
 		);
-		expect(screen.getByText("admin")).toBeInTheDocument();
-		expect(screen.getByText("user")).toBeInTheDocument();
+		// Each array value renders its own chip: "Role: admin" + "Role: user".
+		expect(screen.getByText(/Role: admin/)).toBeInTheDocument();
+		expect(screen.getByText(/Role: user/)).toBeInTheDocument();
 	});
 
 	it("calls onRemoveFilter when removing single-value filter", async () => {

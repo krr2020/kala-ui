@@ -210,44 +210,54 @@ export function useTableState<TData>({
 		[],
 	);
 
-	// Notify parent of sort changes after render (avoids setState-during-render)
+	// Notify parent of sort changes after render. Calling the callback directly
+	// inside useEffect is safe — the setState that triggered this effect has
+	// already committed; the callback runs in the passive-effect phase, not
+	// during render. (The prior queueMicrotask deferral broke act() in tests:
+	// the microtask fired outside act()'s flush window, so sync assertions saw
+	// zero calls.)
 	const prevSortRef = useRef<SortConfig<TData> | null>(defaultSort ?? null);
 	useEffect(() => {
 		if (sortConfig !== prevSortRef.current) {
 			prevSortRef.current = sortConfig;
-			const cb = onSortChange;
-			if (cb) queueMicrotask(() => cb(sortConfig));
+			onSortChange?.(sortConfig);
 		}
 	});
 
-	// Notify parent of filter changes after render (avoids setState-during-render)
+	// Notify parent of filter changes after render.
 	const prevFilterRef = useRef<FilterConfig<TData>[]>(defaultFilters);
 	useEffect(() => {
 		if (filterConfigs !== prevFilterRef.current) {
 			prevFilterRef.current = filterConfigs;
-			const cb = onFilterChange;
-			if (cb) queueMicrotask(() => cb(filterConfigs));
+			onFilterChange?.(filterConfigs);
 		}
 	});
 
-	// Notify parent of search changes after render (avoids setState-during-render)
+	// Notify parent of search changes after render. When a debounce is
+	// configured, the parent (server-side search) is notified only after the
+	// debounce window elapses — firing on every keystroke would hammer the
+	// server. The local searchQuery state updates immediately so the local
+	// (client-side) filtering stays responsive; only the parent callback waits.
 	const prevSearchRef = useRef("");
 	useEffect(() => {
-		if (searchQuery !== prevSearchRef.current) {
-			prevSearchRef.current = searchQuery;
-			const cb = onSearchChange;
-			if (cb) queueMicrotask(() => cb(searchQuery));
+		if (searchQuery === prevSearchRef.current) return
+		prevSearchRef.current = searchQuery
+		if (!onSearchChange) return
+		if (debounceMs <= 0) {
+			onSearchChange(searchQuery)
+			return
 		}
+		const timer = setTimeout(() => onSearchChange(searchQuery), debounceMs)
+		return () => clearTimeout(timer)
 	});
 
-	// Notify parent of pagination changes after render (avoids setState-during-render)
+	// Notify parent of pagination changes after render.
 	const prevPaginationRef = useRef({ page: 1, pageSize: initialPageSize });
 	useEffect(() => {
 		const prev = prevPaginationRef.current;
 		if (currentPage !== prev.page || pageSize !== prev.pageSize) {
 			prevPaginationRef.current = { page: currentPage, pageSize };
-			const cb = onPaginationChange;
-			if (cb) queueMicrotask(() => cb(currentPage, pageSize));
+			onPaginationChange?.(currentPage, pageSize);
 		}
 	});
 
