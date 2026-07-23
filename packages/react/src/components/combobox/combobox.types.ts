@@ -1,3 +1,5 @@
+import type * as React from "react";
+
 export interface ComboboxOption {
 	value: string;
 	label: string;
@@ -5,49 +7,39 @@ export interface ComboboxOption {
 }
 
 export interface ComboboxProps {
-	/**
-	 * Options to display in the combobox
-	 */
+	/** Options to display in the combobox. */
 	options: ComboboxOption[];
-	/**
-	 * Selected value
-	 */
+	/** Selected value. */
 	value?: string;
-	/**
-	 * Callback when value changes
-	 */
+	/** Called when the user selects an option. The dropdown closes after
+	 *  selection. */
 	onValueChange?: (value: string) => void;
-	/**
-	 * Placeholder text when no value is selected
-	 * @default "Select option..."
-	 */
+	/** Placeholder text when no value is selected. @default "Select option..." */
 	placeholder?: string;
-	/**
-	 * Placeholder text for search input
-	 * @default "Search..."
-	 */
+	/** Placeholder text for the search input. @default "Search..." */
 	searchPlaceholder?: string;
-	/**
-	 * Text to show when no results found
-	 * @default "No results found."
-	 */
+	/** Text to show when no results match. @default "No results found." */
 	emptyText?: string;
-	/**
-	 * Disabled state
-	 */
+	/** Disabled state for the whole control. */
 	disabled?: boolean;
-	/**
-	 * Additional CSS classes for trigger button
-	 */
+	/** Additional CSS classes for the trigger button. */
 	className?: string;
-	/**
-	 * Size variant
-	 * @default "default"
-	 */
+	/** Size variant. @default "default" */
 	size?: "sm" | "default";
-	/**
-	 * Match dropdown width to trigger width. When true, also wraps long text.
-	 * @default true
-	 */
+	/** Match dropdown width to the trigger width. When true, also wraps long
+	 *  text inside options. @default true */
 	matchTriggerWidth?: boolean;
+	/** Show a clear button when a value is selected. @default false */
+	clearable?: boolean;
+	/** Called on every search input change. When provided, internal client-side
+	 *  filtering is disabled (use for server-side / async search). */
+	onSearchChange?: (search: string) => void;
+	/** Label to show in the trigger for the selected value when it may not be
+	 *  present in the current options array (e.g. async search). */
+	selectedLabel?: string;
+	/** Custom renderer for each option row. Receives the option and a boolean
+	 *  indicating whether it is currently selected. */
+	renderOption?: (option: ComboboxOption, selected: boolean) => React.ReactNode;
+	/** Draw a separator line between each option. @default false */
+	separateOptions?: boolean;
 }

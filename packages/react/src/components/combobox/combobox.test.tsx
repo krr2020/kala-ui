@@ -1,7 +1,8 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { Combobox, type ComboboxOption } from "./combobox";
+import { Combobox } from "./combobox";
+import type { ComboboxOption } from "./combobox.types";
 
 const mockOptions: ComboboxOption[] = [
 	{ value: "option1", label: "Option 1" },

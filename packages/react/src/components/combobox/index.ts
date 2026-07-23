@@ -1,8 +1,5 @@
-export {
-	Combobox,
-	type ComboboxOption,
-	type ComboboxProps,
-} from "./combobox";
+export { Combobox } from "./combobox";
+export type { ComboboxOption, ComboboxProps } from "./combobox.types";
 export type {
 	ComboboxSkeletonConfig,
 	ComboboxSkeletonProps,

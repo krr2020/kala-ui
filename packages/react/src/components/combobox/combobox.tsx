@@ -17,49 +17,7 @@ import {
 } from "../../primitives/command";
 import { Button } from "../button";
 import { Text } from "../text";
-
-export interface ComboboxOption {
-	value: string;
-	label: string;
-	disabled?: boolean;
-}
-
-export interface ComboboxProps {
-	options: ComboboxOption[];
-	value?: string;
-	onValueChange?: (value: string) => boolean | undefined;
-	/** @default "Select option..." */
-	placeholder?: string;
-	/** @default "Search..." */
-	searchPlaceholder?: string;
-	/** @default "No results found." */
-	emptyText?: string;
-	disabled?: boolean;
-	className?: string;
-	/** @default "default" */
-	size?: "sm" | "default";
-	/** @default true */
-	matchTriggerWidth?: boolean;
-	/** Show a clear button when a value is selected. @default false */
-	clearable?: boolean;
-	/**
-	 * Called on every search input change. When provided, internal client-side
-	 * filtering is disabled (use for server-side / async search).
-	 */
-	onSearchChange?: (search: string) => void;
-	/**
-	 * Label to show in the trigger for the selected value when it may not be
-	 * present in the current options array (e.g. async search).
-	 */
-	selectedLabel?: string;
-	/**
-	 * Custom renderer for each option row. Receives the option and a boolean
-	 * indicating whether it is currently selected.
-	 */
-	renderOption?: (option: ComboboxOption, selected: boolean) => React.ReactNode;
-	/** Draw a separator line between each option. @default false */
-	separateOptions?: boolean;
-}
+import type { ComboboxOption, ComboboxProps } from "./combobox.types";
 
 const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 	(
@@ -200,10 +158,10 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 												value={option.value}
 												disabled={option.disabled ?? false}
 												onSelect={() => {
-													const keepOpen = onValueChange?.(
+													onValueChange?.(
 														option.value === value ? "" : option.value,
 													);
-													if (!keepOpen) handleOpenChange(false);
+													handleOpenChange(false);
 												}}
 												className={renderOption ? "py-2" : undefined}
 											>

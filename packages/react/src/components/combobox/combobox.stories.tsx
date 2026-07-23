@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Skeleton } from "../skeleton";
-import { Combobox, type ComboboxOption } from "./combobox";
+import { Combobox } from "./combobox";
+import type { ComboboxOption } from "./combobox.types";
 
 const meta = {
 	title: "Forms/Combobox",
