@@ -38,7 +38,7 @@ describe("Card", () => {
 		const card = container.firstChild;
 		expect(card).toHaveClass("bg-card");
 		expect(card).toHaveClass("text-card-foreground");
-		expect(card).toHaveClass("rounded-md");
+		expect(card).toHaveClass("rounded-[var(--kala-radius-card)]");
 		expect(card).toHaveClass("border");
 	});
 

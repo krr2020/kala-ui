@@ -11,19 +11,19 @@ import {
 
 // Mock theme-utils since it relies on DOM for theme detection
 vi.mock("./theme-utils", () => ({
-	getChartColors: (theme?: string) => ({
+	getChartColors: (_theme?: string) => ({
 		primary: "#3b82f6",
 		success: "#22c55e",
 		warning: "#f59e0b",
 		destructive: "#ef4444",
 		info: "#06b6d4",
 		mixed: "#8b5cf6",
-		grid: "hsl(var(--border))",
-		tooltipBg: "hsl(var(--popover))",
-		tooltipText: "hsl(var(--popover-foreground))",
-		legendText: "hsl(var(--muted-foreground))",
+		grid: "var(--border)",
+		tooltipBg: "var(--popover)",
+		tooltipText: "var(--popover-foreground)",
+		legendText: "var(--muted-foreground)",
 	}),
-	getThemeAwareChartOptions: (theme?: string) => ({
+	getThemeAwareChartOptions: (_theme?: string) => ({
 		tooltip: {
 			theme: "dark",
 		},

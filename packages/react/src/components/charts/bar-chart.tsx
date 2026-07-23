@@ -93,7 +93,7 @@ export function BarChart({
 				enabled: dataLabels,
 				style: {
 					fontSize: "12px",
-					colors: ["hsl(var(--foreground))"],
+					colors: ["var(--foreground)"],
 				},
 			},
 			stroke: {
@@ -105,28 +105,28 @@ export function BarChart({
 				categories,
 				labels: {
 					style: {
-						colors: "hsl(var(--muted-foreground))",
+						colors: "var(--muted-foreground)",
 						fontSize: "12px",
 					},
 				},
 				axisBorder: {
-					color: "hsl(var(--border))",
+					color: "var(--border)",
 				},
 				axisTicks: {
-					color: "hsl(var(--border))",
+					color: "var(--border)",
 				},
 			},
 			yaxis: {
 				labels: {
 					style: {
-						colors: "hsl(var(--muted-foreground))",
+						colors: "var(--muted-foreground)",
 						fontSize: "12px",
 					},
 					formatter: (value: number) => value.toLocaleString(),
 				},
 			},
 			grid: {
-				borderColor: "hsl(var(--border))",
+				borderColor: "var(--border)",
 				strokeDashArray: 3,
 			},
 			tooltip: {
@@ -139,7 +139,7 @@ export function BarChart({
 				position: "top",
 				horizontalAlign: "right",
 				labels: {
-					colors: "hsl(var(--foreground))",
+					colors: "var(--foreground)",
 				},
 			},
 			...(title && {
@@ -148,7 +148,7 @@ export function BarChart({
 					style: {
 						fontSize: "16px",
 						fontWeight: "600",
-						color: "hsl(var(--foreground))",
+						color: "var(--foreground)",
 					},
 				},
 			}),
@@ -157,7 +157,7 @@ export function BarChart({
 					text: subtitle,
 					style: {
 						fontSize: "12px",
-						color: "hsl(var(--muted-foreground))",
+						color: "var(--muted-foreground)",
 					},
 				},
 			}),

@@ -1,11 +1,7 @@
 import {
 	DndContext,
-	PointerSensor,
-	TouchSensor,
-	KeyboardSensor,
 	useDraggable,
 	useSensor,
-	useSensors,
 } from "@dnd-kit/core";
 import { SortableContext as SortableContextKit, useSortable } from "@dnd-kit/sortable";
 import { fireEvent, render, screen } from "@testing-library/react";
@@ -701,7 +697,7 @@ describe("SortableHandle", () => {
 	});
 
 	it("renders function children with listeners", () => {
-		const mockChild = vi.fn((listeners: any) => (
+		const mockChild = vi.fn((_listeners: any) => (
 			<div>Function Handle</div>
 		));
 
@@ -720,7 +716,7 @@ describe("SortableHandle", () => {
 
 		const handle = screen.getByText("Handle").parentElement;
 		expect(handle).toHaveClass("cursor-grab");
-		expect(handle!.className).toContain("active:cursor-grabbing");
+		expect(handle?.className).toContain("active:cursor-grabbing");
 	});
 
 	it("merges custom className with default classes", () => {

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+
 import { describe, expect, it } from "vitest";
 import { designSystemComponents } from "./design-system-utils";
 import type { ComponentMetadata, CategoryMetadata } from "./design-system-utils";

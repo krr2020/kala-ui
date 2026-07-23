@@ -862,7 +862,7 @@ describe("DataTable", () => {
 		});
 
 		it("respects isRowSelectable", async () => {
-			const user = userEvent.setup();
+			const _user = userEvent.setup();
 			const onSelectionChange = vi.fn();
 			const config = {
 				...selectionConfig,

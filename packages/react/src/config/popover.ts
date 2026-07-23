@@ -59,7 +59,7 @@ export const popoverStyles = {
 		variants: {
 			variant: {
 				default:
-					"bg-popover [border-color:hsl(var(--border)/var(--border-alpha,1))] theme-popover",
+					"bg-popover [border-color:var(--border)] theme-popover",
 				primary: "bg-primary border-primary",
 				secondary: "bg-secondary border-secondary",
 				success: "bg-success border-success",

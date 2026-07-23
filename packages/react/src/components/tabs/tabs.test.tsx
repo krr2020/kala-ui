@@ -412,6 +412,6 @@ describe("Tabs", () => {
 		);
 		const trigger = container.querySelector('[data-slot="tabs-trigger"]');
 		expect(trigger).toBeInTheDocument();
-		expect(trigger).toHaveClass("rounded-md");
+		expect(trigger).toHaveClass("rounded-[var(--kala-radius-control)]");
 	});
 });

@@ -1,0 +1,153 @@
+/*
+ * helpers.css — kala-ui theme helper classes.
+ *
+ * Pure class DEFINITIONS only — NO :root values. The host owns the token
+ * values; this file wires the classes to them via var(). Import this so
+ * components that emit .theme-* / .focus-* / .ring-* render correctly. A host
+ * never needs to vendor or edit this.
+ */
+
+.theme-card {
+	background-color: var(--card);
+	border-color: color-mix(
+		in oklab,
+		var(--border),
+		transparent calc((1 - var(--card-border-alpha, var(--border-alpha, 1))) * 100%)
+	);
+	box-shadow: 0 0 var(--shadow-spread)
+		color-mix(in oklab, var(--shadow-color), transparent calc((1 - var(--shadow-alpha, 0)) * 100%))
+		!important;
+}
+
+.theme-input,
+.theme-dropdown {
+	background-color: var(--card) !important;
+	border-color: color-mix(
+		in oklab,
+		var(--border),
+		transparent calc((1 - var(--border-alpha, 1)) * 100%)
+	) !important;
+}
+
+.theme-popover {
+	background-color: var(--popover) !important;
+	border-color: color-mix(
+		in oklab,
+		var(--border),
+		transparent calc((1 - var(--border-alpha, 1)) * 100%)
+	) !important;
+}
+
+/* Persistent focus rings (always shown, not :focus-visible). */
+.ring-standard {
+	--tw-ring-offset-width: 2px;
+	--tw-ring-offset-color: var(--ring-offset-color);
+	--tw-ring-color: var(--ring);
+	outline: none;
+	box-shadow:
+		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+}
+
+.ring-destructive {
+	--tw-ring-offset-width: 2px;
+	--tw-ring-offset-color: var(--ring-offset-color);
+	--tw-ring-color: var(--destructive);
+	outline: none;
+	box-shadow:
+		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+}
+
+.ring-success {
+	--tw-ring-offset-width: 2px;
+	--tw-ring-offset-color: var(--ring-offset-color);
+	--tw-ring-color: var(--success);
+	outline: none;
+	box-shadow:
+		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+}
+
+.focus-ring {
+	outline: none;
+}
+.focus-ring:focus-visible {
+	--tw-ring-offset-width: 2px;
+	--tw-ring-offset-color: var(--ring-offset-color);
+	--tw-ring-color: var(--ring);
+	box-shadow:
+		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+}
+
+.focus-within-ring {
+	outline: none;
+}
+.focus-within-ring:focus-within {
+	--tw-ring-offset-width: 2px;
+	--tw-ring-offset-color: var(--ring-offset-color);
+	--tw-ring-color: var(--ring);
+	box-shadow:
+		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+}
+
+.focus-ring-destructive {
+	outline: none;
+}
+.focus-ring-destructive:focus-visible {
+	--tw-ring-offset-width: 2px;
+	--tw-ring-offset-color: var(--ring-offset-color);
+	--tw-ring-color: var(--destructive);
+	box-shadow:
+		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+}
+
+.focus-ring-success {
+	outline: none;
+}
+.focus-ring-success:focus-visible {
+	--tw-ring-offset-width: 2px;
+	--tw-ring-offset-color: var(--ring-offset-color);
+	--tw-ring-color: var(--success);
+	box-shadow:
+		0 0 0 var(--tw-ring-offset-width) var(--ring-offset-color),
+		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+}
+
+.focus-within-ring-destructive {
+	outline: none;
+}
+.focus-within-ring-destructive:focus-within {
+	--tw-ring-offset-width: 2px;
+	--tw-ring-offset-color: var(--ring-offset-color);
+	--tw-ring-color: var(--destructive);
+	box-shadow:
+		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+}
+
+.focus-visible-ring-success {
+	outline: none;
+}
+.focus-visible-ring-success:focus-visible {
+	--tw-ring-offset-width: 2px;
+	--tw-ring-offset-color: var(--ring-offset-color);
+	--tw-ring-color: var(--success);
+	box-shadow:
+		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}

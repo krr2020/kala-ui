@@ -1,8 +1,8 @@
 export const tabsListStyles = {
-	base: "flex items-center rounded-lg text-muted-foreground relative",
+		base: "flex items-center w-fit rounded-[var(--kala-radius-card)] text-muted-foreground relative",
 	variants: {
 		variant: {
-			default: "bg-muted p-1 h-10",
+			default: "bg-muted p-1 h-[var(--kala-control-h)]",
 			line: "bg-transparent p-0 h-auto border-b border-border w-full rounded-none",
 			vertical: "flex-col h-auto bg-transparent p-0 items-stretch",
 		},
@@ -23,7 +23,7 @@ export const tabsTriggerStyles = {
 	variants: {
 		variant: {
 			default:
-				"rounded-md data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm",
+				"rounded-[var(--kala-radius-control)] data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm",
 			line: "rounded-none border-b-2 border-transparent bg-transparent px-4 py-3 font-semibold text-muted-foreground shadow-none transition-colors data-[state=active]:text-foreground data-[state=active]:border-primary data-[state=active]:shadow-none hover:text-foreground",
 			vertical:
 				"justify-start rounded-md px-4 py-2 hover:bg-muted data-[state=active]:bg-muted data-[state=active]:text-foreground",

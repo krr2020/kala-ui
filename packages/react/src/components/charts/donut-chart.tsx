@@ -75,13 +75,13 @@ export function DonutChart({
 									show: true,
 									fontSize: "16px",
 									fontWeight: 600,
-									color: "hsl(var(--foreground))",
+									color: "var(--foreground)",
 								},
 								value: {
 									show: true,
 									fontSize: "24px",
 									fontWeight: 700,
-									color: "hsl(var(--foreground))",
+									color: "var(--foreground)",
 									formatter: (value: string) =>
 										parseInt(value, 10).toLocaleString(),
 								},
@@ -89,7 +89,7 @@ export function DonutChart({
 									show: true,
 									label: "Total",
 									fontSize: "14px",
-									color: "hsl(var(--muted-foreground))",
+									color: "var(--muted-foreground)",
 									formatter: (w: { globals: { seriesTotals: number[] } }) => {
 										return w.globals.seriesTotals
 											.reduce((a: number, b: number) => a + b, 0)
@@ -106,7 +106,7 @@ export function DonutChart({
 				position: "bottom",
 				horizontalAlign: "center",
 				labels: {
-					colors: "hsl(var(--foreground))",
+					colors: "var(--foreground)",
 				},
 			},
 			tooltip: {
@@ -134,7 +134,7 @@ export function DonutChart({
 					style: {
 						fontSize: "16px",
 						fontWeight: "600",
-						color: "hsl(var(--foreground))",
+						color: "var(--foreground)",
 					},
 				},
 			}),
@@ -143,7 +143,7 @@ export function DonutChart({
 					text: subtitle,
 					style: {
 						fontSize: "12px",
-						color: "hsl(var(--muted-foreground))",
+						color: "var(--muted-foreground)",
 					},
 				},
 			}),

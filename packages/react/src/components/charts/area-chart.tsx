@@ -99,15 +99,15 @@ export function AreaChart({
 				categories,
 				labels: {
 					style: {
-						colors: "hsl(var(--muted-foreground))",
+						colors: "var(--muted-foreground)",
 						fontSize: "12px",
 					},
 				},
 				axisBorder: {
-					color: "hsl(var(--border))",
+					color: "var(--border)",
 				},
 				axisTicks: {
-					color: "hsl(var(--border))",
+					color: "var(--border)",
 				},
 			},
 			yaxis: {
@@ -115,20 +115,20 @@ export function AreaChart({
 					title: {
 						text: yAxisLabel,
 						style: {
-							color: "hsl(var(--muted-foreground))",
+							color: "var(--muted-foreground)",
 							fontSize: "12px",
 						},
 					},
 				}),
 				labels: {
 					style: {
-						colors: "hsl(var(--muted-foreground))",
+						colors: "var(--muted-foreground)",
 						fontSize: "12px",
 					},
 				},
 			},
 			grid: {
-				borderColor: "hsl(var(--border))",
+				borderColor: "var(--border)",
 				strokeDashArray: 3,
 			},
 			tooltip: {
@@ -144,7 +144,7 @@ export function AreaChart({
 				position: "top",
 				horizontalAlign: "right",
 				labels: {
-					colors: "hsl(var(--foreground))",
+					colors: "var(--foreground)",
 				},
 			},
 			...(title && {
@@ -153,7 +153,7 @@ export function AreaChart({
 					style: {
 						fontSize: "16px",
 						fontWeight: "600",
-						color: "hsl(var(--foreground))",
+						color: "var(--foreground)",
 					},
 				},
 			}),
@@ -162,7 +162,7 @@ export function AreaChart({
 					text: subtitle,
 					style: {
 						fontSize: "12px",
-						color: "hsl(var(--muted-foreground))",
+						color: "var(--muted-foreground)",
 					},
 				},
 			}),

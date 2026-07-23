@@ -34,6 +34,9 @@
 		"./styles": {
 			"default": "./dist/styles/globals.css"
 		},
+		"./styles/helpers": {
+			"default": "./dist/styles/helpers.css"
+		},
 		"./config/tailwind-base": {
 			"types": "./dist/config/tailwind-base.d.ts",
 			"default": "./dist/config/tailwind-base.js"
@@ -460,7 +463,7 @@
 		}
 	},
 	"scripts": {
-		"build": "tsc && node scripts/add-js-extensions.js && pnpm exec postcss src/styles/globals.css -o dist/styles/globals.css",
+		"build": "tsc && node scripts/add-js-extensions.js && pnpm exec postcss src/styles/globals.css -o dist/styles/globals.css && cp src/styles/helpers.css dist/styles/helpers.css",
 		"type-check": "tsc --noEmit",
 		"lint": "biome lint .",
 		"lint:fix": "biome lint . --write",
@@ -527,7 +530,7 @@
 		"clsx": "~2.1.1",
 		"cmdk": "~1.1.1",
 		"date-fns": "~4.1.0",
-		"framer-motion": "~12.23.26",
+		"framer-motion": "~12.42.2",
 		"input-otp": "~1.4.2",
 		"lucide-react": "~0.561.0",
 		"react-apexcharts": "~1.9.0",

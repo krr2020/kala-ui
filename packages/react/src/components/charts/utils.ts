@@ -19,7 +19,7 @@ export function getDefaultChartOptions(
 	return {
 		chart: {
 			fontFamily: "inherit",
-			foreColor: "hsl(var(--muted-foreground))",
+			foreColor: "var(--muted-foreground)",
 			background: "transparent",
 			toolbar: {
 				show: false,

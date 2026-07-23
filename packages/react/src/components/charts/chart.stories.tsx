@@ -99,7 +99,7 @@ export const StackedChart: Story = {
 				categories: months,
 				labels: {
 					style: {
-						colors: "hsl(var(--muted-foreground))",
+						colors: "var(--muted-foreground)",
 						fontSize: "12px",
 					},
 				},
@@ -108,12 +108,12 @@ export const StackedChart: Story = {
 				title: {
 					text: "Sales",
 					style: {
-						color: "hsl(var(--muted-foreground))",
+						color: "var(--muted-foreground)",
 					},
 				},
 				labels: {
 					style: {
-						colors: "hsl(var(--muted-foreground))",
+						colors: "var(--muted-foreground)",
 					},
 				},
 			},
@@ -121,14 +121,14 @@ export const StackedChart: Story = {
 				position: "top",
 				horizontalAlign: "left",
 				labels: {
-					colors: "hsl(var(--foreground))",
+					colors: "var(--foreground)",
 				},
 			},
 			fill: {
 				opacity: 1,
 			},
 			grid: {
-				borderColor: "hsl(var(--border))",
+				borderColor: "var(--border)",
 				strokeDashArray: 3,
 			},
 		};
@@ -322,12 +322,12 @@ export const MixedCharts: Story = {
 							dataLabels: { enabled: false },
 							xaxis: {
 								categories: ["Q1", "Q2", "Q3", "Q4"],
-								labels: { style: { colors: "hsl(var(--muted-foreground))" } },
+								labels: { style: { colors: "var(--muted-foreground)" } },
 							},
 							yaxis: {
-								labels: { style: { colors: "hsl(var(--muted-foreground))" } },
+								labels: { style: { colors: "var(--muted-foreground)" } },
 							},
-							grid: { borderColor: "hsl(var(--border))", strokeDashArray: 3 },
+							grid: { borderColor: "var(--border)", strokeDashArray: 3 },
 						}}
 						series={[{ name: "Sales", data: [44, 55, 57, 56] }]}
 						type="bar"
@@ -350,12 +350,12 @@ export const MixedCharts: Story = {
 							dataLabels: { enabled: false },
 							xaxis: {
 								categories: ["Q1", "Q2", "Q3", "Q4"],
-								labels: { style: { colors: "hsl(var(--muted-foreground))" } },
+								labels: { style: { colors: "var(--muted-foreground)" } },
 							},
 							yaxis: {
-								labels: { style: { colors: "hsl(var(--muted-foreground))" } },
+								labels: { style: { colors: "var(--muted-foreground)" } },
 							},
-							grid: { borderColor: "hsl(var(--border))", strokeDashArray: 3 },
+							grid: { borderColor: "var(--border)", strokeDashArray: 3 },
 							markers: { size: 0, hover: { size: 5 } },
 						}}
 						series={[{ name: "Growth", data: [28, 35, 42, 48] }]}
@@ -374,7 +374,7 @@ export const MixedCharts: Story = {
 							labels: ["A", "B", "C"],
 							legend: {
 								position: "bottom",
-								labels: { colors: "hsl(var(--foreground))" },
+								labels: { colors: "var(--foreground)" },
 							},
 							plotOptions: {
 								pie: {
@@ -385,7 +385,7 @@ export const MixedCharts: Story = {
 											total: {
 												show: true,
 												label: "Total",
-												color: "hsl(var(--foreground))",
+												color: "var(--foreground)",
 												formatter: () => "100",
 											},
 										},
@@ -414,7 +414,7 @@ export const MixedCharts: Story = {
 										value: {
 											fontSize: "24px",
 											fontWeight: 700,
-											color: "hsl(var(--foreground))",
+											color: "var(--foreground)",
 											formatter: (val: number) => `${val}%`,
 										},
 									},

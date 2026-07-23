@@ -461,7 +461,7 @@ export function DataTable<TData>({
 												className={cn(
 													"bg-muted border-t",
 													stickyFooter &&
-													"sticky bottom-0 z-40 shadow-[0_-1px_0_0_hsl(var(--border))] backdrop-blur-sm bg-muted/95",
+													"sticky bottom-0 z-40 shadow-[0_-1px_0_0_var(--border)] backdrop-blur-sm bg-muted/95",
 												)}
 											>
 												<TableRow>

@@ -27,7 +27,7 @@ export interface ComboboxOption {
 export interface ComboboxProps {
 	options: ComboboxOption[];
 	value?: string;
-	onValueChange?: (value: string) => boolean | void;
+	onValueChange?: (value: string) => boolean | undefined;
 	/** @default "Select option..." */
 	placeholder?: string;
 	/** @default "Search..." */

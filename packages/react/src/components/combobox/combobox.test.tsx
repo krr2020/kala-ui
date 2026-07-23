@@ -361,7 +361,7 @@ describe("Combobox", () => {
 	});
 
 	it("shows selected option in async mode after searching", async () => {
-		const user = userEvent.setup();
+		const _user = userEvent.setup();
 		const handleSearchChange = vi.fn();
 		render(
 			<Combobox

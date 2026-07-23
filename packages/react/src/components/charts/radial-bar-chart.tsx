@@ -56,20 +56,20 @@ export function RadialBarChart({
 						size: hollowSize,
 					},
 					track: {
-						background: "hsl(var(--muted))",
+						background: "var(--muted)",
 						strokeWidth: "100%",
 					},
 					dataLabels: {
 						show: dataLabels,
 						name: {
 							fontSize: "14px",
-							color: "hsl(var(--muted-foreground))",
+							color: "var(--muted-foreground)",
 							offsetY: -10,
 						},
 						value: {
 							fontSize: "24px",
 							fontWeight: 700,
-							color: "hsl(var(--foreground))",
+							color: "var(--foreground)",
 							offsetY: 5,
 							formatter: (value: number) => `${value}%`,
 						},
@@ -77,7 +77,7 @@ export function RadialBarChart({
 							show: series.length > 1,
 							label: "Total",
 							fontSize: "14px",
-							color: "hsl(var(--muted-foreground))",
+							color: "var(--muted-foreground)",
 							formatter: (w: { globals: { series: number[] } }) => {
 								const total =
 									w.globals.series.reduce((a: number, b: number) => a + b, 0) /
@@ -94,7 +94,7 @@ export function RadialBarChart({
 				position: "bottom",
 				horizontalAlign: "center",
 				labels: {
-					colors: "hsl(var(--foreground))",
+					colors: "var(--foreground)",
 				},
 			},
 			tooltip: {
@@ -106,7 +106,7 @@ export function RadialBarChart({
 					style: {
 						fontSize: "16px",
 						fontWeight: "600",
-						color: "hsl(var(--foreground))",
+						color: "var(--foreground)",
 					},
 				},
 			}),
@@ -115,7 +115,7 @@ export function RadialBarChart({
 					text: subtitle,
 					style: {
 						fontSize: "12px",
-						color: "hsl(var(--muted-foreground))",
+						color: "var(--muted-foreground)",
 					},
 				},
 			}),

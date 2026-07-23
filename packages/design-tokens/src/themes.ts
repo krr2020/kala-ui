@@ -3,6 +3,8 @@
  *
  * Centralized theme definitions for the design system.
  * All themes defined here serve as single source of truth for styling.
+ * Color values are WHOLE CSS colors (hsl/oklch/hex), not raw HSL channels;
+ * components consume them via `var(--x)`.
  */
 
 export interface Theme {
@@ -10,13 +12,13 @@ export interface Theme {
 	className: string;
 	colorScheme: "light" | "dark";
 	colors: {
-		background: string; // HSL format for CSS
+		background: string; // whole CSS color
 		foreground: string;
 		card: string;
-		border: string; // HSL format
+		border: string; // whole CSS color
 	};
 	shadow?: {
-		color: string; // HSL color
+		color: string; // whole CSS color
 		alpha: number; // Transparency value (0-1)
 		spread: string; // Spread radius
 	};
@@ -28,13 +30,13 @@ export const themes: Record<string, Theme> = {
 		className: "",
 		colorScheme: "light",
 		colors: {
-			background: "0 0% 100%", // rgb(255, 255, 255)
-			foreground: "220 100% 11%", // rgb(0, 23, 55)
-			card: "0 0% 100%", // rgb(255, 255, 255)
-			border: "211 27% 81%", // rgb(192, 204, 218)
+			background: "hsl(0 0% 100%)",
+			foreground: "hsl(220 100% 11%)",
+			card: "hsl(0 0% 100%)",
+			border: "hsl(211 27% 81%)",
 		},
 		shadow: {
-			color: "0 0% 0%",
+			color: "hsl(0 0% 0%)",
 			alpha: 0,
 			spread: "0px",
 		},
@@ -45,13 +47,13 @@ export const themes: Record<string, Theme> = {
 		className: "neutral",
 		colorScheme: "light",
 		colors: {
-			background: "228 25% 97%", // rgb(245, 246, 250)
-			foreground: "220 100% 11%", // rgb(0, 23, 55)
-			card: "0 0% 100%", // rgb(255, 255, 255)
-			border: "221 32% 43%", // rgba(72, 94, 144, 0.16) color
+			background: "hsl(228 25% 97%)",
+			foreground: "hsl(220 100% 11%)",
+			card: "hsl(0 0% 100%)",
+			border: "hsl(221 32% 43%)",
 		},
 		shadow: {
-			color: "221 38% 15%", // rgba(28, 39, 60, 0.05) color
+			color: "hsl(221 38% 15%)",
 			alpha: 0.05,
 			spread: "10px",
 		},
@@ -62,13 +64,13 @@ export const themes: Record<string, Theme> = {
 		className: "accent",
 		colorScheme: "light",
 		colors: {
-			background: "219 81% 49%", // rgba(26, 108, 225, 0.03)
-			foreground: "220 100% 11%", // rgb(0, 23, 55)
-			card: "0 0% 100%", // rgb(255, 255, 255)
-			border: "219 81% 49%", // rgba(26, 108, 225, 0) - transparent
+			background: "hsl(219 81% 49%)",
+			foreground: "hsl(220 100% 11%)",
+			card: "hsl(0 0% 100%)",
+			border: "hsl(219 81% 49%)",
 		},
 		shadow: {
-			color: "219 81% 49%", // rgba(26, 108, 225, 0.1) color
+			color: "hsl(219 81% 49%)",
 			alpha: 0.1,
 			spread: "25px",
 		},
@@ -79,13 +81,13 @@ export const themes: Record<string, Theme> = {
 		className: "dark",
 		colorScheme: "dark",
 		colors: {
-			background: "219 33% 12%", // rgb(20, 28, 43)
-			foreground: "215 18% 66%", // rgb(151, 163, 185)
-			card: "219 31% 17%", // rgb(28, 39, 60)
-			border: "221 32% 43%", // rgba(72, 94, 144, 0.16) color
+			background: "hsl(219 33% 12%)",
+			foreground: "hsl(215 18% 66%)",
+			card: "hsl(219 31% 17%)",
+			border: "hsl(221 32% 43%)",
 		},
 		shadow: {
-			color: "221 38% 15%",
+			color: "hsl(221 38% 15%)",
 			alpha: 0.05,
 			spread: "10px",
 		},
@@ -96,14 +98,13 @@ export const themes: Record<string, Theme> = {
 		className: "high-contrast-light",
 		colorScheme: "light",
 		colors: {
-			// Use existing light theme variables
-			background: "0 0% 100%",
-			foreground: "222.2 84% 4.9%",
-			card: "0 0% 100%",
-			border: "214.3 31.8% 91.4%",
+			background: "hsl(0 0% 100%)",
+			foreground: "hsl(222.2 84% 4.9%)",
+			card: "hsl(0 0% 100%)",
+			border: "hsl(214.3 31.8% 91.4%)",
 		},
 		shadow: {
-			color: "0 0% 0%",
+			color: "hsl(0 0% 0%)",
 			alpha: 0,
 			spread: "0px",
 		},
@@ -114,14 +115,13 @@ export const themes: Record<string, Theme> = {
 		className: "high-contrast-dark",
 		colorScheme: "dark",
 		colors: {
-			// Use existing dark theme variables
-			background: "222.2 84% 4.9%",
-			foreground: "210 40% 98%",
-			card: "222.2 84% 4.9%",
-			border: "217.2 32.6% 17.5%",
+			background: "hsl(222.2 84% 4.9%)",
+			foreground: "hsl(210 40% 98%)",
+			card: "hsl(222.2 84% 4.9%)",
+			border: "hsl(217.2 32.6% 17.5%)",
 		},
 		shadow: {
-			color: "224.3 76.3% 48%",
+			color: "hsl(224.3 76.3% 48%)",
 			alpha: 0,
 			spread: "0px",
 		},

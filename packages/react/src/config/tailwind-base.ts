@@ -24,77 +24,82 @@ export const baseConfig = {
 			screens: breakpoints.screens,
 		},
 		extend: {
+			// Tokens are whole values (hsl/oklch/hex) on :root; alpha via color-mix,
+			// so Tailwind's `/90` modifier still works.
 			backgroundColor: {
-				DEFAULT: "hsl(var(--background) / var(--background-alpha, 1))",
+				DEFAULT:
+					"color-mix(in oklab, var(--background), transparent calc((1 - var(--background-alpha, 1)) * 100%))",
 			},
 			borderColor: {
-				DEFAULT: "hsl(var(--border) / var(--border-alpha, 1))",
+				DEFAULT:
+					"color-mix(in oklab, var(--border), transparent calc((1 - var(--border-alpha, 1)) * 100%))",
 			},
 			ringColor: {
-				DEFAULT: "hsl(var(--ring))",
+				DEFAULT: "var(--ring)",
 			},
 			ringOffsetColor: {
-				DEFAULT: "hsl(var(--background))",
+				DEFAULT: "var(--background)",
 			},
 			colors: {
 				primary: {
 					...colors.primary,
-					DEFAULT: "hsl(var(--primary))",
-					foreground: "hsl(var(--primary-foreground))",
+					DEFAULT: "var(--primary)",
+					foreground: "var(--primary-foreground)",
 				},
 				secondary: {
-					DEFAULT: "hsl(var(--secondary))",
-					foreground: "hsl(var(--secondary-foreground))",
+					DEFAULT: "var(--secondary)",
+					foreground: "var(--secondary-foreground)",
 				},
 				neutral: colors.neutral,
 				success: {
 					...colors.success,
-					DEFAULT: "hsl(var(--success))",
-					foreground: "hsl(var(--success-foreground))",
+					DEFAULT: "var(--success)",
+					foreground: "var(--success-foreground)",
 				},
 				error: {
 					...colors.error,
-					DEFAULT: "hsl(var(--error))",
-					foreground: "hsl(var(--error-foreground))",
+					DEFAULT: "var(--error)",
+					foreground: "var(--error-foreground)",
 				},
 				warning: {
 					...colors.warning,
-					DEFAULT: "hsl(var(--warning))",
-					foreground: "hsl(var(--warning-foreground))",
+					DEFAULT: "var(--warning)",
+					foreground: "var(--warning-foreground)",
 				},
 				info: {
 					...colors.info,
-					DEFAULT: "hsl(var(--info))",
-					foreground: "hsl(var(--info-foreground))",
+					DEFAULT: "var(--info)",
+					foreground: "var(--info-foreground)",
 				},
-				border: "hsl(var(--border) / var(--border-alpha, 1))",
-				input: "hsl(var(--input))",
-				ring: "hsl(var(--ring))",
-				background: "hsl(var(--background))",
-				foreground: "hsl(var(--foreground))",
+				border:
+					"color-mix(in oklab, var(--border), transparent calc((1 - var(--border-alpha, 1)) * 100%))",
+				input: "var(--input)",
+				ring: "var(--ring)",
+				background: "var(--background)",
+				foreground: "var(--foreground)",
 				card: {
-					DEFAULT: "hsl(var(--card))",
-					foreground: "hsl(var(--card-foreground))",
+					DEFAULT: "var(--card)",
+					foreground: "var(--card-foreground)",
 				},
 				popover: {
-					DEFAULT: "hsl(var(--popover))",
-					foreground: "hsl(var(--popover-foreground))",
+					DEFAULT: "var(--popover)",
+					foreground: "var(--popover-foreground)",
 				},
 				muted: {
-					DEFAULT: "hsl(var(--muted))",
-					foreground: "hsl(var(--muted-foreground))",
+					DEFAULT: "var(--muted)",
+					foreground: "var(--muted-foreground)",
 				},
 				accent: {
-					DEFAULT: "hsl(var(--accent))",
-					foreground: "hsl(var(--accent-foreground))",
+					DEFAULT: "var(--accent)",
+					foreground: "var(--accent-foreground)",
 				},
 				destructive: {
-					DEFAULT: "hsl(var(--destructive))",
-					foreground: "hsl(var(--destructive-foreground))",
+					DEFAULT: "var(--destructive)",
+					foreground: "var(--destructive-foreground)",
 				},
 				brand: colors.brand,
 				separator:
-					"hsl(var(--separator, var(--border)) / var(--border-alpha, 1))",
+					"color-mix(in oklab, var(--separator, var(--border)), transparent calc((1 - var(--border-alpha, 1)) * 100%))",
 			},
 			spacing: spacing,
 			fontFamily: typography.fontFamily,
@@ -105,9 +110,9 @@ export const baseConfig = {
 			boxShadow: {
 				...shadows.boxShadow,
 				themed:
-					"0 0 var(--shadow-spread) hsl(var(--shadow-color) / var(--shadow-alpha))",
+					"0 0 var(--shadow-spread) color-mix(in oklab, var(--shadow-color), transparent calc((1 - var(--shadow-alpha, 0)) * 100%))",
 				DEFAULT:
-					"0 0 var(--shadow-spread) hsl(var(--shadow-color) / var(--shadow-alpha))",
+					"0 0 var(--shadow-spread) color-mix(in oklab, var(--shadow-color), transparent calc((1 - var(--shadow-alpha, 0)) * 100%))",
 			},
 			dropShadow: shadows.dropShadow,
 			screens: breakpoints.screens,

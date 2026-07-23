@@ -83,7 +83,7 @@ vi.mock("../input", () => ({
 
 vi.mock("../label", () => ({
 	Label: ({ children }: { children: React.ReactNode }) => (
-		<label>{children}</label>
+		<label htmlFor="mock-input">{children}</label>
 	),
 }));
 
