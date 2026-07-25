@@ -1,6 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import {
 	InputOTP,
 	InputOTPGroup,
@@ -14,6 +13,15 @@ describe("InputOTP", () => {
 		if (typeof document !== "undefined") {
 			document.elementFromPoint = () => null;
 		}
+		// input-otp schedules internal timers (caret/selection tracking) that
+		// outlive the jsdom environment and fire `window`-dependent callbacks
+		// after teardown -> "window is not defined". Fake timers virtualize them
+		// so they never escape into a torn-down environment.
+		vi.useFakeTimers();
+	});
+
+	afterAll(() => {
+		vi.useRealTimers();
 	});
 
 	it("renders correctly", () => {
@@ -30,7 +38,7 @@ describe("InputOTP", () => {
 		expect(screen.getByRole("textbox")).toBeInTheDocument();
 	});
 
-	it("handles input", async () => {
+	it("handles input", () => {
 		const handleChange = vi.fn();
 		render(
 			<InputOTP maxLength={3} onChange={handleChange}>
@@ -42,8 +50,14 @@ describe("InputOTP", () => {
 			</InputOTP>,
 		);
 
-		const input = screen.getByRole("textbox");
-		await userEvent.type(input, "123");
+		// Set the value via the native setter + `input` event so React's
+		// controlled-input onChange fires. Synchronous and timer-independent,
+		// which keeps this stable under fake timers.
+		const input = screen.getByRole("textbox") as HTMLInputElement;
+		const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+		setter?.call(input, "123");
+		fireEvent.input(input);
+
 		expect(handleChange).toHaveBeenCalledWith("123");
 	});
 

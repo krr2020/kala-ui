@@ -350,15 +350,15 @@ describe("Calendar", () => {
 	});
 
 	it("disables dates after a specific date", () => {
-		const today = new Date();
-		const nextWeek = new Date(today);
-		nextWeek.setDate(today.getDate() + 7);
-
+		// Fixed month + mid-month `after` so the rendered grid always has
+		// dates (the 16th–31st) past the cutoff. Using real `new Date()` made
+		// this flaky: when today lands within 7 days of month-end, `today+7`
+		// rolls into next month and the current-month view has no disabled days.
 		render(
 			<Calendar
 				mode="single"
-				disabled={{ after: nextWeek }}
-				defaultMonth={today}
+				disabled={{ after: new Date(2024, 0, 15) }}
+				defaultMonth={new Date(2024, 0, 1)}
 			/>,
 		);
 
