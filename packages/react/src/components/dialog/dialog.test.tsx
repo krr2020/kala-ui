@@ -112,4 +112,32 @@ describe("Dialog", () => {
 		const content = document.body.querySelector('[data-slot="dialog-content"]');
 		expect(content).toHaveClass("custom-dialog");
 	});
+
+	it("should render size full without the centered-panel clamps", () => {
+		const { unmount } = render(
+			<Dialog open>
+				<DialogContent size="full">
+					<DialogHeader>
+						<DialogTitle>Full Dialog</DialogTitle>
+					</DialogHeader>
+				</DialogContent>
+			</Dialog>,
+		);
+		const full = document.body.querySelector('[data-slot="dialog-content"]');
+		expect(full?.className).not.toContain("sm:max-w-");
+		expect(full?.className).not.toContain("sm:top-");
+		unmount();
+
+		render(
+			<Dialog open>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Default Dialog</DialogTitle>
+					</DialogHeader>
+				</DialogContent>
+			</Dialog>,
+		);
+		const def = document.body.querySelector('[data-slot="dialog-content"]');
+		expect(def?.className).toContain("sm:max-w-lg");
+	});
 });
