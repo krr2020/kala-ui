@@ -6,8 +6,24 @@ export type HotkeyItem = [
 	{ preventDefault?: boolean }?,
 ];
 
+const MODIFIERS = ["alt", "ctrl", "meta", "shift"];
+
+function isApplePlatform(): boolean {
+	if (typeof navigator === "undefined") return false;
+	return /mac|iphone|ipad|ipod/i.test(
+		`${navigator.platform} ${navigator.userAgent}`,
+	);
+}
+
 function getHotkeyMatcher(hotkey: string): (event: KeyboardEvent) => boolean {
-	const parts = hotkey.toLowerCase().split("+");
+	// `mod` maps to ⌘ on Apple platforms and Ctrl everywhere else.
+	const parts = hotkey
+		.toLowerCase()
+		.split("+")
+		.map((part) =>
+			part === "mod" ? (isApplePlatform() ? "meta" : "ctrl") : part,
+		);
+
 	const modifiers = {
 		alt: parts.includes("alt"),
 		ctrl: parts.includes("ctrl"),
@@ -15,12 +31,12 @@ function getHotkeyMatcher(hotkey: string): (event: KeyboardEvent) => boolean {
 		shift: parts.includes("shift"),
 	};
 
-	const key = parts.find((part) => !Object.keys(modifiers).includes(part));
+	const key = parts.find((part) => !MODIFIERS.includes(part));
 
 	return (event: KeyboardEvent) => {
 		return (
 			event.altKey === modifiers.alt &&
-			(event.ctrlKey || event.metaKey) === modifiers.ctrl &&
+			event.ctrlKey === modifiers.ctrl &&
 			event.metaKey === modifiers.meta &&
 			event.shiftKey === modifiers.shift &&
 			event.key.toLowerCase() === key

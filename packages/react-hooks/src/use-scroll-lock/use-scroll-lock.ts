@@ -15,8 +15,11 @@ export function useScrollLock(
 ) {
 	const [scrollLocked, setScrollLocked] = useState(initialState);
 	const scrollTop = useRef<number>(0);
+	const isLockedRef = useRef(false);
 
 	const lock = () => {
+		if (isLockedRef.current) return;
+		isLockedRef.current = true;
 		scrollTop.current = window.scrollY;
 		document.body.style.overflow = "hidden";
 		document.body.style.position = "fixed";
@@ -33,6 +36,10 @@ export function useScrollLock(
 	};
 
 	const unlock = () => {
+		// No-op when never locked: unlock runs on mount with initialState=false,
+		// and its window.scrollTo would otherwise jump the page to the top.
+		if (!isLockedRef.current) return;
+		isLockedRef.current = false;
 		document.body.style.overflow = "";
 		document.body.style.position = "";
 		document.body.style.top = "";
