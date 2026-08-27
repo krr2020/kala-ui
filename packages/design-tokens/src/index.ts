@@ -21,17 +21,9 @@ export type {
 export { transitions } from "./transitions";
 export type { FontSize, FontWeight, LineHeight } from "./typography";
 export { typography } from "./typography";
-export type { Theme, ThemeKey } from "./themes";
-export { themes } from "./themes";
 
-// Re-export everything as a single object for convenience
-export const designTokens = {
-	colors: {} as typeof import("./colors").colors,
-	spacing: {} as typeof import("./spacing").spacing,
-	typography: {} as typeof import("./typography").typography,
-	shadows: {} as typeof import("./shadows").shadows,
-	breakpoints: {} as typeof import("./breakpoints").breakpoints,
-	transitions: {} as typeof import("./transitions").transitions,
-	themes: {} as typeof import("./themes").themes,
-	version: "1.0.0",
-} as const;
+/*
+ * Theme VALUES live in CSS (packages/react/src/styles/globals.css) as design
+ * tokens — that stylesheet is the single source of truth for theming. This
+ * package only ships the primitive scales (colors/spacing/typography/…).
+ */
