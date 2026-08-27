@@ -44,7 +44,19 @@ function Alert({
 	skeleton,
 	...props
 }: AlertProps) {
-	const [isVisible, { close }] = useDisclosure(true);
+	const [isVisible, { close, open }] = useDisclosure(true);
+
+	// Dismissing hides this instance only until its CONTENT changes — the
+	// classic trap was reusing one Alert component for each new message and
+	// having it stay invisible after the first dismiss.
+	const previousChildrenRef = React.useRef(children);
+	React.useEffect(() => {
+		if (previousChildrenRef.current !== children) {
+			previousChildrenRef.current = children;
+			open();
+		}
+	});
+
 	if (isLoading) {
 		if (skeleton) {
 			return (

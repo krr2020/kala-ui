@@ -92,6 +92,72 @@ describe("ErrorBoundary", () => {
 		});
 	});
 
+	describe("Default Fallback", () => {
+		it("renders a default fallback instead of blank when no fallback prop", () => {
+			render(
+				<ErrorBoundary>
+					<ThrowError shouldThrow={true} message="Boom" />
+				</ErrorBoundary>,
+			);
+
+			expect(screen.getByRole("alert")).toBeInTheDocument();
+			expect(screen.getByText("Something went wrong")).toBeInTheDocument();
+			expect(screen.getByText("Boom")).toBeInTheDocument();
+		});
+
+		it("default fallback Try again button resets the boundary", async () => {
+			const user = userEvent.setup();
+			const { rerender } = render(
+				<ErrorBoundary>
+					<ThrowError shouldThrow={true} />
+				</ErrorBoundary>,
+			);
+			expect(screen.getByRole("alert")).toBeInTheDocument();
+
+			rerender(
+				<ErrorBoundary>
+					<ThrowError shouldThrow={false} />
+				</ErrorBoundary>,
+			);
+			await user.click(screen.getByRole("button", { name: /try again/i }));
+
+			expect(screen.getByText("Normal content")).toBeInTheDocument();
+		});
+	});
+
+	describe("resetKeys", () => {
+		it("resets automatically when resetKeys change", () => {
+			const { rerender } = render(
+				<ErrorBoundary resetKeys={[1]}>
+					<ThrowError shouldThrow={true} />
+				</ErrorBoundary>,
+			);
+			expect(screen.queryByText("Normal content")).not.toBeInTheDocument();
+
+			rerender(
+				<ErrorBoundary resetKeys={[2]}>
+					<ThrowError shouldThrow={false} />
+				</ErrorBoundary>,
+			);
+
+			expect(screen.getByText("Normal content")).toBeInTheDocument();
+		});
+
+		it("stays on the fallback when resetKeys do not change", () => {
+			const { rerender } = render(
+				<ErrorBoundary resetKeys={[1]}>
+					<ThrowError shouldThrow={true} />
+				</ErrorBoundary>,
+			);
+			rerender(
+				<ErrorBoundary resetKeys={[1]}>
+					<ThrowError shouldThrow={true} />
+				</ErrorBoundary>,
+			);
+			expect(screen.queryByText("Normal content")).not.toBeInTheDocument();
+		});
+	});
+
 	describe("Fallback Prop", () => {
 		it("supports fallback as ReactNode", () => {
 			render(

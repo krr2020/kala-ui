@@ -359,20 +359,40 @@ export interface ListItemTextProps
 	lines?: number;
 }
 
+// Tailwind only compiles classes it can see in source — a composed
+// `line-clamp-${lines}` would silently no-op. Static map keeps every
+// value in source while clamping arbitrary values.
+const LINE_CLAMP_CLASSES: Record<number, string> = {
+	1: "line-clamp-1",
+	2: "line-clamp-2",
+	3: "line-clamp-3",
+	4: "line-clamp-4",
+	5: "line-clamp-5",
+	6: "line-clamp-6",
+};
+
 function ListItemText({
 	className,
 	truncate = false,
 	lines,
+	style,
 	...props
 }: ListItemTextProps) {
+	const clampClass =
+		lines !== undefined ? LINE_CLAMP_CLASSES[lines] : undefined;
 	return (
 		<p
 			className={cn(
 				"text-sm text-muted-foreground",
 				truncate && !lines && "truncate",
-				lines && `line-clamp-${lines}`,
+				clampClass,
 				className,
 			)}
+			style={
+				lines !== undefined && !clampClass
+					? { lineClamp: lines, ...style }
+					: style
+			}
 			{...props}
 		/>
 	);

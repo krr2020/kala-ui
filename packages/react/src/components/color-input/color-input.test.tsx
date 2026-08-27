@@ -130,7 +130,9 @@ describe("ColorInput", () => {
 		await user.click(trigger);
 
 		// The popover opens a named group of labeled preset swatches
-		const presetGroup = screen.getByRole("group", { name: /preset colors/i });
+		const presetGroup = screen.getByRole("group", {
+			name: /preset colors/i,
+		});
 		const colorButtons = within(presetGroup).getAllByRole("button");
 		expect(colorButtons.length).toBe(6);
 		for (const btn of colorButtons) {

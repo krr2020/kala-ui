@@ -85,7 +85,11 @@ export function ColorInput({
 						</PopoverTrigger>
 						<PopoverContent className="w-auto p-3" align="start">
 							<div className="flex flex-col gap-2">
-								<div className="flex gap-2" role="group" aria-label="Preset colors">
+								<div
+									className="flex gap-2"
+									role="group"
+									aria-label="Preset colors"
+								>
 									{PRESET_COLORS.map(({ value, label }) => (
 										<button
 											key={value}

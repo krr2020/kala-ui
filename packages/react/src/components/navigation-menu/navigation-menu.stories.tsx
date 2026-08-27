@@ -1,9 +1,9 @@
 "use client";
 
+import { useMediaQuery } from "@kala-ui/react-hooks";
 import type { Meta, StoryObj } from "@storybook/react";
 import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
 import type * as React from "react";
-import { useMediaQuery } from "@kala-ui/react-hooks";
 import {
 	NavigationMenu,
 	NavigationMenuContent,

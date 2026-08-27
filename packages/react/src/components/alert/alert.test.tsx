@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { Alert, AlertDescription, AlertTitle, alertVariants } from "./alert";
@@ -447,5 +447,25 @@ describe("Alert", () => {
 		const alert = container.querySelector('[data-slot="alert"]');
 		const builtInIcons = alert?.querySelectorAll("svg.size-4");
 		expect(builtInIcons?.length).toBe(0);
+	});
+
+	it("re-appears when content changes after dismissal", () => {
+		const { rerender } = render(
+			<Alert dismissable>
+				<AlertTitle>First message</AlertTitle>
+			</Alert>,
+		);
+
+		fireEvent.click(screen.getByRole("button", { name: "Dismiss alert" }));
+		expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+
+		rerender(
+			<Alert dismissable>
+				<AlertTitle>Second message</AlertTitle>
+			</Alert>,
+		);
+
+		expect(screen.getByRole("alert")).toBeInTheDocument();
+		expect(screen.getByText("Second message")).toBeInTheDocument();
 	});
 });

@@ -34,10 +34,23 @@ export function Spoiler({
 	const [showButton, setShowButton] = React.useState(false);
 	const contentRef = React.useRef<HTMLDivElement>(null);
 
+	// Overflow is re-measured whenever the content resizes — async content
+	// (images, fetched text) may grow past maxHeight after mount.
 	React.useEffect(() => {
-		if (contentRef.current) {
-			setShowButton(contentRef.current.scrollHeight > maxHeight);
-		}
+		const node = contentRef.current;
+		if (!node) return undefined;
+
+		const check = () => {
+			setShowButton(node.scrollHeight > maxHeight);
+		};
+		check();
+
+		if (typeof ResizeObserver === "undefined") return undefined;
+		const observer = new ResizeObserver(check);
+		observer.observe(node);
+		return () => {
+			observer.disconnect();
+		};
 	}, [maxHeight]);
 
 	return (

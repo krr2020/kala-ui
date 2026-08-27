@@ -10,6 +10,10 @@ export interface CollapseProps {
 	in: boolean;
 	/** The content to be collapsed */
 	children: React.ReactNode;
+	/** Id — lets aria-controls point at the collapsible region */
+	id?: string;
+	className?: string;
+	style?: React.CSSProperties;
 	/** Transition duration in seconds */
 	transitionDuration?: number;
 	/** Transition timing function */
@@ -24,6 +28,9 @@ export function Collapse({
 	ref,
 	children,
 	in: opened,
+	id,
+	className,
+	style,
 	transitionDuration = 0.2,
 	transitionTimingFunction = "easeInOut",
 	onTransitionEnd,
@@ -34,6 +41,9 @@ export function Collapse({
 			{opened && (
 				<motion.div
 					ref={ref}
+					id={id}
+					className={className}
+					style={{ overflow: "hidden", ...style }}
 					initial={{ height: 0, opacity: animateOpacity ? 0 : 1 }}
 					animate={{
 						height: "auto",
@@ -64,7 +74,6 @@ export function Collapse({
 						},
 					}}
 					onAnimationComplete={onTransitionEnd}
-					style={{ overflow: "hidden" }}
 				>
 					{children}
 				</motion.div>

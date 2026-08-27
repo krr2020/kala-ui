@@ -6,6 +6,7 @@ import { ChevronsUpDown, X } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { Checkbox } from "../checkbox";
 import {
 	Command,
 	CommandEmpty,
@@ -14,7 +15,6 @@ import {
 	CommandItem,
 	CommandList,
 } from "../command";
-import { Checkbox } from "../checkbox";
 import { Separator } from "../separator";
 
 // ============================================================================

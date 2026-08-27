@@ -295,7 +295,7 @@ describe("ProgressBar", () => {
 			const { container } = render(<ProgressBar value={50} striped />);
 			const bar = container.querySelector('[role="progressbar"]');
 			expect(bar).toHaveClass(
-				"bg-[linear-gradient(45deg,rgba(255,255,255,.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,.15)_50%,rgba(255,255,255,.15)_75%,transparent_75%,transparent)]",
+				"bg-[linear-gradient(45deg,color-mix(in_srgb,var(--foreground)_15%,transparent)_25%,transparent_25%,transparent_50%,color-mix(in_srgb,var(--foreground)_15%,transparent)_50%,color-mix(in_srgb,var(--foreground)_15%,transparent)_75%,transparent_75%,transparent)]",
 			);
 		});
 

@@ -49,20 +49,21 @@ describe("Rating", () => {
 		);
 	});
 
-	it("should not call onValueChange in readOnly mode", async () => {
-		const user = userEvent.setup();
+	it("should announce the value and stay inert in readOnly mode", () => {
 		const handleChange = vi.fn();
 		render(<Rating readOnly value={3} onValueChange={handleChange} />);
 
-		await user.click(screen.getByLabelText("1 star"));
+		const group = screen.getByRole("img", { name: "Rating: 3 out of 5 stars" });
+		fireEvent.click(group);
 		expect(handleChange).not.toHaveBeenCalled();
 	});
 
-	it("should render all buttons as disabled in readOnly", () => {
+	it("should render no interactive buttons in readOnly", () => {
 		render(<Rating readOnly />);
+		expect(screen.queryAllByRole("button")).toEqual([]);
 		expect(
-			screen.getAllByRole("button").every((b) => b.hasAttribute("disabled")),
-		).toBe(true);
+			screen.getByRole("img", { name: "Rating: 0 out of 5 stars" }),
+		).toBeInTheDocument();
 	});
 
 	it("should render as disabled", () => {
@@ -135,12 +136,12 @@ describe("Rating", () => {
 	it("should render half-filled star", () => {
 		render(<Rating value={2.5} allowHalf />);
 		const stars = screen.getAllByRole("button");
-		// Star 3 should show half fill since 2.5 >= 2.5
+		// Star 3 should show half fill since 2.5 >= 2.5 — the overlay clips
+		// its left half via inline clip-path.
 		const star3 = stars[2];
-		const filledStars = star3.querySelectorAll(
-			".clip-path-\\[inset\\(0_50\\%_0_0\\)\\]",
-		);
-		expect(filledStars.length).toBe(1);
+		const overlays = star3.querySelectorAll(".fill-warning");
+		expect(overlays.length).toBe(1);
+		expect(overlays[0].getAttribute("style")).toContain("clip-path");
 	});
 
 	it("should render empty stars for value 0", () => {
@@ -239,12 +240,13 @@ describe("Rating", () => {
 		expect(handleChange).not.toHaveBeenCalled();
 	});
 
-	it("should not call onValueChange on click in readOnly mode", async () => {
+	it("should not call onValueChange when readOnly stars are clicked", () => {
 		const handleChange = vi.fn();
-		render(<Rating readOnly onValueChange={handleChange} />);
+		const { container } = render(
+			<Rating readOnly onValueChange={handleChange} />,
+		);
 
-		const star1 = screen.getByLabelText("1 star");
-		fireEvent.click(star1);
+		fireEvent.click(container.querySelector('[data-slot="rating"]')!);
 		expect(handleChange).not.toHaveBeenCalled();
 	});
 
@@ -285,12 +287,14 @@ describe("Rating", () => {
 		// No crash
 	});
 
-	it("should not set hover value on mouse move when readOnly", () => {
-		render(<Rating readOnly />);
+	it("should not react to mouse move when readOnly", () => {
+		const { container } = render(<Rating readOnly />);
 
-		const star1 = screen.getByLabelText("1 star");
-		fireEvent.mouseMove(star1);
-		// No crash, hover should not change
+		fireEvent.mouseMove(container.querySelector('[data-slot="rating"]')!);
+		// No crash, still a plain img presentation
+		expect(
+			screen.getByRole("img", { name: "Rating: 0 out of 5 stars" }),
+		).toBeInTheDocument();
 	});
 
 	it("should not set hover value on mouse move when disabled", () => {
@@ -374,13 +378,14 @@ describe("Rating", () => {
 		expect(filledOverlay).not.toBeInTheDocument();
 	});
 
-	it("should not clear hover value on mouse leave when readOnly", () => {
+	it("should not change state on mouse leave when readOnly", () => {
 		render(<Rating readOnly value={3} />);
 
 		const fieldset = document.querySelector('[data-slot="rating"]')!;
 		fireEvent.mouseLeave(fieldset);
-		// No crash, and no state change
-		expect(fieldset).toBeInTheDocument();
+		expect(
+			screen.getByRole("img", { name: "Rating: 3 out of 5 stars" }),
+		).toBeInTheDocument();
 	});
 
 	it("should not clear hover value on mouse leave when disabled", () => {
@@ -391,10 +396,43 @@ describe("Rating", () => {
 		expect(fieldset).toBeInTheDocument();
 	});
 
-	it("should render cursor-default when readOnly", () => {
-		const { container } = render(<Rating readOnly />);
+	it("should render cursor-default buttons when disabled", () => {
+		const { container } = render(<Rating disabled />);
 		const stars = container.querySelectorAll("button");
 		expect(stars[0]).toHaveClass("cursor-default");
+	});
+
+	it("should support keyboard half-step adjustments with allowHalf", () => {
+		const handleChange = vi.fn();
+		render(
+			<Rating
+				allowHalf
+				defaultValue={2}
+				onValueChange={handleChange}
+				aria-label="Rate"
+			/>,
+		);
+
+		const fieldset = screen.getByRole("group", { name: "Rate" });
+		fireEvent.keyDown(fieldset, { key: "ArrowUp" });
+		expect(handleChange).toHaveBeenLastCalledWith(2.5);
+		fireEvent.keyDown(fieldset, { key: "ArrowRight" });
+		expect(handleChange).toHaveBeenLastCalledWith(3);
+		fireEvent.keyDown(fieldset, { key: "ArrowDown" });
+		expect(handleChange).toHaveBeenLastCalledWith(2.5);
+	});
+
+	it("should clamp keyboard half-step values without allowHalf", () => {
+		const handleChange = vi.fn();
+		render(<Rating defaultValue={3} onValueChange={handleChange} />);
+
+		const fieldset = document.querySelector('[data-slot="rating"]')!;
+		fireEvent.keyDown(fieldset, { key: "ArrowUp" });
+		expect(handleChange).toHaveBeenLastCalledWith(4);
+		fireEvent.keyDown(fieldset, { key: "End" });
+		expect(handleChange).toHaveBeenLastCalledWith(5);
+		fireEvent.keyDown(fieldset, { key: "Home" });
+		expect(handleChange).toHaveBeenLastCalledWith(0);
 	});
 
 	it("should render correct aria-label for single star", () => {

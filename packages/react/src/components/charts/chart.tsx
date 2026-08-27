@@ -55,13 +55,20 @@ export function Chart({
 
 	// Render empty state when no data
 	if (isEmpty) {
+		// Height may arrive as a number (px) or a CSS length string ("20rem",
+		// "50%") — appending px to a string double-unitizes it.
+		const configuredHeight = skeletonConfig?.height ?? props.height ?? 350;
+		const height =
+			typeof configuredHeight === "number"
+				? `${configuredHeight}px`
+				: configuredHeight;
 		return (
 			<div
 				className={cn(
 					"w-full flex flex-col items-center justify-center text-center rounded-lg border bg-card text-muted-foreground",
 					className,
 				)}
-				style={{ height: `${skeletonConfig?.height ?? props.height ?? 350}px` }}
+				style={{ height }}
 			>
 				<svg
 					className="mb-3 h-10 w-10 opacity-40"

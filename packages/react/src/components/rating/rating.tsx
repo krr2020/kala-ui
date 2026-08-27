@@ -35,6 +35,35 @@ const sizeMap = {
 	lg: "h-7 w-7",
 };
 
+function RatingStar({
+	fill,
+	size,
+}: {
+	fill: "full" | "half" | "empty";
+	size: keyof typeof sizeMap;
+}) {
+	return (
+		<span className="relative inline-flex">
+			{/* Background (empty) star */}
+			<Star
+				aria-hidden="true"
+				className={cn(sizeMap[size], "text-muted-foreground/30")}
+			/>
+			{/* Filled overlay */}
+			{fill !== "empty" && (
+				<Star
+					aria-hidden="true"
+					className={cn(
+						sizeMap[size],
+						"absolute inset-0 text-warning fill-warning",
+					)}
+					style={fill === "half" ? { clipPath: "inset(0 50% 0 0)" } : undefined}
+				/>
+			)}
+		</span>
+	);
+}
+
 function Rating({
 	value,
 	defaultValue = 0,
@@ -93,6 +122,55 @@ function Rating({
 		commit(v === currentValue ? 0 : v);
 	};
 
+	const handleKeyDown = (e: React.KeyboardEvent) => {
+		if (readOnly || disabled) return;
+
+		let delta = 0;
+		if (e.key === "ArrowUp" || e.key === "ArrowRight")
+			delta = allowHalf ? 0.5 : 1;
+		else if (e.key === "ArrowDown" || e.key === "ArrowLeft")
+			delta = allowHalf ? -0.5 : -1;
+		else if (e.key === "Home") {
+			e.preventDefault();
+			setHoverValue(null);
+			commit(0);
+			return;
+		} else if (e.key === "End") {
+			e.preventDefault();
+			setHoverValue(null);
+			commit(count);
+			return;
+		}
+		if (!delta) return;
+
+		e.preventDefault();
+		setHoverValue(null);
+		const base = allowHalf ? currentValue : Math.round(currentValue);
+		commit(Math.min(count, Math.max(0, Number((base + delta).toFixed(1)))));
+	};
+
+	if (readOnly) {
+		// Read-only is presentation, not a row of dead buttons: the value is
+		// announced once through role="img", stars are decorative.
+		return (
+			<fieldset
+				data-slot="rating"
+				ref={ref}
+				role="img"
+				aria-label={`${ariaLabel}: ${currentValue} out of ${count} stars`}
+				className={cn(
+					"inline-flex items-center gap-0.5 border-0 p-0 m-0",
+					className,
+				)}
+				{...props}
+			>
+				{Array.from({ length: count }, (_, i) => (
+					<RatingStar key={i + 1} fill={getStarFill(i + 1)} size={size} />
+				))}
+			</fieldset>
+		);
+	}
+
 	return (
 		<fieldset
 			data-slot="rating"
@@ -103,7 +181,8 @@ function Rating({
 				disabled && "opacity-50",
 				className,
 			)}
-			onMouseLeave={() => !readOnly && !disabled && setHoverValue(null)}
+			onMouseLeave={() => !disabled && setHoverValue(null)}
+			onKeyDown={handleKeyDown}
 			{...props}
 		>
 			{Array.from({ length: count }, (_, i) => {
@@ -116,36 +195,17 @@ function Rating({
 						type="button"
 						aria-label={`${star} star${star !== 1 ? "s" : ""}`}
 						aria-pressed={currentValue >= star}
-						disabled={disabled || readOnly}
+						disabled={disabled}
 						onClick={(e) => handleClick(e, star)}
 						onMouseMove={(e) => handleMouseMove(e, star)}
 						className={cn(
 							"relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm",
-							!readOnly &&
-								!disabled &&
+							!disabled &&
 								"cursor-pointer hover:scale-110 transition-transform",
-							(readOnly || disabled) && "cursor-default",
+							disabled && "cursor-default",
 						)}
 					>
-						{/* Background (empty) star */}
-						<Star
-							aria-hidden="true"
-							className={cn(sizeMap[size], "text-muted-foreground/30")}
-						/>
-						{/* Filled overlay */}
-						{fill !== "empty" && (
-							<Star
-								aria-hidden="true"
-								className={cn(
-									sizeMap[size],
-									"absolute inset-0 text-warning fill-warning",
-									fill === "half" && "clip-path-[inset(0_50%_0_0)]",
-								)}
-								style={
-									fill === "half" ? { clipPath: "inset(0 50% 0 0)" } : undefined
-								}
-							/>
-						)}
+						<RatingStar fill={fill} size={size} />
 					</button>
 				);
 			})}
