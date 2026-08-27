@@ -5,6 +5,7 @@
 	"license": "MIT",
 	"author": "Kala UI",
 	"homepage": "https://krr2020.com/kala-ui",
+	"packageManager": "pnpm@10.17.1",
 	"scripts": {
 		"dev": "pnpm --filter @kala-ui/react dev",
 		"build": "pnpm --filter \"./packages/**\" build",
