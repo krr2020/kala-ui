@@ -4,6 +4,7 @@ import { Skeleton } from "../skeleton";
 import { Textarea } from "../textarea";
 import {
 	Field,
+	FieldControl,
 	FieldDescription,
 	FieldError,
 	FieldLabel,
@@ -27,7 +28,9 @@ export const Default: Story = {
 	render: () => (
 		<Field className="w-80">
 			<FieldLabel>Username</FieldLabel>
-			<Input placeholder="Enter your username" />
+			<FieldControl>
+				<Input placeholder="Enter your username" />
+			</FieldControl>
 			<FieldDescription>This is your public display name.</FieldDescription>
 		</Field>
 	),
@@ -38,7 +41,9 @@ export const WithError: Story = {
 	render: () => (
 		<Field className="w-80">
 			<FieldLabel>Email</FieldLabel>
-			<Input type="email" placeholder="Enter your email" aria-invalid />
+			<FieldControl>
+				<Input type="email" placeholder="Enter your email" aria-invalid />
+			</FieldControl>
 			<FieldError>Please enter a valid email address</FieldError>
 		</Field>
 	),
@@ -49,7 +54,9 @@ export const WithMultipleErrors: Story = {
 	render: () => (
 		<Field className="w-80">
 			<FieldLabel>Password</FieldLabel>
-			<Input type="password" placeholder="Enter password" aria-invalid />
+			<FieldControl>
+				<Input type="password" placeholder="Enter password" aria-invalid />
+			</FieldControl>
 			<FieldError>
 				{[
 					"Password must be at least 8 characters",
@@ -67,7 +74,9 @@ export const WithSeparator: Story = {
 		<Field className="w-80">
 			<FieldLabel>Bio</FieldLabel>
 			<FieldSeparator />
-			<Textarea placeholder="Tell us about yourself" />
+			<FieldControl>
+				<Textarea placeholder="Tell us about yourself" />
+			</FieldControl>
 			<FieldDescription>
 				Brief description for your profile. Max 280 characters.
 			</FieldDescription>

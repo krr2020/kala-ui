@@ -1,11 +1,36 @@
 "use client";
 
+import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { useMemo } from "react";
+import * as React from "react";
 
 import { cn } from "../../lib/utils";
 import { Label } from "../label";
 import { Separator } from "../separator";
+
+interface FieldContextValue {
+	/** Id applied to the description element rendered by FieldDescription. */
+	descriptionId: string;
+	/** Id applied to the error element rendered by FieldError. */
+	errorId: string;
+	/** Id FieldControl falls back to when the wrapped control has none. */
+	controlId: string;
+	/** Effective id of the first FieldControl inside the field (for label binding). */
+	registeredControlId: string | null;
+	/** Whether a FieldDescription is currently rendered inside the field. */
+	descriptionPresent: boolean;
+	/** Whether a FieldError is currently rendered inside the field. */
+	errorPresent: boolean;
+	registerControlId: (id: string) => void;
+	setDescriptionPresent: (present: boolean) => void;
+	setErrorPresent: (present: boolean) => void;
+}
+
+const FieldContext = React.createContext<FieldContextValue | null>(null);
+
+function useField(): FieldContextValue | null {
+	return React.useContext(FieldContext);
+}
 
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
 	return (
@@ -83,13 +108,111 @@ function Field({
 	orientation = "vertical",
 	...props
 }: React.ComponentProps<"fieldset"> & VariantProps<typeof fieldVariants>) {
+	const descriptionId = React.useId();
+	const errorId = React.useId();
+	const controlId = React.useId();
+	const [registeredControlId, setRegisteredControlId] = React.useState<
+		string | null
+	>(null);
+	const [descriptionPresent, setDescriptionPresent] = React.useState(false);
+	const [errorPresent, setErrorPresent] = React.useState(false);
+
+	const context = React.useMemo<FieldContextValue>(
+		() => ({
+			descriptionId,
+			errorId,
+			controlId,
+			registeredControlId,
+			descriptionPresent,
+			errorPresent,
+			registerControlId: setRegisteredControlId,
+			setDescriptionPresent,
+			setErrorPresent,
+		}),
+		[
+			descriptionId,
+			errorId,
+			controlId,
+			registeredControlId,
+			descriptionPresent,
+			errorPresent,
+		],
+	);
+
 	return (
 		<fieldset
 			data-slot="field"
 			data-orientation={orientation}
 			className={cn(fieldVariants({ orientation }), className)}
 			{...props}
-		/>
+		>
+			<FieldContext.Provider value={context}>
+				{props.children}
+			</FieldContext.Provider>
+		</fieldset>
+	);
+}
+
+/**
+ * Wires a form control into its surrounding Field: merges
+ * `aria-describedby` (FieldDescription/FieldError), `aria-invalid` and
+ * `aria-errormessage` onto the control and gives it an id so FieldLabel
+ * binds to it. Renders exactly one child element.
+ */
+function FieldControl({
+	children,
+	...props
+}: React.ComponentProps<typeof Slot>) {
+	const field = useField();
+	const child = React.Children.only(children) as React.ReactElement<
+		Record<string, unknown>
+	>;
+
+	const childId = (child.props.id as string | undefined) ?? field?.controlId;
+
+	React.useEffect(() => {
+		if (!field || !childId) return;
+		field.registerControlId(childId);
+		return () => field.registerControlId(childId);
+	}, [field, childId]);
+
+	if (!field) {
+		return (
+			<Slot data-slot="field-control" {...props}>
+				{children}
+			</Slot>
+		);
+	}
+
+	const childDescribedBy =
+		typeof child.props["aria-describedby"] === "string"
+			? child.props["aria-describedby"]
+			: undefined;
+	const describedBy =
+		[
+			childDescribedBy,
+			field.descriptionPresent ? field.descriptionId : null,
+			field.errorPresent ? field.errorId : null,
+		]
+			.filter(Boolean)
+			.join(" ") || undefined;
+
+	const childInvalid = child.props["aria-invalid"];
+	const invalid =
+		childInvalid !== undefined ? childInvalid : field.errorPresent || undefined;
+
+	const merged = React.cloneElement(child, {
+		id: childId,
+		"aria-describedby": describedBy,
+		"aria-invalid": invalid,
+		"aria-errormessage":
+			field.errorPresent && invalid ? field.errorId : undefined,
+	} as Record<string, unknown>);
+
+	return (
+		<Slot data-slot="field-control" {...props}>
+			{merged}
+		</Slot>
 	);
 }
 
@@ -108,11 +231,14 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
 
 function FieldLabel({
 	className,
+	htmlFor,
 	...props
 }: React.ComponentProps<typeof Label>) {
+	const field = useField();
 	return (
 		<Label
 			data-slot="field-label"
+			htmlFor={htmlFor ?? field?.registeredControlId ?? undefined}
 			className={cn(
 				"group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50",
 				"has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border *:data-[slot=field]:p-4",
@@ -138,9 +264,18 @@ function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
+	const field = useField();
+
+	React.useEffect(() => {
+		if (!field) return;
+		field.setDescriptionPresent(true);
+		return () => field.setDescriptionPresent(false);
+	}, [field]);
+
 	return (
 		<p
 			data-slot="field-description"
+			id={field?.descriptionId}
 			className={cn(
 				"text-muted-foreground text-xs leading-normal font-normal group-has-data-[orientation=horizontal]/field:text-balance",
 				"last:mt-0 nth-last-2:-mt-1 [[data-variant=legend]+&]:-mt-1.5",
@@ -190,7 +325,9 @@ function FieldError({
 }: React.ComponentProps<"div"> & {
 	errors?: Array<{ message?: string } | undefined>;
 }) {
-	const content = useMemo(() => {
+	const field = useField();
+
+	const content = React.useMemo(() => {
 		if (children) {
 			return children;
 		}
@@ -217,6 +354,14 @@ function FieldError({
 		);
 	}, [children, errors]);
 
+	const present = content != null;
+
+	React.useEffect(() => {
+		if (!field) return;
+		field.setErrorPresent(present);
+		return () => field.setErrorPresent(false);
+	}, [field, present]);
+
 	if (!content) {
 		return null;
 	}
@@ -225,6 +370,7 @@ function FieldError({
 		<div
 			role="alert"
 			data-slot="field-error"
+			id={field?.errorId}
 			className={cn("text-destructive text-xs font-medium", className)}
 			{...props}
 		>
@@ -236,6 +382,7 @@ function FieldError({
 export {
 	Field,
 	FieldContent,
+	FieldControl,
 	FieldDescription,
 	FieldError,
 	FieldGroup,

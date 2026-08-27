@@ -80,14 +80,17 @@ RadioGroup.displayName = "RadioGroup";
 const RadioGroupItem = React.forwardRef<
 	React.ComponentRef<typeof RadioGroupPrimitive.Item>,
 	RadioGroupItemProps
->(({ className, label, description, error, children, ...props }, ref) => {
+>(({ className, label, description, error, id, children, ...props }, ref) => {
 	const { variant = "default", size = "md" } =
 		React.useContext(RadioGroupContext);
+	const autoId = React.useId();
+	const itemId = id ?? autoId;
 	const hasContent = label || description || children;
 
 	const radioButton = (
 		<RadioGroupPrimitive.Item
 			ref={ref}
+			id={itemId}
 			data-slot="radio-group-item"
 			className={cn(
 				radioGroupItemVariants({
@@ -112,7 +115,6 @@ const RadioGroupItem = React.forwardRef<
 					className={radioGroupIndicatorSizes[size]}
 					aria-hidden="true"
 				>
-					<title>Selected</title>
 					<circle cx="4" cy="4" r="4" />
 				</svg>
 			</RadioGroupPrimitive.Indicator>
@@ -128,7 +130,7 @@ const RadioGroupItem = React.forwardRef<
 					<div className="grid gap-1.5 leading-none">
 						{label && (
 							<Label
-								htmlFor={props.id}
+								htmlFor={itemId}
 								className={cn(
 									radioGroupLabelStyles.base,
 									error && radioGroupLabelStyles.error,
@@ -157,7 +159,7 @@ const RadioGroupItem = React.forwardRef<
 	if (variant === "cards") {
 		return (
 			<label
-				htmlFor={props.id}
+				htmlFor={itemId}
 				className={cn(
 					radioGroupItemWrapperStyles.cards,
 					error && "border-destructive",
@@ -199,7 +201,7 @@ const RadioGroupItem = React.forwardRef<
 	if (variant === "buttons") {
 		return (
 			<label
-				htmlFor={props.id}
+				htmlFor={itemId}
 				className={cn(
 					radioGroupItemWrapperStyles.buttons,
 					error && "border-destructive",
@@ -208,6 +210,7 @@ const RadioGroupItem = React.forwardRef<
 			>
 				<RadioGroupPrimitive.Item
 					ref={ref}
+					id={itemId}
 					data-slot="radio-group-item"
 					className="sr-only"
 					{...props}

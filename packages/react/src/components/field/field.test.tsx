@@ -4,6 +4,7 @@ import { Input } from "../input";
 import {
 	Field,
 	FieldContent,
+	FieldControl,
 	FieldDescription,
 	FieldError,
 	FieldGroup,
@@ -494,5 +495,116 @@ describe("FieldLabel", () => {
 		);
 		const label = container.querySelector('[data-slot="field-label"]');
 		expect(label).toHaveClass("my-label");
+	});
+});
+
+describe("Field accessibility wiring", () => {
+	it("wires aria-describedby from description to the control", () => {
+		render(
+			<Field>
+				<FieldLabel>Username</FieldLabel>
+				<FieldControl>
+					<Input />
+				</FieldControl>
+				<FieldDescription>Your public name.</FieldDescription>
+			</Field>,
+		);
+		const input = screen.getByRole("textbox");
+		const description = screen.getByText("Your public name.");
+		expect(description).toHaveAttribute("id");
+		expect(input).toHaveAccessibleDescription("Your public name.");
+		expect(input.getAttribute("aria-describedby")).toBe(
+			description.getAttribute("id"),
+		);
+	});
+
+	it("wires aria-errormessage and aria-invalid when an error is present", () => {
+		render(
+			<Field>
+				<FieldLabel>Email</FieldLabel>
+				<FieldControl>
+					<Input type="email" />
+				</FieldControl>
+				<FieldError>Enter a valid email</FieldError>
+			</Field>,
+		);
+		const input = screen.getByRole("textbox");
+		const error = screen.getByRole("alert");
+		expect(input).toHaveAttribute("aria-invalid", "true");
+		expect(input.getAttribute("aria-errormessage")).toBe(
+			error.getAttribute("id"),
+		);
+	});
+
+	it("combines description and error ids and preserves the control's own describedby", () => {
+		render(
+			<Field>
+				<FieldControl>
+					<Input aria-describedby="external-hint" />
+				</FieldControl>
+				<FieldDescription>Hint</FieldDescription>
+				<FieldError>Bad</FieldError>
+			</Field>,
+		);
+		const input = screen.getByRole("textbox");
+		const ids = input.getAttribute("aria-describedby")?.split(" ") ?? [];
+		expect(ids).toContain("external-hint");
+		expect(ids).toContain(screen.getByText("Hint").getAttribute("id"));
+		expect(ids).toContain(screen.getByRole("alert").getAttribute("id"));
+	});
+
+	it("binds the label to the control id automatically", () => {
+		render(
+			<Field>
+				<FieldLabel>Username</FieldLabel>
+				<FieldControl>
+					<Input />
+				</FieldControl>
+			</Field>,
+		);
+		const input = screen.getByRole("textbox");
+		expect(input).toHaveAttribute("id");
+		expect(screen.getByLabelText("Username")).toBe(input);
+	});
+
+	it("respects an explicit control id and explicit htmlFor", () => {
+		render(
+			<Field>
+				<FieldLabel htmlFor="login-username">Username</FieldLabel>
+				<FieldControl>
+					<Input id="login-username" />
+				</FieldControl>
+			</Field>,
+		);
+		expect(screen.getByLabelText("Username")).toHaveAttribute(
+			"id",
+			"login-username",
+		);
+	});
+
+	it("leaves describedby unset when neither description nor error renders", () => {
+		render(
+			<Field>
+				<FieldControl>
+					<Input />
+				</FieldControl>
+				<FieldError errors={[]} />
+			</Field>,
+		);
+		const input = screen.getByRole("textbox");
+		expect(input).not.toHaveAttribute("aria-describedby");
+		expect(input).not.toHaveAttribute("aria-invalid");
+	});
+
+	it("FieldControl works standalone without a Field", () => {
+		render(
+			<FieldControl>
+				<Input aria-label="Standalone" />
+			</FieldControl>,
+		);
+		expect(screen.getByLabelText("Standalone")).toBeInTheDocument();
+		expect(screen.getByLabelText("Standalone")).not.toHaveAttribute(
+			"aria-describedby",
+		);
 	});
 });

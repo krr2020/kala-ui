@@ -1,6 +1,7 @@
 export {
 	Field,
 	FieldContent,
+	FieldControl,
 	FieldDescription,
 	FieldError,
 	FieldGroup,

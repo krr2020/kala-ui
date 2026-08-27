@@ -265,7 +265,7 @@ describe("RadioGroup", () => {
 			expect(radioGroup).toBeInTheDocument();
 		});
 
-		it("should render indicator SVG with title", () => {
+		it("should render decorative indicator SVG hidden from assistive tech", () => {
 			const { container } = render(
 				<RadioGroup defaultValue="option1">
 					<RadioGroupItem value="option1" id="option1" />
@@ -273,7 +273,49 @@ describe("RadioGroup", () => {
 			);
 			const svg = container.querySelector("svg");
 			expect(svg).toBeInTheDocument();
-			expect(svg?.querySelector("title")).toHaveTextContent("Selected");
+			expect(svg).toHaveAttribute("aria-hidden", "true");
 		});
+	});
+});
+
+describe("RadioGroup accessibility wiring", () => {
+	it("auto-generates ids so labels associate without explicit id", () => {
+		render(
+			<RadioGroup>
+				<RadioGroupItem value="a" label="Option A" description="First" />
+				<RadioGroupItem value="b" label="Option B" description="Second" />
+			</RadioGroup>,
+		);
+		expect(screen.getByRole("radio", { name: "Option A" })).toBeInTheDocument();
+		expect(screen.getByRole("radio", { name: "Option B" })).toBeInTheDocument();
+	});
+
+	it("cards variant label associates with the radio input", () => {
+		render(
+			<RadioGroup variant="cards">
+				<RadioGroupItem value="a" label="Card option" />
+			</RadioGroup>,
+		);
+		expect(screen.getByLabelText("Card option")).toBeInTheDocument();
+	});
+
+	it("buttons variant label associates with the sr-only radio input", () => {
+		render(
+			<RadioGroup variant="buttons">
+				<RadioGroupItem value="a" label="Button option" />
+			</RadioGroup>,
+		);
+		expect(screen.getByLabelText("Button option")).toBeInTheDocument();
+	});
+
+	it("explicit id is respected and used for the label", () => {
+		render(
+			<RadioGroup>
+				<RadioGroupItem value="a" id="custom-id" label="Named option" />
+			</RadioGroup>,
+		);
+		const radio = screen.getByRole("radio");
+		expect(radio).toHaveAttribute("id", "custom-id");
+		expect(screen.getByLabelText("Named option")).toBe(radio);
 	});
 });
