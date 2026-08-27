@@ -248,10 +248,10 @@ describe("Input", () => {
 			expect(screen.getByLabelText("Show password")).toBeInTheDocument();
 		});
 
-		it("password toggle is excluded from tab order", () => {
+		it("password toggle is keyboard reachable", () => {
 			render(<Input type="password" showPasswordToggle />);
 			const toggleButton = screen.getByLabelText("Show password");
-			expect(toggleButton).toHaveAttribute("tabindex", "-1");
+			expect(toggleButton).not.toHaveAttribute("tabindex", "-1");
 		});
 	});
 });

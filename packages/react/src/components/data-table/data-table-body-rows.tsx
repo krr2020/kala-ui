@@ -57,7 +57,8 @@ export function DataTableBodyRows<TData>({
 					isSelected && "bg-accent/50",
 					striped && rowIndex % 2 === 0 && "bg-muted/50",
 					hoverable && "hover:bg-muted/50",
-					isClickable && "cursor-pointer",
+					isClickable &&
+						"cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
 					compact && "h-10",
 					getRowClassName?.(row),
 					"border-0",
@@ -70,7 +71,8 @@ export function DataTableBodyRows<TData>({
 						data-state={isSelected ? "selected" : undefined}
 						onClick={() => isClickable && onRowClick(row)}
 						className={rowClassNames}
-						role={isClickable ? "button" : undefined}
+						// clickable rows stay real <tr>s: focusable + Enter/Space
+						// activation keeps table semantics intact for screen readers
 						tabIndex={isClickable ? 0 : undefined}
 						onKeyDown={(e) => {
 							if (isClickable && (e.key === "Enter" || e.key === " ")) {

@@ -86,7 +86,7 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
 							key={link.href}
 							href={link.href}
 							className={cn(
-								"text-sm font-medium px-3 py-2 rounded-md transition-colors",
+								"text-sm font-medium px-3 py-2 rounded-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
 								isActive(link.href)
 									? "bg-accent text-accent-foreground"
 									: "text-foreground hover:bg-accent hover:text-accent-foreground",
@@ -119,7 +119,7 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
 							key={link.href}
 							href={link.href}
 							className={cn(
-								"text-sm font-medium transition-colors hover:text-primary",
+								"text-sm font-medium transition-colors hover:text-primary outline-none focus-visible:underline",
 								isActive(link.href) ? "text-primary" : "text-foreground",
 							)}
 							aria-current={isActive(link.href) ? "page" : undefined}
@@ -137,7 +137,7 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
 							e.stopPropagation();
 							setIsMobileOpen(!isMobileOpen);
 						}}
-						className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+						className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md px-2 py-1"
 						aria-label="Toggle mobile navigation"
 						aria-expanded={isMobileOpen}
 					>
@@ -163,7 +163,7 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
 									href={link.href}
 									onClick={() => setIsMobileOpen(false)}
 									className={cn(
-										"text-sm font-medium px-3 py-2 rounded-md transition-colors",
+										"text-sm font-medium px-3 py-2 rounded-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
 										isActive(link.href)
 											? "bg-accent text-accent-foreground"
 											: "text-foreground hover:bg-accent hover:text-accent-foreground",

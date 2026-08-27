@@ -260,14 +260,32 @@ describe("Slider", () => {
 			expect(slider).toHaveAttribute("aria-valuemax", "100");
 		});
 
-		it("supports aria-label", () => {
+		it("applies aria-label to the thumb (the actual slider)", () => {
 			const { container } = render(
 				<Slider defaultValue={[50]} aria-label="Volume control" />,
 			);
 
-			// Radix applies aria-label to the root element, not individual thumbs
-			const root = container.firstChild as HTMLElement;
-			expect(root).toHaveAttribute("aria-label", "Volume control");
+			const thumb = container.querySelector('[role="slider"]');
+			expect(thumb).toHaveAttribute("aria-label", "Volume control");
+			// the roleless root must not carry prohibited aria-label
+			expect(container.firstChild).not.toHaveAttribute("aria-label");
+		});
+
+		it("names each thumb of a multi-value slider", () => {
+			const { container } = render(
+				<Slider defaultValue={[10, 90]} aria-label="Price range" />,
+			);
+
+			const thumbs = container.querySelectorAll('[role="slider"]');
+			expect(thumbs[0]).toHaveAttribute("aria-label", "Price range (value 1)");
+			expect(thumbs[1]).toHaveAttribute("aria-label", "Price range (value 2)");
+		});
+
+		it("gives unnamed sliders a default thumb label", () => {
+			const { container } = render(<Slider defaultValue={[50]} />);
+
+			const thumb = container.querySelector('[role="slider"]');
+			expect(thumb).toHaveAttribute("aria-label", "Slider value 1");
 		});
 
 		it("has visible focus styles", () => {

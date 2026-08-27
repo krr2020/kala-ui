@@ -85,7 +85,7 @@ export interface ListItemProps extends React.HTMLAttributes<HTMLLIElement> {
 	 */
 	interactive?: boolean;
 	/**
-	 * Render as a link
+	 * Render the row as a link
 	 */
 	href?: string;
 	/**
@@ -103,10 +103,6 @@ export interface ListItemProps extends React.HTMLAttributes<HTMLLIElement> {
 	 * @default false
 	 */
 	dense?: boolean;
-	/**
-	 * Element to render as
-	 */
-	as?: "li" | "a" | "button";
 }
 
 function ListItem({
@@ -116,57 +112,77 @@ function ListItem({
 	active = false,
 	disabled = false,
 	dense = false,
-	as,
 	children,
+	onClick,
 	...props
 }: ListItemProps) {
-	// Determine the element type
-	const Component = as || (href ? "a" : interactive ? "button" : "li");
-	const isButton = Component === "button";
-	const isLink = Component === "a";
-
-	const commonProps = {
-		className: cn(
-			"flex items-center gap-3 w-full text-left",
-			dense ? "px-3 py-2" : "px-4 py-3",
-			interactive && "transition-colors cursor-pointer",
-			interactive && !disabled && "hover:bg-muted",
-			active && "bg-primary/10",
-			disabled && "opacity-50 cursor-not-allowed",
-			className,
-		),
-		role: isButton ? "button" : isLink ? undefined : "listitem",
-		tabIndex: interactive && !disabled ? 0 : undefined,
-		"aria-disabled": disabled ? true : undefined,
+	// The <li> wrapper is unconditional so interactive rows keep valid
+	// ul > li structure; the control itself (a/button) fills the row.
+	const rowClassName = cn(
+		"flex items-center gap-3 w-full text-left",
+		dense ? "px-3 py-2" : "px-4 py-3",
+		interactive && "transition-colors cursor-pointer",
+		interactive && !disabled && "hover:bg-muted",
+		active && "bg-primary/10",
+		disabled && "opacity-50 cursor-not-allowed",
+		className,
+	);
+	const stateProps = {
 		"aria-current": active ? ("page" as const) : undefined,
 	};
 
-	if (isLink && href) {
+	if (href) {
 		return (
-			<a
-				href={href}
-				{...commonProps}
-				{...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-			>
-				{children}
-			</a>
+			<li>
+				<a
+					href={href}
+					aria-disabled={disabled || undefined}
+					onClick={
+						onClick as React.MouseEventHandler<HTMLAnchorElement> | undefined
+					}
+					className={cn(
+						rowClassName,
+						"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+					)}
+					{...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+				>
+					{children}
+				</a>
+			</li>
 		);
 	}
 
-	if (isButton) {
+	if (interactive) {
 		return (
-			<button
-				type="button"
-				{...commonProps}
-				{...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
-			>
-				{children}
-			</button>
+			<li>
+				<button
+					type="button"
+					disabled={disabled}
+					onClick={
+						onClick as React.MouseEventHandler<HTMLButtonElement> | undefined
+					}
+					className={cn(
+						rowClassName,
+						"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+					)}
+					{...stateProps}
+					{...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+				>
+					{children}
+				</button>
+			</li>
 		);
 	}
 
+	// Static rows render no handler: a clickable row must opt in via
+	// `interactive` (real button, keyboard accessible) or `href` (real link).
 	return (
-		<li {...commonProps} {...(props as React.LiHTMLAttributes<HTMLLIElement>)}>
+		<li
+			className={rowClassName}
+			aria-disabled={disabled || undefined}
+			{...stateProps}
+			{...props}
+		>
 			{children}
 		</li>
 	);

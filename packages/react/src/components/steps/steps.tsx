@@ -24,7 +24,7 @@ export interface StepItem {
 }
 
 export interface StepsProps
-	extends React.HTMLAttributes<HTMLDivElement>,
+	extends React.OlHTMLAttributes<HTMLOListElement>,
 		VariantProps<typeof stepsVariants> {
 	currentStep: number;
 	items: StepItem[];
@@ -36,7 +36,7 @@ export interface StepsProps
 	showLine?: boolean;
 }
 
-const Steps = React.forwardRef<HTMLDivElement, StepsProps>(
+const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
 	(
 		{
 			className,
@@ -50,7 +50,7 @@ const Steps = React.forwardRef<HTMLDivElement, StepsProps>(
 		ref,
 	) => {
 		return (
-			<Box
+			<ol
 				ref={ref}
 				className={cn(stepsVariants({ orientation }), className)}
 				{...props}
@@ -64,7 +64,9 @@ const Steps = React.forwardRef<HTMLDivElement, StepsProps>(
 
 					return (
 						<Box
+							as="li"
 							key={step.title}
+							aria-current={isActive ? "step" : undefined}
 							className={cn(
 								"group relative flex",
 								orientation === "vertical"
@@ -110,6 +112,7 @@ const Steps = React.forwardRef<HTMLDivElement, StepsProps>(
 									type="button"
 									className={cn(
 										"relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all duration-300",
+										"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 										isActive
 											? "border-primary bg-primary text-primary-foreground scale-110"
 											: isCompleted
@@ -117,6 +120,13 @@ const Steps = React.forwardRef<HTMLDivElement, StepsProps>(
 												: "border-border bg-background text-muted-foreground group-hover:border-primary/50",
 										isClickable && !isActive ? "cursor-pointer" : "",
 									)}
+									aria-label={`Step ${stepNumber} of ${items.length}: ${step.title}${
+										isCompleted
+											? " (completed)"
+											: isActive
+												? " (current step)"
+												: ""
+									}`}
 									disabled={!isClickable}
 									onClick={() => onStepClick?.(stepNumber)}
 								>
@@ -154,7 +164,7 @@ const Steps = React.forwardRef<HTMLDivElement, StepsProps>(
 						</Box>
 					);
 				})}
-			</Box>
+			</ol>
 		);
 	},
 );

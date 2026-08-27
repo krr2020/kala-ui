@@ -103,9 +103,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 							<button
 								type="button"
 								onClick={() => setShowPassword(!showPassword)}
-								className="cursor-pointer p-1 text-muted-foreground hover:text-foreground focus:outline-none focus:text-foreground transition-colors"
+								className="kala-touch cursor-pointer rounded-sm p-1 text-muted-foreground hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
 								aria-label={showPassword ? "Hide password" : "Show password"}
-								tabIndex={-1}
 							>
 								{showPassword ? (
 									<EyeOff className="h-5 w-5" />

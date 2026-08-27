@@ -13,8 +13,10 @@ const InputGroup = React.forwardRef<
 	React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
 	return (
+		// biome-ignore lint/a11y/useSemanticElements: div[role=group] is the correct generic grouping element here; fieldset is for form legend groups and brings default styles
 		<div
 			ref={ref}
+			role="group"
 			className={cn(
 				"flex w-full items-stretch",
 				// Reset rounded corners for children - focus on direct children that are not headers/labels

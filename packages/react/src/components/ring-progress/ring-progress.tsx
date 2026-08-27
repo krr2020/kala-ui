@@ -52,7 +52,6 @@ export const RingProgress = React.forwardRef<HTMLDivElement, RingProgressProps>(
 			const offset = circumference - (segmentValue / 100) * circumference;
 			const rotation = (accumulatedValue / 100) * 360;
 			accumulatedValue += segmentValue;
-
 			return (
 				<circle
 					key={i}
@@ -74,12 +73,20 @@ export const RingProgress = React.forwardRef<HTMLDivElement, RingProgressProps>(
 		return (
 			<div
 				ref={ref}
+				role="progressbar"
+				aria-valuenow={Math.min(100, Math.round(accumulatedValue))}
+				aria-valuemin={0}
+				aria-valuemax={100}
 				className={cn("relative flex items-center justify-center", className)}
 				style={{ width: size, height: size }}
 				{...props}
 			>
-				<svg width={size} height={size} className="transform" role="img">
-					<title>Progress ring</title>
+				<svg
+					width={size}
+					height={size}
+					className="transform"
+					aria-hidden="true"
+				>
 					{/* Empty ring background */}
 					<circle
 						cx={size / 2}

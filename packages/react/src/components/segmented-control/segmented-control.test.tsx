@@ -203,7 +203,7 @@ describe("SegmentedControl", () => {
 
 	it("applies flex-1 to buttons when fullWidth is true", () => {
 		render(<SegmentedControl data={["A", "B"]} defaultValue="A" fullWidth />);
-		const buttons = screen.getAllByRole("button");
+		const buttons = screen.getAllByRole("radio");
 		expect(buttons[0]).toHaveClass("flex-1");
 		expect(buttons[1]).toHaveClass("flex-1");
 	});
@@ -212,7 +212,7 @@ describe("SegmentedControl", () => {
 		render(
 			<SegmentedControl data={["A", "B"]} defaultValue="A" fullWidth={false} />,
 		);
-		const buttons = screen.getAllByRole("button");
+		const buttons = screen.getAllByRole("radio");
 		expect(buttons[0]).toHaveClass("min-w-[70px]");
 	});
 
@@ -267,14 +267,14 @@ describe("SegmentedControl", () => {
 		render(
 			<SegmentedControl data={["A", "B"]} defaultValue="A" radius="full" />,
 		);
-		const buttons = screen.getAllByRole("button");
+		const buttons = screen.getAllByRole("radio");
 		expect(buttons[0]).toHaveClass("rounded-full");
 		expect(buttons[1]).toHaveClass("rounded-full");
 	});
 
 	it("applies size class to individual buttons", () => {
 		render(<SegmentedControl data={["A", "B"]} defaultValue="A" size="lg" />);
-		const buttons = screen.getAllByRole("button");
+		const buttons = screen.getAllByRole("radio");
 		expect(buttons[0]).toHaveClass("h-12", "text-base");
 	});
 

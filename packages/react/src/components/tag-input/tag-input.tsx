@@ -194,6 +194,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 
 		return (
 			<div className="relative w-full">
+				{/* biome-ignore lint/a11y/noStaticElementInteractions: click/keyboard anywhere in the chip container routes focus to the embedded input, which is the interactive element */}
 				<div
 					className={cn(
 						"flex min-h-[2.5rem] w-full flex-wrap gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm kala-surface-input",
@@ -242,6 +243,9 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 						onKeyDown={handleKeyDown}
 						onPaste={handlePaste}
 						disabled={disabled}
+						// placeholder alone is not an accessible name — keep one even
+						// once the visible placeholder is hidden by existing tags
+						aria-label={placeholder}
 						placeholder={value.length === 0 ? placeholder : ""}
 						className={cn(
 							"flex-1 min-w-[120px] bg-transparent outline-none placeholder:text-muted-foreground",

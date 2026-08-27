@@ -68,6 +68,59 @@ export const SegmentedControl = React.forwardRef<
 			typeof item === "string" ? { label: item, value: item } : item,
 		);
 
+		const isItemDisabled = (item: SegmentedControlItem) =>
+			disabled || !!item.disabled;
+
+		// Roving tabindex: the checked item (else the first enabled one) is the
+		// single tab stop, per the ARIA radiogroup pattern.
+		const activeIndex = (() => {
+			const checked = items.findIndex((item) => item.value === internalValue);
+			if (checked !== -1 && !isItemDisabled(items[checked])) return checked;
+			return items.findIndex((item) => !isItemDisabled(item));
+		})();
+
+		const itemRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
+
+		const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+			const enabled = items.map((item) => !isItemDisabled(item));
+			const deltas: Record<string, number> = {
+				ArrowRight: 1,
+				ArrowDown: 1,
+				ArrowLeft: -1,
+				ArrowUp: -1,
+			};
+			let target: number | undefined;
+			if (e.key in deltas) {
+				e.preventDefault();
+				const delta = deltas[e.key] ?? 0;
+				const count = items.length;
+				for (
+					let i = (index + delta + count) % count;
+					i !== index;
+					i = (i + delta + count) % count
+				) {
+					if (enabled[i]) {
+						target = i;
+						break;
+					}
+				}
+			} else if (e.key === "Home") {
+				e.preventDefault();
+				const first = enabled.indexOf(true);
+				if (first !== -1) target = first;
+			} else if (e.key === "End") {
+				e.preventDefault();
+				const last = enabled.lastIndexOf(true);
+				if (last !== -1) target = last;
+			}
+			if (target !== undefined) {
+				const item = items[target];
+				itemRefs.current[target]?.focus();
+				// arrowing through a radiogroup also selects, like native radios
+				if (item) handleChange(item.value);
+			}
+		};
+
 		const sizeClasses = {
 			xs: "h-6 text-xs",
 			sm: "h-8 text-sm",
@@ -88,6 +141,7 @@ export const SegmentedControl = React.forwardRef<
 		return (
 			<div
 				ref={ref}
+				role="radiogroup"
 				className={cn(
 					"relative flex bg-muted p-1",
 					radiusClasses[radius],
@@ -97,16 +151,26 @@ export const SegmentedControl = React.forwardRef<
 				)}
 				{...props}
 			>
-				{items.map((item) => {
+				{items.map((item, index) => {
 					const isActive = internalValue === item.value;
+					const isTabStop = index === activeIndex;
 					return (
+						// biome-ignore lint/a11y/useSemanticElements: segmented controls use the ARIA radiogroup pattern; native radios cannot render the sliding indicator design
 						<button
 							key={item.value}
+							ref={(el) => {
+								itemRefs.current[index] = el;
+							}}
 							type="button"
-							disabled={disabled || item.disabled}
+							role="radio"
+							aria-checked={isActive}
+							tabIndex={isTabStop ? 0 : -1}
+							disabled={isItemDisabled(item)}
 							onClick={() => !item.disabled && handleChange(item.value)}
+							onKeyDown={(e) => handleKeyDown(e, index)}
 							className={cn(
 								"relative z-10 flex items-center justify-center px-3 font-medium transition-colors",
+								"focus-visible:z-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-muted",
 								sizeClasses[size],
 								fullWidth ? "flex-1" : "min-w-[70px]",
 								isActive

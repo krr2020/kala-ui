@@ -76,7 +76,7 @@ describe("List", () => {
 
 			const item = container.querySelector("li");
 			expect(item).toBeInTheDocument();
-			expect(item).toHaveAttribute("role", "listitem");
+			expect(screen.getByRole("listitem")).toBeInTheDocument();
 		});
 
 		it("should render as anchor when href is provided", () => {
@@ -100,7 +100,7 @@ describe("List", () => {
 
 			const button = screen.getByText("Button Item");
 			expect(button.tagName).toBe("BUTTON");
-			expect(button).toHaveAttribute("role", "button");
+			expect(button.closest("li")).toBeInTheDocument();
 		});
 
 		it("should have tabIndex when interactive and not disabled", () => {
@@ -111,7 +111,7 @@ describe("List", () => {
 			);
 
 			const item = screen.getByText("Interactive Item");
-			expect(item).toHaveAttribute("tabIndex", "0");
+			expect(item).not.toHaveAttribute("tabindex", "-1");
 		});
 
 		it("should not have tabIndex when disabled", () => {
@@ -449,14 +449,15 @@ describe("List", () => {
 
 			const activeItem = screen.getByText("Active Item");
 			expect(activeItem).toHaveAttribute("aria-current", "page");
-			expect(activeItem).toHaveAttribute("tabIndex", "0");
+			expect(activeItem).not.toHaveAttribute("tabindex", "-1");
 
-			const disabledItem = screen.getByText("Disabled Item");
-			expect(disabledItem).toHaveAttribute("aria-disabled", "true");
-			expect(disabledItem).not.toHaveAttribute("tabIndex");
+			const disabledItem = screen.getByRole("button", {
+				name: "Disabled Item",
+			});
+			expect(disabledItem).toBeDisabled();
 		});
 
-		it('should have role="listitem" for non-interactive items', () => {
+		it("should have implicit listitem role for non-interactive items", () => {
 			const { container } = render(
 				<List>
 					<ListItem>Item</ListItem>
@@ -464,18 +465,18 @@ describe("List", () => {
 			);
 
 			const item = container.querySelector("li");
-			expect(item).toHaveAttribute("role", "listitem");
+			expect(screen.getByRole("listitem")).toBe(item);
 		});
 
-		it('should have role="button" for interactive items', () => {
+		it("should have implicit button role for interactive items", () => {
 			render(
 				<List>
 					<ListItem interactive>Button Item</ListItem>
 				</List>,
 			);
 
-			const item = screen.getByText("Button Item");
-			expect(item).toHaveAttribute("role", "button");
+			const item = screen.getByRole("button", { name: "Button Item" });
+			expect(item.tagName).toBe("BUTTON");
 		});
 
 		it("should have proper alt text for avatars", () => {
