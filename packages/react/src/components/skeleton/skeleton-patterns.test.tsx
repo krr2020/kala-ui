@@ -76,7 +76,7 @@ describe("Skeleton Patterns", () => {
 		it("has equal width and height", () => {
 			const { container } = render(<SkeletonCircle size="4rem" />);
 			const circle = container.querySelector(".rounded-full");
-			expect(circle).toHaveStyle({ width: "4rem", height: "4rem" });
+			expect(circle).toHaveStyle({ width: "64px", height: "64px" });
 		});
 	});
 

@@ -7,14 +7,14 @@ import { cn } from "../../lib/utils";
 
 const ResizablePanelGroup = ({
 	className,
+	orientation = "horizontal",
 	...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
-	<ResizablePrimitive.PanelGroup
+}: React.ComponentProps<typeof ResizablePrimitive.Group>) => (
+	<ResizablePrimitive.Group
 		data-slot="resizable-panel-group"
-		className={cn(
-			"flex h-full w-full data-[panel-group-direction=vertical]:flex-col",
-			className,
-		)}
+		data-orientation={orientation}
+		className={cn("group flex h-full w-full", className)}
+		orientation={orientation}
 		{...props}
 	/>
 );
@@ -31,7 +31,7 @@ const ResizablePanel = ({
 );
 
 interface ResizableHandleProps
-	extends React.ComponentProps<typeof ResizablePrimitive.PanelResizeHandle> {
+	extends React.ComponentProps<typeof ResizablePrimitive.Separator> {
 	withHandle?: boolean;
 }
 
@@ -40,16 +40,15 @@ const ResizableHandle = ({
 	className,
 	...props
 }: ResizableHandleProps) => (
-	<ResizablePrimitive.PanelResizeHandle
+	<ResizablePrimitive.Separator
 		data-slot="resizable-handle"
 		className={cn(
 			"bg-separator relative flex items-center justify-center focus-ring",
 			"after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2",
-			"data-[panel-group-direction=vertical]:h-px data-[panel-group-direction=vertical]:w-full data-[panel-group-direction=vertical]:after:left-0 data-[panel-group-direction=vertical]:after:h-1 data-[panel-group-direction=vertical]:after:w-full data-[panel-group-direction=vertical]:after:-translate-y-1/2 data-[panel-group-direction=vertical]:after:translate-x-0",
-			"data-[panel-group-direction=horizontal]:w-px data-[panel-group-direction=horizontal]:after:h-full",
+			"group-data-[orientation=vertical]:h-px group-data-[orientation=vertical]:w-full group-data-[orientation=vertical]:after:left-0 group-data-[orientation=vertical]:after:h-1 group-data-[orientation=vertical]:after:w-full group-data-[orientation=vertical]:after:-translate-y-1/2 group-data-[orientation=vertical]:after:translate-x-0",
+			"group-data-[orientation=horizontal]:w-px group-data-[orientation=horizontal]:after:h-full",
 			"transition-colors hover:bg-primary/50",
-			"data-[resize-handle-state=drag]:bg-primary",
-			"disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-separator",
+			"data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 data-[disabled]:hover:bg-separator",
 			className,
 		)}
 		{...props}
@@ -58,14 +57,14 @@ const ResizableHandle = ({
 			<div
 				className={cn(
 					"bg-separator z-10 flex items-center justify-center rounded-sm border transition-colors",
-					"data-[panel-group-direction=vertical]:h-2 data-[panel-group-direction=vertical]:w-8 data-[panel-group-direction=horizontal]:h-8 data-[panel-group-direction=horizontal]:w-2",
-					"hover:bg-primary/50 data-[resize-handle-state=drag]:bg-primary",
+					"group-data-[orientation=vertical]:h-2 group-data-[orientation=vertical]:w-8 group-data-[orientation=horizontal]:h-8 group-data-[orientation=horizontal]:w-2",
+					"hover:bg-primary/50",
 				)}
 			>
 				<svg
 					className={cn(
 						"text-muted-foreground size-2.5",
-						"data-[panel-group-direction=vertical]:rotate-90",
+						"group-data-[orientation=vertical]:rotate-90",
 					)}
 					viewBox="0 0 24 24"
 					fill="none"
@@ -81,7 +80,7 @@ const ResizableHandle = ({
 				</svg>
 			</div>
 		)}
-	</ResizablePrimitive.PanelResizeHandle>
+	</ResizablePrimitive.Separator>
 );
 
 export { ResizablePanelGroup, ResizablePanel, ResizableHandle };
@@ -89,9 +88,9 @@ export type { ResizableHandleProps };
 
 // Re-export types from react-resizable-panels for convenience
 export type {
-	ImperativePanelGroupHandle,
-	ImperativePanelHandle,
-	PanelGroupProps,
+	GroupImperativeHandle,
+	GroupProps,
+	PanelImperativeHandle,
 	PanelProps,
-	PanelResizeHandleProps,
+	SeparatorProps,
 } from "react-resizable-panels";

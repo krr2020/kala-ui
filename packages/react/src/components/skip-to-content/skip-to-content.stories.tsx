@@ -225,7 +225,7 @@ export const WithComplexNavigation: Story = {
 				<p className="text-sm">
 					🎉 New feature released!{" "}
 					<a href="/new-feature" className="underline font-medium">
-						Learn more
+						Read the release notes
 					</a>
 				</p>
 			</div>

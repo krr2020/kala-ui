@@ -4,7 +4,6 @@ import '../src/styles/globals.css';
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -62,8 +61,9 @@ const preview: Preview = {
         htmlElement.style.colorScheme = colorScheme;
 
         // Set background and color on body to ensure they fill the viewport
-        document.body.style.backgroundColor = 'hsl(var(--background) / var(--background-alpha, 1))';
-        document.body.style.color = 'hsl(var(--foreground))';
+        // (--background already holds a full color value, e.g. "hsl(0 0% 100%)")
+        document.body.style.backgroundColor = 'var(--background)';
+        document.body.style.color = 'var(--foreground)';
         document.body.style.minHeight = '100vh';
       }
 

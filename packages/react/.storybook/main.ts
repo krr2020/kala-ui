@@ -3,13 +3,11 @@ import { dirname, join } from 'node:path';
 import { mergeConfig } from 'vite';
 
 const config: StorybookConfig = {
-  stories: [
-    '../src/**/*.stories.@(js|jsx|mjs|tsx|ts)',
-  ],
+  stories: ['../src/**/*.stories.@(js|jsx|mjs|tsx|ts)'],
   addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
+    '@storybook/addon-docs',
+    '@storybook/addon-a11y',
+    '@storybook/addon-themes',
   ],
   framework: {
     name: '@storybook/react-vite',
@@ -17,9 +15,6 @@ const config: StorybookConfig = {
   },
   typescript: {
     reactDocgen: 'react-docgen',
-  },
-  docs: {
-    autodocs: 'tag',
   },
   viteFinal: async (config, { configType }) => {
     if (configType === 'DEVELOPMENT') {

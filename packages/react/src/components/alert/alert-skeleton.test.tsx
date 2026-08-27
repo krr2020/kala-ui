@@ -22,7 +22,7 @@ describe("AlertSkeleton", () => {
 	});
 
 	it("renders without icon when showIcon is false", () => {
-		const { container } = render(<AlertSkeleton showIcon={false} />);
+		render(<AlertSkeleton showIcon={false} />);
 		// Should still render the text skeletons
 		expect(screen.getByTestId("alert-skeleton")).toBeInTheDocument();
 	});

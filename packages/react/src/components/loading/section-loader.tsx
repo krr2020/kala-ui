@@ -26,7 +26,6 @@ export interface SectionLoaderProps {
 const SectionLoader = React.forwardRef<HTMLDivElement, SectionLoaderProps>(
 	({ message = "Loading...", className, minHeight = "200px" }, ref) => {
 		return (
-			// biome-ignore lint/a11y/useSemanticElements: keep div for correct ref typing and layout
 			<div
 				ref={ref}
 				data-slot="section-loader"

@@ -121,7 +121,7 @@ describe("Button", () => {
 	it("does not render loading spinner when asChild is true", () => {
 		render(
 			<Button asChild isLoading>
-				<a href="/link">Link</a>
+				<a href="/link">Docs</a>
 			</Button>,
 		);
 		const link = screen.getByRole("link");

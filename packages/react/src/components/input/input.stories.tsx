@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import { Mail, Search, User } from "lucide-react";
 import { Skeleton } from "../skeleton";
 import { Input } from "./input";

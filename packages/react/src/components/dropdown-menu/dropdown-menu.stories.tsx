@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import {
 	Cloud,
 	CreditCard,
-	Github,
 	Keyboard,
 	LifeBuoy,
 	LogOut,
@@ -15,8 +14,21 @@ import {
 	UserPlus,
 	Users,
 } from "lucide-react";
+import { siGithub } from "simple-icons";
 import { useState } from "react";
 import { Button } from "../button";
+
+const GithubIcon = ({ className }: { className?: string }) => (
+	<svg
+		role="img"
+		viewBox="0 0 24 24"
+		className={className}
+		fill="currentColor"
+	>
+		<title>GitHub</title>
+		<path d={siGithub.path} />
+	</svg>
+);
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -116,7 +128,7 @@ export const CompleteExample: Story = {
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem>
-					<Github className="mr-2" />
+					<GithubIcon className="mr-2" />
 					GitHub
 				</DropdownMenuItem>
 				<DropdownMenuItem>

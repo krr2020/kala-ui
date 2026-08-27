@@ -17,7 +17,7 @@ import {
 } from "../../primitives/command";
 import { Button } from "../button";
 import { Text } from "../text";
-import type { ComboboxOption, ComboboxProps } from "./combobox.types";
+import type { ComboboxProps } from "./combobox.types";
 
 const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 	(

@@ -22,7 +22,6 @@ export interface PageLoaderProps {
 const PageLoader = React.forwardRef<HTMLDivElement, PageLoaderProps>(
 	({ message = "Loading...", className }, ref) => {
 		return (
-			// biome-ignore lint/a11y/useSemanticElements: keep div for correct ref typing and layout
 			<div
 				ref={ref}
 				data-slot="page-loader"

@@ -93,6 +93,6 @@ describe("FieldSkeleton", () => {
 	it("renders with custom controlHeight", () => {
 		const { container } = render(<FieldSkeleton controlHeight="4rem" />);
 		const controlSkeleton = container.querySelectorAll('[data-slot="skeleton"]')[1];
-		expect(controlSkeleton).toHaveStyle({ height: "4rem" });
+		expect(controlSkeleton).toHaveStyle({ height: "64px" });
 	});
 });

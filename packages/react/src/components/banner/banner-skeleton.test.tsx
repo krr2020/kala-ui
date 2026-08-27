@@ -20,7 +20,7 @@ describe("BannerSkeleton", () => {
 	});
 
 	it("renders without icon when showIcon is false", () => {
-		const { container } = render(<BannerSkeleton showIcon={false} />);
+		render(<BannerSkeleton showIcon={false} />);
 		expect(screen.getByTestId("banner-skeleton")).toBeInTheDocument();
 	});
 

@@ -49,7 +49,6 @@ export function PageTransition({
 }: PageTransitionProps) {
 	const [isVisible, setIsVisible] = React.useState(false);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: pageKey is intentionally used to trigger transition on page change
 	React.useEffect(() => {
 		// Reset visibility on route change
 		setIsVisible(false);

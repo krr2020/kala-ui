@@ -149,6 +149,8 @@ export function getThemeAwareChartOptions(
 	theme?: "light" | "dark" | "neutral" | "accent",
 ) {
 	const colors = getChartColors(theme);
+	const tooltipTheme: "dark" | "light" =
+		getCurrentTheme() === "dark" ? "dark" : "light";
 
 	return {
 		grid: {
@@ -161,7 +163,7 @@ export function getThemeAwareChartOptions(
 			},
 		},
 		tooltip: {
-			theme: getCurrentTheme() === "dark" ? "dark" : "light",
+			theme: tooltipTheme,
 		},
 		legend: {
 			labels: {

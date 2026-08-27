@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("sonner", async () => {
 	const actual = (await vi.importActual("sonner")) as typeof import("sonner");
@@ -24,6 +24,12 @@ vi.mock("sonner", async () => {
 
 import { toast } from "sonner";
 import { Toast } from "./toast";
+
+// Sonner's toast store lives outside React, so toasts created in one test
+// re-render when the next test mounts a fresh <Toaster>; clear it between tests.
+afterEach(() => {
+	toast.dismiss();
+});
 
 describe("Toast", () => {
 	describe("Basic Rendering", () => {

@@ -1,9 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useRef, useState } from "react";
-import type {
-	ImperativePanelGroupHandle,
-	ImperativePanelHandle,
-} from "react-resizable-panels";
+import type { GroupImperativeHandle, PanelImperativeHandle } from "react-resizable-panels";
 import { Button } from "../button";
 import {
 	ResizableHandle,
@@ -30,16 +27,16 @@ export const Horizontal: Story = {
 	args: {},
 	render: () => (
 		<ResizablePanelGroup
-			direction="horizontal"
+			orientation="horizontal"
 			className="min-h-[300px] rounded-lg border"
 		>
-			<ResizablePanel defaultSize={50} className="p-6">
+			<ResizablePanel defaultSize="50" className="p-6">
 				<div className="flex h-full items-center justify-center">
 					<span className="font-semibold">Panel One</span>
 				</div>
 			</ResizablePanel>
 			<ResizableHandle />
-			<ResizablePanel defaultSize={50} className="p-6">
+			<ResizablePanel defaultSize="50" className="p-6">
 				<div className="flex h-full items-center justify-center">
 					<span className="font-semibold">Panel Two</span>
 				</div>
@@ -50,22 +47,22 @@ export const Horizontal: Story = {
 
 /**
  * Vertical resizable panel layout.
- * Use direction="vertical" to create top/bottom panels.
+ * Use orientation="vertical" to create top/bottom panels.
  */
 export const Vertical: Story = {
 	args: {},
 	render: () => (
 		<ResizablePanelGroup
-			direction="vertical"
+			orientation="vertical"
 			className="min-h-[400px] rounded-lg border"
 		>
-			<ResizablePanel defaultSize={25} className="p-6">
+			<ResizablePanel defaultSize="25" className="p-6">
 				<div className="flex h-full items-center justify-center">
 					<span className="font-semibold">Header</span>
 				</div>
 			</ResizablePanel>
 			<ResizableHandle />
-			<ResizablePanel defaultSize={75} className="p-6">
+			<ResizablePanel defaultSize="75" className="p-6">
 				<div className="flex h-full items-center justify-center">
 					<span className="font-semibold">Content</span>
 				</div>
@@ -82,16 +79,16 @@ export const WithHandle: Story = {
 	args: {},
 	render: () => (
 		<ResizablePanelGroup
-			direction="horizontal"
+			orientation="horizontal"
 			className="min-h-[300px] rounded-lg border"
 		>
-			<ResizablePanel defaultSize={30} minSize={20} className="p-6">
+			<ResizablePanel defaultSize="30" minSize="20" className="p-6">
 				<div className="flex h-full items-center justify-center">
 					<span className="font-semibold">Sidebar</span>
 				</div>
 			</ResizablePanel>
 			<ResizableHandle withHandle />
-			<ResizablePanel defaultSize={70} className="p-6">
+			<ResizablePanel defaultSize="70" className="p-6">
 				<div className="flex h-full items-center justify-center">
 					<span className="font-semibold">Main Content</span>
 				</div>
@@ -108,24 +105,24 @@ export const NestedPanels: Story = {
 	args: {},
 	render: () => (
 		<ResizablePanelGroup
-			direction="horizontal"
+			orientation="horizontal"
 			className="min-h-[500px] rounded-lg border"
 		>
-			<ResizablePanel defaultSize={30} minSize={20} className="p-6">
+			<ResizablePanel defaultSize="30" minSize="20" className="p-6">
 				<div className="flex h-full items-center justify-center">
 					<span className="font-semibold">Sidebar</span>
 				</div>
 			</ResizablePanel>
 			<ResizableHandle withHandle />
-			<ResizablePanel defaultSize={70}>
-				<ResizablePanelGroup direction="vertical">
-					<ResizablePanel defaultSize={30} className="p-6">
+			<ResizablePanel defaultSize="70">
+				<ResizablePanelGroup orientation="vertical">
+					<ResizablePanel defaultSize="30" className="p-6">
 						<div className="flex h-full items-center justify-center">
 							<span className="font-semibold">Header</span>
 						</div>
 					</ResizablePanel>
 					<ResizableHandle />
-					<ResizablePanel defaultSize={70} className="p-6">
+					<ResizablePanel defaultSize="70" className="p-6">
 						<div className="flex h-full items-center justify-center">
 							<span className="font-semibold">Main Content</span>
 						</div>
@@ -144,22 +141,22 @@ export const ThreePanels: Story = {
 	args: {},
 	render: () => (
 		<ResizablePanelGroup
-			direction="horizontal"
+			orientation="horizontal"
 			className="min-h-[300px] rounded-lg border"
 		>
-			<ResizablePanel defaultSize={20} minSize={15} className="p-6">
+			<ResizablePanel defaultSize="20" minSize="15" className="p-6">
 				<div className="flex h-full items-center justify-center">
 					<span className="font-semibold">Left Sidebar</span>
 				</div>
 			</ResizablePanel>
 			<ResizableHandle withHandle />
-			<ResizablePanel defaultSize={50} minSize={30} className="p-6">
+			<ResizablePanel defaultSize="50" minSize="30" className="p-6">
 				<div className="flex h-full items-center justify-center">
 					<span className="font-semibold">Main Content</span>
 				</div>
 			</ResizablePanel>
 			<ResizableHandle withHandle />
-			<ResizablePanel defaultSize={30} minSize={15} className="p-6">
+			<ResizablePanel defaultSize="30" minSize="15" className="p-6">
 				<div className="flex h-full items-center justify-center">
 					<span className="font-semibold">Right Sidebar</span>
 				</div>
@@ -171,18 +168,19 @@ export const ThreePanels: Story = {
 /**
  * Panels with size constraints.
  * Use minSize and maxSize to limit panel dimensions.
+ * Sizes are percentages when passed as strings ("20"); numbers are pixels.
  */
 export const WithConstraints: Story = {
 	args: {},
 	render: () => (
 		<ResizablePanelGroup
-			direction="horizontal"
+			orientation="horizontal"
 			className="min-h-[300px] rounded-lg border"
 		>
 			<ResizablePanel
-				defaultSize={30}
-				minSize={20}
-				maxSize={40}
+				defaultSize="30"
+				minSize="20"
+				maxSize="40"
 				className="p-6"
 			>
 				<div className="flex h-full flex-col items-center justify-center gap-2">
@@ -204,13 +202,13 @@ export const WithConstraints: Story = {
 
 /**
  * Collapsible panel with imperative controls.
- * Use the collapse() and expand() API to control panels programmatically.
+ * Use the collapse() and expand() API via panelRef to control panels programmatically.
  */
 export const CollapsiblePanel: Story = {
 	args: {},
 	render: () => {
 		const [isCollapsed, setIsCollapsed] = useState(false);
-		const panelRef = useRef<ImperativePanelHandle>(null);
+		const panelRef = useRef<PanelImperativeHandle | null>(null);
 
 		const togglePanel = () => {
 			const panel = panelRef.current;
@@ -221,7 +219,6 @@ export const CollapsiblePanel: Story = {
 			} else {
 				panel.collapse();
 			}
-			setIsCollapsed(!isCollapsed);
 		};
 
 		return (
@@ -230,17 +227,16 @@ export const CollapsiblePanel: Story = {
 					{isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
 				</Button>
 				<ResizablePanelGroup
-					direction="horizontal"
+					orientation="horizontal"
 					className="min-h-[300px] rounded-lg border"
 				>
 					<ResizablePanel
-						ref={panelRef}
-						defaultSize={30}
-						minSize={15}
+						panelRef={panelRef}
+						defaultSize="30"
+						minSize="15"
 						collapsible
 						className="p-6"
-						onCollapse={() => setIsCollapsed(true)}
-						onExpand={() => setIsCollapsed(false)}
+						onResize={(size) => setIsCollapsed(size.asPercentage <= 15)}
 					>
 						<div className="flex h-full items-center justify-center">
 							<span className="font-semibold">Collapsible Sidebar</span>
@@ -260,35 +256,50 @@ export const CollapsiblePanel: Story = {
 
 /**
  * Imperative panel group controls.
- * Use getLayout() and setLayout() to manage panel sizes programmatically.
+ * Use getLayout() and setLayout() via groupRef to manage panel sizes programmatically.
+ * setLayout takes a map of panel id to percentage.
  */
 export const ImperativeControls: Story = {
 	args: {},
 	render: () => {
-		const groupRef = useRef<ImperativePanelGroupHandle>(null);
-		const [layout, setLayout] = useState<number[]>([33, 34, 33]);
+		const groupRef = useRef<GroupImperativeHandle | null>(null);
+		const [layout, setLayout] = useState({ left: 33, center: 34, right: 33 });
 
-		const applyLayout = (sizes: number[]) => {
+		const applyLayout = (sizes: { left: number; center: number; right: number }) => {
 			groupRef.current?.setLayout(sizes);
+			setLayout(sizes);
 		};
 
 		const getCurrentLayout = () => {
 			const currentLayout = groupRef.current?.getLayout();
 			if (currentLayout) {
-				setLayout(currentLayout.map((size) => Math.round(size)));
+				setLayout({
+					left: Math.round(currentLayout.left ?? 0),
+					center: Math.round(currentLayout.center ?? 0),
+					right: Math.round(currentLayout.right ?? 0),
+				});
 			}
 		};
 
 		return (
 			<div className="space-y-4">
 				<div className="flex flex-wrap gap-2">
-					<Button type="button" onClick={() => applyLayout([25, 50, 25])}>
+					<Button
+						type="button"
+						onClick={() => applyLayout({ left: 25, center: 50, right: 25 })}
+					>
 						25-50-25
 					</Button>
-					<Button type="button" onClick={() => applyLayout([33, 34, 33])}>
+					<Button
+						type="button"
+						onClick={() => applyLayout({ left: 33, center: 34, right: 33 })}
+					>
 						Equal
 					</Button>
-					<Button type="button" onClick={() => applyLayout([15, 70, 15])}>
+					<Button
+						type="button"
+						onClick={() => applyLayout({ left: 15, center: 70, right: 15 })}
+					>
 						15-70-15
 					</Button>
 					<Button type="button" variant="outline" onClick={getCurrentLayout}>
@@ -296,27 +307,33 @@ export const ImperativeControls: Story = {
 					</Button>
 				</div>
 				<div className="text-muted-foreground text-sm">
-					Current layout: {layout.join("% - ")}%
+					Current layout: {layout.left}% - {layout.center}% - {layout.right}%
 				</div>
 				<ResizablePanelGroup
-					ref={groupRef}
-					direction="horizontal"
+					groupRef={groupRef}
+					orientation="horizontal"
 					className="min-h-[300px] rounded-lg border"
-					onLayout={(sizes) => setLayout(sizes.map((size) => Math.round(size)))}
+					onLayoutChanged={(current) =>
+						setLayout({
+							left: Math.round(current.left ?? 0),
+							center: Math.round(current.center ?? 0),
+							right: Math.round(current.right ?? 0),
+						})
+					}
 				>
-					<ResizablePanel defaultSize={33} minSize={15} className="p-6">
+					<ResizablePanel id="left" defaultSize="33" minSize="15" className="p-6">
 						<div className="flex h-full items-center justify-center">
 							<span className="font-semibold">Left</span>
 						</div>
 					</ResizablePanel>
 					<ResizableHandle withHandle />
-					<ResizablePanel defaultSize={34} minSize={15} className="p-6">
+					<ResizablePanel id="center" defaultSize="34" minSize="15" className="p-6">
 						<div className="flex h-full items-center justify-center">
 							<span className="font-semibold">Center</span>
 						</div>
 					</ResizablePanel>
 					<ResizableHandle withHandle />
-					<ResizablePanel defaultSize={33} minSize={15} className="p-6">
+					<ResizablePanel id="right" defaultSize="33" minSize="15" className="p-6">
 						<div className="flex h-full items-center justify-center">
 							<span className="font-semibold">Right</span>
 						</div>
@@ -346,16 +363,16 @@ export const DisabledHandle: Story = {
 					{disabled ? "Enable" : "Disable"} Resizing
 				</button>
 				<ResizablePanelGroup
-					direction="horizontal"
+					orientation="horizontal"
 					className="min-h-[300px] rounded-lg border"
 				>
-					<ResizablePanel defaultSize={50} className="p-6">
+					<ResizablePanel defaultSize="50" className="p-6">
 						<div className="flex h-full items-center justify-center">
 							<span className="font-semibold">Left Panel</span>
 						</div>
 					</ResizablePanel>
 					<ResizableHandle withHandle disabled={disabled} />
-					<ResizablePanel defaultSize={50} className="p-6">
+					<ResizablePanel defaultSize="50" className="p-6">
 						<div className="flex h-full items-center justify-center">
 							<span className="font-semibold">Right Panel</span>
 						</div>
@@ -374,14 +391,14 @@ export const IDELayout: Story = {
 	args: {},
 	render: () => (
 		<ResizablePanelGroup
-			direction="horizontal"
+			orientation="horizontal"
 			className="min-h-[500px] rounded-lg border"
 		>
 			{/* File Explorer */}
 			<ResizablePanel
-				defaultSize={20}
-				minSize={15}
-				maxSize={30}
+				defaultSize="20"
+				minSize="15"
+				maxSize="30"
 				className="border-r"
 			>
 				<div className="flex h-full flex-col">
@@ -402,10 +419,10 @@ export const IDELayout: Story = {
 			<ResizableHandle />
 
 			{/* Editor and Terminal */}
-			<ResizablePanel defaultSize={60}>
-				<ResizablePanelGroup direction="vertical">
+			<ResizablePanel defaultSize="60">
+				<ResizablePanelGroup orientation="vertical">
 					{/* Code Editor */}
-					<ResizablePanel defaultSize={70} minSize={30}>
+					<ResizablePanel defaultSize="70" minSize="30">
 						<div className="flex h-full flex-col">
 							<div className="border-b p-4 font-semibold">Editor</div>
 							<div className="bg-muted/20 flex-1 p-4">
@@ -418,7 +435,7 @@ function App() {
   );
 }
 
-export default App;`}</code>
+export default React.memo(App);`}</code>
 								</pre>
 							</div>
 						</div>
@@ -427,7 +444,7 @@ export default App;`}</code>
 					<ResizableHandle withHandle />
 
 					{/* Terminal */}
-					<ResizablePanel defaultSize={30} minSize={20}>
+					<ResizablePanel defaultSize="30" minSize="20">
 						<div className="flex h-full flex-col">
 							<div className="border-t p-4 font-semibold">Terminal</div>
 							<div className="bg-muted/40 flex-1 p-4">
@@ -447,9 +464,9 @@ export default App;`}</code>
 
 			{/* Properties Panel */}
 			<ResizablePanel
-				defaultSize={20}
-				minSize={15}
-				maxSize={30}
+				defaultSize="20"
+				minSize="15"
+				maxSize="30"
 				className="border-l"
 			>
 				<div className="flex h-full flex-col">
@@ -482,8 +499,8 @@ export default App;`}</code>
 
 /**
  * Keyboard navigation support.
- * Use arrow keys to resize panels (default: 10% increments).
- * Use keyboardResizeBy prop to customize the increment.
+ * Use arrow keys to resize panels; Home/End jump to the min/max size.
+ * Double-clicking a handle resets panels to their default sizes.
  */
 export const KeyboardResize: Story = {
 	args: {},
@@ -494,21 +511,21 @@ export const KeyboardResize: Story = {
 				<ul className="space-y-1">
 					<li>• Focus the handle (click or Tab key)</li>
 					<li>• Use Arrow keys (←/→ or ↑/↓) to resize</li>
-					<li>• Each keypress adjusts by 5%</li>
+					<li>• Home/End jump to the minimum/maximum size</li>
+					<li>• Double-click a handle to reset default sizes</li>
 				</ul>
 			</div>
 			<ResizablePanelGroup
-				direction="horizontal"
+				orientation="horizontal"
 				className="min-h-[300px] rounded-lg border"
-				keyboardResizeBy={5}
 			>
-				<ResizablePanel defaultSize={50} className="p-6">
+				<ResizablePanel defaultSize="50" className="p-6">
 					<div className="flex h-full items-center justify-center">
 						<span className="font-semibold">Left Panel</span>
 					</div>
 				</ResizablePanel>
 				<ResizableHandle withHandle />
-				<ResizablePanel defaultSize={50} className="p-6">
+				<ResizablePanel defaultSize="50" className="p-6">
 					<div className="flex h-full items-center justify-center">
 						<span className="font-semibold">Right Panel</span>
 					</div>
@@ -519,38 +536,57 @@ export const KeyboardResize: Story = {
 };
 
 /**
- * Persistent layout with localStorage.
- * Panel sizes are automatically saved and restored across sessions.
+ * Layout persistence.
+ * onLayoutChanged fires after user-driven resizes (not during the drag),
+ * which is the recommended hook for saving layouts to storage.
  */
 export const PersistentLayout: Story = {
 	args: {},
-	render: () => (
-		<div className="space-y-4">
-			<div className="text-muted-foreground rounded-md border p-4 text-sm">
-				<p className="mb-2 font-semibold">Try it:</p>
-				<ul className="space-y-1">
-					<li>1. Resize the panels below</li>
-					<li>2. Refresh the Storybook page</li>
-					<li>3. Your layout will be restored</li>
-				</ul>
+	render: () => {
+		const [savedLayout, setSavedLayout] = useState<{ sidebar: number } | null>(
+			null,
+		);
+
+		return (
+			<div className="space-y-4">
+				<div className="text-muted-foreground rounded-md border p-4 text-sm">
+					<p className="mb-2 font-semibold">Try it:</p>
+					<ul className="space-y-1">
+						<li>1. Resize the panels below and release the handle</li>
+						<li>
+							2. The saved layout updates:{" "}
+							<strong>
+								sidebar = {savedLayout ? `${Math.round(savedLayout.sidebar)}%` : "—"}
+							</strong>
+						</li>
+						<li>
+							3. Persist the value from onLayoutChanged and pass it back via
+							the defaultLayout prop on the next visit
+						</li>
+					</ul>
+				</div>
+				<ResizablePanelGroup
+					orientation="horizontal"
+					className="min-h-[300px] rounded-lg border"
+					onLayoutChanged={(layout) =>
+						setSavedLayout({
+							sidebar: layout.sidebar ?? 30,
+						})
+					}
+				>
+					<ResizablePanel id="sidebar" defaultSize="30" minSize="20" className="p-6">
+						<div className="flex h-full items-center justify-center">
+							<span className="font-semibold">Sidebar</span>
+						</div>
+					</ResizablePanel>
+					<ResizableHandle withHandle />
+					<ResizablePanel className="p-6">
+						<div className="flex h-full items-center justify-center">
+							<span className="font-semibold">Main Content</span>
+						</div>
+					</ResizablePanel>
+				</ResizablePanelGroup>
 			</div>
-			<ResizablePanelGroup
-				direction="horizontal"
-				className="min-h-[300px] rounded-lg border"
-				autoSaveId="resizable-demo-layout"
-			>
-				<ResizablePanel defaultSize={30} minSize={20} className="p-6">
-					<div className="flex h-full items-center justify-center">
-						<span className="font-semibold">Sidebar</span>
-					</div>
-				</ResizablePanel>
-				<ResizableHandle withHandle />
-				<ResizablePanel defaultSize={70} className="p-6">
-					<div className="flex h-full items-center justify-center">
-						<span className="font-semibold">Main Content</span>
-					</div>
-				</ResizablePanel>
-			</ResizablePanelGroup>
-		</div>
-	),
+		);
+	},
 };

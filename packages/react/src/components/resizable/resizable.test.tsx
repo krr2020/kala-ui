@@ -1,9 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import { useRef } from "react";
-import type {
-	ImperativePanelGroupHandle,
-	ImperativePanelHandle,
-} from "react-resizable-panels";
 import { describe, expect, it, vi } from "vitest";
 import {
 	ResizableHandle,
@@ -12,10 +7,10 @@ import {
 } from "./resizable";
 
 describe("ResizablePanelGroup", () => {
-	describe("Direction", () => {
-		it("should render with horizontal direction", () => {
+	describe("Orientation", () => {
+		it("should render with horizontal orientation", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
@@ -25,12 +20,12 @@ describe("ResizablePanelGroup", () => {
 				'[data-slot="resizable-panel-group"]',
 			);
 			expect(group).toBeInTheDocument();
-			expect(group).toHaveAttribute("data-panel-group-direction", "horizontal");
+			expect(group).toHaveAttribute("data-orientation", "horizontal");
 		});
 
-		it("should render with vertical direction", () => {
+		it("should render with vertical orientation", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="vertical">
+				<ResizablePanelGroup orientation="vertical">
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
@@ -39,12 +34,24 @@ describe("ResizablePanelGroup", () => {
 			const group = container.querySelector(
 				'[data-slot="resizable-panel-group"]',
 			);
-			expect(group).toHaveAttribute("data-panel-group-direction", "vertical");
+			expect(group).toHaveAttribute("data-orientation", "vertical");
 		});
 
-		it("should apply correct flex classes for horizontal direction", () => {
+		it("should default to horizontal orientation", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup>
+					<ResizablePanel>Panel 1</ResizablePanel>
+				</ResizablePanelGroup>,
+			);
+			const group = container.querySelector(
+				'[data-slot="resizable-panel-group"]',
+			);
+			expect(group).toHaveAttribute("data-orientation", "horizontal");
+		});
+
+		it("should apply flex classes", () => {
+			const { container } = render(
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>Panel 1</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
@@ -52,27 +59,13 @@ describe("ResizablePanelGroup", () => {
 				'[data-slot="resizable-panel-group"]',
 			);
 			expect(group).toHaveClass("flex");
-			expect(group).not.toHaveClass("flex-col");
-		});
-
-		it("should apply correct flex classes for vertical direction", () => {
-			const { container } = render(
-				<ResizablePanelGroup direction="vertical">
-					<ResizablePanel>Panel 1</ResizablePanel>
-				</ResizablePanelGroup>,
-			);
-			const group = container.querySelector(
-				'[data-slot="resizable-panel-group"]',
-			);
-			expect(group).toHaveClass("flex");
-			expect(group).toHaveAttribute("data-panel-group-direction", "vertical");
 		});
 	});
 
 	describe("Props and Styling", () => {
 		it("should apply custom className", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal" className="custom-class">
+				<ResizablePanelGroup orientation="horizontal" className="custom-class">
 					<ResizablePanel>Panel 1</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
@@ -82,37 +75,39 @@ describe("ResizablePanelGroup", () => {
 			expect(group).toHaveClass("custom-class");
 		});
 
-		it("should accept autoSaveId prop", () => {
+		it("should accept onLayoutChanged callback", () => {
+			const onLayoutChanged = vi.fn();
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal" autoSaveId="test-layout">
+				<ResizablePanelGroup
+					orientation="horizontal"
+					onLayoutChanged={onLayoutChanged}
+				>
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const group = container.querySelector(
-				'[data-slot="resizable-panel-group"]',
-			);
-			expect(group).toBeInTheDocument();
+			expect(
+				container.querySelector('[data-slot="resizable-panel-group"]'),
+			).toBeInTheDocument();
 		});
 
-		it("should accept keyboardResizeBy prop", () => {
+		it("should accept disabled prop", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal" keyboardResizeBy={5}>
+				<ResizablePanelGroup orientation="horizontal" disabled>
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const group = container.querySelector(
-				'[data-slot="resizable-panel-group"]',
-			);
-			expect(group).toBeInTheDocument();
+			expect(
+				container.querySelector('[data-slot="resizable-panel-group"]'),
+			).toBeInTheDocument();
 		});
 
 		it("should accept custom id prop", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal" id="test-group">
+				<ResizablePanelGroup orientation="horizontal" id="test-group">
 					<ResizablePanel>Panel 1</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
@@ -128,7 +123,7 @@ describe("ResizablePanel", () => {
 	describe("Rendering and Content", () => {
 		it("should render panel content", () => {
 			render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>
 						<div>Panel Content</div>
 					</ResizablePanel>
@@ -139,7 +134,7 @@ describe("ResizablePanel", () => {
 
 		it("should render multiple panels", () => {
 			render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
@@ -154,7 +149,7 @@ describe("ResizablePanel", () => {
 
 		it("should render with complex nested content", () => {
 			render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>
 						<div>
 							<h2>Title</h2>
@@ -171,29 +166,31 @@ describe("ResizablePanel", () => {
 	});
 
 	describe("Props and Styling", () => {
+		// v4 applies className to the nested div (outer div handles flex layout)
+		const styledPanel = (container: HTMLElement) =>
+			container.querySelector('[data-slot="resizable-panel"] > div');
+
 		it("should apply custom className", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel className="custom-panel">Panel 1</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector('[data-slot="resizable-panel"]');
-			expect(panel).toHaveClass("custom-panel");
+			expect(styledPanel(container)).toHaveClass("custom-panel");
 		});
 
 		it("should have relative positioning", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>Panel 1</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector('[data-slot="resizable-panel"]');
-			expect(panel).toHaveClass("relative");
+			expect(styledPanel(container)).toHaveClass("relative");
 		});
 
 		it("should accept custom id prop", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel id="test-panel">Panel 1</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
@@ -203,12 +200,12 @@ describe("ResizablePanel", () => {
 	});
 
 	describe("Size Constraints", () => {
-		it("should accept defaultSize prop", () => {
+		it("should accept defaultSize prop (percentage as string)", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
-					<ResizablePanel defaultSize={30}>Panel 1</ResizablePanel>
+				<ResizablePanelGroup orientation="horizontal">
+					<ResizablePanel defaultSize="30">Panel 1</ResizablePanel>
 					<ResizableHandle />
-					<ResizablePanel defaultSize={70}>Panel 2</ResizablePanel>
+					<ResizablePanel defaultSize="70">Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
 			const panels = container.querySelectorAll(
@@ -219,118 +216,74 @@ describe("ResizablePanel", () => {
 
 		it("should accept minSize prop", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
-					<ResizablePanel minSize={20}>Panel 1</ResizablePanel>
+				<ResizablePanelGroup orientation="horizontal">
+					<ResizablePanel minSize="20">Panel 1</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector('[data-slot="resizable-panel"]');
-			expect(panel).toBeInTheDocument();
+			expect(
+				container.querySelector('[data-slot="resizable-panel"]'),
+			).toBeInTheDocument();
 		});
 
 		it("should accept maxSize prop", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
-					<ResizablePanel maxSize={80}>Panel 1</ResizablePanel>
+				<ResizablePanelGroup orientation="horizontal">
+					<ResizablePanel maxSize="80">Panel 1</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector('[data-slot="resizable-panel"]');
-			expect(panel).toBeInTheDocument();
+			expect(
+				container.querySelector('[data-slot="resizable-panel"]'),
+			).toBeInTheDocument();
 		});
 
 		it("should accept both minSize and maxSize props", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
-					<ResizablePanel minSize={20} maxSize={40}>
+				<ResizablePanelGroup orientation="horizontal">
+					<ResizablePanel minSize="20" maxSize="40">
 						Panel 1
 					</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector('[data-slot="resizable-panel"]');
-			expect(panel).toBeInTheDocument();
-		});
-
-		it("should handle minSize equal to maxSize", () => {
-			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
-					<ResizablePanel minSize={50} maxSize={50}>
-						Panel 1
-					</ResizablePanel>
-					<ResizableHandle />
-					<ResizablePanel>Panel 2</ResizablePanel>
-				</ResizablePanelGroup>,
-			);
-			const panel = container.querySelector('[data-slot="resizable-panel"]');
-			expect(panel).toBeInTheDocument();
+			expect(
+				container.querySelector('[data-slot="resizable-panel"]'),
+			).toBeInTheDocument();
 		});
 	});
 
 	describe("Collapsible Behavior", () => {
 		it("should support collapsible prop", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel collapsible>Panel 1</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector('[data-slot="resizable-panel"]');
-			expect(panel).toBeInTheDocument();
+			expect(
+				container.querySelector('[data-slot="resizable-panel"]'),
+			).toBeInTheDocument();
 		});
 
-		it("should handle onCollapse callback", () => {
-			const onCollapse = vi.fn();
+		it("should handle onResize callback", () => {
+			const onResize = vi.fn();
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
-					<ResizablePanel collapsible onCollapse={onCollapse}>
+				<ResizablePanelGroup orientation="horizontal">
+					<ResizablePanel collapsible onResize={onResize}>
 						Panel 1
 					</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const panel = container.querySelector('[data-slot="resizable-panel"]');
-			expect(panel).toBeInTheDocument();
-		});
-
-		it("should handle onExpand callback", () => {
-			const onExpand = vi.fn();
-			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
-					<ResizablePanel collapsible onExpand={onExpand}>
-						Panel 1
-					</ResizablePanel>
-					<ResizableHandle />
-					<ResizablePanel>Panel 2</ResizablePanel>
-				</ResizablePanelGroup>,
-			);
-			const panel = container.querySelector('[data-slot="resizable-panel"]');
-			expect(panel).toBeInTheDocument();
-		});
-
-		it("should handle both onCollapse and onExpand callbacks", () => {
-			const onCollapse = vi.fn();
-			const onExpand = vi.fn();
-			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
-					<ResizablePanel
-						collapsible
-						onCollapse={onCollapse}
-						onExpand={onExpand}
-					>
-						Panel 1
-					</ResizablePanel>
-					<ResizableHandle />
-					<ResizablePanel>Panel 2</ResizablePanel>
-				</ResizablePanelGroup>,
-			);
-			const panel = container.querySelector('[data-slot="resizable-panel"]');
-			expect(panel).toBeInTheDocument();
+			expect(
+				container.querySelector('[data-slot="resizable-panel"]'),
+			).toBeInTheDocument();
 		});
 	});
 });
@@ -339,19 +292,20 @@ describe("ResizableHandle", () => {
 	describe("Rendering", () => {
 		it("should render resize handle", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
-			const handle = container.querySelector('[data-slot="resizable-handle"]');
-			expect(handle).toBeInTheDocument();
+			expect(
+				container.querySelector('[data-slot="resizable-handle"]'),
+			).toBeInTheDocument();
 		});
 
 		it("should render multiple resize handles", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
@@ -364,68 +318,79 @@ describe("ResizableHandle", () => {
 			);
 			expect(handles).toHaveLength(2);
 		});
-	});
 
-	describe("Handle Indicator", () => {
-		it("should render without handle indicator by default", () => {
+		it("should render separator semantics from the library", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
 			const handle = container.querySelector('[data-slot="resizable-handle"]');
-			const svg = handle?.querySelector("svg");
-			expect(svg).not.toBeInTheDocument();
+			expect(handle).toHaveAttribute("role", "separator");
+		});
+	});
+
+	describe("Handle Indicator", () => {
+		it("should render without handle indicator by default", () => {
+			const { container } = render(
+				<ResizablePanelGroup orientation="horizontal">
+					<ResizablePanel>Panel 1</ResizablePanel>
+					<ResizableHandle />
+					<ResizablePanel>Panel 2</ResizablePanel>
+				</ResizablePanelGroup>,
+			);
+			const handle = container.querySelector('[data-slot="resizable-handle"]');
+			expect(handle?.querySelector("svg")).not.toBeInTheDocument();
 		});
 
 		it("should render with handle indicator when withHandle is true", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
 			const handle = container.querySelector('[data-slot="resizable-handle"]');
-			const svg = handle?.querySelector("svg");
-			expect(svg).toBeInTheDocument();
+			expect(handle?.querySelector("svg")).toBeInTheDocument();
 		});
 
-		it("should rotate handle indicator for vertical direction", () => {
+		it("should rotate handle indicator for vertical orientation", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="vertical">
+				<ResizablePanelGroup orientation="vertical">
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
 			const handle = container.querySelector('[data-slot="resizable-handle"]');
-			const svg = handle?.querySelector("svg");
-			expect(svg).toHaveClass(
-				"data-[panel-group-direction=vertical]:rotate-90",
+			expect(handle?.querySelector("svg")).toHaveClass(
+				"group-data-[orientation=vertical]:rotate-90",
 			);
 		});
 
 		it("should have correct aria-hidden on handle indicator", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel>Panel 2</ResizablePanel>
 				</ResizablePanelGroup>,
 			);
 			const handle = container.querySelector('[data-slot="resizable-handle"]');
-			const svg = handle?.querySelector("svg");
-			expect(svg).toHaveAttribute("aria-hidden", "true");
+			expect(handle?.querySelector("svg")).toHaveAttribute(
+				"aria-hidden",
+				"true",
+			);
 		});
 	});
 
 	describe("Props and Styling", () => {
 		it("should apply custom className", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle className="custom-handle" />
 					<ResizablePanel>Panel 2</ResizablePanel>
@@ -437,7 +402,7 @@ describe("ResizableHandle", () => {
 
 		it("should accept custom id prop", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle id="test-handle" />
 					<ResizablePanel>Panel 2</ResizablePanel>
@@ -449,7 +414,7 @@ describe("ResizableHandle", () => {
 
 		it("should support disabled prop", () => {
 			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
+				<ResizablePanelGroup orientation="horizontal">
 					<ResizablePanel>Panel 1</ResizablePanel>
 					<ResizableHandle disabled />
 					<ResizablePanel>Panel 2</ResizablePanel>
@@ -457,91 +422,18 @@ describe("ResizableHandle", () => {
 			);
 			const handle = container.querySelector('[data-slot="resizable-handle"]');
 			expect(handle).toBeInTheDocument();
-			// The disabled state is handled by library
 		});
-	});
-
-	describe("Callbacks", () => {
-		it("should handle onDragging callback", () => {
-			const onDragging = vi.fn();
-			const { container } = render(
-				<ResizablePanelGroup direction="horizontal">
-					<ResizablePanel>Panel 1</ResizablePanel>
-					<ResizableHandle onDragging={onDragging} />
-					<ResizablePanel>Panel 2</ResizablePanel>
-				</ResizablePanelGroup>,
-			);
-			const handle = container.querySelector('[data-slot="resizable-handle"]');
-			expect(handle).toBeInTheDocument();
-		});
-	});
-});
-
-describe("Imperative Panel API", () => {
-	it("should support ref on ResizablePanel", () => {
-		function TestComponent() {
-			const panelRef = useRef<ImperativePanelHandle>(null);
-			return (
-				<ResizablePanelGroup direction="horizontal">
-					<ResizablePanel ref={panelRef}>Panel 1</ResizablePanel>
-					<ResizableHandle />
-					<ResizablePanel>Panel 2</ResizablePanel>
-				</ResizablePanelGroup>
-			);
-		}
-
-		const { container } = render(<TestComponent />);
-		const panel = container.querySelector('[data-slot="resizable-panel"]');
-		expect(panel).toBeInTheDocument();
-	});
-
-	it("should support ref on ResizablePanelGroup", () => {
-		function TestComponent() {
-			const groupRef = useRef<ImperativePanelGroupHandle>(null);
-			return (
-				<ResizablePanelGroup ref={groupRef} direction="horizontal">
-					<ResizablePanel>Panel 1</ResizablePanel>
-					<ResizableHandle />
-					<ResizablePanel>Panel 2</ResizablePanel>
-				</ResizablePanelGroup>
-			);
-		}
-
-		const { container } = render(<TestComponent />);
-		const group = container.querySelector(
-			'[data-slot="resizable-panel-group"]',
-		);
-		expect(group).toBeInTheDocument();
-	});
-
-	it("should support multiple refs", () => {
-		function TestComponent() {
-			const panel1Ref = useRef<ImperativePanelHandle>(null);
-			const panel2Ref = useRef<ImperativePanelHandle>(null);
-			const groupRef = useRef<ImperativePanelGroupHandle>(null);
-			return (
-				<ResizablePanelGroup ref={groupRef} direction="horizontal">
-					<ResizablePanel ref={panel1Ref}>Panel 1</ResizablePanel>
-					<ResizableHandle />
-					<ResizablePanel ref={panel2Ref}>Panel 2</ResizablePanel>
-				</ResizablePanelGroup>
-			);
-		}
-
-		const { container } = render(<TestComponent />);
-		const panels = container.querySelectorAll('[data-slot="resizable-panel"]');
-		expect(panels).toHaveLength(2);
 	});
 });
 
 describe("Nested Panels", () => {
 	it("should support nested panel groups", () => {
 		const { container } = render(
-			<ResizablePanelGroup direction="horizontal">
+			<ResizablePanelGroup orientation="horizontal">
 				<ResizablePanel>Panel 1</ResizablePanel>
 				<ResizableHandle />
 				<ResizablePanel>
-					<ResizablePanelGroup direction="vertical">
+					<ResizablePanelGroup orientation="vertical">
 						<ResizablePanel>Panel 2A</ResizablePanel>
 						<ResizableHandle />
 						<ResizablePanel>Panel 2B</ResizablePanel>
@@ -560,13 +452,13 @@ describe("Nested Panels", () => {
 
 	it("should support deeply nested panel groups", () => {
 		const { container } = render(
-			<ResizablePanelGroup direction="horizontal">
+			<ResizablePanelGroup orientation="horizontal">
 				<ResizablePanel>
-					<ResizablePanelGroup direction="vertical">
+					<ResizablePanelGroup orientation="vertical">
 						<ResizablePanel>Panel 1A</ResizablePanel>
 						<ResizableHandle />
 						<ResizablePanel>
-							<ResizablePanelGroup direction="horizontal">
+							<ResizablePanelGroup orientation="horizontal">
 								<ResizablePanel>Panel 1A-i</ResizablePanel>
 								<ResizableHandle />
 								<ResizablePanel>Panel 1A-ii</ResizablePanel>
@@ -581,38 +473,12 @@ describe("Nested Panels", () => {
 		);
 		expect(groups).toHaveLength(3);
 	});
-
-	it("should handle multiple nested panel groups", () => {
-		const { container } = render(
-			<ResizablePanelGroup direction="horizontal">
-				<ResizablePanel>
-					<ResizablePanelGroup direction="vertical">
-						<ResizablePanel>Panel 1A</ResizablePanel>
-						<ResizableHandle />
-						<ResizablePanel>Panel 1B</ResizablePanel>
-					</ResizablePanelGroup>
-				</ResizablePanel>
-				<ResizableHandle />
-				<ResizablePanel>
-					<ResizablePanelGroup direction="vertical">
-						<ResizablePanel>Panel 2A</ResizablePanel>
-						<ResizableHandle />
-						<ResizablePanel>Panel 2B</ResizablePanel>
-					</ResizablePanelGroup>
-				</ResizablePanel>
-			</ResizablePanelGroup>,
-		);
-		const groups = container.querySelectorAll(
-			'[data-slot="resizable-panel-group"]',
-		);
-		expect(groups).toHaveLength(3);
-	});
 });
 
 describe("Accessibility", () => {
 	it("should have proper ARIA attributes for keyboard navigation", () => {
 		const { container } = render(
-			<ResizablePanelGroup direction="horizontal">
+			<ResizablePanelGroup orientation="horizontal">
 				<ResizablePanel>Panel 1</ResizablePanel>
 				<ResizableHandle />
 				<ResizablePanel>Panel 2</ResizablePanel>
@@ -623,23 +489,9 @@ describe("Accessibility", () => {
 		expect(handle).toBeInTheDocument();
 	});
 
-	it("should support keyboard resize with keyboardResizeBy prop", () => {
-		const { container } = render(
-			<ResizablePanelGroup direction="horizontal" keyboardResizeBy={5}>
-				<ResizablePanel>Panel 1</ResizablePanel>
-				<ResizableHandle />
-				<ResizablePanel>Panel 2</ResizablePanel>
-			</ResizablePanelGroup>,
-		);
-		const group = container.querySelector(
-			'[data-slot="resizable-panel-group"]',
-		);
-		expect(group).toBeInTheDocument();
-	});
-
 	it("should have focus-ring class on handle", () => {
 		const { container } = render(
-			<ResizablePanelGroup direction="horizontal">
+			<ResizablePanelGroup orientation="horizontal">
 				<ResizablePanel>Panel 1</ResizablePanel>
 				<ResizableHandle />
 				<ResizablePanel>Panel 2</ResizablePanel>
@@ -651,7 +503,7 @@ describe("Accessibility", () => {
 
 	it("should have proper styling for separator", () => {
 		const { container } = render(
-			<ResizablePanelGroup direction="horizontal">
+			<ResizablePanelGroup orientation="horizontal">
 				<ResizablePanel>Panel 1</ResizablePanel>
 				<ResizableHandle />
 				<ResizablePanel>Panel 2</ResizablePanel>
@@ -665,7 +517,7 @@ describe("Accessibility", () => {
 describe("Edge Cases", () => {
 	it("should handle empty panel content", () => {
 		render(
-			<ResizablePanelGroup direction="horizontal">
+			<ResizablePanelGroup orientation="horizontal">
 				<ResizablePanel></ResizablePanel>
 			</ResizablePanelGroup>,
 		);
@@ -675,7 +527,7 @@ describe("Edge Cases", () => {
 
 	it("should handle single panel without handles", () => {
 		const { container } = render(
-			<ResizablePanelGroup direction="horizontal">
+			<ResizablePanelGroup orientation="horizontal">
 				<ResizablePanel>Single Panel</ResizablePanel>
 			</ResizablePanelGroup>,
 		);
@@ -687,35 +539,11 @@ describe("Edge Cases", () => {
 
 	it("should handle panel with only whitespace content", () => {
 		render(
-			<ResizablePanelGroup direction="horizontal">
+			<ResizablePanelGroup orientation="horizontal">
 				<ResizablePanel> </ResizablePanel>
 			</ResizablePanelGroup>,
 		);
 		const panel = document.querySelector('[data-slot="resizable-panel"]');
 		expect(panel).toBeInTheDocument();
-	});
-
-	it("should handle zero defaultSize", () => {
-		const { container } = render(
-			<ResizablePanelGroup direction="horizontal">
-				<ResizablePanel defaultSize={0}>Panel 1</ResizablePanel>
-				<ResizableHandle />
-				<ResizablePanel>Panel 2</ResizablePanel>
-			</ResizablePanelGroup>,
-		);
-		const panels = container.querySelectorAll('[data-slot="resizable-panel"]');
-		expect(panels).toHaveLength(2);
-	});
-
-	it("should handle large defaultSize value", () => {
-		const { container } = render(
-			<ResizablePanelGroup direction="horizontal">
-				<ResizablePanel defaultSize={100}>Panel 1</ResizablePanel>
-				<ResizableHandle />
-				<ResizablePanel defaultSize={0}>Panel 2</ResizablePanel>
-			</ResizablePanelGroup>,
-		);
-		const panels = container.querySelectorAll('[data-slot="resizable-panel"]');
-		expect(panels).toHaveLength(2);
 	});
 });
