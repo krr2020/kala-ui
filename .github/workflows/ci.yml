@@ -57,6 +57,23 @@ jobs:
       - run: pnpm run build
       - run: pnpm run build-storybook
 
+  consumer:
+    name: Next.js App Router consumer build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # The playground imports the built package output, exactly like an
+      # external consumer — build packages first.
+      - run: pnpm run build
+      - run: pnpm run build:apps
+
   storybook:
     name: Storybook smoke & visual regression
     runs-on: ubuntu-latest

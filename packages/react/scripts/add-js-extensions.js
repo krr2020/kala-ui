@@ -10,7 +10,7 @@
  */
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { dirname, join, relative } from 'node:path';
 import { execSync } from 'node:child_process';
 
 const distDir = new URL('../dist', import.meta.url).pathname;
@@ -27,6 +27,7 @@ const files = execSync(`find ${distDir} -name '*.js' -type f`, { encoding: 'utf-
   .filter(Boolean);
 
 let patched = 0;
+let bannered = 0;
 
 function resolveImport(importPath, fromFile) {
   const dir = dirname(fromFile);
@@ -78,6 +79,21 @@ for (const file of files) {
   if (finalContent !== content) {
     writeFileSync(file, finalContent, 'utf-8');
   }
+
+  // Mark every component module and the barrel as client-only so React
+  // Server Component apps (Next.js App Router, Waku, …) can import them
+  // directly without a manual "use client" boundary. dist/lib stays
+  // server-safe (pure helpers, no hooks).
+  const relPath = relative(distDir, file);
+  const needsBanner =
+    relPath === 'index.js' ||
+    (relPath.startsWith('components/') && !finalContent.startsWith('"use client";'));
+
+  if (needsBanner && !finalContent.startsWith('"use client";')) {
+    writeFileSync(file, `"use client";\n${finalContent}`, 'utf-8');
+    bannered++;
+  }
 }
 
 console.log(`Patched ${patched} relative imports with .js extensions`);
+console.log(`Added "use client" banner to ${bannered} files`);

@@ -9,6 +9,7 @@
 	"scripts": {
 		"dev": "pnpm --filter @kala-ui/react dev",
 		"build": "pnpm --filter \"./packages/**\" build",
+		"build:apps": "pnpm --filter \"./apps/**\" build",
 		"build:react": "pnpm --filter @kala-ui/react build",
 		"type-check": "pnpm --filter \"./packages/**\" type-check",
 		"lint": "pnpm --filter \"./packages/**\" lint",

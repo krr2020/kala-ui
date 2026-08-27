@@ -45,4 +45,18 @@ if (existsSync(packagesRoot)) {
   });
 }
 
+// Clean apps (Next.js build output)
+const appsRoot = join(process.cwd(), 'apps');
+if (existsSync(appsRoot)) {
+  const apps = readdirSync(appsRoot);
+  apps.forEach(app => {
+    const appPath = join(appsRoot, app);
+    if (lstatSync(appPath).isDirectory()) {
+      ['node_modules', '.next', 'dist'].forEach(item => {
+        clean(join(appPath, item));
+      });
+    }
+  });
+}
+
 console.log('Clean completed successfully.');
