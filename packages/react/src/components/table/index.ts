@@ -1,4 +1,13 @@
 export {
+	tableBodyStyles,
+	tableCaptionStyles,
+	tableCellStyles,
+	tableFooterStyles,
+	tableHeaderStyles,
+	tableHeadStyles,
+	tableRowStyles,
+} from "../../config/table";
+export {
 	Table,
 	TableBody,
 	TableCaption,

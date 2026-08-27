@@ -7,7 +7,7 @@ import type * as React from "react";
 import { aspectRatioStyles } from "../../config/aspect-ratio";
 import { cn } from "../../lib/utils";
 
-const aspectRatioVariants = cva(aspectRatioStyles.base, {
+export const aspectRatioVariants = cva(aspectRatioStyles.base, {
 	variants: aspectRatioStyles.variants,
 	defaultVariants: aspectRatioStyles.defaultVariants,
 });
@@ -36,4 +36,4 @@ function AspectRatio({
 	);
 }
 
-export { AspectRatio, type AspectRatioProps, aspectRatioVariants };
+export { AspectRatio, type AspectRatioProps };

@@ -64,7 +64,7 @@ function ButtonGroup({
 	);
 }
 
-const buttonGroupSeparatorVariants = cva("shrink-0 bg-separator z-30", {
+export const buttonGroupSeparatorVariants = cva("shrink-0 bg-separator z-30", {
 	variants: {
 		orientation: {
 			horizontal: "w-px self-stretch -ml-px",

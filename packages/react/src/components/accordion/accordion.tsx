@@ -8,7 +8,7 @@ import * as React from "react";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
 
-const accordionVariants = cva("w-full", {
+export const accordionVariants = cva("w-full", {
 	variants: {
 		variant: {
 			default: "",

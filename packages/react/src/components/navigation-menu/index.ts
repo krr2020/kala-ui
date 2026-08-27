@@ -1,3 +1,4 @@
+export { navigationMenuStyles } from "../../config/navigation-menu";
 export {
 	NavigationMenu,
 	NavigationMenuContent,

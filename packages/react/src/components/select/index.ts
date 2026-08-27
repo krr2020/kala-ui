@@ -1,4 +1,12 @@
 export {
+	selectContentStyles,
+	selectItemStyles,
+	selectLabelStyles,
+	selectScrollButtonStyles,
+	selectSeparatorStyles,
+	selectTriggerStyles,
+} from "../../config/select";
+export {
 	NativeSelect,
 	NativeSelectOptGroup,
 	NativeSelectOption,
@@ -14,4 +22,5 @@ export {
 	SelectSeparator,
 	SelectTrigger,
 	SelectValue,
+	selectTriggerVariants,
 } from "./select";

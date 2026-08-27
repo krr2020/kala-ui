@@ -6,7 +6,7 @@ export interface StackProps extends Omit<FlexProps, "direction"> {
 	direction?: "column" | "columnReverse";
 }
 
-const Stack = React.forwardRef<HTMLElement, StackProps>(
+const Stack = React.forwardRef<HTMLDivElement, StackProps>(
 	(
 		{ className, direction = "column", gap = 4, align = "stretch", ...props },
 		ref,

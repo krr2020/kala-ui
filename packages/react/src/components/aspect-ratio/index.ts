@@ -1,1 +1,2 @@
-export { AspectRatio } from "./aspect-ratio";
+export { aspectRatioStyles } from "../../config/aspect-ratio";
+export { AspectRatio, aspectRatioVariants } from "./aspect-ratio";

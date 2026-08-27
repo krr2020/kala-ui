@@ -6,17 +6,17 @@ import * as React from "react";
 import { popoverStyles } from "../../config/popover";
 import { cn } from "../../lib/utils";
 
-const popoverVariants = cva(popoverStyles.base, {
+export const popoverVariants = cva(popoverStyles.base, {
 	variants: popoverStyles.variants,
 	defaultVariants: popoverStyles.defaultVariants,
 });
 
-const popoverHeaderVariants = cva(popoverStyles.header.base, {
+export const popoverHeaderVariants = cva(popoverStyles.header.base, {
 	variants: popoverStyles.header.variants,
 	defaultVariants: popoverStyles.header.defaultVariants,
 });
 
-const popoverArrowVariants = cva(popoverStyles.arrow.base, {
+export const popoverArrowVariants = cva(popoverStyles.arrow.base, {
 	variants: popoverStyles.arrow.variants,
 	defaultVariants: popoverStyles.arrow.defaultVariants,
 });

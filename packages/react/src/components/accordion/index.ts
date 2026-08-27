@@ -3,6 +3,7 @@ export {
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
+	accordionVariants,
 } from "./accordion";
 export type {
 	AccordionSkeletonConfig,

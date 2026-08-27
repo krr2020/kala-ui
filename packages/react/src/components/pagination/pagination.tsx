@@ -148,7 +148,7 @@ function PaginationItem({ className, ...props }: React.ComponentProps<"li">) {
 // ============================================================================
 
 export interface PaginationLinkProps
-	extends Omit<React.ComponentProps<"button">, "onClick"> {
+	extends Omit<React.ComponentProps<"a">, "onClick"> {
 	/**
 	 * Whether this page is currently active
 	 * @default false
@@ -173,6 +173,11 @@ export interface PaginationLinkProps
 	 */
 	href?: string;
 	/**
+	 * Disable the control (applies to the button form; links get
+	 * aria-disabled)
+	 */
+	disabled?: boolean;
+	/**
 	 * On click handler
 	 */
 	onClick?: (e: React.MouseEvent) => void;
@@ -186,6 +191,7 @@ function PaginationLink({
 	children,
 	page,
 	href,
+	disabled,
 	onClick,
 	...props
 }: PaginationLinkProps) {
@@ -246,7 +252,13 @@ function PaginationLink({
 				as="a"
 				href={href}
 				aria-current={isActive ? "page" : undefined}
-				className={cn(baseClasses, variantClasses[parentVariant], className)}
+				aria-disabled={disabled || undefined}
+				className={cn(
+					baseClasses,
+					variantClasses[parentVariant],
+					disabled && "pointer-events-none opacity-50",
+					className,
+				)}
 				{...props}
 			>
 				{children}
@@ -258,10 +270,12 @@ function PaginationLink({
 		<Box
 			as="button"
 			type="button"
+			disabled={disabled}
 			aria-current={isActive ? "page" : undefined}
 			className={cn(baseClasses, variantClasses[parentVariant], className)}
 			onClick={handleClick}
-			{...props}
+			// anchor-typed rest props are a superset of what a button renders
+			{...(props as unknown as React.ComponentProps<"button">)}
 		>
 			{children}
 		</Box>

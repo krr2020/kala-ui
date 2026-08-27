@@ -32,13 +32,20 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		ref,
 	) => {
 		const Comp = asChild ? Slot : "button";
+		const effectiveDisabled = isLoading || disabled;
 		return (
 			<Comp
 				className={cn(
 					buttonVariants({ variant, size, fullWidth, rounded, className }),
+					// asChild renders arbitrary elements (e.g. <a>) where the
+					// `disabled` attribute is invalid — fall back to ARIA + CSS
+					asChild &&
+						effectiveDisabled &&
+						"pointer-events-none aria-disabled:opacity-50 aria-disabled:cursor-not-allowed",
 				)}
 				ref={ref}
-				disabled={isLoading || disabled}
+				disabled={asChild ? undefined : effectiveDisabled}
+				aria-disabled={asChild ? effectiveDisabled || undefined : undefined}
 				aria-busy={isLoading || undefined}
 				{...props}
 			>

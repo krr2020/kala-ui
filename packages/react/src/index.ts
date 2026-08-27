@@ -1,3 +1,5 @@
+export { cn } from "./lib/utils";
+
 // Main entry point for @kala-ui/react
 // Export all components
 

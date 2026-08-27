@@ -10,6 +10,7 @@ export {
 	FieldSeparator,
 	FieldSet,
 	FieldTitle,
+	fieldVariants,
 } from "./field";
 export type { FieldSkeletonProps } from "./field-skeleton";
 export { FieldSkeleton } from "./field-skeleton";

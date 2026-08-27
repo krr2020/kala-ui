@@ -31,6 +31,7 @@ export default defineConfig({
   external: [
     'react',
     'react-dom',
+    '@kala-ui/react-hooks',
     '@radix-ui/*',
     'class-variance-authority',
     'clsx',

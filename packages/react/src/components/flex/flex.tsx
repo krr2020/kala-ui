@@ -1,6 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "../../lib/utils";
 
 const flexVariants = cva("flex", {
@@ -62,53 +62,49 @@ const flexVariants = cva("flex", {
 	},
 });
 
-export interface FlexProps
-	extends React.HTMLAttributes<HTMLElement>,
-		VariantProps<typeof flexVariants> {
-	asChild?: boolean;
-	as?: React.ElementType;
-	// biome-ignore lint/suspicious/noExplicitAny: Support polymorphic props
-	[key: string]: any;
+export type FlexProps<T extends React.ElementType = "div"> = Omit<
+	React.ComponentProps<T>,
+	"as" | "asChild"
+> &
+	VariantProps<typeof flexVariants> & {
+		as?: T;
+		asChild?: boolean;
+	};
+
+export function Flex<T extends React.ElementType = "div">(props: FlexProps<T>) {
+	const {
+		className,
+		direction,
+		wrap,
+		align,
+		justify,
+		gap,
+		grow,
+		shrink,
+		asChild = false,
+		as: Tag = "div",
+		ref,
+		...rest
+	} = props as FlexProps<"div">;
+	const Comp = (asChild ? Slot : Tag) as React.ElementType;
+	return (
+		<Comp
+			className={cn(
+				flexVariants({
+					direction,
+					wrap,
+					align,
+					justify,
+					gap,
+					grow,
+					shrink,
+					className,
+				}),
+			)}
+			ref={ref}
+			{...rest}
+		/>
+	);
 }
 
-const Flex = React.forwardRef<HTMLElement, FlexProps>(
-	(
-		{
-			className,
-			direction,
-			wrap,
-			align,
-			justify,
-			gap,
-			grow,
-			shrink,
-			asChild = false,
-			as: Tag = "div",
-			...props
-		},
-		ref,
-	) => {
-		const Comp = asChild ? Slot : Tag;
-		return (
-			<Comp
-				className={cn(
-					flexVariants({
-						direction,
-						wrap,
-						align,
-						justify,
-						gap,
-						grow,
-						shrink,
-						className,
-					}),
-				)}
-				ref={ref}
-				{...props}
-			/>
-		);
-	},
-);
-Flex.displayName = "Flex";
-
-export { Flex, flexVariants };
+export { flexVariants };

@@ -33,7 +33,7 @@ const hexToRgb = (hex: string) => {
 		: null;
 };
 
-const Overlay = React.forwardRef<HTMLElement, OverlayProps>(
+const Overlay = React.forwardRef<HTMLDivElement, OverlayProps>(
 	(
 		{
 			className,

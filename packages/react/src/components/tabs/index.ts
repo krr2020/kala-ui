@@ -1,4 +1,16 @@
-export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
+export {
+	tabsContentStyles,
+	tabsListStyles,
+	tabsTriggerStyles,
+} from "../../config/tabs";
+export {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+	tabsListVariants,
+	tabsTriggerVariants,
+} from "./tabs";
 export type {
 	TabsSkeletonConfig,
 	TabsSkeletonProps,

@@ -1,3 +1,4 @@
+export { cardStyles } from "../../config/card";
 export {
 	Card,
 	CardAction,

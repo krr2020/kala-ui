@@ -1,3 +1,4 @@
+export { popoverStyles } from "../../config/popover";
 export {
 	Popover,
 	PopoverAnchor,
@@ -7,6 +8,9 @@ export {
 	type PopoverContentProps,
 	PopoverHeader,
 	PopoverTrigger,
+	popoverArrowVariants,
+	popoverHeaderVariants,
+	popoverVariants,
 } from "./popover";
 export type {
 	PopoverSkeletonConfig,

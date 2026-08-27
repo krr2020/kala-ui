@@ -5,7 +5,7 @@ import { cn } from "../../lib/utils";
 import { Box } from "../box";
 import { Text } from "../text";
 
-const stepsVariants = cva("flex w-full", {
+export const stepsVariants = cva("flex w-full", {
 	variants: {
 		orientation: {
 			horizontal: "flex-row items-start",

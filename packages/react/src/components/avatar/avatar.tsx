@@ -18,13 +18,13 @@ const AvatarContext = React.createContext<{
 	shape: "circle",
 });
 
-const avatarVariants = cva(avatarStyles.base, {
+export const avatarVariants = cva(avatarStyles.base, {
 	variants: avatarStyles.variants,
 	compoundVariants: avatarStyles.compoundVariants as never,
 	defaultVariants: avatarStyles.defaultVariants,
 });
 
-const avatarImageVariants = cva(avatarImageStyles.base, {
+export const avatarImageVariants = cva(avatarImageStyles.base, {
 	variants: avatarImageStyles.variants,
 	defaultVariants: avatarImageStyles.defaultVariants,
 });
@@ -76,7 +76,7 @@ function Avatar({
 	);
 }
 
-interface AvatarImageProps
+export interface AvatarImageProps
 	extends Omit<React.ComponentProps<typeof AvatarPrimitive.Image>, "alt">,
 		VariantProps<typeof avatarImageVariants> {
 	/**
@@ -104,12 +104,12 @@ function AvatarImage({
 	);
 }
 
-const avatarFallbackVariants = cva(avatarFallbackStyles.base, {
+export const avatarFallbackVariants = cva(avatarFallbackStyles.base, {
 	variants: avatarFallbackStyles.variants,
 	defaultVariants: avatarFallbackStyles.defaultVariants,
 });
 
-interface AvatarFallbackProps
+export interface AvatarFallbackProps
 	extends React.ComponentProps<typeof AvatarPrimitive.Fallback>,
 		VariantProps<typeof avatarFallbackVariants> {}
 
@@ -131,10 +131,4 @@ function AvatarFallback({
 	);
 }
 
-export {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
-	type AvatarProps,
-	avatarVariants,
-};
+export { Avatar, AvatarFallback, AvatarImage, type AvatarProps };

@@ -228,11 +228,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 						</Flex>
 
 						{/* Right side actions */}
-						<Flex
-							align="center"
-							gap={1.5}
-							className="sm:gap-2 lg:gap-3 shrink-0"
-						>
+						<Flex align="center" className="gap-1.5 sm:gap-2 lg:gap-3 shrink-0">
 							{/* Search Bar (Desktop) */}
 							{searchBar && (
 								<Box className="hidden lg:block w-48 xl:w-64">{searchBar}</Box>

@@ -3,7 +3,7 @@ import type * as React from "react";
 
 import { cn } from "../../lib/utils";
 
-const kbdVariants = cva(
+export const kbdVariants = cva(
 	"inline-flex items-center justify-center font-mono font-medium rounded border border-b-2 bg-muted text-muted-foreground shadow-sm select-none",
 	{
 		variants: {

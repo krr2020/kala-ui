@@ -1,3 +1,4 @@
+export { dropdownMenuStyles } from "../../config/dropdown-menu";
 export {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,

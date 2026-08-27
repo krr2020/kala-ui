@@ -5,7 +5,7 @@ import { AlertTriangle } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
 
-const errorFallbackVariants = cva(
+export const errorFallbackVariants = cva(
 	"flex flex-col items-center justify-center p-8 text-center animate-in fade-in-50",
 	{
 		variants: {

@@ -1,2 +1,3 @@
+export { buttonStyles } from "../../config/button";
 export { Button, buttonVariants } from "./button";
 export type { ButtonProps } from "./button.types";

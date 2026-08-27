@@ -61,14 +61,13 @@ export function DatePicker({
 			</PopoverTrigger>
 			<PopoverContent className={cn("w-auto p-0", className)} align="start">
 				<Calendar
+					{...props}
 					mode="single"
 					selected={date}
 					onSelect={onDateChange || (() => {})}
 					required={false}
 					disabled={disabled}
 					autoFocus
-					// biome-ignore lint/suspicious/noExplicitAny: bypass complex union types
-					{...(props as any)}
 				/>
 			</PopoverContent>
 		</Popover>
@@ -145,14 +144,13 @@ export function DateRangePicker({
 			</PopoverTrigger>
 			<PopoverContent className={cn("w-auto p-0", className)} align="start">
 				<Calendar
+					{...props}
 					mode="range"
 					defaultMonth={dateRange?.from}
 					selected={dateRange}
 					onSelect={onDateRangeChange || (() => {})}
 					numberOfMonths={2}
 					disabled={disabled}
-					// biome-ignore lint/suspicious/noExplicitAny: bypass complex union types
-					{...(props as any)}
 				/>
 			</PopoverContent>
 		</Popover>

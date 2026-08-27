@@ -84,7 +84,7 @@ const Tabs = React.forwardRef<
 );
 Tabs.displayName = TabsPrimitive.Root.displayName;
 
-const tabsListVariants = cva(tabsListStyles.base, {
+export const tabsListVariants = cva(tabsListStyles.base, {
 	variants: tabsListStyles.variants,
 	defaultVariants: tabsListStyles.defaultVariants,
 });
@@ -109,7 +109,7 @@ const TabsList = React.forwardRef<
 ));
 TabsList.displayName = TabsPrimitive.List.displayName;
 
-const tabsTriggerVariants = cva(tabsTriggerStyles.base, {
+export const tabsTriggerVariants = cva(tabsTriggerStyles.base, {
 	variants: tabsTriggerStyles.variants,
 	defaultVariants: tabsTriggerStyles.defaultVariants,
 });

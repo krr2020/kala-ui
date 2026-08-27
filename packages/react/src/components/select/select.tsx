@@ -36,7 +36,7 @@ SelectValue.displayName = SelectPrimitive.Value.displayName;
 
 import { cva } from "class-variance-authority";
 
-const selectTriggerVariants = cva(selectTriggerStyles.base, {
+export const selectTriggerVariants = cva(selectTriggerStyles.base, {
 	variants: selectTriggerStyles.variants,
 	defaultVariants: selectTriggerStyles.defaultVariants,
 });

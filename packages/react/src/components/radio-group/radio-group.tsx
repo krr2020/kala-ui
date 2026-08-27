@@ -49,12 +49,12 @@ const RadioGroupContext = React.createContext<{
 	size?: "sm" | "md" | "lg";
 }>({});
 
-const radioGroupVariants = cva("", {
+export const radioGroupVariants = cva("", {
 	variants: radioGroupStyles.variants,
 	defaultVariants: radioGroupStyles.defaultVariants,
 });
 
-const radioGroupItemVariants = cva(radioGroupItemStyles.base, {
+export const radioGroupItemVariants = cva(radioGroupItemStyles.base, {
 	variants: radioGroupItemStyles.variants,
 	defaultVariants: radioGroupItemStyles.defaultVariants,
 });

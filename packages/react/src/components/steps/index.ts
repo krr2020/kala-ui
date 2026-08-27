@@ -1,4 +1,4 @@
-export { type StepItem, Steps, type StepsProps } from "./steps";
+export { type StepItem, Steps, type StepsProps, stepsVariants } from "./steps";
 export type {
 	StepsSkeletonConfig,
 	StepsSkeletonProps,

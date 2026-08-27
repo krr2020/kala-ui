@@ -16,7 +16,7 @@ import { cn } from "../../lib/utils";
 import type { BannerSkeletonConfig } from "../skeleton/skeleton.types";
 import { BannerSkeleton } from "./banner-skeleton";
 
-const bannerVariants = cva(
+export const bannerVariants = cva(
 	"w-full z-50 px-4 py-3 text-sm font-medium flex items-center justify-between gap-4",
 	{
 		variants: {
@@ -109,5 +109,3 @@ export function Banner({
 		</div>
 	);
 }
-
-export { bannerVariants };

@@ -1,20 +1,28 @@
 import { Slot } from "@radix-ui/react-slot";
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "../../lib/utils";
 
-export interface BoxProps extends React.HTMLAttributes<HTMLElement> {
+/**
+ * Polymorphic props: everything the rendered element accepts, plus `as` /
+ * `asChild`. Typed per element — `<Box as="a" href>` typechecks, `<Box
+ * gap={2}>` (a Flex prop) is a compile error.
+ */
+export type BoxProps<T extends React.ElementType = "div"> = Omit<
+	React.ComponentProps<T>,
+	"as" | "asChild"
+> & {
+	as?: T;
 	asChild?: boolean;
-	as?: React.ElementType;
-	// biome-ignore lint/suspicious/noExplicitAny: Support polymorphic props
-	[key: string]: any;
+};
+
+export function Box<T extends React.ElementType = "div">(props: BoxProps<T>) {
+	const {
+		className,
+		asChild = false,
+		as: Tag = "div",
+		ref,
+		...rest
+	} = props as BoxProps<"div">;
+	const Comp = (asChild ? Slot : Tag) as React.ElementType;
+	return <Comp className={cn(className)} ref={ref} {...rest} />;
 }
-
-const Box = React.forwardRef<HTMLElement, BoxProps>(
-	({ className, asChild = false, as: Tag = "div", ...props }, ref) => {
-		const Comp = asChild ? Slot : Tag;
-		return <Comp className={cn(className)} ref={ref} {...props} />;
-	},
-);
-Box.displayName = "Box";
-
-export { Box };
