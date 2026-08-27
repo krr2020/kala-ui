@@ -7,6 +7,11 @@ export interface ComboboxOption {
 }
 
 export interface ComboboxProps {
+	/**
+	 * Accessible name for the combobox trigger.
+	 * @default the placeholder text
+	 */
+	"aria-label"?: string;
 	/** Options to display in the combobox. */
 	options: ComboboxOption[];
 	/** Selected value. */

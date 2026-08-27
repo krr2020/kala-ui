@@ -625,3 +625,31 @@ describe("Combobox", () => {
 		expect(screen.getByText("Pick...")).toBeInTheDocument();
 	});
 });
+
+describe("Combobox accessibility", () => {
+	it("clear control is a real button outside the trigger (no nested interactives)", () => {
+		const { container } = render(
+			<Combobox options={mockOptions} value="option2" clearable />,
+		);
+		const clear = screen.getByLabelText("Clear selection");
+		expect(clear.tagName).toBe("BUTTON");
+		// the clear button must not be a descendant of the combobox trigger
+		expect(clear.closest('[role="combobox"]')).toBeNull();
+	});
+
+	it("clearing does not open the popover", async () => {
+		const user = userEvent.setup();
+		const onValueChange = vi.fn();
+		render(
+			<Combobox
+				options={mockOptions}
+				value="option2"
+				clearable
+				onValueChange={onValueChange}
+			/>,
+		);
+		await user.click(screen.getByLabelText("Clear selection"));
+		expect(onValueChange).toHaveBeenCalledWith("");
+		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+	});
+});

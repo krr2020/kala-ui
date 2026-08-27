@@ -207,76 +207,85 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
 			onValueChange?.([]);
 		};
 
+		const triggerLabel = selectedOptions.length
+			? `Options selected: ${selectedOptions.map((o) => o.label).join(", ")}`
+			: placeholder;
+
 		return (
 			<PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
-				<PopoverPrimitive.Trigger asChild>
-					<button
-						ref={ref}
-						type="button"
-						role="combobox"
-						aria-expanded={open}
-						aria-disabled={disabled}
-						disabled={disabled}
-						className={cn(
-							"flex min-h-10 w-full items-center justify-between rounded-md border bg-background px-3 py-2 text-sm transition-colors kala-surface-input",
-							"hover:bg-accent/50",
-							"kala-focus-ring",
-							"disabled:cursor-not-allowed disabled:opacity-50",
-							className,
-						)}
-					>
-						<div className="flex flex-1 flex-wrap gap-1">
-							{selectedOptions.length === 0 ? (
-								<span className="text-muted-foreground">{placeholder}</span>
-							) : (
-								<>
-									{displayedOptions.map((option) => (
-										<span
-											key={option.value}
-											className="inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground"
-										>
-											{option.icon && (
-												<span className="mr-1 flex size-3 items-center">
-													{option.icon}
-												</span>
-											)}
-											{option.label}
+				<div
+					data-slot="multi-select"
+					className={cn(
+						"relative flex min-h-10 w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input",
+						!disabled && "hover:bg-accent/50",
+						disabled && "cursor-not-allowed opacity-50",
+						className,
+					)}
+				>
+					<PopoverPrimitive.Trigger asChild>
+						<button
+							ref={ref}
+							type="button"
+							role="combobox"
+							aria-expanded={open}
+							aria-label={triggerLabel}
+							disabled={disabled}
+							className="absolute inset-0 z-0 rounded-md kala-focus-ring"
+						/>
+					</PopoverPrimitive.Trigger>
+					<div className="pointer-events-none relative z-10 flex flex-1 flex-wrap items-center gap-1 py-1.5 pl-3">
+						{selectedOptions.length === 0 ? (
+							<span className="text-muted-foreground">{placeholder}</span>
+						) : (
+							<>
+								{displayedOptions.map((option) => (
+									<span
+										key={option.value}
+										className="inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground"
+									>
+										{option.icon && (
+											<span className="mr-1 flex size-3 items-center">
+												{option.icon}
+											</span>
+										)}
+										{option.label}
+										{!disabled && (
 											<button
 												type="button"
 												onClick={(e) => handleRemove(option.value, e)}
-												className="rounded-sm hover:bg-secondary-foreground/20"
+												className="kala-touch pointer-events-auto rounded-sm hover:bg-secondary-foreground/20"
 												aria-label={`Remove ${option.label}`}
 											>
 												<X className="size-3" aria-hidden="true" />
 											</button>
-										</span>
-									))}
-									{remainingCount > 0 && (
-										<span className="inline-flex items-center rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
-											+{remainingCount} more
-										</span>
-									)}
-								</>
-							)}
-						</div>
-						<div className="flex items-center gap-1">
-							{showClearAll && value.length > 0 && (
-								<button
-									type="button"
-									onClick={handleClearAll}
-									className="mr-1 rounded-sm opacity-50 hover:opacity-100"
-									aria-label="Clear all"
-								>
-									<X className="size-4" />
-								</button>
-							)}
-							<ChevronsUpDown
-								className="size-4 shrink-0 opacity-50"
-								aria-hidden="true"
-							/>
-						</div>
-					</button>
-				</PopoverPrimitive.Trigger>
+										)}
+									</span>
+								))}
+								{remainingCount > 0 && (
+									<span className="inline-flex items-center rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
+										+{remainingCount} more
+									</span>
+								)}
+							</>
+						)}
+					</div>
+					<div className="pointer-events-none relative z-10 flex items-center gap-1 py-1.5 pr-3">
+						{showClearAll && value.length > 0 && !disabled && (
+							<button
+								type="button"
+								onClick={handleClearAll}
+								className="kala-touch pointer-events-auto mr-1 rounded-sm opacity-50 hover:opacity-100"
+								aria-label="Clear all"
+							>
+								<X className="size-4" aria-hidden="true" />
+							</button>
+						)}
+						<ChevronsUpDown
+							className="size-4 shrink-0 opacity-50"
+							aria-hidden="true"
+						/>
+					</div>
+				</div>
 				<PopoverPrimitive.Portal>
 					<PopoverPrimitive.Content
 						className="z-30 p-0"

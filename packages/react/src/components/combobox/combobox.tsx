@@ -37,6 +37,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 			selectedLabel,
 			renderOption,
 			separateOptions = false,
+			"aria-label": ariaLabel,
 		},
 		ref,
 	) => {
@@ -68,48 +69,52 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 
 		return (
 			<PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
-				<PopoverPrimitive.Trigger asChild>
-					<Button
-						ref={ref}
-						variant="outline"
-						role="combobox"
-						aria-expanded={open}
-						disabled={disabled}
-						className={cn(
-							"w-full justify-between font-normal overflow-hidden",
-							size === "sm" ? "h-8 px-3 text-xs" : "h-10 px-4",
-							!value && "text-muted-foreground",
-							className,
-						)}
-					>
-						<Text
+				<div className="relative w-full">
+					<PopoverPrimitive.Trigger asChild>
+						<Button
+							ref={ref}
+							variant="outline"
+							role="combobox"
+							aria-expanded={open}
+							aria-label={ariaLabel ?? placeholder}
+							disabled={disabled}
 							className={cn(
-								"truncate min-w-0",
-								matchTriggerWidth && "flex-1 text-left",
+								"w-full justify-between font-normal overflow-hidden",
+								size === "sm" ? "h-8 px-3 text-xs" : "h-10 px-4",
+								!value && "text-muted-foreground",
+								clearable && value && "pr-16",
+								className,
 							)}
 						>
-							{value ? displayLabel : placeholder}
-						</Text>
-						<span className="ml-2 flex items-center gap-1 shrink-0">
-							{clearable && value && (
-								// biome-ignore lint/a11y/useSemanticElements: <button> inside PopoverTrigger causes nested button hydration error
-								<span
-									role="button"
-									aria-label="Clear selection"
-									tabIndex={0}
-									onClick={handleClear}
-									onKeyDown={(e) => {
-										if (e.key === "Enter" || e.key === " ") handleClear();
-									}}
-									className="opacity-50 hover:opacity-100 rounded-sm hover:bg-accent p-0.5 cursor-pointer"
-								>
-									<X className="size-3" />
-								</span>
-							)}
-							<ChevronsUpDown className="size-4 opacity-50" />
-						</span>
-					</Button>
-				</PopoverPrimitive.Trigger>
+							<Text
+								className={cn(
+									"truncate min-w-0",
+									matchTriggerWidth && "flex-1 text-left",
+								)}
+							>
+								{value ? displayLabel : placeholder}
+							</Text>
+							<ChevronsUpDown
+								className="size-4 opacity-50 shrink-0"
+								aria-hidden="true"
+							/>
+						</Button>
+					</PopoverPrimitive.Trigger>
+					{clearable && value && !disabled && (
+						<button
+							type="button"
+							aria-label="Clear selection"
+							onClick={(e) => {
+								// sibling of the trigger, but stop bubbling for overlay layouts
+								e.stopPropagation();
+								handleClear();
+							}}
+							className="kala-touch absolute inset-y-0 right-8 my-auto flex h-6 w-6 items-center justify-center rounded-sm opacity-50 hover:opacity-100 hover:bg-accent cursor-pointer outline-none focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring"
+						>
+							<X className="size-3" aria-hidden="true" />
+						</button>
+					)}
+				</div>
 				<PopoverPrimitive.Portal>
 					<PopoverPrimitive.Content
 						className="p-0 z-30"

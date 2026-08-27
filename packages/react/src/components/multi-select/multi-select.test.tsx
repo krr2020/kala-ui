@@ -38,7 +38,7 @@ describe("MultiSelect", () => {
 
 		const button = screen.getByRole("combobox");
 		expect(button).toBeInTheDocument();
-		expect(button).toHaveTextContent("Select options...");
+		expect(button).toHaveAccessibleName("Select options...");
 	});
 
 	it("shows selected values as chips", () => {
@@ -47,8 +47,9 @@ describe("MultiSelect", () => {
 		);
 
 		const button = screen.getByRole("combobox");
-		expect(button).toHaveTextContent("Option 1");
-		expect(button).toHaveTextContent("Option 2");
+		expect(button).toHaveAccessibleName(/Option 1.*Option 2/);
+		expect(screen.getByText("Option 1")).toBeInTheDocument();
+		expect(screen.getByText("Option 2")).toBeInTheDocument();
 	});
 
 	it("opens popover on click", async () => {
@@ -228,8 +229,7 @@ describe("MultiSelect", () => {
 			/>,
 		);
 
-		const button = screen.getByRole("combobox");
-		const chips = within(button).getAllByText(/Option \d/);
+		const chips = screen.getAllByText(/Option \d/);
 		expect(chips[0]).toHaveTextContent("Option 3");
 		expect(chips[1]).toHaveTextContent("Option 1");
 	});
@@ -243,8 +243,7 @@ describe("MultiSelect", () => {
 			/>,
 		);
 
-		const button = screen.getByRole("combobox");
-		const chips = within(button).getAllByText(/Option \d/);
+		const chips = screen.getAllByText(/Option \d/);
 		expect(chips[0]).toHaveTextContent("Option 1");
 		expect(chips[1]).toHaveTextContent("Option 3");
 	});
@@ -271,11 +270,10 @@ describe("MultiSelect", () => {
 			/>,
 		);
 
-		const button = screen.getByRole("combobox");
-		expect(within(button).getByText("Option 1")).toBeInTheDocument();
-		expect(within(button).getByText("Option 2")).toBeInTheDocument();
-		expect(within(button).queryByText("Option 3")).not.toBeInTheDocument();
-		expect(within(button).getByText("+1 more")).toBeInTheDocument();
+		expect(screen.getByText("Option 1")).toBeInTheDocument();
+		expect(screen.getByText("Option 2")).toBeInTheDocument();
+		expect(screen.queryByText("Option 3")).not.toBeInTheDocument();
+		expect(screen.getByText("+1 more")).toBeInTheDocument();
 	});
 
 	it("does not show +N more when maxVisibleSelections is 0", () => {
@@ -294,8 +292,8 @@ describe("MultiSelect", () => {
 	it("applies custom className", () => {
 		render(<MultiSelect options={mockOptions} className="custom-ms" />);
 
-		const button = screen.getByRole("combobox");
-		expect(button).toHaveClass("custom-ms");
+		const root = document.querySelector('[data-slot="multi-select"]');
+		expect(root).toHaveClass("custom-ms");
 	});
 
 	it("renders grouped options", async () => {
@@ -490,10 +488,10 @@ describe("MultiSelect", () => {
 		expect(ref).toHaveBeenCalled();
 	});
 
-	it("renders trigger with aria-disabled when disabled", () => {
+	it("renders natively disabled trigger when disabled", () => {
 		render(<MultiSelect options={mockOptions} disabled />);
 		const button = screen.getByRole("combobox");
-		expect(button).toHaveAttribute("aria-disabled", "true");
+		expect(button).toBeDisabled();
 	});
 
 	it("renders trigger with aria-expanded when open", async () => {
@@ -548,9 +546,8 @@ describe("MultiSelect", () => {
 				maxVisibleSelections={5}
 			/>,
 		);
-		const button = screen.getByRole("combobox");
-		expect(within(button).getByText("Option 1")).toBeInTheDocument();
-		expect(within(button).queryByText("+")).not.toBeInTheDocument();
+		expect(screen.getByText("Option 1")).toBeInTheDocument();
+		expect(screen.queryByText("+")).not.toBeInTheDocument();
 	});
 
 	it("searches within the dropdown", async () => {
@@ -828,5 +825,49 @@ describe("MultiSelect", () => {
 
 		render(<MultiSelect options={groupedWithIcons} value={["x1"]} />);
 		expect(screen.getByTestId("chip-icon")).toBeInTheDocument();
+	});
+});
+
+describe("MultiSelect accessibility", () => {
+	it("trigger contains no nested interactive elements", () => {
+		const { container } = render(
+			<MultiSelect options={mockOptions} value={["option1", "option2"]} />,
+		);
+		const combobox = screen.getByRole("combobox");
+		expect(combobox.querySelector("button")).toBeNull();
+		// chip remove and clear-all buttons exist as siblings, not descendants
+		expect(screen.getByLabelText("Remove Option 1")).toBeInTheDocument();
+		expect(screen.getByLabelText("Clear all")).toBeInTheDocument();
+		expect(container.querySelector("button > button")).toBeNull();
+	});
+
+	it("trigger announces the current selection", () => {
+		render(
+			<MultiSelect options={mockOptions} value={["option1", "option2"]} />,
+		);
+		expect(screen.getByRole("combobox")).toHaveAccessibleName(
+			/Option 1.*Option 2/,
+		);
+	});
+
+	it("removing a chip does not open the popover", async () => {
+		const user = userEvent.setup();
+		const onValueChange = vi.fn();
+		render(
+			<MultiSelect
+				options={mockOptions}
+				value={["option1", "option2"]}
+				onValueChange={onValueChange}
+			/>,
+		);
+		await user.click(screen.getByLabelText("Remove Option 1"));
+		expect(onValueChange).toHaveBeenCalledWith(["option2"]);
+		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+	});
+
+	it("hides remove and clear-all controls when disabled", () => {
+		render(<MultiSelect options={mockOptions} value={["option1"]} disabled />);
+		expect(screen.queryByLabelText("Remove Option 1")).not.toBeInTheDocument();
+		expect(screen.queryByLabelText("Clear all")).not.toBeInTheDocument();
 	});
 });
