@@ -1,0 +1,26 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"outDir": "dist",
+		"rootDir": "src",
+		"jsx": "react-jsx",
+		"lib": ["ES2022", "DOM", "DOM.Iterable"],
+		"types": ["node", "vitest/globals", "@testing-library/jest-dom"],
+		"paths": {
+			"@/*": ["./src/*"]
+		},
+		"tsBuildInfoFile": ".tsconfig.tsbuildinfo"
+	},
+	"include": ["src/**/*"],
+	"exclude": [
+		"node_modules",
+		"dist",
+		"**/*.test.ts",
+		"**/*.test.tsx",
+		"**/*.spec.ts",
+		"**/*.spec.tsx",
+		"**/*.stories.ts",
+		"**/*.stories.tsx",
+		"**/__tests__/**"
+	]
+}

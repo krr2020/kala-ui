@@ -1,22 +1,33 @@
 #!/usr/bin/env node
 
 /**
- * Post-tsc build script that adds .js extensions to all relative imports
- * in the dist output. TypeScript's tsc does not emit .js extensions for
- * relative imports, which is required for Node.js ESM resolution when
- * "type": "module" is set in package.json.
+ * Shared post-tsc build step for @kala-ui/react and @kala-ui/react-app.
  *
- * This runs after `tsc` as part of the build process.
+ * 1. Adds .js extensions to relative imports in the dist output — tsc does
+ *    not emit them, and Node.js ESM resolution requires them when
+ *    "type": "module" is set.
+ * 2. Prepends "use client" to the barrel and dist/components/** so React
+ *    Server Component apps can import components directly. dist/lib stays
+ *    server-safe (pure helpers, no hooks).
+ *
+ * Usage: node scripts/add-js-extensions.mjs <package-dir-relative-to-cwd>
+ * (from a package script: `node ../../scripts/add-js-extensions.mjs .`)
  */
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, join, relative } from 'node:path';
+import { dirname, join, relative, resolve } from 'node:path';
 import { execSync } from 'node:child_process';
 
-const distDir = new URL('../dist', import.meta.url).pathname;
+const pkgArg = process.argv[2];
+if (!pkgArg) {
+  console.error('Usage: node scripts/add-js-extensions.mjs <package-dir>');
+  process.exit(1);
+}
+
+const distDir = resolve(process.cwd(), pkgArg, 'dist');
 
 if (!existsSync(distDir)) {
-  console.log('No dist directory found, skipping');
+  console.log(`No dist directory found at ${distDir}, skipping`);
   process.exit(0);
 }
 

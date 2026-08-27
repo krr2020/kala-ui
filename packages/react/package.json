@@ -40,6 +40,9 @@
 		"./styles/helpers": {
 			"default": "./dist/styles/helpers.css"
 		},
+		"./tailwind": {
+			"default": "./dist/styles/theme.css"
+		},
 		"./accordion": {
 			"types": "./dist/components/accordion/index.d.ts",
 			"default": "./dist/components/accordion/index.js"
@@ -466,7 +469,7 @@
 		}
 	},
 	"scripts": {
-		"build": "tsc && node scripts/add-js-extensions.js && pnpm exec postcss src/styles/globals.css -o dist/styles/globals.css && cp src/styles/helpers.css dist/styles/helpers.css",
+		"build": "tsc && node ../../scripts/add-js-extensions.mjs . && pnpm exec postcss src/styles/globals.css -o dist/styles/globals.css && cp src/styles/helpers.css src/styles/theme.css dist/styles/",
 		"type-check": "tsc --noEmit",
 		"lint": "biome lint .",
 		"lint:fix": "biome lint . --write",

@@ -1,0 +1,21 @@
+/*
+ * @kala-ui/react-app stylesheet — utilities only.
+ *
+ * The theme layer, preflight, design tokens and kala-* helper classes all
+ * ship in @kala-ui/react/styles; import it BEFORE this file:
+ *
+ *   @import "@kala-ui/react/styles";
+ *   @import "@kala-ui/react-app/styles";
+ *
+ * This entry compiles utilities for the app-level components against the
+ * same shared Tailwind theme (imported below at build time), so both
+ * packages generate identical utility output. Tailwind v4 tree-shakes the
+ * theme layer, so only mappings actually used by these utilities are
+ * re-emitted here; token values resolve from the core stylesheet.
+ */
+
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "../../../react/src/styles/theme.css";
+@source "../../src";

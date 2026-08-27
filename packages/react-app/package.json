@@ -1,0 +1,163 @@
+{
+	"name": "@kala-ui/react-app",
+	"version": "0.1.0-beta.0",
+	"type": "module",
+	"sideEffects": [
+		"**/*.css"
+	],
+	"description": "App-level composite components for Kala UI — AppShell, Sidebar, Header, DataTable, ApexCharts wrappers, drag-and-drop and dashboard widgets — built on @kala-ui/react primitives.",
+	"keywords": [
+		"react",
+		"ui",
+		"components",
+		"app-shell",
+		"data-table",
+		"charts",
+		"dashboard",
+		"design-system",
+		"typescript"
+	],
+	"author": "Kala UI",
+	"license": "MIT",
+	"homepage": "https://krr2020.com/kala-ui",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/krr2020/kala-ui.git",
+		"directory": "packages/react-app"
+	},
+	"bugs": {
+		"url": "https://github.com/krr2020/kala-ui/issues"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./styles": {
+			"default": "./dist/styles/app.css"
+		},
+		"./app-shell": {
+			"types": "./dist/components/app-shell/index.d.ts",
+			"default": "./dist/components/app-shell/index.js"
+		},
+		"./charts": {
+			"types": "./dist/components/charts/index.d.ts",
+			"default": "./dist/components/charts/index.js"
+		},
+		"./data-table": {
+			"types": "./dist/components/data-table/index.d.ts",
+			"default": "./dist/components/data-table/index.js"
+		},
+		"./dnd": {
+			"types": "./dist/components/dnd/index.d.ts",
+			"default": "./dist/components/dnd/index.js"
+		},
+		"./footer": {
+			"types": "./dist/components/footer/index.d.ts",
+			"default": "./dist/components/footer/index.js"
+		},
+		"./header": {
+			"types": "./dist/components/header/index.d.ts",
+			"default": "./dist/components/header/index.js"
+		},
+		"./metric-card": {
+			"types": "./dist/components/metric-card/index.d.ts",
+			"default": "./dist/components/metric-card/index.js"
+		},
+		"./nav-link": {
+			"types": "./dist/components/nav-link/index.d.ts",
+			"default": "./dist/components/nav-link/index.js"
+		},
+		"./navigation": {
+			"types": "./dist/components/navigation/index.d.ts",
+			"default": "./dist/components/navigation/index.js"
+		},
+		"./session-card": {
+			"types": "./dist/components/session-card/index.d.ts",
+			"default": "./dist/components/session-card/index.js"
+		},
+		"./sidebar": {
+			"types": "./dist/components/sidebar/index.d.ts",
+			"default": "./dist/components/sidebar/index.js"
+		},
+		"./social-login-button": {
+			"types": "./dist/components/social-login-button/index.d.ts",
+			"default": "./dist/components/social-login-button/index.js"
+		},
+		"./social-login-buttons": {
+			"types": "./dist/components/social-login-buttons/index.d.ts",
+			"default": "./dist/components/social-login-buttons/index.js"
+		},
+		"./sparkline-chart": {
+			"types": "./dist/components/sparkline-chart/index.d.ts",
+			"default": "./dist/components/sparkline-chart/index.js"
+		},
+		"./user-menu-dropdown": {
+			"types": "./dist/components/user-menu-dropdown/index.d.ts",
+			"default": "./dist/components/user-menu-dropdown/index.js"
+		},
+		"./lib/active-path": {
+			"types": "./dist/lib/active-path.d.ts",
+			"default": "./dist/lib/active-path.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc && node ../../scripts/add-js-extensions.mjs . && pnpm exec postcss src/styles/app.css -o dist/styles/app.css",
+		"type-check": "tsc --noEmit",
+		"lint": "biome lint .",
+		"lint:fix": "biome lint . --write",
+		"lint:fix-unsafe": "biome lint . --write --unsafe",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage",
+		"format": "biome format --write ."
+	},
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE",
+		"CHANGELOG.md"
+	],
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org/"
+	},
+	"peerDependencies": {
+		"react": "^19.2.0",
+		"react-dom": "^19.2.0"
+	},
+	"dependencies": {
+		"@dnd-kit/core": "^6.3.1",
+		"@dnd-kit/modifiers": "^9.0.0",
+		"@dnd-kit/sortable": "^10.0.0",
+		"@dnd-kit/utilities": "^3.2.2",
+		"@kala-ui/react": "workspace:*",
+		"@kala-ui/react-hooks": "workspace:*",
+		"apexcharts": "~7.0.0",
+		"lucide-react": "~1.34.0",
+		"react-apexcharts": "~2.1.1",
+		"simple-icons": "~16.28.0"
+	},
+	"devDependencies": {
+		"@tailwindcss/postcss": "~4.3.3",
+		"@testing-library/jest-dom": "~7.0.1",
+		"@testing-library/react": "~16.3.2",
+		"@testing-library/user-event": "~14.6.6",
+		"@types/node": "~26.4.0",
+		"@types/react": "~19.2.18",
+		"@types/react-dom": "~19.2.5",
+		"@vitejs/plugin-react": "~6.1.0",
+		"@vitest/coverage-v8": "~4.1.11",
+		"jsdom": "^30.0.1",
+		"postcss": "~8.5.26",
+		"react": "^19.2.8",
+		"react-dom": "^19.2.8",
+		"tailwindcss": "~4.3.3",
+		"tailwindcss-animate": "~1.0.7",
+		"typescript": "~7.0.2",
+		"vite": "~8.2.2",
+		"vitest": "~4.1.11"
+	}
+}
