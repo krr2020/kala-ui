@@ -722,6 +722,52 @@ describe("DataTable", () => {
 			expect(checkboxes.length).toBeGreaterThan(0);
 		});
 
+		it("syncs selection state when selectedIds prop changes", () => {
+			const { rerender } = render(
+				<DataTable
+					data={mockUsers}
+					columns={mockColumns}
+					selection={selectionConfig}
+				/>,
+			);
+			expect(
+				screen.getByRole("checkbox", { name: "Select row 1" }),
+			).not.toBeChecked();
+
+			// Parent (e.g. bulk delete) shrinks the selection — UI must follow.
+			rerender(
+				<DataTable
+					data={mockUsers}
+					columns={mockColumns}
+					selection={{
+						...selectionConfig,
+						selectedIds: new Set<string>(["1"]),
+					}}
+				/>,
+			);
+			expect(
+				screen.getByRole("checkbox", { name: "Select row 1" }),
+			).toBeChecked();
+			expect(
+				screen.getByRole("checkbox", { name: "Select row 2" }),
+			).not.toBeChecked();
+
+			// And clears it entirely.
+			rerender(
+				<DataTable
+					data={mockUsers}
+					columns={mockColumns}
+					selection={{
+						...selectionConfig,
+						selectedIds: new Set<string>(),
+					}}
+				/>,
+			);
+			expect(
+				screen.getByRole("checkbox", { name: "Select row 1" }),
+			).not.toBeChecked();
+		});
+
 		it("renders select all checkbox", () => {
 			render(
 				<DataTable

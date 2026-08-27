@@ -96,7 +96,7 @@ export const NavLink = React.forwardRef<HTMLButtonElement, NavLinkProps>(
 								"flex items-center justify-center text-muted-foreground transition-transform duration-200",
 								children &&
 									!disableRightSectionRotation &&
-									opened &&
+									isOpened &&
 									"rotate-90",
 							)}
 						>
@@ -106,7 +106,7 @@ export const NavLink = React.forwardRef<HTMLButtonElement, NavLinkProps>(
 					)}
 				</button>
 
-				{children && opened && (
+				{children && isOpened && (
 					<div className={cn("flex flex-col gap-1", indent && "pl-4")}>
 						{children}
 					</div>

@@ -467,4 +467,19 @@ describe("Header", () => {
 	it("has displayName set to Header", () => {
 		expect(Header.displayName).toBe("Header");
 	});
+
+	it("locks body scroll while the mobile menu is open and releases on close", () => {
+		const { rerender } = render(<Header isMobileMenuOpen={true} />);
+		expect(document.body.style.overflow).toBe("hidden");
+		expect(document.body.style.position).toBe("fixed");
+
+		rerender(<Header isMobileMenuOpen={false} />);
+		expect(document.body.style.overflow).toBe("");
+		expect(document.body.style.position).toBe("");
+	});
+
+	it("does not touch body scroll when the menu never opens", () => {
+		render(<Header />);
+		expect(document.body.style.overflow).toBe("");
+	});
 });

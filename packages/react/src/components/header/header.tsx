@@ -86,7 +86,13 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 		},
 		ref,
 	) => {
-		useScrollLock(!!isMobileMenuOpen);
+		// useScrollLock's argument is the INITIAL state only — drive it through
+		// the setter so opening/closing the menu actually engages the lock.
+		const [, setScrollLocked] = useScrollLock();
+		React.useEffect(() => {
+			setScrollLocked(!!isMobileMenuOpen);
+		}, [isMobileMenuOpen, setScrollLocked]);
+
 		const mounted = useMounted();
 
 		// Track expanded mobile menu items

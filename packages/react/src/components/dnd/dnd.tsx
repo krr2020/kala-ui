@@ -331,6 +331,19 @@ export interface SortableItemProps {
 	handle?: boolean;
 }
 
+// SortableHandle receives its parent SortableItem's dnd-kit wiring through
+// this context — a handle must never register its own sortable (the old
+// `useSortable({ id: "" })` created a phantom element that broke
+// handle-based dragging and collided with real ids).
+interface SortableHandleContextValue {
+	attributes: DraggableAttributes;
+	listeners: SyntheticListenerMap | undefined;
+	setActivatorNodeRef: (node: HTMLElement | null) => void;
+}
+
+const SortableHandleContext =
+	React.createContext<SortableHandleContextValue | null>(null);
+
 const SortableItem = React.forwardRef<HTMLDivElement, SortableItemProps>(
 	(
 		{ children, className, id, disabled = false, handle = false, ...props },
@@ -340,6 +353,7 @@ const SortableItem = React.forwardRef<HTMLDivElement, SortableItemProps>(
 			attributes,
 			listeners,
 			setNodeRef,
+			setActivatorNodeRef,
 			transform,
 			transition,
 			isDragging,
@@ -371,23 +385,27 @@ const SortableItem = React.forwardRef<HTMLDivElement, SortableItemProps>(
 		};
 
 		return (
-			<div
-				ref={(node) => {
-					setNodeRef(node);
-					if (typeof ref === "function") {
-						ref(node);
-					} else if (ref) {
-						ref.current = node;
-					}
-				}}
-				style={style}
-				className={cn(className)}
-				{...attributes}
-				{...(handle ? {} : listeners)}
-				{...props}
+			<SortableHandleContext.Provider
+				value={{ attributes, listeners, setActivatorNodeRef }}
 			>
-				{content}
-			</div>
+				<div
+					ref={(node) => {
+						setNodeRef(node);
+						if (typeof ref === "function") {
+							ref(node);
+						} else if (ref) {
+							ref.current = node;
+						}
+					}}
+					style={style}
+					className={cn(className)}
+					{...attributes}
+					{...(handle ? {} : listeners)}
+					{...props}
+				>
+					{content}
+				</div>
+			</SortableHandleContext.Provider>
 		);
 	},
 );
@@ -407,17 +425,32 @@ export interface SortableHandleProps {
 
 const SortableHandle = React.forwardRef<HTMLDivElement, SortableHandleProps>(
 	({ children, className, ...props }, ref) => {
-		const { attributes, listeners } = useSortable({ id: "" });
+		const sortable = React.useContext(SortableHandleContext);
+
+		if (!sortable && process.env.NODE_ENV !== "production") {
+			console.warn(
+				"SortableHandle must be rendered inside a SortableItem to receive drag listeners.",
+			);
+		}
 
 		const content =
-			typeof children === "function" ? children(listeners) : children;
+			typeof children === "function"
+				? children(sortable?.listeners)
+				: children;
 
 		return (
 			<div
-				ref={ref}
+				ref={(node) => {
+					sortable?.setActivatorNodeRef(node);
+					if (typeof ref === "function") {
+						ref(node);
+					} else if (ref) {
+						ref.current = node;
+					}
+				}}
 				className={cn("cursor-grab active:cursor-grabbing", className)}
-				{...attributes}
-				{...listeners}
+				{...(sortable?.attributes ?? {})}
+				{...(sortable?.listeners ?? {})}
 				{...props}
 			>
 				{content}

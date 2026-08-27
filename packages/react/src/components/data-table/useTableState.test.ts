@@ -461,6 +461,48 @@ describe("useTableState", () => {
 			expect(onSearchChange).toHaveBeenCalledWith("test");
 			vi.useRealTimers();
 		});
+
+		it("keeps the pending debounced search across unrelated re-renders", () => {
+			vi.useFakeTimers();
+			const onSearchChange = vi.fn();
+
+			const { result, rerender } = renderHook(
+				({ external }: { external: number }) =>
+					useTableState({
+						data,
+						columns,
+						pageSize: 10,
+						searchConfig: {
+							debounce: 300,
+							placeholder: "Search",
+							ariaLabel: "Search",
+						},
+						onSearchChange,
+					}),
+				{ initialProps: { external: 0 } },
+			);
+
+			act(() => {
+				result.current.setSearchQuery("hello");
+			});
+
+			// Unrelated re-render mid-debounce (e.g. the server delivered new
+			// data) must not cancel the pending onSearchChange.
+			act(() => {
+				rerender({ external: 1 });
+			});
+			act(() => {
+				vi.advanceTimersByTime(299);
+			});
+			expect(onSearchChange).not.toHaveBeenCalled();
+
+			act(() => {
+				vi.advanceTimersByTime(2);
+			});
+			expect(onSearchChange).toHaveBeenCalledTimes(1);
+			expect(onSearchChange).toHaveBeenCalledWith("hello");
+			vi.useRealTimers();
+		});
 	});
 
 	describe("pagination", () => {

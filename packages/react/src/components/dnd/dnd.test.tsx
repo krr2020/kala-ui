@@ -106,6 +106,7 @@ vi.mock("@dnd-kit/sortable", () => ({
 		attributes: { "data-sortable": "true" },
 		listeners: { onMouseDown: vi.fn() },
 		setNodeRef: vi.fn(),
+		setActivatorNodeRef: vi.fn(),
 		transform: null,
 		transition: undefined,
 		isDragging: false,
@@ -696,12 +697,27 @@ describe("SortableHandle", () => {
 		expect(screen.getByText("Handle Content")).toBeInTheDocument();
 	});
 
-	it("renders function children with listeners", () => {
+	it("renders function children with undefined listeners when standalone", () => {
 		const mockChild = vi.fn((_listeners: any) => (
 			<div>Function Handle</div>
 		));
 
 		render(<SortableHandle>{mockChild}</SortableHandle>);
+
+		expect(mockChild).toHaveBeenCalledWith(undefined);
+		expect(screen.getByText("Function Handle")).toBeInTheDocument();
+	});
+
+	it("passes the parent SortableItem's listeners to function children", () => {
+		const mockChild = vi.fn((_listeners: any) => (
+			<div>Function Handle</div>
+		));
+
+		render(
+			<SortableItem id="item-1" handle>
+				<SortableHandle>{mockChild}</SortableHandle>
+			</SortableItem>,
+		);
 
 		expect(mockChild).toHaveBeenCalledWith(expect.any(Object));
 		expect(screen.getByText("Function Handle")).toBeInTheDocument();
@@ -731,15 +747,27 @@ describe("SortableHandle", () => {
 		expect(handle).toHaveClass("custom-handle");
 	});
 
-	it("spreads attributes and listeners from useSortable", () => {
+	it("does not register its own sortable (no phantom id)", () => {
 		render(
 			<SortableHandle>
 				<div>Handle</div>
 			</SortableHandle>,
 		);
 
-		// useSortable is called with id: "" for SortableHandle
-		expect(useSortable).toHaveBeenCalledWith({ id: "" });
+		expect(useSortable).not.toHaveBeenCalled();
+	});
+
+	it("spreads the parent item's attributes and listeners when nested", () => {
+		render(
+			<SortableItem id="item-1" handle>
+				<SortableHandle>
+					<div>Handle</div>
+				</SortableHandle>
+			</SortableItem>,
+		);
+
+		const handle = screen.getByText("Handle").parentElement as HTMLElement;
+		expect(handle).toHaveAttribute("data-sortable", "true");
 	});
 });
 

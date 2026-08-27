@@ -233,23 +233,37 @@ export function useTableState<TData>({
 		}
 	});
 
+	// Extract debounce ms from searchConfig
+	const debounceMs = useMemo(() => {
+		if (!searchConfig || typeof searchConfig === "boolean") return 0;
+		return searchConfig.debounce ?? 0;
+	}, [searchConfig]);
+
 	// Notify parent of search changes after render. When a debounce is
 	// configured, the parent (server-side search) is notified only after the
 	// debounce window elapses — firing on every keystroke would hammer the
 	// server. The local searchQuery state updates immediately so the local
 	// (client-side) filtering stays responsive; only the parent callback waits.
+	// The effect depends on [searchQuery] only: re-running it on unrelated
+	// re-renders would clear the pending timer and silently swallow the
+	// callback, so the latest callback is read through a ref instead.
 	const prevSearchRef = useRef("");
+	const onSearchChangeRef = useRef(onSearchChange);
 	useEffect(() => {
-		if (searchQuery === prevSearchRef.current) return
-		prevSearchRef.current = searchQuery
-		if (!onSearchChange) return
-		if (debounceMs <= 0) {
-			onSearchChange(searchQuery)
-			return
-		}
-		const timer = setTimeout(() => onSearchChange(searchQuery), debounceMs)
-		return () => clearTimeout(timer)
+		onSearchChangeRef.current = onSearchChange;
 	});
+	useEffect(() => {
+		if (searchQuery === prevSearchRef.current) return;
+		prevSearchRef.current = searchQuery;
+		const callback = onSearchChangeRef.current;
+		if (!callback) return;
+		if (debounceMs <= 0) {
+			callback(searchQuery);
+			return;
+		}
+		const timer = setTimeout(() => callback(searchQuery), debounceMs);
+		return () => clearTimeout(timer);
+	}, [searchQuery, debounceMs]);
 
 	// Notify parent of pagination changes after render.
 	const prevPaginationRef = useRef({ page: 1, pageSize: initialPageSize });
@@ -279,12 +293,6 @@ export function useTableState<TData>({
 		setFilterConfigs([]);
 		setCurrentPage(1);
 	}, []);
-
-	// Extract debounce ms from searchConfig
-	const debounceMs = useMemo(() => {
-		if (!searchConfig || typeof searchConfig === "boolean") return 0;
-		return searchConfig.debounce ?? 0;
-	}, [searchConfig]);
 
 	const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 

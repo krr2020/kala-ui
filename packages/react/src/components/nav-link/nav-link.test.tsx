@@ -45,4 +45,44 @@ describe("NavLink", () => {
 		const button = screen.getByRole("button");
 		expect(button).toHaveClass("bg-accent");
 	});
+
+	it("respects controlled opened prop for rendering children", () => {
+		const { rerender } = render(
+			<NavLink label="Parent" opened={false} onChangeOpened={vi.fn()}>
+				<div>Child</div>
+			</NavLink>,
+		);
+		expect(screen.queryByText("Child")).not.toBeInTheDocument();
+
+		rerender(
+			<NavLink label="Parent" opened={true} onChangeOpened={vi.fn()}>
+				<div>Child</div>
+			</NavLink>,
+		);
+		expect(screen.getByText("Child")).toBeInTheDocument();
+	});
+
+	it("rotates the chevron when controlled opened is true", () => {
+		render(
+			<NavLink label="Parent" opened={true} onChangeOpened={vi.fn()}>
+				<div>Child</div>
+			</NavLink>,
+		);
+		const chevronWrapper = screen.getByText("Parent").parentElement
+			?.nextElementSibling as HTMLElement;
+		expect(chevronWrapper).toHaveClass("rotate-90");
+	});
+
+	it("calls onChangeOpened with next value on click in controlled mode", () => {
+		const onChangeOpened = vi.fn();
+		render(
+			<NavLink label="Parent" opened={false} onChangeOpened={onChangeOpened}>
+				<div>Child</div>
+			</NavLink>,
+		);
+		fireEvent.click(screen.getByText("Parent"));
+		expect(onChangeOpened).toHaveBeenCalledWith(true);
+		// Controlled: stays closed until the parent flips the prop.
+		expect(screen.queryByText("Child")).not.toBeInTheDocument();
+	});
 });

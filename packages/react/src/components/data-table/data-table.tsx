@@ -156,10 +156,23 @@ export function DataTable<TData>({
 	// Determine display data: use full data for server-side pagination, pageData for client-side
 	const displayData = paginationCallback ? data : pageData;
 
-	// Row selection state
+	// Row selection state. When the caller controls selection via
+	// `selection.selectedIds`, mirror prop changes into state during render
+	// (React's "adjust state on prop change" pattern) — useState only seeds the
+	// initial value, so bulk-delete flows that update the prop would otherwise
+	// keep rendering a stale selection.
 	const [selectedIds, setSelectedIds] = useState<Set<string>>(
 		selection?.selectedIds ?? new Set(),
 	);
+	const controlledSelectedIds = selection?.selectedIds;
+	const prevControlledSelectedIds = useRef(controlledSelectedIds);
+	if (
+		controlledSelectedIds !== undefined &&
+		controlledSelectedIds !== prevControlledSelectedIds.current
+	) {
+		prevControlledSelectedIds.current = controlledSelectedIds;
+		setSelectedIds(controlledSelectedIds);
+	}
 
 	// Scroll container ref for scroll-to-top/bottom buttons
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
