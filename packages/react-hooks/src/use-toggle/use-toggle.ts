@@ -30,7 +30,7 @@ export function useToggle<T = boolean>(
 				setState((current) => (current === option1 ? option2 : option1));
 			}
 		},
-		[option1],
+		[option1, option2],
 	);
 
 	return [state, toggle];

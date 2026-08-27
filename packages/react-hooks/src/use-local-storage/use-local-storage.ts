@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export interface UseStorageOptions<T> {
 	/** Storage key */
@@ -24,49 +24,78 @@ function createStorageHook(storageType: "localStorage" | "sessionStorage") {
 		key,
 		defaultValue,
 		getInitialValueInEffect = true,
-		serialize = JSON.stringify,
-		deserialize = JSON.parse,
+		serialize,
+		deserialize,
 	}: UseStorageOptions<T>): UseStorageReturnValue<T> {
-		const getStorageValue = useCallback((): T => {
+		// Options are kept in refs so the callbacks below stay identity-stable
+		// even when callers pass inline literals (prevents effect re-run loops).
+		const defaultValueRef = useRef(defaultValue);
+		const serializeRef = useRef(serialize ?? JSON.stringify);
+		const deserializeRef = useRef(deserialize ?? JSON.parse);
+
+		useEffect(() => {
+			defaultValueRef.current = defaultValue;
+			serializeRef.current = serialize ?? JSON.stringify;
+			deserializeRef.current = deserialize ?? JSON.parse;
+		});
+
+		const readStoredValue = useCallback((): T | undefined => {
 			if (typeof window === "undefined") {
-				return defaultValue as T;
+				return undefined;
 			}
 
 			try {
 				const item = window[storageType].getItem(key);
-				return item ? deserialize(item) : (defaultValue as T);
+				if (item === null) {
+					return undefined;
+				}
+				return deserializeRef.current(item);
 			} catch (error) {
 				console.warn(`Error reading ${storageType} key "${key}":`, error);
-				return defaultValue as T;
+				return undefined;
 			}
-		}, [key, defaultValue, deserialize, storageType]);
+		}, [key]);
 
-		const [storedValue, setStoredValue] = useState<T>(
-			getInitialValueInEffect ? (defaultValue as T) : getStorageValue(),
+		const [storedValue, setStoredValue] = useState<T>(() =>
+			getInitialValueInEffect
+				? (defaultValue as T)
+				: (readStoredValue() ?? (defaultValue as T)),
 		);
 
+		// Sync from storage after mount (and whenever the key changes); a
+		// missing entry leaves the default in place instead of overwriting it.
 		useEffect(() => {
-			if (getInitialValueInEffect) {
-				setStoredValue(getStorageValue());
+			if (!getInitialValueInEffect) {
+				return;
 			}
-		}, [getInitialValueInEffect, getStorageValue]);
+			const stored = readStoredValue();
+			if (stored !== undefined) {
+				setStoredValue(stored);
+			}
+		}, [getInitialValueInEffect, readStoredValue]);
+
+		const storedValueRef = useRef(storedValue);
+		storedValueRef.current = storedValue;
 
 		const setValue = useCallback(
 			(value: T | ((val: T) => T)) => {
-				try {
-					const valueToStore =
-						value instanceof Function ? value(storedValue) : value;
-					setStoredValue(valueToStore);
+				const valueToStore =
+					value instanceof Function ? value(storedValueRef.current) : value;
+				setStoredValue(valueToStore);
 
+				try {
 					if (typeof window !== "undefined") {
-						window[storageType].setItem(key, serialize(valueToStore));
+						window[storageType].setItem(
+							key,
+							serializeRef.current(valueToStore),
+						);
 						window.dispatchEvent(new StorageEvent("storage", { key }));
 					}
 				} catch (error) {
 					console.warn(`Error setting ${storageType} key "${key}":`, error);
 				}
 			},
-			[key, serialize, storedValue, storageType],
+			[key],
 		);
 
 		const removeValue = useCallback(() => {
@@ -75,34 +104,36 @@ function createStorageHook(storageType: "localStorage" | "sessionStorage") {
 					window[storageType].removeItem(key);
 					window.dispatchEvent(new StorageEvent("storage", { key }));
 				}
-				setStoredValue(defaultValue as T);
+				setStoredValue(defaultValueRef.current as T);
 			} catch (error) {
 				console.warn(`Error removing ${storageType} key "${key}":`, error);
 			}
-		}, [key, defaultValue, storageType]);
+		}, [key]);
 
-		// Listen for changes from other tabs/windows
+		// Listen for changes from other tabs/windows. Events we dispatched
+		// ourselves carry no newValue and are ignored.
 		useEffect(() => {
 			if (typeof window === "undefined") {
 				return undefined;
 			}
 
 			const handleStorageChange = (e: StorageEvent) => {
-				if (e.key === key && e.newValue) {
-					try {
-						setStoredValue(deserialize(e.newValue));
-					} catch (error) {
-						console.warn(
-							`Error parsing ${storageType} value for key "${key}":`,
-							error,
-						);
-					}
+				if (e.key !== key || !e.newValue) {
+					return;
+				}
+				try {
+					setStoredValue(deserializeRef.current(e.newValue));
+				} catch (error) {
+					console.warn(
+						`Error parsing ${storageType} value for key "${key}":`,
+						error,
+					);
 				}
 			};
 
 			window.addEventListener("storage", handleStorageChange);
 			return () => window.removeEventListener("storage", handleStorageChange);
-		}, [key, deserialize, storageType]);
+		}, [key]);
 
 		return [storedValue, setValue, removeValue];
 	};
