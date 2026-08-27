@@ -1,6 +1,7 @@
 "use client";
 
 import { useUncontrolled } from "@kala-ui/react-hooks";
+import * as React from "react";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import type { DateRange } from "react-day-picker";
@@ -47,6 +48,7 @@ export function DatePicker({
 		defaultValue,
 		onChange: onValueChange,
 	});
+	const [open, setOpen] = React.useState(false);
 
 	if (isLoading) {
 		return (
@@ -55,7 +57,7 @@ export function DatePicker({
 	}
 
 	return (
-		<Popover>
+		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
@@ -75,7 +77,10 @@ export function DatePicker({
 					{...props}
 					mode="single"
 					selected={date}
-					onSelect={setDate}
+					onSelect={(selectedDate) => {
+						setDate(selectedDate);
+						setOpen(false);
+					}}
 					required={false}
 					disabled={disabled}
 					autoFocus
@@ -129,6 +134,16 @@ export function DateRangePicker({
 		defaultValue,
 		onChange: onValueChange,
 	});
+	const [open, setOpen] = React.useState(false);
+	// react-day-picker v10 reports {from: X, to: X} already on the FIRST
+	// click, so completion can't be read off the shape — track the phase.
+	const awaitingRangeEndRef = React.useRef(false);
+	const handleOpenChange = (nextOpen: boolean) => {
+		setOpen(nextOpen);
+		if (nextOpen) {
+			awaitingRangeEndRef.current = false;
+		}
+	};
 
 	if (isLoading) {
 		return (
@@ -137,7 +152,7 @@ export function DateRangePicker({
 	}
 
 	return (
-		<Popover>
+		<Popover open={open} onOpenChange={handleOpenChange}>
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
@@ -169,7 +184,17 @@ export function DateRangePicker({
 					mode="range"
 					defaultMonth={dateRange?.from}
 					selected={dateRange}
-					onSelect={setDateRange}
+					onSelect={(range) => {
+						setDateRange(range);
+						if (!awaitingRangeEndRef.current) {
+							// First click picked the start — stay open for the end.
+							awaitingRangeEndRef.current = true;
+						} else {
+							// Second click completed (or re-picked) the range.
+							awaitingRangeEndRef.current = false;
+							setOpen(false);
+						}
+					}}
 					numberOfMonths={2}
 					disabled={disabled}
 				/>

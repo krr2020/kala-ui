@@ -54,17 +54,34 @@ function NumberInput({
 		onChange?.(newValue === "" ? undefined : newValue);
 	};
 
+	// 0.1 + 0.2 must be 0.3, not 0.30000000000000004: round the sum to the
+	// decimal precision implied by the operands.
+	const decimalsOf = (n: number): number => {
+		const s = String(n);
+		const mantissa = s.split("e")[0];
+		const exp = s.includes("e") ? Number(s.split("e")[1]) : 0;
+		return Math.max((mantissa.split(".")[1] ?? "").length - exp, 0);
+	};
+
+	const applyStep = (base: number, delta: number): number => {
+		const precision = Math.min(
+			Math.max(decimalsOf(step), decimalsOf(base), 0),
+			100,
+		);
+		return Number((base + delta).toFixed(precision));
+	};
+
 	const increment = () => {
 		if (disabled) return;
 		const base = typeof currentValue === "number" ? currentValue : (min ?? 0);
-		commit(clamp(base + step));
+		commit(clamp(applyStep(base, step)));
 		setInputText(null);
 	};
 
 	const decrement = () => {
 		if (disabled) return;
 		const base = typeof currentValue === "number" ? currentValue : (min ?? 0);
-		commit(clamp(base - step));
+		commit(clamp(applyStep(base, -step)));
 		setInputText(null);
 	};
 
@@ -168,9 +185,9 @@ function NumberInput({
 
 			<input
 				ref={ref}
+				{...props}
 				type="text"
 				inputMode="decimal"
-				{...props}
 				value={displayValue}
 				disabled={disabled}
 				onKeyDown={handleKeyDown}

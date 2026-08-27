@@ -23,10 +23,36 @@ function TimeColumn({
 	label: string;
 }) {
 	const containerRef = React.useRef<HTMLDivElement>(null);
+	// First alignment happens before user interaction — jump without
+	// animation so opening the picker doesn't visibly scroll.
+	const isFirstAlignRef = React.useRef(true);
 
-	const scrollIntoView = React.useCallback((el: HTMLButtonElement | null) => {
-		el?.scrollIntoView({ block: "center", behavior: "smooth" });
-	}, []);
+	// Scrolls ONLY the column viewport. Native scrollIntoView would also
+	// scroll every ancestor up to the page.
+	React.useLayoutEffect(() => {
+		const container = containerRef.current;
+		const selectedEl = container?.querySelector<HTMLButtonElement>(
+			"[data-selected='true']",
+		);
+		if (!container || !selectedEl) return;
+
+		const containerRect = container.getBoundingClientRect();
+		const elementRect = selectedEl.getBoundingClientRect();
+		const delta =
+			elementRect.top -
+			containerRect.top -
+			(container.clientHeight - elementRect.height) / 2;
+
+		if (typeof container.scrollTo === "function") {
+			container.scrollTo({
+				top: container.scrollTop + delta,
+				behavior: isFirstAlignRef.current ? "auto" : "smooth",
+			});
+		} else {
+			container.scrollTop += delta;
+		}
+		isFirstAlignRef.current = false;
+	}, [selected]);
 
 	return (
 		<div className="flex flex-col items-center gap-1 min-w-0">
@@ -41,8 +67,8 @@ function TimeColumn({
 				{values.map((v) => (
 					<button
 						key={v}
-						ref={v === selected ? scrollIntoView : undefined}
 						type="button"
+						data-selected={v === selected ? "true" : undefined}
 						disabled={disabled}
 						onClick={() => onSelect(v)}
 						className={cn(

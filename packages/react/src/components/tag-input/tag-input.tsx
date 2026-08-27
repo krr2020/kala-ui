@@ -78,6 +78,9 @@ export function TagInput({
 	});
 	const [inputValue, setInputValue] = React.useState("");
 	const inputRef = React.useRef<HTMLInputElement>(null);
+	// IME composition (Chinese/Japanese/Korean…): keys typed while composing
+	// belong to the candidate text, never to tag creation.
+	const isComposingRef = React.useRef(false);
 
 	React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
@@ -134,6 +137,10 @@ export function TagInput({
 		// the built-in separator/backspace behavior.
 		onKeyDown?.(e);
 		if (e.defaultPrevented) return;
+
+		if (isComposingRef.current || e.nativeEvent.isComposing) {
+			return;
+		}
 
 		// Handle separator keys
 		if (separators.includes(e.key)) {
@@ -241,6 +248,12 @@ export function TagInput({
 					type="text"
 					value={inputValue}
 					onChange={(e) => setInputValue(e.target.value)}
+					onCompositionStart={() => {
+						isComposingRef.current = true;
+					}}
+					onCompositionEnd={() => {
+						isComposingRef.current = false;
+					}}
 					onKeyDown={handleKeyDown}
 					onPaste={handlePaste}
 					disabled={disabled}

@@ -111,9 +111,11 @@ export function Input({
 						</button>
 					)}
 
-					{/* Custom suffix icon */}
+					{/* Custom suffix icon — never blocks input clicks */}
 					{suffixIcon && (
-						<span className="text-muted-foreground">{suffixIcon}</span>
+						<span className="pointer-events-none text-muted-foreground">
+							{suffixIcon}
+						</span>
 					)}
 				</div>
 			)}

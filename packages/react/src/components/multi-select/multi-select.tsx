@@ -220,8 +220,16 @@ function MultiSelect({
 		? `Options selected: ${selectedOptions.map((o) => o.label).join(", ")}`
 		: placeholder;
 
+	// Stale search from a previous session must not leak into the next open.
+	const handleOpenChange = (nextOpen: boolean) => {
+		setOpen(nextOpen);
+		if (!nextOpen) {
+			setSearch("");
+		}
+	};
+
 	return (
-		<PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
+		<PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
 			<div
 				data-slot="multi-select"
 				className={cn(

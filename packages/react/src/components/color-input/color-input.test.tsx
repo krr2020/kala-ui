@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { ColorInput } from "./color-input";
@@ -129,16 +129,13 @@ describe("ColorInput", () => {
 		const trigger = screen.getByRole("button", { name: /pick a color/i });
 		await user.click(trigger);
 
-		// The popover should open and render color preset buttons
-		const colorButtons = screen
-			.getAllByRole("button")
-			.filter(
-				(btn) =>
-					btn !== trigger &&
-					btn.getAttribute("type") === "button" &&
-					!btn.hasAttribute("aria-label"),
-			);
-		expect(colorButtons.length).toBeGreaterThan(0);
+		// The popover opens a named group of labeled preset swatches
+		const presetGroup = screen.getByRole("group", { name: /preset colors/i });
+		const colorButtons = within(presetGroup).getAllByRole("button");
+		expect(colorButtons.length).toBe(6);
+		for (const btn of colorButtons) {
+			expect(btn).toHaveAttribute("aria-label");
+		}
 	});
 
 	it("selects a preset color and updates input", async () => {

@@ -1,5 +1,5 @@
 import { useUncontrolled } from "@kala-ui/react-hooks";
-import type * as React from "react";
+import * as React from "react";
 import { inputStyles } from "../../config/input";
 import { cn } from "../../lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
@@ -32,6 +32,15 @@ export interface ColorInputProps
 	withPreview?: boolean;
 }
 
+const PRESET_COLORS: { value: string; label: string }[] = [
+	{ value: "#000000", label: "Black" },
+	{ value: "#ffffff", label: "White" },
+	{ value: "#ef4444", label: "Red" },
+	{ value: "#22c55e", label: "Green" },
+	{ value: "#3b82f6", label: "Blue" },
+	{ value: "#f59e0b", label: "Amber" },
+];
+
 export function ColorInput({
 	ref,
 	className,
@@ -49,6 +58,7 @@ export function ColorInput({
 		defaultValue: defaultValue ?? "",
 		onChange: onValueChange,
 	});
+	const [open, setOpen] = React.useState(false);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setInternalValue(e.target.value);
@@ -62,7 +72,7 @@ export function ColorInput({
 		<div className="relative flex items-center">
 			{withPreview && (
 				<div className="absolute left-3 top-1/2 -translate-y-1/2 z-10">
-					<Popover>
+					<Popover open={open} onOpenChange={setOpen}>
 						<PopoverTrigger asChild>
 							<button
 								type="button"
@@ -75,22 +85,24 @@ export function ColorInput({
 						</PopoverTrigger>
 						<PopoverContent className="w-auto p-3" align="start">
 							<div className="flex flex-col gap-2">
-								<div className="flex gap-2">
-									{[
-										"#000000",
-										"#ffffff",
-										"#ef4444",
-										"#22c55e",
-										"#3b82f6",
-										"#f59e0b",
-									].map((color) => (
+								<div className="flex gap-2" role="group" aria-label="Preset colors">
+									{PRESET_COLORS.map(({ value, label }) => (
 										<button
-											key={color}
+											key={value}
 											type="button"
-											className="h-6 w-6 rounded border shadow-sm hover:scale-110 transition-transform"
-											style={{ backgroundColor: color }}
+											aria-label={label}
+											aria-pressed={
+												internalValue.toLowerCase() === value ? true : undefined
+											}
+											className={cn(
+												"h-6 w-6 rounded border shadow-sm hover:scale-110 transition-transform",
+												internalValue.toLowerCase() === value &&
+													"ring-2 ring-ring ring-offset-1",
+											)}
+											style={{ backgroundColor: value }}
 											onClick={() => {
-												setInternalValue(color);
+												setInternalValue(value);
+												setOpen(false);
 											}}
 										/>
 									))}
@@ -100,6 +112,7 @@ export function ColorInput({
 									value={internalValue.length === 7 ? internalValue : "#000000"}
 									onChange={handleColorChange}
 									className="h-8 w-full cursor-pointer"
+									aria-label="Custom color"
 								/>
 							</div>
 						</PopoverContent>

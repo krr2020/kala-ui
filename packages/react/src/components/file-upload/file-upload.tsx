@@ -65,12 +65,34 @@ export function FileUpload({
 	const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files;
 		const file = files?.[0];
+		// Reset so selecting the same file again still fires change.
+		e.target.value = "";
 		if (file) {
 			validateAndSelectFile(file);
 		}
 	};
 
+	/** Matches a File against an `accept` list (extensions, "type/*", exact types) */
+	const isAccepted = (file: File): boolean => {
+		if (!accept) return true;
+		const name = file.name.toLowerCase();
+		const type = file.type.toLowerCase();
+		return accept.split(",").some((token) => {
+			const t = token.trim().toLowerCase();
+			if (!t) return false;
+			if (t.startsWith(".")) return name.endsWith(t);
+			if (t.endsWith("/*")) return type.startsWith(t.slice(0, -1));
+			return type === t;
+		});
+	};
+
 	const validateAndSelectFile = (file: File) => {
+		if (!isAccepted(file)) {
+			onError?.(
+				`File type not accepted. Allowed: ${accept?.split(",").join(", ") ?? "any"}`,
+			);
+			return;
+		}
 		if (maxSize && file.size > maxSize) {
 			onError?.(`File size exceeds ${formatFileSize(maxSize)}`);
 			return;
