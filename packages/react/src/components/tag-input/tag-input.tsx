@@ -65,6 +65,8 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 			placeholder = "Type and press comma...",
 			disabled = false,
 			hasError = false,
+			onKeyDown,
+			onPaste,
 			...props
 		},
 		ref,
@@ -74,31 +76,38 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 
 		React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
-		const addTag = React.useCallback(
-			(tagToAdd: string) => {
-				const transformed = transformTag(tagToAdd);
+		// Adds a batch of candidate tags in one pass. Every tag in the batch is
+		// validated against the CURRENT value plus the tags already accepted in
+		// this batch, so pasting "a,b,c" produces ["a","b","c"] — not just "c".
+		const addTags = React.useCallback(
+			(candidates: string[]) => {
+				const existing = allowDuplicates ? null : new Set(value);
+				const accepted: string[] = [];
 
-				// Skip empty tags
-				if (!transformed) return;
+				for (const candidate of candidates) {
+					const transformed = transformTag(candidate);
 
-				// Check max tags limit
-				if (maxTags && value.length >= maxTags) {
-					return;
+					// Skip empty tags
+					if (!transformed) continue;
+
+					// Check max tags limit
+					if (maxTags !== undefined && value.length + accepted.length >= maxTags) {
+						break;
+					}
+
+					// Check duplicates (also catches repeats within the same paste)
+					if (existing?.has(transformed)) continue;
+
+					// Validate tag
+					if (validateTag && !validateTag(transformed)) continue;
+
+					existing?.add(transformed);
+					accepted.push(transformed);
 				}
 
-				// Check duplicates
-				if (!allowDuplicates && value.includes(transformed)) {
-					return;
-				}
+				if (accepted.length === 0) return;
 
-				// Validate tag
-				if (validateTag && !validateTag(transformed)) {
-					return;
-				}
-
-				// Add the tag
-				const newTags = [...value, transformed];
-				onChange?.(newTags);
+				onChange?.([...value, ...accepted]);
 				setInputValue("");
 			},
 			[value, onChange, transformTag, allowDuplicates, maxTags, validateTag],
@@ -117,10 +126,15 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 		}, [onChange]);
 
 		const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+			// Consumer handler runs first and may preventDefault to opt out of
+			// the built-in separator/backspace behavior.
+			onKeyDown?.(e);
+			if (e.defaultPrevented) return;
+
 			// Handle separator keys
 			if (separators.includes(e.key)) {
 				e.preventDefault();
-				addTag(inputValue);
+				addTags([inputValue]);
 				return;
 			}
 
@@ -128,42 +142,40 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 			if (e.key === "Backspace" && !inputValue && value.length > 0) {
 				e.preventDefault();
 				removeTag(value.length - 1);
-				return;
 			}
-
-			// Call original onKeyDown if provided
-			props.onKeyDown?.(e);
 		};
 
 		const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-			// Handle pasting comma-separated values
+			onPaste?.(e);
+			if (e.defaultPrevented) return;
+
+			// Handle pasting separator-separated values
 			const pastedText = e.clipboardData.getData("text");
 
 			// Check if paste contains separators
-			const hasSeparator = separators.some((sep) => {
-				if (sep === "Enter") return pastedText.includes("\n");
-				return pastedText.includes(sep);
-			});
+			const hasSeparator = separators.some((sep) =>
+				sep === "Enter" ? pastedText.includes("\n") : pastedText.includes(sep),
+			);
 
 			if (hasSeparator) {
 				e.preventDefault();
 
-				// Split by all separators
+				// Split by all separators (escaped — a separator like "+" or "("
+				// must not be treated as regex syntax)
 				const regex = new RegExp(
-					separators.map((sep) => (sep === "Enter" ? "\\n" : sep)).join("|"),
+					separators
+						.map((sep) =>
+							sep === "Enter"
+								? "\\n"
+								: sep.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+						)
+						.join("|"),
 					"g",
 				);
 				const tags = pastedText.split(regex);
 
-				tags.forEach((tag) => {
-					const trimmed = tag.trim();
-					if (trimmed) {
-						addTag(trimmed);
-					}
-				});
+				addTags(tags);
 			}
-
-			props.onPaste?.(e);
 		};
 
 		const handleContainerClick = () => {
@@ -195,7 +207,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 					{/* Render tags */}
 					{value.map((tag, index) => (
 						<Badge
-							key={`tag-${tag}-${Date.now()}-${index}`}
+							key={`${tag}-${index}`}
 							variant="secondary"
 							className="flex items-center gap-1 pl-2 pr-1 py-0 h-6 text-xs"
 						>

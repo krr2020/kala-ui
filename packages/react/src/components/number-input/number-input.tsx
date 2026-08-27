@@ -7,6 +7,11 @@ import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton/skeleton";
 import type { NumberInputProps } from "./number-input.types";
 
+// Permits intermediate typing states like "", "-", "1.", "1e", "-.5".
+// Arrangements that aren't real numbers (e.g. "1.2.3") stay in the buffer and
+// never commit — they revert on blur.
+const NUMERIC_TEXT_PATTERN = /^[0-9.eE+-]*$/;
+
 function NumberInput({
 	className,
 	min,
@@ -19,12 +24,18 @@ function NumberInput({
 	size = "default",
 	hasError = false,
 	isLoading = false,
+	onKeyDown,
+	onBlur,
 	ref,
 	...props
 }: NumberInputProps) {
 	const [internalValue, setInternalValue] = React.useState<number | "">(
 		defaultValue ?? "",
 	);
+	// While the field is focused, the raw text the user typed is the source of
+	// truth for display; committed numbers would erase intermediate input like
+	// "-" or "1." (the whole reason type="number" is not used here).
+	const [inputText, setInputText] = React.useState<string | null>(null);
 
 	const isControlled = value !== undefined;
 	const currentValue = isControlled ? value : internalValue;
@@ -47,41 +58,62 @@ function NumberInput({
 		if (disabled) return;
 		const base = typeof currentValue === "number" ? currentValue : (min ?? 0);
 		commit(clamp(base + step));
+		setInputText(null);
 	};
 
 	const decrement = () => {
 		if (disabled) return;
 		const base = typeof currentValue === "number" ? currentValue : (min ?? 0);
 		commit(clamp(base - step));
+		setInputText(null);
+	};
+
+	const commitBuffer = () => {
+		if (inputText === null) return;
+		setInputText(null);
+		if (inputText.trim() === "") return;
+		const parsed = Number(inputText);
+		if (Number.isFinite(parsed)) {
+			const clamped = clamp(parsed);
+			if (clamped !== currentValue) commit(clamped);
+		}
+		// Non-numeric garbage simply reverts to the committed value.
 	};
 
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		onKeyDown?.(e);
+		if (e.defaultPrevented) return;
+
 		if (e.key === "ArrowUp") {
 			e.preventDefault();
 			increment();
 		} else if (e.key === "ArrowDown") {
 			e.preventDefault();
 			decrement();
+		} else if (e.key === "Enter") {
+			commitBuffer();
 		}
 	};
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const raw = e.target.value;
-		if (raw === "" || raw === "-") {
+		if (!NUMERIC_TEXT_PATTERN.test(raw)) return;
+		setInputText(raw);
+		if (raw === "") {
 			commit("");
-		} else {
-			const parsed = Number(raw);
-			if (!Number.isNaN(parsed)) {
-				commit(parsed);
-			}
+			return;
+		}
+		const parsed = Number(raw);
+		// Live-commit whenever the buffer is a complete number so the parent
+		// tracks along; partial input ("-", "1.", "2e") waits for completion.
+		if (Number.isFinite(parsed) && parsed !== currentValue) {
+			commit(parsed);
 		}
 	};
 
-	const handleBlur = () => {
-		if (typeof currentValue === "number") {
-			const clamped = clamp(currentValue);
-			if (clamped !== currentValue) commit(clamped);
-		}
+	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+		commitBuffer();
+		onBlur?.(e);
 	};
 
 	if (isLoading) {
@@ -104,6 +136,10 @@ function NumberInput({
 		max !== undefined &&
 		typeof currentValue === "number" &&
 		currentValue >= max;
+
+	const displayValue =
+		inputText ??
+		(currentValue === "" ? "" : String(currentValue));
 
 	return (
 		<div
@@ -133,26 +169,18 @@ function NumberInput({
 
 			<input
 				ref={ref}
-				type="number"
-				aria-valuenow={
-					typeof currentValue === "number" ? currentValue : undefined
-				}
-				aria-valuemin={min}
-				aria-valuemax={max}
-				value={currentValue}
-				min={min}
-				max={max}
-				step={step}
+				type="text"
+				inputMode="decimal"
+				{...props}
+				value={displayValue}
 				disabled={disabled}
 				onKeyDown={handleKeyDown}
 				onChange={handleInputChange}
 				onBlur={handleBlur}
 				className={cn(
 					"flex-1 min-w-0 bg-transparent text-center text-sm focus:outline-none disabled:cursor-not-allowed",
-					"[-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
 					size === "sm" ? "px-1 py-1" : "px-2 py-2",
 				)}
-				{...props}
 			/>
 
 			<button

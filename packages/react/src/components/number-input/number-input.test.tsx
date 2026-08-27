@@ -6,19 +6,19 @@ import { NumberInput } from "./number-input";
 describe("NumberInput", () => {
 	it("should render input with increment and decrement buttons", () => {
 		render(<NumberInput />);
-		expect(screen.getByRole("spinbutton")).toBeInTheDocument();
+		expect(screen.getByRole("textbox")).toBeInTheDocument();
 		expect(screen.getByLabelText("Increase value")).toBeInTheDocument();
 		expect(screen.getByLabelText("Decrease value")).toBeInTheDocument();
 	});
 
 	it("should render with defaultValue", () => {
 		render(<NumberInput defaultValue={5} />);
-		expect(screen.getByRole("spinbutton")).toHaveValue(5);
+		expect(screen.getByRole("textbox")).toHaveValue("5");
 	});
 
 	it("should render controlled value", () => {
 		render(<NumberInput value={10} onChange={vi.fn()} />);
-		expect(screen.getByRole("spinbutton")).toHaveValue(10);
+		expect(screen.getByRole("textbox")).toHaveValue("10");
 	});
 
 	it("should increment value when + button is clicked", async () => {
@@ -80,7 +80,7 @@ describe("NumberInput", () => {
 		const handleChange = vi.fn();
 		render(<NumberInput defaultValue={3} onChange={handleChange} />);
 
-		await user.click(screen.getByRole("spinbutton"));
+		await user.click(screen.getByRole("textbox"));
 		await user.keyboard("{ArrowUp}");
 		expect(handleChange).toHaveBeenCalledWith(4);
 	});
@@ -90,7 +90,7 @@ describe("NumberInput", () => {
 		const handleChange = vi.fn();
 		render(<NumberInput defaultValue={3} onChange={handleChange} />);
 
-		await user.click(screen.getByRole("spinbutton"));
+		await user.click(screen.getByRole("textbox"));
 		await user.keyboard("{ArrowDown}");
 		expect(handleChange).toHaveBeenCalledWith(2);
 	});
@@ -100,14 +100,14 @@ describe("NumberInput", () => {
 		const handleChange = vi.fn();
 		render(<NumberInput defaultValue={5} onChange={handleChange} />);
 
-		const input = screen.getByRole("spinbutton");
+		const input = screen.getByRole("textbox");
 		await user.clear(input);
 		expect(handleChange).toHaveBeenCalledWith(undefined);
 	});
 
 	it("should be disabled when disabled prop is true", () => {
 		render(<NumberInput disabled />);
-		expect(screen.getByRole("spinbutton")).toBeDisabled();
+		expect(screen.getByRole("textbox")).toBeDisabled();
 		expect(screen.getByLabelText("Increase value")).toBeDisabled();
 		expect(screen.getByLabelText("Decrease value")).toBeDisabled();
 	});
@@ -131,7 +131,7 @@ describe("NumberInput", () => {
 		const handleChange = vi.fn();
 		render(<NumberInput min={0} max={100} onChange={handleChange} />);
 
-		const input = screen.getByRole("spinbutton");
+		const input = screen.getByRole("textbox");
 		await user.type(input, "150");
 		await user.tab(); // trigger blur
 		expect(handleChange).toHaveBeenLastCalledWith(100);
@@ -154,5 +154,70 @@ describe("NumberInput", () => {
 		const { container } = render(<NumberInput className="custom-class" />);
 		const wrapper = container.querySelector('[data-slot="number-input"]');
 		expect(wrapper).toHaveClass("custom-class");
+	});
+
+	it("should let the user type a leading minus without committing", async () => {
+		const user = userEvent.setup();
+		const handleChange = vi.fn();
+		render(<NumberInput defaultValue={5} onChange={handleChange} />);
+
+		const input = screen.getByRole("textbox");
+		await user.clear(input);
+		handleChange.mockClear();
+
+		await user.type(input, "-");
+		expect(input).toHaveValue("-");
+		expect(handleChange).not.toHaveBeenCalled();
+
+		await user.type(input, "5");
+		expect(input).toHaveValue("-5");
+		expect(handleChange).toHaveBeenLastCalledWith(-5);
+	});
+
+	it("should keep decimal points visible while typing", async () => {
+		const user = userEvent.setup();
+		const handleChange = vi.fn();
+		render(<NumberInput defaultValue={0} onChange={handleChange} />);
+
+		const input = screen.getByRole("textbox");
+		await user.clear(input);
+		handleChange.mockClear();
+
+		await user.type(input, "1.");
+		expect(input).toHaveValue("1.");
+
+		await user.type(input, "5");
+		expect(input).toHaveValue("1.5");
+		expect(handleChange).toHaveBeenLastCalledWith(1.5);
+	});
+
+	it("should clamp the buffered value on Enter", async () => {
+		const user = userEvent.setup();
+		const handleChange = vi.fn();
+		render(<NumberInput min={0} max={10} onChange={handleChange} />);
+
+		const input = screen.getByRole("textbox");
+		await user.type(input, "50");
+		expect(handleChange).toHaveBeenLastCalledWith(50);
+
+		await user.keyboard("{Enter}");
+		expect(handleChange).toHaveBeenLastCalledWith(10);
+		expect(input).toHaveValue("10");
+	});
+
+	it("should revert non-numeric input on blur", async () => {
+		const user = userEvent.setup();
+		const handleChange = vi.fn();
+		render(<NumberInput defaultValue={7} onChange={handleChange} />);
+
+		const input = screen.getByRole("textbox");
+		await user.clear(input);
+		await user.type(input, "1.2.3");
+		expect(input).toHaveValue("1.2.3");
+
+		await user.tab();
+		// Reverts to the last valid committed number, never the garbage.
+		expect(input).toHaveValue("1.2");
+		expect(handleChange).toHaveBeenLastCalledWith(1.2);
 	});
 });

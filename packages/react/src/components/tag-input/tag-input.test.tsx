@@ -226,7 +226,7 @@ describe("TagInput", () => {
 		expect(input).toHaveFocus();
 	});
 
-	it("should handle paste with comma-separated values", async () => {
+	it("should handle paste with comma-separated values in one batch", async () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
@@ -236,7 +236,84 @@ describe("TagInput", () => {
 		await user.click(input);
 		await user.paste("tag1, tag2, tag3");
 
-		expect(onChange).toHaveBeenCalledTimes(3);
+		expect(onChange).toHaveBeenCalledTimes(1);
+		expect(onChange).toHaveBeenCalledWith(["tag1", "tag2", "tag3"]);
+	});
+
+	it("should deduplicate tags within a single paste", async () => {
+		const user = userEvent.setup();
+		const onChange = vi.fn();
+
+		render(<TagInput value={[]} onChange={onChange} />);
+
+		const input = screen.getByRole("textbox");
+		await user.click(input);
+		await user.paste("a,a,b");
+
+		expect(onChange).toHaveBeenCalledTimes(1);
+		expect(onChange).toHaveBeenCalledWith(["a", "b"]);
+	});
+
+	it("should respect maxTags when pasting a batch", async () => {
+		const user = userEvent.setup();
+		const onChange = vi.fn();
+
+		render(<TagInput value={["x"]} onChange={onChange} maxTags={2} />);
+
+		const input = screen.getByRole("textbox");
+		await user.click(input);
+		await user.paste("a,b,c");
+
+		expect(onChange).toHaveBeenCalledTimes(1);
+		expect(onChange).toHaveBeenCalledWith(["x", "a"]);
+	});
+
+	it("should treat regex-special separators literally when pasting", async () => {
+		const user = userEvent.setup();
+		const onChange = vi.fn();
+
+		render(<TagInput value={[]} onChange={onChange} separators={["+"]} />);
+
+		const input = screen.getByRole("textbox");
+		await user.click(input);
+		await user.paste("a+b");
+
+		expect(onChange).toHaveBeenCalledTimes(1);
+		expect(onChange).toHaveBeenCalledWith(["a", "b"]);
+	});
+
+	it("should let a consumer preventDefault suppress separator handling", async () => {
+		const user = userEvent.setup();
+		const onChange = vi.fn();
+
+		render(
+			<TagInput
+				value={[]}
+				onChange={onChange}
+				onKeyDown={(e) => {
+					if (e.key === ",") e.preventDefault();
+				}}
+			/>,
+		);
+
+		const input = screen.getByRole("textbox");
+		await user.type(input, "tag,");
+
+		expect(onChange).not.toHaveBeenCalled();
+	});
+
+	it("should not remount existing tags on re-render", () => {
+		const onChange = vi.fn();
+		const { rerender } = render(
+			<TagInput value={["a", "b"]} onChange={onChange} />,
+		);
+
+		const nodeA = screen.getByText("a");
+		const nodeB = screen.getByText("b");
+		rerender(<TagInput value={["a", "b"]} onChange={onChange} />);
+
+		expect(screen.getByText("a")).toBe(nodeA);
+		expect(screen.getByText("b")).toBe(nodeB);
 	});
 
 	it("should apply custom className", () => {
