@@ -96,6 +96,8 @@ const accentTheme: ThemeColorScheme = {
  * Get current theme from DOM
  */
 function getCurrentTheme(): "light" | "dark" | "neutral" | "accent" {
+	// Chart components call this during render; on the server there is no DOM.
+	if (typeof document === "undefined") return "light";
 	if (document.documentElement.classList.contains("dark")) {
 		return document.documentElement.classList.contains("accent")
 			? "accent"

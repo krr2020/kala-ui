@@ -3,11 +3,17 @@
  * React component for ApexCharts with built-in loading and empty states
  */
 
+import { lazy, Suspense } from "react";
 import type { Props } from "react-apexcharts";
-import ReactApexChart from "react-apexcharts";
 import { cn } from "../../lib/utils";
 import type { ChartSkeletonConfig } from "./chart.types";
 import { ChartSkeleton } from "./chart-skeleton";
+
+// apexcharts touches `window` at module scope, so importing it statically
+// crashes any SSR framework on the first render — and the root barrel
+// transitively imports every chart. Loaded lazily instead: the module only
+// evaluates in the browser, and the tree stays SSR-safe.
+const ReactApexChart = lazy(() => import("react-apexcharts"));
 
 export interface ChartProps extends Props {
 	className?: string;
@@ -80,7 +86,15 @@ export function Chart({
 
 	return (
 		<div className={cn("w-full", className)}>
-			<ReactApexChart {...props} />
+			<Suspense
+				fallback={
+					skeleton ?? (
+						<ChartSkeleton {...(skeletonConfig || {})} className={className} />
+					)
+				}
+			>
+				<ReactApexChart {...props} />
+			</Suspense>
 		</div>
 	);
 }

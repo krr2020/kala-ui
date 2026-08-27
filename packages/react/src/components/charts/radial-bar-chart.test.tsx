@@ -66,38 +66,38 @@ describe("RadialBarChart", () => {
 		labels: ["Progress"],
 	};
 
-	it("should render the chart", () => {
+	it("should render the chart", async () => {
 		render(<RadialBarChart {...defaultProps} />);
-		expect(screen.getByTestId("apex-chart")).toBeInTheDocument();
+		expect(await screen.findByTestId("apex-chart")).toBeInTheDocument();
 	});
 
-	it("should pass radialBar type to ApexChart", () => {
+	it("should pass radialBar type to ApexChart", async () => {
 		render(<RadialBarChart {...defaultProps} />);
-		expect(screen.getByTestId("apex-chart")).toHaveAttribute(
+		expect(await screen.findByTestId("apex-chart")).toHaveAttribute(
 			"data-type",
 			"radialBar",
 		);
 	});
 
-	it("should pass series data to the chart", () => {
+	it("should pass series data to the chart", async () => {
 		render(<RadialBarChart {...defaultProps} />);
 		const seriesEl = screen.getByTestId("chart-series");
 		expect(seriesEl.textContent).toContain("75");
 	});
 
-	it("should include labels in chart options", () => {
+	it("should include labels in chart options", async () => {
 		render(<RadialBarChart {...defaultProps} />);
 		const optionsEl = screen.getByTestId("chart-options");
 		expect(optionsEl.textContent).toContain("Progress");
 	});
 
-	it("should apply default className with w-full", () => {
+	it("should apply default className with w-full", async () => {
 		const { container } = render(<RadialBarChart {...defaultProps} />);
 		const wrapper = container.firstChild as HTMLElement;
 		expect(wrapper).toHaveClass("w-full");
 	});
 
-	it("should apply custom className", () => {
+	it("should apply custom className", async () => {
 		const { container } = render(
 			<RadialBarChart {...defaultProps} className="custom-radial" />,
 		);
@@ -105,35 +105,35 @@ describe("RadialBarChart", () => {
 		expect(wrapper).toHaveClass("custom-radial", "w-full");
 	});
 
-	it("should show loading skeleton when isLoading is true", () => {
+	it("should show loading skeleton when isLoading is true", async () => {
 		render(<RadialBarChart {...defaultProps} isLoading />);
 		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
 	});
 
-	it("should show empty state when series is empty", () => {
+	it("should show empty state when series is empty", async () => {
 		render(<RadialBarChart series={[]} labels={[]} />);
 		expect(screen.getByText("No data available")).toBeInTheDocument();
 	});
 
-	it("should show empty state when labels are empty", () => {
+	it("should show empty state when labels are empty", async () => {
 		render(<RadialBarChart series={defaultProps.series} labels={[]} />);
 		expect(screen.getByText("No data available")).toBeInTheDocument();
 	});
 
-	it("should show custom empty message", () => {
+	it("should show custom empty message", async () => {
 		render(
 			<RadialBarChart series={[]} labels={[]} emptyMessage="No progress" />,
 		);
 		expect(screen.getByText("No progress")).toBeInTheDocument();
 	});
 
-	it("should not show empty state while loading with empty data", () => {
+	it("should not show empty state while loading with empty data", async () => {
 		render(<RadialBarChart series={[]} labels={[]} isLoading />);
 		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
 		expect(screen.queryByText("No data available")).not.toBeInTheDocument();
 	});
 
-	it("should use custom colors when provided", () => {
+	it("should use custom colors when provided", async () => {
 		render(
 			<RadialBarChart
 				{...defaultProps}
@@ -144,25 +144,25 @@ describe("RadialBarChart", () => {
 		expect(optionsEl.textContent).toContain("#ff0000");
 	});
 
-	it("should include title in chart options when provided", () => {
+	it("should include title in chart options when provided", async () => {
 		render(<RadialBarChart {...defaultProps} title="Completion Rate" />);
 		const optionsEl = screen.getByTestId("chart-options");
 		expect(optionsEl.textContent).toContain("Completion Rate");
 	});
 
-	it("should include subtitle in chart options when provided", () => {
+	it("should include subtitle in chart options when provided", async () => {
 		render(<RadialBarChart {...defaultProps} subtitle="Current sprint" />);
 		const optionsEl = screen.getByTestId("chart-options");
 		expect(optionsEl.textContent).toContain("Current sprint");
 	});
 
-	it("should set hollow size in options", () => {
+	it("should set hollow size in options", async () => {
 		render(<RadialBarChart {...defaultProps} hollowSize="70%" />);
 		const optionsEl = screen.getByTestId("chart-options");
 		expect(optionsEl.textContent).toContain("70%");
 	});
 
-	it("should handle multiple series", () => {
+	it("should handle multiple series", async () => {
 		const multiSeries = { series: [75, 50, 90], labels: ["Task A", "Task B", "Task C"] };
 		render(<RadialBarChart {...multiSeries} />);
 		const seriesEl = screen.getByTestId("chart-series");
@@ -171,37 +171,37 @@ describe("RadialBarChart", () => {
 		expect(seriesEl.textContent).toContain("90");
 	});
 
-	it("should handle custom height and width", () => {
+	it("should handle custom height and width", async () => {
 		render(<RadialBarChart {...defaultProps} height={300} width="80%" />);
-		expect(screen.getByTestId("apex-chart")).toBeInTheDocument();
+		expect(await screen.findByTestId("apex-chart")).toBeInTheDocument();
 	});
 
-	it("should disable animations when animations is false", () => {
+	it("should disable animations when animations is false", async () => {
 		render(<RadialBarChart {...defaultProps} animations={false} />);
 		const optionsEl = screen.getByTestId("chart-options");
 		expect(optionsEl.textContent).toContain('"enabled":false');
 	});
 
-	it("should hide data labels when dataLabels is false", () => {
+	it("should hide data labels when dataLabels is false", async () => {
 		render(<RadialBarChart {...defaultProps} dataLabels={false} />);
 		const optionsEl = screen.getByTestId("chart-options");
 		expect(optionsEl.textContent).toContain('"show":false');
 	});
 
-	it("should show legend when multiple series", () => {
+	it("should show legend when multiple series", async () => {
 		const multiSeries = { series: [75, 50], labels: ["Task A", "Task B"] };
 		render(<RadialBarChart {...multiSeries} />);
 		const optionsEl = screen.getByTestId("chart-options");
 		expect(optionsEl.textContent).toContain('"show":true');
 	});
 
-	it("should accept custom options override", () => {
+	it("should accept custom options override", async () => {
 		render(
 			<RadialBarChart
 				{...defaultProps}
 				options={{ chart: { fontFamily: "Arial" } } as never}
 			/>,
 		);
-		expect(screen.getByTestId("apex-chart")).toBeInTheDocument();
+		expect(await screen.findByTestId("apex-chart")).toBeInTheDocument();
 	});
 });

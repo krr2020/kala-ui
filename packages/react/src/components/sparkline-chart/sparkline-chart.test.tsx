@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { SparklineChart } from "./sparkline-chart";
 
@@ -32,35 +32,35 @@ vi.mock("react-apexcharts", () => ({
 describe("SparklineChart", () => {
 	const mockData = [30, 40, 35, 50, 49, 60, 70, 91];
 
-	it("should render sparkline chart", () => {
+	it("should render sparkline chart", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
-		expect(getByTestId("sparkline-chart")).toBeInTheDocument();
+		expect(await screen.findByTestId("sparkline-chart")).toBeInTheDocument();
 	});
 
-	it("should render with line type by default", () => {
+	it("should render with line type by default", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
-		expect(getByTestId("sparkline-chart")).toHaveAttribute("data-type", "line");
+		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute("data-type", "line");
 	});
 
-	it("should render with area type", () => {
+	it("should render with area type", async () => {
 		const { getByTestId } = render(
 			<SparklineChart data={mockData} type="area" />,
 		);
 
-		expect(getByTestId("sparkline-chart")).toHaveAttribute("data-type", "area");
+		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute("data-type", "area");
 	});
 
-	it("should render with bar type", () => {
+	it("should render with bar type", async () => {
 		const { getByTestId } = render(
 			<SparklineChart data={mockData} type="bar" />,
 		);
 
-		expect(getByTestId("sparkline-chart")).toHaveAttribute("data-type", "bar");
+		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute("data-type", "bar");
 	});
 
-	it("should use default color", () => {
+	it("should use default color", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
 		const options = JSON.parse(
@@ -69,7 +69,7 @@ describe("SparklineChart", () => {
 		expect(options.colors[0].toLowerCase()).toEqual("#3b82f6");
 	});
 
-	it("should apply custom color", () => {
+	it("should apply custom color", async () => {
 		const { getByTestId } = render(
 			<SparklineChart data={mockData} color="#FF5733" />,
 		);
@@ -80,29 +80,29 @@ describe("SparklineChart", () => {
 		expect(options.colors).toEqual(["#FF5733"]);
 	});
 
-	it("should use default dimensions", () => {
+	it("should use default dimensions", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
-		expect(getByTestId("sparkline-chart")).toHaveAttribute(
+		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute(
 			"data-width",
 			"100%",
 		);
-		expect(getByTestId("sparkline-chart")).toHaveAttribute("data-height", "64");
+		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute("data-height", "64");
 	});
 
-	it("should apply custom width and height", () => {
+	it("should apply custom width and height", async () => {
 		const { getByTestId } = render(
 			<SparklineChart data={mockData} width={200} height={100} />,
 		);
 
-		expect(getByTestId("sparkline-chart")).toHaveAttribute("data-width", "200");
-		expect(getByTestId("sparkline-chart")).toHaveAttribute(
+		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute("data-width", "200");
+		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute(
 			"data-height",
 			"100",
 		);
 	});
 
-	it("should disable tooltip by default", () => {
+	it("should disable tooltip by default", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
 		const options = JSON.parse(
@@ -111,7 +111,7 @@ describe("SparklineChart", () => {
 		expect(options.tooltip.enabled).toBe(false);
 	});
 
-	it("should enable tooltip when specified", () => {
+	it("should enable tooltip when specified", async () => {
 		const { getByTestId } = render(
 			<SparklineChart data={mockData} tooltip={true} />,
 		);
@@ -122,7 +122,7 @@ describe("SparklineChart", () => {
 		expect(options.tooltip.enabled).toBe(true);
 	});
 
-	it("should enable animations by default", () => {
+	it("should enable animations by default", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
 		const options = JSON.parse(
@@ -131,7 +131,7 @@ describe("SparklineChart", () => {
 		expect(options.chart.animations.enabled).toBe(true);
 	});
 
-	it("should disable animations when specified", () => {
+	it("should disable animations when specified", async () => {
 		const { getByTestId } = render(
 			<SparklineChart data={mockData} animated={false} />,
 		);
@@ -142,7 +142,7 @@ describe("SparklineChart", () => {
 		expect(options.chart.animations.enabled).toBe(false);
 	});
 
-	it("should be non-interactive by default", () => {
+	it("should be non-interactive by default", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
 		const options = JSON.parse(
@@ -152,7 +152,7 @@ describe("SparklineChart", () => {
 		expect(options.markers.hover.size).toBe(0);
 	});
 
-	it("should enable interactive mode", () => {
+	it("should enable interactive mode", async () => {
 		const { getByTestId } = render(
 			<SparklineChart data={mockData} interactive={true} />,
 		);
@@ -164,7 +164,7 @@ describe("SparklineChart", () => {
 		expect(options.markers.hover.size).toBe(4);
 	});
 
-	it("should apply gradient for area charts", () => {
+	it("should apply gradient for area charts", async () => {
 		const { getByTestId } = render(
 			<SparklineChart data={mockData} type="area" />,
 		);
@@ -175,7 +175,7 @@ describe("SparklineChart", () => {
 		expect(options.fill.type).toBe("gradient");
 	});
 
-	it("should not apply gradient for line charts", () => {
+	it("should not apply gradient for line charts", async () => {
 		const { getByTestId } = render(
 			<SparklineChart data={mockData} type="line" />,
 		);
@@ -186,7 +186,7 @@ describe("SparklineChart", () => {
 		expect(options.fill.type).toBe("solid");
 	});
 
-	it("should apply custom gradient colors for area charts", () => {
+	it("should apply custom gradient colors for area charts", async () => {
 		const { getByTestId } = render(
 			<SparklineChart
 				data={mockData}
@@ -204,7 +204,7 @@ describe("SparklineChart", () => {
 		expect(options.fill.gradient.colorStops[1].color).toBe("#00FF00");
 	});
 
-	it("should use smooth stroke curve for line charts", () => {
+	it("should use smooth stroke curve for line charts", async () => {
 		const { getByTestId } = render(
 			<SparklineChart data={mockData} type="line" />,
 		);
@@ -215,7 +215,7 @@ describe("SparklineChart", () => {
 		expect(options.stroke.curve).toBe("smooth");
 	});
 
-	it("should set stroke width for line charts", () => {
+	it("should set stroke width for line charts", async () => {
 		const { getByTestId } = render(
 			<SparklineChart data={mockData} type="line" />,
 		);
@@ -226,7 +226,7 @@ describe("SparklineChart", () => {
 		expect(options.stroke.width).toBe(2);
 	});
 
-	it("should set zero stroke width for non-line charts", () => {
+	it("should set zero stroke width for non-line charts", async () => {
 		const { getByTestId } = render(
 			<SparklineChart data={mockData} type="bar" />,
 		);
@@ -237,7 +237,7 @@ describe("SparklineChart", () => {
 		expect(options.stroke.width).toBe(0);
 	});
 
-	it("should pass data as series", () => {
+	it("should pass data as series", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
 		const series = JSON.parse(getByTestId("chart-series").textContent || "[]");
@@ -245,7 +245,7 @@ describe("SparklineChart", () => {
 		expect(series[0].data).toEqual(mockData);
 	});
 
-	it("should apply custom className", () => {
+	it("should apply custom className", async () => {
 		const { container } = render(
 			<SparklineChart data={mockData} className="custom-sparkline" />,
 		);
@@ -256,7 +256,7 @@ describe("SparklineChart", () => {
 		);
 	});
 
-	it("should enable sparkline mode", () => {
+	it("should enable sparkline mode", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
 		const options = JSON.parse(
@@ -265,7 +265,7 @@ describe("SparklineChart", () => {
 		expect(options.chart.sparkline.enabled).toBe(true);
 	});
 
-	it("should hide grid", () => {
+	it("should hide grid", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
 		const options = JSON.parse(
@@ -274,7 +274,7 @@ describe("SparklineChart", () => {
 		expect(options.grid.show).toBe(false);
 	});
 
-	it("should hide axis labels", () => {
+	it("should hide axis labels", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
 		const options = JSON.parse(
@@ -284,7 +284,7 @@ describe("SparklineChart", () => {
 		expect(options.yaxis.labels.show).toBe(false);
 	});
 
-	it("should hide toolbar", () => {
+	it("should hide toolbar", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
 		const options = JSON.parse(
@@ -293,7 +293,7 @@ describe("SparklineChart", () => {
 		expect(options.chart.toolbar.show).toBe(false);
 	});
 
-	it("should disable zoom", () => {
+	it("should disable zoom", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
 		const options = JSON.parse(
@@ -302,7 +302,7 @@ describe("SparklineChart", () => {
 		expect(options.chart.zoom.enabled).toBe(false);
 	});
 
-	it("should set bar column width for bar charts", () => {
+	it("should set bar column width for bar charts", async () => {
 		const { getByTestId } = render(
 			<SparklineChart data={mockData} type="bar" />,
 		);
@@ -313,21 +313,21 @@ describe("SparklineChart", () => {
 		expect(options.plotOptions.bar.columnWidth).toBe("80%");
 	});
 
-	it("should handle empty data array", () => {
+	it("should handle empty data array", async () => {
 		const { getByTestId } = render(<SparklineChart data={[]} />);
 
 		const series = JSON.parse(getByTestId("chart-series").textContent || "[]");
 		expect(series[0].data).toEqual([]);
 	});
 
-	it("should handle single data point", () => {
+	it("should handle single data point", async () => {
 		const { getByTestId } = render(<SparklineChart data={[42]} />);
 
 		const series = JSON.parse(getByTestId("chart-series").textContent || "[]");
 		expect(series[0].data).toEqual([42]);
 	});
 
-	it("should handle negative values", () => {
+	it("should handle negative values", async () => {
 		const negativeData = [10, -5, 20, -15, 30];
 		const { getByTestId } = render(<SparklineChart data={negativeData} />);
 

@@ -37,20 +37,20 @@ describe("Chart", () => {
 		},
 	];
 
-	it("should render chart component", () => {
+	it("should render chart component", async () => {
 		render(<Chart options={mockOptions} series={mockSeries} type="line" />);
 
-		expect(screen.getByTestId("apex-chart")).toBeInTheDocument();
+		expect(await screen.findByTestId("apex-chart")).toBeInTheDocument();
 	});
 
-	it("should pass options to ApexChart", () => {
+	it("should pass options to ApexChart", async () => {
 		render(<Chart options={mockOptions} series={mockSeries} type="line" />);
 
 		const optionsElement = screen.getByTestId("chart-options");
 		expect(optionsElement.textContent).toContain("basic-chart");
 	});
 
-	it("should pass series data to ApexChart", () => {
+	it("should pass series data to ApexChart", async () => {
 		render(<Chart options={mockOptions} series={mockSeries} type="line" />);
 
 		const seriesElement = screen.getByTestId("chart-series");
@@ -58,14 +58,14 @@ describe("Chart", () => {
 		expect(seriesElement.textContent).toContain("30");
 	});
 
-	it("should pass chart type to ApexChart", () => {
+	it("should pass chart type to ApexChart", async () => {
 		render(<Chart options={mockOptions} series={mockSeries} type="bar" />);
 
-		const chart = screen.getByTestId("apex-chart");
+		const chart = await screen.findByTestId("apex-chart");
 		expect(chart).toHaveAttribute("data-type", "bar");
 	});
 
-	it("should apply default className with w-full", () => {
+	it("should apply default className with w-full", async () => {
 		const { container } = render(
 			<Chart options={mockOptions} series={mockSeries} type="line" />,
 		);
@@ -74,7 +74,7 @@ describe("Chart", () => {
 		expect(wrapper).toHaveClass("w-full");
 	});
 
-	it("should apply custom className", () => {
+	it("should apply custom className", async () => {
 		const { container } = render(
 			<Chart
 				className="custom-chart-class"
@@ -88,43 +88,43 @@ describe("Chart", () => {
 		expect(wrapper).toHaveClass("custom-chart-class", "w-full");
 	});
 
-	it("should render with line chart type", () => {
+	it("should render with line chart type", async () => {
 		render(<Chart options={mockOptions} series={mockSeries} type="line" />);
 
-		expect(screen.getByTestId("apex-chart")).toHaveAttribute(
+		expect(await screen.findByTestId("apex-chart")).toHaveAttribute(
 			"data-type",
 			"line",
 		);
 	});
 
-	it("should render with bar chart type", () => {
+	it("should render with bar chart type", async () => {
 		render(<Chart options={mockOptions} series={mockSeries} type="bar" />);
 
-		expect(screen.getByTestId("apex-chart")).toHaveAttribute(
+		expect(await screen.findByTestId("apex-chart")).toHaveAttribute(
 			"data-type",
 			"bar",
 		);
 	});
 
-	it("should render with area chart type", () => {
+	it("should render with area chart type", async () => {
 		render(<Chart options={mockOptions} series={mockSeries} type="area" />);
 
-		expect(screen.getByTestId("apex-chart")).toHaveAttribute(
+		expect(await screen.findByTestId("apex-chart")).toHaveAttribute(
 			"data-type",
 			"area",
 		);
 	});
 
-	it("should render with pie chart type", () => {
+	it("should render with pie chart type", async () => {
 		render(<Chart options={mockOptions} series={[44, 55, 13]} type="pie" />);
 
-		expect(screen.getByTestId("apex-chart")).toHaveAttribute(
+		expect(await screen.findByTestId("apex-chart")).toHaveAttribute(
 			"data-type",
 			"pie",
 		);
 	});
 
-	it("should handle height prop", () => {
+	it("should handle height prop", async () => {
 		render(
 			<Chart
 				options={mockOptions}
@@ -134,10 +134,10 @@ describe("Chart", () => {
 			/>,
 		);
 
-		expect(screen.getByTestId("apex-chart")).toBeInTheDocument();
+		expect(await screen.findByTestId("apex-chart")).toBeInTheDocument();
 	});
 
-	it("should handle width prop", () => {
+	it("should handle width prop", async () => {
 		render(
 			<Chart
 				options={mockOptions}
@@ -147,10 +147,10 @@ describe("Chart", () => {
 			/>,
 		);
 
-		expect(screen.getByTestId("apex-chart")).toBeInTheDocument();
+		expect(await screen.findByTestId("apex-chart")).toBeInTheDocument();
 	});
 
-	it("should pass all additional props to ReactApexChart", () => {
+	it("should pass all additional props to ReactApexChart", async () => {
 		render(
 			<Chart
 				options={mockOptions}
@@ -161,10 +161,10 @@ describe("Chart", () => {
 			/>,
 		);
 
-		expect(screen.getByTestId("apex-chart")).toBeInTheDocument();
+		expect(await screen.findByTestId("apex-chart")).toBeInTheDocument();
 	});
 
-	it("should show loading skeleton when isLoading is true", () => {
+	it("should show loading skeleton when isLoading is true", async () => {
 		render(
 			<Chart options={mockOptions} series={mockSeries} type="line" isLoading />,
 		);
@@ -174,7 +174,7 @@ describe("Chart", () => {
 		expect(screen.queryByTestId("apex-chart")).not.toBeInTheDocument();
 	});
 
-	it("should show loading skeleton with skeletonConfig when isLoading is true", () => {
+	it("should show loading skeleton with skeletonConfig when isLoading is true", async () => {
 		render(
 			<Chart
 				options={mockOptions}
@@ -189,7 +189,7 @@ describe("Chart", () => {
 		).toBeInTheDocument();
 	});
 
-	it("should show custom skeleton when isLoading is true and skeleton is provided", () => {
+	it("should show custom skeleton when isLoading is true and skeleton is provided", async () => {
 		render(
 			<Chart
 				options={mockOptions}
@@ -205,7 +205,7 @@ describe("Chart", () => {
 		).not.toBeInTheDocument();
 	});
 
-	it("should show empty state when isEmpty is true", () => {
+	it("should show empty state when isEmpty is true", async () => {
 		render(
 			<Chart options={mockOptions} series={mockSeries} type="line" isEmpty />,
 		);
@@ -213,7 +213,7 @@ describe("Chart", () => {
 		expect(screen.queryByTestId("apex-chart")).not.toBeInTheDocument();
 	});
 
-	it("should show custom empty message when isEmpty is true", () => {
+	it("should show custom empty message when isEmpty is true", async () => {
 		render(
 			<Chart
 				options={mockOptions}
@@ -226,13 +226,13 @@ describe("Chart", () => {
 		expect(screen.getByText("Nothing here")).toBeInTheDocument();
 	});
 
-	it("should show empty state with default height when no height prop", () => {
+	it("should show empty state with default height when no height prop", async () => {
 		render(<Chart options={mockOptions} series={mockSeries} type="line" isEmpty />);
 		const emptyState = screen.getByText("No data available").closest("div");
 		expect(emptyState).toHaveStyle({ height: "350px" });
 	});
 
-	it("should show empty state with height from height prop", () => {
+	it("should show empty state with height from height prop", async () => {
 		render(
 			<Chart
 				options={mockOptions}
@@ -246,7 +246,7 @@ describe("Chart", () => {
 		expect(emptyState).toHaveStyle({ height: "500px" });
 	});
 
-	it("should show empty state with height from skeletonConfig", () => {
+	it("should show empty state with height from skeletonConfig", async () => {
 		render(
 			<Chart
 				options={mockOptions}
@@ -260,7 +260,7 @@ describe("Chart", () => {
 		expect(emptyState).toHaveStyle({ height: "250px" });
 	});
 
-	it("should apply className to empty state", () => {
+	it("should apply className to empty state", async () => {
 		render(
 			<Chart
 				options={mockOptions}
@@ -276,14 +276,42 @@ describe("Chart", () => {
 });
 
 describe("getTooltipTheme", () => {
-	it("should return light when document has no dark class", () => {
+	it("should return light when document has no dark class", async () => {
 		document.documentElement.classList.remove("dark");
 		expect(getTooltipTheme()).toBe("light");
 	});
 
-	it("should return dark when document has dark class", () => {
+	it("should return dark when document has dark class", async () => {
 		document.documentElement.classList.add("dark");
 		expect(getTooltipTheme()).toBe("dark");
 		document.documentElement.classList.remove("dark");
+	});
+});
+
+describe("Chart SSR safety", () => {
+	it("evaluates the charts barrel with no window/document (SSR import)", async () => {
+		vi.resetModules();
+		vi.stubGlobal("window", undefined);
+		vi.stubGlobal("document", undefined);
+
+		// A static react-apexcharts import crashes here (apexcharts touches
+		// window at module scope); the lazy wrapper keeps the barrel — and the
+		// root barrel that re-exports it — importable on the server.
+		const mod = await import("./index");
+
+		expect(mod.Chart).toBeDefined();
+		expect(mod.AreaChart).toBeDefined();
+
+		vi.unstubAllGlobals();
+	});
+
+	it("reads theme utilities without a DOM", async () => {
+		vi.resetModules();
+		vi.stubGlobal("document", undefined);
+
+		const { getChartColors } = await import("./theme-utils");
+		expect(getChartColors("light")).toBeTruthy();
+
+		vi.unstubAllGlobals();
 	});
 });
