@@ -52,8 +52,8 @@ describe("Sidebar", () => {
 		expect(screen.getByText("Dashboard")).toBeInTheDocument();
 		expect(screen.getByText("Users")).toBeInTheDocument();
 		// Settings section is defaultOpen: false, so links are hidden initially
-		expect(screen.queryByText("Profile")).not.toBeInTheDocument();
-		expect(screen.queryByText("Security")).not.toBeInTheDocument();
+		expect(screen.queryByText("Profile")).not.toBeVisible();
+		expect(screen.queryByText("Security")).not.toBeVisible();
 	});
 
 	it("should render link icons when provided", () => {
@@ -127,7 +127,7 @@ describe("Sidebar", () => {
 		const settingsHeader = screen.getByText("Settings");
 
 		// Initially collapsed (defaultOpen: false)
-		expect(screen.queryByText("Profile")).not.toBeInTheDocument();
+		expect(screen.queryByText("Profile")).not.toBeVisible();
 
 		// Click to expand
 		await user.click(settingsHeader);
@@ -135,7 +135,7 @@ describe("Sidebar", () => {
 
 		// Click to collapse
 		await user.click(settingsHeader);
-		expect(screen.queryByText("Profile")).not.toBeInTheDocument();
+		expect(screen.queryByText("Profile")).not.toBeVisible();
 	});
 
 	it("should open collapsible section by default when defaultOpen=true", () => {

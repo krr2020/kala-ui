@@ -258,11 +258,17 @@ export const DesignSystemOverview = () => {
 						<AvatarFallback>JD</AvatarFallback>
 					</Avatar>,
 					<Avatar key="image">
-						<AvatarImage src="https://i.pravatar.cc/400?img=36" />
+						<AvatarImage
+							src="https://i.pravatar.cc/400?img=36"
+							alt="Demo avatar"
+						/>
 						<AvatarFallback>JD</AvatarFallback>
 					</Avatar>,
 					<Avatar key="ring" className="ring-2 ring-primary">
-						<AvatarImage src="https://i.pravatar.cc/400?img=68" />
+						<AvatarImage
+							src="https://i.pravatar.cc/400?img=68"
+							alt="Demo avatar with ring"
+						/>
 						<AvatarFallback>AB</AvatarFallback>
 					</Avatar>,
 				];

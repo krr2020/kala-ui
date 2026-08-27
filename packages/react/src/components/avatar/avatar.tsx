@@ -24,6 +24,23 @@ const avatarVariants = cva(avatarStyles.base, {
 	defaultVariants: avatarStyles.defaultVariants,
 });
 
+const avatarImageVariants = cva(avatarImageStyles.base, {
+	variants: avatarImageStyles.variants,
+	defaultVariants: avatarImageStyles.defaultVariants,
+});
+
+// Skeleton sizing mirrors the size utilities in config/avatar.ts
+const AVATAR_SKELETON_SIZES: Record<string, string> = {
+	xs: "1.5rem",
+	sm: "2rem",
+	default: "2.5rem",
+	md: "3rem",
+	lg: "3.5rem",
+	xl: "4rem",
+	xxl: "5rem",
+	"2xl": "5rem",
+};
+
 interface AvatarProps
 	extends React.ComponentProps<typeof AvatarPrimitive.Root>,
 		VariantProps<typeof avatarVariants> {
@@ -43,17 +60,8 @@ function Avatar({
 }: AvatarProps) {
 	// Show loading skeleton
 	if (isLoading) {
-		const sizeMap: Record<string, string> = {
-			xs: "1.5rem",
-			sm: "2rem",
-			default: "2.5rem",
-			md: "2.5rem",
-			lg: "3rem",
-			xl: "4rem",
-			xxl: "5rem",
-			"2xl": "5rem",
-		};
-		const skeletonSize = size ? sizeMap[size] : sizeMap.md;
+		const skeletonSize =
+			AVATAR_SKELETON_SIZES[size ?? "default"] ?? AVATAR_SKELETON_SIZES.default;
 		return <SkeletonCircle size={skeletonSize} className={className} />;
 	}
 
@@ -69,7 +77,13 @@ function Avatar({
 }
 
 interface AvatarImageProps
-	extends React.ComponentProps<typeof AvatarPrimitive.Image> {
+	extends Omit<React.ComponentProps<typeof AvatarPrimitive.Image>, "alt">,
+		VariantProps<typeof avatarImageVariants> {
+	/**
+	 * Alternative text describing the avatar (the person's or entity's name).
+	 * Required so screen readers never land on an unnamed image.
+	 */
+	alt: string;
 	shape?: "circle" | "rounded" | "square";
 }
 
@@ -80,11 +94,6 @@ function AvatarImage({
 }: AvatarImageProps) {
 	const { shape: contextShape } = React.useContext(AvatarContext);
 	const shape = shapeProp || contextShape || "circle";
-
-	const avatarImageVariants = cva(avatarImageStyles.base, {
-		variants: avatarImageStyles.variants,
-		defaultVariants: avatarImageStyles.defaultVariants,
-	});
 
 	return (
 		<AvatarPrimitive.Image

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { Sidebar, type SidebarSection } from "./sidebar";
@@ -253,11 +253,13 @@ describe("Sidebar", () => {
 
 		render(<Sidebar navSections={nonCollapsibleSection} />);
 
-		const sectionButton = screen.getByRole("button", {
+		const heading = screen.getByRole("heading", {
 			name: "Non-Collapsible",
 		});
-		expect(sectionButton).toBeDisabled();
-		expect(sectionButton).not.toHaveAttribute("aria-expanded");
+		expect(heading).toBeInTheDocument();
+		expect(
+			screen.queryByRole("button", { name: "Non-Collapsible" }),
+		).not.toBeInTheDocument();
 	});
 
 	it("should rotate chevron icon when section is expanded", () => {
@@ -299,5 +301,64 @@ describe("Sidebar", () => {
 		await user.click(section1Button);
 		expect(section1Button).toHaveAttribute("aria-expanded", "false");
 		expect(section2Button).toHaveAttribute("aria-expanded", "true");
+	});
+});
+
+describe("Sidebar mobile overlay accessibility", () => {
+	it("acts as a labelled modal dialog while open on mobile", () => {
+		render(<Sidebar navSections={[]} onClose={() => {}} />);
+		expect(screen.getByRole("dialog", { name: "Sidebar" })).toHaveAttribute(
+			"aria-modal",
+			"true",
+		);
+	});
+
+	it("closes on Escape while open on mobile", async () => {
+		const user = userEvent.setup();
+		const onClose = vi.fn();
+		render(<Sidebar navSections={[]} onClose={onClose} />);
+		await user.keyboard("{Escape}");
+		expect(onClose).toHaveBeenCalledTimes(1);
+	});
+
+	it("locks background scroll while open on mobile", () => {
+		render(<Sidebar navSections={[]} onClose={() => {}} />);
+		expect(document.body.style.overflow).toBe("hidden");
+	});
+
+	it("restores scroll when closed", () => {
+		const { rerender } = render(
+			<Sidebar navSections={[]} onClose={() => {}} />,
+		);
+		expect(document.body.style.overflow).toBe("hidden");
+		rerender(<Sidebar navSections={[]} isOpen={false} onClose={() => {}} />);
+		expect(document.body.style.overflow).toBe("");
+	});
+
+	it("traps Tab focus within the open sidebar", async () => {
+		const user = userEvent.setup();
+		render(
+			<Sidebar
+				navSections={[
+					{
+						title: "Main",
+						links: [
+							{ label: "Home", href: "/" },
+							{ label: "Users", href: "/users" },
+						],
+					},
+				]}
+				onClose={() => {}}
+			/>,
+		);
+		const dialog = screen.getByRole("dialog", { name: "Sidebar" });
+		// focus is moved into the dialog on open
+		expect(dialog).toContainElement(document.activeElement);
+		// tabbing from the last link cycles back inside the dialog
+		const links = within(dialog).getAllByRole("link");
+		const last = links[links.length - 1];
+		if (last) (last as HTMLElement).focus();
+		await user.tab();
+		expect(dialog).toContainElement(document.activeElement);
 	});
 });

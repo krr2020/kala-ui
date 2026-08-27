@@ -434,3 +434,37 @@ describe("FileUpload", () => {
 		});
 	});
 });
+
+describe("FileUpload accessibility", () => {
+	it("renders the file input outside the trigger button", () => {
+		const { container } = render(<FileUpload onFileSelect={() => {}} />);
+		const trigger = screen.getByRole("button", { name: /click to upload/i });
+		const input = container.querySelector('input[type="file"]');
+		expect(input).toBeInTheDocument();
+		expect(input?.closest("button")).toBeNull();
+	});
+
+	it("announces errors via role=alert and ties them to the trigger", () => {
+		render(<FileUpload error="File too large" onFileSelect={() => {}} />);
+		const alert = screen.getByRole("alert");
+		expect(alert).toHaveTextContent("File too large");
+		const trigger = screen.getByRole("button", { name: /click to upload/i });
+		expect(trigger).toHaveAttribute("aria-invalid", "true");
+		expect(trigger).toHaveAttribute(
+			"aria-describedby",
+			alert.getAttribute("id"),
+		);
+	});
+
+	it("labels the clear control", () => {
+		render(
+			<FileUpload
+				value={new File(["x"], "a.txt", { type: "text/plain" })}
+				onClear={() => {}}
+			/>,
+		);
+		expect(
+			screen.getByRole("button", { name: "Clear selected file" }),
+		).toBeInTheDocument();
+	});
+});

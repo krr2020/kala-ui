@@ -56,7 +56,11 @@ export function PasswordStrengthIndicator({
 	const strength = calculatePasswordStrength(password);
 
 	return (
-		<div data-comp="password-strength-indicator" className="mt-3">
+		<div
+			data-comp="password-strength-indicator"
+			className="mt-3"
+			aria-live="polite"
+		>
 			<div className="mb-2 flex items-center justify-between">
 				<span className="text-xs font-medium text-muted-foreground">
 					Password Strength
@@ -65,7 +69,15 @@ export function PasswordStrengthIndicator({
 					{STRENGTH_LABELS[strength]}
 				</span>
 			</div>
-			<div className="flex gap-2">
+			{/* biome-ignore lint/a11y/useSemanticElements: native <meter> cannot be styled into the segmented bar design */}
+			<div
+				className="flex gap-2"
+				role="meter"
+				aria-label="Password strength"
+				aria-valuenow={strength}
+				aria-valuemin={0}
+				aria-valuemax={PASSWORD_MAX_STRENGTH}
+			>
 				{[0, 1, 2, 3, 4].map((level) => {
 					const isActive = level <= strength;
 					return (

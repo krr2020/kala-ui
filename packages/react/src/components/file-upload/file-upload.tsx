@@ -33,6 +33,7 @@ export function FileUpload({
 }: FileUploadProps) {
 	const [isDragging, setIsDragging] = React.useState(false);
 	const inputRef = React.useRef<HTMLInputElement>(null);
+	const errorId = React.useId();
 
 	const handleDragOver = (e: React.DragEvent) => {
 		e.preventDefault();
@@ -91,6 +92,18 @@ export function FileUpload({
 
 	return (
 		<div className={cn("w-full", className)} {...props}>
+			{/* Native file input lives outside the trigger so no interactive
+			    elements nest; the button opens it programmatically. */}
+			<input
+				ref={inputRef}
+				type="file"
+				className="hidden"
+				accept={accept}
+				onChange={handleFileInput}
+				disabled={disabled}
+				tabIndex={-1}
+				aria-hidden="true"
+			/>
 			{value ? (
 				<div className="relative flex items-center p-4 border rounded bg-muted kala-surface-card">
 					<div className="p-2 mr-4 bg-background rounded border kala-surface-card">
@@ -108,6 +121,10 @@ export function FileUpload({
 								<div
 									className="bg-primary h-1.5 rounded-full transition-all duration-300"
 									style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+									role="progressbar"
+									aria-valuenow={Math.min(100, Math.max(0, progress))}
+									aria-valuemin={0}
+									aria-valuemax={100}
 								/>
 							</div>
 						)}
@@ -119,6 +136,7 @@ export function FileUpload({
 							size="sm"
 							className="ml-2 text-muted-foreground hover:text-destructive"
 							onClick={onClear}
+							aria-label="Clear selected file"
 						>
 							<X className="w-4 h-4" />
 						</Button>
@@ -131,6 +149,8 @@ export function FileUpload({
 					onDragOver={handleDragOver}
 					onDragLeave={handleDragLeave}
 					onDrop={handleDrop}
+					aria-invalid={error ? true : undefined}
+					aria-describedby={error ? errorId : undefined}
 					className={cn(
 						"relative flex flex-col items-center justify-center w-full p-6 border-2 border-dashed rounded transition-colors cursor-pointer kala-surface-input",
 						"kala-focus-ring",
@@ -142,14 +162,6 @@ export function FileUpload({
 						className,
 					)}
 				>
-					<input
-						ref={inputRef}
-						type="file"
-						className="hidden"
-						accept={accept}
-						onChange={handleFileInput}
-						disabled={disabled}
-					/>
 					<div className="p-3 mb-3 rounded-full bg-muted">
 						<CloudUpload className="w-6 h-6 text-muted-foreground" />
 					</div>
@@ -163,7 +175,11 @@ export function FileUpload({
 					</p>
 				</button>
 			)}
-			{error && <p className="mt-2 text-sm text-destructive">{error}</p>}
+			{error && (
+				<p id={errorId} role="alert" className="mt-2 text-sm text-destructive">
+					{error}
+				</p>
+			)}
 		</div>
 	);
 }

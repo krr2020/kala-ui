@@ -492,3 +492,48 @@ describe("Header", () => {
 		expect(document.body.style.overflow).toBe("");
 	});
 });
+
+describe("Header mobile menu accessibility", () => {
+	const openMenu = () => (
+		<Header
+			logo={<a href="/">Kala</a>}
+			navLinks={[{ label: "Home", href: "/" }]}
+			isMobileMenuOpen
+			onMobileMenuToggle={() => {}}
+		/>
+	);
+
+	it("renders the open menu as a labelled modal dialog", () => {
+		render(openMenu());
+		expect(
+			screen.getByRole("dialog", { name: "Mobile navigation" }),
+		).toHaveAttribute("aria-modal", "true");
+	});
+
+	it("moves focus into the menu and traps Tab inside it", async () => {
+		const user = userEvent.setup();
+		render(openMenu());
+		const dialog = screen.getByRole("dialog", { name: "Mobile navigation" });
+		expect(dialog).toContainElement(document.activeElement);
+
+		const close = screen.getByRole("button", { name: "Close mobile menu" });
+		(close as HTMLElement).focus();
+		await user.tab();
+		expect(dialog).toContainElement(document.activeElement);
+	});
+
+	it("closes on Escape", async () => {
+		const user = userEvent.setup();
+		const onToggle = vi.fn();
+		render(
+			<Header
+				logo={<a href="/">Kala</a>}
+				navLinks={[{ label: "Home", href: "/" }]}
+				isMobileMenuOpen
+				onMobileMenuToggle={onToggle}
+			/>,
+		);
+		await user.keyboard("{Escape}");
+		expect(onToggle).toHaveBeenCalledTimes(1);
+	});
+});

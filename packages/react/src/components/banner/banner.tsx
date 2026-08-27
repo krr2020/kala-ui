@@ -44,12 +44,12 @@ export interface BannerProps
 	onClose?: () => void;
 	/**
 	 * ARIA role for the banner
-	 * @default 'banner' - use 'alert' for important/urgent messages
+	 * @default 'status' - announces politely; use 'alert' for urgent messages
 	 */
-	role?: "banner" | "alert" | "status";
+	role?: "status" | "alert";
 	/**
 	 * ARIA live region for dynamic announcements
-	 * @default undefined - use 'polite' or 'assertive' for dynamic banners
+	 * @default undefined - role status/alert already imply live regions
 	 */
 	"aria-live"?: "polite" | "assertive";
 	isLoading?: boolean;
@@ -63,7 +63,7 @@ export function Banner({
 	position,
 	onClose,
 	children,
-	role = "banner",
+	role = "status",
 	isLoading = false,
 	skeletonConfig,
 	skeleton,
@@ -100,10 +100,10 @@ export function Banner({
 				<button
 					type="button"
 					onClick={onClose}
-					className="cursor-pointer shrink-0 p-1 rounded hover:bg-overlay/20 transition-colors"
+					className="kala-touch cursor-pointer shrink-0 p-1 rounded hover:bg-overlay/20 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring"
 					aria-label="Close banner"
 				>
-					<X className="w-4 h-4" />
+					<X className="w-4 h-4" aria-hidden="true" />
 				</button>
 			)}
 		</div>

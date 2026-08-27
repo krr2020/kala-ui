@@ -11,37 +11,37 @@ describe("Banner", () => {
 
 	it("should render with default variant (info)", () => {
 		render(<Banner>Info message</Banner>);
-		const banner = screen.getByRole("banner");
+		const banner = screen.getByRole("status");
 		expect(banner).toHaveClass("bg-info", "text-info-foreground");
 	});
 
 	it("should render with warning variant", () => {
 		render(<Banner variant="warning">Warning message</Banner>);
-		const banner = screen.getByRole("banner");
+		const banner = screen.getByRole("status");
 		expect(banner).toHaveClass("bg-warning", "text-warning-foreground");
 	});
 
 	it("should render with error variant", () => {
 		render(<Banner variant="error">Error message</Banner>);
-		const banner = screen.getByRole("banner");
+		const banner = screen.getByRole("status");
 		expect(banner).toHaveClass("bg-destructive", "text-destructive-foreground");
 	});
 
 	it("should render with success variant", () => {
 		render(<Banner variant="success">Success message</Banner>);
-		const banner = screen.getByRole("banner");
+		const banner = screen.getByRole("status");
 		expect(banner).toHaveClass("bg-success", "text-success-foreground");
 	});
 
 	it("should render with fixed position by default", () => {
 		render(<Banner>Fixed banner</Banner>);
-		const banner = screen.getByRole("banner");
+		const banner = screen.getByRole("status");
 		expect(banner).toHaveClass("fixed", "top-0", "left-0", "right-0");
 	});
 
 	it("should render with static position", () => {
 		render(<Banner position="static">Static banner</Banner>);
-		const banner = screen.getByRole("banner");
+		const banner = screen.getByRole("status");
 		expect(banner).toHaveClass("relative");
 		expect(banner).not.toHaveClass("fixed");
 	});
@@ -74,7 +74,7 @@ describe("Banner", () => {
 
 	it("should apply custom className", () => {
 		render(<Banner className="custom-class">Custom banner</Banner>);
-		const banner = screen.getByRole("banner");
+		const banner = screen.getByRole("status");
 		expect(banner).toHaveClass("custom-class");
 	});
 
@@ -86,7 +86,7 @@ describe("Banner", () => {
 
 	it("should render with aria-live attribute", () => {
 		render(<Banner aria-live="assertive">Live banner</Banner>);
-		const banner = screen.getByRole("banner");
+		const banner = screen.getByRole("status");
 		expect(banner).toHaveAttribute("aria-live", "assertive");
 	});
 
@@ -116,7 +116,7 @@ describe("Banner", () => {
 
 	it("should render with aria-live='polite'", () => {
 		render(<Banner aria-live="polite">Polite banner</Banner>);
-		const banner = screen.getByRole("banner");
+		const banner = screen.getByRole("status");
 		expect(banner).toHaveAttribute("aria-live", "polite");
 	});
 

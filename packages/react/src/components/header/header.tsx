@@ -1,6 +1,6 @@
 "use client";
 
-import { useMounted, useScrollLock } from "@kala-ui/react-hooks";
+import { useFocusTrap, useMounted, useScrollLock } from "@kala-ui/react-hooks";
 import { Bell, ChevronDown, Menu, Settings, X } from "lucide-react";
 import * as React from "react";
 import { createPortal } from "react-dom";
@@ -93,6 +93,17 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 			setScrollLocked(!!isMobileMenuOpen);
 		}, [isMobileMenuOpen, setScrollLocked]);
 
+		// Fullscreen mobile menu: trap focus, close on Escape.
+		const mobileNavRef = useFocusTrap(!!isMobileMenuOpen);
+		React.useEffect(() => {
+			if (!isMobileMenuOpen) return;
+			const handleKeyDown = (event: KeyboardEvent) => {
+				if (event.key === "Escape") onMobileMenuToggle?.();
+			};
+			window.addEventListener("keydown", handleKeyDown);
+			return () => window.removeEventListener("keydown", handleKeyDown);
+		}, [isMobileMenuOpen, onMobileMenuToggle]);
+
 		const mounted = useMounted();
 
 		// Track expanded mobile menu items
@@ -181,7 +192,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 																						"block px-4 py-2.5 text-sm font-normal no-underline outline-none transition-colors",
 																						"text-foreground",
 																						"hover:bg-accent hover:text-accent-foreground",
-																						"focus:bg-accent focus:text-accent-foreground",
+																						"focus-visible:bg-accent focus-visible:text-accent-foreground",
 																						child.active &&
 																							"text-primary bg-primary/10",
 																					)}
@@ -281,6 +292,9 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 							{/* Mobile Navigation - Fixed positioned overlay */}
 							<Box
 								as="nav"
+								ref={mobileNavRef}
+								role="dialog"
+								aria-modal="true"
 								className="fixed top-0 left-0 right-0 bottom-0 bg-popover z-40 lg:hidden overflow-hidden flex flex-col kala-surface-popover"
 								aria-label="Mobile navigation"
 							>
@@ -389,7 +403,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 																		as="a"
 																		href={link.href}
 																		className={cn(
-																			"flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-accent",
+																			"flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-accent outline-none focus-visible:bg-accent",
 																			link.variant === "danger"
 																				? "text-destructive hover:bg-destructive/10"
 																				: "text-foreground hover:text-foreground",
@@ -451,7 +465,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 																as="a"
 																href={link.href}
 																className={cn(
-																	"text-sm font-medium px-4 py-3 flex items-center justify-between transition-colors hover:bg-accent border-l-4",
+																	"text-sm font-medium px-4 py-3 flex items-center justify-between transition-colors hover:bg-accent border-l-4 outline-none focus-visible:bg-accent",
 																	link.active
 																		? "bg-primary/10 text-primary border-primary"
 																		: "text-foreground border-transparent hover:border-border",
@@ -487,7 +501,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 																				key={child.label}
 																				href={child.href}
 																				className={cn(
-																					"block text-sm px-8 py-2.5 transition-colors hover:bg-accent border-l-4 border-transparent",
+																					"block text-sm px-8 py-2.5 transition-colors hover:bg-accent border-l-4 border-transparent outline-none focus-visible:bg-accent",
 																					child.active
 																						? "text-primary font-medium"
 																						: "text-muted-foreground hover:text-foreground",

@@ -33,13 +33,30 @@ function CopyButton({
 	...props
 }: CopyButtonProps) {
 	const [copied, setCopied] = React.useState(false);
+	const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+	React.useEffect(() => {
+		return () => {
+			if (timerRef.current) clearTimeout(timerRef.current);
+		};
+	}, []);
 
 	const handleCopy = React.useCallback(() => {
 		if (!navigator?.clipboard) return;
-		navigator.clipboard.writeText(value).then(() => {
-			setCopied(true);
-			setTimeout(() => setCopied(false), timeout);
-		});
+		navigator.clipboard
+			.writeText(value)
+			.then(() => {
+				if (timerRef.current) clearTimeout(timerRef.current);
+				setCopied(true);
+				timerRef.current = setTimeout(() => {
+					setCopied(false);
+					timerRef.current = null;
+				}, timeout);
+			})
+			.catch(() => {
+				// Clipboard write rejected (permissions, non-secure context):
+				// swallow so the click doesn't produce an unhandled rejection.
+			});
 	}, [value, timeout]);
 
 	return (
@@ -49,6 +66,7 @@ function CopyButton({
 			size={size}
 			variant={variant}
 			aria-label={copied ? "Copied!" : ariaLabel}
+			aria-live="polite"
 			onClick={handleCopy}
 			className={cn("transition-all", className)}
 			{...props}
