@@ -60,12 +60,46 @@ function DrawerOverlay({
 	);
 }
 
+const SIZE_WIDTH_CLASSES: Record<NonNullable<DrawerContentProps["size"]>, string> = {
+	sm: "w-[24rem] sm:max-w-[24rem]",
+	md: "w-[32rem] sm:max-w-[32rem]",
+	lg: "w-[40rem] sm:max-w-[40rem]",
+	xl: "w-[48rem] sm:max-w-[48rem]",
+	"2xl": "w-[56rem] sm:max-w-[56rem]",
+	full: "w-screen sm:max-w-none",
+};
+
+const SIZE_HEIGHT_CLASSES: Record<NonNullable<DrawerContentProps["size"]>, string> = {
+	sm: "h-[24rem] sm:max-h-[24rem]",
+	md: "h-[32rem] sm:max-h-[32rem]",
+	lg: "h-[40rem] sm:max-h-[40rem]",
+	xl: "h-[48rem] sm:max-h-[48rem]",
+	"2xl": "h-[56rem] sm:max-h-[56rem]",
+	full: "h-screen sm:max-h-none",
+};
+
+type DrawerContentProps = React.ComponentProps<typeof DrawerPrimitive.Content> & {
+	/** Width (left/right) or height (top/bottom) preset. Defaults to the legacy
+	 * `w-3/4 sm:max-w-sm` shape for left/right and auto height for top/bottom. */
+	size?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
+};
+
 function DrawerContent({
 	className,
 	children,
+	size,
 	...props
-}: React.ComponentProps<typeof DrawerPrimitive.Content>) {
+}: DrawerContentProps) {
 	const { direction } = React.useContext(DrawerContext);
+	const isHorizontal = direction === "left" || direction === "right";
+	const sizeClass =
+		size && isHorizontal
+			? SIZE_WIDTH_CLASSES[size]
+			: size
+				? SIZE_HEIGHT_CLASSES[size]
+				: isHorizontal
+					? "w-3/4 sm:max-w-sm"
+					: "";
 	return (
 		<DrawerPortal data-slot="drawer-portal">
 			<DrawerOverlay />
@@ -76,10 +110,11 @@ function DrawerContent({
 					(!direction || direction === "bottom") &&
 						"inset-x-0 bottom-0 mt-24 rounded-t-lg border-t",
 					direction === "right" &&
-						"inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
+						"inset-y-0 right-0 h-screen border-l",
 					direction === "left" &&
-						"inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
+						"inset-y-0 left-0 h-screen border-r",
 					direction === "top" && "inset-x-0 top-0 mb-24 rounded-b-lg border-b",
+					sizeClass,
 					className,
 				)}
 				{...props}
