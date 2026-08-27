@@ -389,8 +389,11 @@ describe("TreeView", () => {
 			.getByText("Resume.pdf")
 			.closest('[data-slot="tree-node"]');
 
-		expect((docsNode as HTMLElement).style.paddingLeft).toBe("0rem");
-		expect((childNode as HTMLElement).style.paddingLeft).toBe("1.25rem");
+		// padding lives on the visual row inside the treeitem
+		const docsRow = (docsNode as HTMLElement).querySelector("div");
+		const childRow = (childNode as HTMLElement).querySelector("div");
+		expect((docsRow as HTMLElement).style.paddingLeft).toBe("0rem");
+		expect((childRow as HTMLElement).style.paddingLeft).toBe("1.25rem");
 	});
 
 	it("should set aria-expanded on parent nodes", () => {
@@ -407,7 +410,7 @@ describe("TreeView", () => {
 		expect(notesItem).not.toHaveAttribute("aria-expanded");
 	});
 
-	it("should set tabIndex=-1 on disabled nodes", () => {
+	it("should mark disabled nodes aria-disabled and keep them out of the tab order", () => {
 		const dataWithDisabled: TreeItem[] = [
 			{ id: "1", label: "Disabled", disabled: true },
 		];
@@ -415,6 +418,7 @@ describe("TreeView", () => {
 		const node = screen
 			.getByText("Disabled")
 			.closest('[data-slot="tree-node"]');
+		expect(node).toHaveAttribute("aria-disabled", "true");
 		expect(node).toHaveAttribute("tabIndex", "-1");
 	});
 
@@ -469,5 +473,109 @@ describe("TreeView", () => {
 		await user.click(screen.getByText("Documents"));
 		expect(handleSelect).toHaveBeenCalledWith("1");
 		expect(screen.getByText("Resume.pdf")).toBeInTheDocument();
+	});
+});
+
+describe("TreeView keyboard navigation", () => {
+	it("has a single tab stop (roving tabindex) among visible nodes", () => {
+		render(<TreeView data={treeData} defaultExpanded={["1"]} />);
+		const items = screen.getAllByRole("treeitem");
+		const tabbable = items.filter((el) => el.getAttribute("tabIndex") === "0");
+		expect(tabbable).toHaveLength(1);
+		expect(tabbable[0]).toHaveTextContent("Documents");
+	});
+
+	it("ArrowDown moves focus to the next visible node", async () => {
+		const user = userEvent.setup();
+		render(<TreeView data={treeData} defaultExpanded={["1"]} />);
+		const documents = screen
+			.getByText("Documents")
+			.closest('[role="treeitem"]');
+		(documents as HTMLElement).focus();
+		await user.keyboard("{ArrowDown}");
+		expect(
+			screen.getByText("Resume.pdf").closest('[role="treeitem"]'),
+		).toHaveFocus();
+	});
+
+	it("ArrowDown skips collapsed children", async () => {
+		const user = userEvent.setup();
+		render(<TreeView data={treeData} />);
+		const documents = screen
+			.getByText("Documents")
+			.closest('[role="treeitem"]');
+		(documents as HTMLElement).focus();
+		await user.keyboard("{ArrowDown}");
+		expect(
+			screen.getByText("Pictures").closest('[role="treeitem"]'),
+		).toHaveFocus();
+	});
+
+	it("ArrowUp moves focus to the previous visible node", async () => {
+		const user = userEvent.setup();
+		render(<TreeView data={treeData} />);
+		const notes = screen.getByText("Notes.txt").closest('[role="treeitem"]');
+		(notes as HTMLElement).focus();
+		await user.keyboard("{ArrowUp}");
+		expect(
+			screen.getByText("Pictures").closest('[role="treeitem"]'),
+		).toHaveFocus();
+	});
+
+	it("Home and End move focus to the first and last visible nodes", async () => {
+		const user = userEvent.setup();
+		render(<TreeView data={treeData} />);
+		const notes = screen.getByText("Notes.txt").closest('[role="treeitem"]');
+		(notes as HTMLElement).focus();
+		await user.keyboard("{Home}");
+		expect(
+			screen.getByText("Documents").closest('[role="treeitem"]'),
+		).toHaveFocus();
+		await user.keyboard("{End}");
+		expect(
+			screen.getByText("Notes.txt").closest('[role="treeitem"]'),
+		).toHaveFocus();
+	});
+
+	it("ArrowRight on an expanded parent moves focus into its first child", async () => {
+		const user = userEvent.setup();
+		render(<TreeView data={treeData} defaultExpanded={["1"]} />);
+		const documents = screen
+			.getByText("Documents")
+			.closest('[role="treeitem"]');
+		(documents as HTMLElement).focus();
+		await user.keyboard("{ArrowRight}");
+		expect(
+			screen.getByText("Resume.pdf").closest('[role="treeitem"]'),
+		).toHaveFocus();
+	});
+
+	it("ArrowLeft on a nested child moves focus to its parent", async () => {
+		const user = userEvent.setup();
+		render(<TreeView data={treeData} defaultExpanded={["1"]} />);
+		const resume = screen.getByText("Resume.pdf").closest('[role="treeitem"]');
+		(resume as HTMLElement).focus();
+		await user.keyboard("{ArrowLeft}");
+		expect(
+			screen.getByText("Documents").closest('[role="treeitem"]'),
+		).toHaveFocus();
+	});
+
+	it("child groups are exposed as role=group with aria-level on items", () => {
+		render(<TreeView data={treeData} defaultExpanded={["1"]} />);
+		const group = screen.getByRole("group");
+		expect(group).toBeInTheDocument();
+		const resume = screen.getByText("Resume.pdf").closest('[role="treeitem"]');
+		expect(resume).toHaveAttribute("aria-level", "2");
+		expect(
+			screen.getByText("Documents").closest('[role="treeitem"]'),
+		).toHaveAttribute("aria-level", "1");
+	});
+
+	it("accepts an aria-label on the tree", () => {
+		render(<TreeView data={treeData} aria-label="File browser" />);
+		expect(
+			screen.getByRole("tree", { name: "File browser" }),
+		).toBeInTheDocument();
 	});
 });

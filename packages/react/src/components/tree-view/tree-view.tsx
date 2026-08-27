@@ -13,7 +13,8 @@ export interface TreeItem {
 	disabled?: boolean;
 }
 
-export interface TreeViewProps {
+export interface TreeViewProps
+	extends Omit<React.ComponentProps<"ul">, "onSelect"> {
 	/** Tree data */
 	data: TreeItem[];
 	/** Selected item id(s) */
@@ -24,25 +25,30 @@ export interface TreeViewProps {
 	onSelect?: (id: string) => void;
 	/** Multi-select mode */
 	multiSelect?: boolean;
-	/** Additional className */
-	className?: string;
 }
 
 interface TreeViewContextValue {
 	selected: Set<string>;
 	expanded: Set<string>;
+	activeId: string | null;
+	multiSelect: boolean;
 	onSelect: (id: string) => void;
 	onToggle: (id: string) => void;
-	multiSelect: boolean;
+	setActiveId: (id: string) => void;
+	registerNode: (id: string, element: HTMLLIElement | null) => void;
+	focusNode: (id: string) => void;
+	navigate: (id: string, key: string) => void;
 }
 
-const TreeViewContext = React.createContext<TreeViewContextValue>({
-	selected: new Set(),
-	expanded: new Set(),
-	onSelect: () => {},
-	onToggle: () => {},
-	multiSelect: false,
-});
+const TreeViewContext = React.createContext<TreeViewContextValue | null>(null);
+
+function useTreeView() {
+	const context = React.useContext(TreeViewContext);
+	if (!context) {
+		throw new Error("Tree components must be used within a TreeView.");
+	}
+	return context;
+}
 
 interface TreeNodeProps {
 	item: TreeItem;
@@ -50,53 +56,85 @@ interface TreeNodeProps {
 }
 
 function TreeNode({ item, level }: TreeNodeProps) {
-	const { selected, expanded, onSelect, onToggle } =
-		React.useContext(TreeViewContext);
+	const {
+		selected,
+		expanded,
+		activeId,
+		onSelect,
+		onToggle,
+		setActiveId,
+		registerNode,
+		navigate,
+	} = useTreeView();
+	const liRef = React.useRef<HTMLLIElement>(null);
 
 	const isSelected = selected.has(item.id);
 	const isExpanded = expanded.has(item.id);
 	const hasChildren = !!item.children?.length;
+	const isActive = activeId === item.id;
 
-	const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+	React.useEffect(() => {
+		registerNode(item.id, liRef.current);
+		return () => registerNode(item.id, null);
+	}, [item.id, registerNode]);
+
+	const activate = () => {
 		if (item.disabled) return;
-		if (e.key === "Enter" || e.key === " ") {
-			e.preventDefault();
-			if (hasChildren) onToggle(item.id);
-			else onSelect(item.id);
-		} else if (e.key === "ArrowRight" && hasChildren && !isExpanded) {
-			e.preventDefault();
-			onToggle(item.id);
-		} else if (e.key === "ArrowLeft" && hasChildren && isExpanded) {
-			e.preventDefault();
-			onToggle(item.id);
+		if (hasChildren) onToggle(item.id);
+		onSelect(item.id);
+	};
+
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLLIElement>) => {
+		switch (e.key) {
+			case "Enter":
+			case " ":
+				e.preventDefault();
+				activate();
+				break;
+			case "ArrowDown":
+			case "ArrowUp":
+			case "ArrowLeft":
+			case "ArrowRight":
+			case "Home":
+			case "End":
+				e.preventDefault();
+				navigate(item.id, e.key);
+				break;
+			default:
+				break;
 		}
 	};
 
 	return (
 		<li
+			ref={liRef}
 			role="treeitem"
-			tabIndex={item.disabled ? -1 : 0}
+			data-slot="tree-node"
+			data-selected={isSelected || undefined}
+			tabIndex={isActive ? 0 : -1}
 			aria-expanded={hasChildren ? isExpanded : undefined}
 			aria-selected={isSelected}
 			aria-disabled={item.disabled}
+			aria-level={level + 1}
+			onFocus={() => setActiveId(item.id)}
+			onClick={(e) => {
+				e.stopPropagation();
+				activate();
+			}}
+			onKeyDown={handleKeyDown}
+			className={cn(
+				"group/tree-item outline-none",
+				item.disabled && "cursor-not-allowed pointer-events-none",
+			)}
 		>
 			<div
-				data-slot="tree-node"
-				data-selected={isSelected || undefined}
-				tabIndex={item.disabled ? -1 : 0}
-				onClick={() => {
-					if (item.disabled) return;
-					if (hasChildren) onToggle(item.id);
-					onSelect(item.id);
-				}}
-				onKeyDown={handleKeyDown}
 				style={{ paddingLeft: `${level * 1.25}rem` }}
 				className={cn(
 					"flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm cursor-pointer select-none transition-colors",
 					"hover:bg-accent hover:text-accent-foreground",
-					"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+					"group-focus-visible/tree-item:outline-none group-focus-visible/tree-item:ring-2 group-focus-visible/tree-item:ring-ring",
 					isSelected && "bg-accent text-accent-foreground font-medium",
-					item.disabled && "opacity-50 cursor-not-allowed pointer-events-none",
+					item.disabled && "opacity-50",
 				)}
 			>
 				{hasChildren ? (
@@ -121,7 +159,8 @@ function TreeNode({ item, level }: TreeNodeProps) {
 			</div>
 
 			{hasChildren && isExpanded && (
-				<ul className="mt-0.5">
+				// biome-ignore lint/a11y/useSemanticElements: role=group is the ARIA APG treeview structure for child groups
+				<ul role="group" className="mt-0.5">
 					{item.children?.map((child) => (
 						<TreeNode key={child.id} item={child} level={level + 1} />
 					))}
@@ -138,6 +177,7 @@ function TreeView({
 	onSelect,
 	multiSelect = false,
 	className,
+	...props
 }: TreeViewProps) {
 	const [selectedIds, setSelectedIds] = React.useState<Set<string>>(() => {
 		if (!selectedProp) return new Set();
@@ -147,6 +187,9 @@ function TreeView({
 	const [expandedIds, setExpandedIds] = React.useState<Set<string>>(
 		() => new Set(defaultExpanded),
 	);
+
+	const [activeId, setActiveId] = React.useState<string | null>(null);
+	const nodeRefs = React.useRef(new Map<string, HTMLLIElement>());
 
 	const isControlled = selectedProp !== undefined;
 	const currentSelected = isControlled
@@ -177,26 +220,150 @@ function TreeView({
 		});
 	};
 
+	// Flat ordered list of currently visible node ids plus parent/children info,
+	// recomputed as nodes expand and collapse.
+	const { visibleIds, parentId, hasChildrenMap, disabledMap } =
+		React.useMemo(() => {
+			const visible: string[] = [];
+			const parent: Record<string, string | undefined> = {};
+			const childrenMap: Record<string, boolean> = {};
+			const disabled: Record<string, boolean> = {};
+
+			const walk = (items: TreeItem[], parent_id: string | undefined) => {
+				for (const item of items) {
+					parent[item.id] = parent_id;
+					childrenMap[item.id] = !!item.children?.length;
+					disabled[item.id] = !!item.disabled;
+					visible.push(item.id);
+					if (item.children?.length && expandedIds.has(item.id)) {
+						walk(item.children, item.id);
+					}
+				}
+			};
+			walk(data, undefined);
+			return {
+				visibleIds: visible,
+				parentId: parent,
+				hasChildrenMap: childrenMap,
+				disabledMap: disabled,
+			};
+		}, [data, expandedIds]);
+
+	// Roving tabindex: exactly one visible, enabled node (the active one, else
+	// the first) is in the tab order. Disabled nodes are never focusable.
+	const effectiveActiveId = React.useMemo(() => {
+		if (activeId && visibleIds.includes(activeId) && !disabledMap[activeId]) {
+			return activeId;
+		}
+		return visibleIds.find((id) => !disabledMap[id]) ?? null;
+	}, [activeId, visibleIds, disabledMap]);
+
+	const registerNode = React.useCallback(
+		(id: string, element: HTMLLIElement | null) => {
+			if (element) nodeRefs.current.set(id, element);
+			else nodeRefs.current.delete(id);
+		},
+		[],
+	);
+
+	const focusNode = React.useCallback((id: string) => {
+		nodeRefs.current.get(id)?.focus();
+	}, []);
+
+	const navigate = React.useCallback(
+		(id: string, key: string) => {
+			const index = visibleIds.indexOf(id);
+			if (index === -1) return;
+
+			// walk visible nodes in a direction, skipping disabled ones
+			const step = (from: number, delta: number) => {
+				for (let i = from; i >= 0 && i < visibleIds.length; i += delta) {
+					if (!disabledMap[visibleIds[i]]) return visibleIds[i];
+				}
+				return undefined;
+			};
+
+			let target: string | undefined;
+			switch (key) {
+				case "ArrowDown":
+					target = step(index + 1, 1);
+					break;
+				case "ArrowUp":
+					target = step(index - 1, -1);
+					break;
+				case "Home":
+					target = step(0, 1);
+					break;
+				case "End":
+					target = step(visibleIds.length - 1, -1);
+					break;
+				case "ArrowRight":
+					if (!hasChildrenMap[id]) return;
+					if (expandedIds.has(id)) {
+						// first child is the next visible node when expanded
+						target = step(index + 1, 1);
+					} else {
+						handleToggle(id);
+						return;
+					}
+					break;
+				case "ArrowLeft":
+					if (hasChildrenMap[id] && expandedIds.has(id)) {
+						handleToggle(id);
+						return;
+					}
+					target = parentId[id];
+					if (target && disabledMap[target]) target = undefined;
+					break;
+				default:
+					return;
+			}
+
+			if (target && target !== id) {
+				setActiveId(target);
+				focusNode(target);
+			}
+		},
+		[visibleIds, hasChildrenMap, disabledMap, expandedIds, parentId, focusNode],
+	);
+
+	const contextValue = React.useMemo<TreeViewContextValue>(
+		() => ({
+			selected: currentSelected,
+			expanded: expandedIds,
+			activeId: effectiveActiveId,
+			multiSelect,
+			onSelect: handleSelect,
+			onToggle: handleToggle,
+			setActiveId,
+			registerNode,
+			focusNode,
+			navigate,
+		}),
+		[
+			currentSelected,
+			expandedIds,
+			effectiveActiveId,
+			multiSelect,
+			registerNode,
+			focusNode,
+			navigate,
+		],
+	);
+
 	return (
-		<TreeViewContext.Provider
-			value={{
-				selected: currentSelected,
-				expanded: expandedIds,
-				onSelect: handleSelect,
-				onToggle: handleToggle,
-				multiSelect,
-			}}
-		>
-			<div
+		<TreeViewContext.Provider value={contextValue}>
+			<ul
 				role="tree"
 				data-slot="tree-view"
 				aria-multiselectable={multiSelect}
 				className={cn("space-y-0.5 p-1", className)}
+				{...props}
 			>
 				{data.map((item) => (
 					<TreeNode key={item.id} item={item} level={0} />
 				))}
-			</div>
+			</ul>
 		</TreeViewContext.Provider>
 	);
 }
