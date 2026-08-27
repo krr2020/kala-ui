@@ -286,6 +286,10 @@ Releases are managed by maintainers following semantic versioning:
 - Minor version: New features (backward compatible)
 - Patch version: Bug fixes (backward compatible)
 
+Versioning and publishing run through [changesets](https://github.com/changesets/changesets) —
+the full workflow (adding a changeset to your PR, prerelease/beta cycles,
+publishing) is documented in [docs/RELEASING.md](./docs/RELEASING.md).
+
 ## Code of Conduct
 
 Be respectful and inclusive:

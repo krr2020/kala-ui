@@ -119,6 +119,8 @@ pnpm test
 
 # Run Storybook
 pnpm storybook
+
+# Cut and publish a release (changesets) — see docs/RELEASING.md
 ```
 
 ## Contributing
