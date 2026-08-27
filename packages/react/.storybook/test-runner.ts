@@ -19,6 +19,9 @@ import { fileURLToPath } from 'node:url';
  * token, color, spacing, and layout-mode regression the themes can produce.
  * Intrinsic text-derived geometry (width/height) is excluded for the same
  * reason; specified paddings/margins/borders are font-independent and kept.
+ * `font-family` is also excluded: Chromium expands `system-ui` into the
+ * host OS's system font list, so the computed value differs between macOS
+ * and the Linux CI runners even for identical CSS.
  *
  * Baselines live in `.storybook/visual-baselines/<story>.<theme>.json`.
  * Regenerate deliberately with: UPDATE_SNAPSHOTS=1 pnpm run test-storybook
@@ -97,7 +100,6 @@ const VISUAL_PROPS = [
 	'outline-color',
 	'outline-width',
 	'outline-style',
-	'font-family',
 	'font-size',
 	'font-weight',
 	'font-style',
@@ -195,6 +197,43 @@ function baselinePath(storyId: string, theme: string) {
 	return join(BASELINE_DIR, `${safe}.${theme}.json`);
 }
 
+// Compare captures against the baseline and report a bounded list of precise,
+// per-property diffs. A deep-equality dump of the whole JSON crashes CI
+// runners instead of reporting (Node's stdout write fails with EINVAL on the
+// multi-megabyte jest diff), and is unreadable anyway.
+const MAX_REPORTED_DIFFS = 20;
+
+function diffCaptures(
+	captured: CapturedNode[],
+	baseline: CapturedNode[],
+): string[] {
+	const diffs: string[] = [];
+	const count = Math.max(captured.length, baseline.length);
+	for (let i = 0; i < count && diffs.length < MAX_REPORTED_DIFFS; i++) {
+		const got = captured[i];
+		const want = baseline[i];
+		if (!got || !want) {
+			diffs.push(
+				`node[${i}]: ${got ? 'unexpected extra node' : 'missing node'} vs baseline`,
+			);
+			continue;
+		}
+		if (got.tag !== want.tag || got.slot !== want.slot || got.classes !== want.classes) {
+			diffs.push(
+				`node[${i}]: structure <${want.tag} slot="${want.slot}" class="${want.classes}"> -> <${got.tag} slot="${got.slot}" class="${got.classes}">`,
+			);
+		}
+		for (const prop of VISUAL_PROPS) {
+			if (got.styles[prop] !== want.styles[prop]) {
+				diffs.push(
+					`node[${i}] <${want.tag}> ${prop}: expected ${JSON.stringify(want.styles[prop])}, received ${JSON.stringify(got.styles[prop])}`,
+				);
+			}
+		}
+	}
+	return diffs;
+}
+
 // The CSS freeze stops keyframe/transition animations, but framer-motion and
 // friends drive inline styles from requestAnimationFrame and the Web
 // Animations API. Finish those, then keep sampling until two consecutive
@@ -257,7 +296,12 @@ const config: TestRunnerConfig = {
 			const hasBaseline = existsSync(file);
 			if (hasBaseline && !process.env.UPDATE_SNAPSHOTS) {
 				const baseline = JSON.parse(await readFile(file, 'utf8')) as CapturedNode[];
-				expect(captured).toEqual(baseline);
+				const diffs = diffCaptures(captured, baseline);
+				if (diffs.length > 0) {
+					throw new Error(
+						`visual baseline mismatch (${diffs.length}${diffs.length >= MAX_REPORTED_DIFFS ? '+' : ''} diffs shown):\n  ${diffs.join('\n  ')}`,
+					);
+				}
 			} else {
 				await mkdir(dirname(file), { recursive: true });
 				await writeFile(file, `${JSON.stringify(captured, null, 1)}\n`, 'utf8');
