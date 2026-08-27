@@ -155,3 +155,36 @@
 		scroll-behavior: auto !important;
 	}
 }
+
+/*
+ * Touch targets (WCAG 2.5.8 / mobile 44×44 guidance).
+ *
+ * On coarse pointers (touch screens) every kala-ui interactive control
+ * exposes a hit area of at least 44×44 CSS pixels without changing its
+ * rendered size: a transparent ::after overlay is centered on the element
+ * and never grows past the element's own bounds when they already exceed
+ * 44px (so large controls never steal taps from neighbors).
+ *
+ * Fine-pointer (mouse/trackpad) and print environments get nothing —
+ * `pointer: coarse` is evaluated by the device, not by breakpoints.
+ */
+@layer components {
+	@media (pointer: coarse) {
+		.kala-touch {
+			position: relative;
+		}
+
+		.kala-touch::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			width: max(100%, 44px);
+			height: max(100%, 44px);
+			margin: auto;
+			/* purely a hit area — never visible */
+			background: transparent;
+			-webkit-user-select: none;
+			user-select: none;
+		}
+	}
+}

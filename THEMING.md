@@ -139,6 +139,12 @@ Styling hooks emitted by components (all `kala-` prefixed, defined in
   `kala-focus-within-ring`, `kala-focus-within-ring-destructive` — keyboard
   focus rings
 - `kala-ring`, `kala-ring-destructive` — persistent (always-on) rings
+- `kala-touch` — touch-target enabler: on `pointer: coarse` devices (phones,
+  tablets) expands the element's hit area to at least 44×44px via a
+  transparent overlay; a no-op everywhere else. Applied automatically to
+  compact controls (Button, Checkbox, Switch, Radio, icon actions), so you
+  never need it by hand — add it to your own small buttons if you want the
+  same guarantee. Never changes visuals, only the tap area.
 
 Because these live in the `components` cascade layer, any utility or
 unlayered CSS you add beats them — `className` overrides just work:

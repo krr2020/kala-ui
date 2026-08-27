@@ -1,5 +1,5 @@
 export const switchStyles = {
-	base: "cursor-pointer peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-input inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all kala-focus-ring disabled:cursor-not-allowed disabled:opacity-50 disabled:pointer-events-none",
+	base: "cursor-pointer peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-input inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all kala-focus-ring kala-touch disabled:cursor-not-allowed disabled:opacity-50 disabled:pointer-events-none",
 };
 
 export const switchThumbStyles = {

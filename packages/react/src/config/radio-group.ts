@@ -12,7 +12,7 @@ export const radioGroupStyles = {
 };
 
 export const radioGroupItemStyles = {
-	base: "cursor-pointer group relative shrink-0 rounded-full border transition-all outline-none kala-focus-ring disabled:cursor-not-allowed disabled:opacity-50",
+	base: "cursor-pointer group relative shrink-0 rounded-full border transition-all outline-none kala-focus-ring kala-touch disabled:cursor-not-allowed disabled:opacity-50",
 	variants: {
 		variant: {
 			default:

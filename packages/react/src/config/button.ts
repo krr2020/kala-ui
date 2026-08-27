@@ -1,5 +1,5 @@
 export const buttonStyles = {
-	base: "cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--kala-radius-control)] text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed kala-focus-ring",
+	base: "cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--kala-radius-control)] text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed kala-focus-ring kala-touch",
 	variants: {
 		variant: {
 			default: "bg-primary text-primary-foreground hover:bg-primary/90",
