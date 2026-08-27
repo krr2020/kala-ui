@@ -13,7 +13,7 @@ import {
 	CommandInput,
 	CommandItem,
 	CommandList,
-} from "../../primitives/command";
+} from "../command";
 import { Checkbox } from "../checkbox";
 import { Separator } from "../separator";
 

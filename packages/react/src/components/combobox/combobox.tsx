@@ -14,7 +14,7 @@ import {
 	CommandItem,
 	CommandList,
 	CommandSeparator,
-} from "../../primitives/command";
+} from "../command";
 import { Button } from "../button";
 import { Text } from "../text";
 import type { ComboboxProps } from "./combobox.types";
