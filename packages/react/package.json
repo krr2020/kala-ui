@@ -5,7 +5,7 @@
 	"sideEffects": [
 		"**/*.css"
 	],
-	"description": "65+ accessible React components built with Radix UI and Tailwind CSS. Includes DataTable with server-side support, charts, drag-and-drop, and comprehensive form controls.",
+	"description": "~90 accessible standard UI components built with Radix UI and Tailwind CSS — primitives, form controls, overlays and menus. App-level composites (AppShell, DataTable, charts) live in @kala-ui/react-app.",
 	"keywords": [
 		"react",
 		"ui",

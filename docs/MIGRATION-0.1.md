@@ -30,6 +30,47 @@ Tailwind CSS at all:
 @import "@kala-ui/react/styles/helpers";
 ```
 
+### Package split: standard UI vs app-level components
+
+`@kala-ui/react` now contains the ~90 standard UI components only. The 15
+app-level composites moved to a new package, `@kala-ui/react-app`, which
+depends on core:
+
+| Moved to `@kala-ui/react-app` | |
+|---|---|
+| Application chrome | `AppShell`, `Header`, `Footer`, `Sidebar`, `Navigation`, `NavLink` |
+| Data composites | `DataTable`, `Dnd` (dnd-kit sortable lists/boards) |
+| Charts | `Chart`, `AreaChart`, `BarChart`, `LineChart`, `DonutChart`, `PieChart`, `RadialBarChart`, `SparklineChart` |
+| Widgets | `MetricCard`, `SessionCard`, `UserMenuDropdown`, `SocialLoginButton`, `SocialLoginButtons` |
+
+Update imports and add the app stylesheet (utilities-only; the theme,
+tokens, preflight and helper classes ship once via the core stylesheet,
+which must be imported first):
+
+```bash
+pnpm add @kala-ui/react-app
+```
+
+```ts
+// before
+import { AppShell, Button, DataTable } from "@kala-ui/react";
+
+// after
+import { Button } from "@kala-ui/react";
+import { AppShell, DataTable } from "@kala-ui/react-app";
+```
+
+```css
+@import "@kala-ui/react/styles";
+@import "@kala-ui/react-app/styles"; /* only if you use the app package */
+```
+
+Two util-level moves came with the split: `isActivePath` now lives in
+`@kala-ui/react-app` (it exists for `Navigation`/`Sidebar`), and
+`FormSkeleton`/`FieldGroupSkeleton` are exported from `@kala-ui/react/field`
+instead of `/skeleton`. Everything else keeps its export name — only the
+import source changes.
+
 If your app already runs Tailwind v4, you can keep your own setup and
 instead `@source` the package so your compiler sees the library's class
 names; both paths are supported. The helper classes are `kala-*`

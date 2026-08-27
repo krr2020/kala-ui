@@ -8,6 +8,7 @@
   
   #### Breaking changes
   
+  - **Package split**: `@kala-ui/react` now ships the ~90 standard UI components only. The 15 app-level composites (`AppShell`, `Header`, `Footer`, `Sidebar`, `Navigation`, `NavLink`, `DataTable`, `Dnd`, all `Chart` components, `MetricCard`, `SessionCard`, `UserMenuDropdown`, `SocialLoginButton(s)`) moved to the new **`@kala-ui/react-app`** package, which depends on core. Import both packages and `@import "@kala-ui/react-app/styles"` after the core stylesheet. `isActivePath` moved to `@kala-ui/react-app`; `FormSkeleton`/`FieldGroupSkeleton` are exported from `/field` instead of `/skeleton`. See `docs/MIGRATION-0.1.md`.
   - **Theming**: Tailwind v4-native `globals.css` (`@theme`/`@custom-variant dark`); `@kala-ui/design-tokens` package, `tailwind-base` config export, `tailwind.config.ts`, and the `--overlay`/`--border-strong`/`--radius` token removals. Tokens are whole color values overridable on `:root`/`.dark`; alpha via `color-mix`. Custom helper classes renamed to `kala-*` and defined once in `styles/helpers.css`.
   - **`"use client"` directives** are emitted in both packages' dist — every component and hook server-renders in React Server Component apps without a manual client boundary.
   - **React 19 ref-as-prop**: all components accept `ref` directly (no more `forwardRef` objects).

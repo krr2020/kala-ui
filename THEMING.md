@@ -16,6 +16,7 @@ npm install @kala-ui/react
 
 ```tsx
 import "@kala-ui/react/styles"; // precompiled CSS: tokens, utilities, component classes
+// import "@kala-ui/react-app/styles"; // utilities for @kala-ui/react-app (import after core)
 ```
 
 Optional theme switching (class strategy, OS preference, persistence):
@@ -62,6 +63,7 @@ Redefine tokens after the import, in any color format:
 
 ```css
 @import "@kala-ui/react/styles";
+/* @import "@kala-ui/react-app/styles"; */ /* if you use the app package */
 
 :root {
   --primary: oklch(0.55 0.22 264);
@@ -155,22 +157,29 @@ unlayered CSS you add beats them — `className` overrides just work:
 
 ## Using with your own Tailwind build
 
-Two supported recipes:
+Two supported recipes. Both cover the core package; if you also use
+`@kala-ui/react-app`, add its stylesheet/`@source` alongside the core one
+(every recipe below shows the app-package line commented).
 
-### A. Precompiled stylesheet (recommended)
+### A. Precompiled stylesheets (recommended)
 
 ```ts
 import "@kala-ui/react/styles";
+// import "@kala-ui/react-app/styles"; // only if you use @kala-ui/react-app
 ```
 
 Works with any setup — Tailwind or not, any framework. Utilities referenced
-by kala-ui components are already compiled in.
+by kala-ui components are already compiled in. The app package's stylesheet
+is utilities-only: the theme, tokens, preflight and `kala-*` helper classes
+all ship once via `@kala-ui/react/styles`, which must be imported first.
 
 ### B. Compile kala-ui into your own Tailwind v4 build
 
 ```css
 @import "tailwindcss";
+@import "@kala-ui/react/tailwind"; /* shared @theme mapping + dark variant */
 @source "../node_modules/@kala-ui/react/dist";
+/* @source "../node_modules/@kala-ui/react-app/dist";  app package */
 @import "@kala-ui/react/styles/helpers";
 
 /* tokens — start from the :root block of @kala-ui/react/styles
@@ -185,6 +194,9 @@ by kala-ui components are already compiled in.
 ```
 
 - `@source` scans the shipped JS for utility class names so they compile.
+- `@kala-ui/react/tailwind` is the shared theme source both packages build
+  against — importing it keeps your utilities identical to the precompiled
+  ones (the `@custom-variant` line becomes optional but harmless).
 - `helpers.css` carries the `kala-*` component classes (already layered).
 - Token definitions are NOT included in this mode — copy the default `:root`
   and `.dark` blocks from `@kala-ui/react/styles` once, then customize;
@@ -193,7 +205,8 @@ by kala-ui components are already compiled in.
 ## Charts
 
 Charts (`Chart`, `LineChart`, `AreaChart`, `BarChart`, `DonutChart`,
-`RadialBarChart`, `SparklineChart`) are theme-aware with zero config:
+`RadialBarChart`, `SparklineChart` — all in `@kala-ui/react-app`) are
+theme-aware with zero config:
 
 - Series colors derive from `--primary`, `--success`, `--warning`,
   `--destructive`, `--info` (lighter tints in light themes, darker shades in

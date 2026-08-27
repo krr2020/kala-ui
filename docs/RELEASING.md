@@ -1,8 +1,9 @@
 # Releasing
 
 Kala UI releases through [changesets](https://github.com/changesets/changesets).
-Both workspace packages (`@kala-ui/react`, `@kala-ui/react-hooks`) version
-from the same changesets; bump them together.
+All three workspace packages (`@kala-ui/react`, `@kala-ui/react-app`,
+`@kala-ui/react-hooks`) version from the same changesets; bump them together
+(`react-app` depends on `react`, which changesets links via `workspace:*`).
 
 ## Daily flow
 
@@ -19,7 +20,7 @@ from the same changesets; bump them together.
 ## Cutting a release
 
 ```sh
-pnpm run build          # fresh dist for both packages
+pnpm run build          # fresh dist for all packages
 pnpm run version-packages   # consumes changesets, bumps versions, writes CHANGELOGs
 ```
 

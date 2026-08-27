@@ -4,27 +4,30 @@ A modern React component library and design system built with Radix UI primitive
 
 ## Packages
 
-This monorepo contains:
+This monorepo contains three packages split along architectural lines
+(`react-app` → `react` → `react-hooks`, never the other way around):
 
-- **[@kala-ui/react](./packages/react)** - 65+ accessible React UI components
-- **[@kala-ui/react-hooks](./packages/react-hooks)** - 18+ essential React hooks
+- **[@kala-ui/react](./packages/react)** — ~90 standard UI components: primitives, form controls, overlays and menus. Buttons, dialogs, inputs, tables, calendars — the design-system vocabulary.
+- **[@kala-ui/react-app](./packages/react-app)** — 15 app-level composites built on the core primitives: `AppShell`, `Header`, `Sidebar`, `DataTable`, ApexCharts `charts`, `Dnd`, dashboard and auth widgets.
+- **[@kala-ui/react-hooks](./packages/react-hooks)** — 18+ essential React hooks.
 
 ## Installation
 
 ```bash
-# Install all packages
-pnpm install
-
-# Install specific package
+# Core UI components only
 pnpm add @kala-ui/react
+
+# App-level composites (depends on core)
+pnpm add @kala-ui/react-app
 ```
 
 ## Quick Start
 
-### 1. Install the package
+### 1. Install the package(s)
 
 ```bash
 npm install @kala-ui/react
+npm install @kala-ui/react-app   # optional: app-level components
 ```
 
 ### 2. Import global styles
@@ -32,6 +35,7 @@ npm install @kala-ui/react
 ```tsx
 // In your main entry point (App.tsx, main.tsx, or index.tsx)
 import '@kala-ui/react/styles';
+import '@kala-ui/react-app/styles'; // only if you use @kala-ui/react-app
 ```
 
 ### 3. Use components
@@ -39,13 +43,17 @@ import '@kala-ui/react/styles';
 ```tsx
 import { Button } from '@kala-ui/react/button';
 import { Input } from '@kala-ui/react/input';
+import { AppShell } from '@kala-ui/react-app/app-shell';
+import { DataTable } from '@kala-ui/react-app/data-table';
 
 function App() {
   return (
-    <div>
-      <Button>Click me</Button>
-      <Input placeholder="Enter text" />
-    </div>
+    <AppShell>
+      <AppShell.Main>
+        <Button>Click me</Button>
+        <Input placeholder="Enter text" />
+      </AppShell.Main>
+    </AppShell>
   );
 }
 ```
@@ -100,7 +108,7 @@ pnpm build
 # Type check all packages
 pnpm type-check
 
-# Run linting
+# Run linting (includes package-boundary guard)
 pnpm lint
 
 # Fix linting issues
