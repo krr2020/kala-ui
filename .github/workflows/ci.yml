@@ -37,9 +37,9 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm run type-check
-      # Unit tests resolve @kala-ui/react-hooks from its built dist output,
-      # so build the hooks package before testing.
-      - run: pnpm --filter @kala-ui/react-hooks build
+      # Unit tests resolve @kala-ui/react-hooks and @kala-ui/react from
+      # their built dist output, so build both before testing.
+      - run: pnpm --filter @kala-ui/react-hooks --filter @kala-ui/react build
       - run: pnpm run test
 
   build:
@@ -86,7 +86,8 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      # Unit tests resolve @kala-ui/react-hooks from its built dist output.
+      # The composed Storybook aliases @kala-ui/react to source, but app
+      # stories resolve @kala-ui/react-hooks from its built dist output.
       - run: pnpm --filter @kala-ui/react-hooks build
       - run: pnpm --filter @kala-ui/react exec playwright install --with-deps chromium
       - run: pnpm run test-storybook

@@ -41,6 +41,9 @@ importers:
       '@kala-ui/react':
         specifier: workspace:*
         version: link:../../packages/react
+      '@kala-ui/react-app':
+        specifier: workspace:*
+        version: link:../../packages/react-app
       '@kala-ui/react-hooks':
         specifier: workspace:*
         version: link:../../packages/react-hooks

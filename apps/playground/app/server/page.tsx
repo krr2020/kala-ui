@@ -27,6 +27,7 @@ import { Steps } from "@kala-ui/react/steps";
 import { Alert } from "@kala-ui/react/alert";
 import { AlertSkeleton } from "@kala-ui/react/alert";
 import { cn } from "@kala-ui/react/lib/utils";
+import { MetricCard } from "@kala-ui/react-app/metric-card";
 
 export default function ServerPage() {
 	return (
@@ -71,6 +72,24 @@ export default function ServerPage() {
 					<span className={cn("text-sm", "text-muted-foreground")}>
 						cn() imported from @kala-ui/react/lib/utils stays server-safe.
 					</span>
+				</CardContent>
+			</Card>
+
+			<Card className="w-full max-w-md">
+				<CardHeader>
+					<CardTitle>App-level package import</CardTitle>
+					<CardDescription>
+						@kala-ui/react-app subpath export with serializable props.
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<MetricCard
+						title="Server revenue"
+						value="$42k"
+						change={8}
+						changeLabel="vs last month"
+						color="success"
+					/>
 				</CardContent>
 			</Card>
 		</main>

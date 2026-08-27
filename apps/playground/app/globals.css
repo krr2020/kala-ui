@@ -1,5 +1,6 @@
 @import "@kala-ui/react/styles";
 @import "@kala-ui/react/styles/helpers";
+@import "@kala-ui/react-app/styles";
 
 /*
  * Consumer theme override: redefine tokens in any color format and every
