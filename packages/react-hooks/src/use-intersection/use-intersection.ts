@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface UseIntersectionOptions extends IntersectionObserverInit {
 	/** If true, observer will disconnect after first intersection */
@@ -7,13 +7,17 @@ export interface UseIntersectionOptions extends IntersectionObserverInit {
 
 export interface UseIntersectionReturnValue {
 	/** Ref to attach to element */
-	ref: React.RefObject<HTMLElement>;
+	ref: React.RefCallback<HTMLElement>;
 	/** Intersection observer entry */
 	entry: IntersectionObserverEntry | null;
 }
 
 /**
  * Uses Intersection Observer API to detect element visibility
+ *
+ * The ref is a stable callback ref, so the observer attaches whenever the
+ * node mounts — including after the initial render — and re-attaches when it
+ * swaps to a different node or when the observer options change.
  *
  * @param options - Intersection observer options
  *
@@ -40,39 +44,33 @@ export function useIntersection(
 		rootMargin,
 	} = options;
 	const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null);
-	const ref = useRef<HTMLElement>(null);
-	const observerRef = useRef<IntersectionObserver | null>(null);
+	const [node, setNode] = useState<HTMLElement | null>(null);
+
+	const ref = useCallback((element: HTMLElement | null) => {
+		setNode(element);
+	}, []);
 
 	useEffect(() => {
-		if (!ref.current) return undefined;
+		if (!node) return undefined;
 
-		if (observerRef.current) {
-			observerRef.current.disconnect();
-		}
-
-		observerRef.current = new IntersectionObserver(
+		const observer = new IntersectionObserver(
 			([newEntry]) => {
+				if (!newEntry) return;
 				setEntry(newEntry);
 
-				if (
-					disconnectOnIntersect &&
-					newEntry.isIntersecting &&
-					observerRef.current
-				) {
-					observerRef.current.disconnect();
+				if (disconnectOnIntersect && newEntry.isIntersecting) {
+					observer.disconnect();
 				}
 			},
 			{ threshold, root, rootMargin },
 		);
 
-		observerRef.current.observe(ref.current);
+		observer.observe(node);
 
 		return () => {
-			if (observerRef.current) {
-				observerRef.current.disconnect();
-			}
+			observer.disconnect();
 		};
-	}, [disconnectOnIntersect, threshold, root, rootMargin]);
+	}, [disconnectOnIntersect, threshold, root, rootMargin, node]);
 
 	return { ref, entry };
 }

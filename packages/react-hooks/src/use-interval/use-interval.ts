@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useCallbackRef } from "../utils";
 
 export interface UseIntervalOptions {
@@ -41,11 +41,15 @@ export function useInterval(
 ): UseIntervalReturnValue {
 	const fnRef = useCallbackRef(fn);
 	const intervalRef = useRef<number | null>(null);
+	// The ref guards the timer lifecycle; the state reports `active` to
+	// consumers — a ref alone would never trigger a re-render.
 	const activeRef = useRef(false);
+	const [active, setActive] = useState(false);
 
 	const start = useCallback(() => {
 		if (!activeRef.current) {
 			activeRef.current = true;
+			setActive(true);
 			intervalRef.current = window.setInterval(fnRef, interval);
 		}
 	}, [fnRef, interval]);
@@ -53,6 +57,7 @@ export function useInterval(
 	const stop = useCallback(() => {
 		if (activeRef.current && intervalRef.current !== null) {
 			activeRef.current = false;
+			setActive(false);
 			window.clearInterval(intervalRef.current);
 			intervalRef.current = null;
 		}
@@ -73,5 +78,5 @@ export function useInterval(
 		return stop;
 	}, [autoInvoke, start, stop]);
 
-	return { start, stop, toggle, active: activeRef.current };
+	return { start, stop, toggle, active };
 }

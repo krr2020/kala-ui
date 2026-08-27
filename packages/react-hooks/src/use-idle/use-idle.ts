@@ -8,6 +8,13 @@ const DEFAULT_EVENTS: (keyof WindowEventMap)[] = [
 	"scroll",
 ];
 
+export interface UseIdleOptions {
+	/** Activity events that reset the idle timer */
+	events?: (keyof WindowEventMap)[];
+	/** Whether the user starts out considered idle */
+	initialState?: boolean;
+}
+
 /**
  * Detects user inactivity
  *
@@ -18,16 +25,17 @@ const DEFAULT_EVENTS: (keyof WindowEventMap)[] = [
  */
 export function useIdle(
 	timeout: number,
-	options: { events?: (keyof WindowEventMap)[]; initialState?: boolean } = {},
+	options: UseIdleOptions = {},
 ): boolean {
 	const { events = DEFAULT_EVENTS, initialState = false } = options;
 	const [idle, setIdle] = useState<boolean>(initialState);
 	const timeoutId = useRef<number | null>(null);
+	// Content-matched dep: inline array literals must not rebind listeners
+	// on every render.
+	const _eventsKey = events.join("\u0000");
 
 	useEffect(() => {
-		const handleEvent = () => {
-			setIdle(false);
-
+		const startTimer = () => {
 			if (timeoutId.current) {
 				window.clearTimeout(timeoutId.current);
 			}
@@ -37,11 +45,18 @@ export function useIdle(
 			}, timeout);
 		};
 
+		const handleEvent = () => {
+			setIdle(false);
+			startTimer();
+		};
+
 		for (const event of events) {
 			window.addEventListener(event, handleEvent);
 		}
 
-		handleEvent();
+		// Schedule without marking the user active, so initialState survives
+		// until the timeout lapses or real activity arrives.
+		startTimer();
 
 		return () => {
 			for (const event of events) {

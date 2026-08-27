@@ -34,9 +34,15 @@ export {
 } from "./use-element-size/use-element-size";
 export { useFocusTrap } from "./use-focus-trap/use-focus-trap";
 export { type HotkeyItem, useHotkeys } from "./use-hotkeys/use-hotkeys";
-export { useHover } from "./use-hover/use-hover";
+export {
+	type UseHoverReturn,
+	useHover,
+} from "./use-hover/use-hover";
 export { useId } from "./use-id/use-id";
-export { useIdle } from "./use-idle/use-idle";
+export {
+	type UseIdleOptions,
+	useIdle,
+} from "./use-idle/use-idle";
 export {
 	type UseIntersectionOptions,
 	type UseIntersectionReturnValue,
@@ -82,7 +88,10 @@ export {
 } from "./use-pagination/use-pagination";
 export { usePrevious } from "./use-previous/use-previous";
 export { useReducedMotion } from "./use-reduced-motion/use-reduced-motion";
-export { useScrollLock } from "./use-scroll-lock/use-scroll-lock";
+export {
+	type UseScrollLockOptions,
+	useScrollLock,
+} from "./use-scroll-lock/use-scroll-lock";
 export { useTimeout } from "./use-timeout/use-timeout";
 export { useToggle } from "./use-toggle/use-toggle";
 export { useUncontrolled } from "./use-uncontrolled/use-uncontrolled";

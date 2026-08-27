@@ -50,4 +50,37 @@ describe("useScrollLock", () => {
 		expect(result.current[0]).toBe(true);
 		scrollToSpy.mockRestore();
 	});
+
+	it("keeps the page locked until every nested consumer releases", () => {
+		const scrollToSpy = vi
+			.spyOn(window, "scrollTo")
+			.mockImplementation(() => {});
+		const first = renderHook(() => useScrollLock(true));
+		const second = renderHook(() => useScrollLock(false));
+
+		expect(document.body.style.overflow).toBe("hidden");
+
+		// A second consumer locks — the document is already locked, but the
+		// reference count must go up.
+		act(() => {
+			second.result.current[1](true);
+		});
+		expect(document.body.style.overflow).toBe("hidden");
+
+		// First consumer releases — the second still holds the lock.
+		act(() => {
+			first.result.current[1](false);
+		});
+		expect(document.body.style.overflow).toBe("hidden");
+
+		// Last consumer releases — the page actually unlocks.
+		act(() => {
+			second.result.current[1](false);
+		});
+		expect(document.body.style.overflow).toBe("");
+		expect(scrollToSpy).toHaveBeenCalledTimes(1);
+		scrollToSpy.mockRestore();
+		first.unmount();
+		second.unmount();
+	});
 });

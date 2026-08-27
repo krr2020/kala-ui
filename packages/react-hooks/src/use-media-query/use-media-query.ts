@@ -34,19 +34,25 @@ export function useMediaQuery(
 			return initialValue;
 		}
 
-		if (typeof window !== "undefined" && typeof window.matchMedia === "function") {
+		if (
+			typeof window !== "undefined" &&
+			typeof window.matchMedia === "function"
+		) {
 			return window.matchMedia(query).matches;
 		}
 
 		return false;
 	};
 
-	const [matches, setMatches] = useState(
-		getInitialValueInEffect ? initialValue : getInitialValueFn(),
+	const [matches, setMatches] = useState<boolean>(
+		getInitialValueInEffect ? (initialValue ?? false) : getInitialValueFn(),
 	);
 
 	useEffect(() => {
-		if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+		if (
+			typeof window === "undefined" ||
+			typeof window.matchMedia !== "function"
+		) {
 			return undefined;
 		}
 
@@ -64,11 +70,9 @@ export function useMediaQuery(
 		}
 
 		// Legacy browsers
-		// @ts-expect-error - deprecated but needed for older Safari
 		mediaQuery.addListener(handler);
-		// @ts-expect-error
 		return () => mediaQuery.removeListener(handler);
 	}, [query]);
 
-	return matches || false;
+	return matches;
 }

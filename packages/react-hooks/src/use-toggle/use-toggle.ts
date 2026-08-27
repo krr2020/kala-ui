@@ -17,7 +17,9 @@ import { useCallback, useState } from "react";
  * ```
  */
 export function useToggle<T = boolean>(
-	options: readonly [T, T] = [false, true] as readonly [T, T],
+	// Sound: the default is only reachable when no options are passed, in
+	// which case T falls back to `boolean`.
+	options: readonly [T, T] = [false, true] as unknown as readonly [T, T],
 ): [T, (value?: T) => void] {
 	const [[option1, option2]] = useState(options);
 	const [state, setState] = useState<T>(option1);

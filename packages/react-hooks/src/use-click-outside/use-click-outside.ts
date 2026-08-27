@@ -1,19 +1,25 @@
 import { useEffect, useRef } from "react";
 import { useCallbackRef } from "../utils";
 
+const DEFAULT_EVENTS = ["mousedown", "touchstart"];
+
 export interface UseClickOutsideOptions {
-	/** Events to listen to */
+	/** Events to listen to (default: ['mousedown', 'touchstart']) */
 	events?: string[];
-	/** Nodes to ignore clicks on */
+	/** Nodes whose subtrees never count as "outside" */
 	ignore?: (HTMLElement | null)[];
 }
 
 /**
  * Detects clicks outside of a given element
  *
- * @param handler - Function to call when click outside is detected
- * @param events - Events to listen to (default: ['mousedown', 'touchstart'])
- * @param nodes - Additional nodes to exclude from detection
+ * The handler is kept in a ref, so changing it never rebinds the listeners.
+ * The `ignore` nodes are read at event time, so mutating the array contents
+ * takes effect immediately. The event list only takes effect through a
+ * re-render — it is matched by content, not array identity.
+ *
+ * @param handler - Function to call when a click outside is detected
+ * @param options - Events to listen to and nodes to ignore
  *
  * @example
  * ```tsx
@@ -26,11 +32,17 @@ export interface UseClickOutsideOptions {
  */
 export function useClickOutside<T extends HTMLElement = HTMLElement>(
 	handler: () => void,
-	events: string[] = ["mousedown", "touchstart"],
-	nodes: (HTMLElement | null)[] = [],
-): React.RefObject<T> {
+	options: UseClickOutsideOptions = {},
+): React.RefObject<T | null> {
 	const ref = useRef<T>(null);
 	const handlerRef = useCallbackRef(handler);
+	const optionsRef = useRef(options);
+
+	useEffect(() => {
+		optionsRef.current = options;
+	});
+
+	const events = options.events ?? DEFAULT_EVENTS;
 
 	useEffect(() => {
 		const listener = (event: Event) => {
@@ -40,8 +52,7 @@ export function useClickOutside<T extends HTMLElement = HTMLElement>(
 				return;
 			}
 
-			// Check if click was on any of the ignore nodes
-			for (const node of nodes) {
+			for (const node of optionsRef.current.ignore ?? []) {
 				if (node?.contains(target)) {
 					return;
 				}
@@ -50,16 +61,18 @@ export function useClickOutside<T extends HTMLElement = HTMLElement>(
 			handlerRef();
 		};
 
-		events.forEach((event) => {
-			document.addEventListener(event, listener);
-		});
+		for (const eventName of events) {
+			document.addEventListener(eventName, listener);
+		}
 
 		return () => {
-			events.forEach((event) => {
-				document.removeEventListener(event, listener);
-			});
+			for (const eventName of events) {
+				document.removeEventListener(eventName, listener);
+			}
 		};
-	}, [events, nodes, handlerRef]);
+		// Content-matched dep: identity changes in the events array do not
+		// rebind, but an actually different event list does.
+	}, [handlerRef, events]);
 
 	return ref;
 }
