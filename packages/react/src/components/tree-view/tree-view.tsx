@@ -55,7 +55,10 @@ interface TreeNodeProps {
 	level: number;
 }
 
-function TreeNode({ item, level }: TreeNodeProps) {
+const TreeNode = React.memo(function TreeNode({
+	item,
+	level,
+}: TreeNodeProps) {
 	const {
 		selected,
 		expanded,
@@ -168,7 +171,7 @@ function TreeNode({ item, level }: TreeNodeProps) {
 			)}
 		</li>
 	);
-}
+});
 
 function TreeView({
 	data,
@@ -197,29 +200,35 @@ function TreeView({
 		? new Set(Array.isArray(selectedProp) ? selectedProp : [selectedProp])
 		: selectedIds;
 
-	const handleSelect = (id: string) => {
-		if (!isControlled) {
-			setSelectedIds((prev) => {
-				if (multiSelect) {
-					const next = new Set(prev);
-					if (next.has(id)) next.delete(id);
-					else next.add(id);
-					return next;
-				}
-				return new Set([id]);
-			});
-		}
-		onSelect?.(id);
-	};
+	const isControlledRef = React.useRef(isControlled);
+	isControlledRef.current = isControlled;
 
-	const handleToggle = (id: string) => {
+	const handleSelect = React.useCallback(
+		(id: string) => {
+			if (!isControlledRef.current) {
+				setSelectedIds((prev) => {
+					if (multiSelect) {
+						const next = new Set(prev);
+						if (next.has(id)) next.delete(id);
+						else next.add(id);
+						return next;
+					}
+					return new Set([id]);
+				});
+			}
+			onSelect?.(id);
+		},
+		[multiSelect, onSelect],
+	);
+
+	const handleToggle = React.useCallback((id: string) => {
 		setExpandedIds((prev) => {
 			const next = new Set(prev);
 			if (next.has(id)) next.delete(id);
 			else next.add(id);
 			return next;
 		});
-	};
+	}, []);
 
 	// Flat ordered list of currently visible node ids plus parent/children info,
 	// recomputed as nodes expand and collapse.
@@ -341,15 +350,7 @@ function TreeView({
 			focusNode,
 			navigate,
 		}),
-		[
-			currentSelected,
-			expandedIds,
-			effectiveActiveId,
-			multiSelect,
-			registerNode,
-			focusNode,
-			navigate,
-		],
+		[currentSelected, expandedIds, effectiveActiveId, handleSelect, handleToggle, navigate],
 	);
 
 	return (
