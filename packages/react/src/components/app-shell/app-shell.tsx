@@ -8,17 +8,18 @@ import { Box } from "../box";
 export interface AppShellProps extends React.ComponentProps<"div"> {
 	/** Header configuration */
 	header?: { height: number | string };
-	/** Navbar configuration */
+	/**
+	 * Navbar configuration. The navbar sits off-canvas below `breakpoint`
+	 * and reserves Main's left padding from it upward.
+	 */
 	navbar?: {
 		width: number | string;
 		breakpoint?: "sm" | "md" | "lg" | "xl";
-		collapsed?: { mobile?: boolean; desktop?: boolean };
 	};
-	/** Aside configuration */
+	/** Aside configuration. Mirrors the navbar on the right edge. */
 	aside?: {
 		width: number | string;
 		breakpoint?: "sm" | "md" | "lg" | "xl";
-		collapsed?: { mobile?: boolean; desktop?: boolean };
 	};
 	/** Footer configuration */
 	footer?: { height: number | string };
@@ -141,8 +142,8 @@ function AppShellNavbar({
 	const { navbar } = React.useContext(AppShellContext);
 	if (!navbar) return null;
 
-	const collapsedMobile = navbar.collapsed?.mobile;
-	const collapsedDesktop = navbar.collapsed?.desktop;
+	// Off-canvas below the configured breakpoint, docked from it upward.
+	const variant = `${navbar.breakpoint ?? "md"}:`;
 
 	return (
 		<Box
@@ -151,11 +152,8 @@ function AppShellNavbar({
 			className={cn(
 				"fixed left-0 z-40 flex flex-col bg-background transition-transform duration-300 ease-in-out",
 				withBorder && "border-r",
-				// Mobile handling
-				collapsedMobile ? "-translate-x-full" : "translate-x-0",
-				// Desktop handling (simplified for now, ideally needs media query check or CSS media query)
-				// For now we assume desktop is usually visible unless collapsedDesktop is true
-				collapsedDesktop && "lg:-translate-x-full",
+				"-translate-x-full",
+				`${variant}translate-x-0`,
 				className,
 			)}
 			style={{
@@ -182,8 +180,7 @@ function AppShellAside({
 	const { aside } = React.useContext(AppShellContext);
 	if (!aside) return null;
 
-	const collapsedMobile = aside.collapsed?.mobile;
-	const collapsedDesktop = aside.collapsed?.desktop;
+	const variant = `${aside.breakpoint ?? "md"}:`;
 
 	return (
 		<Box
@@ -192,8 +189,8 @@ function AppShellAside({
 			className={cn(
 				"fixed right-0 z-40 flex flex-col bg-background transition-transform duration-300 ease-in-out",
 				withBorder && "border-l",
-				collapsedMobile ? "translate-x-full" : "translate-x-0",
-				collapsedDesktop && "lg:translate-x-full",
+				"translate-x-full",
+				`${variant}translate-x-0`,
 				className,
 			)}
 			style={{
@@ -229,25 +226,16 @@ function AppShellMain({ ref, className, ...props }: AppShellMainProps) {
 			className={cn(
 				"flex-1 transition-all duration-300 ease-in-out",
 				padding && paddingClasses[padding],
+				header && "pt-[var(--app-shell-header-height)]",
+				footer && "pb-[var(--app-shell-footer-height)]",
+				// Side offsets only reserve space while the fixed panels are
+				// actually docked (breakpoint and up).
+				navbar &&
+					`${navbar.breakpoint ?? "md"}:pl-[var(--app-shell-navbar-width)]`,
+				aside &&
+					`${aside.breakpoint ?? "md"}:pr-[var(--app-shell-aside-width)]`,
 				className,
 			)}
-			style={{
-				paddingTop: header
-					? "calc(var(--app-shell-header-height) + var(--padding-top, 0px))"
-					: undefined,
-				paddingBottom: footer
-					? "calc(var(--app-shell-footer-height) + var(--padding-bottom, 0px))"
-					: undefined,
-				paddingLeft: navbar
-					? "calc(var(--app-shell-navbar-width) + var(--padding-left, 0px))"
-					: undefined,
-				paddingRight: aside
-					? "calc(var(--app-shell-aside-width) + var(--padding-right, 0px))"
-					: undefined,
-				// Note: Real responsive margin adjustment requires media queries matching the navbar breakpoint
-				// For this basic implementation, we assume the navbar takes space.
-				// Users can override margins with Tailwind classes if needed for responsive behavior.
-			}}
 			{...props}
 		/>
 	);

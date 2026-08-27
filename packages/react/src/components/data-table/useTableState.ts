@@ -20,6 +20,8 @@ interface UseTableStateOptions<TData> {
 	searchConfig?: SearchConfig<TData> | boolean;
 	pageSize?: number;
 	total?: number;
+	/** Controlled page number (1-indexed); omitted = uncontrolled */
+	page?: number;
 	/** Callback when sort changes */
 	onSortChange?: (sort: SortConfig<TData> | null) => void;
 	/** Callback when filters change */
@@ -41,6 +43,7 @@ export function useTableState<TData>({
 	searchConfig,
 	pageSize: initialPageSize = 10,
 	total: manualTotal,
+	page,
 	onSortChange,
 	onFilterChange,
 	onSearchChange,
@@ -55,6 +58,21 @@ export function useTableState<TData>({
 	const [searchQuery, setSearchQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pageSize, setPageSize] = useState(initialPageSize);
+
+	// Controlled page: mirror prop changes into internal state during render
+	// (adjust-state-on-prop-change). The hook keeps working uncontrolled when
+	// no `page` is supplied.
+	const prevControlledPageRef = useRef<number | undefined>(undefined);
+	if (
+		page !== undefined &&
+		page !== prevControlledPageRef.current &&
+		page !== currentPage
+	) {
+		prevControlledPageRef.current = page;
+		setCurrentPage(page);
+	} else {
+		prevControlledPageRef.current = page;
+	}
 
 	// Sync pageSize when initialPageSize changes (e.g. data loads and pagination is false)
 	useEffect(() => {

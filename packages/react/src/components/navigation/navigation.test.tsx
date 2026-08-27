@@ -101,13 +101,45 @@ describe("Navigation", () => {
 		});
 
 		it("should render all links in vertical layout", () => {
-			render(
+			const { container } = render(
 				<Navigation links={mockLinks} pathname="/" mobileLayout="vertical" />,
 			);
 
-			expect(screen.getAllByText("Home")).toHaveLength(1);
-			expect(screen.getAllByText("About")).toHaveLength(1);
-			expect(screen.getAllByText("Contact")).toHaveLength(1);
+			// Both desktop (hidden md:flex) and mobile (md:hidden) navs stay in
+			// the DOM — mobileLayout only changes the MOBILE presentation, the
+			// desktop horizontal bar must still exist.
+			expect(screen.getAllByText("Home")).toHaveLength(2);
+			expect(screen.getAllByText("About")).toHaveLength(2);
+			expect(screen.getAllByText("Contact")).toHaveLength(2);
+
+			const [desktopNav, mobileNav] = Array.from(
+				container.querySelectorAll("nav"),
+			);
+			expect(desktopNav).toHaveClass("md:flex");
+			expect(mobileNav).toHaveClass("md:hidden");
+		});
+
+		it("should not false-positive on partial href prefixes", () => {
+			render(
+				<Navigation
+					links={[
+						{ label: "Admin", href: "/admin" },
+						{ label: "Users", href: "/users" },
+					]}
+					pathname="/admin-panel"
+					mobileLayout="vertical"
+				/>,
+			);
+
+			const adminLinks = screen.getAllByText("Admin");
+			for (const link of adminLinks) {
+				expect(link).not.toHaveAttribute("aria-current", "page");
+			}
+
+			const usersLinks = screen.getAllByText("Users");
+			for (const link of usersLinks) {
+				expect(link).not.toHaveAttribute("aria-current");
+			}
 		});
 	});
 

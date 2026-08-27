@@ -134,24 +134,52 @@ describe("AppShell", () => {
 		expect(footer.className).not.toContain("border-t");
 	});
 
-	it("renders navbar with collapsed mobile", () => {
+	it("renders navbar off-canvas by default and docked from its breakpoint", () => {
 		render(
-			<AppShell navbar={{ width: 250, collapsed: { mobile: true } }}>
+			<AppShell navbar={{ width: 250, breakpoint: "lg" }}>
 				<AppShell.Navbar>Navbar</AppShell.Navbar>
 			</AppShell>,
 		);
 		const nav = screen.getByRole("navigation");
 		expect(nav.className).toContain("-translate-x-full");
+		expect(nav.className).toContain("lg:translate-x-0");
 	});
 
-	it("renders aside with collapsed desktop", () => {
+	it("renders aside docked only from its breakpoint", () => {
 		render(
-			<AppShell aside={{ width: 200, collapsed: { desktop: true } }}>
+			<AppShell aside={{ width: 200, breakpoint: "md" }}>
 				<AppShell.Aside>Aside</AppShell.Aside>
 			</AppShell>,
 		);
 		const aside = document.querySelector("aside");
-		expect(aside?.className).toContain("lg:translate-x-full");
+		expect(aside?.className).toContain("translate-x-full");
+		expect(aside?.className).toContain("md:translate-x-0");
+	});
+
+	it("reserves Main side offsets only at the panel breakpoints", () => {
+		render(
+			<AppShell
+				header={{ height: 64 }}
+				footer={{ height: 48 }}
+				navbar={{ width: 250, breakpoint: "lg" }}
+				aside={{ width: 200, breakpoint: "xl" }}
+			>
+				<AppShell.Header>Header</AppShell.Header>
+				<AppShell.Main>Main</AppShell.Main>
+				<AppShell.Aside>Aside</AppShell.Aside>
+				<AppShell.Footer>Footer</AppShell.Footer>
+			</AppShell>,
+		);
+
+		const main = screen.getByRole("main");
+		expect(main.className).toContain("pt-[var(--app-shell-header-height)]");
+		expect(main.className).toContain("pb-[var(--app-shell-footer-height)]");
+		expect(main.className).toContain(
+			"lg:pl-[var(--app-shell-navbar-width)]",
+		);
+		expect(main.className).toContain(
+			"xl:pr-[var(--app-shell-aside-width)]",
+		);
 	});
 
 	it("applies CSS variables for all layout sections", () => {

@@ -9,7 +9,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import type * as React from "react";
 import { type ReactNode, useEffect, useId, useState } from "react";
-import { cn } from "../../lib/utils";
+import { cn, isActivePath } from "../../lib/utils";
 import { Button } from "../button";
 
 export interface SidebarLink {
@@ -112,12 +112,7 @@ export function Sidebar({
 		});
 	};
 
-	const isLinkActive = (href: string) => {
-		if (href === "/") {
-			return pathname === "/";
-		}
-		return pathname.startsWith(href);
-	};
+	const isLinkActive = (href: string) => isActivePath(pathname, href);
 
 	const renderLink = (link: SidebarLink) => {
 		const active = isLinkActive(link.href);

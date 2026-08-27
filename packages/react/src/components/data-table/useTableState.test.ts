@@ -64,6 +64,49 @@ describe("useTableState", () => {
 		});
 	});
 
+	describe("controlled page", () => {
+		it("exposes currentPage from a controlled page prop", () => {
+			const data = Array.from({ length: 30 }, (_, i) => ({ id: i + 1 }));
+			const { result, rerender } = renderHook(
+				({ page }: { page?: number }) =>
+					useTableState({
+						data,
+						columns: [{ accessorKey: "id" as const, header: "ID" }],
+						pageSize: 10,
+						page,
+					}),
+				{ initialProps: { page: 3 as number | undefined } },
+			);
+			expect(result.current.currentPage).toBe(3);
+
+			rerender({ page: 1 });
+			expect(result.current.currentPage).toBe(1);
+		});
+
+		it("pageData slices follow the controlled page", () => {
+			const data = Array.from({ length: 25 }, (_, i) => ({ id: i + 1 }));
+			const { result, rerender } = renderHook(
+				({ page }: { page?: number }) =>
+					useTableState({
+						data,
+						columns: [{ accessorKey: "id" as const, header: "ID" }],
+						pageSize: 10,
+						page,
+					}),
+				{ initialProps: { page: 2 as number | undefined } },
+			);
+
+			expect(result.current.pageData.map((r) => r.id)).toEqual([
+				11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+			]);
+
+			rerender({ page: 3 });
+			expect(result.current.pageData.map((r) => r.id)).toEqual([
+				21, 22, 23, 24, 25,
+			]);
+		});
+	});
+
 	describe("sorting", () => {
 		it("sorts ascending on first toggle", () => {
 			const { result } = renderHook(() =>

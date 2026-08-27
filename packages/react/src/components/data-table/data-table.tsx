@@ -117,12 +117,18 @@ export function DataTable<TData>({
 	}, [searchable]);
 
 	// Table state management
+	const controlledPage = useMemo(() => {
+		if (!pagination || typeof pagination === "boolean") return undefined;
+		return pagination.page;
+	}, [pagination]);
+
 	const tableState = useTableState<TData>({
 		data,
 		columns,
 		searchConfig: searchable,
 		pageSize,
 		total: totalCount,
+		page: controlledPage,
 		defaultSort,
 		defaultFilters,
 		onSortChange,

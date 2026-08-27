@@ -2,7 +2,7 @@
 
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
-import { cn } from "../../lib/utils";
+import { cn, isActivePath } from "../../lib/utils";
 
 export interface NavigationLink {
 	label: string;
@@ -43,12 +43,7 @@ export function Navigation({
 }: NavigationProps) {
 	const [isMobileOpen, setIsMobileOpen] = React.useState(false);
 
-	const isActive = (href: string) => {
-		if (href === "/") {
-			return pathname === "/";
-		}
-		return pathname.startsWith(href);
-	};
+	const isActive = (href: string) => isActivePath(pathname, href);
 
 	// Close mobile menu when clicking outside
 	React.useEffect(() => {
@@ -65,8 +60,8 @@ export function Navigation({
 		return () => document.removeEventListener("click", handleClickOutside);
 	}, [isMobileOpen]);
 
-	// Desktop Navigation (horizontal or vertical)
-	if (orientation === "vertical" || mobileLayout === "vertical") {
+	// Vertical desktop navigation (explicit opt-in via orientation)
+	if (orientation === "vertical") {
 		return (
 			<nav
 				data-comp="navigation"
@@ -96,6 +91,57 @@ export function Navigation({
 					</a>
 				))}
 			</nav>
+		);
+	}
+
+	// Horizontal on desktop + stacked vertical list on mobile
+	if (mobileLayout === "vertical") {
+		return (
+			<>
+				<nav
+					data-comp="navigation"
+					className={cn("hidden md:flex flex-row items-center gap-6", className)}
+					aria-label="Main navigation"
+					{...props}
+					ref={ref}
+				>
+					{links.map((link) => (
+						<a
+							key={link.href}
+							href={link.href}
+							className={cn(
+								"text-sm font-medium transition-colors hover:text-primary outline-none focus-visible:underline",
+								isActive(link.href) ? "text-primary" : "text-foreground",
+							)}
+							aria-current={isActive(link.href) ? "page" : undefined}
+						>
+							{link.label}
+						</a>
+					))}
+				</nav>
+
+				<nav
+					data-comp="navigation"
+					className={cn("flex md:hidden flex-col gap-2", className)}
+					aria-label="Mobile navigation"
+				>
+					{links.map((link) => (
+						<a
+							key={link.href}
+							href={link.href}
+							className={cn(
+								"text-sm font-medium px-3 py-2 rounded-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
+								isActive(link.href)
+									? "bg-accent text-accent-foreground"
+									: "text-foreground hover:bg-accent hover:text-accent-foreground",
+							)}
+							aria-current={isActive(link.href) ? "page" : undefined}
+						>
+							{link.label}
+						</a>
+					))}
+				</nav>
+			</>
 		);
 	}
 
