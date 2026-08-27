@@ -1,0 +1,15 @@
+{
+	"$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
+	"changelog": [
+		"@changesets/cli/changelog",
+		{ "repo": "krr2020/kala-ui" }
+	],
+	"commit": false,
+	"fixed": [],
+	"linked": [],
+	"access": "public",
+	"baseBranch": "main",
+	"updateInternalDependencies": "patch",
+	"onlyUpdatePeerDependentsWhenExternal": false,
+	"bumpVersionsWithWorkspaceProtocolOnly": false
+}

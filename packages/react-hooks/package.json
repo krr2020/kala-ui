@@ -2,6 +2,7 @@
 	"name": "@kala-ui/react-hooks",
 	"version": "0.0.1-beta.3",
 	"type": "module",
+	"sideEffects": false,
 	"description": "Collection of reusable React hooks for kala-ui",
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",

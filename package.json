@@ -14,11 +14,15 @@
 		"lint:fix": "pnpm --filter \"./packages/**\" lint:fix",
 		"lint:fix-unsafe": "pnpm --filter \"./packages/**\" lint:fix-unsafe",
 		"format": "pnpm --filter \"./packages/**\" format",
-		"test": "pnpm --filter @kala-ui/react test",
+		"test": "pnpm --filter \"./packages/**\" test",
 		"test:watch": "pnpm --filter @kala-ui/react test:watch",
 		"test:coverage": "pnpm --filter @kala-ui/react test:coverage",
 		"storybook": "pnpm --filter @kala-ui/react storybook",
 		"build-storybook": "pnpm --filter @kala-ui/react build-storybook",
+		"test-storybook": "pnpm --filter @kala-ui/react test-storybook",
+		"changeset": "changeset",
+		"version-packages": "changeset version",
+		"release": "changeset publish",
 		"clean": "node scripts/clean.mjs"
 	},
 	"peerDependencies": {
@@ -27,6 +31,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.10",
+		"@changesets/cli": "3.0.1",
 		"@types/react": "~19.2.18",
 		"@types/react-dom": "~19.2.5",
 		"postcss-cli": "^11.0.1",
