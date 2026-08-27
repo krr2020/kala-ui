@@ -20,7 +20,7 @@ export interface AvatarItem {
 	fallback: string;
 }
 
-export interface AvatarGroupProps {
+export interface AvatarGroupProps extends React.ComponentProps<"div"> {
 	/** List of avatars to display */
 	avatars: AvatarItem[];
 	/** Maximum number of avatars to show before overflow */
@@ -39,6 +39,8 @@ function AvatarGroup({
 	size = "md",
 	showTooltip = true,
 	className,
+	ref,
+	...props
 }: AvatarGroupProps) {
 	const visible = avatars.slice(0, max);
 	const overflow = avatars.length - max;
@@ -60,7 +62,9 @@ function AvatarGroup({
 		<TooltipProvider>
 			<div
 				data-slot="avatar-group"
+				ref={ref}
 				className={cn("flex items-center", className)}
+				{...props}
 			>
 				{visible.map((avatar, index) =>
 					showTooltip ? (

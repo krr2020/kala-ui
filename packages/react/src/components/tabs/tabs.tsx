@@ -18,49 +18,40 @@ const TabsContext = React.createContext<{
 	uniqueId: string;
 } | null>(null);
 
-const Tabs = React.forwardRef<
-	React.ComponentRef<typeof TabsPrimitive.Root>,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
->(
-	(
-		{
-			className,
-			value,
-			onValueChange,
-			defaultValue,
-			orientation = "horizontal",
-			...props
-		},
-		ref,
-	) => {
-		const uniqueId = React.useId();
-		const [activeTab, setActiveTab] = useUncontrolled({
-			value,
-			defaultValue,
-			onChange: onValueChange,
-		});
+function Tabs({
+	ref,
+	className,
+	value,
+	onValueChange,
+	defaultValue,
+	orientation = "horizontal",
+	...props
+}: React.ComponentProps<typeof TabsPrimitive.Root>) {
+	const uniqueId = React.useId();
+	const [activeTab, setActiveTab] = useUncontrolled({
+		value,
+		defaultValue,
+		onChange: onValueChange,
+	});
 
-		return (
-			<TabsContext.Provider value={{ activeTab, setActiveTab, uniqueId }}>
-				<TabsPrimitive.Root
-					ref={ref}
-					value={activeTab}
-					onValueChange={setActiveTab}
-					orientation={orientation}
-					data-slot="tabs"
-					className={cn(
-						"flex",
-						orientation === "vertical" ? "flex-row gap-6" : "flex-col",
-						className,
-					)}
-					{...props}
-				/>
-			</TabsContext.Provider>
-		);
-	},
-);
-Tabs.displayName = TabsPrimitive.Root.displayName;
-
+	return (
+		<TabsContext.Provider value={{ activeTab, setActiveTab, uniqueId }}>
+			<TabsPrimitive.Root
+				ref={ref}
+				value={activeTab}
+				onValueChange={setActiveTab}
+				orientation={orientation}
+				data-slot="tabs"
+				className={cn(
+					"flex",
+					orientation === "vertical" ? "flex-row gap-6" : "flex-col",
+					className,
+				)}
+				{...props}
+			/>
+		</TabsContext.Provider>
+	);
+}
 export const tabsListVariants = cva(tabsListStyles.base, {
 	variants: tabsListStyles.variants,
 	defaultVariants: tabsListStyles.defaultVariants,
@@ -70,32 +61,38 @@ const TabsListContext = React.createContext<{
 	variant?: VariantProps<typeof tabsListVariants>["variant"];
 }>({});
 
-const TabsList = React.forwardRef<
-	React.ComponentRef<typeof TabsPrimitive.List>,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> &
-		VariantProps<typeof tabsListVariants>
->(({ className, variant = "default", align, ...props }, ref) => (
-	<TabsListContext.Provider value={{ variant }}>
-		<TabsPrimitive.List
-			ref={ref}
-			data-slot="tabs-list"
-			className={cn(tabsListVariants({ variant, align }), className)}
-			{...props}
-		/>
-	</TabsListContext.Provider>
-));
-TabsList.displayName = TabsPrimitive.List.displayName;
-
+function TabsList({
+	ref,
+	className,
+	variant = "default",
+	align,
+	...props
+}: React.ComponentProps<typeof TabsPrimitive.List> &
+	VariantProps<typeof tabsListVariants>) {
+	return (
+		<TabsListContext.Provider value={{ variant }}>
+			<TabsPrimitive.List
+				ref={ref}
+				data-slot="tabs-list"
+				className={cn(tabsListVariants({ variant, align }), className)}
+				{...props}
+			/>
+		</TabsListContext.Provider>
+	);
+}
 export const tabsTriggerVariants = cva(tabsTriggerStyles.base, {
 	variants: tabsTriggerStyles.variants,
 	defaultVariants: tabsTriggerStyles.defaultVariants,
 });
 
-const TabsTrigger = React.forwardRef<
-	React.ComponentRef<typeof TabsPrimitive.Trigger>,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> &
-		VariantProps<typeof tabsTriggerVariants>
->(({ className, variant, children, ...props }, ref) => {
+function TabsTrigger({
+	ref,
+	className,
+	variant,
+	children,
+	...props
+}: React.ComponentProps<typeof TabsPrimitive.Trigger> &
+	VariantProps<typeof tabsTriggerVariants>) {
 	const { variant: listVariant } = React.useContext(TabsListContext);
 	const finalVariant = variant || listVariant || "default";
 
@@ -109,20 +106,20 @@ const TabsTrigger = React.forwardRef<
 			<span className="relative z-10 inline-flex items-center">{children}</span>
 		</TabsPrimitive.Trigger>
 	);
-});
-TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
-
-const TabsContent = React.forwardRef<
-	React.ComponentRef<typeof TabsPrimitive.Content>,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
->(({ className, ...props }, ref) => (
-	<TabsPrimitive.Content
-		ref={ref}
-		data-slot="tabs-content"
-		className={cn(tabsContentStyles.base, className)}
-		{...props}
-	/>
-));
-TabsContent.displayName = TabsPrimitive.Content.displayName;
+}
+function TabsContent({
+	ref,
+	className,
+	...props
+}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+	return (
+		<TabsPrimitive.Content
+			ref={ref}
+			data-slot="tabs-content"
+			className={cn(tabsContentStyles.base, className)}
+			{...props}
+		/>
+	);
+}
 
 export { Tabs, TabsContent, TabsList, TabsTrigger };

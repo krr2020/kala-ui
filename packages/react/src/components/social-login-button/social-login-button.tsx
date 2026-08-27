@@ -4,7 +4,6 @@
  */
 
 import { Loader2 } from "lucide-react";
-import * as React from "react";
 import type { SimpleIcon } from "simple-icons";
 import { siFacebook, siGithub, siGoogle, siX } from "simple-icons";
 import { cn } from "../../lib/utils";
@@ -104,47 +103,45 @@ const providerConfig = {
 	},
 } as const;
 
-export const SocialLoginButton = React.forwardRef<
-	HTMLButtonElement,
-	SocialLoginButtonProps
->(
-	(
-		{ provider, isLoading = false, label, className, disabled, ...props },
-		ref,
-	) => {
-		const config = providerConfig[provider];
-		const displayLabel = label ?? config.label;
-		const icon = config.icon;
+export function SocialLoginButton({
+	ref,
+	provider,
+	isLoading = false,
+	label,
+	className,
+	disabled,
+	...props
+}: SocialLoginButtonProps) {
+	const config = providerConfig[provider];
+	const displayLabel = label ?? config.label;
+	const icon = config.icon;
 
-		return (
-			<Button
-				ref={ref}
-				data-comp="social-login-button"
-				type="button"
-				variant="outline"
-				className={cn(
-					"relative transition-colors duration-200 bg-transparent border-input text-foreground",
-					config.color,
-					className,
-				)}
-				disabled={disabled || isLoading}
-				{...props}
-			>
-				{isLoading ? (
-					<Loader2 className="w-5 h-5 animate-spin mr-2" />
-				) : provider === "linkedin" ? (
-					<LinkedInIcon className="w-5 h-5 mr-2" />
-				) : icon ? (
-					<SimpleIconWrapper
-						icon={icon}
-						className="w-5 h-5 mr-2"
-						label={displayLabel}
-					/>
-				) : null}
-				<span>{isLoading ? "Redirecting..." : displayLabel}</span>
-			</Button>
-		);
-	},
-);
-
-SocialLoginButton.displayName = "SocialLoginButton";
+	return (
+		<Button
+			ref={ref}
+			data-comp="social-login-button"
+			type="button"
+			variant="outline"
+			className={cn(
+				"relative transition-colors duration-200 bg-transparent border-input text-foreground",
+				config.color,
+				className,
+			)}
+			disabled={disabled || isLoading}
+			{...props}
+		>
+			{isLoading ? (
+				<Loader2 className="w-5 h-5 animate-spin mr-2" />
+			) : provider === "linkedin" ? (
+				<LinkedInIcon className="w-5 h-5 mr-2" />
+			) : icon ? (
+				<SimpleIconWrapper
+					icon={icon}
+					className="w-5 h-5 mr-2"
+					label={displayLabel}
+				/>
+			) : null}
+			<span>{isLoading ? "Redirecting..." : displayLabel}</span>
+		</Button>
+	);
+}

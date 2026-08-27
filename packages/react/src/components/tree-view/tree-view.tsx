@@ -177,6 +177,7 @@ function TreeView({
 	onSelect,
 	multiSelect = false,
 	className,
+	ref,
 	...props
 }: TreeViewProps) {
 	const [selectedIds, setSelectedIds] = React.useState<Set<string>>(() => {

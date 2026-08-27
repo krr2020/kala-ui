@@ -245,8 +245,8 @@ describe("Spoiler", () => {
 		expect(screen.getByText("Third paragraph")).toBeInTheDocument();
 	});
 
-	it("has displayName set to Spoiler", () => {
-		expect(Spoiler.displayName).toBe("Spoiler");
+	it("has function name set to Spoiler", () => {
+		expect(Spoiler.name).toBe("Spoiler");
 	});
 
 	it("renders with maxHeight of 0", () => {

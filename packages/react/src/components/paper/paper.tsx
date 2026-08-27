@@ -1,6 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "../../lib/utils";
 
 const paperVariants = cva("bg-background text-foreground", {
@@ -33,26 +33,28 @@ const paperVariants = cva("bg-background text-foreground", {
 });
 
 export interface PaperProps
-	extends React.HTMLAttributes<HTMLDivElement>,
+	extends React.ComponentProps<"div">,
 		VariantProps<typeof paperVariants> {
 	asChild?: boolean;
 }
 
-const Paper = React.forwardRef<HTMLDivElement, PaperProps>(
-	(
-		{ className, shadow, radius, withBorder, asChild = false, ...props },
-		ref,
-	) => {
-		const Comp = asChild ? Slot : "div";
-		return (
-			<Comp
-				className={cn(paperVariants({ shadow, radius, withBorder, className }))}
-				ref={ref}
-				{...props}
-			/>
-		);
-	},
-);
-Paper.displayName = "Paper";
+function Paper({
+	ref,
+	className,
+	shadow,
+	radius,
+	withBorder,
+	asChild = false,
+	...props
+}: PaperProps) {
+	const Comp = asChild ? Slot : "div";
+	return (
+		<Comp
+			className={cn(paperVariants({ shadow, radius, withBorder, className }))}
+			ref={ref}
+			{...props}
+		/>
+	);
+}
 
 export { Paper, paperVariants };

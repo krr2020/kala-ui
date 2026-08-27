@@ -6,7 +6,7 @@ import { Box } from "../box";
 import { Button } from "../button";
 import { Flex } from "../flex";
 
-export interface SpoilerProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface SpoilerProps extends React.ComponentProps<"div"> {
 	/** Max height in collapsed state (px) */
 	maxHeight: number;
 	/** Label for "Show more" button */
@@ -19,51 +19,45 @@ export interface SpoilerProps extends React.HTMLAttributes<HTMLDivElement> {
 	transitionDuration?: number;
 }
 
-export const Spoiler = React.forwardRef<HTMLDivElement, SpoilerProps>(
-	(
-		{
-			className,
-			children,
-			maxHeight = 100,
-			showLabel = "Show more",
-			hideLabel = "Show less",
-			initialState = false,
-			transitionDuration = 0.2,
-			...props
-		},
-		ref,
-	) => {
-		const [expanded, { toggle: toggleExpanded }] = useDisclosure(initialState);
-		const [showButton, setShowButton] = React.useState(false);
-		const contentRef = React.useRef<HTMLDivElement>(null);
+export function Spoiler({
+	ref,
+	className,
+	children,
+	maxHeight = 100,
+	showLabel = "Show more",
+	hideLabel = "Show less",
+	initialState = false,
+	transitionDuration = 0.2,
+	...props
+}: SpoilerProps) {
+	const [expanded, { toggle: toggleExpanded }] = useDisclosure(initialState);
+	const [showButton, setShowButton] = React.useState(false);
+	const contentRef = React.useRef<HTMLDivElement>(null);
 
-		React.useEffect(() => {
-			if (contentRef.current) {
-				setShowButton(contentRef.current.scrollHeight > maxHeight);
-			}
-		}, [maxHeight]);
+	React.useEffect(() => {
+		if (contentRef.current) {
+			setShowButton(contentRef.current.scrollHeight > maxHeight);
+		}
+	}, [maxHeight]);
 
-		return (
-			<Box ref={ref} className={cn("relative", className)} {...props}>
-				<motion.div
-					initial={false}
-					animate={{ height: expanded ? "auto" : maxHeight }}
-					transition={{ duration: transitionDuration, ease: "easeInOut" }}
-					className="overflow-hidden"
-				>
-					<Box ref={contentRef}>{children}</Box>
-				</motion.div>
+	return (
+		<Box ref={ref} className={cn("relative", className)} {...props}>
+			<motion.div
+				initial={false}
+				animate={{ height: expanded ? "auto" : maxHeight }}
+				transition={{ duration: transitionDuration, ease: "easeInOut" }}
+				className="overflow-hidden"
+			>
+				<Box ref={contentRef}>{children}</Box>
+			</motion.div>
 
-				{showButton && (
-					<Flex justify="center" className="mt-2">
-						<Button variant="ghost" size="sm" onClick={toggleExpanded}>
-							{expanded ? hideLabel : showLabel}
-						</Button>
-					</Flex>
-				)}
-			</Box>
-		);
-	},
-);
-
-Spoiler.displayName = "Spoiler";
+			{showButton && (
+				<Flex justify="center" className="mt-2">
+					<Button variant="ghost" size="sm" onClick={toggleExpanded}>
+						{expanded ? hideLabel : showLabel}
+					</Button>
+				</Flex>
+			)}
+		</Box>
+	);
+}

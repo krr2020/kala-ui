@@ -54,6 +54,7 @@ import {
 } from "@dnd-kit/sortable";
 import type { Transform } from "@dnd-kit/utilities";
 import { CSS } from "@dnd-kit/utilities";
+import { useMergedRef } from "@kala-ui/react-hooks";
 import * as React from "react";
 import { cn } from "../../lib/utils";
 
@@ -143,29 +144,28 @@ export interface DragDropContextProps
 	useSensors?: UseDragDropSensorsOptions;
 }
 
-const DragDropContext = React.forwardRef<HTMLDivElement, DragDropContextProps>(
-	(
-		{ children, sensors: sensorsProp, useSensors: useSensorsOptions, ...props },
-		_ref,
-	) => {
-		const defaultSensors = createDragDropSensors(useSensorsOptions);
-		const sensors = sensorsProp ?? defaultSensors;
+function DragDropContext({
+	children,
+	sensors: sensorsProp,
+	useSensors: useSensorsOptions,
+	...props
+}: DragDropContextProps) {
+	const defaultSensors = createDragDropSensors(useSensorsOptions);
+	const sensors = sensorsProp ?? defaultSensors;
 
-		return (
-			<DndKitContext sensors={sensors} {...props}>
-				{children}
-			</DndKitContext>
-		);
-	},
-);
-
-DragDropContext.displayName = "DragDropContext";
+	return (
+		<DndKitContext sensors={sensors} {...props}>
+			{children}
+		</DndKitContext>
+	);
+}
 
 // ============================================================================
 // Droppable
 // ============================================================================
 
 export interface DroppableProps {
+	ref?: React.Ref<HTMLDivElement>;
 	id: UniqueIdentifier;
 	children:
 		| React.ReactNode
@@ -177,44 +177,41 @@ export interface DroppableProps {
 	disabled?: boolean;
 }
 
-const Droppable = React.forwardRef<HTMLDivElement, DroppableProps>(
-	({ children, className, id, disabled = false, ...props }, ref) => {
-		const { isOver, setNodeRef } = useDroppable({
-			id,
-			disabled,
-		});
+function Droppable({
+	ref,
+	children,
+	className,
+	id,
+	disabled = false,
+	...props
+}: DroppableProps) {
+	const { isOver, setNodeRef } = useDroppable({
+		id,
+		disabled,
+	});
 
-		const content =
-			typeof children === "function"
-				? children({ isOver, setNodeRef })
-				: children;
+	const content =
+		typeof children === "function"
+			? children({ isOver, setNodeRef })
+			: children;
 
-		return (
-			<div
-				ref={(node) => {
-					setNodeRef(node);
-					if (typeof ref === "function") {
-						ref(node);
-					} else if (ref) {
-						ref.current = node;
-					}
-				}}
-				className={cn(className)}
-				{...props}
-			>
-				{content}
-			</div>
-		);
-	},
-);
-
-Droppable.displayName = "Droppable";
+	return (
+		<div
+			ref={useMergedRef(ref, setNodeRef)}
+			className={cn(className)}
+			{...props}
+		>
+			{content}
+		</div>
+	);
+}
 
 // ============================================================================
 // Draggable
 // ============================================================================
 
 export interface DraggableProps {
+	ref?: React.Ref<HTMLDivElement>;
 	id: UniqueIdentifier;
 	children:
 		| React.ReactNode
@@ -234,48 +231,44 @@ export interface DraggableProps {
 	disabled?: boolean;
 }
 
-const Draggable = React.forwardRef<HTMLDivElement, DraggableProps>(
-	({ children, className, id, disabled = false, ...props }, ref) => {
-		const { attributes, listeners, setNodeRef, transform, isDragging } =
-			useDraggable({
-				id,
-				disabled,
-			});
+function Draggable({
+	ref,
+	children,
+	className,
+	id,
+	disabled = false,
+	...props
+}: DraggableProps) {
+	const { attributes, listeners, setNodeRef, transform, isDragging } =
+		useDraggable({
+			id,
+			disabled,
+		});
 
-		const content =
-			typeof children === "function"
-				? children({ attributes, listeners, setNodeRef, transform, isDragging })
-				: children;
+	const content =
+		typeof children === "function"
+			? children({ attributes, listeners, setNodeRef, transform, isDragging })
+			: children;
 
-		const style = transform
-			? {
-					transform: CSS.Translate.toString(transform),
-				}
-			: undefined;
+	const style = transform
+		? {
+				transform: CSS.Translate.toString(transform),
+			}
+		: undefined;
 
-		return (
-			<div
-				ref={(node) => {
-					setNodeRef(node);
-					if (typeof ref === "function") {
-						ref(node);
-					} else if (ref) {
-						ref.current = node;
-					}
-				}}
-				style={style}
-				className={cn(className)}
-				{...attributes}
-				{...listeners}
-				{...props}
-			>
-				{content}
-			</div>
-		);
-	},
-);
-
-Draggable.displayName = "Draggable";
+	return (
+		<div
+			ref={useMergedRef(ref, setNodeRef)}
+			style={style}
+			className={cn(className)}
+			{...attributes}
+			{...listeners}
+			{...props}
+		>
+			{content}
+		</div>
+	);
+}
 
 // ============================================================================
 // Sortable Context
@@ -288,31 +281,32 @@ export interface SortableContextProps {
 	children: React.ReactNode;
 }
 
-const SortableContext = React.forwardRef<HTMLDivElement, SortableContextProps>(
-	({ children, items, strategy = verticalListSortingStrategy }, _ref) => {
-		const itemIds = React.useMemo(
-			() =>
-				items.map((item) =>
-					typeof item === "object" && "id" in item ? item.id : item,
-				),
-			[items],
-		);
+function SortableContext({
+	children,
+	items,
+	strategy = verticalListSortingStrategy,
+}: SortableContextProps) {
+	const itemIds = React.useMemo(
+		() =>
+			items.map((item) =>
+				typeof item === "object" && "id" in item ? item.id : item,
+			),
+		[items],
+	);
 
-		return (
-			<SortableContextKit items={itemIds} strategy={strategy}>
-				{children}
-			</SortableContextKit>
-		);
-	},
-);
-
-SortableContext.displayName = "SortableContext";
+	return (
+		<SortableContextKit items={itemIds} strategy={strategy}>
+			{children}
+		</SortableContextKit>
+	);
+}
 
 // ============================================================================
 // Sortable Item
 // ============================================================================
 
 export interface SortableItemProps {
+	ref?: React.Ref<HTMLDivElement>;
 	id: UniqueIdentifier;
 	children:
 		| React.ReactNode
@@ -344,120 +338,109 @@ interface SortableHandleContextValue {
 const SortableHandleContext =
 	React.createContext<SortableHandleContextValue | null>(null);
 
-const SortableItem = React.forwardRef<HTMLDivElement, SortableItemProps>(
-	(
-		{ children, className, id, disabled = false, handle = false, ...props },
-		ref,
-	) => {
-		const {
-			attributes,
-			listeners,
-			setNodeRef,
-			setActivatorNodeRef,
-			transform,
-			transition,
-			isDragging,
-			isSorting,
-			isOver,
-		} = useSortable({
-			id,
-			disabled,
-		});
+function SortableItem({
+	ref,
+	children,
+	className,
+	id,
+	disabled = false,
+	handle = false,
+	...props
+}: SortableItemProps) {
+	const {
+		attributes,
+		listeners,
+		setNodeRef,
+		setActivatorNodeRef,
+		transform,
+		transition,
+		isDragging,
+		isSorting,
+		isOver,
+	} = useSortable({
+		id,
+		disabled,
+	});
 
-		const content =
-			typeof children === "function"
-				? children({
-						attributes,
-						listeners,
-						setNodeRef,
-						transform,
-						transition,
-						isDragging,
-						isSorting,
-						isOver,
-					})
-				: children;
+	const content =
+		typeof children === "function"
+			? children({
+					attributes,
+					listeners,
+					setNodeRef,
+					transform,
+					transition,
+					isDragging,
+					isSorting,
+					isOver,
+				})
+			: children;
 
-		const style: React.CSSProperties = {
-			transform: CSS.Transform.toString(transform),
-			transition,
-			zIndex: isDragging ? 9999 : undefined,
-		};
+	const style: React.CSSProperties = {
+		transform: CSS.Transform.toString(transform),
+		transition,
+		zIndex: isDragging ? 9999 : undefined,
+	};
 
-		return (
-			<SortableHandleContext.Provider
-				value={{ attributes, listeners, setActivatorNodeRef }}
+	return (
+		<SortableHandleContext.Provider
+			value={{ attributes, listeners, setActivatorNodeRef }}
+		>
+			<div
+				ref={useMergedRef(ref, setNodeRef)}
+				style={style}
+				className={cn(className)}
+				{...attributes}
+				{...(handle ? {} : listeners)}
+				{...props}
 			>
-				<div
-					ref={(node) => {
-						setNodeRef(node);
-						if (typeof ref === "function") {
-							ref(node);
-						} else if (ref) {
-							ref.current = node;
-						}
-					}}
-					style={style}
-					className={cn(className)}
-					{...attributes}
-					{...(handle ? {} : listeners)}
-					{...props}
-				>
-					{content}
-				</div>
-			</SortableHandleContext.Provider>
-		);
-	},
-);
-
-SortableItem.displayName = "SortableItem";
+				{content}
+			</div>
+		</SortableHandleContext.Provider>
+	);
+}
 
 // ============================================================================
 // Sortable Handle
 // ============================================================================
 
 export interface SortableHandleProps {
+	ref?: React.Ref<HTMLDivElement>;
 	children:
 		| React.ReactNode
 		| ((listeners: SyntheticListenerMap | undefined) => React.ReactNode);
 	className?: string;
 }
 
-const SortableHandle = React.forwardRef<HTMLDivElement, SortableHandleProps>(
-	({ children, className, ...props }, ref) => {
-		const sortable = React.useContext(SortableHandleContext);
+function SortableHandle({
+	ref,
+	children,
+	className,
+	...props
+}: SortableHandleProps) {
+	const sortable = React.useContext(SortableHandleContext);
 
-		if (!sortable && process.env.NODE_ENV !== "production") {
-			console.warn(
-				"SortableHandle must be rendered inside a SortableItem to receive drag listeners.",
-			);
-		}
-
-		const content =
-			typeof children === "function" ? children(sortable?.listeners) : children;
-
-		return (
-			<div
-				ref={(node) => {
-					sortable?.setActivatorNodeRef(node);
-					if (typeof ref === "function") {
-						ref(node);
-					} else if (ref) {
-						ref.current = node;
-					}
-				}}
-				className={cn("cursor-grab active:cursor-grabbing", className)}
-				{...(sortable?.attributes ?? {})}
-				{...(sortable?.listeners ?? {})}
-				{...props}
-			>
-				{content}
-			</div>
+	if (!sortable && process.env.NODE_ENV !== "production") {
+		console.warn(
+			"SortableHandle must be rendered inside a SortableItem to receive drag listeners.",
 		);
-	},
-);
+	}
 
-SortableHandle.displayName = "SortableHandle";
+	const content =
+		typeof children === "function" ? children(sortable?.listeners) : children;
+
+	return (
+		<div
+			ref={useMergedRef(ref, sortable?.setActivatorNodeRef)}
+			className={cn("cursor-grab active:cursor-grabbing", className)}
+			{...(sortable?.attributes ?? {})}
+			{...(sortable?.listeners ?? {})}
+			{...props}
+		>
+			{content}
+		</div>
+	);
+}
 
 // ============================================================================
 // Drag Overlay Component
@@ -472,18 +455,18 @@ export interface DragOverlayComponentProps {
 	} | null;
 }
 
-const DragOverlayComponent = React.forwardRef<
-	HTMLDivElement,
-	DragOverlayComponentProps
->(({ children, className, dropAnimation, ...props }, _ref) => {
+function DragOverlayComponent({
+	children,
+	className,
+	dropAnimation,
+	...props
+}: DragOverlayComponentProps) {
 	return (
 		<DragOverlay dropAnimation={dropAnimation} {...props}>
 			{children ? <div className={cn(className)}>{children}</div> : null}
 		</DragOverlay>
 	);
-});
-
-DragOverlayComponent.displayName = "DragOverlayComponent";
+}
 
 // ============================================================================
 // Exports

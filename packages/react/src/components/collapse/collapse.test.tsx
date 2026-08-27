@@ -55,8 +55,8 @@ describe("Collapse", () => {
 		expect(wrapper).toHaveStyle({ overflow: "hidden" });
 	});
 
-	it("has displayName set to Collapse", () => {
-		expect(Collapse.displayName).toBe("Collapse");
+	it("has function name set to Collapse", () => {
+		expect(Collapse.name).toBe("Collapse");
 	});
 
 	it("renders with animateOpacity set to true", () => {

@@ -2,7 +2,7 @@ import type * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import type * as React from "react";
 
 export interface RadioGroupProps
-	extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {
+	extends React.ComponentProps<typeof RadioGroupPrimitive.Root> {
 	/**
 	 * Visual variant of the radio group
 	 * @default "default"
@@ -16,7 +16,7 @@ export interface RadioGroupProps
 }
 
 export interface RadioGroupItemProps
-	extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
+	extends React.ComponentProps<typeof RadioGroupPrimitive.Item> {
 	/**
 	 * Label text for the radio item
 	 */

@@ -114,7 +114,10 @@ function AlertDialogTitle({
 function AlertDialogDescription({
 	className,
 	...props
-}: React.ComponentProps<typeof AlertDialogPrimitive.Description>) {
+}: Omit<
+	React.ComponentProps<typeof AlertDialogPrimitive.Description>,
+	"color"
+>) {
 	return (
 		<AlertDialogPrimitive.Description
 			asChild

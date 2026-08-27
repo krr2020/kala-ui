@@ -222,8 +222,8 @@ describe("ColorInput", () => {
 		expect(input).not.toHaveClass("border-success");
 	});
 
-	it("has correct displayName", () => {
-		expect(ColorInput.displayName).toBe("ColorInput");
+	it("has correct function name", () => {
+		expect(ColorInput.name).toBe("ColorInput");
 	});
 
 	it("handles typing in the text input", async () => {

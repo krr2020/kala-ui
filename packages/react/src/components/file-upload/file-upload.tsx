@@ -6,7 +6,7 @@ import { cn } from "../../lib/utils";
 import { Button } from "../button";
 
 export interface FileUploadProps
-	extends Omit<React.HTMLAttributes<HTMLDivElement>, "onError"> {
+	extends Omit<React.ComponentProps<"div">, "onError"> {
 	/** Selected file (controlled; null = cleared) */
 	value?: File | null;
 	/**

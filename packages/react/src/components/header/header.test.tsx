@@ -473,8 +473,8 @@ describe("Header", () => {
 		expect(container.querySelector("header")).toBeInTheDocument();
 	});
 
-	it("has displayName set to Header", () => {
-		expect(Header.displayName).toBe("Header");
+	it("has function name set to Header", () => {
+		expect(Header.name).toBe("Header");
 	});
 
 	it("locks body scroll while the mobile menu is open and releases on close", () => {

@@ -10,7 +10,7 @@
 import * as React from "react";
 import { cn } from "../../lib/utils";
 
-export interface PageTransitionProps {
+export interface PageTransitionProps extends React.ComponentProps<"div"> {
 	/**
 	 * Children to render with transition
 	 */
@@ -46,6 +46,8 @@ export function PageTransition({
 	className,
 	duration = 300,
 	pageKey,
+	ref,
+	...props
 }: PageTransitionProps) {
 	const [isVisible, setIsVisible] = React.useState(false);
 
@@ -62,12 +64,14 @@ export function PageTransition({
 	return (
 		<div
 			data-slot="page-transition"
+			ref={ref}
 			className={cn(
 				"transition-opacity ease-in-out",
 				isVisible ? "opacity-100" : "opacity-0",
 				className,
 			)}
 			style={{ transitionDuration: `${duration}ms` }}
+			{...props}
 		>
 			{children}
 		</div>

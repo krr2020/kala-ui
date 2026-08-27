@@ -30,6 +30,7 @@ export interface MultiSelectOption {
 }
 
 export interface MultiSelectProps {
+	ref?: React.Ref<HTMLButtonElement>;
 	/**
 	 * Options to display
 	 */
@@ -112,316 +113,311 @@ export interface MultiSelectProps {
 	matchTriggerWidth?: boolean;
 }
 
-const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
-	(
-		{
-			options,
-			value,
-			defaultValue,
-			onValueChange,
-			placeholder = "Select options...",
-			searchPlaceholder = "Search...",
-			emptyText = "No results found.",
-			maxSelected,
-			disabled = false,
-			className,
-			showActions = true,
-			showSelectAll = showActions,
-			showClearAll = showActions,
-			preserveSelectionOrder = false,
-			maxVisibleSelections = 3,
-			showSeparators = false,
-			matchTriggerWidth = true,
-		},
-		ref,
-	) => {
-		const [selected, setSelected] = useUncontrolled<string[]>({
-			value,
-			defaultValue: defaultValue ?? [],
-			onChange: onValueChange,
-		});
-		const [open, setOpen] = React.useState(false);
-		const [search, setSearch] = React.useState("");
+function MultiSelect({
+	ref,
+	options,
+	value,
+	defaultValue,
+	onValueChange,
+	placeholder = "Select options...",
+	searchPlaceholder = "Search...",
+	emptyText = "No results found.",
+	maxSelected,
+	disabled = false,
+	className,
+	showActions = true,
+	showSelectAll = showActions,
+	showClearAll = showActions,
+	preserveSelectionOrder = false,
+	maxVisibleSelections = 3,
+	showSeparators = false,
+	matchTriggerWidth = true,
+}: MultiSelectProps) {
+	const [selected, setSelected] = useUncontrolled<string[]>({
+		value,
+		defaultValue: defaultValue ?? [],
+		onChange: onValueChange,
+	});
+	const [open, setOpen] = React.useState(false);
+	const [search, setSearch] = React.useState("");
 
-		// Group options
-		const { groups, noGroup } = React.useMemo(() => {
-			const groups: Record<string, MultiSelectOption[]> = {};
-			const noGroup: MultiSelectOption[] = [];
+	// Group options
+	const { groups, noGroup } = React.useMemo(() => {
+		const groups: Record<string, MultiSelectOption[]> = {};
+		const noGroup: MultiSelectOption[] = [];
 
-			options.forEach((option) => {
-				if (option.group) {
-					if (!groups[option.group]) groups[option.group] = [];
-					groups[option.group]?.push(option);
-				} else {
-					noGroup.push(option);
-				}
-			});
-
-			return { groups, noGroup };
-		}, [options]);
-
-		const selectedOptions = React.useMemo(() => {
-			if (preserveSelectionOrder) {
-				return selected
-					.map((v) => options.find((o) => o.value === v))
-					.filter((o): o is MultiSelectOption => !!o);
-			}
-			return options.filter((option) => selected.includes(option.value));
-		}, [selected, options, preserveSelectionOrder]);
-
-		const displayedOptions = React.useMemo(() => {
-			if (
-				maxVisibleSelections &&
-				maxVisibleSelections > 0 &&
-				selectedOptions.length > maxVisibleSelections
-			) {
-				return selectedOptions.slice(0, maxVisibleSelections);
-			}
-			return selectedOptions;
-		}, [selectedOptions, maxVisibleSelections]);
-
-		const remainingCount = selectedOptions.length - displayedOptions.length;
-
-		const isMaxSelected = maxSelected ? selected.length >= maxSelected : false;
-		const availableOptions = options.filter((opt) => !opt.disabled);
-		const isAllSelected =
-			availableOptions.length > 0 &&
-			availableOptions.every((opt) => selected.includes(opt.value));
-		const isIndeterminate =
-			selected.length > 0 &&
-			!isAllSelected &&
-			selected.length < availableOptions.length;
-
-		const handleSelect = (optionValue: string) => {
-			const newValue = selected.includes(optionValue)
-				? selected.filter((v) => v !== optionValue)
-				: [...selected, optionValue];
-			setSelected(newValue);
-		};
-
-		const handleRemove = (optionValue: string, e: React.MouseEvent) => {
-			e.stopPropagation();
-			setSelected(selected.filter((v) => v !== optionValue));
-		};
-
-		const handleSelectAll = () => {
-			if (isAllSelected) {
-				setSelected([]);
+		options.forEach((option) => {
+			if (option.group) {
+				if (!groups[option.group]) groups[option.group] = [];
+				groups[option.group]?.push(option);
 			} else {
-				const allValues = availableOptions.map((opt) => opt.value);
-				setSelected(allValues);
+				noGroup.push(option);
 			}
-		};
+		});
 
-		const handleClearAll = (e: React.MouseEvent) => {
-			e.stopPropagation();
+		return { groups, noGroup };
+	}, [options]);
+
+	const selectedOptions = React.useMemo(() => {
+		if (preserveSelectionOrder) {
+			return selected
+				.map((v) => options.find((o) => o.value === v))
+				.filter((o): o is MultiSelectOption => !!o);
+		}
+		return options.filter((option) => selected.includes(option.value));
+	}, [selected, options, preserveSelectionOrder]);
+
+	const displayedOptions = React.useMemo(() => {
+		if (
+			maxVisibleSelections &&
+			maxVisibleSelections > 0 &&
+			selectedOptions.length > maxVisibleSelections
+		) {
+			return selectedOptions.slice(0, maxVisibleSelections);
+		}
+		return selectedOptions;
+	}, [selectedOptions, maxVisibleSelections]);
+
+	const remainingCount = selectedOptions.length - displayedOptions.length;
+
+	const isMaxSelected = maxSelected ? selected.length >= maxSelected : false;
+	const availableOptions = options.filter((opt) => !opt.disabled);
+	const isAllSelected =
+		availableOptions.length > 0 &&
+		availableOptions.every((opt) => selected.includes(opt.value));
+	const isIndeterminate =
+		selected.length > 0 &&
+		!isAllSelected &&
+		selected.length < availableOptions.length;
+
+	const handleSelect = (optionValue: string) => {
+		const newValue = selected.includes(optionValue)
+			? selected.filter((v) => v !== optionValue)
+			: [...selected, optionValue];
+		setSelected(newValue);
+	};
+
+	const handleRemove = (optionValue: string, e: React.MouseEvent) => {
+		e.stopPropagation();
+		setSelected(selected.filter((v) => v !== optionValue));
+	};
+
+	const handleSelectAll = () => {
+		if (isAllSelected) {
 			setSelected([]);
-		};
+		} else {
+			const allValues = availableOptions.map((opt) => opt.value);
+			setSelected(allValues);
+		}
+	};
 
-		const triggerLabel = selectedOptions.length
-			? `Options selected: ${selectedOptions.map((o) => o.label).join(", ")}`
-			: placeholder;
+	const handleClearAll = (e: React.MouseEvent) => {
+		e.stopPropagation();
+		setSelected([]);
+	};
 
-		return (
-			<PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
-				<div
-					data-slot="multi-select"
-					className={cn(
-						"relative flex min-h-10 w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input",
-						!disabled && "hover:bg-accent/50",
-						disabled && "cursor-not-allowed opacity-50",
-						className,
-					)}
-				>
-					<PopoverPrimitive.Trigger asChild>
-						<button
-							ref={ref}
-							type="button"
-							role="combobox"
-							aria-expanded={open}
-							aria-label={triggerLabel}
-							disabled={disabled}
-							className="absolute inset-0 z-0 rounded-md kala-focus-ring"
-						/>
-					</PopoverPrimitive.Trigger>
-					<div className="pointer-events-none relative z-10 flex flex-1 flex-wrap items-center gap-1 py-1.5 pl-3">
-						{selectedOptions.length === 0 ? (
-							<span className="text-muted-foreground">{placeholder}</span>
-						) : (
-							<>
-								{displayedOptions.map((option) => (
-									<span
-										key={option.value}
-										className="inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground"
-									>
-										{option.icon && (
-											<span className="mr-1 flex size-3 items-center">
-												{option.icon}
-											</span>
-										)}
-										{option.label}
-										{!disabled && (
-											<button
-												type="button"
-												onClick={(e) => handleRemove(option.value, e)}
-												className="kala-touch pointer-events-auto rounded-sm hover:bg-secondary-foreground/20"
-												aria-label={`Remove ${option.label}`}
-											>
-												<X className="size-3" aria-hidden="true" />
-											</button>
-										)}
-									</span>
-								))}
-								{remainingCount > 0 && (
-									<span className="inline-flex items-center rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
-										+{remainingCount} more
-									</span>
-								)}
-							</>
-						)}
-					</div>
-					<div className="pointer-events-none relative z-10 flex items-center gap-1 py-1.5 pr-3">
-						{showClearAll && selected.length > 0 && !disabled && (
-							<button
-								type="button"
-								onClick={handleClearAll}
-								className="kala-touch pointer-events-auto mr-1 rounded-sm opacity-50 hover:opacity-100"
-								aria-label="Clear all"
-							>
-								<X className="size-4" aria-hidden="true" />
-							</button>
-						)}
-						<ChevronsUpDown
-							className="size-4 shrink-0 opacity-50"
-							aria-hidden="true"
-						/>
-					</div>
-				</div>
-				<PopoverPrimitive.Portal>
-					<PopoverPrimitive.Content
-						className="z-30 p-0"
-						align="start"
-						sideOffset={4}
-						style={
-							matchTriggerWidth
-								? { width: "var(--radix-popover-trigger-width)" }
-								: undefined
-						}
-					>
-						<Command
-							className={cn(
-								"rounded-lg border bg-popover text-popover-foreground kala-surface-popover",
-								matchTriggerWidth ? "w-full" : "min-w-[200px]",
-							)}
-						>
-							<CommandInput
-								placeholder={searchPlaceholder}
-								value={search}
-								onValueChange={setSearch}
-							/>
-							<CommandList>
-								<CommandEmpty>{emptyText}</CommandEmpty>
-								{showSelectAll && !maxSelected && (
-									<CommandGroup className="sticky top-0 z-10 bg-popover p-0 kala-surface-card">
-										<CommandItem
-											onSelect={handleSelectAll}
-											className="cursor-pointer rounded-none border-b py-2"
+	const triggerLabel = selectedOptions.length
+		? `Options selected: ${selectedOptions.map((o) => o.label).join(", ")}`
+		: placeholder;
+
+	return (
+		<PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
+			<div
+				data-slot="multi-select"
+				className={cn(
+					"relative flex min-h-10 w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input",
+					!disabled && "hover:bg-accent/50",
+					disabled && "cursor-not-allowed opacity-50",
+					className,
+				)}
+			>
+				<PopoverPrimitive.Trigger asChild>
+					<button
+						ref={ref}
+						type="button"
+						role="combobox"
+						aria-expanded={open}
+						aria-label={triggerLabel}
+						disabled={disabled}
+						className="absolute inset-0 z-0 rounded-md kala-focus-ring"
+					/>
+				</PopoverPrimitive.Trigger>
+				<div className="pointer-events-none relative z-10 flex flex-1 flex-wrap items-center gap-1 py-1.5 pl-3">
+					{selectedOptions.length === 0 ? (
+						<span className="text-muted-foreground">{placeholder}</span>
+					) : (
+						<>
+							{displayedOptions.map((option) => (
+								<span
+									key={option.value}
+									className="inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground"
+								>
+									{option.icon && (
+										<span className="mr-1 flex size-3 items-center">
+											{option.icon}
+										</span>
+									)}
+									{option.label}
+									{!disabled && (
+										<button
+											type="button"
+											onClick={(e) => handleRemove(option.value, e)}
+											className="kala-touch pointer-events-auto rounded-sm hover:bg-secondary-foreground/20"
+											aria-label={`Remove ${option.label}`}
 										>
-											<Checkbox
-												checked={
-													isAllSelected
-														? true
-														: isIndeterminate
-															? "indeterminate"
-															: false
-												}
-												className="mr-2 pointer-events-none"
-											/>
-											Select All
-										</CommandItem>
-									</CommandGroup>
-								)}
-								{noGroup.length > 0 && (
-									<CommandGroup>
-										{noGroup.map((option, index) => {
-											const isSelected = selected.includes(option.value);
-											const isDisabled =
-												option.disabled || (isMaxSelected && !isSelected);
-											return (
-												<React.Fragment key={option.value}>
-													{showSeparators && index > 0 && (
-														<Separator className="my-1" />
-													)}
-													<CommandItem
-														value={option.label}
-														disabled={isDisabled}
-														onSelect={() => handleSelect(option.value)}
-													>
-														<Checkbox
-															checked={isSelected}
-															className="mr-2 pointer-events-none"
-														/>
-														{option.icon && (
-															<span className="mr-2 flex size-4 items-center text-muted-foreground">
-																{option.icon}
-															</span>
-														)}
-														<span
-															className={cn(!matchTriggerWidth && "truncate")}
-														>
-															{option.label}
+											<X className="size-3" aria-hidden="true" />
+										</button>
+									)}
+								</span>
+							))}
+							{remainingCount > 0 && (
+								<span className="inline-flex items-center rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
+									+{remainingCount} more
+								</span>
+							)}
+						</>
+					)}
+				</div>
+				<div className="pointer-events-none relative z-10 flex items-center gap-1 py-1.5 pr-3">
+					{showClearAll && selected.length > 0 && !disabled && (
+						<button
+							type="button"
+							onClick={handleClearAll}
+							className="kala-touch pointer-events-auto mr-1 rounded-sm opacity-50 hover:opacity-100"
+							aria-label="Clear all"
+						>
+							<X className="size-4" aria-hidden="true" />
+						</button>
+					)}
+					<ChevronsUpDown
+						className="size-4 shrink-0 opacity-50"
+						aria-hidden="true"
+					/>
+				</div>
+			</div>
+			<PopoverPrimitive.Portal>
+				<PopoverPrimitive.Content
+					className="z-30 p-0"
+					align="start"
+					sideOffset={4}
+					style={
+						matchTriggerWidth
+							? { width: "var(--radix-popover-trigger-width)" }
+							: undefined
+					}
+				>
+					<Command
+						className={cn(
+							"rounded-lg border bg-popover text-popover-foreground kala-surface-popover",
+							matchTriggerWidth ? "w-full" : "min-w-[200px]",
+						)}
+					>
+						<CommandInput
+							placeholder={searchPlaceholder}
+							value={search}
+							onValueChange={setSearch}
+						/>
+						<CommandList>
+							<CommandEmpty>{emptyText}</CommandEmpty>
+							{showSelectAll && !maxSelected && (
+								<CommandGroup className="sticky top-0 z-10 bg-popover p-0 kala-surface-card">
+									<CommandItem
+										onSelect={handleSelectAll}
+										className="cursor-pointer rounded-none border-b py-2"
+									>
+										<Checkbox
+											checked={
+												isAllSelected
+													? true
+													: isIndeterminate
+														? "indeterminate"
+														: false
+											}
+											className="mr-2 pointer-events-none"
+										/>
+										Select All
+									</CommandItem>
+								</CommandGroup>
+							)}
+							{noGroup.length > 0 && (
+								<CommandGroup>
+									{noGroup.map((option, index) => {
+										const isSelected = selected.includes(option.value);
+										const isDisabled =
+											option.disabled || (isMaxSelected && !isSelected);
+										return (
+											<React.Fragment key={option.value}>
+												{showSeparators && index > 0 && (
+													<Separator className="my-1" />
+												)}
+												<CommandItem
+													value={option.label}
+													disabled={isDisabled}
+													onSelect={() => handleSelect(option.value)}
+												>
+													<Checkbox
+														checked={isSelected}
+														className="mr-2 pointer-events-none"
+													/>
+													{option.icon && (
+														<span className="mr-2 flex size-4 items-center text-muted-foreground">
+															{option.icon}
 														</span>
-													</CommandItem>
-												</React.Fragment>
-											);
-										})}
-									</CommandGroup>
-								)}
+													)}
+													<span
+														className={cn(!matchTriggerWidth && "truncate")}
+													>
+														{option.label}
+													</span>
+												</CommandItem>
+											</React.Fragment>
+										);
+									})}
+								</CommandGroup>
+							)}
 
-								{Object.entries(groups).map(([groupName, groupOptions]) => (
-									<CommandGroup key={groupName} heading={groupName}>
-										{groupOptions.map((option, index) => {
-											const isSelected = selected.includes(option.value);
-											const isDisabled =
-												option.disabled || (isMaxSelected && !isSelected);
-											return (
-												<React.Fragment key={option.value}>
-													{showSeparators && index > 0 && (
-														<Separator className="my-1" />
-													)}
-													<CommandItem
-														value={option.label}
-														disabled={isDisabled}
-														onSelect={() => handleSelect(option.value)}
-													>
-														<Checkbox
-															checked={isSelected}
-															className="mr-2 pointer-events-none"
-														/>
-														{option.icon && (
-															<span className="mr-2 flex size-4 items-center text-muted-foreground">
-																{option.icon}
-															</span>
-														)}
-														<span
-															className={cn(!matchTriggerWidth && "truncate")}
-														>
-															{option.label}
+							{Object.entries(groups).map(([groupName, groupOptions]) => (
+								<CommandGroup key={groupName} heading={groupName}>
+									{groupOptions.map((option, index) => {
+										const isSelected = selected.includes(option.value);
+										const isDisabled =
+											option.disabled || (isMaxSelected && !isSelected);
+										return (
+											<React.Fragment key={option.value}>
+												{showSeparators && index > 0 && (
+													<Separator className="my-1" />
+												)}
+												<CommandItem
+													value={option.label}
+													disabled={isDisabled}
+													onSelect={() => handleSelect(option.value)}
+												>
+													<Checkbox
+														checked={isSelected}
+														className="mr-2 pointer-events-none"
+													/>
+													{option.icon && (
+														<span className="mr-2 flex size-4 items-center text-muted-foreground">
+															{option.icon}
 														</span>
-													</CommandItem>
-												</React.Fragment>
-											);
-										})}
-									</CommandGroup>
-								))}
-							</CommandList>
-						</Command>
-					</PopoverPrimitive.Content>
-				</PopoverPrimitive.Portal>
-			</PopoverPrimitive.Root>
-		);
-	},
-);
-MultiSelect.displayName = "MultiSelect";
+													)}
+													<span
+														className={cn(!matchTriggerWidth && "truncate")}
+													>
+														{option.label}
+													</span>
+												</CommandItem>
+											</React.Fragment>
+										);
+									})}
+								</CommandGroup>
+							))}
+						</CommandList>
+					</Command>
+				</PopoverPrimitive.Content>
+			</PopoverPrimitive.Portal>
+		</PopoverPrimitive.Root>
+	);
+}
 
 export { MultiSelect };

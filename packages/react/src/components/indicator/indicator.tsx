@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
 
@@ -43,7 +43,7 @@ const indicatorVariants = cva(
 );
 
 export interface IndicatorProps
-	extends Omit<React.HTMLAttributes<HTMLDivElement>, "color">,
+	extends Omit<React.ComponentProps<"div">, "color">,
 		VariantProps<typeof indicatorVariants> {
 	/** Indicator position relative to the target element */
 	position?:
@@ -74,96 +74,90 @@ export interface IndicatorProps
 	children?: React.ReactNode;
 }
 
-const Indicator = React.forwardRef<HTMLDivElement, IndicatorProps>(
-	(
-		{
-			className,
-			position = "top-right",
-			offset = 0,
-			inline = false,
-			size = 10,
-			withBorder = false,
-			disabled = false,
-			processing = false,
-			color = "primary",
-			label,
-			children,
-			style,
-			...props
-		},
-		ref,
-	) => {
-		const getPositionStyles = () => {
-			const styles: React.CSSProperties = {};
+function Indicator({
+	ref,
+	className,
+	position = "top-right",
+	offset = 0,
+	inline = false,
+	size = 10,
+	withBorder = false,
+	disabled = false,
+	processing = false,
+	color = "primary",
+	label,
+	children,
+	style,
+	...props
+}: IndicatorProps) {
+	const getPositionStyles = () => {
+		const styles: React.CSSProperties = {};
 
-			if (offset) {
-				switch (position) {
-					case "top-left":
-						styles.top = offset;
-						styles.left = offset;
-						break;
-					case "top-center":
-						styles.top = offset;
-						break;
-					case "top-right":
-						styles.top = offset;
-						styles.right = offset;
-						break;
-					case "middle-left":
-						styles.left = offset;
-						break;
-					case "middle-right":
-						styles.right = offset;
-						break;
-					case "bottom-left":
-						styles.bottom = offset;
-						styles.left = offset;
-						break;
-					case "bottom-center":
-						styles.bottom = offset;
-						break;
-					case "bottom-right":
-						styles.bottom = offset;
-						styles.right = offset;
-						break;
-				}
+		if (offset) {
+			switch (position) {
+				case "top-left":
+					styles.top = offset;
+					styles.left = offset;
+					break;
+				case "top-center":
+					styles.top = offset;
+					break;
+				case "top-right":
+					styles.top = offset;
+					styles.right = offset;
+					break;
+				case "middle-left":
+					styles.left = offset;
+					break;
+				case "middle-right":
+					styles.right = offset;
+					break;
+				case "bottom-left":
+					styles.bottom = offset;
+					styles.left = offset;
+					break;
+				case "bottom-center":
+					styles.bottom = offset;
+					break;
+				case "bottom-right":
+					styles.bottom = offset;
+					styles.right = offset;
+					break;
 			}
+		}
 
-			return styles;
-		};
+		return styles;
+	};
 
-		return (
-			<Box
-				ref={ref}
-				className={cn("relative", inline ? "inline-block" : "block")}
-			>
-				{!disabled && (
-					<div
-						className={cn(
-							indicatorVariants({ position, color, withBorder, processing }),
-							"rounded-full",
-							className,
-						)}
-						style={{
-							width: label ? "auto" : size,
-							height: size,
-							minWidth: size,
-							padding: label ? `0 ${size / 3}px` : 0,
-							fontSize: size * 0.7,
-							...getPositionStyles(),
-							...style,
-						}}
-						{...props}
-					>
-						{label}
-					</div>
-				)}
-				{children}
-			</Box>
-		);
-	},
-);
-
-Indicator.displayName = "Indicator";
+	return (
+		<Box
+			ref={ref}
+			className={cn("relative", inline ? "inline-block" : "block")}
+		>
+			{!disabled && (
+				<div
+					className={cn(
+						indicatorVariants({ position, color, withBorder, processing }),
+						"rounded-full",
+						className,
+					)}
+					style={{
+						width: label ? "auto" : size,
+						height: size,
+						minWidth: size,
+						padding: label ? `0 ${size / 3}px` : 0,
+						fontSize: size * 0.7,
+						...getPositionStyles(),
+						...style,
+					}}
+					{...props}
+				>
+					{label}
+				</div>
+			)}
+			{children}
+		</Box>
+	);
+}
 
 export { Indicator, indicatorVariants };

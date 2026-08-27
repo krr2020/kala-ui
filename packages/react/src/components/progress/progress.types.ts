@@ -11,7 +11,7 @@ type ProgressColor =
 type ProgressSize = "sm" | "md" | "lg";
 
 export interface ProgressProps
-	extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
+	extends React.ComponentProps<typeof ProgressPrimitive.Root> {
 	/**
 	 * Progress value (0-100)
 	 */
@@ -58,6 +58,7 @@ export interface ProgressProps
 }
 
 export interface ProgressBarProps {
+	ref?: React.Ref<HTMLDivElement>;
 	value: number;
 	color?: ProgressColor;
 	striped?: boolean;

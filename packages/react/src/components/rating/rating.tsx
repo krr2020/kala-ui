@@ -6,7 +6,7 @@ import * as React from "react";
 
 import { cn } from "../../lib/utils";
 
-export interface RatingProps {
+export interface RatingProps extends React.ComponentProps<"fieldset"> {
 	/** Controlled value */
 	value?: number;
 	/** Default value for uncontrolled usage */
@@ -46,6 +46,8 @@ function Rating({
 	size = "md",
 	className,
 	"aria-label": ariaLabel = "Rating",
+	ref,
+	...props
 }: RatingProps) {
 	const [currentValue, commit] = useUncontrolled<number>({
 		value,
@@ -94,6 +96,7 @@ function Rating({
 	return (
 		<fieldset
 			data-slot="rating"
+			ref={ref}
 			aria-label={ariaLabel}
 			className={cn(
 				"inline-flex items-center gap-0.5 border-0 p-0 m-0",
@@ -101,6 +104,7 @@ function Rating({
 				className,
 			)}
 			onMouseLeave={() => !readOnly && !disabled && setHoverValue(null)}
+			{...props}
 		>
 			{Array.from({ length: count }, (_, i) => {
 				const star = i + 1;

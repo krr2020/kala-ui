@@ -1,4 +1,5 @@
-import type { ReactElement } from "react";
+import type * as React from "react";
+import { cn } from "../../lib/utils";
 
 const PASSWORD_MIN_LENGTH = 8;
 const PASSWORD_STRONG_LENGTH = 12;
@@ -12,7 +13,8 @@ const STRENGTH_LABELS = [
 	"Strong",
 ] as const;
 
-interface PasswordStrengthIndicatorProps {
+export interface PasswordStrengthIndicatorProps
+	extends React.ComponentProps<"div"> {
 	password: string;
 }
 
@@ -48,7 +50,10 @@ function calculatePasswordStrength(pwd: string): number {
 
 export function PasswordStrengthIndicator({
 	password,
-}: PasswordStrengthIndicatorProps): ReactElement | null {
+	className,
+	ref,
+	...props
+}: PasswordStrengthIndicatorProps): React.ReactNode | null {
 	if (!password) {
 		return null;
 	}
@@ -58,8 +63,10 @@ export function PasswordStrengthIndicator({
 	return (
 		<div
 			data-comp="password-strength-indicator"
-			className="mt-3"
+			ref={ref}
+			className={cn("mt-3", className)}
 			aria-live="polite"
+			{...props}
 		>
 			<div className="mb-2 flex items-center justify-between">
 				<span className="text-xs font-medium text-muted-foreground">

@@ -525,8 +525,8 @@ describe("Indicator", () => {
 		expect(screen.getByTestId("my-indicator")).toBeInTheDocument();
 	});
 
-	it("has correct displayName", () => {
-		expect(Indicator.displayName).toBe("Indicator");
+	it("has correct function name", () => {
+		expect(Indicator.name).toBe("Indicator");
 	});
 
 	it("indicatorVariants function produces expected output", () => {

@@ -9,6 +9,7 @@ export interface MultiSelectOption {
 }
 
 export interface MultiSelectProps {
+	ref?: React.Ref<HTMLButtonElement>;
 	/**
 	 * Options to display
 	 */

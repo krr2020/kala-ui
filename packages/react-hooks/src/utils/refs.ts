@@ -18,7 +18,7 @@ export function useCallbackRef<T extends (...args: unknown[]) => unknown>(
 /**
  * Merges multiple refs into a single ref callback
  */
-export function assignRef<T>(ref: React.ForwardedRef<T>, value: T | null) {
+export function assignRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
 	if (typeof ref === "function") {
 		ref(value);
 	} else if (ref !== null && ref !== undefined) {
@@ -26,7 +26,7 @@ export function assignRef<T>(ref: React.ForwardedRef<T>, value: T | null) {
 	}
 }
 
-export function mergeRefs<T>(...refs: React.ForwardedRef<T>[]) {
+export function mergeRefs<T>(...refs: (React.Ref<T> | undefined)[]) {
 	return (node: T | null) => {
 		refs.forEach((ref) => {
 			assignRef(ref, node);

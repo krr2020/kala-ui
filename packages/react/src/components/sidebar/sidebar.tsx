@@ -3,9 +3,11 @@
 import {
 	useFocusTrap,
 	useMediaQuery,
+	useMergedRef,
 	useScrollLock,
 } from "@kala-ui/react-hooks";
 import { ChevronDown } from "lucide-react";
+import type * as React from "react";
 import { type ReactNode, useEffect, useId, useState } from "react";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
@@ -24,7 +26,8 @@ export interface SidebarSection {
 	defaultOpen?: boolean;
 }
 
-export interface SidebarProps {
+export interface SidebarProps
+	extends Omit<React.ComponentProps<"aside">, "color"> {
 	/**
 	 * Logo or brand element to display at the top
 	 */
@@ -64,6 +67,8 @@ export function Sidebar({
 	onClose,
 	className,
 	footer,
+	ref,
+	...props
 }: SidebarProps) {
 	// Mobile overlay behavior: on small screens the sidebar acts as a modal
 	// drawer (Escape to close, focus trap, background scroll lock).
@@ -214,6 +219,8 @@ export function Sidebar({
 	// The sidebar is a plain <aside> on desktop; on mobile it becomes a modal
 	// dialog — role=dialog is not allowed on <aside>, so the element itself
 	// switches with the viewport.
+	const shellRef = useMergedRef(ref, trapRef);
+
 	const shellClassName = cn(
 		"fixed left-0 top-0 z-30 h-full w-64 bg-popover border-r text-foreground transition-transform duration-300 ease-out flex flex-col kala-surface-card",
 		"md:translate-x-0 md:z-10",
@@ -235,17 +242,23 @@ export function Sidebar({
 			{/* Sidebar */}
 			{overlayActive ? (
 				<div
-					ref={trapRef}
+					ref={shellRef}
 					data-comp="sidebar"
 					role="dialog"
 					aria-modal="true"
 					aria-label="Sidebar"
 					className={shellClassName}
+					{...props}
 				>
 					{sidebarContent}
 				</div>
 			) : (
-				<aside ref={trapRef} data-comp="sidebar" className={shellClassName}>
+				<aside
+					ref={shellRef}
+					data-comp="sidebar"
+					className={shellClassName}
+					{...props}
+				>
 					{sidebarContent}
 				</aside>
 			)}

@@ -12,6 +12,7 @@ import {
 	Tablet,
 	Wifi,
 } from "lucide-react";
+import type * as React from "react";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
 import { Card, CardContent, CardHeader } from "../card";
@@ -30,7 +31,7 @@ export interface SessionData {
 	isCurrent: boolean;
 }
 
-export interface SessionCardProps {
+export interface SessionCardProps extends React.ComponentProps<"div"> {
 	session: SessionData;
 	onRevoke?: (sessionId: string) => void | Promise<void>;
 	isRevoking?: boolean;
@@ -90,11 +91,18 @@ export function SessionCard({
 	isLoading = false,
 	skeletonConfig,
 	skeleton,
+	ref,
+	...props
 }: SessionCardProps) {
 	if (isLoading) {
 		if (skeleton) {
 			return (
-				<Card data-comp="session-card" className={cn("relative", className)}>
+				<Card
+					data-comp="session-card"
+					ref={ref}
+					className={cn("relative", className)}
+					{...props}
+				>
 					{skeleton}
 				</Card>
 			);
@@ -112,7 +120,12 @@ export function SessionCard({
 	};
 
 	return (
-		<Card data-comp="session-card" className={cn("relative", className)}>
+		<Card
+			data-comp="session-card"
+			ref={ref}
+			className={cn("relative", className)}
+			{...props}
+		>
 			<CardHeader className="pb-3">
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex items-start gap-3 flex-1">

@@ -1,6 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "../../lib/utils";
 
 const containerVariants = cva("mx-auto w-full px-4 md:px-6 lg:px-8", {
@@ -23,23 +23,27 @@ const containerVariants = cva("mx-auto w-full px-4 md:px-6 lg:px-8", {
 });
 
 export interface ContainerProps
-	extends React.HTMLAttributes<HTMLDivElement>,
+	extends React.ComponentProps<"div">,
 		VariantProps<typeof containerVariants> {
 	asChild?: boolean;
 }
 
-const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
-	({ className, size, centered, asChild = false, ...props }, ref) => {
-		const Comp = asChild ? Slot : "div";
-		return (
-			<Comp
-				className={cn(containerVariants({ size, centered, className }))}
-				ref={ref}
-				{...props}
-			/>
-		);
-	},
-);
-Container.displayName = "Container";
+function Container({
+	ref,
+	className,
+	size,
+	centered,
+	asChild = false,
+	...props
+}: ContainerProps) {
+	const Comp = asChild ? Slot : "div";
+	return (
+		<Comp
+			className={cn(containerVariants({ size, centered, className }))}
+			ref={ref}
+			{...props}
+		/>
+	);
+}
 
 export { Container, containerVariants };

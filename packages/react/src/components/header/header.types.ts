@@ -25,7 +25,9 @@ export interface UserProfile {
 	links: UserProfileLink[];
 }
 
-export interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
+export interface HeaderProps
+	extends React.HTMLAttributes<HTMLElement>,
+		React.RefAttributes<HTMLElement> {
 	logo?: React.ReactNode;
 	navLinks?: NavLink[];
 	userMenu?: React.ReactNode;

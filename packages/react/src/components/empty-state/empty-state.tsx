@@ -28,7 +28,7 @@ const emptyStateVariants = cva(
 );
 
 export interface EmptyStateProps
-	extends Omit<React.HTMLAttributes<HTMLDivElement>, "color">,
+	extends Omit<React.ComponentProps<"div">, "color">,
 		VariantProps<typeof emptyStateVariants> {
 	icon?: LucideIcon | string;
 	title: string;
@@ -55,6 +55,7 @@ function EmptyState({
 	isLoading = false,
 	skeletonConfig,
 	skeleton,
+	ref,
 	...props
 }: EmptyStateProps) {
 	if (isLoading) {
@@ -62,6 +63,7 @@ function EmptyState({
 			return (
 				<div
 					data-comp="empty-state"
+					ref={ref}
 					className={cn(emptyStateVariants({ color, size }), className)}
 					{...props}
 				>
@@ -82,6 +84,7 @@ function EmptyState({
 
 	return (
 		<div
+			ref={ref}
 			data-comp="empty-state"
 			className={cn(emptyStateVariants({ color, size }), className)}
 			{...props}

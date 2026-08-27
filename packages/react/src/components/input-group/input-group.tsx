@@ -5,13 +5,15 @@
  * For best compatibility, use simple inputs without additional features inside InputGroup.
  */
 
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "../../lib/utils";
 
-const InputGroup = React.forwardRef<
-	HTMLDivElement,
-	React.HTMLAttributes<HTMLDivElement>
->(({ className, children, ...props }, ref) => {
+function InputGroup({
+	ref,
+	className,
+	children,
+	...props
+}: React.ComponentProps<"div">) {
 	return (
 		// biome-ignore lint/a11y/useSemanticElements: div[role=group] is the correct generic grouping element here; fieldset is for form legend groups and brings default styles
 		<div
@@ -34,13 +36,12 @@ const InputGroup = React.forwardRef<
 			{children}
 		</div>
 	);
-});
-InputGroup.displayName = "InputGroup";
-
-const InputGroupText = React.forwardRef<
-	HTMLDivElement,
-	React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
+}
+function InputGroupText({
+	ref,
+	className,
+	...props
+}: React.ComponentProps<"div">) {
 	return (
 		<div
 			ref={ref}
@@ -51,7 +52,6 @@ const InputGroupText = React.forwardRef<
 			{...props}
 		/>
 	);
-});
-InputGroupText.displayName = "InputGroupText";
+}
 
 export { InputGroup, InputGroupText };

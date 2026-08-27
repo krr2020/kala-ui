@@ -129,10 +129,7 @@ function DrawerContent({
 	);
 }
 
-function DrawerHeader({
-	className,
-	...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
 			className={cn(
@@ -144,10 +141,7 @@ function DrawerHeader({
 	);
 }
 
-function DrawerFooter({
-	className,
-	...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
 			className={cn(

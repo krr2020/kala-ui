@@ -1,11 +1,10 @@
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
 import { Overlay, type OverlayProps } from "../overlay";
 import { Spinner } from "../spinner";
 
-export interface LoadingOverlayProps
-	extends React.HTMLAttributes<HTMLDivElement> {
+export interface LoadingOverlayProps extends React.ComponentProps<"div"> {
 	/** If set loading overlay will be visible */
 	visible?: boolean;
 	/** Overlay z-index */
@@ -20,59 +19,53 @@ export interface LoadingOverlayProps
 	transitionDuration?: number;
 }
 
-const LoadingOverlay = React.forwardRef<HTMLDivElement, LoadingOverlayProps>(
-	(
-		{
-			className,
-			visible = false,
-			zIndex = 400,
-			overlayProps,
-			loaderProps,
-			transitionDuration = 0,
-			style,
-			...props
-		},
-		ref,
-	) => {
-		const { children: loaderChildren, ...otherLoaderProps } = loaderProps || {};
+function LoadingOverlay({
+	ref,
+	className,
+	visible = false,
+	zIndex = 400,
+	overlayProps,
+	loaderProps,
+	transitionDuration = 0,
+	style,
+	...props
+}: LoadingOverlayProps) {
+	const { children: loaderChildren, ...otherLoaderProps } = loaderProps || {};
 
-		if (!visible && transitionDuration === 0) {
-			return null;
-		}
+	if (!visible && transitionDuration === 0) {
+		return null;
+	}
 
-		return (
-			<Box
-				ref={ref}
-				className={cn(
-					"absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity",
-					visible ? "opacity-100 pointer-events-auto" : "opacity-0",
-					className,
+	return (
+		<Box
+			ref={ref}
+			className={cn(
+				"absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity",
+				visible ? "opacity-100 pointer-events-auto" : "opacity-0",
+				className,
+			)}
+			style={{
+				zIndex,
+				transitionDuration: `${transitionDuration}ms`,
+				...style,
+			}}
+			{...props}
+		>
+			<Overlay
+				zIndex={zIndex}
+				{...overlayProps}
+				fixed={false} // LoadingOverlay is usually absolute to parent
+				className={cn(overlayProps?.className)}
+			/>
+			<Box className="relative z-10">
+				{loaderChildren ? (
+					loaderChildren
+				) : (
+					<Spinner size="lg" {...otherLoaderProps} />
 				)}
-				style={{
-					zIndex,
-					transitionDuration: `${transitionDuration}ms`,
-					...style,
-				}}
-				{...props}
-			>
-				<Overlay
-					zIndex={zIndex}
-					{...overlayProps}
-					fixed={false} // LoadingOverlay is usually absolute to parent
-					className={cn(overlayProps?.className)}
-				/>
-				<Box className="relative z-10">
-					{loaderChildren ? (
-						loaderChildren
-					) : (
-						<Spinner size="lg" {...otherLoaderProps} />
-					)}
-				</Box>
 			</Box>
-		);
-	},
-);
-
-LoadingOverlay.displayName = "LoadingOverlay";
+		</Box>
+	);
+}
 
 export { LoadingOverlay };

@@ -18,7 +18,7 @@ const buttonGroupVariants = cva("inline-flex isolate", {
 });
 
 interface ButtonGroupProps
-	extends React.HTMLAttributes<HTMLDivElement>,
+	extends React.ComponentProps<"div">,
 		VariantProps<typeof buttonGroupVariants> {
 	/**
 	 * Accessible label describing the button group's purpose
@@ -77,7 +77,7 @@ export const buttonGroupSeparatorVariants = cva("shrink-0 bg-separator z-30", {
 });
 
 interface ButtonGroupSeparatorProps
-	extends React.HTMLAttributes<HTMLHRElement>,
+	extends React.ComponentProps<"hr">,
 		VariantProps<typeof buttonGroupSeparatorVariants> {}
 
 function ButtonGroupSeparator({

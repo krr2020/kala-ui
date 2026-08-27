@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "../../lib/utils";
 import { Box, type BoxProps } from "../box";
 
@@ -33,65 +33,59 @@ const hexToRgb = (hex: string) => {
 		: null;
 };
 
-const Overlay = React.forwardRef<HTMLDivElement, OverlayProps>(
-	(
-		{
-			className,
-			color = "#000",
-			backgroundOpacity = 0.6,
-			blur,
-			gradient,
-			zIndex,
-			fixed = false,
-			radius,
-			style,
-			children,
-			...props
-		},
-		ref,
-	) => {
-		const backgroundStyle = gradient
-			? { backgroundImage: gradient }
-			: color.startsWith("#")
-				? {
-						backgroundColor: `rgba(${
-							hexToRgb(color)?.r ?? 0
-						}, ${hexToRgb(color)?.g ?? 0}, ${hexToRgb(color)?.b ?? 0}, ${backgroundOpacity})`,
-					}
-				: {
-						backgroundColor: color,
-						// If we can't parse color, we can't easily set rgba.
-						// We could use `opacity` but that affects children.
-						// Alternative: Use a pseudo-element or just accept that named colors + opacity prop might behave like standard opacity if we can't mix them.
-						// Or just leave it as is and let user pass rgba string as color.
-					};
+function Overlay({
+	ref,
+	className,
+	color = "#000",
+	backgroundOpacity = 0.6,
+	blur,
+	gradient,
+	zIndex,
+	fixed = false,
+	radius,
+	style,
+	children,
+	...props
+}: OverlayProps) {
+	const backgroundStyle = gradient
+		? { backgroundImage: gradient }
+		: color.startsWith("#")
+			? {
+					backgroundColor: `rgba(${
+						hexToRgb(color)?.r ?? 0
+					}, ${hexToRgb(color)?.g ?? 0}, ${hexToRgb(color)?.b ?? 0}, ${backgroundOpacity})`,
+				}
+			: {
+					backgroundColor: color,
+					// If we can't parse color, we can't easily set rgba.
+					// We could use `opacity` but that affects children.
+					// Alternative: Use a pseudo-element or just accept that named colors + opacity prop might behave like standard opacity if we can't mix them.
+					// Or just leave it as is and let user pass rgba string as color.
+				};
 
-		// Refined approach: If we used the `opacity` CSS property, it would fade out the children (like text/loader).
-		// The requirement is to only fade the background.
-		// So if it's a hex color, we convert to RGBA.
-		// If it's not hex, we rely on the user passing a valid color string (which might be rgba).
-		// If they pass a named color like 'red' and opacity 0.5, we can't easily mix them without a lib.
-		// I will stick to hex conversion for now as it covers most cases (default is #000).
+	// Refined approach: If we used the `opacity` CSS property, it would fade out the children (like text/loader).
+	// The requirement is to only fade the background.
+	// So if it's a hex color, we convert to RGBA.
+	// If it's not hex, we rely on the user passing a valid color string (which might be rgba).
+	// If they pass a named color like 'red' and opacity 0.5, we can't easily mix them without a lib.
+	// I will stick to hex conversion for now as it covers most cases (default is #000).
 
-		return (
-			<Box
-				ref={ref}
-				className={cn(fixed ? "fixed" : "absolute", "inset-0", className)}
-				style={{
-					...backgroundStyle,
-					backdropFilter: blur ? `blur(${blur}px)` : undefined,
-					zIndex,
-					borderRadius: radius,
-					...style,
-				}}
-				{...props}
-			>
-				{children}
-			</Box>
-		);
-	},
-);
-
-Overlay.displayName = "Overlay";
+	return (
+		<Box
+			ref={ref}
+			className={cn(fixed ? "fixed" : "absolute", "inset-0", className)}
+			style={{
+				...backgroundStyle,
+				backdropFilter: blur ? `blur(${blur}px)` : undefined,
+				zIndex,
+				borderRadius: radius,
+				...style,
+			}}
+			{...props}
+		>
+			{children}
+		</Box>
+	);
+}
 
 export { Overlay };

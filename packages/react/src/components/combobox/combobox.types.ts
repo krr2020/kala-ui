@@ -7,6 +7,7 @@ export interface ComboboxOption {
 }
 
 export interface ComboboxProps {
+	ref?: React.Ref<HTMLButtonElement>;
 	/**
 	 * Accessible name for the combobox trigger.
 	 * @default the placeholder text

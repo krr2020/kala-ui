@@ -84,11 +84,14 @@ export const Sizes: Story = {
 export const Colors: Story = {
 	render: () => (
 		<div className="flex flex-col gap-4">
-			<Text color="default">Default Color</Text>
+			<Text>Default (foreground)</Text>
 			<Text color="muted">Muted Color</Text>
 			<Text color="primary">Primary Color</Text>
 			<Text color="secondary">Secondary Color</Text>
 			<Text color="destructive">Destructive Color</Text>
+			<Text color="success">Success Color</Text>
+			<Text color="warning">Warning Color</Text>
+			<Text color="info">Info Color</Text>
 		</div>
 	),
 };

@@ -1,7 +1,6 @@
 import type * as React from "react";
 
-export interface InputProps
-	extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.ComponentProps<"input"> {
 	/** Show password visibility toggle button (only for type="password") */
 	showPasswordToggle?: boolean;
 	/** Prefix icon element */

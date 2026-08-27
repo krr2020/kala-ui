@@ -1,6 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "../../lib/utils";
 
 const gridVariants = cva("grid", {
@@ -63,30 +63,33 @@ const gridVariants = cva("grid", {
 });
 
 export interface GridProps
-	extends React.HTMLAttributes<HTMLDivElement>,
+	extends React.ComponentProps<"div">,
 		VariantProps<typeof gridVariants> {
 	asChild?: boolean;
 }
 
-const Grid = React.forwardRef<HTMLDivElement, GridProps>(
-	(
-		{ className, cols, gap, flow, align, justify, asChild = false, ...props },
-		ref,
-	) => {
-		const Comp = asChild ? Slot : "div";
-		return (
-			<Comp
-				className={cn(
-					gridVariants({ cols, gap, flow, align, justify, className }),
-				)}
-				ref={ref}
-				{...props}
-			/>
-		);
-	},
-);
-Grid.displayName = "Grid";
-
+function Grid({
+	ref,
+	className,
+	cols,
+	gap,
+	flow,
+	align,
+	justify,
+	asChild = false,
+	...props
+}: GridProps) {
+	const Comp = asChild ? Slot : "div";
+	return (
+		<Comp
+			className={cn(
+				gridVariants({ cols, gap, flow, align, justify, className }),
+			)}
+			ref={ref}
+			{...props}
+		/>
+	);
+}
 const gridItemVariants = cva("", {
 	variants: {
 		colSpan: {
@@ -151,36 +154,31 @@ const gridItemVariants = cva("", {
 });
 
 export interface GridItemProps
-	extends React.HTMLAttributes<HTMLDivElement>,
+	extends React.ComponentProps<"div">,
 		VariantProps<typeof gridItemVariants> {
 	asChild?: boolean;
 }
 
-const GridItem = React.forwardRef<HTMLDivElement, GridItemProps>(
-	(
-		{
-			className,
-			colSpan,
-			rowSpan,
-			colStart,
-			colEnd,
-			asChild = false,
-			...props
-		},
-		ref,
-	) => {
-		const Comp = asChild ? Slot : "div";
-		return (
-			<Comp
-				className={cn(
-					gridItemVariants({ colSpan, rowSpan, colStart, colEnd, className }),
-				)}
-				ref={ref}
-				{...props}
-			/>
-		);
-	},
-);
-GridItem.displayName = "GridItem";
+function GridItem({
+	ref,
+	className,
+	colSpan,
+	rowSpan,
+	colStart,
+	colEnd,
+	asChild = false,
+	...props
+}: GridItemProps) {
+	const Comp = asChild ? Slot : "div";
+	return (
+		<Comp
+			className={cn(
+				gridItemVariants({ colSpan, rowSpan, colStart, colEnd, className }),
+			)}
+			ref={ref}
+			{...props}
+		/>
+	);
+}
 
 export { Grid, GridItem, gridItemVariants, gridVariants };

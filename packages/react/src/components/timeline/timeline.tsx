@@ -84,11 +84,12 @@ interface TimelineProps extends React.ComponentProps<"div"> {
 	children: React.ReactNode;
 }
 
-function Timeline({ className, children, ...props }: TimelineProps) {
+function Timeline({ className, children, ref, ...props }: TimelineProps) {
 	const items = React.Children.toArray(children);
 
 	return (
 		<div
+			ref={ref}
 			data-slot="timeline"
 			className={cn("flex flex-col", className)}
 			{...props}

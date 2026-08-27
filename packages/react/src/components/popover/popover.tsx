@@ -139,7 +139,7 @@ function PopoverContent({
 // ============================================================================
 
 export interface PopoverHeaderProps
-	extends Omit<React.HTMLAttributes<HTMLDivElement>, "color"> {
+	extends Omit<React.ComponentProps<"div">, "color"> {
 	/**
 	 * Tint the header strip. Falls back to the parent PopoverContent's
 	 * headerColor (or its color for solid popovers); plain when unset.
@@ -169,10 +169,7 @@ function PopoverHeader({ className, color, ...props }: PopoverHeaderProps) {
 // Popover Body
 // ============================================================================
 
-function PopoverBody({
-	className,
-	...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+function PopoverBody({ className, ...props }: React.ComponentProps<"div">) {
 	const context = React.useContext(PopoverColorContext);
 	const hasColoredHeader =
 		context?.headerColor !== undefined ||

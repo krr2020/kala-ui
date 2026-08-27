@@ -165,7 +165,7 @@ function ListItem({
 						"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
 					)}
 					{...stateProps}
-					{...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+					{...(props as React.ComponentProps<"button">)}
 				>
 					{children}
 				</button>
@@ -191,8 +191,7 @@ function ListItem({
 // List Item Icon
 // ===========================
 
-export interface ListItemIconProps
-	extends React.HTMLAttributes<HTMLDivElement> {
+export interface ListItemIconProps extends React.ComponentProps<"div"> {
 	/**
 	 * Icon size variant
 	 * @default 'default'
@@ -227,8 +226,7 @@ function ListItemIcon({
 // List Item Avatar
 // ===========================
 
-export interface ListItemAvatarProps
-	extends React.HTMLAttributes<HTMLDivElement> {
+export interface ListItemAvatarProps extends React.ComponentProps<"div"> {
 	/**
 	 * Avatar image source
 	 */
@@ -287,8 +285,7 @@ function ListItemAvatar({
 // List Item Content
 // ===========================
 
-export interface ListItemContentProps
-	extends React.HTMLAttributes<HTMLDivElement> {
+export interface ListItemContentProps extends React.ComponentProps<"div"> {
 	/**
 	 * Truncate text with ellipsis
 	 * @default false
@@ -385,8 +382,7 @@ function ListItemText({
 // List Item Action
 // ===========================
 
-export interface ListItemActionProps
-	extends React.HTMLAttributes<HTMLDivElement> {}
+export interface ListItemActionProps extends React.ComponentProps<"div"> {}
 
 function ListItemAction({ className, ...props }: ListItemActionProps) {
 	return (

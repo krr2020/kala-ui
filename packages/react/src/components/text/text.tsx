@@ -1,6 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "../../lib/utils";
 
 const textVariants = cva("text-foreground", {
@@ -40,12 +40,13 @@ const textVariants = cva("text-foreground", {
 			end: "text-end",
 		},
 		color: {
-			default: "text-foreground",
-			muted: "text-muted-foreground",
 			primary: "text-primary",
 			secondary: "text-secondary-foreground",
 			destructive: "text-destructive",
-			accent: "text-accent-foreground",
+			success: "text-success",
+			warning: "text-warning",
+			info: "text-info",
+			muted: "text-muted-foreground",
 		},
 		truncate: {
 			true: "truncate",
@@ -55,46 +56,39 @@ const textVariants = cva("text-foreground", {
 		size: "md",
 		weight: "normal",
 		align: "left",
-		color: "default",
 	},
 });
 
 export interface TextProps
 	extends Omit<React.HTMLAttributes<HTMLElement>, "color">,
-		VariantProps<typeof textVariants> {
+		VariantProps<typeof textVariants>,
+		React.RefAttributes<HTMLElement> {
 	asChild?: boolean;
 	as?: React.ElementType;
-	// biome-ignore lint/suspicious/noExplicitAny: Support polymorphic props
-	[key: string]: any;
 }
 
-const Text = React.forwardRef<HTMLElement, TextProps>(
-	(
-		{
-			className,
-			size,
-			weight,
-			align,
-			color,
-			truncate,
-			asChild = false,
-			as: Tag = "p",
-			...props
-		},
-		ref,
-	) => {
-		const Comp = asChild ? Slot : Tag;
-		return (
-			<Comp
-				className={cn(
-					textVariants({ size, weight, align, color, truncate, className }),
-				)}
-				ref={ref}
-				{...props}
-			/>
-		);
-	},
-);
-Text.displayName = "Text";
+function Text({
+	ref,
+	className,
+	size,
+	weight,
+	align,
+	color,
+	truncate,
+	asChild = false,
+	as: Tag = "p",
+	...props
+}: TextProps) {
+	const Comp = asChild ? Slot : Tag;
+	return (
+		<Comp
+			className={cn(
+				textVariants({ size, weight, align, color, truncate, className }),
+			)}
+			ref={ref}
+			{...props}
+		/>
+	);
+}
 
 export { Text, textVariants };

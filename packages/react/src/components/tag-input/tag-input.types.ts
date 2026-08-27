@@ -1,10 +1,7 @@
 import type * as React from "react";
 
 export interface TagInputProps
-	extends Omit<
-		React.InputHTMLAttributes<HTMLInputElement>,
-		"value" | "onChange"
-	> {
+	extends Omit<React.ComponentProps<"input">, "value" | "onChange"> {
 	/**
 	 * Array of tag values
 	 */

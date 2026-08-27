@@ -13,7 +13,8 @@ import {
 	DropdownMenuTrigger,
 } from "../dropdown-menu";
 
-export interface UserMenuDropdownProps {
+export interface UserMenuDropdownProps
+	extends Omit<React.ComponentProps<"button">, "color"> {
 	/**
 	 * User information to display
 	 */
@@ -51,6 +52,8 @@ export function UserMenuDropdown({
 	onLogout,
 	baseUrl = "/admin",
 	className,
+	ref,
+	...props
 }: UserMenuDropdownProps) {
 	const initials = user.name
 		? user.name
@@ -81,8 +84,10 @@ export function UserMenuDropdown({
 			<DropdownMenuTrigger asChild>
 				<Button
 					variant="ghost"
+					ref={ref}
 					className={cn("h-auto p-1 rounded-full hover:bg-accent", className)}
 					aria-label="User menu"
+					{...props}
 				>
 					<Avatar className="size-8">
 						{user.avatar && (

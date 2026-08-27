@@ -15,7 +15,7 @@ import { cn } from "../../lib/utils";
 import { Label } from "../label";
 
 export interface RadioGroupProps
-	extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {
+	extends React.ComponentProps<typeof RadioGroupPrimitive.Root> {
 	/**
 	 * Visual variant of the radio group
 	 * @default "default"
@@ -29,7 +29,7 @@ export interface RadioGroupProps
 }
 
 export interface RadioGroupItemProps
-	extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
+	extends React.ComponentProps<typeof RadioGroupPrimitive.Item> {
 	/**
 	 * Label text for the radio item
 	 */
@@ -59,10 +59,13 @@ export const radioGroupItemVariants = cva(radioGroupItemStyles.base, {
 	defaultVariants: radioGroupItemStyles.defaultVariants,
 });
 
-const RadioGroup = React.forwardRef<
-	React.ComponentRef<typeof RadioGroupPrimitive.Root>,
-	RadioGroupProps
->(({ className, variant = "default", size = "md", ...props }, ref) => {
+function RadioGroup({
+	ref,
+	className,
+	variant = "default",
+	size = "md",
+	...props
+}: RadioGroupProps) {
 	return (
 		<RadioGroupContext.Provider value={{ variant, size }}>
 			<RadioGroupPrimitive.Root
@@ -73,14 +76,18 @@ const RadioGroup = React.forwardRef<
 			/>
 		</RadioGroupContext.Provider>
 	);
-});
+}
 
-RadioGroup.displayName = "RadioGroup";
-
-const RadioGroupItem = React.forwardRef<
-	React.ComponentRef<typeof RadioGroupPrimitive.Item>,
-	RadioGroupItemProps
->(({ className, label, description, error, id, children, ...props }, ref) => {
+function RadioGroupItem({
+	ref,
+	className,
+	label,
+	description,
+	error,
+	id,
+	children,
+	...props
+}: RadioGroupItemProps) {
 	const { variant = "default", size = "md" } =
 		React.useContext(RadioGroupContext);
 	const autoId = React.useId();
@@ -223,8 +230,6 @@ const RadioGroupItem = React.forwardRef<
 	}
 
 	return radioButton;
-});
-
-RadioGroupItem.displayName = "RadioGroupItem";
+}
 
 export { RadioGroup, RadioGroupItem };
