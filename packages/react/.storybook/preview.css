@@ -1,0 +1,10 @@
+/*
+ * Storybook-wide stylesheet for the composed core + app Storybook.
+ *
+ * Inlines the core entry (theme, tokens, helpers, core utilities) and adds
+ * the react-app source tree to the Tailwind scan so app-level stories get
+ * their utilities too. @source paths resolve relative to the file that
+ * declares them, which is why the two live in different files.
+ */
+@import "../src/styles/globals.css";
+@source "../../react-app/src";

@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/react';
 import type { StoryContext } from '@storybook/react';
 import { MotionConfig } from 'framer-motion';
-import '../src/styles/globals.css';
+import './preview.css';
 
 const preview: Preview = {
   parameters: {
