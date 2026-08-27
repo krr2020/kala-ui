@@ -285,6 +285,21 @@ const config: TestRunnerConfig = {
 		});
 		await page.evaluate(() => document.fonts.ready);
 		await page.waitForTimeout(50);
+		// Captures of content-sized grids depend on the text metrics of the
+		// effective font. preview-head.html pins IBM Plex Sans as a webfont so
+		// every OS measures identical glyphs. Explicitly load the face as an
+		// availability probe (faces load lazily per weight used, so a text-free
+		// story would otherwise never load it) and fail loudly when it is
+		// unavailable instead of producing platform-dependent mystery diffs.
+		await page.evaluate(() => document.fonts.load('400 16px "IBM Plex Sans"'));
+		const fontLoaded = await page.evaluate(() =>
+			document.fonts.check('400 16px "IBM Plex Sans"'),
+		);
+		if (!fontLoaded) {
+			throw new Error(
+				'IBM Plex Sans webfont did not load — visual captures would depend on the OS fallback font',
+			);
+		}
 
 		for (const theme of THEMES) {
 			await applyTheme(page, theme);

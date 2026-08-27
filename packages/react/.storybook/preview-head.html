@@ -1,3 +1,12 @@
+<!-- Pin the design font as a webfont: intrinsic text metrics (and therefore
+     content-sized grid tracks in the visual baselines) must be identical on
+     every OS — a local fallback font would make captures non-deterministic. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=block"
+>
 <style>
   /* Ensure body fills the viewport and uses theme colors */
   body {
