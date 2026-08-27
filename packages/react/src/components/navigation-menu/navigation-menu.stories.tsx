@@ -3,7 +3,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
 import type * as React from "react";
-import { useIsMobile } from "../../lib/use-mobile";
+import { useMediaQuery } from "@kala-ui/react-hooks";
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -87,11 +87,10 @@ function ListItem({
 // Main Demo Story - Full Featured Navigation Menu
 export const NavigationMenuDemo: Story = {
 	render: () => {
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const isMobile = useIsMobile();
+		const isDesktop = useMediaQuery("(min-width: 768px)");
 
 		return (
-			<NavigationMenu viewport={isMobile}>
+			<NavigationMenu viewport={!isDesktop}>
 				<NavigationMenuList className="flex-wrap">
 					<NavigationMenuItem>
 						<NavigationMenuTrigger>Home</NavigationMenuTrigger>
