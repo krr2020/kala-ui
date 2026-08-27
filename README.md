@@ -35,22 +35,7 @@ npm install @kala-ui/react
 import '@kala-ui/react/styles';
 ```
 
-### 3. Configure Tailwind CSS
-
-```ts
-// tailwind.config.ts
-import tailwindConfig from '@kala-ui/react/config/tailwind-base';
-
-export default {
-  content: [
-    './src/**/*.{ts,tsx}',
-    './node_modules/@kala-ui/react/**/*.{ts,tsx}',
-  ],
-  ...tailwindConfig,
-};
-```
-
-### 4. Use components
+### 3. Use components
 
 ```tsx
 import { Button } from '@kala-ui/react/button';

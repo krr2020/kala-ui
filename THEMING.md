@@ -1,336 +1,212 @@
 # Theming Guide
 
-This guide explains how to use Kala UI's theming system and design tokens in your application.
+How to theme kala-ui. The system is plain CSS custom properties: every
+component, chart, scrim, and focus ring reads from the same token set, and
+token values are **whole CSS colors** (`hsl(...)`, `oklch(...)`, `#hex` —
+never bare HSL channel triplets).
 
-## Installation
+**You do not need Tailwind to use kala-ui.** Tailwind is an implementation
+detail of the precompiled stylesheet; the tokens work everywhere.
+
+## Quick start
 
 ```bash
-# Install the main React package (includes styles)
 npm install @kala-ui/react
-
-# Or if you need design tokens separately
-npm install @kala-ui/design-tokens
 ```
-
-## Quick Start
-
-### 1. Import Global Styles
-
-Add this to your main entry point (e.g., `App.tsx`, `main.tsx`, or `index.tsx`):
 
 ```tsx
-import '@kala-ui/react/styles';
+import "@kala-ui/react/styles"; // precompiled CSS: tokens, utilities, component classes
 ```
 
-This imports the global CSS that includes:
-- Tailwind CSS base styles
-- CSS custom properties for themes
-- Responsive breakpoints
-- Focus ring utilities
-
-### 2. Configure Tailwind CSS
-
-In your `tailwind.config.ts`:
-
-```ts
-import tailwindConfig from '@kala-ui/react/config/tailwind-base';
-
-export default {
-  content: [
-    './src/**/*.{ts,tsx}',
-    './node_modules/@kala-ui/react/**/*.{ts,tsx}',
-  ],
-  ...tailwindConfig,
-};
-```
-
-### 3. Set Up Theme Provider (Optional)
-
-While not required, using a theme provider makes it easier to switch themes dynamically:
+Optional theme switching (class strategy, OS preference, persistence):
 
 ```tsx
-import { useState } from 'react';
+import { ThemeProvider, useTheme } from "@kala-ui/react";
 
-function App({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState('light');
-
+export function App() {
   return (
-    <div className={theme}>
-      {children}
-    </div>
+    <ThemeProvider defaultTheme="system">
+      <ThemeToggle />
+      {/* your app */}
+    </ThemeProvider>
   );
 }
-```
-
-## Available Themes
-
-Kala UI includes 6 built-in themes:
-
-| Theme | Class Name | Description |
-|-------|------------|-------------|
-| Light | `light` or `''` | Default light theme (no class needed) |
-| Neutral | `neutral` | Subtle, neutral light theme |
-| Accent | `accent` | Light theme with blue accent and shadow |
-| Dark | `dark` | Dark mode theme |
-| High Contrast Light | `high-contrast-light` | WCAG AAA compliant light theme |
-| High Contrast Dark | `high-contrast-dark` | WCAG AAA compliant dark theme |
-
-### Using Themes
-
-Add the theme class to your root element:
-
-```tsx
-// Light (default)
-<div className="light">
-  {/* Your app */}
-</div>
-
-// Or no class (defaults to light)
-<div>
-  {/* Your app */}
-</div>
-
-// Neutral
-<div className="neutral">
-  {/* Your app */}
-</div>
-
-// Dark
-<div className="dark">
-  {/* Your app */}
-</div>
-
-// Accent
-<div className="accent">
-  {/* Your app */}
-</div>
-```
-
-### Combining Themes
-
-You can combine theme classes for variations:
-
-```tsx
-// Dark with accent colors
-<div className="dark accent">
-  {/* Your app */}
-</div>
-```
-
-## CSS Custom Properties
-
-Themes use CSS custom properties (CSS variables) for easy customization. Here are the available properties:
-
-### Base Colors
-
-```css
-/* Background colors */
---background          /* Main background color */
---card               /* Card/popover background */
---popover            /* Popover background */
-
-/* Text colors */
---foreground         /* Main text color */
---card-foreground    /* Card text color */
---popover-foreground /* Popover text color */
-
-/* Action colors */
---primary            /* Primary brand color */
---primary-foreground /* Text on primary */
---secondary          /* Secondary brand color */
---secondary-foreground /* Text on secondary */
-
-/* Muted colors */
---muted              /* Muted background */
---muted-foreground   /* Muted text */
-
-/* Accent colors */
---accent             /* Accent background */
---accent-foreground  /* Text on accent */
-
-/* Destructive */
---destructive        /* Destructive/error color */
---destructive-foreground /* Text on destructive */
-
-/* Borders and inputs */
---border             /* Border color */
---border-alpha       /* Border opacity (0-1) */
---card-border-alpha  /* Card border opacity */
---input              /* Input background */
-
-/* Focus ring */
---ring               /* Focus ring color */
---ring-offset-color  /* Focus ring offset color */
-
-/* Shadows */
---shadow-color       /* Shadow color */
---shadow-alpha       /* Shadow opacity */
---shadow-spread      /* Shadow spread radius */
-
-/* Semantic status colors */
---success            /* Success color */
---success-foreground /* Text on success */
---warning            /* Warning color */
---warning-foreground /* Text on warning */
---error              /* Error color */
---error-foreground   /* Text on error */
---info               /* Info color */
---info-foreground    /* Text on info */
-
-/* Utilities */
---radius             /* Border radius */
---separator          /* Separator color */
-```
-
-## Using Design Tokens Programmatically
-
-If you need design tokens in JavaScript/TypeScript:
-
-```tsx
-import { colors, spacing, typography, shadows, breakpoints, themes } from '@kala-ui/design-tokens';
-
-// Use color tokens
-const primaryColor = colors.primary; // '#3b82f6'
-const backgroundColor = colors.gray[100];
-
-// Use spacing
-const padding = spacing.md; // '1rem'
-
-// Use typography
-const fontSize = typography.text.lg; // '1.125rem'
-const fontWeight = typography.fontWeight.bold;
-
-// Use shadows
-const shadow = shadows.md;
-
-// Use breakpoints
-const breakpoint = breakpoints.md; // '768px'
-
-// Use themes
-const theme = themes.dark;
-console.log(theme.name); // 'Dark'
-console.log(theme.colorScheme); // 'dark'
-```
-
-## Dark Mode Support
-
-### System Preference
-
-To follow system preference, use Tailwind's `dark` class strategy:
-
-```ts
-// tailwind.config.ts
-export default {
-  darkMode: 'class', // or 'media' for system preference
-  // ...
-};
-```
-
-### Manual Toggle
-
-```tsx
-import { useState, useEffect } from 'react';
 
 function ThemeToggle() {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    // Apply theme class to root element
-    const root = document.documentElement;
-    if (isDark) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  }, [isDark]);
-
+  const { theme, setTheme, themes } = useTheme();
   return (
-    <button onClick={() => setIsDark(!isDark)}>
-      Toggle {isDark ? 'Light' : 'Dark'} Mode
-    </button>
+    <select value={theme} onChange={(e) => setTheme(e.target.value as never)}>
+      <option value="system">System</option>
+      {themes.map((t) => (
+        <option key={t} value={t}>
+          {t}
+        </option>
+      ))}
+    </select>
   );
 }
 ```
 
-## Customizing Themes
+`ThemeProvider` applies the active theme as a class on `<html>`, persists the
+choice to `localStorage` (key `kala-ui-theme`, configurable via `storageKey`),
+resolves `"system"` through `prefers-color-scheme` (live), and syncs the CSS
+`color-scheme` property (disable with `enableColorScheme={false}`). Themes:
+`light` (default) · `neutral` · `accent` · `dark` · `high-contrast-light` ·
+`high-contrast-dark`. You can also toggle the classes yourself — everything
+(including charts) observes `<html>` class changes, with or without the
+provider.
 
-You can create custom themes by overriding CSS variables:
+## Customizing the palette
+
+Redefine tokens after the import, in any color format:
 
 ```css
-/* Create a custom theme */
-.custom-theme {
-  --background: 210 40% 98%;
-  --foreground: 222.2 84% 4.9%;
-  --primary: 270 70% 50%;
-  /* Override other variables as needed */
+@import "@kala-ui/react/styles";
+
+:root {
+  --primary: oklch(0.55 0.22 264);
+  --primary-foreground: white;
+  --kala-radius-control: 9999px; /* pill-shaped controls */
+}
+
+.dark {
+  --primary: oklch(0.75 0.18 264);
 }
 ```
 
-## Accessing Theme Tokens in Components
+That is the whole customization model. Every `bg-primary` button, chart
+series, spinner, and link picks the change up — charts resolve token values
+from the live stylesheet at render time (with curated fallbacks where no CSS
+engine exists, e.g. SSR).
 
-```tsx
-// Using Tailwind utility classes
-<div className="bg-background text-foreground border-border">
-  Content
-</div>
+### Token reference
 
-// Using inline styles with CSS variables
-<div style={{
-  backgroundColor: 'hsl(var(--background))',
-  color: 'hsl(var(--foreground))'
-}}>
-  Content
-</div>
+| Group | Tokens |
+| --- | --- |
+| Base | `--background`, `--foreground`, `--background-alpha` |
+| Surfaces | `--card`, `--card-foreground`, `--popover`, `--popover-foreground`, `--card-border-alpha` |
+| Brand | `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground`, `--accent`, `--accent-foreground` |
+| Feedback | `--success`, `--warning`, `--error`, `--info`, `--destructive` + `-foreground` each |
+| Text/lines | `--muted`, `--muted-foreground`, `--border`, `--border-strong`, `--border-alpha`, `--separator`, `--input` |
+| Focus | `--ring`, `--ring-offset-color` |
+| Scrim | `--overlay`, `--overlay-alpha` (dialog/drawer/sidebar overlays; `bg-overlay` utility, `/40`-style modifiers work) |
+| Shadows | `--shadow-color`, `--shadow-alpha`, `--shadow-spread` |
+| Shape/density | `--kala-radius-control`, `--kala-radius-card`, `--kala-control-h`, `--kala-control-px`, `--kala-card-pad` |
+
+Notes:
+
+- `--*-foreground` tokens exist so text placed ON a filled surface stays
+  legible — when you change `--primary`, change `--primary-foreground` to a
+  contrasting color.
+- Alpha tokens (`--border-alpha`, `--overlay-alpha`, `--shadow-alpha`) let a
+  theme draw borders/scrims/shadows at partial opacity in any color format;
+  kala-ui applies them with `color-mix()`.
+- `--kala-*` knobs set the shape language in one place: control radius, card
+  radius, control height, control padding, card padding. Prefer them over
+  per-component overrides.
+- `--border-strong` is the stronger border used for table headers/separators.
+
+## Built-in themes
+
+`:root` defaults to the light theme. Other themes are classes on `<html>`
+(or any wrapper): `neutral`, `accent`, `dark`, `dark accent`,
+`high-contrast-light`, `high-contrast-dark`.
+
+## Custom themes
+
+Add your own class and redefine whatever the theme changes:
+
+```css
+.my-brand {
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+  --kala-radius-control: 9999px; /* pill controls */
+}
 ```
 
-## TypeScript Support
-
-TypeScript types are available for design tokens:
-
 ```tsx
-import type { ThemeKey, ColorScale, SpacingScale } from '@kala-ui/design-tokens';
-
-const currentTheme: ThemeKey = 'dark';
-const primaryColor: ColorScale = 'blue.500';
-const spacingValue: SpacingScale = 'md';
+document.documentElement.classList.add("my-brand");
 ```
 
-## Best Practices
+## Component CSS classes
 
-1. **Use theme classes** - Apply theme classes at the root element, not individual components
-2. **Leverage Tailwind utilities** - Use Tailwind's `bg-`, `text-`, `border-` classes that map to theme variables
-3. **Test contrast** - Use high-contrast themes for better accessibility
-4. **Respect system preferences** - Use media queries to detect system dark mode preference
-5. **Maintain consistency** - Use design tokens instead of hard-coded values
+Styling hooks emitted by components (all `kala-` prefixed, defined in
+`@layer components` so your utilities always win):
 
-## Migration from Custom Themes
+- `kala-surface-card`, `kala-surface-input`, `kala-surface-popover` — themed
+  surface (background/border, card adds the themed shadow)
+- `kala-focus-ring`, `kala-focus-ring-destructive`, `kala-focus-ring-success`,
+  `kala-focus-within-ring`, `kala-focus-within-ring-destructive` — keyboard
+  focus rings
+- `kala-ring`, `kala-ring-destructive` — persistent (always-on) rings
 
-If you have existing custom themes, you can:
+Because these live in the `components` cascade layer, any utility or
+unlayered CSS you add beats them — `className` overrides just work:
 
-1. Map your color values to CSS variables
-2. Create a new theme class with your variables
-3. Gradually update components to use Tailwind utilities
+```tsx
+<Card className="bg-red-500/10 border-red-500" /> // wins over kala-surface-card
+```
 
-## Troubleshooting
+## Using with your own Tailwind build
 
-**Styles not loading:**
-- Ensure you've imported `@kala-ui/react/styles`
-- Check that Tailwind is configured correctly
-- Verify the content paths in `tailwind.config.ts`
+Two supported recipes:
 
-**Theme not applying:**
-- Make sure the theme class is on a parent element
-- Check for conflicting CSS specificity
-- Verify CSS variables are defined
+### A. Precompiled stylesheet (recommended)
 
-**Dark mode not working:**
-- Configure `darkMode` in `tailwind.config.ts`
-- Ensure the `dark` class is applied to the root element
-- Check that all components use theme-aware classes
+```ts
+import "@kala-ui/react/styles";
+```
 
-## Support
+Works with any setup — Tailwind or not, any framework. Utilities referenced
+by kala-ui components are already compiled in.
 
-For issues or questions about theming:
-- Check the [Storybook documentation](https://krr2020.com/kala-ui)
-- Review the source code in `packages/react/src/styles/globals.css`
-- Check design tokens in `packages/design-tokens/src/`
+### B. Compile kala-ui into your own Tailwind v4 build
+
+```css
+@import "tailwindcss";
+@source "../node_modules/@kala-ui/react/dist";
+@import "@kala-ui/react/styles/helpers";
+
+/* tokens — start from the :root block of @kala-ui/react/styles
+   and customize: */
+:root {
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+}
+
+/* mirror kala-ui's class-based dark mode: */
+@custom-variant dark (&:where(.dark, .dark *));
+```
+
+- `@source` scans the shipped JS for utility class names so they compile.
+- `helpers.css` carries the `kala-*` component classes (already layered).
+- Token definitions are NOT included in this mode — copy the default `:root`
+  and `.dark` blocks from `@kala-ui/react/styles` once, then customize;
+  otherwise components fall back to inherited/initial values for colors.
+
+## Charts
+
+Charts (`Chart`, `LineChart`, `AreaChart`, `BarChart`, `DonutChart`,
+`RadialBarChart`, `SparklineChart`) are theme-aware with zero config:
+
+- Series colors derive from `--primary`, `--success`, `--warning`,
+  `--destructive`, `--info` (lighter tints in light themes, darker shades in
+  dark themes, computed with `color-mix`).
+- Grid lines follow `--border`, axis labels follow `--muted-foreground`,
+  tooltips follow `--popover` / `--popover-foreground`.
+- Theme switches (`.dark` etc. on `<html>`) are picked up live via a
+  `MutationObserver` — no remount needed.
+- Explicit `color`/`colors` props still win for one-off branding.
+
+## FAQ
+
+**Do I need `@kala-ui/design-tokens`?** Only if you want the primitive
+palette scales (hex ramps, spacing, typography) in JS — e.g. for canvas
+rendering or non-CSS contexts. Theming itself never requires it; CSS is the
+source of truth.
+
+**How do I remove the rounded look globally?**
+`:root { --kala-radius-control: 0; --kala-radius-card: 0; }`
+
+**How do I make dialog scrims less dark?**
+`:root { --overlay: hsl(0 0% 0%); --overlay-alpha: 0.3; }`
