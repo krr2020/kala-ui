@@ -19,16 +19,20 @@
 		"rules": {
 			"complexity": {
 				"noImportantStyles": "off"
-			},
-			"suspicious": {
-				"noArrayIndexKey": "off"
-			},
-			"a11y": {
-				"noStaticElementInteractions": "off"
 			}
 		}
 	},
 	"overrides": [
+		{
+			"includes": ["src/components/tree-view/tree-view.tsx"],
+			"linter": {
+				"rules": {
+					"a11y": {
+						"noNoninteractiveElementToInteractiveRole": "off"
+					}
+				}
+			}
+		},
 		{
 			"includes": ["**/*.test.ts", "**/*.test.tsx"],
 			"linter": {
@@ -39,6 +43,9 @@
 					},
 					"suspicious": {
 						"noExplicitAny": "off"
+					},
+					"a11y": {
+						"noStaticElementInteractions": "off"
 					},
 					"style": {
 						"noNonNullAssertion": "off"
