@@ -9,14 +9,14 @@ export interface MetricCardProps
 	change?: number;
 	changeLabel?: string;
 	subtitle?: string;
-	variant?:
+	color?:
 		| "primary"
+		| "secondary"
+		| "destructive"
 		| "success"
 		| "warning"
 		| "info"
-		| "destructive"
-		| "secondary"
-		| "default";
+		| "muted";
 	isLoading?: boolean;
 	skeletonConfig?: MetricCardSkeletonConfig;
 	skeleton?: React.ReactNode;

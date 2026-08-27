@@ -110,20 +110,18 @@ export const avatarFallbackStyles = {
 			rounded: "rounded-md",
 			square: "rounded-none",
 		},
-		variant: {
-			default: "bg-primary text-primary-foreground",
+		color: {
 			primary: "bg-primary text-primary-foreground",
 			secondary: "bg-secondary text-secondary-foreground",
+			destructive: "bg-destructive text-destructive-foreground",
 			success: "bg-success text-success-foreground",
 			warning: "bg-warning text-warning-foreground",
-			danger: "bg-destructive text-destructive-foreground",
-			destructive: "bg-destructive text-destructive-foreground",
 			info: "bg-info text-info-foreground",
 			muted: "bg-muted text-muted-foreground",
 		},
 	},
 	defaultVariants: {
 		shape: "circle",
-		variant: "default",
+		color: "primary",
 	} as const,
 };

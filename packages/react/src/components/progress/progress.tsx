@@ -5,7 +5,7 @@ import * as React from "react";
 import { cn } from "../../lib/utils";
 import type { ProgressBarProps, ProgressProps } from "./progress.types";
 
-type ProgressColor = "default" | "success" | "info" | "warning" | "destructive";
+type ProgressColor = "primary" | "secondary" | "destructive" | "success" | "warning" | "info";
 type ProgressSize = "sm" | "md" | "lg";
 
 const sizeClasses: Record<ProgressSize, string> = {
@@ -15,11 +15,12 @@ const sizeClasses: Record<ProgressSize, string> = {
 };
 
 const colorClasses: Record<ProgressColor, string> = {
-	default: "bg-primary",
-	success: "bg-success",
-	info: "bg-info",
-	warning: "bg-warning",
+	primary: "bg-primary",
+	secondary: "bg-secondary",
 	destructive: "bg-destructive",
+	success: "bg-success",
+	warning: "bg-warning",
+	info: "bg-info",
 };
 
 const stripedGradient =
@@ -35,7 +36,7 @@ const Progress = React.forwardRef<
 			value = 0,
 			max = 100,
 			min = 0,
-			color = "default",
+			color = "primary",
 			size = "md",
 			striped = false,
 			animated = false,
@@ -48,8 +49,6 @@ const Progress = React.forwardRef<
 		// Clamp value between min and max
 		const clampedValue = Math.min(Math.max(value ?? 0, min), max);
 		const percentage = ((clampedValue - min) / (max - min)) * 100;
-
-		const variantColor = color === "danger" ? "destructive" : color;
 
 		return (
 			<ProgressPrimitive.Root
@@ -66,7 +65,7 @@ const Progress = React.forwardRef<
 				<ProgressPrimitive.Indicator
 					className={cn(
 						"h-full w-full flex-1 transition-all duration-500 ease-in-out",
-						colorClasses[variantColor],
+						colorClasses[color],
 						striped && stripedGradient,
 						striped && "bg-size-[1rem_1rem]",
 						animated && striped && "animate-progress-stripes",
@@ -77,11 +76,11 @@ const Progress = React.forwardRef<
 						<span
 							className={cn(
 								"flex h-full items-center justify-center text-xs font-medium",
-								variantColor === "default" && "text-primary-foreground",
-								variantColor === "success" && "text-success-foreground",
-								variantColor === "info" && "text-info-foreground",
-								variantColor === "warning" && "text-warning-foreground",
-								variantColor === "destructive" && "text-destructive-foreground",
+								color === "primary" && "text-primary-foreground",
+								color === "success" && "text-success-foreground",
+								color === "info" && "text-info-foreground",
+								color === "warning" && "text-warning-foreground",
+								color === "destructive" && "text-destructive-foreground",
 								size === "md" && "text-[10px]",
 								size === "lg" && "text-xs",
 							)}
@@ -104,7 +103,7 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
 	(
 		{
 			value,
-			color = "default",
+			color = "primary",
 			striped = false,
 			animated = false,
 			label,
@@ -112,8 +111,6 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
 		},
 		ref,
 	) => {
-		const variantColor = color === "danger" ? "destructive" : color;
-
 		return (
 			<div
 				ref={ref}
@@ -123,7 +120,7 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
 				aria-valuemax={100}
 				className={cn(
 					"h-full transition-all duration-500 ease-in-out flex items-center justify-center",
-					colorClasses[variantColor],
+					colorClasses[color],
 					striped && stripedGradient,
 					striped && "bg-size-[1rem_1rem]",
 					animated && striped && "animate-progress-stripes",
@@ -135,11 +132,11 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
 					<span
 						className={cn(
 							"text-xs font-medium px-2",
-							variantColor === "default" && "text-primary-foreground",
-							variantColor === "success" && "text-success-foreground",
-							variantColor === "info" && "text-info-foreground",
-							variantColor === "warning" && "text-warning-foreground",
-							variantColor === "destructive" && "text-destructive-foreground",
+							color === "primary" && "text-primary-foreground",
+							color === "success" && "text-success-foreground",
+							color === "info" && "text-info-foreground",
+							color === "warning" && "text-warning-foreground",
+							color === "destructive" && "text-destructive-foreground",
 						)}
 					>
 						{label}

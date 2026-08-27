@@ -222,9 +222,9 @@ export interface EmptyStateSkeletonConfig {
  */
 export interface BannerSkeletonConfig {
 	/**
-	 * Banner variant
+	 * Banner semantic color
 	 */
-	variant?: "default" | "info" | "warning" | "error" | "success";
+	color?: "info" | "warning" | "destructive" | "success";
 	/**
 	 * Show icon in skeleton
 	 */
@@ -240,17 +240,22 @@ export interface BannerSkeletonConfig {
  */
 export interface AlertSkeletonConfig {
 	/**
-	 * Alert variant
+	 * Alert fill style
+	 * @default "subtle"
 	 */
-	variant?:
-		| "default"
+	variant?: "subtle" | "outline" | "solid";
+	/**
+	 * Alert semantic color
+	 * @default "primary"
+	 */
+	color?:
 		| "primary"
 		| "secondary"
-		| "success"
-		| "danger"
 		| "destructive"
+		| "success"
 		| "warning"
-		| "info";
+		| "info"
+		| "muted";
 	/**
 	 * Show icon in skeleton
 	 */

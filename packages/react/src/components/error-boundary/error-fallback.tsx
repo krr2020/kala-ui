@@ -92,11 +92,7 @@ export function ErrorFallback({
 				</details>
 			)}
 
-			{reset && (
-				<Button onClick={reset} variant="default">
-					Try Again
-				</Button>
-			)}
+			{reset && <Button onClick={reset}>Try Again</Button>}
 		</div>
 	);
 }

@@ -21,20 +21,20 @@ const alertVariants = cva(alertStyles.base, {
 	defaultVariants: alertStyles.defaultVariants,
 });
 
-const variantIcons = {
+const colorIcons = {
 	primary: Info,
 	secondary: Info,
-	success: CheckCircle2,
-	danger: AlertCircle,
 	destructive: AlertCircle,
+	success: CheckCircle2,
 	warning: AlertTriangle,
 	info: Info,
+	muted: Info,
 };
 
 function Alert({
 	className,
-	variant = "primary",
-	style: alertStyle,
+	variant = "subtle",
+	color = "primary",
 	dismissable = false,
 	onDismiss,
 	showIcon = true,
@@ -50,10 +50,7 @@ function Alert({
 			return (
 				<Box
 					data-slot="alert"
-					className={cn(
-						alertVariants({ variant, style: alertStyle }),
-						className,
-					)}
+					className={cn(alertVariants({ variant, color }), className)}
 					{...props}
 				>
 					{skeleton}
@@ -62,7 +59,8 @@ function Alert({
 		}
 		return (
 			<AlertSkeleton
-				variant={variant || "default"}
+				variant={variant ?? "subtle"}
+				color={color ?? "primary"}
 				showIcon={showIcon}
 				className={className}
 				{...props}
@@ -77,9 +75,7 @@ function Alert({
 
 	if (!isVisible) return null;
 
-	const Icon = variant
-		? variantIcons[variant as keyof typeof variantIcons]
-		: Info;
+	const Icon = colorIcons[color ?? "primary"] ?? Info;
 	const hasCustomIcon = React.Children.toArray(children).some((child) => {
 		if (!React.isValidElement(child)) return false;
 		const type = child.type;
@@ -105,7 +101,7 @@ function Alert({
 			data-slot="alert"
 			role="alert"
 			className={cn(
-				alertVariants({ variant, style: alertStyle }),
+				alertVariants({ variant, color }),
 				dismissable && "pr-10",
 				className,
 			)}

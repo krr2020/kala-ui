@@ -247,7 +247,7 @@ describe("Avatar", () => {
 	it("should render AvatarFallback with muted variant", () => {
 		const { container } = render(
 			<Avatar>
-				<AvatarFallback variant="muted">MU</AvatarFallback>
+				<AvatarFallback color="muted">MU</AvatarFallback>
 			</Avatar>,
 		);
 

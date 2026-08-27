@@ -202,7 +202,7 @@ export interface BulkAction<TData> {
 	/** Disabled state */
 	disabled?: boolean;
 	/** Variant (default, destructive, etc.) */
-	variant?: "default" | "destructive" | "outline" | "secondary";
+	variant?: "solid" | "ghost" | "outline" | "subtle" | "link" | "destructive";
 	/** Requires confirmation */
 	requireConfirmation?: boolean;
 	/** Confirmation message */

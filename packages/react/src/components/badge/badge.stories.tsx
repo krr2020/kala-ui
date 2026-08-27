@@ -37,14 +37,14 @@ type Story = StoryObj<typeof meta>;
 export const ContextualVariations: Story = {
 	render: () => (
 		<div className="flex gap-2 flex-wrap items-center">
-			<Badge variant="primary">Primary</Badge>
+			<Badge>Primary</Badge>
 			<Badge variant="secondary">Secondary</Badge>
-			<Badge variant="success">Success</Badge>
-			<Badge variant="danger">Danger</Badge>
-			<Badge variant="warning">Warning</Badge>
-			<Badge variant="info">Info</Badge>
-			<Badge variant="light">Light</Badge>
-			<Badge variant="dark">Dark</Badge>
+			<Badge color="success">Success</Badge>
+			<Badge color="destructive">Danger</Badge>
+			<Badge color="warning">Warning</Badge>
+			<Badge color="info">Info</Badge>
+			<Badge color="muted">Light</Badge>
+			<Badge color="muted">Dark</Badge>
 		</div>
 	),
 };
@@ -53,28 +53,28 @@ export const ContextualVariations: Story = {
 export const PillBadges: Story = {
 	render: () => (
 		<div className="flex gap-2 flex-wrap items-center">
-			<Badge variant="primary" shape="pill">
+			<Badgeshape="pill">
 				Primary
 			</Badge>
-			<Badge variant="secondary" shape="pill">
+			<Badge color="secondary" shape="pill">
 				Secondary
 			</Badge>
-			<Badge variant="success" shape="pill">
+			<Badge color="success" shape="pill">
 				Success
 			</Badge>
-			<Badge variant="danger" shape="pill">
+			<Badge color="destructive" shape="pill">
 				Danger
 			</Badge>
-			<Badge variant="warning" shape="pill">
+			<Badge color="warning" shape="pill">
 				Warning
 			</Badge>
-			<Badge variant="info" shape="pill">
+			<Badge color="info" shape="pill">
 				Info
 			</Badge>
-			<Badge variant="light" shape="pill">
+			<Badge color="muted" shape="pill">
 				Light
 			</Badge>
-			<Badge variant="dark" shape="pill">
+			<Badge color="muted" shape="pill">
 				Dark
 			</Badge>
 		</div>
@@ -85,28 +85,28 @@ export const PillBadges: Story = {
 export const LinkBadges: Story = {
 	render: () => (
 		<div className="flex gap-2 flex-wrap items-center">
-			<Badge variant="primary" asChild>
+			<BadgeasChild>
 				<a href="/">Primary</a>
 			</Badge>
-			<Badge variant="secondary" asChild>
+			<Badge color="secondary" asChild>
 				<a href="/">Secondary</a>
 			</Badge>
-			<Badge variant="success" asChild>
+			<Badge color="success" asChild>
 				<a href="/">Success</a>
 			</Badge>
-			<Badge variant="danger" asChild>
+			<Badge color="destructive" asChild>
 				<a href="/">Danger</a>
 			</Badge>
-			<Badge variant="warning" asChild>
+			<Badge color="warning" asChild>
 				<a href="/">Warning</a>
 			</Badge>
-			<Badge variant="info" asChild>
+			<Badge color="info" asChild>
 				<a href="/">Info</a>
 			</Badge>
-			<Badge variant="light" asChild>
+			<Badge color="muted" asChild>
 				<a href="/">Light</a>
 			</Badge>
-			<Badge variant="dark" asChild>
+			<Badge color="muted" asChild>
 				<a href="/">Dark</a>
 			</Badge>
 		</div>

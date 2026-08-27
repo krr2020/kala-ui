@@ -16,19 +16,19 @@ describe("Banner", () => {
 	});
 
 	it("should render with warning variant", () => {
-		render(<Banner variant="warning">Warning message</Banner>);
+		render(<Banner color="warning">Warning message</Banner>);
 		const banner = screen.getByRole("status");
 		expect(banner).toHaveClass("bg-warning", "text-warning-foreground");
 	});
 
 	it("should render with error variant", () => {
-		render(<Banner variant="error">Error message</Banner>);
+		render(<Banner color="destructive">Error message</Banner>);
 		const banner = screen.getByRole("status");
 		expect(banner).toHaveClass("bg-destructive", "text-destructive-foreground");
 	});
 
 	it("should render with success variant", () => {
-		render(<Banner variant="success">Success message</Banner>);
+		render(<Banner color="success">Success message</Banner>);
 		const banner = screen.getByRole("status");
 		expect(banner).toHaveClass("bg-success", "text-success-foreground");
 	});

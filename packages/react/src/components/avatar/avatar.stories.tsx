@@ -96,25 +96,25 @@ export const Initials: Story = {
 	render: () => (
 		<div className="flex gap-4 items-center">
 			<Avatar size="xs">
-				<AvatarFallback variant="primary">DF</AvatarFallback>
+				<AvatarFallback>DF</AvatarFallback>
 			</Avatar>
 			<Avatar size="sm">
 				<AvatarFallback variant="primary">DF</AvatarFallback>
 			</Avatar>
 			<Avatar size="lg">
-				<AvatarFallback variant="primary">DF</AvatarFallback>
+				<AvatarFallback>DF</AvatarFallback>
 			</Avatar>
 			<Avatar size="lg">
-				<AvatarFallback variant="primary">DF</AvatarFallback>
+				<AvatarFallback>DF</AvatarFallback>
 			</Avatar>
 			<Avatar size="xl">
-				<AvatarFallback variant="primary">DF</AvatarFallback>
+				<AvatarFallback>DF</AvatarFallback>
 			</Avatar>
 			<Avatar size="xl">
-				<AvatarFallback variant="primary">DF</AvatarFallback>
+				<AvatarFallback>DF</AvatarFallback>
 			</Avatar>
 			<Avatar size="xl">
-				<AvatarFallback variant="primary">DF</AvatarFallback>
+				<AvatarFallback>DF</AvatarFallback>
 			</Avatar>
 		</div>
 	),
@@ -125,22 +125,22 @@ export const InitialsVariants: Story = {
 	render: () => (
 		<div className="flex gap-4 items-center">
 			<Avatar size="lg">
-				<AvatarFallback variant="primary">PR</AvatarFallback>
+				<AvatarFallback>PR</AvatarFallback>
 			</Avatar>
 			<Avatar size="lg">
-				<AvatarFallback variant="secondary">SE</AvatarFallback>
+				<AvatarFallback color="secondary">SE</AvatarFallback>
 			</Avatar>
 			<Avatar size="lg">
-				<AvatarFallback variant="success">SU</AvatarFallback>
+				<AvatarFallback color="success">SU</AvatarFallback>
 			</Avatar>
 			<Avatar size="lg">
-				<AvatarFallback variant="danger">DA</AvatarFallback>
+				<AvatarFallback color="destructive">DA</AvatarFallback>
 			</Avatar>
 			<Avatar size="lg">
-				<AvatarFallback variant="warning">WA</AvatarFallback>
+				<AvatarFallback color="warning">WA</AvatarFallback>
 			</Avatar>
 			<Avatar size="lg">
-				<AvatarFallback variant="info">IN</AvatarFallback>
+				<AvatarFallback color="info">IN</AvatarFallback>
 			</Avatar>
 		</div>
 	),
@@ -159,7 +159,7 @@ export const StatusIndicators: Story = {
 				<AvatarFallback>OF</AvatarFallback>
 			</Avatar>
 			<Avatar size="xl" status="online">
-				<AvatarFallback variant="primary">DF</AvatarFallback>
+				<AvatarFallback>DF</AvatarFallback>
 			</Avatar>
 		</div>
 	),

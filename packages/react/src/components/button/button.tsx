@@ -12,6 +12,7 @@ import type { ButtonProps } from "./button.types";
 
 const buttonVariants = cva(buttonStyles.base, {
 	variants: buttonStyles.variants,
+	compoundVariants: buttonStyles.compoundVariants as never,
 	defaultVariants: buttonStyles.defaultVariants,
 });
 
@@ -20,6 +21,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		{
 			className,
 			variant,
+			color,
 			size,
 			fullWidth,
 			rounded,
@@ -36,7 +38,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		return (
 			<Comp
 				className={cn(
-					buttonVariants({ variant, size, fullWidth, rounded, className }),
+					buttonVariants({
+						variant,
+						color,
+						size,
+						fullWidth,
+						rounded,
+						className,
+					}),
 					// asChild renders arbitrary elements (e.g. <a>) where the
 					// `disabled` attribute is invalid — fall back to ARIA + CSS
 					asChild &&

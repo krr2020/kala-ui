@@ -48,7 +48,7 @@ export const BasicExample: Story = {
 				</CardDescription>
 			</CardContent>
 			<CardFooter>
-				<Button variant="primary">Go somewhere</Button>
+				<Button>Go somewhere</Button>
 			</CardFooter>
 		</Card>
 	),
@@ -352,7 +352,7 @@ export const CardGrid: Story = {
 export const WithBasicMarker: Story = {
 	render: () => (
 		<Card className="relative w-[350px] overflow-hidden">
-			<CardMarker position="top-left" color="danger">
+			<CardMarker position="top-left" color="destructive">
 				SALE
 			</CardMarker>
 			<CardImage
@@ -476,7 +476,7 @@ export const WithIconMarker: Story = {
 			</Card>
 
 			<Card className="relative w-[300px] overflow-hidden">
-				<CardMarker position="top-right" variant="icon" color="danger">
+				<CardMarker position="top-right" variant="icon" color="destructive">
 					<Tag className="h-5 w-5" />
 				</CardMarker>
 				<CardImage
@@ -499,7 +499,7 @@ export const WithRibbonMarker: Story = {
 	render: () => (
 		<div className="flex flex-wrap gap-4">
 			<Card className="relative w-[300px] overflow-hidden">
-				<CardMarker position="top-left" variant="ribbon" color="danger">
+				<CardMarker position="top-left" variant="ribbon" color="destructive">
 					SALE
 				</CardMarker>
 				<CardImage
@@ -604,7 +604,7 @@ export const MarkerColors: Story = {
 			</Card>
 
 			<Card className="relative w-[250px] overflow-hidden">
-				<CardMarker color="danger">Danger</CardMarker>
+				<CardMarker color="destructive">Danger</CardMarker>
 				<CardImage
 					src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=150&fit=crop"
 					alt="Product"
@@ -634,7 +634,7 @@ export const MarkerColors: Story = {
 export const EcommerceProduct: Story = {
 	render: () => (
 		<Card className="relative w-[350px] overflow-hidden">
-			<CardMarker position="top-left" color="danger">
+			<CardMarker position="top-left" color="destructive">
 				30% OFF
 			</CardMarker>
 			<CardMarker position="top-right" variant="icon" color="success">
@@ -668,9 +668,7 @@ export const EcommerceProduct: Story = {
 				</div>
 			</CardContent>
 			<CardFooter className="gap-2">
-				<Button className="flex-1" variant="primary">
-					Add to Cart
-				</Button>
+				<Button className="flex-1">Add to Cart</Button>
 				<Button variant="outline">
 					<Heart className="h-4 w-4" />
 				</Button>

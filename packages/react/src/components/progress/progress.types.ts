@@ -1,7 +1,7 @@
 import type * as ProgressPrimitive from "@radix-ui/react-progress";
 import type * as React from "react";
 
-type ProgressColor = "default" | "success" | "info" | "warning" | "destructive";
+type ProgressColor = "primary" | "secondary" | "destructive" | "success" | "warning" | "info";
 type ProgressSize = "sm" | "md" | "lg";
 
 export interface ProgressProps
@@ -24,7 +24,7 @@ export interface ProgressProps
 	 * Color variant
 	 * @default "default"
 	 */
-	color?: ProgressColor | "danger";
+	color?: ProgressColor;
 	/**
 	 * Size variant
 	 * @default "md"
@@ -53,7 +53,7 @@ export interface ProgressProps
 
 export interface ProgressBarProps {
 	value: number;
-	color?: ProgressColor | "danger";
+	color?: ProgressColor;
 	striped?: boolean;
 	animated?: boolean;
 	label?: string;

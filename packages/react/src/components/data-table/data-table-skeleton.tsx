@@ -122,7 +122,7 @@ export function DataTableSkeleton<TData = unknown>({
 					{Array.from({ length: filterCount }).map((_, i) => (
 						<Badge
 							key={`filter-${i}`}
-							variant="secondary"
+							color="secondary"
 							className="gap-1.5 pl-2 pr-1 py-1 bg-primary/10 text-primary border-primary/20"
 						>
 							<span className="text-xs font-medium">Filter: Value</span>

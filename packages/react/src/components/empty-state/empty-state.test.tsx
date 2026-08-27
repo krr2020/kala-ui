@@ -136,7 +136,7 @@ describe("EmptyState", () => {
 
 		it("renders with destructive variant", () => {
 			const { container } = render(
-				<EmptyState title="No data" variant="destructive" />,
+				<EmptyState title="No data" color="destructive" />,
 			);
 			expect(container.firstChild).toHaveClass("border-destructive/20");
 		});
@@ -148,7 +148,7 @@ describe("EmptyState", () => {
 
 		it("applies correct background for destructive variant", () => {
 			const { container } = render(
-				<EmptyState title="No data" variant="destructive" />,
+				<EmptyState title="No data" color="destructive" />,
 			);
 			expect(container.firstChild).toHaveClass("bg-destructive/10");
 		});

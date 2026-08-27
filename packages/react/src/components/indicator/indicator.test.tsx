@@ -227,7 +227,7 @@ describe("Indicator", () => {
 
 	it("renders with danger color", () => {
 		const { container } = render(
-			<Indicator color="danger">
+			<Indicator color="destructive">
 				<div>Target</div>
 			</Indicator>,
 		);
@@ -532,7 +532,7 @@ describe("Indicator", () => {
 	it("indicatorVariants function produces expected output", () => {
 		const result = indicatorVariants({
 			position: "top-right",
-			color: "danger",
+			color: "destructive",
 			withBorder: true,
 			processing: true,
 		});

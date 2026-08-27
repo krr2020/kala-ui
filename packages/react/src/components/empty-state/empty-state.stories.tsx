@@ -65,7 +65,7 @@ export const Showcase: Story = {
 				title="Access denied"
 				description="You don't have permission to view this content."
 				icon={Lock}
-				variant="destructive"
+				color="destructive"
 			/>
 			<EmptyState
 				title="No users found"

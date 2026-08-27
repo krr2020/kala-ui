@@ -1,80 +1,114 @@
+/**
+ * Popover styles.
+ *
+ * `variant` — "default" (surface) or "solid" (fully colored body; requires
+ * `color`). `headerColor` tints the PopoverHeader strip on an otherwise
+ * default popover. The arrow follows the effective color.
+ */
+export const POPOVER_COLORS = [
+	"primary",
+	"secondary",
+	"destructive",
+	"success",
+	"warning",
+	"info",
+	"muted",
+] as const;
+
+export type PopoverColor = (typeof POPOVER_COLORS)[number];
+
 export const popoverStyles = {
 	base: "z-30 w-72 origin-(--radix-popover-content-transform-origin) rounded-md drop-shadow-md outline-hidden data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1 duration-200",
 	variants: {
 		variant: {
 			default: "bg-popover text-popover-foreground border kala-surface-popover",
-			"header-primary": "bg-popover text-popover-foreground border-0",
-			"header-secondary": "bg-popover text-popover-foreground border-0",
-			"header-success": "bg-popover text-popover-foreground border-0",
-			"header-danger": "bg-popover text-popover-foreground border-0",
-			"header-warning": "bg-popover text-popover-foreground border-0",
-			"header-info": "bg-popover text-popover-foreground border-0",
-			primary: "bg-primary text-primary-foreground border-0",
-			secondary: "bg-secondary text-secondary-foreground border-0",
-			success: "bg-success text-success-foreground border-0",
-			danger: "bg-destructive text-destructive-foreground border-0",
-			warning: "bg-warning text-warning-foreground border-0",
-			info: "bg-info text-info-foreground border-0",
+			solid: "border-0",
+		},
+		color: {
+			primary: "",
+			secondary: "",
+			destructive: "",
+			success: "",
+			warning: "",
+			info: "",
+			muted: "",
 		},
 		padding: {
 			md: "p-4",
 			none: "",
 		},
 	},
+	compoundVariants: [
+		{
+			variant: "solid",
+			color: "primary",
+			className: "bg-primary text-primary-foreground",
+		},
+		{
+			variant: "solid",
+			color: "secondary",
+			className: "bg-secondary text-secondary-foreground",
+		},
+		{
+			variant: "solid",
+			color: "destructive",
+			className: "bg-destructive text-destructive-foreground",
+		},
+		{
+			variant: "solid",
+			color: "success",
+			className: "bg-success text-success-foreground",
+		},
+		{
+			variant: "solid",
+			color: "warning",
+			className: "bg-warning text-warning-foreground",
+		},
+		{
+			variant: "solid",
+			color: "info",
+			className: "bg-info text-info-foreground",
+		},
+		{
+			variant: "solid",
+			color: "muted",
+			className: "bg-muted text-muted-foreground",
+		},
+	],
 	defaultVariants: {
 		variant: "default",
+		color: "primary",
 		padding: "md",
 	},
 	header: {
-		base: "font-semibold border-b border-muted-foreground rounded-t-md",
+		base: "font-semibold border-b border-muted-foreground rounded-t-md px-4 py-3",
 		variants: {
-			variant: {
-				"header-primary":
-					"bg-primary text-primary-foreground px-4 py-3 border-transparent",
-				"header-secondary":
-					"bg-secondary text-secondary-foreground px-4 py-3 border-transparent",
-				"header-success":
-					"bg-success text-success-foreground px-4 py-3 border-transparent",
-				"header-danger":
-					"bg-destructive text-destructive-foreground px-4 py-3 border-transparent",
-				"header-warning":
-					"bg-warning text-warning-foreground px-4 py-3 border-transparent",
-				"header-info":
-					"bg-info text-info-foreground px-4 py-3 border-transparent",
-				default: "px-4 py-3",
-				primary: "px-4 py-2 border-white/20",
-				secondary: "px-4 py-2 border-white/20",
-				success: "px-4 py-2 border-white/20",
-				danger: "px-4 py-2 border-white/20",
-				warning: "px-4 py-2 border-white/20",
-				info: "px-4 py-2 border-white/20",
+			color: {
+				primary: "bg-primary text-primary-foreground border-transparent",
+				secondary: "bg-secondary text-secondary-foreground border-transparent",
+				destructive:
+					"bg-destructive text-destructive-foreground border-transparent",
+				success: "bg-success text-success-foreground border-transparent",
+				warning: "bg-warning text-warning-foreground border-transparent",
+				info: "bg-info text-info-foreground border-transparent",
+				muted: "bg-muted text-muted-foreground border-transparent",
 			},
 		},
-		defaultVariants: {
-			variant: "default",
-		},
+		defaultVariants: {},
 	},
 	arrow: {
 		base: "z-30 size-2.5",
 		variants: {
-			variant: {
-				default: "bg-popover [border-color:var(--border)] kala-surface-popover",
+			color: {
 				primary: "bg-primary border-primary",
 				secondary: "bg-secondary border-secondary",
+				destructive: "bg-destructive border-destructive",
 				success: "bg-success border-success",
-				danger: "bg-destructive border-destructive",
 				warning: "bg-warning border-warning",
 				info: "bg-info border-info",
-				"header-primary": "bg-primary border-primary",
-				"header-secondary": "bg-secondary border-secondary",
-				"header-success": "bg-success border-success",
-				"header-danger": "bg-destructive border-destructive",
-				"header-warning": "bg-warning border-warning",
-				"header-info": "bg-info border-info",
+				muted: "bg-muted border-muted",
 			},
 		},
-		defaultVariants: {
-			variant: "default",
-		},
+		defaultVariants: {},
 	},
 } as const;

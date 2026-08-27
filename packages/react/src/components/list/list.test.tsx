@@ -409,28 +409,28 @@ describe("List", () => {
 			expect(screen.getByText("5")).toBeInTheDocument();
 		});
 
-		it("should apply variant classes", () => {
+		it("should apply color classes", () => {
 			const { rerender } = render(
 				<List>
 					<ListItem>
-						<ListItemBadge variant="primary">Badge</ListItemBadge>
+						<ListItemBadge color="primary">Badge</ListItemBadge>
 					</ListItem>
 				</List>,
 			);
 
 			let badge = screen.getByText("Badge");
-			expect(badge).toHaveClass("bg-primary");
+			expect(badge).toHaveClass("bg-primary/10", "text-primary");
 
 			rerender(
 				<List>
 					<ListItem>
-						<ListItemBadge variant="danger">Badge</ListItemBadge>
+						<ListItemBadge color="destructive">Badge</ListItemBadge>
 					</ListItem>
 				</List>,
 			);
 
 			badge = screen.getByText("Badge");
-			expect(badge).toHaveClass("bg-destructive");
+			expect(badge).toHaveClass("bg-destructive/10", "text-destructive");
 		});
 	});
 

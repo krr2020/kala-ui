@@ -37,12 +37,12 @@ describe("BannerSkeleton", () => {
 	});
 
 	it("renders with info variant", () => {
-		const { container } = render(<BannerSkeleton variant="info" />);
+		const { container } = render(<BannerSkeleton color="info" />);
 		expect(container.firstChild).toHaveClass("bg-info", "text-info-foreground");
 	});
 
 	it("renders with warning variant", () => {
-		const { container } = render(<BannerSkeleton variant="warning" />);
+		const { container } = render(<BannerSkeleton color="warning" />);
 		expect(container.firstChild).toHaveClass(
 			"bg-warning",
 			"text-warning-foreground",
@@ -50,7 +50,7 @@ describe("BannerSkeleton", () => {
 	});
 
 	it("renders with error variant", () => {
-		const { container } = render(<BannerSkeleton variant="error" />);
+		const { container } = render(<BannerSkeleton color="destructive" />);
 		expect(container.firstChild).toHaveClass(
 			"bg-destructive",
 			"text-destructive-foreground",
@@ -58,7 +58,7 @@ describe("BannerSkeleton", () => {
 	});
 
 	it("renders with success variant", () => {
-		const { container } = render(<BannerSkeleton variant="success" />);
+		const { container } = render(<BannerSkeleton color="success" />);
 		expect(container.firstChild).toHaveClass(
 			"bg-success",
 			"text-success-foreground",
@@ -66,7 +66,7 @@ describe("BannerSkeleton", () => {
 	});
 
 	it("renders with default variant", () => {
-		render(<BannerSkeleton variant="default" />);
+		render(<BannerSkeleton />);
 		expect(screen.getByTestId("banner-skeleton")).toBeInTheDocument();
 	});
 

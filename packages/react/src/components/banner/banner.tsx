@@ -20,10 +20,10 @@ export const bannerVariants = cva(
 	"w-full z-50 px-4 py-3 text-sm font-medium flex items-center justify-between gap-4",
 	{
 		variants: {
-			variant: {
+			color: {
 				info: "bg-info text-info-foreground",
 				warning: "bg-warning text-warning-foreground",
-				error: "bg-destructive text-destructive-foreground",
+				destructive: "bg-destructive text-destructive-foreground",
 				success: "bg-success text-success-foreground",
 			},
 			position: {
@@ -32,14 +32,14 @@ export const bannerVariants = cva(
 			},
 		},
 		defaultVariants: {
-			variant: "info",
+			color: "info",
 			position: "fixed",
 		},
 	},
 );
 
 export interface BannerProps
-	extends React.ComponentProps<"div">,
+	extends Omit<React.ComponentProps<"div">, "color">,
 		VariantProps<typeof bannerVariants> {
 	onClose?: () => void;
 	/**
@@ -59,7 +59,7 @@ export interface BannerProps
 
 export function Banner({
 	className,
-	variant,
+	color,
 	position,
 	onClose,
 	children,
@@ -73,7 +73,7 @@ export function Banner({
 		if (skeleton) {
 			return (
 				<div
-					className={cn(bannerVariants({ variant, position }), className)}
+					className={cn(bannerVariants({ color, position }), className)}
 					role={role}
 					{...props}
 				>
@@ -83,7 +83,7 @@ export function Banner({
 		}
 		return (
 			<BannerSkeleton
-				className={cn(bannerVariants({ variant, position }), className)}
+				className={cn(bannerVariants({ color, position }), className)}
 				{...skeletonConfig}
 			/>
 		);
@@ -91,7 +91,7 @@ export function Banner({
 
 	return (
 		<div
-			className={cn(bannerVariants({ variant, position }), className)}
+			className={cn(bannerVariants({ color, position }), className)}
 			role={role}
 			{...props}
 		>

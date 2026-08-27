@@ -46,9 +46,9 @@ export const WithArrow: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="success">Success Header Arrow</Button>
+					<Button color="success">Success Header Arrow</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="header-success" side="bottom">
+				<PopoverContent headerColor="success" side="bottom">
 					<PopoverHeader>Success Header</PopoverHeader>
 					<PopoverBody>
 						<p className="text-sm">The arrow matches the green header color.</p>
@@ -58,9 +58,9 @@ export const WithArrow: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="danger">Danger Full Arrow</Button>
+					<Button color="destructive">Danger Full Arrow</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="danger" side="right">
+				<PopoverContent color="destructive" side="right">
 					<p className="text-sm text-white p-2">
 						The arrow matches the full red background.
 					</p>
@@ -121,7 +121,7 @@ export const Directions: Story = {
 		<div className="flex gap-4 flex-wrap items-center justify-center">
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="secondary">Popover Top</Button>
+					<Button color="secondary">Popover Top</Button>
 				</PopoverTrigger>
 				<PopoverContent side="top">
 					<p className="text-sm">
@@ -132,7 +132,7 @@ export const Directions: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="secondary">Popover Right</Button>
+					<Button color="secondary">Popover Right</Button>
 				</PopoverTrigger>
 				<PopoverContent side="right">
 					<p className="text-sm">
@@ -143,7 +143,7 @@ export const Directions: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="secondary">Popover Bottom</Button>
+					<Button color="secondary">Popover Bottom</Button>
 				</PopoverTrigger>
 				<PopoverContent side="bottom">
 					<p className="text-sm">
@@ -154,7 +154,7 @@ export const Directions: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="secondary">Popover Left</Button>
+					<Button color="secondary">Popover Left</Button>
 				</PopoverTrigger>
 				<PopoverContent side="left">
 					<p className="text-sm">
@@ -197,7 +197,7 @@ export const ColoredHeaders: Story = {
 				<PopoverTrigger asChild>
 					<Button>Primary Header</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="header-primary">
+				<PopoverContent headerColor="primary">
 					<PopoverHeader>Primary Popover</PopoverHeader>
 					<PopoverBody>
 						<p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
@@ -207,9 +207,9 @@ export const ColoredHeaders: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="secondary">Secondary Header</Button>
+					<Button color="secondary">Secondary Header</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="header-secondary">
+				<PopoverContent headerColor="secondary">
 					<PopoverHeader>Secondary Popover</PopoverHeader>
 					<PopoverBody>
 						<p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
@@ -219,9 +219,9 @@ export const ColoredHeaders: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="success">Success Header</Button>
+					<Button color="success">Success Header</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="header-success">
+				<PopoverContent headerColor="success">
 					<PopoverHeader>Success Popover</PopoverHeader>
 					<PopoverBody>
 						<p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
@@ -231,9 +231,9 @@ export const ColoredHeaders: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="danger">Danger Header</Button>
+					<Button color="destructive">Danger Header</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="header-danger">
+				<PopoverContent headerColor="destructive">
 					<PopoverHeader>Danger Popover</PopoverHeader>
 					<PopoverBody>
 						<p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
@@ -243,9 +243,9 @@ export const ColoredHeaders: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="warning">Warning Header</Button>
+					<Button color="warning">Warning Header</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="header-warning">
+				<PopoverContent headerColor="warning">
 					<PopoverHeader>Warning Popover</PopoverHeader>
 					<PopoverBody>
 						<p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
@@ -255,9 +255,9 @@ export const ColoredHeaders: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="info">Info Header</Button>
+					<Button color="info">Info Header</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="header-info">
+				<PopoverContent headerColor="info">
 					<PopoverHeader>Info Popover</PopoverHeader>
 					<PopoverBody>
 						<p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
@@ -279,7 +279,7 @@ export const FullColoredBackgrounds: Story = {
 				<PopoverTrigger asChild>
 					<Button>Primary Popover</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="primary">
+				<PopoverContent>
 					<PopoverHeader>Primary Popover</PopoverHeader>
 					<PopoverBody>
 						<p>Fully colored background with primary color.</p>
@@ -289,9 +289,9 @@ export const FullColoredBackgrounds: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="secondary">Secondary Popover</Button>
+					<Button color="secondary">Secondary Popover</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="secondary">
+				<PopoverContent color="secondary">
 					<PopoverHeader>Secondary Popover</PopoverHeader>
 					<PopoverBody>
 						<p>Fully colored background with secondary color.</p>
@@ -301,9 +301,9 @@ export const FullColoredBackgrounds: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="success">Success Popover</Button>
+					<Button color="success">Success Popover</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="success">
+				<PopoverContent color="success">
 					<PopoverHeader>Success Popover</PopoverHeader>
 					<PopoverBody>
 						<p>Fully colored background with success color.</p>
@@ -313,9 +313,9 @@ export const FullColoredBackgrounds: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="danger">Danger Popover</Button>
+					<Button color="destructive">Danger Popover</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="danger">
+				<PopoverContent color="destructive">
 					<PopoverHeader>Danger Popover</PopoverHeader>
 					<PopoverBody>
 						<p>Fully colored background with danger color.</p>
@@ -325,9 +325,9 @@ export const FullColoredBackgrounds: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="warning">Warning Popover</Button>
+					<Button color="warning">Warning Popover</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="warning">
+				<PopoverContent color="warning">
 					<PopoverHeader>Warning Popover</PopoverHeader>
 					<PopoverBody>
 						<p>Fully colored background with warning color.</p>
@@ -337,9 +337,9 @@ export const FullColoredBackgrounds: Story = {
 
 			<Popover>
 				<PopoverTrigger asChild>
-					<Button variant="info">Info Popover</Button>
+					<Button color="info">Info Popover</Button>
 				</PopoverTrigger>
-				<PopoverContent variant="info">
+				<PopoverContent color="info">
 					<PopoverHeader>Info Popover</PopoverHeader>
 					<PopoverBody>
 						<p>Fully colored background with info color.</p>
@@ -407,10 +407,10 @@ export const DismissibleFocus: Story = {
 				</p>
 				<Popover open={open} onOpenChange={setOpen}>
 					<PopoverTrigger asChild>
-						<Button variant="danger">Dismissible Popover</Button>
+						<Button color="destructive">Dismissible Popover</Button>
 					</PopoverTrigger>
 					<PopoverContent
-						variant="header-danger"
+						headerColor="destructive"
 						onClick={() => setOpen(false)}
 						onPointerDownOutside={() => setOpen(false)}
 					>

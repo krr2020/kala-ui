@@ -81,7 +81,7 @@ describe("Popover", () => {
 		render(
 			<Popover>
 				<PopoverTrigger>Open</PopoverTrigger>
-				<PopoverContent variant="header-primary">Content</PopoverContent>
+				<PopoverContent headerColor="primary">Content</PopoverContent>
 			</Popover>,
 		);
 
@@ -89,7 +89,7 @@ describe("Popover", () => {
 		const content = document.body.querySelector(
 			'[data-slot="popover-content"]',
 		);
-		expect(content).toHaveAttribute("data-variant", "header-primary");
+		expect(content).toHaveAttribute("data-variant", "default");
 	});
 
 	it("should render close button", async () => {
@@ -156,7 +156,7 @@ describe("Popover", () => {
 		render(
 			<Popover>
 				<PopoverTrigger>Open</PopoverTrigger>
-				<PopoverContent variant="header-success">
+				<PopoverContent headerColor="success">
 					<PopoverHeader>Success Header</PopoverHeader>
 				</PopoverContent>
 			</Popover>,
@@ -172,7 +172,7 @@ describe("Popover", () => {
 		render(
 			<Popover>
 				<PopoverTrigger>Open</PopoverTrigger>
-				<PopoverContent variant="danger">
+				<PopoverContent variant="solid" color="destructive">
 					<PopoverHeader>Danger</PopoverHeader>
 				</PopoverContent>
 			</Popover>,
@@ -182,7 +182,7 @@ describe("Popover", () => {
 		const content = document.body.querySelector(
 			'[data-slot="popover-content"]',
 		);
-		expect(content).toHaveAttribute("data-variant", "danger");
+		expect(content).toHaveAttribute("data-variant", "solid");
 	});
 
 	it("should render arrow by default", async () => {

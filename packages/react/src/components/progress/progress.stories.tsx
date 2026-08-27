@@ -128,7 +128,7 @@ export const Colors: Story = {
 		<div className="w-96 space-y-4">
 			<div>
 				<div className="text-sm font-medium mb-2">Default</div>
-				<Progress value={40} color="default" />
+				<Progress value={40} color="primary" />
 			</div>
 			<div>
 				<div className="text-sm font-medium mb-2 text-success">Success</div>
@@ -144,7 +144,7 @@ export const Colors: Story = {
 			</div>
 			<div>
 				<div className="text-sm font-medium mb-2 text-destructive">Danger</div>
-				<Progress value={30} color="danger" />
+				<Progress value={30} color="destructive" />
 			</div>
 		</div>
 	),
@@ -166,7 +166,7 @@ export const Striped: Story = {
 			</div>
 			<div>
 				<div className="text-sm font-medium mb-2">Danger with Stripes</div>
-				<Progress value={85} color="danger" striped size="lg" />
+				<Progress value={85} color="destructive" striped size="lg" />
 			</div>
 		</div>
 	),
@@ -188,7 +188,7 @@ export const Animated: Story = {
 			</div>
 			<div>
 				<div className="text-sm font-medium mb-2">Loading...</div>
-				<Progress value={30} color="default" striped animated size="lg" />
+				<Progress value={30} color="primary" striped animated size="lg" />
 			</div>
 		</div>
 	),
@@ -203,7 +203,7 @@ export const MultipleBars: Story = {
 			<div>
 				<div className="text-sm font-medium mb-2">Storage Usage Breakdown</div>
 				<ProgressGroup size="lg">
-					<ProgressBar value={15} color="danger" label="Docs" />
+					<ProgressBar value={15} color="destructive" label="Docs" />
 					<ProgressBar value={30} color="warning" label="Images" />
 					<ProgressBar value={20} color="success" label="Videos" />
 				</ProgressGroup>
@@ -362,7 +362,7 @@ export const EdgeCases: Story = {
 				<div className="text-sm font-medium mb-2">
 					Negative value (clamped to 0)
 				</div>
-				<Progress value={-20} color="danger" size="lg" showValue />
+				<Progress value={-20} color="destructive" size="lg" showValue />
 			</div>
 			<div>
 				<div className="text-sm font-medium mb-2">

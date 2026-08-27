@@ -581,7 +581,7 @@ export function DataTable<TData>({
 						{showScrollButtons && (
 							<Flex gap={2} className="absolute bottom-4 right-4 z-10">
 								<Button
-									variant="secondary"
+									color="secondary"
 									size="icon"
 									onClick={scrollToTop}
 									className="rounded-full shadow-lg h-9 w-9 bg-background/80 backdrop-blur-sm border-border-strong/20"
@@ -590,7 +590,7 @@ export function DataTable<TData>({
 									<ArrowUp className="h-4 w-4" />
 								</Button>
 								<Button
-									variant="secondary"
+									color="secondary"
 									size="icon"
 									onClick={scrollToBottom}
 									className="rounded-full shadow-lg h-9 w-9 bg-background/80 backdrop-blur-sm border-border-strong/20"

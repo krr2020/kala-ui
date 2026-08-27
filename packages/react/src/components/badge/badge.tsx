@@ -8,12 +8,14 @@ import { Skeleton } from "../skeleton";
 
 const badgeVariants = cva(badgeStyles.base, {
 	variants: badgeStyles.variants,
+	compoundVariants: badgeStyles.compoundVariants as never,
 	defaultVariants: badgeStyles.defaultVariants,
 });
 
 function Badge({
 	className,
 	variant,
+	color,
 	shape,
 	asChild = false,
 	isLoading = false,
@@ -39,7 +41,7 @@ function Badge({
 	return (
 		<Comp
 			data-slot="badge"
-			className={cn(badgeVariants({ variant, shape }), className)}
+			className={cn(badgeVariants({ variant, color, shape }), className)}
 			{...props}
 		/>
 	);

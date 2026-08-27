@@ -324,7 +324,7 @@ describe("ButtonGroup Integration", () => {
 	it("works with Button components", () => {
 		render(
 			<ButtonGroup>
-				<Button variant="default">Edit</Button>
+				<Button>Edit</Button>
 				<Button variant="default">Delete</Button>
 			</ButtonGroup>,
 		);

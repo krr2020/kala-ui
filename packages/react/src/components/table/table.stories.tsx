@@ -557,7 +557,7 @@ export const BackgroundExample: Story = {
 						<TableCell>alice@example.com</TableCell>
 						<TableCell>Admin</TableCell>
 						<TableCell className="text-right">
-							<Badge variant="success">Active</Badge>
+							<Badge color="success">Active</Badge>
 						</TableCell>
 					</TableRow>
 					<TableRow>
@@ -565,7 +565,7 @@ export const BackgroundExample: Story = {
 						<TableCell>bob@example.com</TableCell>
 						<TableCell>User</TableCell>
 						<TableCell className="text-right">
-							<Badge variant="success">Active</Badge>
+							<Badge color="success">Active</Badge>
 						</TableCell>
 					</TableRow>
 					<TableRow>
@@ -573,7 +573,7 @@ export const BackgroundExample: Story = {
 						<TableCell>carol@example.com</TableCell>
 						<TableCell>User</TableCell>
 						<TableCell className="text-right">
-							<Badge variant="secondary">Inactive</Badge>
+							<Badge color="secondary">Inactive</Badge>
 						</TableCell>
 					</TableRow>
 				</TableBody>

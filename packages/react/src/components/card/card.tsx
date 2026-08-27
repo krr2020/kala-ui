@@ -147,17 +147,24 @@ export interface CardMarkerProps extends React.HTMLAttributes<HTMLDivElement> {
 	 */
 	variant?: "default" | "icon" | "ribbon";
 	/**
-	 * Color scheme
-	 * @default 'default'
+	 * Semantic color ('muted' renders the old dark chip)
+	 * @default 'muted'
 	 */
-	color?: "default" | "primary" | "success" | "warning" | "danger" | "info";
+	color?:
+		| "primary"
+		| "secondary"
+		| "destructive"
+		| "success"
+		| "warning"
+		| "info"
+		| "muted";
 }
 
 function CardMarker({
 	className,
 	position = "top-left",
 	variant = "default",
-	color = "default",
+	color = "muted",
 	children,
 	...props
 }: CardMarkerProps) {
@@ -169,12 +176,13 @@ function CardMarker({
 	};
 
 	const colorClasses = {
-		default: "bg-foreground text-background",
 		primary: "bg-primary text-primary-foreground",
+		secondary: "bg-secondary text-secondary-foreground",
+		destructive: "bg-destructive text-destructive-foreground",
 		success: "bg-success text-success-foreground",
 		warning: "bg-warning text-warning-foreground",
-		danger: "bg-destructive text-destructive-foreground",
 		info: "bg-info text-info-foreground",
+		muted: "bg-foreground text-background",
 	};
 
 	// Base marker styles

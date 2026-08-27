@@ -75,7 +75,7 @@ function AvatarGroup({
 
 				{overflow > 0 && (
 					<Avatar size={size} className="ring-2 ring-background -ml-2">
-						<AvatarFallback variant="muted">+{overflow}</AvatarFallback>
+						<AvatarFallback color="muted">+{overflow}</AvatarFallback>
 					</Avatar>
 				)}
 			</div>

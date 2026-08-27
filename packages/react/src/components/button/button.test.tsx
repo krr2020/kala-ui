@@ -25,13 +25,13 @@ describe("Button", () => {
 	});
 
 	it("applies secondary variant styles", () => {
-		render(<Button variant="secondary">Secondary</Button>);
+		render(<Button color="secondary">Secondary</Button>);
 		const button = screen.getByRole("button");
 		expect(button).toHaveClass("bg-secondary");
 	});
 
 	it("applies destructive variant styles", () => {
-		render(<Button variant="destructive">Delete</Button>);
+		render(<Button color="destructive">Delete</Button>);
 		const button = screen.getByRole("button");
 		expect(button).toHaveClass("bg-destructive");
 	});

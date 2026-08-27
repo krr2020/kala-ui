@@ -28,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 export const DefaultStyle: Story = {
 	render: () => (
 		<Flex direction="column" gap={4} className="w-[600px]">
-			<Alert variant="primary">
+			<Alert>
 				<AlertDescription>
 					A simple primary alert—check it out!
 				</AlertDescription>
@@ -38,20 +38,20 @@ export const DefaultStyle: Story = {
 					A simple secondary alert—check it out!
 				</AlertDescription>
 			</Alert>
-			<Alert variant="success">
+			<Alert color="success">
 				<AlertDescription>
 					A simple success alert—check it out!
 				</AlertDescription>
 			</Alert>
-			<Alert variant="danger">
+			<Alert color="destructive">
 				<AlertDescription>A simple danger alert—check it out!</AlertDescription>
 			</Alert>
-			<Alert variant="warning">
+			<Alert color="warning">
 				<AlertDescription>
 					A simple warning alert—check it out!
 				</AlertDescription>
 			</Alert>
-			<Alert variant="info">
+			<Alert color="info">
 				<AlertDescription>A simple info alert—check it out!</AlertDescription>
 			</Alert>
 		</Flex>
@@ -62,32 +62,32 @@ export const DefaultStyle: Story = {
 export const OutlineStyle: Story = {
 	render: () => (
 		<Flex direction="column" gap={4} className="w-[600px]">
-			<Alert variant="primary" style="outline">
+			<Alert variant="outline">
 				<AlertDescription>
 					An outline primary alert—check it out!
 				</AlertDescription>
 			</Alert>
-			<Alert variant="secondary" style="outline">
+			<Alert color="secondary" variant="outline">
 				<AlertDescription>
 					An outline secondary alert—check it out!
 				</AlertDescription>
 			</Alert>
-			<Alert variant="success" style="outline">
+			<Alert color="success" variant="outline">
 				<AlertDescription>
 					An outline success alert—check it out!
 				</AlertDescription>
 			</Alert>
-			<Alert variant="danger" style="outline">
+			<Alert color="destructive" variant="outline">
 				<AlertDescription>
 					An outline danger alert—check it out!
 				</AlertDescription>
 			</Alert>
-			<Alert variant="warning" style="outline">
+			<Alert color="warning" variant="outline">
 				<AlertDescription>
 					An outline warning alert—check it out!
 				</AlertDescription>
 			</Alert>
-			<Alert variant="info" style="outline">
+			<Alert color="info" variant="outline">
 				<AlertDescription>An outline info alert—check it out!</AlertDescription>
 			</Alert>
 		</Flex>
@@ -98,24 +98,24 @@ export const OutlineStyle: Story = {
 export const SolidStyle: Story = {
 	render: () => (
 		<Flex direction="column" gap={4} className="w-[600px]">
-			<Alert variant="primary" style="solid">
+			<Alert variant="solid">
 				<AlertDescription>A solid primary alert—check it out!</AlertDescription>
 			</Alert>
-			<Alert variant="secondary" style="solid">
+			<Alert color="secondary" variant="solid">
 				<AlertDescription>
 					A solid secondary alert—check it out!
 				</AlertDescription>
 			</Alert>
-			<Alert variant="success" style="solid">
+			<Alert color="success" variant="solid">
 				<AlertDescription>A solid success alert—check it out!</AlertDescription>
 			</Alert>
-			<Alert variant="danger" style="solid">
+			<Alert color="destructive" variant="solid">
 				<AlertDescription>A solid danger alert—check it out!</AlertDescription>
 			</Alert>
-			<Alert variant="warning" style="solid">
+			<Alert color="warning" variant="solid">
 				<AlertDescription>A solid warning alert—check it out!</AlertDescription>
 			</Alert>
-			<Alert variant="info" style="solid">
+			<Alert color="info" variant="solid">
 				<AlertDescription>A solid info alert—check it out!</AlertDescription>
 			</Alert>
 		</Flex>
@@ -126,25 +126,25 @@ export const SolidStyle: Story = {
 export const WithIcons: Story = {
 	render: () => (
 		<Flex direction="column" gap={4} className="w-[600px]">
-			<Alert variant="primary">
+			<Alert>
 				<InfoIcon />
 				<AlertDescription>
 					A primary alert with icon—check it out!
 				</AlertDescription>
 			</Alert>
-			<Alert variant="success">
+			<Alert color="success">
 				<CheckCircle2 />
 				<AlertDescription>
 					A success alert with icon—check it out!
 				</AlertDescription>
 			</Alert>
-			<Alert variant="warning">
+			<Alert color="warning">
 				<AlertTriangle />
 				<AlertDescription>
 					A warning alert with icon—check it out!
 				</AlertDescription>
 			</Alert>
-			<Alert variant="danger">
+			<Alert color="destructive">
 				<AlertCircle />
 				<AlertDescription>
 					A danger alert with icon—check it out!
@@ -157,7 +157,7 @@ export const WithIcons: Story = {
 // With Title and Description
 export const WithTitleAndDescription: Story = {
 	render: () => (
-		<Alert variant="success" className="w-[600px]">
+		<Alert color="success" className="w-[600px]">
 			<CheckCircle2 />
 			<AlertTitle>Well done!</AlertTitle>
 			<AlertDescription>
@@ -172,7 +172,7 @@ export const WithTitleAndDescription: Story = {
 // With Link
 export const WithLink: Story = {
 	render: () => (
-		<Alert variant="primary" className="w-[600px]">
+		<Alert className="w-[600px]">
 			<AlertDescription>
 				A simple primary alert with{" "}
 				<Box
@@ -192,14 +192,14 @@ export const WithLink: Story = {
 export const Dismissable: Story = {
 	render: () => (
 		<Flex direction="column" gap={4} className="w-[600px]">
-			<Alert variant="success" dismissable>
+			<Alert color="success" dismissable>
 				<CheckCircle2 />
 				<AlertTitle>Success</AlertTitle>
 				<AlertDescription>
 					Your changes have been saved successfully.
 				</AlertDescription>
 			</Alert>
-			<Alert variant="info" dismissable>
+			<Alert color="info" dismissable>
 				<InfoIcon />
 				<AlertTitle>Information</AlertTitle>
 				<AlertDescription>
@@ -207,7 +207,7 @@ export const Dismissable: Story = {
 				</AlertDescription>
 			</Alert>
 			<Alert
-				variant="warning"
+				color="warning"
 				dismissable
 				onDismiss={() => console.log("Warning dismissed")}
 			>
@@ -218,7 +218,7 @@ export const Dismissable: Story = {
 					callback when dismissed.
 				</AlertDescription>
 			</Alert>
-			<Alert variant="danger" dismissable>
+			<Alert color="destructive" dismissable>
 				<AlertCircle />
 				<AlertTitle>Error</AlertTitle>
 				<AlertDescription>
@@ -232,7 +232,7 @@ export const Dismissable: Story = {
 // Complex with Paragraphs
 export const ComplexAlert: Story = {
 	render: () => (
-		<Alert variant="info" className="w-[600px]">
+		<Alert color="info" className="w-[600px]">
 			<InfoIcon />
 			<AlertTitle>Information</AlertTitle>
 			<AlertDescription>

@@ -99,10 +99,7 @@ export function ColumnHeaderFilter<TData>({
 						className={`h-4 w-4 ${hasActiveFilter ? "text-primary" : "text-muted-foreground"}`}
 					/>
 					{hasActiveFilter ? (
-						<Badge
-							variant="default"
-							className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px]"
-						>
+						<Badge className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px]">
 							<Text size="xs" weight="bold" className="text-primary-foreground">
 								{column.type === "text" ? "1" : activeCount}
 							</Text>

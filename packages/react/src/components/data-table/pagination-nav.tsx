@@ -68,7 +68,7 @@ export function PaginationNav({
 				) : (
 					<Button
 						key={item}
-						variant={item === currentPage ? "default" : "outline"}
+						variant={item === currentPage ? "solid" : "outline"}
 						size="sm"
 						onClick={() => onPageChange(item as number)}
 						className="h-8 w-8 p-0 text-xs"

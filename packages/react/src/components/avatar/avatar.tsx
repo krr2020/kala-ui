@@ -107,13 +107,13 @@ export const avatarFallbackVariants = cva(avatarFallbackStyles.base, {
 });
 
 export interface AvatarFallbackProps
-	extends React.ComponentProps<typeof AvatarPrimitive.Fallback>,
+	extends Omit<React.ComponentProps<typeof AvatarPrimitive.Fallback>, "color">,
 		VariantProps<typeof avatarFallbackVariants> {}
 
 function AvatarFallback({
 	className,
 	shape: shapeProp,
-	variant,
+	color,
 	...props
 }: AvatarFallbackProps) {
 	const { shape: contextShape } = React.useContext(AvatarContext);
@@ -122,7 +122,7 @@ function AvatarFallback({
 	return (
 		<AvatarPrimitive.Fallback
 			data-slot="avatar-fallback"
-			className={cn(avatarFallbackVariants({ shape, variant }), className)}
+			className={cn(avatarFallbackVariants({ shape, color }), className)}
 			{...props}
 		/>
 	);

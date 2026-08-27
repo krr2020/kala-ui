@@ -32,7 +32,7 @@ export interface BannerSkeletonProps extends BannerSkeletonConfig {
  * ```
  */
 export function BannerSkeleton({
-	variant = "info",
+	color = "info",
 	showIcon = true,
 	showCloseButton = true,
 	className,
@@ -43,10 +43,10 @@ export function BannerSkeleton({
 			data-testid={dataTestId || "banner-skeleton"}
 			className={cn(
 				"w-full px-4 py-3 text-sm font-medium flex items-center justify-between gap-4",
-				variant === "info" && "bg-info text-info-foreground",
-				variant === "warning" && "bg-warning text-warning-foreground",
-				variant === "error" && "bg-destructive text-destructive-foreground",
-				variant === "success" && "bg-success text-success-foreground",
+				color === "info" && "bg-info text-info-foreground",
+				color === "warning" && "bg-warning text-warning-foreground",
+				color === "destructive" && "bg-destructive text-destructive-foreground",
+				color === "success" && "bg-success text-success-foreground",
 				className,
 			)}
 		>

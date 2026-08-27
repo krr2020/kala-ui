@@ -624,7 +624,7 @@ export const CustomCells: Story = {
 						</Button>
 						<Button
 							size="sm"
-							variant="destructive"
+							color="destructive"
 							onClick={() => alert(`Delete ${user.name}`)}
 						>
 							Delete

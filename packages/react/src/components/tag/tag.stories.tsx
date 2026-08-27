@@ -21,25 +21,23 @@ export const Default: Story = {
 export const Filled: Story = {
 	render: () => (
 		<div className="flex flex-wrap gap-2">
-			<Tag variant="filled" color="default">
-				Default
-			</Tag>
+			<Tag variant="solid">Default</Tag>
 			<Tag variant="filled" color="primary">
 				Primary
 			</Tag>
-			<Tag variant="filled" color="secondary">
+			<Tag variant="solid" color="secondary">
 				Secondary
 			</Tag>
-			<Tag variant="filled" color="success">
+			<Tag variant="solid" color="success">
 				Success
 			</Tag>
-			<Tag variant="filled" color="warning">
+			<Tag variant="solid" color="warning">
 				Warning
 			</Tag>
-			<Tag variant="filled" color="error">
+			<Tag variant="solid" color="destructive">
 				Error
 			</Tag>
-			<Tag variant="filled" color="info">
+			<Tag variant="solid" color="info">
 				Info
 			</Tag>
 		</div>
@@ -49,9 +47,7 @@ export const Filled: Story = {
 export const Outline: Story = {
 	render: () => (
 		<div className="flex flex-wrap gap-2">
-			<Tag variant="outline" color="default">
-				Default
-			</Tag>
+			<Tag variant="outline">Default</Tag>
 			<Tag variant="outline" color="primary">
 				Primary
 			</Tag>
@@ -64,7 +60,7 @@ export const Outline: Story = {
 			<Tag variant="outline" color="warning">
 				Warning
 			</Tag>
-			<Tag variant="outline" color="error">
+			<Tag variant="outline" color="destructive">
 				Error
 			</Tag>
 			<Tag variant="outline" color="info">
@@ -77,25 +73,23 @@ export const Outline: Story = {
 export const Soft: Story = {
 	render: () => (
 		<div className="flex flex-wrap gap-2">
-			<Tag variant="soft" color="default">
-				Default
-			</Tag>
-			<Tag variant="soft" color="primary">
+			<Tag variant="subtle">Default</Tag>
+			<Tag variant="subtle" color="primary">
 				Primary
 			</Tag>
-			<Tag variant="soft" color="secondary">
+			<Tag variant="subtle" color="secondary">
 				Secondary
 			</Tag>
-			<Tag variant="soft" color="success">
+			<Tag variant="subtle" color="success">
 				Success
 			</Tag>
-			<Tag variant="soft" color="warning">
+			<Tag variant="subtle" color="warning">
 				Warning
 			</Tag>
-			<Tag variant="soft" color="error">
+			<Tag variant="subtle" color="destructive">
 				Error
 			</Tag>
-			<Tag variant="soft" color="info">
+			<Tag variant="subtle" color="info">
 				Info
 			</Tag>
 		</div>
@@ -121,7 +115,7 @@ export const WithIcon: Story = {
 			<Tag icon={<TagIcon />} variant="outline" color="success">
 				Success
 			</Tag>
-			<Tag icon={<TagIcon />} variant="filled" color="info">
+			<Tag icon={<TagIcon />} variant="solid" color="info">
 				Info
 			</Tag>
 		</div>
@@ -135,7 +129,7 @@ export const Removable: Story = {
 			<Tag variant="outline" color="primary" onRemove={() => {}}>
 				Primary
 			</Tag>
-			<Tag variant="filled" color="success" onRemove={() => {}}>
+			<Tag variant="solid" color="success" onRemove={() => {}}>
 				Success
 			</Tag>
 		</div>
@@ -157,8 +151,8 @@ export const WithIconAndRemove: Story = {
 				Primary
 			</Tag>
 			<Tag
-				variant="filled"
-				color="error"
+				variant="solid"
+				color="destructive"
 				icon={<TagIcon />}
 				onRemove={() => {}}
 			>

@@ -43,7 +43,7 @@ export const DesignSystemOverview = () => {
 			case "Button":
 				return [
 					<Button key="default">Default</Button>,
-					<Button key="secondary" variant="secondary">
+					<Button key="secondary" color="secondary">
 						Secondary
 					</Button>,
 					<Button key="outline" variant="outline">
@@ -146,10 +146,10 @@ export const DesignSystemOverview = () => {
 				];
 			case "Alert":
 				return [
-					<Alert key="info" variant="info">
+					<Alert key="info" color="info">
 						Information alert message
 					</Alert>,
-					<Alert key="warning" variant="warning">
+					<Alert key="warning" color="warning">
 						Warning alert message
 					</Alert>,
 				];
@@ -245,7 +245,7 @@ export const DesignSystemOverview = () => {
 			case "Badge":
 				return [
 					<Badge key="default">Default</Badge>,
-					<Badge key="secondary" variant="secondary">
+					<Badge key="secondary" color="secondary">
 						Secondary
 					</Badge>,
 					<Badge key="outline" variant="outline">
@@ -294,7 +294,7 @@ export const DesignSystemOverview = () => {
 								<TableRow>
 									<TableCell>Jane Smith</TableCell>
 									<TableCell>
-										<Badge variant="secondary">Inactive</Badge>
+										<Badge color="secondary">Inactive</Badge>
 									</TableCell>
 									<TableCell>2024-01-16</TableCell>
 								</TableRow>

@@ -11,18 +11,18 @@ const tagVariants = cva(
 	{
 		variants: {
 			variant: {
-				filled: "",
+				solid: "",
 				outline: "border bg-transparent",
-				soft: "",
+				subtle: "",
 			},
 			color: {
-				default: "",
 				primary: "",
 				secondary: "",
+				destructive: "",
 				success: "",
 				warning: "",
-				error: "",
 				info: "",
+				muted: "",
 			},
 			size: {
 				sm: "text-xs px-2 py-0.5 [&_svg]:size-3",
@@ -31,47 +31,40 @@ const tagVariants = cva(
 			},
 		},
 		compoundVariants: [
-			// filled
 			{
-				variant: "filled",
-				color: "default",
-				className: "bg-primary text-primary-foreground",
-			},
-			{
-				variant: "filled",
+				variant: "solid",
 				color: "primary",
 				className: "bg-primary text-primary-foreground",
 			},
 			{
-				variant: "filled",
+				variant: "solid",
 				color: "secondary",
 				className: "bg-secondary text-secondary-foreground",
 			},
 			{
-				variant: "filled",
+				variant: "solid",
+				color: "destructive",
+				className: "bg-destructive text-destructive-foreground",
+			},
+			{
+				variant: "solid",
 				color: "success",
 				className: "bg-success text-success-foreground",
 			},
 			{
-				variant: "filled",
+				variant: "solid",
 				color: "warning",
 				className: "bg-warning text-warning-foreground",
 			},
 			{
-				variant: "filled",
-				color: "error",
-				className: "bg-destructive text-destructive-foreground",
-			},
-			{
-				variant: "filled",
+				variant: "solid",
 				color: "info",
 				className: "bg-info text-info-foreground",
 			},
-			// outline
 			{
-				variant: "outline",
-				color: "default",
-				className: "border-primary text-primary",
+				variant: "solid",
+				color: "muted",
+				className: "bg-muted text-muted-foreground",
 			},
 			{
 				variant: "outline",
@@ -81,7 +74,12 @@ const tagVariants = cva(
 			{
 				variant: "outline",
 				color: "secondary",
-				className: "border-secondary text-secondary-foreground",
+				className: "border-secondary text-secondary",
+			},
+			{
+				variant: "outline",
+				color: "destructive",
+				className: "border-destructive text-destructive",
 			},
 			{
 				variant: "outline",
@@ -95,46 +93,53 @@ const tagVariants = cva(
 			},
 			{
 				variant: "outline",
-				color: "error",
-				className: "border-destructive text-destructive",
-			},
-			{ variant: "outline", color: "info", className: "border-info text-info" },
-			// soft
-			{
-				variant: "soft",
-				color: "default",
-				className: "bg-primary/10 text-primary",
+				color: "info",
+				className: "border-info text-info",
 			},
 			{
-				variant: "soft",
+				variant: "outline",
+				color: "muted",
+				className: "border-muted-foreground text-muted-foreground",
+			},
+			{
+				variant: "subtle",
 				color: "primary",
 				className: "bg-primary/10 text-primary",
 			},
 			{
-				variant: "soft",
+				variant: "subtle",
 				color: "secondary",
-				className: "bg-secondary/20 text-secondary-foreground",
+				className: "bg-secondary/10 text-secondary",
 			},
 			{
-				variant: "soft",
+				variant: "subtle",
+				color: "destructive",
+				className: "bg-destructive/10 text-destructive",
+			},
+			{
+				variant: "subtle",
 				color: "success",
 				className: "bg-success/10 text-success",
 			},
 			{
-				variant: "soft",
+				variant: "subtle",
 				color: "warning",
 				className: "bg-warning/10 text-warning",
 			},
 			{
-				variant: "soft",
-				color: "error",
-				className: "bg-destructive/10 text-destructive",
+				variant: "subtle",
+				color: "info",
+				className: "bg-info/10 text-info",
 			},
-			{ variant: "soft", color: "info", className: "bg-info/10 text-info" },
+			{
+				variant: "subtle",
+				color: "muted",
+				className: "bg-muted text-muted-foreground",
+			},
 		],
 		defaultVariants: {
-			variant: "soft",
-			color: "default",
+			variant: "subtle",
+			color: "muted",
 			size: "md",
 		},
 	},

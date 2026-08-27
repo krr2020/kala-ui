@@ -12,14 +12,14 @@ export interface MetricCardProps
 	change?: number;
 	changeLabel?: string;
 	subtitle?: string;
-	variant?:
+	color?:
 		| "primary"
+		| "secondary"
+		| "destructive"
 		| "success"
 		| "warning"
 		| "info"
-		| "destructive"
-		| "secondary"
-		| "default";
+		| "muted";
 	isLoading?: boolean;
 	skeletonConfig?: MetricCardSkeletonConfig;
 	skeleton?: React.ReactNode;
@@ -35,7 +35,7 @@ const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
 			changeLabel,
 			subtitle,
 			className,
-			variant = "default",
+			color = "muted",
 			isLoading = false,
 			skeletonConfig,
 			skeleton,
@@ -80,32 +80,32 @@ const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
 			return changeLabel || defaultLabel;
 		};
 
-		const getVariantStyles = () => {
-			switch (variant) {
+		const getColorStyles = () => {
+			switch (color) {
 				case "primary":
 					return "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground";
+				case "secondary":
+					return "bg-gradient-to-br from-secondary to-secondary/90 text-secondary-foreground";
+				case "destructive":
+					return "bg-gradient-to-br from-destructive to-destructive/90 text-destructive-foreground";
 				case "success":
 					return "bg-gradient-to-br from-success to-success/90 text-success-foreground";
 				case "warning":
 					return "bg-gradient-to-br from-warning to-warning/90 text-warning-foreground";
 				case "info":
 					return "bg-gradient-to-br from-info to-info/90 text-info-foreground";
-				case "destructive":
-					return "bg-gradient-to-br from-destructive to-destructive/90 text-destructive-foreground";
-				case "secondary":
-					return "bg-gradient-to-br from-secondary to-secondary/90 text-secondary-foreground";
 				default:
 					return "bg-card border text-card-foreground";
 			}
 		};
 
-		const isColorful = variant !== "default" || className?.includes("bg-");
+		const isColorful = color !== "muted" || className?.includes("bg-");
 
 		return (
 			<Card
 				ref={ref}
 				data-comp="metric-card"
-				className={cn(getVariantStyles(), className)}
+				className={cn(getColorStyles(), className)}
 				{...props}
 			>
 				<div className="p-6">

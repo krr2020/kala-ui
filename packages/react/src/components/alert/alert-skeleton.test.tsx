@@ -31,7 +31,7 @@ describe("AlertSkeleton", () => {
 	});
 
 	it("renders with primary variant", () => {
-		render(<AlertSkeleton variant="primary" />);
+		render(<AlertSkeleton />);
 		expect(screen.getByTestId("alert-skeleton")).toBeInTheDocument();
 	});
 
@@ -41,27 +41,27 @@ describe("AlertSkeleton", () => {
 	});
 
 	it("renders with success variant", () => {
-		render(<AlertSkeleton variant="success" />);
+		render(<AlertSkeleton color="success" />);
 		expect(screen.getByTestId("alert-skeleton")).toBeInTheDocument();
 	});
 
 	it("renders with danger variant", () => {
-		render(<AlertSkeleton variant="danger" />);
+		render(<AlertSkeleton color="destructive" />);
 		expect(screen.getByTestId("alert-skeleton")).toBeInTheDocument();
 	});
 
 	it("renders with destructive variant", () => {
-		render(<AlertSkeleton variant="destructive" />);
+		render(<AlertSkeleton color="destructive" />);
 		expect(screen.getByTestId("alert-skeleton")).toBeInTheDocument();
 	});
 
 	it("renders with info variant", () => {
-		render(<AlertSkeleton variant="info" />);
+		render(<AlertSkeleton color="info" />);
 		expect(screen.getByTestId("alert-skeleton")).toBeInTheDocument();
 	});
 
 	it("renders with secondary variant", () => {
-		render(<AlertSkeleton variant="secondary" />);
+		render(<AlertSkeleton color="secondary" />);
 		expect(screen.getByTestId("alert-skeleton")).toBeInTheDocument();
 	});
 

@@ -70,7 +70,7 @@ export const WithContent: Story = {
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 			</div>
 			<Overlay {...args} className="flex items-center justify-center">
-				<Button variant="secondary">Overlay Action</Button>
+				<Button color="secondary">Overlay Action</Button>
 			</Overlay>
 		</div>
 	),

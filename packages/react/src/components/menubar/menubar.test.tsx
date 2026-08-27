@@ -203,15 +203,15 @@ describe("MenubarItem", () => {
 				<MenubarMenu>
 					<MenubarTrigger>File</MenubarTrigger>
 					<MenubarContent>
-						<MenubarItem variant="destructive">Delete</MenubarItem>
+						<MenubarItem color="destructive">Delete</MenubarItem>
 					</MenubarContent>
 				</MenubarMenu>
 			</Menubar>,
 		);
 
 		await user.click(screen.getByText("File"));
-		const item = document.querySelector('[data-variant="destructive"]');
-		expect(item).toHaveClass("data-[variant=destructive]:text-destructive");
+		const item = document.querySelector('[data-color="destructive"]');
+		expect(item).toHaveClass("data-[color=destructive]:text-destructive");
 	});
 
 	it("applies inset prop", async () => {

@@ -94,7 +94,7 @@ export const ApplicationMenubar: Story = {
 						<MenubarShortcut>⇧⌘S</MenubarShortcut>
 					</MenubarItem>
 					<MenubarSeparator />
-					<MenubarItem variant="destructive">
+					<MenubarItem color="destructive">
 						Close Window
 						<MenubarShortcut>⌘W</MenubarShortcut>
 					</MenubarItem>
@@ -406,10 +406,10 @@ export const DisabledItems: Story = {
 					<MenubarItem disabled>Disabled Action</MenubarItem>
 					<MenubarItem>Another Available Action</MenubarItem>
 					<MenubarSeparator />
-					<MenubarItem disabled variant="destructive">
+					<MenubarItem disabled color="destructive">
 						Disabled Destructive Action
 					</MenubarItem>
-					<MenubarItem variant="destructive">Delete</MenubarItem>
+					<MenubarItem color="destructive">Delete</MenubarItem>
 				</MenubarContent>
 			</MenubarMenu>
 		</Menubar>

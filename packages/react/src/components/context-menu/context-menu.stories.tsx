@@ -59,7 +59,7 @@ export const Default: Story = {
 						<ContextMenuItem>Save Page As…</ContextMenuItem>
 						<ContextMenuItem>Create Shortcut…</ContextMenuItem>
 						<ContextMenuSeparator />
-						<ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+						<ContextMenuItem color="destructive">Delete</ContextMenuItem>
 					</ContextMenuSubContent>
 				</ContextMenuSub>
 			</ContextMenuContent>

@@ -195,14 +195,14 @@ describe("DropdownMenu", () => {
 			<DropdownMenu>
 				<DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
 				<DropdownMenuContent>
-					<DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+					<DropdownMenuItem color="destructive">Delete</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>,
 		);
 
 		await user.click(screen.getByText("Open Menu"));
 		expect(
-			document.querySelector('[data-variant="destructive"]'),
+			document.querySelector('[data-color="destructive"]'),
 		).toBeInTheDocument();
 	});
 

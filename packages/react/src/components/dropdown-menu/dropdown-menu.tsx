@@ -60,21 +60,21 @@ function DropdownMenuGroup({
 function DropdownMenuItem({
 	className,
 	inset,
-	variant = "default",
+	color,
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Item> & {
 	inset?: boolean;
-	variant?: "default" | "destructive";
+	color?: "destructive";
 }) {
 	return (
 		<DropdownMenuPrimitive.Item
 			data-slot="dropdown-menu-item"
 			data-inset={inset}
-			data-variant={variant}
+			data-color={color}
 			className={cn(
 				dropdownMenuStyles.item.base,
 				inset && dropdownMenuStyles.item.inset,
-				variant === "destructive" && dropdownMenuStyles.item.destructive,
+				color === "destructive" && dropdownMenuStyles.item.destructive,
 				className,
 			)}
 			{...props}

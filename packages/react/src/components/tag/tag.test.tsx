@@ -53,7 +53,7 @@ describe("Tag", () => {
 
 	it("should apply filled variant", () => {
 		const { container } = render(
-			<Tag variant="filled" color="primary">
+			<Tag variant="solid" color="primary">
 				Tag
 			</Tag>,
 		);

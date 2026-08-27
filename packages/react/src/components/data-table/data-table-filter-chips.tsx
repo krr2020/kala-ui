@@ -52,7 +52,7 @@ export function DataTableFilterChips<TData>({
 				return filterValueArray.map((value, idx) => (
 					<Badge
 						key={`${String(filter.key)}-${value}-${idx}`}
-						variant="secondary"
+						color="secondary"
 						className="gap-1.5 pl-2 pr-1 py-1 bg-primary/10 text-primary border-primary/20"
 					>
 						<Text size="xs" weight="medium">

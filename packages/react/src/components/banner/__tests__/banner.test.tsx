@@ -20,21 +20,23 @@ describe("Banner", () => {
 
 	it("should render with warning variant", () => {
 		const { container } = render(
-			<Banner variant="warning">Warning banner</Banner>,
+			<Banner color="warning">Warning banner</Banner>,
 		);
 		const banner = container.firstChild;
 		expect(banner).toHaveClass("bg-warning");
 	});
 
 	it("should render with error variant", () => {
-		const { container } = render(<Banner variant="error">Error banner</Banner>);
+		const { container } = render(
+			<Banner color="destructive">Error banner</Banner>,
+		);
 		const banner = container.firstChild;
 		expect(banner).toHaveClass("bg-destructive");
 	});
 
 	it("should render with success variant", () => {
 		const { container } = render(
-			<Banner variant="success">Success banner</Banner>,
+			<Banner color="success">Success banner</Banner>,
 		);
 		const banner = container.firstChild;
 		expect(banner).toHaveClass("bg-success");

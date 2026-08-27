@@ -3,7 +3,7 @@
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { cva } from "class-variance-authority";
 import * as React from "react";
-import { popoverStyles } from "../../config/popover";
+import { type PopoverColor, popoverStyles } from "../../config/popover";
 import { cn } from "../../lib/utils";
 
 export const popoverVariants = cva(popoverStyles.base, {
@@ -46,52 +46,56 @@ function PopoverTrigger({
 // ============================================================================
 
 export interface PopoverContentProps
-	extends React.ComponentProps<typeof PopoverPrimitive.Content> {
+	extends Omit<React.ComponentProps<typeof PopoverPrimitive.Content>, "color"> {
 	/**
 	 * Whether to show the arrow pointing to the trigger
 	 * @default true
 	 */
 	showArrow?: boolean;
 	/**
-	 * Visual variant for the popover
-	 * - default: White background with border
-	 * - header-[color]: Colored header with white body
-	 * - [color]: Full colored background
+	 * Visual variant
+	 * - default: surface background with border
+	 * - solid: fully colored body (tinted by `color`)
 	 * @default "default"
 	 */
-	variant?:
-		| "default"
-		| "header-primary"
-		| "header-secondary"
-		| "header-success"
-		| "header-danger"
-		| "header-warning"
-		| "header-info"
-		| "primary"
-		| "secondary"
-		| "success"
-		| "danger"
-		| "warning"
-		| "info";
+	variant?: "default" | "solid";
+	/**
+	 * Semantic color — tints a solid popover and the arrow
+	 * @default "primary"
+	 */
+	color?: PopoverColor;
+	/**
+	 * Tint the PopoverHeader strip of a default (surface) popover
+	 */
+	headerColor?: PopoverColor;
 }
 
-const PopoverVariantContext =
-	React.createContext<PopoverContentProps["variant"]>("default");
+interface PopoverColorContextValue {
+	variant: "default" | "solid";
+	color: PopoverColor;
+	headerColor?: PopoverColor;
+}
+
+const PopoverColorContext =
+	React.createContext<PopoverColorContextValue | null>(null);
 
 function PopoverContent({
 	className,
 	align = "center",
 	sideOffset = 4,
 	variant = "default",
+	color = "primary",
+	headerColor,
 	showArrow = true,
 	children,
 	...props
 }: PopoverContentProps) {
-	const hasColoredHeader = variant.startsWith("header-");
+	const hasColoredHeader = headerColor !== undefined;
 	const padding = hasColoredHeader ? "none" : "md";
+	const arrowColor = headerColor ?? (variant === "solid" ? color : undefined);
 
 	return (
-		<PopoverVariantContext.Provider value={variant}>
+		<PopoverColorContext.Provider value={{ variant, color, headerColor }}>
 			<PopoverPrimitive.Portal>
 				<PopoverPrimitive.Content
 					data-slot="popover-content"
@@ -100,7 +104,7 @@ function PopoverContent({
 					sideOffset={sideOffset}
 					className={cn(
 						"group",
-						popoverVariants({ variant, padding }),
+						popoverVariants({ variant, color, padding }),
 						className,
 					)}
 					{...props}
@@ -111,11 +115,13 @@ function PopoverContent({
 							<div
 								className={cn(
 									"border-l border-t bg-inherit border-inherit",
-									popoverArrowVariants({ variant }),
+									popoverArrowVariants({ color: arrowColor }),
+									!arrowColor &&
+										"bg-popover [border-color:var(--border)] kala-surface-popover",
 								)}
 								style={{
 									transform:
-										variant === "default" || hasColoredHeader
+										variant === "default" && !hasColoredHeader
 											? "translateY(-50%) rotate(225deg)"
 											: "translateY(-50%) rotate(45deg)",
 								}}
@@ -124,7 +130,7 @@ function PopoverContent({
 					)}
 				</PopoverPrimitive.Content>
 			</PopoverPrimitive.Portal>
-		</PopoverVariantContext.Provider>
+		</PopoverColorContext.Provider>
 	);
 }
 
@@ -132,15 +138,28 @@ function PopoverContent({
 // Popover Header
 // ============================================================================
 
-function PopoverHeader({
-	className,
-	...props
-}: React.HTMLAttributes<HTMLDivElement>) {
-	const variant = React.useContext(PopoverVariantContext);
+export interface PopoverHeaderProps
+	extends Omit<React.HTMLAttributes<HTMLDivElement>, "color"> {
+	/**
+	 * Tint the header strip. Falls back to the parent PopoverContent's
+	 * headerColor (or its color for solid popovers); plain when unset.
+	 */
+	color?: PopoverColor;
+}
+
+function PopoverHeader({ className, color, ...props }: PopoverHeaderProps) {
+	const context = React.useContext(PopoverColorContext);
+	const effectiveColor =
+		color ??
+		context?.headerColor ??
+		(context?.variant === "solid" ? context.color : undefined);
 
 	return (
 		<div
-			className={cn(popoverHeaderVariants({ variant }), className)}
+			className={cn(
+				popoverHeaderVariants({ color: effectiveColor }),
+				className,
+			)}
 			{...props}
 		/>
 	);
@@ -154,18 +173,14 @@ function PopoverBody({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-	const variant = React.useContext(PopoverVariantContext);
-	const hasColoredHeader = variant?.startsWith("header-");
-	const isFullyColored = variant !== "default" && !hasColoredHeader;
+	const context = React.useContext(PopoverColorContext);
+	const hasColoredHeader =
+		context?.headerColor !== undefined ||
+		(context?.variant === "solid" && context.color !== undefined);
 
 	return (
 		<div
-			className={cn(
-				"text-sm",
-				hasColoredHeader ? "p-4" : "", // Only add padding if there's a colored header
-				isFullyColored ? "p-4" : "", // Add padding for fully colored variants
-				className,
-			)}
+			className={cn("text-sm", hasColoredHeader ? "p-4" : "", className)}
 			{...props}
 		/>
 	);

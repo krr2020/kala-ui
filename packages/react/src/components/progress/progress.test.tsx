@@ -68,7 +68,7 @@ describe("Progress", () => {
 
 	describe("Visual Variants", () => {
 		it("should apply default color", () => {
-			const { container } = render(<Progress value={50} color="default" />);
+			const { container } = render(<Progress value={50} color="primary" />);
 			const root = container.querySelector("[data-state]");
 			const indicator = root?.querySelector("div");
 			expect(indicator).toHaveClass("bg-primary");
@@ -82,7 +82,7 @@ describe("Progress", () => {
 		});
 
 		it("should apply danger color", () => {
-			const { container } = render(<Progress value={50} color="danger" />);
+			const { container } = render(<Progress value={50} color="destructive" />);
 			const root = container.querySelector("[data-state]");
 			const indicator = root?.querySelector("div");
 			expect(indicator).toHaveClass("bg-destructive");
@@ -205,7 +205,7 @@ describe("Progress", () => {
 		});
 
 		it("should show correct text color for default variant with showValue", () => {
-			render(<Progress value={50} showValue size="md" color="default" />);
+			render(<Progress value={50} showValue size="md" color="primary" />);
 			const textSpan = screen.getByText("50%");
 			expect(textSpan).toHaveClass("text-primary-foreground");
 		});
@@ -284,7 +284,9 @@ describe("ProgressBar", () => {
 		});
 
 		it("should apply danger color mapped to destructive", () => {
-			const { container } = render(<ProgressBar value={50} color="danger" />);
+			const { container } = render(
+				<ProgressBar value={50} color="destructive" />,
+			);
 			const bar = container.querySelector('[role="progressbar"]');
 			expect(bar).toHaveClass("bg-destructive");
 		});
@@ -318,7 +320,7 @@ describe("ProgressBar", () => {
 		});
 
 		it("should show correct text color for default variant with label", () => {
-			render(<ProgressBar value={50} label="Default" color="default" />);
+			render(<ProgressBar value={50} label="Default" color="primary" />);
 			const textSpan = screen.getByText("Default");
 			expect(textSpan).toHaveClass("text-primary-foreground");
 		});
@@ -350,7 +352,7 @@ describe("ProgressBar", () => {
 		});
 
 		it("should map danger color to destructive for label text color", () => {
-			render(<ProgressBar value={50} label="Danger" color="danger" />);
+			render(<ProgressBar value={50} label="Danger" color="destructive" />);
 			const textSpan = screen.getByText("Danger");
 			expect(textSpan).toHaveClass("text-destructive-foreground");
 		});

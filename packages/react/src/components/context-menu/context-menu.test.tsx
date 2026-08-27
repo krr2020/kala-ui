@@ -126,7 +126,7 @@ describe("ContextMenu", () => {
 			<ContextMenu>
 				<ContextMenuTrigger>Right-click here</ContextMenuTrigger>
 				<ContextMenuContent>
-					<ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+					<ContextMenuItem color="destructive">Delete</ContextMenuItem>
 				</ContextMenuContent>
 			</ContextMenu>,
 		);
@@ -136,7 +136,7 @@ describe("ContextMenu", () => {
 			keys: "[MouseRight]",
 		});
 		// Content rendered in portal — query from document
-		const item = document.querySelector('[data-variant="destructive"]');
+		const item = document.querySelector('[data-color="destructive"]');
 		expect(item).toBeInTheDocument();
 	});
 

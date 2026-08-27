@@ -101,7 +101,7 @@ export const InButton: Story = {
 				<Spinner variant="current" className="mr-2 h-4 w-4" />
 				Please wait
 			</Button>
-			<Button variant="secondary" disabled>
+			<Button color="secondary" disabled>
 				<Spinner variant="current" className="mr-2 h-4 w-4" />
 				Saving...
 			</Button>

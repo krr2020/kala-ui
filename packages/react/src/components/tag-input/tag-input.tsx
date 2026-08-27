@@ -212,7 +212,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 					{value.map((tag, index) => (
 						<Badge
 							key={`${tag}-${index}`}
-							variant="secondary"
+							color="secondary"
 							className="flex items-center gap-1 pl-2 pr-1 py-0 h-6 text-xs"
 						>
 							<span>{tag}</span>

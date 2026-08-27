@@ -235,7 +235,7 @@ describe("CardMarker", () => {
 	});
 
 	it("renders default variant with danger color", () => {
-		const { container } = render(<CardMarker color="danger">Badge</CardMarker>);
+		const { container } = render(<CardMarker color="destructive">Badge</CardMarker>);
 		expect(container.firstChild).toHaveClass(
 			"bg-destructive",
 			"text-destructive-foreground",

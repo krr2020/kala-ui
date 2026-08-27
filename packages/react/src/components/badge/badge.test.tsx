@@ -15,46 +15,46 @@ describe("Badge", () => {
 	});
 
 	it("should render with secondary variant", () => {
-		render(<Badge variant="secondary">Secondary</Badge>);
+		render(<Badge color="secondary">Secondary</Badge>);
 		expect(screen.getByText("Secondary")).toBeInTheDocument();
 	});
 
 	it("should render with danger variant", () => {
-		render(<Badge variant="danger">Danger</Badge>);
+		render(<Badge color="destructive">Danger</Badge>);
 		expect(screen.getByText("Danger")).toBeInTheDocument();
 	});
 
 	it("should render with secondary variant", () => {
-		render(<Badge variant="secondary">Secondary</Badge>);
+		render(<Badge color="secondary">Secondary</Badge>);
 		expect(screen.getByText("Secondary")).toBeInTheDocument();
 	});
 
 	it("should render with success variant", () => {
-		const { container } = render(<Badge variant="success">Success</Badge>);
+		const { container } = render(<Badge color="success">Success</Badge>);
 		const badge = container.querySelector('[data-slot="badge"]');
 		expect(badge).toHaveClass("bg-success");
 	});
 
 	it("should render with warning variant", () => {
-		const { container } = render(<Badge variant="warning">Warning</Badge>);
+		const { container } = render(<Badge color="warning">Warning</Badge>);
 		const badge = container.querySelector('[data-slot="badge"]');
 		expect(badge).toHaveClass("bg-warning");
 	});
 
 	it("should render with danger variant styling", () => {
-		const { container } = render(<Badge variant="danger">Error</Badge>);
+		const { container } = render(<Badge color="destructive">Error</Badge>);
 		const badge = container.querySelector('[data-slot="badge"]');
 		expect(badge).toHaveClass("bg-destructive");
 	});
 
-	it("should render with error variant styling", () => {
-		const { container } = render(<Badge variant="error">Error</Badge>);
+	it("should render with destructive color styling", () => {
+		const { container } = render(<Badge color="destructive">Error</Badge>);
 		const badge = container.querySelector('[data-slot="badge"]');
-		expect(badge).toHaveClass("bg-error");
+		expect(badge).toHaveClass("bg-destructive");
 	});
 
 	it("should render with info variant", () => {
-		const { container } = render(<Badge variant="info">Info</Badge>);
+		const { container } = render(<Badge color="info">Info</Badge>);
 		const badge = container.querySelector('[data-slot="badge"]');
 		expect(badge).toHaveClass("bg-info");
 	});

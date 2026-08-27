@@ -136,7 +136,7 @@ export const CompleteExample: Story = {
 					API
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
-				<DropdownMenuItem variant="destructive">
+				<DropdownMenuItem color="destructive">
 					<LogOut className="mr-2" />
 					Log out
 					<DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
@@ -151,7 +151,7 @@ export const BasicExample: Story = {
 	render: () => (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="secondary">Dropdown Menu</Button>
+				<Button color="secondary">Dropdown Menu</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
 				<DropdownMenuItem>Action</DropdownMenuItem>
@@ -234,7 +234,7 @@ export const WithHeadersAndStates: Story = {
 			{/* With Header */}
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<Button variant="secondary">With Header</Button>
+					<Button color="secondary">With Header</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent>
 					<DropdownMenuLabel>DROPDOWN HEADER</DropdownMenuLabel>
@@ -247,7 +247,7 @@ export const WithHeadersAndStates: Story = {
 			{/* With Divider */}
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<Button variant="secondary">With Divider</Button>
+					<Button color="secondary">With Divider</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent>
 					<DropdownMenuLabel>DROPDOWN HEADER</DropdownMenuLabel>
@@ -261,7 +261,7 @@ export const WithHeadersAndStates: Story = {
 			{/* With Disabled */}
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<Button variant="secondary">With States</Button>
+					<Button color="secondary">With States</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent>
 					<DropdownMenuItem>Active item</DropdownMenuItem>
@@ -279,7 +279,7 @@ export const DifferentTriggers: Story = {
 		<div className="flex flex-wrap gap-4">
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<Button variant="primary">Primary</Button>
+					<Button>Primary</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent>
 					<DropdownMenuItem>Profile</DropdownMenuItem>
@@ -291,7 +291,7 @@ export const DifferentTriggers: Story = {
 
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<Button variant="success">Success</Button>
+					<Button color="success">Success</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent>
 					<DropdownMenuItem>Save</DropdownMenuItem>
@@ -302,13 +302,13 @@ export const DifferentTriggers: Story = {
 
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<Button variant="danger">Danger</Button>
+					<Button color="destructive">Danger</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent>
 					<DropdownMenuItem>Delete</DropdownMenuItem>
 					<DropdownMenuItem>Remove</DropdownMenuItem>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem variant="destructive">
+					<DropdownMenuItem color="destructive">
 						Delete permanently
 					</DropdownMenuItem>
 				</DropdownMenuContent>

@@ -29,7 +29,7 @@ describe("Alert", () => {
 
 	it("should render with danger variant", () => {
 		const { container } = render(
-			<Alert variant="danger">
+			<Alert color="destructive">
 				<AlertTitle>Error</AlertTitle>
 			</Alert>,
 		);
@@ -99,7 +99,7 @@ describe("Alert", () => {
 
 	it("should render with success variant", () => {
 		const { container } = render(
-			<Alert variant="success">
+			<Alert color="success">
 				<AlertTitle>Success</AlertTitle>
 			</Alert>,
 		);
@@ -109,7 +109,7 @@ describe("Alert", () => {
 
 	it("should render with warning variant", () => {
 		const { container } = render(
-			<Alert variant="warning">
+			<Alert color="warning">
 				<AlertTitle>Warning</AlertTitle>
 			</Alert>,
 		);
@@ -119,7 +119,7 @@ describe("Alert", () => {
 
 	it("should render with info variant", () => {
 		const { container } = render(
-			<Alert variant="info">
+			<Alert color="info">
 				<AlertTitle>Info</AlertTitle>
 			</Alert>,
 		);
@@ -129,7 +129,7 @@ describe("Alert", () => {
 
 	it("should render with secondary variant", () => {
 		const { container } = render(
-			<Alert variant="secondary">
+			<Alert color="secondary">
 				<AlertTitle>Secondary</AlertTitle>
 			</Alert>,
 		);
@@ -139,7 +139,7 @@ describe("Alert", () => {
 
 	it("should render with destructive variant", () => {
 		const { container } = render(
-			<Alert variant="destructive">
+			<Alert color="destructive">
 				<AlertTitle>Destructive</AlertTitle>
 			</Alert>,
 		);
@@ -149,7 +149,7 @@ describe("Alert", () => {
 
 	it("should render with outline style", () => {
 		const { container } = render(
-			<Alert style="outline">
+			<Alert variant="outline">
 				<AlertTitle>Outline</AlertTitle>
 			</Alert>,
 		);
@@ -159,7 +159,7 @@ describe("Alert", () => {
 
 	it("should render with solid style", () => {
 		const { container } = render(
-			<Alert style="solid">
+			<Alert variant="solid">
 				<AlertTitle>Solid</AlertTitle>
 			</Alert>,
 		);
@@ -377,7 +377,7 @@ describe("Alert", () => {
 
 	it("should render built-in icon when hasCustomIcon is false and showIcon is true", () => {
 		const { container } = render(
-			<Alert variant="success">Plain text only</Alert>,
+			<Alert color="success">Plain text only</Alert>,
 		);
 		const alert = container.querySelector('[data-slot="alert"]');
 		// Only text children (no AlertTitle/AlertDescription), so hasCustomIcon is false

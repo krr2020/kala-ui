@@ -10,7 +10,7 @@ const emptyStateVariants = cva(
 	"flex flex-col items-center justify-center rounded-lg border p-8 text-center animate-in fade-in-50",
 	{
 		variants: {
-			variant: {
+			color: {
 				default: "border-dashed bg-muted/20",
 				destructive: "border-destructive/20 bg-destructive/10",
 			},
@@ -21,14 +21,14 @@ const emptyStateVariants = cva(
 			},
 		},
 		defaultVariants: {
-			variant: "default",
+			color: "default",
 			size: "md",
 		},
 	},
 );
 
 export interface EmptyStateProps
-	extends React.HTMLAttributes<HTMLDivElement>,
+	extends Omit<React.HTMLAttributes<HTMLDivElement>, "color">,
 		VariantProps<typeof emptyStateVariants> {
 	icon?: LucideIcon | string;
 	title: string;
@@ -45,7 +45,7 @@ export interface EmptyStateProps
 
 function EmptyState({
 	className,
-	variant,
+	color,
 	size,
 	icon,
 	title,
@@ -62,7 +62,7 @@ function EmptyState({
 			return (
 				<div
 					data-comp="empty-state"
-					className={cn(emptyStateVariants({ variant, size }), className)}
+					className={cn(emptyStateVariants({ color, size }), className)}
 					{...props}
 				>
 					{skeleton}
@@ -71,7 +71,7 @@ function EmptyState({
 		}
 		return (
 			<EmptyStateSkeleton
-				className={cn(emptyStateVariants({ variant, size }), className)}
+				className={cn(emptyStateVariants({ color, size }), className)}
 				{...skeletonConfig}
 			/>
 		);
@@ -83,7 +83,7 @@ function EmptyState({
 	return (
 		<div
 			data-comp="empty-state"
-			className={cn(emptyStateVariants({ variant, size }), className)}
+			className={cn(emptyStateVariants({ color, size }), className)}
 			{...props}
 		>
 			<div
@@ -108,7 +108,7 @@ function EmptyState({
 				</p>
 			)}
 			{action && (
-				<Button onClick={action.onClick} variant={action.variant || "default"}>
+				<Button onClick={action.onClick} variant={action.variant}>
 					{action.label}
 				</Button>
 			)}

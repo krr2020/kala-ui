@@ -10,7 +10,7 @@ describe("Button", () => {
 	});
 
 	it("should render with destructive variant", () => {
-		render(<Button variant="destructive">Delete</Button>);
+		render(<Button color="destructive">Delete</Button>);
 		const button = screen.getByRole("button", { name: /delete/i });
 		expect(button).toBeInTheDocument();
 	});
@@ -22,7 +22,7 @@ describe("Button", () => {
 	});
 
 	it("should render with secondary variant", () => {
-		render(<Button variant="secondary">Secondary</Button>);
+		render(<Button color="secondary">Secondary</Button>);
 		const button = screen.getByRole("button", { name: /secondary/i });
 		expect(button).toBeInTheDocument();
 	});

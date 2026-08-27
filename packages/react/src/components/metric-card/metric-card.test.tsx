@@ -88,9 +88,9 @@ describe("MetricCard", () => {
 		expect(card).toHaveClass("bg-card", "border", "text-card-foreground");
 	});
 
-	it("should render with primary variant", () => {
+	it("should render with primary color", () => {
 		const { container } = render(
-			<MetricCard title="Users" value={100} variant="primary" />,
+			<MetricCard title="Users" value={100} color="primary" />,
 		);
 		const card = container.querySelector('[data-comp="metric-card"]');
 
@@ -101,45 +101,45 @@ describe("MetricCard", () => {
 		);
 	});
 
-	it("should render with success variant", () => {
+	it("should render with success color", () => {
 		const { container } = render(
-			<MetricCard title="Users" value={100} variant="success" />,
+			<MetricCard title="Users" value={100} color="success" />,
 		);
 		const card = container.querySelector('[data-comp="metric-card"]');
 
 		expect(card).toHaveClass("from-success", "text-success-foreground");
 	});
 
-	it("should render with warning variant", () => {
+	it("should render with warning color", () => {
 		const { container } = render(
-			<MetricCard title="Users" value={100} variant="warning" />,
+			<MetricCard title="Users" value={100} color="warning" />,
 		);
 		const card = container.querySelector('[data-comp="metric-card"]');
 
 		expect(card).toHaveClass("from-warning", "text-warning-foreground");
 	});
 
-	it("should render with info variant", () => {
+	it("should render with info color", () => {
 		const { container } = render(
-			<MetricCard title="Users" value={100} variant="info" />,
+			<MetricCard title="Users" value={100} color="info" />,
 		);
 		const card = container.querySelector('[data-comp="metric-card"]');
 
 		expect(card).toHaveClass("from-info", "text-info-foreground");
 	});
 
-	it("should render with destructive variant", () => {
+	it("should render with destructive color", () => {
 		const { container } = render(
-			<MetricCard title="Errors" value={5} variant="destructive" />,
+			<MetricCard title="Errors" value={5} color="destructive" />,
 		);
 		const card = container.querySelector('[data-comp="metric-card"]');
 
 		expect(card).toHaveClass("from-destructive", "text-destructive-foreground");
 	});
 
-	it("should render with secondary variant", () => {
+	it("should render with secondary color", () => {
 		const { container } = render(
-			<MetricCard title="Users" value={100} variant="secondary" />,
+			<MetricCard title="Users" value={100} color="secondary" />,
 		);
 		const card = container.querySelector('[data-comp="metric-card"]');
 
@@ -203,7 +203,7 @@ describe("MetricCard", () => {
 
 	it("should apply correct color classes for positive change", () => {
 		const { container } = render(
-			<MetricCard title="Users" value={100} change={15} variant="default" />,
+			<MetricCard title="Users" value={100} change={15} color="muted" />,
 		);
 
 		const changeElement = container.querySelector(".text-success");
@@ -212,7 +212,7 @@ describe("MetricCard", () => {
 
 	it("should apply correct color classes for negative change", () => {
 		const { container } = render(
-			<MetricCard title="Users" value={100} change={-15} variant="default" />,
+			<MetricCard title="Users" value={100} change={-15} color="muted" />,
 		);
 
 		const changeElement = container.querySelector(".text-destructive");

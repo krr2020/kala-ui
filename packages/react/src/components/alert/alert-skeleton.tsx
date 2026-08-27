@@ -29,11 +29,12 @@ export interface AlertSkeletonProps extends AlertSkeletonConfig {
  * ```tsx
  * <AlertSkeleton />
  *
- * <AlertSkeleton variant="warning" showIcon={true} />
+ * <AlertSkeleton color="warning" showIcon={true} />
  * ```
  */
 export function AlertSkeleton({
-	variant = "primary",
+	variant = "subtle",
+	color = "primary",
 	showIcon = true,
 	className,
 	"data-testid": dataTestId,
@@ -44,10 +45,9 @@ export function AlertSkeleton({
 			role="alert"
 			className={cn(
 				alertStyles.base,
-				variant &&
-					alertStyles.compoundVariants?.find(
-						(v) => v.variant === variant && v.style === "default",
-					)?.className,
+				alertStyles.compoundVariants?.find(
+					(v) => v.variant === variant && v.color === color,
+				)?.className,
 				className,
 			)}
 		>

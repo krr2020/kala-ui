@@ -89,7 +89,14 @@ export function DataTableToolbar<TData>({
 							{bulkActions.map((action) => (
 								<Button
 									key={action.id}
-									variant={action.variant ?? "outline"}
+									variant={
+										action.variant === "destructive"
+											? "solid"
+											: (action.variant ?? "outline")
+									}
+									color={
+										action.variant === "destructive" ? "destructive" : undefined
+									}
 									size="sm"
 									onClick={() => action.onClick(selectedRows)}
 									disabled={selectedIdsCount === 0 || action.disabled}

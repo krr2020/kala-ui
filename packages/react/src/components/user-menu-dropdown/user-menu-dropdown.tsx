@@ -117,7 +117,7 @@ export function UserMenuDropdown({
 					Settings
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
-				<DropdownMenuItem onClick={handleLogoutClick} variant="destructive">
+				<DropdownMenuItem onClick={handleLogoutClick} color="destructive">
 					<LogOut className="mr-2 size-4" />
 					Logout
 				</DropdownMenuItem>

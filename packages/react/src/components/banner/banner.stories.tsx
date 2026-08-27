@@ -86,28 +86,28 @@ export const AllVariants: Story = {
 	render: () => (
 		<div className="space-y-4 p-4">
 			<Banner
-				variant="info"
+				color="info"
 				position="static"
 				onClose={() => console.log("Info closed")}
 			>
 				Info: System maintenance scheduled for tonight.
 			</Banner>
 			<Banner
-				variant="warning"
+				color="warning"
 				position="static"
 				onClose={() => console.log("Warning closed")}
 			>
 				Warning: Your session will expire in 5 minutes.
 			</Banner>
 			<Banner
-				variant="error"
+				color="destructive"
 				position="static"
 				onClose={() => console.log("Error closed")}
 			>
 				Error: Unable to connect to the server.
 			</Banner>
 			<Banner
-				variant="success"
+				color="success"
 				position="static"
 				onClose={() => console.log("Success closed")}
 			>

@@ -122,7 +122,7 @@ export const FeatureShowcase: Story = {
 			{/* Confirmation Dialog */}
 			<Drawer>
 				<DrawerTrigger asChild>
-					<Button variant="danger" className="w-full">
+					<Button color="destructive" className="w-full">
 						Delete Account
 					</Button>
 				</DrawerTrigger>
@@ -136,7 +136,7 @@ export const FeatureShowcase: Story = {
 							</DrawerDescription>
 						</DrawerHeader>
 						<DrawerFooter>
-							<Button variant="danger">Delete Account</Button>
+							<Button color="destructive">Delete Account</Button>
 							<DrawerClose asChild>
 								<Button variant="outline">Cancel</Button>
 							</DrawerClose>
@@ -148,7 +148,7 @@ export const FeatureShowcase: Story = {
 			{/* Multiple Actions */}
 			<Drawer>
 				<DrawerTrigger asChild>
-					<Button variant="secondary" className="w-full">
+					<Button color="secondary" className="w-full">
 						Action Menu
 					</Button>
 				</DrawerTrigger>

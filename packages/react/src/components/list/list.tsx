@@ -1,7 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "../../lib/utils";
-import { Badge, type badgeVariants } from "../badge";
+import { Badge } from "../badge";
 import type { ListSkeletonConfig } from "../skeleton/skeleton.types";
 import { ListSkeleton } from "./list-skeleton";
 
@@ -405,31 +405,28 @@ function ListItemAction({ className, ...props }: ListItemActionProps) {
 export interface ListItemBadgeProps
 	extends React.HTMLAttributes<HTMLSpanElement> {
 	/**
-	 * Badge variant
-	 * @default 'default'
+	 * Badge semantic color
+	 * @default 'muted'
 	 */
-	variant?: "default" | "primary" | "success" | "warning" | "danger";
+	color?:
+		| "primary"
+		| "secondary"
+		| "destructive"
+		| "success"
+		| "warning"
+		| "info"
+		| "muted";
 }
 
 function ListItemBadge({
 	className,
-	variant = "default",
+	color = "muted",
 	...props
 }: ListItemBadgeProps) {
-	const variantMap: Record<
-		string,
-		VariantProps<typeof badgeVariants>["variant"]
-	> = {
-		default: "secondary",
-		primary: "primary",
-		success: "success",
-		warning: "warning",
-		danger: "danger",
-	};
-
 	return (
 		<Badge
-			variant={variantMap[variant] || "secondary"}
+			variant="subtle"
+			color={color}
 			shape="pill"
 			className={cn("px-2 py-0.5", className)}
 			{...props}

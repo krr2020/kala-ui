@@ -4,7 +4,7 @@ import type { AlertSkeletonConfig } from "../skeleton/skeleton.types";
 import type { alertVariants } from "./alert";
 
 export interface AlertProps
-	extends Omit<React.ComponentProps<"div">, "style">,
+	extends Omit<React.ComponentProps<"div">, "color">,
 		VariantProps<typeof alertVariants> {
 	dismissable?: boolean;
 	onDismiss?: () => void;

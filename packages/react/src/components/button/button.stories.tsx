@@ -74,28 +74,26 @@ export const Variants: Story = {
 	render: (args) => (
 		<Stack gap={4}>
 			<Flex wrap="wrap" gap={2}>
-				<Button {...args} variant="primary">
-					Primary
-				</Button>
-				<Button {...args} variant="secondary">
+				<Button {...args}>Primary</Button>
+				<Button {...args} color="secondary">
 					Secondary
 				</Button>
-				<Button {...args} variant="success">
+				<Button {...args} color="success">
 					Success
 				</Button>
-				<Button {...args} variant="warning">
+				<Button {...args} color="warning">
 					Warning
 				</Button>
-				<Button {...args} variant="danger">
+				<Button {...args} color="destructive">
 					Danger
 				</Button>
-				<Button {...args} variant="info">
+				<Button {...args} color="info">
 					Info
 				</Button>
-				<Button {...args} variant="light">
+				<Button {...args} color="muted">
 					Light
 				</Button>
-				<Button {...args} variant="dark">
+				<Button {...args} color="muted">
 					Dark
 				</Button>
 				<Button {...args} variant="link">
@@ -116,28 +114,28 @@ export const OutlineVariants: Story = {
 				<Button {...args} variant="outline">
 					Default Outline
 				</Button>
-				<Button {...args} variant="outline-primary">
+				<Button {...args} variant="outline" color="primary">
 					Primary
 				</Button>
-				<Button {...args} variant="outline-secondary">
+				<Button {...args} variant="outline" color="secondary">
 					Secondary
 				</Button>
-				<Button {...args} variant="outline-success">
+				<Button {...args} variant="outline" color="success">
 					Success
 				</Button>
-				<Button {...args} variant="outline-warning">
+				<Button {...args} variant="outline" color="warning">
 					Warning
 				</Button>
-				<Button {...args} variant="outline-danger">
+				<Button {...args} variant="outline" color="destructive">
 					Danger
 				</Button>
-				<Button {...args} variant="outline-info">
+				<Button {...args} variant="outline" color="info">
 					Info
 				</Button>
-				<Button {...args} variant="outline-light">
+				<Button {...args} variant="outline" color="muted">
 					Light
 				</Button>
-				<Button {...args} variant="outline-dark">
+				<Button {...args} variant="outline" color="muted">
 					Dark
 				</Button>
 			</Flex>

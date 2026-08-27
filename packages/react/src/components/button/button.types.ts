@@ -3,7 +3,7 @@ import type * as React from "react";
 import type { buttonVariants } from "./button";
 
 export interface ButtonProps
-	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+	extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">,
 		VariantProps<typeof buttonVariants> {
 	asChild?: boolean;
 	/** Optional translation key for button text */
