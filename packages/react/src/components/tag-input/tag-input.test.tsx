@@ -27,7 +27,7 @@ describe("TagInput", () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={[]} onChange={onChange} />);
+		render(<TagInput value={[]} onValueChange={onChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.type(input, "newtag,");
@@ -39,7 +39,7 @@ describe("TagInput", () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={[]} onChange={onChange} />);
+		render(<TagInput value={[]} onValueChange={onChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.type(input, ",");
@@ -51,7 +51,7 @@ describe("TagInput", () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={[]} onChange={onChange} />);
+		render(<TagInput value={[]} onValueChange={onChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.type(input, "  tag  ,");
@@ -63,7 +63,7 @@ describe("TagInput", () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={["existing"]} onChange={onChange} />);
+		render(<TagInput value={["existing"]} onValueChange={onChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.type(input, "existing,");
@@ -78,7 +78,7 @@ describe("TagInput", () => {
 		render(
 			<TagInput
 				value={["existing"]}
-				onChange={onChange}
+				onValueChange={onChange}
 				allowDuplicates={true}
 			/>,
 		);
@@ -94,7 +94,11 @@ describe("TagInput", () => {
 		const onChange = vi.fn();
 
 		render(
-			<TagInput value={["tag1", "tag2"]} onChange={onChange} maxTags={2} />,
+			<TagInput
+				value={["tag1", "tag2"]}
+				onValueChange={onChange}
+				maxTags={2}
+			/>,
 		);
 
 		const input = screen.getByRole("textbox");
@@ -107,7 +111,7 @@ describe("TagInput", () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={["tag1", "tag2"]} onChange={onChange} />);
+		render(<TagInput value={["tag1", "tag2"]} onValueChange={onChange} />);
 
 		const removeButton = screen.getByLabelText("Remove tag1");
 		await user.click(removeButton);
@@ -119,7 +123,7 @@ describe("TagInput", () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={["tag1", "tag2"]} onChange={onChange} />);
+		render(<TagInput value={["tag1", "tag2"]} onValueChange={onChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.click(input);
@@ -132,7 +136,7 @@ describe("TagInput", () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={["tag1"]} onChange={onChange} />);
+		render(<TagInput value={["tag1"]} onValueChange={onChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.type(input, "text{Backspace}");
@@ -144,7 +148,7 @@ describe("TagInput", () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={["tag1", "tag2"]} onChange={onChange} />);
+		render(<TagInput value={["tag1", "tag2"]} onValueChange={onChange} />);
 
 		const clearButton = screen.getByLabelText("Clear all tags");
 		await user.click(clearButton);
@@ -164,7 +168,11 @@ describe("TagInput", () => {
 		const validateTag = vi.fn((tag) => tag.length > 2);
 
 		render(
-			<TagInput value={[]} onChange={onChange} validateTag={validateTag} />,
+			<TagInput
+				value={[]}
+				onValueChange={onChange}
+				validateTag={validateTag}
+			/>,
 		);
 
 		const input = screen.getByRole("textbox");
@@ -180,7 +188,11 @@ describe("TagInput", () => {
 		const transformTag = vi.fn((tag) => tag.toLowerCase());
 
 		render(
-			<TagInput value={[]} onChange={onChange} transformTag={transformTag} />,
+			<TagInput
+				value={[]}
+				onValueChange={onChange}
+				transformTag={transformTag}
+			/>,
 		);
 
 		const input = screen.getByRole("textbox");
@@ -194,7 +206,9 @@ describe("TagInput", () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={[]} onChange={onChange} separators={[";", "|"]} />);
+		render(
+			<TagInput value={[]} onValueChange={onChange} separators={[";", "|"]} />,
+		);
 
 		const input = screen.getByRole("textbox");
 		await user.type(input, "tag1;tag2|");
@@ -230,7 +244,7 @@ describe("TagInput", () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={[]} onChange={onChange} />);
+		render(<TagInput value={[]} onValueChange={onChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.click(input);
@@ -244,7 +258,7 @@ describe("TagInput", () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={[]} onChange={onChange} />);
+		render(<TagInput value={[]} onValueChange={onChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.click(input);
@@ -258,7 +272,7 @@ describe("TagInput", () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={["x"]} onChange={onChange} maxTags={2} />);
+		render(<TagInput value={["x"]} onValueChange={onChange} maxTags={2} />);
 
 		const input = screen.getByRole("textbox");
 		await user.click(input);
@@ -272,7 +286,7 @@ describe("TagInput", () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={[]} onChange={onChange} separators={["+"]} />);
+		render(<TagInput value={[]} onValueChange={onChange} separators={["+"]} />);
 
 		const input = screen.getByRole("textbox");
 		await user.click(input);
@@ -289,7 +303,7 @@ describe("TagInput", () => {
 		render(
 			<TagInput
 				value={[]}
-				onChange={onChange}
+				onValueChange={onChange}
 				onKeyDown={(e) => {
 					if (e.key === ",") e.preventDefault();
 				}}
@@ -305,12 +319,12 @@ describe("TagInput", () => {
 	it("should not remount existing tags on re-render", () => {
 		const onChange = vi.fn();
 		const { rerender } = render(
-			<TagInput value={["a", "b"]} onChange={onChange} />,
+			<TagInput value={["a", "b"]} onValueChange={onChange} />,
 		);
 
 		const nodeA = screen.getByText("a");
 		const nodeB = screen.getByText("b");
-		rerender(<TagInput value={["a", "b"]} onChange={onChange} />);
+		rerender(<TagInput value={["a", "b"]} onValueChange={onChange} />);
 
 		expect(screen.getByText("a")).toBe(nodeA);
 		expect(screen.getByText("b")).toBe(nodeB);
@@ -338,7 +352,7 @@ describe("TagInput", () => {
 		const onKeyDown = vi.fn();
 		render(
 			<div onClick={onClick} onKeyDown={onKeyDown}>
-				<TagInput value={["tag1"]} onChange={onChange} />
+				<TagInput value={["tag1"]} onValueChange={onChange} />
 			</div>,
 		);
 
@@ -367,7 +381,9 @@ describe("TagInput", () => {
 		const _user = userEvent.setup();
 		const onChange = vi.fn();
 
-		render(<TagInput value={["tag1"]} onChange={onChange} disabled={true} />);
+		render(
+			<TagInput value={["tag1"]} onValueChange={onChange} disabled={true} />,
+		);
 
 		const removeButton = screen.getByLabelText("Remove tag1");
 		expect(removeButton).toBeDisabled();

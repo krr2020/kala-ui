@@ -1,5 +1,6 @@
 "use client";
 
+import { useUncontrolled } from "@kala-ui/react-hooks";
 import { Star } from "lucide-react";
 import * as React from "react";
 
@@ -11,7 +12,7 @@ export interface RatingProps {
 	/** Default value for uncontrolled usage */
 	defaultValue?: number;
 	/** Callback when rating changes */
-	onChange?: (value: number) => void;
+	onValueChange?: (value: number) => void;
 	/** Number of stars */
 	count?: number;
 	/** Allow half-star ratings */
@@ -37,7 +38,7 @@ const sizeMap = {
 function Rating({
 	value,
 	defaultValue = 0,
-	onChange,
+	onValueChange,
 	count = 5,
 	allowHalf = false,
 	readOnly = false,
@@ -46,17 +47,14 @@ function Rating({
 	className,
 	"aria-label": ariaLabel = "Rating",
 }: RatingProps) {
-	const [internalValue, setInternalValue] = React.useState(defaultValue);
+	const [currentValue, commit] = useUncontrolled<number>({
+		value,
+		defaultValue,
+		onChange: onValueChange,
+	});
 	const [hoverValue, setHoverValue] = React.useState<number | null>(null);
 
-	const isControlled = value !== undefined;
-	const currentValue = isControlled ? value : internalValue;
 	const displayValue = hoverValue ?? currentValue;
-
-	const commit = (v: number) => {
-		if (!isControlled) setInternalValue(v);
-		onChange?.(v);
-	};
 
 	const getStarFill = (star: number): "full" | "half" | "empty" => {
 		if (displayValue >= star) return "full";

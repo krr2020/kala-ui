@@ -1,6 +1,6 @@
 "use client";
 
-import { useDisclosure } from "@kala-ui/react-hooks";
+import { useDisclosure, useUncontrolled } from "@kala-ui/react-hooks";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { Check, ChevronsUpDown, X } from "lucide-react";
 import * as React from "react";
@@ -24,6 +24,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 		{
 			options,
 			value,
+			defaultValue,
 			onValueChange,
 			placeholder = "Select option...",
 			searchPlaceholder = "Search...",
@@ -42,10 +43,15 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 		ref,
 	) => {
 		const [open, { set: setOpen }] = useDisclosure(false);
+		const [internalValue, setInternalValue] = useUncontrolled<string>({
+			value,
+			defaultValue,
+			onChange: onValueChange,
+		});
 		const [search, setSearch] = React.useState("");
 
 		const isAsync = Boolean(onSearchChange);
-		const selectedOption = options.find((o) => o.value === value);
+		const selectedOption = options.find((o) => o.value === internalValue);
 		const displayLabel = selectedOption?.label ?? selectedLabel ?? placeholder;
 
 		const visibleOptions = isAsync && search.length === 0 ? [] : options;
@@ -64,7 +70,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 		};
 
 		const handleClear = () => {
-			onValueChange?.("");
+			setInternalValue("");
 		};
 
 		return (
@@ -81,8 +87,8 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 							className={cn(
 								"w-full justify-between font-normal overflow-hidden",
 								size === "sm" ? "h-8 px-3 text-xs" : "h-10 px-4",
-								!value && "text-muted-foreground",
-								clearable && value && "pr-16",
+								!internalValue && "text-muted-foreground",
+								clearable && internalValue && "pr-16",
 								className,
 							)}
 						>
@@ -92,7 +98,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 									matchTriggerWidth && "flex-1 text-left",
 								)}
 							>
-								{value ? displayLabel : placeholder}
+								{internalValue ? displayLabel : placeholder}
 							</Text>
 							<ChevronsUpDown
 								className="size-4 opacity-50 shrink-0"
@@ -100,7 +106,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 							/>
 						</Button>
 					</PopoverPrimitive.Trigger>
-					{clearable && value && !disabled && (
+					{clearable && internalValue && !disabled && (
 						<button
 							type="button"
 							aria-label="Clear selection"
@@ -163,21 +169,21 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 												value={option.value}
 												disabled={option.disabled ?? false}
 												onSelect={() => {
-													onValueChange?.(
-														option.value === value ? "" : option.value,
+													setInternalValue(
+														option.value === internalValue ? "" : option.value,
 													);
 													handleOpenChange(false);
 												}}
 												className={renderOption ? "py-2" : undefined}
 											>
 												{renderOption ? (
-													renderOption(option, value === option.value)
+													renderOption(option, internalValue === option.value)
 												) : (
 													<>
 														<Check
 															className={cn(
 																"mr-2 size-4",
-																value === option.value
+																internalValue === option.value
 																	? "opacity-100"
 																	: "opacity-0",
 															)}

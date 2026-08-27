@@ -240,7 +240,7 @@ export const Dynamic: Story = {
 		const total = 10;
 
 		return (
-			<Pagination total={total} page={page} onChange={setPage}>
+			<Pagination total={total} page={page} onPageChange={setPage}>
 				<PaginationContent>
 					<PaginationItem>
 						<PaginationPrevious />

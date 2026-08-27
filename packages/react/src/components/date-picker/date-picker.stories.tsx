@@ -35,7 +35,7 @@ export const Default: Story = {
 	render: () => {
 		const [date, setDate] = useState<Date | undefined>();
 
-		return <DatePicker date={date} onDateChange={setDate} />;
+		return <DatePicker value={date} onValueChange={setDate} />;
 	},
 };
 
@@ -43,7 +43,7 @@ export const WithDefaultDate: Story = {
 	render: () => {
 		const [date, setDate] = useState<Date | undefined>(new Date());
 
-		return <DatePicker date={date} onDateChange={setDate} />;
+		return <DatePicker value={date} onValueChange={setDate} />;
 	},
 };
 
@@ -54,7 +54,7 @@ export const CustomPlaceholder: Story = {
 		return (
 			<DatePicker
 				date={date}
-				onDateChange={setDate}
+				onValueChange={setDate}
 				placeholder="Select a date"
 			/>
 		);
@@ -71,13 +71,13 @@ export const CustomFormat: Story = {
 					<p className="mb-2 text-sm text-muted-foreground">
 						Default format (PPP):
 					</p>
-					<DatePicker date={date} onDateChange={setDate} />
+					<DatePicker value={date} onValueChange={setDate} />
 				</div>
 				<div>
 					<p className="mb-2 text-sm text-muted-foreground">
 						Short format (P):
 					</p>
-					<DatePicker date={date} onDateChange={setDate} formatStr="P" />
+					<DatePicker value={date} onValueChange={setDate} formatStr="P" />
 				</div>
 				<div>
 					<p className="mb-2 text-sm text-muted-foreground">
@@ -85,7 +85,7 @@ export const CustomFormat: Story = {
 					</p>
 					<DatePicker
 						date={date}
-						onDateChange={setDate}
+						onValueChange={setDate}
 						formatStr="yyyy-MM-dd"
 					/>
 				</div>
@@ -98,7 +98,7 @@ export const DisabledState: Story = {
 	render: () => {
 		const [date, setDate] = useState<Date | undefined>(new Date());
 
-		return <DatePicker date={date} onDateChange={setDate} disabled />;
+		return <DatePicker value={date} onValueChange={setDate} disabled />;
 	},
 };
 
@@ -116,7 +116,7 @@ export const DisabledDates: Story = {
 			<div>
 				<DatePicker
 					date={date}
-					onDateChange={setDate}
+					onValueChange={setDate}
 					disabled={disabledDates}
 				/>
 				<p className="mt-4 text-sm text-muted-foreground">
@@ -139,7 +139,7 @@ export const DateRangeLimit: Story = {
 			<div>
 				<DatePicker
 					date={date}
-					onDateChange={setDate}
+					onValueChange={setDate}
 					disabled={{ before: today, after: thirtyDaysFromNow }}
 				/>
 				<p className="mt-4 text-sm text-muted-foreground">
@@ -157,7 +157,7 @@ export const CustomButtonStyle: Story = {
 		return (
 			<DatePicker
 				date={date}
-				onDateChange={setDate}
+				onValueChange={setDate}
 				buttonClassName="w-full"
 				placeholder="Full width button"
 			/>
@@ -181,7 +181,7 @@ export const WithCallback: Story = {
 
 		return (
 			<div>
-				<DatePicker date={date} onDateChange={handleDateChange} />
+				<DatePicker value={date} onValueChange={handleDateChange} />
 				{message && (
 					<p className="mt-4 text-sm text-muted-foreground">{message}</p>
 				)}
@@ -196,9 +196,7 @@ export const DateRange: Story = {
 			DayPickerDateRange | undefined
 		>();
 
-		return (
-			<DateRangePicker dateRange={dateRange} onDateRangeChange={setDateRange} />
-		);
+		return <DateRangePicker value={dateRange} onValueChange={setDateRange} />;
 	},
 };
 
@@ -209,9 +207,7 @@ export const DateRangeWithDefault: Story = {
 			to: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
 		});
 
-		return (
-			<DateRangePicker dateRange={dateRange} onDateRangeChange={setDateRange} />
-		);
+		return <DateRangePicker value={dateRange} onValueChange={setDateRange} />;
 	},
 };
 
@@ -224,7 +220,7 @@ export const DateRangeCustomPlaceholder: Story = {
 		return (
 			<DateRangePicker
 				dateRange={dateRange}
-				onDateRangeChange={setDateRange}
+				onValueChange={setDateRange}
 				placeholder="Select date range"
 			/>
 		);
@@ -244,10 +240,7 @@ export const DateRangeCustomFormat: Story = {
 					<p className="mb-2 text-sm text-muted-foreground">
 						Default format (LLL dd, y):
 					</p>
-					<DateRangePicker
-						dateRange={dateRange}
-						onDateRangeChange={setDateRange}
-					/>
+					<DateRangePicker dateRange={dateRange} onValueChange={setDateRange} />
 				</div>
 				<div>
 					<p className="mb-2 text-sm text-muted-foreground">
@@ -255,7 +248,7 @@ export const DateRangeCustomFormat: Story = {
 					</p>
 					<DateRangePicker
 						dateRange={dateRange}
-						onDateRangeChange={setDateRange}
+						onValueChange={setDateRange}
 						formatStr="P"
 					/>
 				</div>
@@ -265,7 +258,7 @@ export const DateRangeCustomFormat: Story = {
 					</p>
 					<DateRangePicker
 						dateRange={dateRange}
-						onDateRangeChange={setDateRange}
+						onValueChange={setDateRange}
 						formatStr="MM/dd/yyyy"
 					/>
 				</div>
@@ -284,7 +277,7 @@ export const DateRangeDisabled: Story = {
 		return (
 			<DateRangePicker
 				dateRange={dateRange}
-				onDateRangeChange={setDateRange}
+				onValueChange={setDateRange}
 				buttonDisabled
 			/>
 		);
@@ -315,7 +308,7 @@ export const DateRangeWithCallback: Story = {
 			<div>
 				<DateRangePicker
 					dateRange={dateRange}
-					onDateRangeChange={handleRangeChange}
+					onValueChange={handleRangeChange}
 				/>
 				{message && (
 					<p className="mt-4 text-sm text-muted-foreground">{message}</p>
@@ -336,14 +329,11 @@ export const Comparison: Story = {
 			<div className="space-y-6">
 				<div>
 					<h3 className="mb-2 text-sm font-medium">Single Date Picker</h3>
-					<DatePicker date={singleDate} onDateChange={setSingleDate} />
+					<DatePicker value={singleDate} onValueChange={setSingleDate} />
 				</div>
 				<div>
 					<h3 className="mb-2 text-sm font-medium">Date Range Picker</h3>
-					<DateRangePicker
-						dateRange={dateRange}
-						onDateRangeChange={setDateRange}
-					/>
+					<DateRangePicker dateRange={dateRange} onValueChange={setDateRange} />
 				</div>
 			</div>
 		);

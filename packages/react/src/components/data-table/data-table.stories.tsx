@@ -476,7 +476,7 @@ export const ServerSidePagination: Story = {
 					page,
 					pageSize,
 					total,
-					onChange: (newPage, newPageSize) => {
+					onPageChange: (newPage, newPageSize) => {
 						setPage(newPage);
 						setPageSize(newPageSize);
 					},
@@ -899,7 +899,7 @@ export const ServerSideDataFetching: Story = {
 						pageSize: pageSize,
 						total: totalRecords,
 						pageSizeOptions: [10, 20, 50, 100],
-						onChange: (page, size) => {
+						onPageChange: (page, size) => {
 							console.log("Pagination changed:", { page, size });
 							setCurrentPage(page);
 							setPageSize(size);

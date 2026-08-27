@@ -1,5 +1,6 @@
 "use client";
 
+import { useUncontrolled } from "@kala-ui/react-hooks";
 import { X } from "lucide-react";
 import * as React from "react";
 
@@ -12,13 +13,17 @@ export interface TagInputProps
 		"value" | "onChange"
 	> {
 	/**
-	 * Array of tag values
+	 * Array of tag values (controlled)
 	 */
 	value?: string[];
 	/**
+	 * Initial tags (uncontrolled)
+	 */
+	defaultValue?: string[];
+	/**
 	 * Callback when tags change
 	 */
-	onChange?: (tags: string[]) => void;
+	onValueChange?: (tags: string[]) => void;
 	/**
 	 * Character(s) that trigger tag creation
 	 * @default [',']
@@ -54,8 +59,9 @@ export interface TagInputProps
 export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 	(
 		{
-			value = [],
-			onChange,
+			value,
+			defaultValue,
+			onValueChange,
 			separators = [","],
 			allowDuplicates = false,
 			maxTags,
@@ -71,6 +77,11 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 		},
 		ref,
 	) => {
+		const [tags, setTags] = useUncontrolled<string[]>({
+			value,
+			defaultValue: defaultValue ?? [],
+			onChange: onValueChange,
+		});
 		const [inputValue, setInputValue] = React.useState("");
 		const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -81,7 +92,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 		// this batch, so pasting "a,b,c" produces ["a","b","c"] — not just "c".
 		const addTags = React.useCallback(
 			(candidates: string[]) => {
-				const existing = allowDuplicates ? null : new Set(value);
+				const existing = allowDuplicates ? null : new Set(tags);
 				const accepted: string[] = [];
 
 				for (const candidate of candidates) {
@@ -93,7 +104,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 					// Check max tags limit
 					if (
 						maxTags !== undefined &&
-						value.length + accepted.length >= maxTags
+						tags.length + accepted.length >= maxTags
 					) {
 						break;
 					}
@@ -110,23 +121,22 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 
 				if (accepted.length === 0) return;
 
-				onChange?.([...value, ...accepted]);
+				setTags([...tags, ...accepted]);
 				setInputValue("");
 			},
-			[value, onChange, transformTag, allowDuplicates, maxTags, validateTag],
+			[tags, setTags, transformTag, allowDuplicates, maxTags, validateTag],
 		);
 
 		const removeTag = React.useCallback(
 			(indexToRemove: number) => {
-				const newTags = value.filter((_, index) => index !== indexToRemove);
-				onChange?.(newTags);
+				setTags(tags.filter((_, index) => index !== indexToRemove));
 			},
-			[value, onChange],
+			[tags, setTags],
 		);
 
 		const clearAllTags = React.useCallback(() => {
-			onChange?.([]);
-		}, [onChange]);
+			setTags([]);
+		}, [setTags]);
 
 		const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 			// Consumer handler runs first and may preventDefault to opt out of
@@ -142,9 +152,9 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 			}
 
 			// Handle backspace on empty input to remove last tag
-			if (e.key === "Backspace" && !inputValue && value.length > 0) {
+			if (e.key === "Backspace" && !inputValue && tags.length > 0) {
 				e.preventDefault();
-				removeTag(value.length - 1);
+				removeTag(tags.length - 1);
 			}
 		};
 
@@ -201,7 +211,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 						"kala-focus-within-ring",
 						hasError && "border-destructive kala-focus-within-ring-destructive",
 						disabled && "cursor-not-allowed bg-muted",
-						value.length > 0 && "pr-10",
+						tags.length > 0 && "pr-10",
 						className,
 					)}
 					onClick={handleContainerClick}
@@ -209,7 +219,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 					tabIndex={-1}
 				>
 					{/* Render tags */}
-					{value.map((tag, index) => (
+					{tags.map((tag, index) => (
 						<Badge
 							key={`${tag}-${index}`}
 							color="secondary"
@@ -246,7 +256,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 						// placeholder alone is not an accessible name — keep one even
 						// once the visible placeholder is hidden by existing tags
 						aria-label={placeholder}
-						placeholder={value.length === 0 ? placeholder : ""}
+						placeholder={tags.length === 0 ? placeholder : ""}
 						className={cn(
 							"flex-1 min-w-[120px] bg-transparent outline-none placeholder:text-muted-foreground",
 							"text-foreground",
@@ -257,7 +267,7 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 				</div>
 
 				{/* Clear all button */}
-				{value.length > 0 && !disabled && (
+				{tags.length > 0 && !disabled && (
 					<button
 						type="button"
 						onClick={clearAllTags}

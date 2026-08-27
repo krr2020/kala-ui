@@ -12,7 +12,7 @@ const mockSteps: StepItem[] = [
 describe("Steps", () => {
 	describe("Basic Rendering", () => {
 		it("renders all steps", () => {
-			render(<Steps currentStep={1} items={mockSteps} />);
+			render(<Steps value={1} items={mockSteps} />);
 
 			expect(screen.getByText("Step 1")).toBeInTheDocument();
 			expect(screen.getByText("Step 2")).toBeInTheDocument();
@@ -20,7 +20,7 @@ describe("Steps", () => {
 		});
 
 		it("renders step descriptions", () => {
-			render(<Steps currentStep={1} items={mockSteps} />);
+			render(<Steps value={1} items={mockSteps} />);
 
 			expect(screen.getByText("First step description")).toBeInTheDocument();
 			expect(screen.getByText("Second step description")).toBeInTheDocument();
@@ -33,14 +33,14 @@ describe("Steps", () => {
 				{ title: "Step 2" },
 			];
 
-			render(<Steps currentStep={1} items={stepsWithoutDesc} />);
+			render(<Steps value={1} items={stepsWithoutDesc} />);
 
 			expect(screen.getByText("Step 1")).toBeInTheDocument();
 			expect(screen.getByText("Step 2")).toBeInTheDocument();
 		});
 
 		it("renders step numbers by default", () => {
-			render(<Steps currentStep={1} items={mockSteps} />);
+			render(<Steps value={1} items={mockSteps} />);
 
 			expect(screen.getByText("1")).toBeInTheDocument();
 			expect(screen.getByText("2")).toBeInTheDocument();
@@ -49,7 +49,7 @@ describe("Steps", () => {
 
 		it("accepts custom className", () => {
 			const { container } = render(
-				<Steps currentStep={1} items={mockSteps} className="custom-class" />,
+				<Steps value={1} items={mockSteps} className="custom-class" />,
 			);
 
 			expect(container.firstChild as HTMLElement).toHaveClass("custom-class");
@@ -58,7 +58,7 @@ describe("Steps", () => {
 
 	describe("Current Step", () => {
 		it("highlights current step", () => {
-			render(<Steps currentStep={2} items={mockSteps} />);
+			render(<Steps value={2} items={mockSteps} />);
 
 			const step2 = screen.getByText("Step 2");
 			expect(step2).not.toBeNull();
@@ -66,21 +66,21 @@ describe("Steps", () => {
 		});
 
 		it("shows check icon for completed steps", () => {
-			const { container } = render(<Steps currentStep={3} items={mockSteps} />);
+			const { container } = render(<Steps value={3} items={mockSteps} />);
 
 			const checkIcons = container.querySelectorAll("svg");
 			expect(checkIcons.length).toBeGreaterThan(0);
 		});
 
 		it("shows numbers for upcoming steps", () => {
-			render(<Steps currentStep={1} items={mockSteps} />);
+			render(<Steps value={1} items={mockSteps} />);
 
 			expect(screen.getByText("2")).toBeInTheDocument();
 			expect(screen.getByText("3")).toBeInTheDocument();
 		});
 
 		it("applies scale to active step", () => {
-			const { container } = render(<Steps currentStep={2} items={mockSteps} />);
+			const { container } = render(<Steps value={2} items={mockSteps} />);
 
 			const indicators = container.querySelectorAll('[class*="rounded-full"]');
 			const activeIndicator = indicators[1]; // Second step (index 1)
@@ -91,14 +91,14 @@ describe("Steps", () => {
 
 	describe("Completed Steps", () => {
 		it("marks previous steps as completed", () => {
-			const { container } = render(<Steps currentStep={3} items={mockSteps} />);
+			const { container } = render(<Steps value={3} items={mockSteps} />);
 
 			const checkIcons = container.querySelectorAll("svg");
 			expect(checkIcons.length).toBeGreaterThanOrEqual(2);
 		});
 
 		it("applies completed styling to finished steps", () => {
-			const { container } = render(<Steps currentStep={3} items={mockSteps} />);
+			const { container } = render(<Steps value={3} items={mockSteps} />);
 
 			const indicators = container.querySelectorAll('[class*="rounded-full"]');
 			const firstIndicator = indicators[0];
@@ -107,7 +107,7 @@ describe("Steps", () => {
 		});
 
 		it("shows progress line for completed steps", () => {
-			const { container } = render(<Steps currentStep={3} items={mockSteps} />);
+			const { container } = render(<Steps value={3} items={mockSteps} />);
 
 			const progressLines = container.querySelectorAll('[class*="bg-primary"]');
 			expect(progressLines.length).toBeGreaterThan(0);
@@ -116,14 +116,14 @@ describe("Steps", () => {
 
 	describe("Orientation", () => {
 		it("renders horizontal by default", () => {
-			const { container } = render(<Steps currentStep={1} items={mockSteps} />);
+			const { container } = render(<Steps value={1} items={mockSteps} />);
 
 			expect(container.firstChild).toHaveClass("flex-row");
 		});
 
 		it("renders vertical when specified", () => {
 			const { container } = render(
-				<Steps currentStep={1} items={mockSteps} orientation="vertical" />,
+				<Steps value={1} items={mockSteps} orientation="vertical" />,
 			);
 
 			expect(container.firstChild).toHaveClass("flex-col");
@@ -131,7 +131,7 @@ describe("Steps", () => {
 
 		it("applies correct horizontal styling", () => {
 			const { container } = render(
-				<Steps currentStep={1} items={mockSteps} orientation="horizontal" />,
+				<Steps value={1} items={mockSteps} orientation="horizontal" />,
 			);
 
 			expect(container.firstChild).toHaveClass("items-start");
@@ -139,7 +139,7 @@ describe("Steps", () => {
 
 		it("applies correct vertical styling", () => {
 			const { container } = render(
-				<Steps currentStep={1} items={mockSteps} orientation="vertical" />,
+				<Steps value={1} items={mockSteps} orientation="vertical" />,
 			);
 
 			expect(container.firstChild).toHaveClass("flex-col");
@@ -147,12 +147,12 @@ describe("Steps", () => {
 	});
 
 	describe("Click Interactions", () => {
-		it("calls onStepClick when step is clicked", async () => {
+		it("calls onValueChange when step is clicked", async () => {
 			const user = userEvent.setup();
 			const onStepClick = vi.fn();
 
 			const { container } = render(
-				<Steps currentStep={1} items={mockSteps} onStepClick={onStepClick} />,
+				<Steps value={1} items={mockSteps} onValueChange={onStepClick} />,
 			);
 
 			const indicators = container.querySelectorAll('[class*="rounded-full"]');
@@ -165,7 +165,7 @@ describe("Steps", () => {
 
 		it("does not call onStepClick when not provided", async () => {
 			const user = userEvent.setup();
-			const { container } = render(<Steps currentStep={1} items={mockSteps} />);
+			const { container } = render(<Steps value={1} items={mockSteps} />);
 
 			const indicators = container.querySelectorAll('[class*="rounded-full"]');
 			const secondIndicator = indicators[1];
@@ -176,10 +176,10 @@ describe("Steps", () => {
 			expect(true).toBe(true);
 		});
 
-		it("makes steps clickable when onStepClick is provided", () => {
+		it("makes steps clickable when onValueChange is provided", () => {
 			const onStepClick = vi.fn();
 			const { container } = render(
-				<Steps currentStep={1} items={mockSteps} onStepClick={onStepClick} />,
+				<Steps value={1} items={mockSteps} onValueChange={onStepClick} />,
 			);
 
 			const indicators = container.querySelectorAll(
@@ -191,7 +191,7 @@ describe("Steps", () => {
 		it("does not make current step clickable", () => {
 			const onStepClick = vi.fn();
 			const { container } = render(
-				<Steps currentStep={2} items={mockSteps} onStepClick={onStepClick} />,
+				<Steps value={2} items={mockSteps} onValueChange={onStepClick} />,
 			);
 
 			const indicators = container.querySelectorAll('[class*="rounded-full"]');
@@ -207,7 +207,7 @@ describe("Steps", () => {
 			const onStepClick = vi.fn();
 
 			const { container } = render(
-				<Steps currentStep={3} items={mockSteps} onStepClick={onStepClick} />,
+				<Steps value={3} items={mockSteps} onValueChange={onStepClick} />,
 			);
 
 			const indicators = container.querySelectorAll('[class*="rounded-full"]');
@@ -223,7 +223,7 @@ describe("Steps", () => {
 			const onStepClick = vi.fn();
 
 			const { container } = render(
-				<Steps currentStep={1} items={mockSteps} onStepClick={onStepClick} />,
+				<Steps value={1} items={mockSteps} onValueChange={onStepClick} />,
 			);
 
 			const indicators = container.querySelectorAll('[class*="rounded-full"]');
@@ -242,7 +242,7 @@ describe("Steps", () => {
 				{ title: "Step 2", icon: <span data-testid="icon-2">✅</span> },
 			];
 
-			render(<Steps currentStep={1} items={stepsWithIcons} />);
+			render(<Steps value={1} items={stepsWithIcons} />);
 
 			expect(screen.getByTestId("icon-1")).toBeInTheDocument();
 			expect(screen.getByTestId("icon-2")).toBeInTheDocument();
@@ -254,9 +254,7 @@ describe("Steps", () => {
 				{ title: "Step 2", icon: <span data-testid="icon-2">✅</span> },
 			];
 
-			const { container } = render(
-				<Steps currentStep={2} items={stepsWithIcons} />,
-			);
+			const { container } = render(<Steps value={2} items={stepsWithIcons} />);
 
 			// First step should show check icon instead of custom icon
 			const checkIcons = container.querySelectorAll("svg");
@@ -267,7 +265,7 @@ describe("Steps", () => {
 	describe("Progress Lines", () => {
 		it("shows connecting lines between steps", () => {
 			const { container } = render(
-				<Steps currentStep={1} items={mockSteps} orientation="horizontal" />,
+				<Steps value={1} items={mockSteps} orientation="horizontal" />,
 			);
 
 			// Check for horizontal connecting lines (have w-full class)
@@ -277,7 +275,7 @@ describe("Steps", () => {
 
 		it("shows horizontal lines in horizontal orientation", () => {
 			const { container } = render(
-				<Steps currentStep={1} items={mockSteps} orientation="horizontal" />,
+				<Steps value={1} items={mockSteps} orientation="horizontal" />,
 			);
 
 			const horizontalLines = container.querySelectorAll('[class*="w-full"]');
@@ -286,7 +284,7 @@ describe("Steps", () => {
 
 		it("shows vertical lines in vertical orientation", () => {
 			const { container } = render(
-				<Steps currentStep={1} items={mockSteps} orientation="vertical" />,
+				<Steps value={1} items={mockSteps} orientation="vertical" />,
 			);
 
 			const verticalLines = Array.from(
@@ -296,7 +294,7 @@ describe("Steps", () => {
 		});
 
 		it("animates progress lines with transitions", () => {
-			const { container } = render(<Steps currentStep={2} items={mockSteps} />);
+			const { container } = render(<Steps value={2} items={mockSteps} />);
 
 			const progressBars = container.querySelectorAll(
 				'[class*="transition-all"]',
@@ -305,7 +303,7 @@ describe("Steps", () => {
 		});
 
 		it("does not show line after last step", () => {
-			const { container } = render(<Steps currentStep={1} items={mockSteps} />);
+			const { container } = render(<Steps value={1} items={mockSteps} />);
 
 			const stepContainers = container.querySelectorAll(
 				'[class*="group relative flex"]',
@@ -322,23 +320,21 @@ describe("Steps", () => {
 		it("handles single step", () => {
 			const singleStep: StepItem[] = [{ title: "Only Step" }];
 
-			render(<Steps currentStep={1} items={singleStep} />);
+			render(<Steps value={1} items={singleStep} />);
 
 			expect(screen.getByText("Only Step")).toBeInTheDocument();
 		});
 
 		it("handles empty items array gracefully", () => {
-			const { container } = render(<Steps currentStep={1} items={[]} />);
+			const { container } = render(<Steps value={1} items={[]} />);
 
 			expect(container.firstChild).toBeInTheDocument();
 		});
 
-		it("handles currentStep beyond items length", () => {
-			render(<Steps currentStep={10} items={mockSteps} />);
+		it("handles value beyond items length", () => {
+			render(<Steps value={10} items={mockSteps} />);
 
-			const { container } = render(
-				<Steps currentStep={10} items={mockSteps} />,
-			);
+			const { container } = render(<Steps value={10} items={mockSteps} />);
 
 			// All steps should be completed
 			const checkIcons = container.querySelectorAll("svg");
@@ -346,7 +342,7 @@ describe("Steps", () => {
 		});
 
 		it("handles currentStep of 0", () => {
-			render(<Steps currentStep={0} items={mockSteps} />);
+			render(<Steps value={0} items={mockSteps} />);
 
 			// No steps should be completed
 			expect(screen.queryByText("1")).toBeInTheDocument();
@@ -357,7 +353,7 @@ describe("Steps", () => {
 				title: `Step ${i + 1}`,
 			}));
 
-			render(<Steps currentStep={5} items={manySteps} />);
+			render(<Steps value={5} items={manySteps} />);
 
 			expect(screen.getByText("Step 1")).toBeInTheDocument();
 			expect(screen.getByText("Step 10")).toBeInTheDocument();
@@ -366,7 +362,7 @@ describe("Steps", () => {
 
 	describe("Styling", () => {
 		it("applies transition classes", () => {
-			const { container } = render(<Steps currentStep={1} items={mockSteps} />);
+			const { container } = render(<Steps value={1} items={mockSteps} />);
 
 			const transitionElements = container.querySelectorAll(
 				'[class*="transition"]',
@@ -375,7 +371,7 @@ describe("Steps", () => {
 		});
 
 		it("applies proper colors to active step", () => {
-			const { container } = render(<Steps currentStep={2} items={mockSteps} />);
+			const { container } = render(<Steps value={2} items={mockSteps} />);
 
 			const indicators = container.querySelectorAll('[class*="rounded-full"]');
 			const activeIndicator = indicators[1];
@@ -385,7 +381,7 @@ describe("Steps", () => {
 		});
 
 		it("applies proper colors to completed steps", () => {
-			const { container } = render(<Steps currentStep={3} items={mockSteps} />);
+			const { container } = render(<Steps value={3} items={mockSteps} />);
 
 			const indicators = container.querySelectorAll('[class*="rounded-full"]');
 			const completedIndicator = indicators[0];
@@ -394,7 +390,7 @@ describe("Steps", () => {
 		});
 
 		it("applies proper colors to future steps", () => {
-			const { container } = render(<Steps currentStep={1} items={mockSteps} />);
+			const { container } = render(<Steps value={1} items={mockSteps} />);
 
 			const indicators = container.querySelectorAll('[class*="rounded-full"]');
 			const futureIndicator = indicators[2];
@@ -408,7 +404,7 @@ describe("Steps", () => {
 		it("accepts standard div attributes", () => {
 			const { container } = render(
 				<Steps
-					currentStep={1}
+					value={1}
 					items={mockSteps}
 					id="test-steps"
 					data-testid="steps"
@@ -420,7 +416,7 @@ describe("Steps", () => {
 
 		it("forwards ref correctly", () => {
 			const ref = vi.fn();
-			render(<Steps currentStep={1} items={mockSteps} ref={ref} />);
+			render(<Steps value={1} items={mockSteps} ref={ref} />);
 
 			expect(ref).toHaveBeenCalled();
 		});

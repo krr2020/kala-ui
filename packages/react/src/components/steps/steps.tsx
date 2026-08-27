@@ -1,3 +1,4 @@
+import { useUncontrolled } from "@kala-ui/react-hooks";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Check } from "lucide-react";
 import * as React from "react";
@@ -26,9 +27,12 @@ export interface StepItem {
 export interface StepsProps
 	extends React.OlHTMLAttributes<HTMLOListElement>,
 		VariantProps<typeof stepsVariants> {
-	currentStep: number;
+	/** Current step index, 0-based (controlled) */
+	value: number;
+	/** Initial step index, 0-based (uncontrolled) */
+	defaultValue?: number;
 	items: StepItem[];
-	onStepClick?: (step: number) => void;
+	onValueChange?: (step: number) => void;
 	/**
 	 * Show connecting lines between steps
 	 * @default true
@@ -41,14 +45,21 @@ const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
 		{
 			className,
 			orientation,
-			currentStep,
+			value: valueProp,
+			defaultValue,
 			items,
-			onStepClick,
+			onValueChange,
 			showLine = true,
 			...props
 		},
 		ref,
 	) => {
+		const [currentStep, setCurrentStep] = useUncontrolled<number>({
+			value: valueProp,
+			defaultValue,
+			onChange: onValueChange,
+		});
+
 		return (
 			<ol
 				ref={ref}
@@ -60,7 +71,7 @@ const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
 					const isCompleted = stepNumber < currentStep;
 					const isActive = stepNumber === currentStep;
 					const isLast = index === items.length - 1;
-					const isClickable = !!onStepClick;
+					const isClickable = !!onValueChange;
 
 					return (
 						<Box
@@ -128,7 +139,7 @@ const Steps = React.forwardRef<HTMLOListElement, StepsProps>(
 												: ""
 									}`}
 									disabled={!isClickable}
-									onClick={() => onStepClick?.(stepNumber)}
+									onClick={() => setCurrentStep(stepNumber)}
 								>
 									{isCompleted ? (
 										<Check className="h-4 w-4" />

@@ -32,7 +32,7 @@ describe("FileUpload", () => {
 		it("handles file selection via input", async () => {
 			const handleFileSelect = vi.fn();
 			const { container } = render(
-				<FileUpload onFileSelect={handleFileSelect} />,
+				<FileUpload onValueChange={handleFileSelect} />,
 			);
 
 			const file = new File(["dummy content"], "test.png", {
@@ -51,7 +51,7 @@ describe("FileUpload", () => {
 		it("accepts file with matching type", async () => {
 			const handleFileSelect = vi.fn();
 			const { container } = render(
-				<FileUpload accept=".png" onFileSelect={handleFileSelect} />,
+				<FileUpload accept=".png" onValueChange={handleFileSelect} />,
 			);
 
 			const file = new File(["content"], "test.png", { type: "image/png" });
@@ -69,7 +69,7 @@ describe("FileUpload", () => {
 			const { container } = render(
 				<FileUpload
 					maxSize={1024}
-					onFileSelect={handleFileSelect}
+					onValueChange={handleFileSelect}
 					onError={handleError}
 				/>,
 			);
@@ -90,7 +90,7 @@ describe("FileUpload", () => {
 		it("accepts file within size limit", async () => {
 			const handleFileSelect = vi.fn();
 			const { container } = render(
-				<FileUpload maxSize={2048} onFileSelect={handleFileSelect} />,
+				<FileUpload maxSize={2048} onValueChange={handleFileSelect} />,
 			);
 
 			const file = new File(["content"], "small.png", { type: "image/png" });
@@ -125,7 +125,7 @@ describe("FileUpload", () => {
 
 		it("handles file drop", async () => {
 			const handleFileSelect = vi.fn();
-			render(<FileUpload onFileSelect={handleFileSelect} />);
+			render(<FileUpload onValueChange={handleFileSelect} />);
 
 			const file = new File(["content"], "dropped.png", { type: "image/png" });
 			const button = screen.getByRole("button");
@@ -143,7 +143,7 @@ describe("FileUpload", () => {
 			render(
 				<FileUpload
 					maxSize={1024}
-					onFileSelect={handleFileSelect}
+					onValueChange={handleFileSelect}
 					onError={handleError}
 				/>,
 			);
@@ -163,7 +163,7 @@ describe("FileUpload", () => {
 
 		it("does not handle drop when disabled", async () => {
 			const handleFileSelect = vi.fn();
-			render(<FileUpload disabled onFileSelect={handleFileSelect} />);
+			render(<FileUpload disabled onValueChange={handleFileSelect} />);
 
 			const file = new File(["content"], "file.png", { type: "image/png" });
 			const button = screen.getByRole("button");
@@ -285,7 +285,7 @@ describe("FileUpload", () => {
 			const file = new File(["dummy content"], "test.png", {
 				type: "image/png",
 			});
-			render(<FileUpload value={file} onClear={handleClear} />);
+			render(<FileUpload value={file} onValueChange={handleClear} />);
 
 			const clearButton = screen.getByRole("button");
 			await userEvent.click(clearButton);
@@ -297,7 +297,7 @@ describe("FileUpload", () => {
 			const file = new File(["dummy content"], "test.png", {
 				type: "image/png",
 			});
-			render(<FileUpload value={file} onClear={handleClear} disabled />);
+			render(<FileUpload value={file} onValueChange={handleClear} disabled />);
 
 			// Clear button should not be present when disabled
 			const buttons = screen.queryAllByRole("button");
@@ -345,7 +345,7 @@ describe("FileUpload", () => {
 
 		it("does not open file dialog when disabled", async () => {
 			const handleFileSelect = vi.fn();
-			render(<FileUpload disabled onFileSelect={handleFileSelect} />);
+			render(<FileUpload disabled onValueChange={handleFileSelect} />);
 
 			const button = screen.getByRole("button");
 			await userEvent.click(button);
@@ -437,7 +437,7 @@ describe("FileUpload", () => {
 
 describe("FileUpload accessibility", () => {
 	it("renders the file input outside the trigger button", () => {
-		const { container } = render(<FileUpload onFileSelect={() => {}} />);
+		const { container } = render(<FileUpload onValueChange={() => {}} />);
 		const trigger = screen.getByRole("button", { name: /click to upload/i });
 		const input = container.querySelector('input[type="file"]');
 		expect(input).toBeInTheDocument();
@@ -445,7 +445,7 @@ describe("FileUpload accessibility", () => {
 	});
 
 	it("announces errors via role=alert and ties them to the trigger", () => {
-		render(<FileUpload error="File too large" onFileSelect={() => {}} />);
+		render(<FileUpload error="File too large" onValueChange={() => {}} />);
 		const alert = screen.getByRole("alert");
 		expect(alert).toHaveTextContent("File too large");
 		const trigger = screen.getByRole("button", { name: /click to upload/i });
@@ -460,7 +460,7 @@ describe("FileUpload accessibility", () => {
 		render(
 			<FileUpload
 				value={new File(["x"], "a.txt", { type: "text/plain" })}
-				onClear={() => {}}
+				onValueChange={() => {}}
 			/>,
 		);
 		expect(

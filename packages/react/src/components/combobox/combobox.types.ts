@@ -14,8 +14,10 @@ export interface ComboboxProps {
 	"aria-label"?: string;
 	/** Options to display in the combobox. */
 	options: ComboboxOption[];
-	/** Selected value. */
+	/** Selected value (controlled). */
 	value?: string;
+	/** Initially selected value (uncontrolled). */
+	defaultValue?: string;
 	/** Called when the user selects an option. The dropdown closes after
 	 *  selection. */
 	onValueChange?: (value: string) => void;

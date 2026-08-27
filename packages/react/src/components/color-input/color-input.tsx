@@ -1,3 +1,4 @@
+import { useUncontrolled } from "@kala-ui/react-hooks";
 import * as React from "react";
 import { inputStyles } from "../../config/input";
 import { cn } from "../../lib/utils";
@@ -16,7 +17,7 @@ export interface ColorInputProps
 	/**
 	 * Callback fired when value changes
 	 */
-	onChange?: (value: string) => void;
+	onValueChange?: (value: string) => void;
 	/**
 	 * If true, renders with error styles
 	 */
@@ -37,7 +38,7 @@ export const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
 			className,
 			value: valueProp,
 			defaultValue,
-			onChange,
+			onValueChange,
 			error,
 			success,
 			withPreview = true,
@@ -46,26 +47,18 @@ export const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
 		},
 		ref,
 	) => {
-		const [internalValue, setInternalValue] = React.useState<string>(
-			valueProp ?? defaultValue ?? "",
-		);
-
-		React.useEffect(() => {
-			if (valueProp !== undefined) {
-				setInternalValue(valueProp);
-			}
-		}, [valueProp]);
+		const [internalValue, setInternalValue] = useUncontrolled<string>({
+			value: valueProp,
+			defaultValue: defaultValue ?? "",
+			onChange: onValueChange,
+		});
 
 		const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-			const val = e.target.value;
-			setInternalValue(val);
-			onChange?.(val);
+			setInternalValue(e.target.value);
 		};
 
 		const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-			const val = e.target.value;
-			setInternalValue(val);
-			onChange?.(val);
+			setInternalValue(e.target.value);
 		};
 
 		return (
@@ -101,7 +94,6 @@ export const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
 												style={{ backgroundColor: color }}
 												onClick={() => {
 													setInternalValue(color);
-													onChange?.(color);
 												}}
 											/>
 										))}

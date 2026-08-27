@@ -37,10 +37,10 @@ describe("TimePicker", () => {
 		expect(screen.queryByText("SS")).not.toBeInTheDocument();
 	});
 
-	it("should call onChange when a minute is selected", async () => {
+	it("should call onValueChange when a minute is selected", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<TimePicker onChange={handleChange} />);
+		render(<TimePicker onValueChange={handleChange} />);
 
 		// "30" exists only in the minutes column (hours are 0–23)
 		const minuteButton = screen
@@ -53,10 +53,10 @@ describe("TimePicker", () => {
 		);
 	});
 
-	it("should call onChange when an hour is selected", async () => {
+	it("should call onValueChange when an hour is selected", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<TimePicker hourCycle={24} onChange={handleChange} />);
+		render(<TimePicker hourCycle={24} onValueChange={handleChange} />);
 
 		const hourButtons = screen
 			.getAllByRole("button")
@@ -69,7 +69,7 @@ describe("TimePicker", () => {
 
 	it("should display controlled value", () => {
 		render(
-			<TimePicker value={{ hours: 14, minutes: 30 }} onChange={vi.fn()} />,
+			<TimePicker value={{ hours: 14, minutes: 30 }} onValueChange={vi.fn()} />,
 		);
 		expect(screen.getByText("14:30")).toBeInTheDocument();
 	});
@@ -79,7 +79,7 @@ describe("TimePicker", () => {
 			<TimePicker
 				value={{ hours: 14, minutes: 30 }}
 				hourCycle={12}
-				onChange={vi.fn()}
+				onValueChange={vi.fn()}
 			/>,
 		);
 		expect(screen.getByText(/02:30 PM/)).toBeInTheDocument();
@@ -112,7 +112,7 @@ describe("TimePicker", () => {
 			<TimePicker
 				hourCycle={12}
 				defaultValue={{ hours: 9, minutes: 0 }}
-				onChange={handleChange}
+				onValueChange={handleChange}
 			/>,
 		);
 
@@ -135,7 +135,7 @@ describe("TimePicker", () => {
 			<TimePicker
 				value={{ hours: 0, minutes: 0 }}
 				hourCycle={12}
-				onChange={vi.fn()}
+				onValueChange={vi.fn()}
 			/>,
 		);
 		expect(screen.getByText(/12:00 AM/)).toBeInTheDocument();
@@ -146,7 +146,7 @@ describe("TimePicker", () => {
 			<TimePicker
 				value={{ hours: 13, minutes: 0 }}
 				hourCycle={12}
-				onChange={vi.fn()}
+				onValueChange={vi.fn()}
 			/>,
 		);
 		expect(screen.getByText(/01:00 PM/)).toBeInTheDocument();
@@ -157,7 +157,7 @@ describe("TimePicker", () => {
 			<TimePicker
 				value={{ hours: 12, minutes: 0 }}
 				hourCycle={12}
-				onChange={vi.fn()}
+				onValueChange={vi.fn()}
 			/>,
 		);
 		expect(screen.getByText(/12:00 PM/)).toBeInTheDocument();
@@ -168,7 +168,7 @@ describe("TimePicker", () => {
 			<TimePicker
 				value={{ hours: 23, minutes: 30 }}
 				hourCycle={12}
-				onChange={vi.fn()}
+				onValueChange={vi.fn()}
 			/>,
 		);
 		expect(screen.getByText(/11:30 PM/)).toBeInTheDocument();
@@ -179,7 +179,7 @@ describe("TimePicker", () => {
 			<TimePicker
 				value={{ hours: 10, minutes: 30, seconds: 45 }}
 				showSeconds
-				onChange={vi.fn()}
+				onValueChange={vi.fn()}
 			/>,
 		);
 		expect(screen.getByText("10:30:45")).toBeInTheDocument();
@@ -191,7 +191,7 @@ describe("TimePicker", () => {
 				value={{ hours: 14, minutes: 30, seconds: 45 }}
 				hourCycle={12}
 				showSeconds
-				onChange={vi.fn()}
+				onValueChange={vi.fn()}
 			/>,
 		);
 		expect(screen.getByText(/02:30:45 PM/)).toBeInTheDocument();
@@ -204,7 +204,7 @@ describe("TimePicker", () => {
 			<TimePicker
 				hourCycle={12}
 				defaultValue={{ hours: 9, minutes: 0 }}
-				onChange={handleChange}
+				onValueChange={handleChange}
 			/>,
 		);
 
@@ -226,7 +226,7 @@ describe("TimePicker", () => {
 			<TimePicker
 				hourCycle={12}
 				defaultValue={{ hours: 15, minutes: 0 }}
-				onChange={handleChange}
+				onValueChange={handleChange}
 			/>,
 		);
 
@@ -248,7 +248,7 @@ describe("TimePicker", () => {
 			<TimePicker
 				hourCycle={12}
 				defaultValue={{ hours: 21, minutes: 0 }}
-				onChange={handleChange}
+				onValueChange={handleChange}
 			/>,
 		);
 
@@ -263,7 +263,7 @@ describe("TimePicker", () => {
 	it("should select seconds when showSeconds is true", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<TimePicker showSeconds onChange={handleChange} />);
+		render(<TimePicker showSeconds onValueChange={handleChange} />);
 
 		// "45" in seconds column
 		const secButtons = screen
@@ -309,7 +309,9 @@ describe("TimePicker", () => {
 	});
 
 	it("should apply correct class to active hour in TimeColumn", () => {
-		render(<TimePicker value={{ hours: 10, minutes: 0 }} onChange={vi.fn()} />);
+		render(
+			<TimePicker value={{ hours: 10, minutes: 0 }} onValueChange={vi.fn()} />,
+		);
 		const hour10 = screen
 			.getAllByRole("button")
 			.find(
@@ -343,7 +345,7 @@ describe("TimePicker", () => {
 			<TimePicker
 				hourCycle={12}
 				defaultValue={{ hours: 15, minutes: 0 }}
-				onChange={handleChange}
+				onValueChange={handleChange}
 			/>,
 		);
 
@@ -363,7 +365,7 @@ describe("TimePicker", () => {
 			<TimePicker
 				hourCycle={12}
 				defaultValue={{ hours: 5, minutes: 0 }}
-				onChange={handleChange}
+				onValueChange={handleChange}
 			/>,
 		);
 
@@ -379,7 +381,10 @@ describe("TimePicker", () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
 		render(
-			<TimePicker value={{ hours: 10, minutes: 0 }} onChange={handleChange} />,
+			<TimePicker
+				value={{ hours: 10, minutes: 0 }}
+				onValueChange={handleChange}
+			/>,
 		);
 
 		// Select minute 30
@@ -393,7 +398,9 @@ describe("TimePicker", () => {
 	});
 
 	it("should pad single digit values with leading zero in display", () => {
-		render(<TimePicker value={{ hours: 5, minutes: 3 }} onChange={vi.fn()} />);
+		render(
+			<TimePicker value={{ hours: 5, minutes: 3 }} onValueChange={vi.fn()} />,
+		);
 		expect(screen.getByText("05:03")).toBeInTheDocument();
 	});
 
@@ -402,7 +409,7 @@ describe("TimePicker", () => {
 			<TimePicker
 				value={{ hours: 5, minutes: 3, seconds: 7 }}
 				showSeconds
-				onChange={vi.fn()}
+				onValueChange={vi.fn()}
 			/>,
 		);
 		expect(screen.getByText("05:03:07")).toBeInTheDocument();

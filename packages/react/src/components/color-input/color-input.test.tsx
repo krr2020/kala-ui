@@ -11,7 +11,7 @@ describe("ColorInput", () => {
 
 	it("handles value change", () => {
 		const handleChange = vi.fn();
-		render(<ColorInput onChange={handleChange} />);
+		render(<ColorInput onValueChange={handleChange} />);
 		const input = screen.getByRole("textbox");
 
 		fireEvent.change(input, { target: { value: "#ffffff" } });
@@ -144,7 +144,7 @@ describe("ColorInput", () => {
 	it("selects a preset color and updates input", async () => {
 		const handleChange = vi.fn();
 		const user = userEvent.setup();
-		render(<ColorInput onChange={handleChange} />);
+		render(<ColorInput onValueChange={handleChange} />);
 
 		const trigger = screen.getByRole("button", { name: /pick a color/i });
 		await user.click(trigger);
@@ -164,20 +164,20 @@ describe("ColorInput", () => {
 		}
 	});
 
-	it("does not call onChange when value prop changes externally", () => {
+	it("does not call onValueChange when value prop changes externally", () => {
 		const handleChange = vi.fn();
 		const { rerender } = render(
-			<ColorInput value="#000000" onChange={handleChange} />,
+			<ColorInput value="#000000" onValueChange={handleChange} />,
 		);
-		rerender(<ColorInput value="#ff0000" onChange={handleChange} />);
-		// onChange should not be called on prop change, only on user interaction
+		rerender(<ColorInput value="#ff0000" onValueChange={handleChange} />);
+		// onValueChange should not be called on prop change, only on user interaction
 		expect(handleChange).not.toHaveBeenCalled();
 	});
 
 	it("handles color picker native input change", async () => {
 		const handleChange = vi.fn();
 		const user = userEvent.setup();
-		render(<ColorInput onChange={handleChange} />);
+		render(<ColorInput onValueChange={handleChange} />);
 
 		const trigger = screen.getByRole("button", { name: /pick a color/i });
 		await user.click(trigger);
@@ -229,7 +229,7 @@ describe("ColorInput", () => {
 	it("handles typing in the text input", async () => {
 		const handleChange = vi.fn();
 		const user = userEvent.setup();
-		render(<ColorInput onChange={handleChange} />);
+		render(<ColorInput onValueChange={handleChange} />);
 		const input = screen.getByRole("textbox");
 		await user.type(input, "#a");
 		expect(handleChange).toHaveBeenCalled();
@@ -285,7 +285,7 @@ describe("ColorInput", () => {
 	it("preset color click updates internal value and calls onChange", async () => {
 		const handleChange = vi.fn();
 		const user = userEvent.setup();
-		render(<ColorInput onChange={handleChange} defaultValue="#000000" />);
+		render(<ColorInput onValueChange={handleChange} defaultValue="#000000" />);
 
 		const trigger = screen.getByRole("button", { name: /pick a color/i });
 		await user.click(trigger);
@@ -310,7 +310,7 @@ describe("ColorInput", () => {
 	it("handles color picker change when internal value is short hex", async () => {
 		const handleChange = vi.fn();
 		const user = userEvent.setup();
-		render(<ColorInput onChange={handleChange} defaultValue="abc" />);
+		render(<ColorInput onValueChange={handleChange} defaultValue="abc" />);
 
 		const trigger = screen.getByRole("button", { name: /pick a color/i });
 		await user.click(trigger);

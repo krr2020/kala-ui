@@ -7,24 +7,26 @@ import { Button } from "../button";
 
 export interface FileUploadProps
 	extends Omit<React.HTMLAttributes<HTMLDivElement>, "onError"> {
-	onFileSelect?: (file: File) => void;
+	/** Selected file (controlled; null = cleared) */
+	value?: File | null;
+	/**
+	 * Fired with the newly selected file, or null when cleared
+	 */
+	onValueChange?: (file: File | null) => void;
 	accept?: string;
 	maxSize?: number; // in bytes
 	disabled?: boolean;
-	value?: File | null;
-	onClear?: () => void;
 	error?: string;
 	progress?: number;
 	onError?: (error: string) => void;
 }
 
 export function FileUpload({
-	onFileSelect,
+	value,
+	onValueChange,
 	accept,
 	maxSize,
 	disabled,
-	value,
-	onClear,
 	error,
 	progress,
 	onError,
@@ -73,7 +75,7 @@ export function FileUpload({
 			onError?.(`File size exceeds ${formatFileSize(maxSize)}`);
 			return;
 		}
-		onFileSelect?.(file);
+		onValueChange?.(file);
 	};
 
 	const handleClick = () => {
@@ -129,13 +131,13 @@ export function FileUpload({
 							</div>
 						)}
 					</div>
-					{!disabled && onClear && (
+					{!disabled && onValueChange && (
 						<Button
 							type="button"
 							variant="ghost"
 							size="sm"
 							className="ml-2 text-muted-foreground hover:text-destructive"
-							onClick={onClear}
+							onClick={() => onValueChange(null)}
 							aria-label="Clear selected file"
 						>
 							<X className="w-4 h-4" />

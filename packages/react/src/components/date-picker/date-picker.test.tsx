@@ -26,7 +26,7 @@ describe("DatePicker", () => {
 
 	it("displays formatted date when date is selected", () => {
 		const date = new Date(2024, 0, 15); // Jan 15, 2024
-		render(<DatePicker date={date} />);
+		render(<DatePicker value={date} />);
 
 		// Should show formatted date (format: PPP = "January 15th, 2024")
 		expect(screen.getByText(/january/i)).toBeInTheDocument();
@@ -52,11 +52,11 @@ describe("DatePicker", () => {
 		expect(grid).toBeInTheDocument();
 	});
 
-	it("calls onDateChange when a date is selected", async () => {
+	it("calls onValueChange when a date is selected", async () => {
 		const user = userEvent.setup();
-		const onDateChange = vi.fn();
+		const onValueChange = vi.fn();
 
-		render(<DatePicker onDateChange={onDateChange} />);
+		render(<DatePicker onValueChange={onValueChange} />);
 
 		const button = screen.getByRole("button");
 		await user.click(button);
@@ -73,7 +73,7 @@ describe("DatePicker", () => {
 
 		if (dateButtons.length > 0) {
 			await user.click(dateButtons[10]);
-			expect(onDateChange).toHaveBeenCalled();
+			expect(onValueChange).toHaveBeenCalled();
 		}
 	});
 
@@ -105,7 +105,7 @@ describe("DatePicker", () => {
 
 	it("formats date with custom format string", () => {
 		const date = new Date(2024, 0, 15);
-		render(<DatePicker date={date} formatStr="yyyy-MM-dd" />);
+		render(<DatePicker value={date} formatStr="yyyy-MM-dd" />);
 
 		expect(screen.getByText("2024-01-15")).toBeInTheDocument();
 	});
@@ -204,7 +204,7 @@ describe("DateRangePicker", () => {
 			from: new Date(2024, 0, 10),
 			to: new Date(2024, 0, 20),
 		};
-		render(<DateRangePicker dateRange={dateRange} />);
+		render(<DateRangePicker value={dateRange} />);
 
 		// Should show formatted dates with dash separator
 		expect(screen.getByText(/-/)).toBeInTheDocument();
@@ -217,7 +217,7 @@ describe("DateRangePicker", () => {
 		const dateRange: DateRange = {
 			from: new Date(2024, 0, 10),
 		};
-		render(<DateRangePicker dateRange={dateRange} />);
+		render(<DateRangePicker value={dateRange} />);
 
 		expect(screen.getByText(/jan/i)).toBeInTheDocument();
 		expect(screen.getByText(/10/)).toBeInTheDocument();
@@ -244,11 +244,11 @@ describe("DateRangePicker", () => {
 		expect(grids.length).toBeGreaterThanOrEqual(1);
 	});
 
-	it("calls onDateRangeChange when dates are selected", async () => {
+	it("calls onValueChange when dates are selected", async () => {
 		const user = userEvent.setup();
-		const onDateRangeChange = vi.fn();
+		const onValueChange = vi.fn();
 
-		render(<DateRangePicker onDateRangeChange={onDateRangeChange} />);
+		render(<DateRangePicker onValueChange={onValueChange} />);
 
 		const button = screen.getByRole("button");
 		await user.click(button);
@@ -265,10 +265,20 @@ describe("DateRangePicker", () => {
 
 		if (dateButtons.length >= 2) {
 			await user.click(dateButtons[10]);
-			expect(onDateRangeChange).toHaveBeenCalled();
+			expect(onValueChange).toHaveBeenCalled();
 
-			await user.click(dateButtons[15]);
-			expect(onDateRangeChange).toHaveBeenCalledTimes(2);
+			// the controlled selection re-renders the day grid — re-query
+			const dayButtonsAfter = () =>
+				screen
+					.getAllByRole("button")
+					.filter(
+						(btn) =>
+							btn.textContent &&
+							/^\d{1,2}$/.test(btn.textContent) &&
+							!btn.hasAttribute("disabled"),
+					);
+			await user.click(dayButtonsAfter()[15]);
+			expect(onValueChange).toHaveBeenCalledTimes(2);
 		}
 	});
 
@@ -291,7 +301,7 @@ describe("DateRangePicker", () => {
 			from: new Date(2024, 0, 10),
 			to: new Date(2024, 0, 20),
 		};
-		render(<DateRangePicker dateRange={dateRange} formatStr="yyyy-MM-dd" />);
+		render(<DateRangePicker value={dateRange} formatStr="yyyy-MM-dd" />);
 
 		expect(screen.getByText(/2024-01-10/)).toBeInTheDocument();
 		expect(screen.getByText(/2024-01-20/)).toBeInTheDocument();
@@ -328,7 +338,7 @@ describe("DateRangePicker", () => {
 			from: new Date(2024, 5, 10), // June 2024
 			to: new Date(2024, 6, 20), // July 2024
 		};
-		render(<DateRangePicker dateRange={dateRange} />);
+		render(<DateRangePicker value={dateRange} />);
 
 		const button = screen.getByRole("button");
 		await user.click(button);

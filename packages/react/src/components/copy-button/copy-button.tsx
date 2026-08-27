@@ -1,5 +1,6 @@
 "use client";
 
+import { useClipboard } from "@kala-ui/react-hooks";
 import { Check, Copy } from "lucide-react";
 import * as React from "react";
 
@@ -32,32 +33,11 @@ function CopyButton({
 	"aria-label": ariaLabel = "Copy to clipboard",
 	...props
 }: CopyButtonProps) {
-	const [copied, setCopied] = React.useState(false);
-	const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-
-	React.useEffect(() => {
-		return () => {
-			if (timerRef.current) clearTimeout(timerRef.current);
-		};
-	}, []);
+	const { copied, copy } = useClipboard({ timeout });
 
 	const handleCopy = React.useCallback(() => {
-		if (!navigator?.clipboard) return;
-		navigator.clipboard
-			.writeText(value)
-			.then(() => {
-				if (timerRef.current) clearTimeout(timerRef.current);
-				setCopied(true);
-				timerRef.current = setTimeout(() => {
-					setCopied(false);
-					timerRef.current = null;
-				}, timeout);
-			})
-			.catch(() => {
-				// Clipboard write rejected (permissions, non-secure context):
-				// swallow so the click doesn't produce an unhandled rejection.
-			});
-	}, [value, timeout]);
+		copy(value);
+	}, [copy, value]);
 
 	return (
 		<Button

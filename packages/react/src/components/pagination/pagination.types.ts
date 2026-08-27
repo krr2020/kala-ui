@@ -11,9 +11,9 @@ export interface PaginationProps
 	 */
 	page?: number;
 	/**
-	 * Initial active page
+	 * Initial active page (uncontrolled)
 	 */
-	initialPage?: number;
+	defaultPage?: number;
 	/**
 	 * Siblings amount on left/right side of selected page
 	 */
@@ -25,7 +25,7 @@ export interface PaginationProps
 	/**
 	 * Callback fired after change of each page
 	 */
-	onChange?: (page: number) => void;
+	onPageChange?: (page: number) => void;
 	/**
 	 * ARIA label for the navigation
 	 * @default "Pagination"

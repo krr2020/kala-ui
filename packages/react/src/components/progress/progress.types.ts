@@ -1,7 +1,13 @@
 import type * as ProgressPrimitive from "@radix-ui/react-progress";
 import type * as React from "react";
 
-type ProgressColor = "primary" | "secondary" | "destructive" | "success" | "warning" | "info";
+type ProgressColor =
+	| "primary"
+	| "secondary"
+	| "destructive"
+	| "success"
+	| "warning"
+	| "info";
 type ProgressSize = "sm" | "md" | "lg";
 
 export interface ProgressProps

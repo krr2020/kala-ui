@@ -100,7 +100,7 @@ export interface PaginationConfig {
 	/** Page size options */
 	pageSizeOptions?: number[];
 	/** Callback when pagination changes (for server-side pagination) */
-	onChange?: (page: number, pageSize: number) => void;
+	onPageChange?: (page: number, pageSize: number) => void;
 }
 
 /**

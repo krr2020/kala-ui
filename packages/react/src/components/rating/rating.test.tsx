@@ -15,10 +15,10 @@ describe("Rating", () => {
 		expect(screen.getAllByRole("button").length).toBe(3);
 	});
 
-	it("should call onChange when star is clicked", async () => {
+	it("should call onValueChange when star is clicked", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<Rating onChange={handleChange} />);
+		render(<Rating onValueChange={handleChange} />);
 
 		await user.click(screen.getByLabelText("3 stars"));
 		expect(handleChange).toHaveBeenCalledWith(3);
@@ -27,14 +27,14 @@ describe("Rating", () => {
 	it("should toggle off when same star is clicked", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<Rating defaultValue={3} onChange={handleChange} />);
+		render(<Rating defaultValue={3} onValueChange={handleChange} />);
 
 		await user.click(screen.getByLabelText("3 stars"));
 		expect(handleChange).toHaveBeenCalledWith(0);
 	});
 
 	it("should mark stars as pressed based on value", () => {
-		render(<Rating value={3} onChange={vi.fn()} />);
+		render(<Rating value={3} onValueChange={vi.fn()} />);
 		expect(screen.getByLabelText("1 star")).toHaveAttribute(
 			"aria-pressed",
 			"true",
@@ -49,10 +49,10 @@ describe("Rating", () => {
 		);
 	});
 
-	it("should not call onChange in readOnly mode", async () => {
+	it("should not call onValueChange in readOnly mode", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<Rating readOnly value={3} onChange={handleChange} />);
+		render(<Rating readOnly value={3} onValueChange={handleChange} />);
 
 		await user.click(screen.getByLabelText("1 star"));
 		expect(handleChange).not.toHaveBeenCalled();
@@ -124,7 +124,7 @@ describe("Rating", () => {
 	it("should support half-star ratings with allowHalf", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<Rating allowHalf onChange={handleChange} />);
+		render(<Rating allowHalf onValueChange={handleChange} />);
 
 		// Click on the right half of star 2 - should select 2
 		const star2 = screen.getByLabelText("2 stars");
@@ -198,9 +198,9 @@ describe("Rating", () => {
 		expect(stars[0]).toHaveClass("cursor-pointer");
 	});
 
-	it("should call onChange with half-star value when clicking left half", async () => {
+	it("should call onValueChange with half-star value when clicking left half", async () => {
 		const handleChange = vi.fn();
-		render(<Rating allowHalf onChange={handleChange} />);
+		render(<Rating allowHalf onValueChange={handleChange} />);
 
 		const star2 = screen.getByLabelText("2 stars");
 		const rect = { width: 20, left: 100 };
@@ -214,9 +214,9 @@ describe("Rating", () => {
 		vi.restoreAllMocks();
 	});
 
-	it("should call onChange with full star value when clicking right half with allowHalf", async () => {
+	it("should call onValueChange with full star value when clicking right half with allowHalf", async () => {
 		const handleChange = vi.fn();
-		render(<Rating allowHalf onChange={handleChange} />);
+		render(<Rating allowHalf onValueChange={handleChange} />);
 
 		const star3 = screen.getByLabelText("3 stars");
 		const rect = { width: 20, left: 100 };
@@ -230,18 +230,18 @@ describe("Rating", () => {
 		vi.restoreAllMocks();
 	});
 
-	it("should not call onChange in disabled mode", async () => {
+	it("should not call onValueChange in disabled mode", async () => {
 		const handleChange = vi.fn();
-		render(<Rating disabled onChange={handleChange} />);
+		render(<Rating disabled onValueChange={handleChange} />);
 
 		const star1 = screen.getByLabelText("1 star");
 		fireEvent.click(star1);
 		expect(handleChange).not.toHaveBeenCalled();
 	});
 
-	it("should not call onChange on click in readOnly mode", async () => {
+	it("should not call onValueChange on click in readOnly mode", async () => {
 		const handleChange = vi.fn();
-		render(<Rating readOnly onChange={handleChange} />);
+		render(<Rating readOnly onValueChange={handleChange} />);
 
 		const star1 = screen.getByLabelText("1 star");
 		fireEvent.click(star1);

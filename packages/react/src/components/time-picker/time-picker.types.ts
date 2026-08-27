@@ -10,7 +10,7 @@ export interface TimePickerProps {
 	/** Default value for uncontrolled usage */
 	defaultValue?: TimeValue;
 	/** Called when time changes */
-	onChange?: (value: TimeValue) => void;
+	onValueChange?: (value: TimeValue) => void;
 	/** 12-hour or 24-hour format */
 	hourCycle?: 12 | 24;
 	/** Whether to show seconds column */

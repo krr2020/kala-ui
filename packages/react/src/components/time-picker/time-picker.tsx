@@ -1,5 +1,6 @@
 "use client";
 
+import { useUncontrolled } from "@kala-ui/react-hooks";
 import * as React from "react";
 
 import { cn } from "../../lib/utils";
@@ -63,7 +64,7 @@ function TimeColumn({
 function TimePicker({
 	value,
 	defaultValue,
-	onChange,
+	onValueChange,
 	hourCycle = 24,
 	showSeconds = false,
 	disabled = false,
@@ -71,21 +72,14 @@ function TimePicker({
 	isLoading = false,
 	className,
 }: TimePickerProps) {
-	const [internalValue, setInternalValue] = React.useState<TimeValue>(
-		defaultValue ?? { hours: 0, minutes: 0, seconds: 0 },
-	);
-	const [period, setPeriod] = React.useState<"AM" | "PM">(() => {
-		const h = (defaultValue ?? value)?.hours ?? 0;
-		return h < 12 ? "AM" : "PM";
+	const [current, commit] = useUncontrolled<TimeValue>({
+		value,
+		defaultValue: defaultValue ?? { hours: 0, minutes: 0, seconds: 0 },
+		onChange: onValueChange,
 	});
-
-	const isControlled = value !== undefined;
-	const current = isControlled ? value : internalValue;
-
-	const commit = (next: TimeValue) => {
-		if (!isControlled) setInternalValue(next);
-		onChange?.(next);
-	};
+	// Derived, never stored: AM/PM always mirrors the effective value, so a
+	// controlled value crossing the noon boundary can't leave a stale toggle.
+	const period: "AM" | "PM" = current.hours < 12 ? "AM" : "PM";
 
 	const hours24 = Array.from({ length: 24 }, (_, i) => i);
 	const hours12 = Array.from({ length: 12 }, (_, i) => (i === 0 ? 12 : i));
@@ -114,10 +108,8 @@ function TimePicker({
 	};
 
 	const handlePeriodToggle = () => {
-		const next = period === "AM" ? "PM" : "AM";
-		setPeriod(next);
 		const h24 =
-			next === "PM"
+			period === "AM"
 				? current.hours < 12
 					? current.hours + 12
 					: current.hours

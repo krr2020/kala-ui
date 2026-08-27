@@ -10,8 +10,7 @@ const meta: Meta<typeof FileUpload> = {
 	},
 	tags: ["autodocs"],
 	args: {
-		onFileSelect: fn(),
-		onClear: fn(),
+		onValueChange: fn(),
 		onError: fn(),
 	},
 };

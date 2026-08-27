@@ -5,7 +5,7 @@ export const DOTS = "dots";
 
 export interface UsePaginationSettings {
 	/** Page selected on initial render, overrides value if both are provided */
-	initialPage?: number;
+	defaultPage?: number;
 
 	/** Controlled page number */
 	page?: number;
@@ -20,7 +20,7 @@ export interface UsePaginationSettings {
 	boundaries?: number;
 
 	/** Callback fired after change of each page */
-	onChange?: (page: number) => void;
+	onPageChange?: (page: number) => void;
 }
 
 function range(start: number, end: number) {
@@ -33,15 +33,15 @@ export function usePagination({
 	siblings = 1,
 	boundaries = 1,
 	page,
-	initialPage = 1,
-	onChange,
+	defaultPage = 1,
+	onPageChange,
 }: UsePaginationSettings) {
 	const _total = Math.max(0, Math.trunc(total));
 	const [activePage, setActivePage] = useUncontrolled({
 		value: page,
-		defaultValue: initialPage,
-		finalValue: initialPage,
-		onChange,
+		defaultValue: defaultPage,
+		finalValue: defaultPage,
+		onChange: onPageChange,
 	});
 
 	const setPage = (pageNumber: number) => {

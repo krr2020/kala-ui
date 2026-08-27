@@ -46,7 +46,7 @@ export const Nested: Story = {
 			<NavLink
 				label="Settings"
 				icon={<Settings className="h-4 w-4" />}
-				defaultOpened
+				defaultOpen
 			>
 				<NavLink label="Account" indent />
 				<NavLink label="Security" indent active />

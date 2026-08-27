@@ -5,7 +5,13 @@ import * as React from "react";
 import { cn } from "../../lib/utils";
 import type { ProgressBarProps, ProgressProps } from "./progress.types";
 
-type ProgressColor = "primary" | "secondary" | "destructive" | "success" | "warning" | "info";
+type ProgressColor =
+	| "primary"
+	| "secondary"
+	| "destructive"
+	| "success"
+	| "warning"
+	| "info";
 type ProgressSize = "sm" | "md" | "lg";
 
 const sizeClasses: Record<ProgressSize, string> = {

@@ -63,21 +63,21 @@ const items = [
 
 export const Default: Story = {
 	args: {
-		currentStep: 2,
+		value: 2,
 		items: items.map(({ icon, ...rest }) => rest), // No icons by default
 	},
 };
 
 export const WithIcons: Story = {
 	args: {
-		currentStep: 2,
+		value: 2,
 		items: items,
 	},
 };
 
 export const Vertical: Story = {
 	args: {
-		currentStep: 2,
+		value: 2,
 		orientation: "vertical",
 		items: items,
 	},
@@ -85,22 +85,22 @@ export const Vertical: Story = {
 
 export const Clickable: Story = {
 	args: {
-		currentStep: 2,
+		value: 2,
 		items: items,
-		onStepClick: (step) => alert(`Clicked step ${step}`),
+		onValueChange: (step) => alert(`Clicked step ${step}`),
 	},
 };
 
 export const Completed: Story = {
 	args: {
-		currentStep: 5,
+		value: 5,
 		items: items,
 	},
 };
 
 export const WithoutLines: Story = {
 	args: {
-		currentStep: 2,
+		value: 2,
 		items: items,
 		showLine: false,
 	},
@@ -108,7 +108,7 @@ export const WithoutLines: Story = {
 
 export const HorizontalWithLines: Story = {
 	args: {
-		currentStep: 2,
+		value: 2,
 		orientation: "horizontal",
 		items: items,
 		showLine: true,

@@ -1,5 +1,6 @@
 "use client";
 
+import { useUncontrolled } from "@kala-ui/react-hooks";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { ChevronsUpDown, X } from "lucide-react";
 import * as React from "react";
@@ -34,9 +35,13 @@ export interface MultiSelectProps {
 	 */
 	options: MultiSelectOption[];
 	/**
-	 * Selected values (array)
+	 * Selected values (controlled)
 	 */
 	value?: string[];
+	/**
+	 * Initially selected values (uncontrolled)
+	 */
+	defaultValue?: string[];
 	/**
 	 * Callback when values change
 	 */
@@ -111,7 +116,8 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
 	(
 		{
 			options,
-			value = [],
+			value,
+			defaultValue,
 			onValueChange,
 			placeholder = "Select options...",
 			searchPlaceholder = "Search...",
@@ -129,6 +135,11 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
 		},
 		ref,
 	) => {
+		const [selected, setSelected] = useUncontrolled<string[]>({
+			value,
+			defaultValue: defaultValue ?? [],
+			onChange: onValueChange,
+		});
 		const [open, setOpen] = React.useState(false);
 		const [search, setSearch] = React.useState("");
 
@@ -151,12 +162,12 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
 
 		const selectedOptions = React.useMemo(() => {
 			if (preserveSelectionOrder) {
-				return value
+				return selected
 					.map((v) => options.find((o) => o.value === v))
 					.filter((o): o is MultiSelectOption => !!o);
 			}
-			return options.filter((option) => value.includes(option.value));
-		}, [value, options, preserveSelectionOrder]);
+			return options.filter((option) => selected.includes(option.value));
+		}, [selected, options, preserveSelectionOrder]);
 
 		const displayedOptions = React.useMemo(() => {
 			if (
@@ -171,40 +182,40 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
 
 		const remainingCount = selectedOptions.length - displayedOptions.length;
 
-		const isMaxSelected = maxSelected ? value.length >= maxSelected : false;
+		const isMaxSelected = maxSelected ? selected.length >= maxSelected : false;
 		const availableOptions = options.filter((opt) => !opt.disabled);
 		const isAllSelected =
 			availableOptions.length > 0 &&
-			availableOptions.every((opt) => value.includes(opt.value));
+			availableOptions.every((opt) => selected.includes(opt.value));
 		const isIndeterminate =
-			value.length > 0 &&
+			selected.length > 0 &&
 			!isAllSelected &&
-			value.length < availableOptions.length;
+			selected.length < availableOptions.length;
 
 		const handleSelect = (optionValue: string) => {
-			const newValue = value.includes(optionValue)
-				? value.filter((v) => v !== optionValue)
-				: [...value, optionValue];
-			onValueChange?.(newValue);
+			const newValue = selected.includes(optionValue)
+				? selected.filter((v) => v !== optionValue)
+				: [...selected, optionValue];
+			setSelected(newValue);
 		};
 
 		const handleRemove = (optionValue: string, e: React.MouseEvent) => {
 			e.stopPropagation();
-			onValueChange?.(value.filter((v) => v !== optionValue));
+			setSelected(selected.filter((v) => v !== optionValue));
 		};
 
 		const handleSelectAll = () => {
 			if (isAllSelected) {
-				onValueChange?.([]);
+				setSelected([]);
 			} else {
 				const allValues = availableOptions.map((opt) => opt.value);
-				onValueChange?.(allValues);
+				setSelected(allValues);
 			}
 		};
 
 		const handleClearAll = (e: React.MouseEvent) => {
 			e.stopPropagation();
-			onValueChange?.([]);
+			setSelected([]);
 		};
 
 		const triggerLabel = selectedOptions.length
@@ -270,7 +281,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
 						)}
 					</div>
 					<div className="pointer-events-none relative z-10 flex items-center gap-1 py-1.5 pr-3">
-						{showClearAll && value.length > 0 && !disabled && (
+						{showClearAll && selected.length > 0 && !disabled && (
 							<button
 								type="button"
 								onClick={handleClearAll}
@@ -333,7 +344,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
 								{noGroup.length > 0 && (
 									<CommandGroup>
 										{noGroup.map((option, index) => {
-											const isSelected = value.includes(option.value);
+											const isSelected = selected.includes(option.value);
 											const isDisabled =
 												option.disabled || (isMaxSelected && !isSelected);
 											return (
@@ -370,7 +381,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
 								{Object.entries(groups).map(([groupName, groupOptions]) => (
 									<CommandGroup key={groupName} heading={groupName}>
 										{groupOptions.map((option, index) => {
-											const isSelected = value.includes(option.value);
+											const isSelected = selected.includes(option.value);
 											const isDisabled =
 												option.disabled || (isMaxSelected && !isSelected);
 											return (

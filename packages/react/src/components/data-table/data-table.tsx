@@ -103,7 +103,7 @@ export function DataTable<TData>({
 	// Extract callbacks from configs
 	const paginationCallback = useMemo(() => {
 		if (!pagination || typeof pagination === "boolean") return undefined;
-		return pagination.onChange;
+		return pagination.onPageChange;
 	}, [pagination]);
 
 	const totalCount = useMemo(() => {

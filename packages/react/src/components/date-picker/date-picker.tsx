@@ -1,5 +1,6 @@
 "use client";
 
+import { useUncontrolled } from "@kala-ui/react-hooks";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import type { DateRange } from "react-day-picker";
@@ -14,8 +15,11 @@ export interface DatePickerProps
 		React.ComponentProps<typeof Calendar>,
 		"mode" | "selected" | "onSelect" | "className" | "required" | "disabled"
 	> {
-	date?: Date;
-	onDateChange?: (date: Date | undefined) => void;
+	/** Selected date (controlled) */
+	value?: Date;
+	/** Initially selected date (uncontrolled) */
+	defaultValue?: Date;
+	onValueChange?: (date: Date | undefined) => void;
 	placeholder?: string;
 	disabled?: React.ComponentProps<typeof Calendar>["disabled"];
 	buttonDisabled?: boolean;
@@ -26,8 +30,9 @@ export interface DatePickerProps
 }
 
 export function DatePicker({
-	date,
-	onDateChange,
+	value: valueProp,
+	defaultValue,
+	onValueChange,
 	placeholder = "Pick a date",
 	disabled,
 	buttonDisabled = false,
@@ -37,6 +42,12 @@ export function DatePicker({
 	isLoading = false,
 	...props
 }: DatePickerProps) {
+	const [date, setDate] = useUncontrolled<Date | undefined>({
+		value: valueProp,
+		defaultValue,
+		onChange: onValueChange,
+	});
+
 	if (isLoading) {
 		return (
 			<Skeleton className={cn("h-10 w-[280px] rounded-md", buttonClassName)} />
@@ -64,7 +75,7 @@ export function DatePicker({
 					{...props}
 					mode="single"
 					selected={date}
-					onSelect={onDateChange || (() => {})}
+					onSelect={setDate}
 					required={false}
 					disabled={disabled}
 					autoFocus
@@ -86,8 +97,11 @@ export interface DateRangePickerProps
 		| "required"
 		| "disabled"
 	> {
-	dateRange?: DateRange;
-	onDateRangeChange?: (range: DateRange | undefined) => void;
+	/** Selected range (controlled) */
+	value?: DateRange;
+	/** Initially selected range (uncontrolled) */
+	defaultValue?: DateRange;
+	onValueChange?: (range: DateRange | undefined) => void;
 	placeholder?: string;
 	disabled?: React.ComponentProps<typeof Calendar>["disabled"];
 	buttonDisabled?: boolean;
@@ -98,8 +112,9 @@ export interface DateRangePickerProps
 }
 
 export function DateRangePicker({
-	dateRange,
-	onDateRangeChange,
+	value: valueProp,
+	defaultValue,
+	onValueChange,
 	placeholder = "Pick a date range",
 	disabled,
 	buttonDisabled = false,
@@ -109,6 +124,12 @@ export function DateRangePicker({
 	isLoading = false,
 	...props
 }: DateRangePickerProps) {
+	const [dateRange, setDateRange] = useUncontrolled<DateRange | undefined>({
+		value: valueProp,
+		defaultValue,
+		onChange: onValueChange,
+	});
+
 	if (isLoading) {
 		return (
 			<Skeleton className={cn("h-10 w-[300px] rounded-md", buttonClassName)} />
@@ -148,7 +169,7 @@ export function DateRangePicker({
 					mode="range"
 					defaultMonth={dateRange?.from}
 					selected={dateRange}
-					onSelect={onDateRangeChange || (() => {})}
+					onSelect={setDateRange}
 					numberOfMonths={2}
 					disabled={disabled}
 				/>

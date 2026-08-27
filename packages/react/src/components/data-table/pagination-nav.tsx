@@ -37,7 +37,7 @@ export function PaginationNav({
 		page: currentPage,
 		siblings: 0,
 		boundaries: 1,
-		onChange: onPageChange,
+		onPageChange,
 	});
 
 	return (

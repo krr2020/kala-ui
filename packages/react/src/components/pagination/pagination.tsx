@@ -22,20 +22,20 @@ function Pagination({
 	"aria-label": ariaLabel = "Pagination",
 	total,
 	page,
-	initialPage,
+	defaultPage,
 	siblings,
 	boundaries,
-	onChange,
+	onPageChange,
 	children,
 	...props
 }: PaginationProps) {
 	const pagination = usePagination({
 		total: total || 0,
 		page,
-		initialPage,
+		defaultPage,
 		siblings,
 		boundaries,
-		onChange,
+		onPageChange,
 	});
 
 	return (

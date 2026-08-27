@@ -292,7 +292,7 @@ describe("DataTable", () => {
 				enabled: true as const,
 				selectedIds: new Set<string>(),
 				getRowId: (row: TestUser) => row.id,
-				onSelectionChange: vi.fn(),
+				onSelectionPageChange: vi.fn(),
 			};
 
 			render(
@@ -614,12 +614,12 @@ describe("DataTable", () => {
 						page: 1,
 						pageSize: 2,
 						total: mockUsers.length,
-						onChange: onPaginationChange,
+						onPageChange: onPaginationChange,
 					}}
 				/>,
 			);
 
-			// With server-side pagination (onChange provided), full data should be displayed
+			// With server-side pagination (onPageChange provided), full data should be displayed
 			expect(screen.getByText("Alice Johnson")).toBeInTheDocument();
 			expect(screen.getByText("Bob Smith")).toBeInTheDocument();
 			expect(screen.getByText("Charlie Brown")).toBeInTheDocument();
@@ -627,7 +627,7 @@ describe("DataTable", () => {
 			expect(screen.getByText("Eve Adams")).toBeInTheDocument();
 		});
 
-		it("server-side pagination fires onChange when navigating", async () => {
+		it("server-side pagination fires onPageChange when navigating", async () => {
 			const user = userEvent.setup();
 			const onPaginationChange = vi.fn();
 
@@ -639,7 +639,7 @@ describe("DataTable", () => {
 						page: 1,
 						pageSize: 2,
 						total: mockUsers.length,
-						onChange: onPaginationChange,
+						onPageChange: onPaginationChange,
 					}}
 				/>,
 			);
@@ -650,7 +650,7 @@ describe("DataTable", () => {
 			expect(onPaginationChange).toHaveBeenCalledWith(2, 2);
 		});
 
-		it("server-side pagination fires onChange when changing page number", async () => {
+		it("server-side pagination fires onPageChange when changing page number", async () => {
 			const user = userEvent.setup();
 			const onPaginationChange = vi.fn();
 
@@ -662,7 +662,7 @@ describe("DataTable", () => {
 						page: 1,
 						pageSize: 2,
 						total: mockUsers.length,
-						onChange: onPaginationChange,
+						onPageChange: onPaginationChange,
 					}}
 				/>,
 			);
@@ -702,7 +702,7 @@ describe("DataTable", () => {
 			enabled: true,
 			selectedIds: new Set<string>(),
 			getRowId: (row: TestUser) => row.id,
-			onSelectionChange: vi.fn(),
+			onSelectionPageChange: vi.fn(),
 		};
 
 		it("renders checkboxes when selection is enabled", () => {

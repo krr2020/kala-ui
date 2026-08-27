@@ -1,3 +1,4 @@
+import { useUncontrolled } from "@kala-ui/react-hooks";
 import { motion } from "framer-motion";
 import * as React from "react";
 import { cn } from "../../lib/utils";
@@ -15,7 +16,7 @@ export interface SegmentedControlProps
 	data: SegmentedControlData[];
 	value?: string;
 	defaultValue?: string;
-	onChange?: (value: string) => void;
+	onValueChange?: (value: string) => void;
 	disabled?: boolean;
 	name?: string;
 	fullWidth?: boolean;
@@ -33,7 +34,7 @@ export const SegmentedControl = React.forwardRef<
 			data,
 			value: valueProp,
 			defaultValue,
-			onChange,
+			onValueChange,
 			disabled,
 			name,
 			fullWidth,
@@ -43,26 +44,14 @@ export const SegmentedControl = React.forwardRef<
 		},
 		ref,
 	) => {
-		const [internalValue, setInternalValue] = React.useState<string>(
-			valueProp ??
+		const [internalValue, handleChange] = useUncontrolled<string>({
+			value: valueProp,
+			defaultValue:
 				defaultValue ??
 				(typeof data[0] === "string" ? data[0] : data[0]?.value) ??
 				"",
-		);
-
-		React.useEffect(() => {
-			if (valueProp !== undefined) {
-				setInternalValue(valueProp);
-			}
-		}, [valueProp]);
-
-		const handleChange = (val: string) => {
-			if (disabled) return;
-			if (valueProp === undefined) {
-				setInternalValue(val);
-			}
-			onChange?.(val);
-		};
+			onChange: onValueChange,
+		});
 
 		const items = data.map((item) =>
 			typeof item === "string" ? { label: item, value: item } : item,
@@ -117,7 +106,7 @@ export const SegmentedControl = React.forwardRef<
 				const item = items[target];
 				itemRefs.current[target]?.focus();
 				// arrowing through a radiogroup also selects, like native radios
-				if (item) handleChange(item.value);
+				if (item && !disabled) handleChange(item.value);
 			}
 		};
 

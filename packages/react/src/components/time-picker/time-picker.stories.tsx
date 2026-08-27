@@ -10,7 +10,7 @@ const meta: Meta<typeof TimePicker> = {
 	},
 	tags: ["autodocs"],
 	args: {
-		onChange: fn(),
+		onValueChange: fn(),
 	},
 	argTypes: {
 		hourCycle: {

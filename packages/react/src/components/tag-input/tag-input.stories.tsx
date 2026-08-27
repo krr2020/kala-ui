@@ -21,7 +21,7 @@ export const Default: Story = {
 			<div className="w-[500px]">
 				<TagInput
 					value={tags}
-					onChange={setTags}
+					onValueChange={setTags}
 					placeholder="Type and press comma or enter..."
 				/>
 			</div>
@@ -38,7 +38,7 @@ export const WithInitialTags: Story = {
 		]);
 		return (
 			<div className="w-[500px]">
-				<TagInput value={tags} onChange={setTags} />
+				<TagInput value={tags} onValueChange={setTags} />
 			</div>
 		);
 	},
@@ -51,7 +51,7 @@ export const WithMaxTags: Story = {
 			<div className="w-[500px]">
 				<TagInput
 					value={tags}
-					onChange={setTags}
+					onValueChange={setTags}
 					maxTags={3}
 					placeholder="Maximum 3 tags allowed"
 				/>
@@ -81,7 +81,7 @@ export const WithError: Story = {
 			<div className="w-[500px]">
 				<TagInput
 					value={tags}
-					onChange={setTags}
+					onValueChange={setTags}
 					hasError
 					placeholder="This field has an error"
 				/>
@@ -98,7 +98,7 @@ export const CustomSeparators: Story = {
 			<div className="w-[500px]">
 				<TagInput
 					value={tags}
-					onChange={setTags}
+					onValueChange={setTags}
 					separators={[";", "Enter"]}
 					placeholder="Type and press semicolon or enter..."
 				/>
@@ -117,7 +117,7 @@ export const WithValidation: Story = {
 			<div className="w-[500px]">
 				<TagInput
 					value={tags}
-					onChange={setTags}
+					onValueChange={setTags}
 					validateTag={(tag) => tag.startsWith("/")}
 					placeholder="Only routes starting with / are allowed"
 				/>
@@ -136,7 +136,7 @@ export const AllowDuplicates: Story = {
 			<div className="w-[500px]">
 				<TagInput
 					value={tags}
-					onChange={setTags}
+					onValueChange={setTags}
 					allowDuplicates
 					placeholder="Duplicates allowed"
 				/>

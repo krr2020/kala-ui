@@ -19,7 +19,11 @@ export const Default: Story = {
 		const [value, setValue] = React.useState(3);
 		return (
 			<div className="flex flex-col items-center gap-2">
-				<Rating value={value} onChange={setValue} aria-label="Product rating" />
+				<Rating
+					value={value}
+					onValueChange={setValue}
+					aria-label="Product rating"
+				/>
 				<span className="text-sm text-muted-foreground">Rating: {value}</span>
 			</div>
 		);
@@ -37,7 +41,7 @@ export const HalfStars: Story = {
 			<div className="flex flex-col items-center gap-2">
 				<Rating
 					value={value}
-					onChange={setValue}
+					onValueChange={setValue}
 					allowHalf
 					aria-label="Half-star rating"
 				/>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useUncontrolled } from "@kala-ui/react-hooks";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
@@ -10,30 +11,6 @@ import {
 	tabsTriggerStyles,
 } from "../../config/tabs";
 import { cn } from "../../lib/utils";
-
-function useControllableState<T>({
-	prop,
-	defaultProp,
-	onChange = () => {},
-}: {
-	prop?: T | undefined;
-	defaultProp?: T | undefined;
-	onChange?: ((value: T) => void) | undefined;
-}) {
-	const [uncontrolledProp, setUncontrolledProp] = React.useState(defaultProp);
-	const isControlled = prop !== undefined;
-	const value = isControlled ? prop : uncontrolledProp;
-	const handleChange = React.useCallback(
-		(nextValue: T) => {
-			if (!isControlled) {
-				setUncontrolledProp(nextValue);
-			}
-			onChange?.(nextValue);
-		},
-		[isControlled, onChange],
-	);
-	return [value, handleChange] as const;
-}
 
 const TabsContext = React.createContext<{
 	activeTab?: string | undefined;
@@ -57,10 +34,10 @@ const Tabs = React.forwardRef<
 		ref,
 	) => {
 		const uniqueId = React.useId();
-		const [activeTab, setActiveTab] = useControllableState({
-			prop: value,
+		const [activeTab, setActiveTab] = useUncontrolled({
+			value,
+			defaultValue,
 			onChange: onValueChange,
-			defaultProp: defaultValue,
 		});
 
 		return (

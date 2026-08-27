@@ -28,7 +28,7 @@ describe("SegmentedControl", () => {
 		render(
 			<SegmentedControl
 				data={["Option 1", "Option 2"]}
-				onChange={handleChange}
+				onValueChange={handleChange}
 				defaultValue="Option 1"
 			/>,
 		);
@@ -42,7 +42,7 @@ describe("SegmentedControl", () => {
 		render(
 			<SegmentedControl
 				data={["Option 1", "Option 2"]}
-				onChange={handleChange}
+				onValueChange={handleChange}
 				disabled
 			/>,
 		);
@@ -59,7 +59,7 @@ describe("SegmentedControl", () => {
 					{ label: "Option 1", value: "1" },
 					{ label: "Option 2", value: "2", disabled: true },
 				]}
-				onChange={handleChange}
+				onValueChange={handleChange}
 				defaultValue="1"
 			/>,
 		);
@@ -233,7 +233,11 @@ describe("SegmentedControl", () => {
 	it("does not update internal value when valueProp is provided and option clicked", () => {
 		const handleChange = vi.fn();
 		render(
-			<SegmentedControl data={["A", "B"]} value="A" onChange={handleChange} />,
+			<SegmentedControl
+				data={["A", "B"]}
+				value="A"
+				onValueChange={handleChange}
+			/>,
 		);
 
 		fireEvent.click(screen.getByText("B"));

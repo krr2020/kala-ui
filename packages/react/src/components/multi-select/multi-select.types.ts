@@ -14,9 +14,13 @@ export interface MultiSelectProps {
 	 */
 	options: MultiSelectOption[];
 	/**
-	 * Selected values (array)
+	 * Selected values (controlled)
 	 */
 	value?: string[];
+	/**
+	 * Initially selected values (uncontrolled)
+	 */
+	defaultValue?: string[];
 	/**
 	 * Callback when values change
 	 */

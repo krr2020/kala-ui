@@ -1,3 +1,4 @@
+import { useUncontrolled } from "@kala-ui/react-hooks";
 import { ChevronRight } from "lucide-react";
 import * as React from "react";
 import { cn } from "../../lib/utils";
@@ -15,11 +16,11 @@ export interface NavLinkProps
 	/** Active state */
 	active?: boolean;
 	/** Collapsed/Expanded state for nested items */
-	defaultOpened?: boolean;
+	defaultOpen?: boolean;
 	/** Controlled opened state */
-	opened?: boolean;
+	open?: boolean;
 	/** Callback for opened state change */
-	onChangeOpened?: (opened: boolean) => void;
+	onOpenChange?: (open: boolean) => void;
 	/** Nested links */
 	children?: React.ReactNode;
 	/** Disable right section rotation when opened */
@@ -37,9 +38,9 @@ export const NavLink = React.forwardRef<HTMLButtonElement, NavLinkProps>(
 			icon,
 			rightSection,
 			active,
-			defaultOpened = false,
-			opened: openedProp,
-			onChangeOpened,
+			defaultOpen = false,
+			open: openProp,
+			onOpenChange,
 			children,
 			disableRightSectionRotation = false,
 			indent = false,
@@ -48,17 +49,16 @@ export const NavLink = React.forwardRef<HTMLButtonElement, NavLinkProps>(
 		},
 		ref,
 	) => {
-		const [opened, setOpened] = React.useState(defaultOpened);
-
-		const isOpened = openedProp !== undefined ? openedProp : opened;
+		const [isOpened, handleOpenChange] = useUncontrolled<boolean>({
+			value: openProp,
+			defaultValue: defaultOpen,
+			onChange: onOpenChange,
+		});
 
 		const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
 			if (children) {
 				e.preventDefault();
-				if (openedProp === undefined) {
-					setOpened(!opened);
-				}
-				onChangeOpened?.(!isOpened);
+				handleOpenChange(!isOpened);
 			}
 			onClick?.(e);
 		};

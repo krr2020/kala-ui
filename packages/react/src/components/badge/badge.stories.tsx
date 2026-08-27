@@ -53,9 +53,7 @@ export const ContextualVariations: Story = {
 export const PillBadges: Story = {
 	render: () => (
 		<div className="flex gap-2 flex-wrap items-center">
-			<Badgeshape="pill">
-				Primary
-			</Badge>
+			<Badge shape="pill">Primary</Badge>
 			<Badge color="secondary" shape="pill">
 				Secondary
 			</Badge>
@@ -85,7 +83,7 @@ export const PillBadges: Story = {
 export const LinkBadges: Story = {
 	render: () => (
 		<div className="flex gap-2 flex-wrap items-center">
-			<BadgeasChild>
+			<Badge asChild>
 				<a href="/">Primary</a>
 			</Badge>
 			<Badge color="secondary" asChild>
