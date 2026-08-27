@@ -1,3 +1,38 @@
 packages:
   - 'packages/*'
   - 'apps/*'
+
+# Single source of truth for dependency versions shared across workspace
+# packages — reference as "catalog:" from any package.json. Bump a version
+# here and every package follows. Entries belong here when two or more
+# packages use them; single-package deps stay literal in that package.
+# Consumer-facing peerDependencies stay literal ranges (^19.2.0) on purpose:
+# the catalog pins what we develop and test against, peers declare what
+# consumers may install.
+catalog:
+  # React + types
+  react: ^19.2.8
+  react-dom: ^19.2.8
+  '@types/react': ~19.2.18
+  '@types/react-dom': ~19.2.5
+  # Toolchain
+  typescript: ~7.0.2
+  vite: ~8.2.2
+  '@vitejs/plugin-react': ~6.1.0
+  '@types/node': ~26.4.0
+  postcss: ~8.5.26
+  # Test stack
+  vitest: ~4.1.11
+  '@vitest/coverage-v8': ~4.1.11
+  jsdom: ^30.0.1
+  '@testing-library/react': ~16.3.2
+  '@testing-library/jest-dom': ~7.0.1
+  '@testing-library/user-event': ~14.6.6
+  vitest-axe: ^0.1.0
+  # Tailwind
+  tailwindcss: ~4.3.3
+  '@tailwindcss/postcss': ~4.3.3
+  tailwindcss-animate: ~1.0.7
+  # Shared runtime dependencies
+  lucide-react: ~1.34.0
+  simple-icons: ~16.28.0

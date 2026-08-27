@@ -34,13 +34,13 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.5.10",
 		"@changesets/cli": "3.0.1",
-		"@types/react": "~19.2.18",
-		"@types/react-dom": "~19.2.5",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
 		"http-server": "^14.1.1",
 		"postcss-cli": "^11.0.1",
-		"react": "^19.2.8",
-		"react-dom": "^19.2.8",
-		"typescript": "~7.0.2"
+		"react": "catalog:",
+		"react-dom": "catalog:",
+		"typescript": "catalog:"
 	},
 	"engines": {
 		"node": ">=18.0.0",
