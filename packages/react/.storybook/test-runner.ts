@@ -21,7 +21,12 @@ import { fileURLToPath } from 'node:url';
  * reason; specified paddings/margins/borders are font-independent and kept.
  * `font-family` is also excluded: Chromium expands `system-ui` into the
  * host OS's system font list, so the computed value differs between macOS
- * and the Linux CI runners even for identical CSS.
+ * and the Linux CI runners even for identical CSS. The two remaining
+ * glyph-metric-derived values (content-sized grid tracks, auto margins) are
+ * captured at integer precision, and the capture freeze forces
+ * `text-rendering: geometricPrecision` — Linux font hinting quantizes glyph
+ * advances to whole pixels (drifting a few px per label) while macOS keeps
+ * them floating, so un-hinted metrics + integer rounding agree everywhere.
  *
  * Baselines live in `.storybook/visual-baselines/<story>.<theme>.json`.
  * Regenerate deliberately with: UPDATE_SNAPSHOTS=1 pnpm run test-storybook
@@ -168,6 +173,15 @@ async function captureStyles(page: import('playwright').Page) {	const props = VI
 				0,
 				maxNodes,
 			);
+			// Glyph-metric-derived geometry: hinting policies differ per OS, so
+			// keep only integer precision for these two properties.
+			const roundedProps = new Set([
+				'grid-template-columns',
+				'margin-top',
+				'margin-right',
+				'margin-bottom',
+				'margin-left',
+			]);
 			const pathOf = (el: Element, depth: number) => {
 				const parent = el.parentElement;
 				const index = parent
@@ -178,7 +192,15 @@ async function captureStyles(page: import('playwright').Page) {	const props = VI
 			return elements.map((el, i) => {
 				const computed = window.getComputedStyle(el);
 				const styles: Record<string, string> = {};
-				for (const prop of props) styles[prop] = computed.getPropertyValue(prop);
+				for (const prop of props) {
+					const value = computed.getPropertyValue(prop);
+					styles[prop] = roundedProps.has(prop)
+						? value.replace(
+								/(-?\d+(?:\.\d+)?)px/g,
+								(_, n) => `${Math.round(Number(n))}px`,
+							)
+						: value;
+				}
 				return {
 					path: pathOf(el, i),
 					tag: el.tagName.toLowerCase(),
@@ -281,6 +303,7 @@ const config: TestRunnerConfig = {
 				transition: none !important;
 				caret-color: transparent !important;
 				scroll-behavior: auto !important;
+				text-rendering: geometricPrecision !important;
 			}`,
 		});
 		await page.evaluate(() => document.fonts.ready);
