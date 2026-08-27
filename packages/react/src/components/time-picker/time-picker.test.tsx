@@ -132,42 +132,67 @@ describe("TimePicker", () => {
 
 	it("should display midnight (0) as 12 in 12-hour mode", () => {
 		render(
-			<TimePicker value={{ hours: 0, minutes: 0 }} hourCycle={12} onChange={vi.fn()} />,
+			<TimePicker
+				value={{ hours: 0, minutes: 0 }}
+				hourCycle={12}
+				onChange={vi.fn()}
+			/>,
 		);
 		expect(screen.getByText(/12:00 AM/)).toBeInTheDocument();
 	});
 
 	it("should display hour 13 as 1 in 12-hour mode", () => {
 		render(
-			<TimePicker value={{ hours: 13, minutes: 0 }} hourCycle={12} onChange={vi.fn()} />,
+			<TimePicker
+				value={{ hours: 13, minutes: 0 }}
+				hourCycle={12}
+				onChange={vi.fn()}
+			/>,
 		);
 		expect(screen.getByText(/01:00 PM/)).toBeInTheDocument();
 	});
 
 	it("should display hour 12 as 12 in 12-hour mode", () => {
 		render(
-			<TimePicker value={{ hours: 12, minutes: 0 }} hourCycle={12} onChange={vi.fn()} />,
+			<TimePicker
+				value={{ hours: 12, minutes: 0 }}
+				hourCycle={12}
+				onChange={vi.fn()}
+			/>,
 		);
 		expect(screen.getByText(/12:00 PM/)).toBeInTheDocument();
 	});
 
 	it("should display hour 23 as 11 in 12-hour mode", () => {
 		render(
-			<TimePicker value={{ hours: 23, minutes: 30 }} hourCycle={12} onChange={vi.fn()} />,
+			<TimePicker
+				value={{ hours: 23, minutes: 30 }}
+				hourCycle={12}
+				onChange={vi.fn()}
+			/>,
 		);
 		expect(screen.getByText(/11:30 PM/)).toBeInTheDocument();
 	});
 
 	it("should display seconds in time display when showSeconds is true", () => {
 		render(
-			<TimePicker value={{ hours: 10, minutes: 30, seconds: 45 }} showSeconds onChange={vi.fn()} />,
+			<TimePicker
+				value={{ hours: 10, minutes: 30, seconds: 45 }}
+				showSeconds
+				onChange={vi.fn()}
+			/>,
 		);
 		expect(screen.getByText("10:30:45")).toBeInTheDocument();
 	});
 
 	it("should display seconds in 12h time display when showSeconds is true", () => {
 		render(
-			<TimePicker value={{ hours: 14, minutes: 30, seconds: 45 }} hourCycle={12} showSeconds onChange={vi.fn()} />,
+			<TimePicker
+				value={{ hours: 14, minutes: 30, seconds: 45 }}
+				hourCycle={12}
+				showSeconds
+				onChange={vi.fn()}
+			/>,
 		);
 		expect(screen.getByText(/02:30:45 PM/)).toBeInTheDocument();
 	});
@@ -238,9 +263,7 @@ describe("TimePicker", () => {
 	it("should select seconds when showSeconds is true", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(
-			<TimePicker showSeconds onChange={handleChange} />,
-		);
+		render(<TimePicker showSeconds onChange={handleChange} />);
 
 		// "45" in seconds column
 		const secButtons = screen
@@ -286,12 +309,12 @@ describe("TimePicker", () => {
 	});
 
 	it("should apply correct class to active hour in TimeColumn", () => {
-		render(
-			<TimePicker value={{ hours: 10, minutes: 0 }} onChange={vi.fn()} />,
-		);
+		render(<TimePicker value={{ hours: 10, minutes: 0 }} onChange={vi.fn()} />);
 		const hour10 = screen
 			.getAllByRole("button")
-			.find((b) => b.textContent === "10" && b.classList.contains("bg-primary"));
+			.find(
+				(b) => b.textContent === "10" && b.classList.contains("bg-primary"),
+			);
 		expect(hour10).toBeDefined();
 	});
 
@@ -356,10 +379,7 @@ describe("TimePicker", () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
 		render(
-			<TimePicker
-				value={{ hours: 10, minutes: 0 }}
-				onChange={handleChange}
-			/>,
+			<TimePicker value={{ hours: 10, minutes: 0 }} onChange={handleChange} />,
 		);
 
 		// Select minute 30
@@ -373,15 +393,17 @@ describe("TimePicker", () => {
 	});
 
 	it("should pad single digit values with leading zero in display", () => {
-		render(
-			<TimePicker value={{ hours: 5, minutes: 3 }} onChange={vi.fn()} />,
-		);
+		render(<TimePicker value={{ hours: 5, minutes: 3 }} onChange={vi.fn()} />);
 		expect(screen.getByText("05:03")).toBeInTheDocument();
 	});
 
 	it("should display seconds with leading zero in display", () => {
 		render(
-			<TimePicker value={{ hours: 5, minutes: 3, seconds: 7 }} showSeconds onChange={vi.fn()} />,
+			<TimePicker
+				value={{ hours: 5, minutes: 3, seconds: 7 }}
+				showSeconds
+				onChange={vi.fn()}
+			/>,
 		);
 		expect(screen.getByText("05:03:07")).toBeInTheDocument();
 	});

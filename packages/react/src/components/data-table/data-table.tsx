@@ -44,16 +44,16 @@ import {
 	TableRow,
 } from "../table";
 import { Text } from "../text";
-import { DataTableBodyRows } from "./data-table-body-rows";
-import { DataTableFilterChips } from "./data-table-filter-chips";
-import { DataTableHeaderRow } from "./data-table-header-row";
-import { DataTableSkeleton } from "./data-table-skeleton";
-import { DataTableToolbar } from "./data-table-toolbar";
 import type {
 	DataTableProps,
 	PaginationConfig,
 	SearchConfig,
 } from "./data-table.types";
+import { DataTableBodyRows } from "./data-table-body-rows";
+import { DataTableFilterChips } from "./data-table-filter-chips";
+import { DataTableHeaderRow } from "./data-table-header-row";
+import { DataTableSkeleton } from "./data-table-skeleton";
+import { DataTableToolbar } from "./data-table-toolbar";
 import { PaginationNav } from "./pagination-nav";
 import { useTableState } from "./useTableState";
 
@@ -393,10 +393,14 @@ export function DataTable<TData>({
 					{/* Table Container */}
 					<Box
 						className={cn(
-							"border relative overflow-hidden theme-card",
-							stickyFooter && paginationConfig && displayData.length > 0 ? "flex-1 min-h-0" : "",
+							"border relative overflow-hidden kala-surface-card",
+							stickyFooter && paginationConfig && displayData.length > 0
+								? "flex-1 min-h-0"
+								: "",
 							bordered && "border-2",
-							paginationConfig && displayData.length > 0 ? "rounded-t-lg border-b-0" : "rounded-lg",
+							paginationConfig && displayData.length > 0
+								? "rounded-t-lg border-b-0"
+								: "rounded-lg",
 						)}
 					>
 						<Box
@@ -404,7 +408,9 @@ export function DataTable<TData>({
 							onScroll={handleScroll}
 							className={cn(
 								"overflow-auto relative",
-								paginationConfig && displayData.length > 0 ? "rounded-t-lg" : "rounded-lg",
+								paginationConfig && displayData.length > 0
+									? "rounded-t-lg"
+									: "rounded-lg",
 								stickyFooter ? "flex-1 min-h-0 max-h-[70vh]" : "max-h-[800px]",
 							)}
 						>
@@ -474,7 +480,7 @@ export function DataTable<TData>({
 												className={cn(
 													"bg-muted border-t",
 													stickyFooter &&
-													"sticky bottom-0 z-40 shadow-[0_-1px_0_0_var(--border)] backdrop-blur-sm bg-muted/95",
+														"sticky bottom-0 z-40 shadow-[0_-1px_0_0_var(--border)] backdrop-blur-sm bg-muted/95",
 												)}
 											>
 												<TableRow>
@@ -518,7 +524,7 @@ export function DataTable<TData>({
 																		onClick={() =>
 																			toggleSort(
 																				column.accessorKey ||
-																				(column.id as keyof TData),
+																					(column.id as keyof TData),
 																			)
 																		}
 																		aria-label={`Sort by ${column.header}`}
@@ -550,11 +556,16 @@ export function DataTable<TData>({
 
 										{footer && (
 											<TableFooter
-												className={cn("border-t", !!paginationConfig && "border-b")}
+												className={cn(
+													"border-t",
+													!!paginationConfig && "border-b",
+												)}
 											>
 												<TableRow className="border-0">
 													<TableCell
-														colSpan={columns.length + (selection?.enabled ? 1 : 0)}
+														colSpan={
+															columns.length + (selection?.enabled ? 1 : 0)
+														}
 														className="p-4"
 													>
 														{footer}
@@ -601,7 +612,13 @@ export function DataTable<TData>({
 								stickyFooter && "shrink-0",
 							)}
 						>
-							<Flex align="center" justify="between" gap={4} className="w-full sm:w-auto" wrap="wrap">
+							<Flex
+								align="center"
+								justify="between"
+								gap={4}
+								className="w-full sm:w-auto"
+								wrap="wrap"
+							>
 								<Text as="span" className="text-foreground whitespace-nowrap">
 									{Math.min(
 										(paginationConfig.page - 1) * paginationConfig.pageSize + 1,
@@ -613,11 +630,7 @@ export function DataTable<TData>({
 										paginationConfig.total,
 									)}
 									{" / "}
-									<Text
-										as="span"
-										weight="medium"
-										className="text-foreground"
-									>
+									<Text as="span" weight="medium" className="text-foreground">
 										{paginationConfig.total}
 									</Text>
 								</Text>

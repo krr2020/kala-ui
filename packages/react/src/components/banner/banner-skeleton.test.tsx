@@ -43,17 +43,26 @@ describe("BannerSkeleton", () => {
 
 	it("renders with warning variant", () => {
 		const { container } = render(<BannerSkeleton variant="warning" />);
-		expect(container.firstChild).toHaveClass("bg-warning", "text-warning-foreground");
+		expect(container.firstChild).toHaveClass(
+			"bg-warning",
+			"text-warning-foreground",
+		);
 	});
 
 	it("renders with error variant", () => {
 		const { container } = render(<BannerSkeleton variant="error" />);
-		expect(container.firstChild).toHaveClass("bg-destructive", "text-destructive-foreground");
+		expect(container.firstChild).toHaveClass(
+			"bg-destructive",
+			"text-destructive-foreground",
+		);
 	});
 
 	it("renders with success variant", () => {
 		const { container } = render(<BannerSkeleton variant="success" />);
-		expect(container.firstChild).toHaveClass("bg-success", "text-success-foreground");
+		expect(container.firstChild).toHaveClass(
+			"bg-success",
+			"text-success-foreground",
+		);
 	});
 
 	it("renders with default variant", () => {

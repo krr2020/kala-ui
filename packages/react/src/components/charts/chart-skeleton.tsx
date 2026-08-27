@@ -59,7 +59,7 @@ export function ChartSkeleton({
 		<div className={cn("w-full space-y-4", className)}>
 			{/* Chart area skeleton */}
 			<div
-				className="w-full rounded-lg border bg-card theme-card"
+				className="w-full rounded-lg border bg-card kala-surface-card"
 				style={{ height: `${height}px` }}
 			>
 				<div className="flex items-center justify-center h-full">

@@ -526,7 +526,7 @@ export const WithResultsSummary: Story = {
 		const pages = usePaginationItems(currentPage, totalPages);
 
 		return (
-			<div className="w-full max-w-3xl space-y-4 rounded-lg border bg-card text-card-foreground p-6 theme-card">
+			<div className="w-full max-w-3xl space-y-4 rounded-lg border bg-card text-card-foreground p-6 kala-surface-card">
 				<div className="flex items-center justify-between">
 					<p className="text-sm text-muted-foreground">
 						Showing <span className="font-medium">{startItem}</span> to{" "}

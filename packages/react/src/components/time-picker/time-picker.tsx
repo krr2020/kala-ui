@@ -137,7 +137,7 @@ function TimePicker({
 		<div
 			data-slot="time-picker"
 			className={cn(
-				"inline-flex flex-col rounded-md border bg-card p-3 theme-input",
+				"inline-flex flex-col rounded-md border bg-card p-3 kala-surface-input",
 				hasError && "border-destructive",
 				disabled && "opacity-50",
 				className,

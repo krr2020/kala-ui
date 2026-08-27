@@ -283,11 +283,7 @@ describe("FieldTitle", () => {
 
 describe("FieldError", () => {
 	it("should render single error from errors prop", () => {
-		render(
-			<FieldError
-				errors={[{ message: "Required" }]}
-			/>,
-		);
+		render(<FieldError errors={[{ message: "Required" }]} />);
 		const alert = screen.getByRole("alert");
 		expect(alert).toHaveTextContent("Required");
 	});
@@ -323,10 +319,7 @@ describe("FieldError", () => {
 	it("should deduplicate errors with same message", () => {
 		render(
 			<FieldError
-				errors={[
-					{ message: "Required" },
-					{ message: "Required" },
-				]}
+				errors={[{ message: "Required" }, { message: "Required" }]}
 			/>,
 		);
 		const alert = screen.getByRole("alert");
@@ -337,9 +330,7 @@ describe("FieldError", () => {
 
 	it("should skip errors with undefined message", () => {
 		const { container } = render(
-			<FieldError
-				errors={[{ message: undefined }]}
-			/>,
+			<FieldError errors={[{ message: undefined }]} />,
 		);
 		expect(container.innerHTML).toBe("");
 	});
@@ -347,10 +338,7 @@ describe("FieldError", () => {
 	it("should skip errors with undefined message in list context", () => {
 		render(
 			<FieldError
-				errors={[
-					{ message: "Valid error" },
-					{ message: undefined },
-				]}
+				errors={[{ message: "Valid error" }, { message: undefined }]}
 			/>,
 		);
 		const alert = screen.getByRole("alert");
@@ -416,10 +404,7 @@ describe("FieldSeparator", () => {
 		render(<FieldSeparator>or</FieldSeparator>);
 		const contentSpan = screen.getByText("or");
 		expect(contentSpan).toBeInTheDocument();
-		expect(contentSpan).toHaveAttribute(
-			"data-slot",
-			"field-separator-content",
-		);
+		expect(contentSpan).toHaveAttribute("data-slot", "field-separator-content");
 		expect(contentSpan.tagName).toBe("SPAN");
 	});
 
@@ -479,7 +464,9 @@ describe("Field invalid state", () => {
 
 describe("FieldDescription", () => {
 	it("should render p element with data-slot", () => {
-		const { container } = render(<FieldDescription>Some description</FieldDescription>);
+		const { container } = render(
+			<FieldDescription>Some description</FieldDescription>,
+		);
 		const desc = container.querySelector('[data-slot="field-description"]');
 		expect(desc).toBeInTheDocument();
 		expect(desc?.tagName).toBe("P");

@@ -114,8 +114,10 @@ describe("Table", () => {
 
 	it("should render loading skeleton when isLoading is true", () => {
 		const { container } = render(<Table isLoading />);
-		expect(container.querySelector('[class*="animate-pulse"]')).toBeInTheDocument();
-		expect(container.querySelector('table')).toBeInTheDocument();
+		expect(
+			container.querySelector('[class*="animate-pulse"]'),
+		).toBeInTheDocument();
+		expect(container.querySelector("table")).toBeInTheDocument();
 	});
 
 	it("should render loading skeleton with legacy props", () => {
@@ -128,7 +130,10 @@ describe("Table", () => {
 
 	it("should render custom skeleton when isLoading and skeleton prop provided", () => {
 		render(
-			<Table isLoading skeleton={<div data-testid="custom-skeleton">Loading...</div>} />,
+			<Table
+				isLoading
+				skeleton={<div data-testid="custom-skeleton">Loading...</div>}
+			/>,
 		);
 		expect(screen.getByTestId("custom-skeleton")).toBeInTheDocument();
 	});
@@ -184,15 +189,31 @@ describe("Table", () => {
 				<TableCaption>Cap</TableCaption>
 			</Table>,
 		);
-		expect(container.querySelector('[data-slot="table-container"]')).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="table-container"]'),
+		).toBeInTheDocument();
 		expect(container.querySelector('[data-slot="table"]')).toBeInTheDocument();
-		expect(container.querySelector('[data-slot="table-header"]')).toBeInTheDocument();
-		expect(container.querySelector('[data-slot="table-body"]')).toBeInTheDocument();
-		expect(container.querySelector('[data-slot="table-row"]')).toBeInTheDocument();
-		expect(container.querySelector('[data-slot="table-head"]')).toBeInTheDocument();
-		expect(container.querySelector('[data-slot="table-cell"]')).toBeInTheDocument();
-		expect(container.querySelector('[data-slot="table-footer"]')).toBeInTheDocument();
-		expect(container.querySelector('[data-slot="table-caption"]')).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="table-header"]'),
+		).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="table-body"]'),
+		).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="table-row"]'),
+		).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="table-head"]'),
+		).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="table-cell"]'),
+		).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="table-footer"]'),
+		).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="table-caption"]'),
+		).toBeInTheDocument();
 	});
 
 	it("should apply custom className to sub-components", () => {
@@ -216,19 +237,17 @@ describe("Table", () => {
 				<TableCaption className="caption-cls">Cap</TableCaption>
 			</Table>,
 		);
-		expect(container.querySelector('.header-cls')).toBeInTheDocument();
-		expect(container.querySelector('.head-cls')).toBeInTheDocument();
-		expect(container.querySelector('.body-cls')).toBeInTheDocument();
-		expect(container.querySelector('.row-cls')).toBeInTheDocument();
-		expect(container.querySelector('.cell-cls')).toBeInTheDocument();
-		expect(container.querySelector('.footer-cls')).toBeInTheDocument();
-		expect(container.querySelector('.caption-cls')).toBeInTheDocument();
+		expect(container.querySelector(".header-cls")).toBeInTheDocument();
+		expect(container.querySelector(".head-cls")).toBeInTheDocument();
+		expect(container.querySelector(".body-cls")).toBeInTheDocument();
+		expect(container.querySelector(".row-cls")).toBeInTheDocument();
+		expect(container.querySelector(".cell-cls")).toBeInTheDocument();
+		expect(container.querySelector(".footer-cls")).toBeInTheDocument();
+		expect(container.querySelector(".caption-cls")).toBeInTheDocument();
 	});
 
 	it("should render Table.Skeleton via compound component", () => {
-		const { container } = render(
-			<Table.Skeleton rows={4} columns={3} />,
-		);
+		const { container } = render(<Table.Skeleton rows={4} columns={3} />);
 		const rows = container.querySelectorAll("tbody tr");
 		expect(rows).toHaveLength(4);
 	});

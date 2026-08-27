@@ -174,7 +174,7 @@ export function AreaChart({
 					label: {
 						text: line.label || "",
 						style: {
-							color: "#fff",
+							color: "var(--destructive-foreground)",
 							background: line.color || themeColors.destructive[0],
 						},
 					},

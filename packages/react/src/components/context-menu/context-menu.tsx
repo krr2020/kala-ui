@@ -38,7 +38,7 @@ function ContextMenuContent({
 			<ContextMenuPrimitive.Content
 				data-slot="context-menu-content"
 				className={cn(
-					"z-30 min-w-[10rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground theme-dropdown",
+					"z-30 min-w-[10rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground kala-surface-popover",
 					"data-[state=open]:animate-in data-[state=closed]:animate-out",
 					"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
 					"data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
@@ -228,7 +228,7 @@ function ContextMenuSubContent({
 		<ContextMenuPrimitive.SubContent
 			data-slot="context-menu-sub-content"
 			className={cn(
-				"z-30 min-w-[10rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground theme-dropdown",
+				"z-30 min-w-[10rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground kala-surface-popover",
 				"data-[state=open]:animate-in data-[state=closed]:animate-out",
 				"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
 				"data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
@@ -243,18 +243,18 @@ function ContextMenuSubContent({
 
 export {
 	ContextMenu,
-	ContextMenuTrigger,
-	ContextMenuPortal,
+	ContextMenuCheckboxItem,
 	ContextMenuContent,
 	ContextMenuGroup,
-	ContextMenuLabel,
 	ContextMenuItem,
-	ContextMenuCheckboxItem,
+	ContextMenuLabel,
+	ContextMenuPortal,
 	ContextMenuRadioGroup,
 	ContextMenuRadioItem,
 	ContextMenuSeparator,
 	ContextMenuShortcut,
 	ContextMenuSub,
-	ContextMenuSubTrigger,
 	ContextMenuSubContent,
+	ContextMenuSubTrigger,
+	ContextMenuTrigger,
 };

@@ -1,32 +1,29 @@
+import { DndContext, useDraggable, useSensor } from "@dnd-kit/core";
 import {
-	DndContext,
-	useDraggable,
-	useSensor,
-} from "@dnd-kit/core";
-import { SortableContext as SortableContextKit, useSortable } from "@dnd-kit/sortable";
+	SortableContext as SortableContextKit,
+	useSortable,
+} from "@dnd-kit/sortable";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
+	collisionDetectionAlgorithms,
 	DragDropContext,
 	Draggable,
 	DragOverlayComponent,
 	Droppable,
+	modifiers,
 	SortableContext,
 	SortableHandle,
 	SortableItem,
-	collisionDetectionAlgorithms,
-	modifiers,
 	sortingStrategies,
 	useDragDropSensors,
 } from "./dnd";
 
 // Mock @dnd-kit/core
 vi.mock("@dnd-kit/core", () => ({
-	DndContext: vi.fn(
-		({ children, sensors, onDragEnd, ...props }: any) => (
-			<div data-testid="dnd-context">{children}</div>
-		),
-	),
+	DndContext: vi.fn(({ children, sensors, onDragEnd, ...props }: any) => (
+		<div data-testid="dnd-context">{children}</div>
+	)),
 	useDroppable: vi.fn(() => ({
 		isOver: false,
 		setNodeRef: vi.fn(),
@@ -60,18 +57,17 @@ vi.mock("@dnd-kit/core", () => ({
 	TouchSensor: vi.fn(),
 	useSensor: vi.fn((sensor: any, options: any) => ({ sensor, options })),
 	useSensors: vi.fn((...sensors: any[]) => sensors),
-	DragOverlay: vi.fn(
-		({ children, dropAnimation, className, ...props }: any) =>
-			children ? (
-				<div
-					data-testid="drag-overlay"
-					data-dropanimation={!!dropAnimation}
-					className={className}
-					{...props}
-				>
-					{children}
-				</div>
-			) : null,
+	DragOverlay: vi.fn(({ children, dropAnimation, className, ...props }: any) =>
+		children ? (
+			<div
+				data-testid="drag-overlay"
+				data-dropanimation={!!dropAnimation}
+				className={className}
+				{...props}
+			>
+				{children}
+			</div>
+		) : null,
 	),
 }));
 
@@ -97,11 +93,9 @@ vi.mock("@dnd-kit/utilities", () => ({
 
 // Mock @dnd-kit/sortable
 vi.mock("@dnd-kit/sortable", () => ({
-	SortableContext: vi.fn(
-		({ children, items, strategy }: any) => (
-			<div data-testid="sortable-context-kit">{children}</div>
-		),
-	),
+	SortableContext: vi.fn(({ children, items, strategy }: any) => (
+		<div data-testid="sortable-context-kit">{children}</div>
+	)),
 	useSortable: vi.fn(() => ({
 		attributes: { "data-sortable": "true" },
 		listeners: { onMouseDown: vi.fn() },
@@ -211,15 +205,13 @@ describe("DragDropContext", () => {
 		// useSensor is called 3 times (PointerSensor, TouchSensor, KeyboardSensor)
 		expect(mockUseSensor).toHaveBeenCalledTimes(3);
 		// PointerSensor and TouchSensor receive activationConstraint
-		expect(mockUseSensor).toHaveBeenCalledWith(
-			expect.any(Function),
-			{ activationConstraint: constraint },
-		);
+		expect(mockUseSensor).toHaveBeenCalledWith(expect.any(Function), {
+			activationConstraint: constraint,
+		});
 		// KeyboardSensor receives coordinateGetter
-		expect(mockUseSensor).toHaveBeenCalledWith(
-			expect.any(Function),
-			{ coordinateGetter: expect.any(Function) },
-		);
+		expect(mockUseSensor).toHaveBeenCalledWith(expect.any(Function), {
+			coordinateGetter: expect.any(Function),
+		});
 	});
 });
 
@@ -390,7 +382,9 @@ describe("Draggable", () => {
 
 		const draggableElement =
 			screen.getByText("Draggable Content").parentElement;
-		expect(draggableElement).toHaveStyle({ transform: "translate(10px, 20px)" });
+		expect(draggableElement).toHaveStyle({
+			transform: "translate(10px, 20px)",
+		});
 	});
 });
 
@@ -457,10 +451,7 @@ describe("SortableContext", () => {
 
 		const customStrategy = "myCustomStrategy";
 		render(
-			<SortableContext
-				items={["a"]}
-				strategy={customStrategy as any}
-			>
+			<SortableContext items={["a"]} strategy={customStrategy as any}>
 				<div>Test</div>
 			</SortableContext>,
 		);
@@ -513,9 +504,7 @@ describe("SortableItem", () => {
 	it("renders function children with all sortable args", () => {
 		const mockChild = vi.fn(() => <div>Rendered</div>);
 
-		render(
-			<SortableItem id="test-item">{mockChild}</SortableItem>,
-		);
+		render(<SortableItem id="test-item">{mockChild}</SortableItem>);
 
 		expect(mockChild).toHaveBeenCalledWith(
 			expect.objectContaining({
@@ -698,9 +687,7 @@ describe("SortableHandle", () => {
 	});
 
 	it("renders function children with undefined listeners when standalone", () => {
-		const mockChild = vi.fn((_listeners: any) => (
-			<div>Function Handle</div>
-		));
+		const mockChild = vi.fn((_listeners: any) => <div>Function Handle</div>);
 
 		render(<SortableHandle>{mockChild}</SortableHandle>);
 
@@ -709,9 +696,7 @@ describe("SortableHandle", () => {
 	});
 
 	it("passes the parent SortableItem's listeners to function children", () => {
-		const mockChild = vi.fn((_listeners: any) => (
-			<div>Function Handle</div>
-		));
+		const mockChild = vi.fn((_listeners: any) => <div>Function Handle</div>);
 
 		render(
 			<SortableItem id="item-1" handle>

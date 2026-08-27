@@ -185,9 +185,7 @@ describe("DropdownMenu", () => {
 		);
 
 		await user.click(screen.getByText("Open Menu"));
-		expect(
-			document.querySelector('[data-inset="true"]'),
-		).toBeInTheDocument();
+		expect(document.querySelector('[data-inset="true"]')).toBeInTheDocument();
 	});
 
 	it("should render menu item with destructive variant", async () => {

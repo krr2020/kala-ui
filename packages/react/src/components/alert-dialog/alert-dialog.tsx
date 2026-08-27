@@ -39,7 +39,7 @@ function AlertDialogOverlay({
 		<AlertDialogPrimitive.Overlay
 			data-slot="alert-dialog-overlay"
 			className={cn(
-				"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-30 bg-black/50 backdrop-blur-sm",
+				"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-30 bg-overlay backdrop-blur-sm",
 				className,
 			)}
 			{...props}
@@ -57,7 +57,7 @@ function AlertDialogContent({
 			<AlertDialogPrimitive.Content
 				data-slot="alert-dialog-content"
 				className={cn(
-					"bg-card data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-30 flex flex-col translate-x-[-50%] translate-y-[-50%] rounded-lg border duration-200 w-[90vw] max-w-lg theme-card",
+					"bg-card data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-30 flex flex-col translate-x-[-50%] translate-y-[-50%] rounded-lg border duration-200 w-[90vw] max-w-lg kala-surface-card",
 					className,
 				)}
 				{...props}
@@ -170,15 +170,15 @@ function AlertDialogCancel({
 
 export {
 	AlertDialog,
-	AlertDialogPortal,
-	AlertDialogOverlay,
-	AlertDialogTrigger,
-	AlertDialogContent,
-	AlertDialogHeader,
-	AlertDialogBody,
-	AlertDialogFooter,
-	AlertDialogTitle,
-	AlertDialogDescription,
 	AlertDialogAction,
+	AlertDialogBody,
 	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogOverlay,
+	AlertDialogPortal,
+	AlertDialogTitle,
+	AlertDialogTrigger,
 };

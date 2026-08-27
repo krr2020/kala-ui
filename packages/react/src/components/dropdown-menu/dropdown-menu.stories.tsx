@@ -14,21 +14,17 @@ import {
 	UserPlus,
 	Users,
 } from "lucide-react";
-import { siGithub } from "simple-icons";
 import { useState } from "react";
+import { siGithub } from "simple-icons";
 import { Button } from "../button";
 
 const GithubIcon = ({ className }: { className?: string }) => (
-	<svg
-		role="img"
-		viewBox="0 0 24 24"
-		className={className}
-		fill="currentColor"
-	>
+	<svg role="img" viewBox="0 0 24 24" className={className} fill="currentColor">
 		<title>GitHub</title>
 		<path d={siGithub.path} />
 	</svg>
 );
+
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,

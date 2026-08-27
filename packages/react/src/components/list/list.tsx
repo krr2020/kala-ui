@@ -424,11 +424,11 @@ function ListItemBadge({
 export {
 	List,
 	ListItem,
-	ListItemIcon,
-	ListItemAvatar,
-	ListItemContent,
-	ListItemTitle,
-	ListItemText,
 	ListItemAction,
+	ListItemAvatar,
 	ListItemBadge,
+	ListItemContent,
+	ListItemIcon,
+	ListItemText,
+	ListItemTitle,
 };

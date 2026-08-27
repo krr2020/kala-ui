@@ -24,11 +24,6 @@ for (const dir of componentDirs) {
 // Add lib/utils
 entries['components/lib/utils'] = 'src/lib/utils.ts';
 
-// Add config/tailwind-base
-if (existsSync('src/config/tailwind-base.ts')) {
-  entries['config/tailwind-base'] = 'src/config/tailwind-base.ts';
-}
-
 export default defineConfig({
   entry: entries,
   format: ['esm'],

@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 import {
-	getDefaultChartOptions,
-	defaultColors,
-	formatNumber,
-	formatCurrency,
-	formatPercentage,
 	createGradient,
+	defaultColors,
+	formatCurrency,
+	formatNumber,
+	formatPercentage,
+	getDefaultChartOptions,
 	getResponsiveOptions,
 } from "./utils";
 

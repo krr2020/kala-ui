@@ -41,7 +41,10 @@ describe("SparklineChart", () => {
 	it("should render with line type by default", async () => {
 		const { getByTestId } = render(<SparklineChart data={mockData} />);
 
-		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute("data-type", "line");
+		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute(
+			"data-type",
+			"line",
+		);
 	});
 
 	it("should render with area type", async () => {
@@ -49,7 +52,10 @@ describe("SparklineChart", () => {
 			<SparklineChart data={mockData} type="area" />,
 		);
 
-		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute("data-type", "area");
+		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute(
+			"data-type",
+			"area",
+		);
 	});
 
 	it("should render with bar type", async () => {
@@ -57,7 +63,10 @@ describe("SparklineChart", () => {
 			<SparklineChart data={mockData} type="bar" />,
 		);
 
-		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute("data-type", "bar");
+		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute(
+			"data-type",
+			"bar",
+		);
 	});
 
 	it("should use default color", async () => {
@@ -87,7 +96,10 @@ describe("SparklineChart", () => {
 			"data-width",
 			"100%",
 		);
-		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute("data-height", "64");
+		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute(
+			"data-height",
+			"64",
+		);
 	});
 
 	it("should apply custom width and height", async () => {
@@ -95,7 +107,10 @@ describe("SparklineChart", () => {
 			<SparklineChart data={mockData} width={200} height={100} />,
 		);
 
-		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute("data-width", "200");
+		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute(
+			"data-width",
+			"200",
+		);
 		expect(await screen.findByTestId("sparkline-chart")).toHaveAttribute(
 			"data-height",
 			"100",

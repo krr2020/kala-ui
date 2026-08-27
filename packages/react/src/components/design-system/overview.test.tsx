@@ -41,7 +41,11 @@ vi.mock("../badge", () => ({
 }));
 
 vi.mock("../breadcrumbs", () => ({
-	Breadcrumbs: ({ items }: { items: Array<{ label: string; href?: string }> }) => (
+	Breadcrumbs: ({
+		items,
+	}: {
+		items: Array<{ label: string; href?: string }>;
+	}) => (
 		<nav data-testid="breadcrumbs">
 			{items.map((item, i) => (
 				<span key={i}>{item.label}</span>

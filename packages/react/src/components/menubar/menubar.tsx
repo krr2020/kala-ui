@@ -20,7 +20,7 @@ function Menubar({
 		<MenubarPrimitive.Root
 			data-slot="menubar"
 			className={cn(
-				"flex h-10 items-center space-x-1 rounded-md border bg-background p-1 theme-card",
+				"flex h-10 items-center space-x-1 rounded-md border bg-background p-1 kala-surface-card",
 				className,
 			)}
 			{...props}
@@ -115,7 +115,7 @@ function MenubarContent({
 				sideOffset={sideOffset}
 				className={cn(
 					"z-30 min-w-[12rem] max-h-(--radix-menubar-content-available-height) origin-(--radix-menubar-content-transform-origin) overflow-x-hidden overflow-y-auto",
-					"rounded-md border bg-popover p-1 text-popover-foreground theme-dropdown",
+					"rounded-md border bg-popover p-1 text-popover-foreground kala-surface-popover",
 					"data-[state=open]:animate-in data-[state=closed]:animate-out",
 					"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
 					"data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",

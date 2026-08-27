@@ -8,10 +8,10 @@ import {
 	type AvatarProps,
 } from "../avatar/avatar";
 import {
-	TooltipProvider,
 	Tooltip,
-	TooltipTrigger,
 	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
 } from "../tooltip/tooltip";
 
 export interface AvatarItem {

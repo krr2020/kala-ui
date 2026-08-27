@@ -227,7 +227,9 @@ describe("Chart", () => {
 	});
 
 	it("should show empty state with default height when no height prop", async () => {
-		render(<Chart options={mockOptions} series={mockSeries} type="line" isEmpty />);
+		render(
+			<Chart options={mockOptions} series={mockSeries} type="line" isEmpty />,
+		);
 		const emptyState = screen.getByText("No data available").closest("div");
 		expect(emptyState).toHaveStyle({ height: "350px" });
 	});

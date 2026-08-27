@@ -7,9 +7,9 @@ import {
 } from "lucide-react";
 import { Box } from "../box";
 import { Flex } from "../flex";
+import { Skeleton } from "../skeleton";
 import { Stack } from "../stack";
 import { Text } from "../text";
-import { Skeleton } from "../skeleton";
 import { Alert, AlertDescription, AlertTitle } from "./alert";
 
 const meta = {

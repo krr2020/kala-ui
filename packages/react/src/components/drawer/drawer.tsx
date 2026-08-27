@@ -52,7 +52,7 @@ function DrawerOverlay({
 		<DrawerPrimitive.Overlay
 			data-slot="drawer-overlay"
 			className={cn(
-				"fixed inset-0 z-30 bg-black/50 backdrop-blur-sm",
+				"fixed inset-0 z-30 bg-overlay backdrop-blur-sm",
 				className,
 			)}
 			{...props}
@@ -60,7 +60,10 @@ function DrawerOverlay({
 	);
 }
 
-const SIZE_WIDTH_CLASSES: Record<NonNullable<DrawerContentProps["size"]>, string> = {
+const SIZE_WIDTH_CLASSES: Record<
+	NonNullable<DrawerContentProps["size"]>,
+	string
+> = {
 	sm: "w-[24rem] sm:max-w-[24rem]",
 	md: "w-[32rem] sm:max-w-[32rem]",
 	lg: "w-[40rem] sm:max-w-[40rem]",
@@ -69,7 +72,10 @@ const SIZE_WIDTH_CLASSES: Record<NonNullable<DrawerContentProps["size"]>, string
 	full: "w-screen sm:max-w-none",
 };
 
-const SIZE_HEIGHT_CLASSES: Record<NonNullable<DrawerContentProps["size"]>, string> = {
+const SIZE_HEIGHT_CLASSES: Record<
+	NonNullable<DrawerContentProps["size"]>,
+	string
+> = {
 	sm: "h-[24rem] sm:max-h-[24rem]",
 	md: "h-[32rem] sm:max-h-[32rem]",
 	lg: "h-[40rem] sm:max-h-[40rem]",
@@ -78,7 +84,9 @@ const SIZE_HEIGHT_CLASSES: Record<NonNullable<DrawerContentProps["size"]>, strin
 	full: "h-screen sm:max-h-none",
 };
 
-type DrawerContentProps = React.ComponentProps<typeof DrawerPrimitive.Content> & {
+type DrawerContentProps = React.ComponentProps<
+	typeof DrawerPrimitive.Content
+> & {
 	/** Width (left/right) or height (top/bottom) preset. Defaults to the legacy
 	 * `w-3/4 sm:max-w-sm` shape for left/right and auto height for top/bottom. */
 	size?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
@@ -106,13 +114,11 @@ function DrawerContent({
 			<DrawerPrimitive.Content
 				data-slot="drawer-content"
 				className={cn(
-					"fixed z-30 flex h-auto flex-col bg-background theme-card",
+					"fixed z-30 flex h-auto flex-col bg-background kala-surface-card",
 					(!direction || direction === "bottom") &&
 						"inset-x-0 bottom-0 mt-24 rounded-t-lg border-t",
-					direction === "right" &&
-						"inset-y-0 right-0 h-screen border-l",
-					direction === "left" &&
-						"inset-y-0 left-0 h-screen border-r",
+					direction === "right" && "inset-y-0 right-0 h-screen border-l",
+					direction === "left" && "inset-y-0 left-0 h-screen border-r",
 					direction === "top" && "inset-x-0 top-0 mb-24 rounded-b-lg border-b",
 					sizeClass,
 					className,
@@ -187,13 +193,13 @@ function DrawerDescription({
 
 export {
 	Drawer,
-	DrawerPortal,
-	DrawerOverlay,
-	DrawerTrigger,
 	DrawerClose,
 	DrawerContent,
-	DrawerHeader,
-	DrawerFooter,
-	DrawerTitle,
 	DrawerDescription,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerOverlay,
+	DrawerPortal,
+	DrawerTitle,
+	DrawerTrigger,
 };

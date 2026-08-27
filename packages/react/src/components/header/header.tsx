@@ -118,7 +118,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 				ref={ref}
 				data-comp="header"
 				className={cn(
-					"w-full bg-popover border-b sticky top-0 z-20 theme-popover",
+					"w-full bg-popover border-b sticky top-0 z-20 kala-surface-popover",
 					className,
 				)}
 				{...props}
@@ -273,7 +273,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 						<>
 							{/* Mobile Menu Backdrop Overlay */}
 							<Box
-								className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+								className="fixed inset-0 bg-overlay/40 backdrop-blur-sm z-40 lg:hidden"
 								onClick={onMobileMenuToggle}
 								aria-hidden="true"
 							/>
@@ -281,7 +281,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 							{/* Mobile Navigation - Fixed positioned overlay */}
 							<Box
 								as="nav"
-								className="fixed top-0 left-0 right-0 bottom-0 bg-popover z-40 lg:hidden overflow-hidden flex flex-col theme-popover"
+								className="fixed top-0 left-0 right-0 bottom-0 bg-popover z-40 lg:hidden overflow-hidden flex flex-col kala-surface-popover"
 								aria-label="Mobile navigation"
 							>
 								{/* Mobile Header with Close Button */}

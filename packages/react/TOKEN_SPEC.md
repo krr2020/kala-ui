@@ -36,10 +36,11 @@ Define all of these in `:root` and the dark block (values differ, names same).
 | `--error` / `--error-foreground` | error semantic |
 | `--info` / `--info-foreground` | info semantic |
 | `--border` | default 1px hairline |
+| `--border-strong` | stronger hairline (table headers/separators) |
 | `--input` | input border |
 | `--ring` / `--ring-offset-color` | focus ring + its offset (background) |
 | `--separator` | dividers (defaults to `--border`) |
-| `--radius` | base radius (kala derives sm/md/lg/xl) |
+| `--overlay` / `--overlay-alpha` | scrim color + opacity for dialog/drawer/sidebar overlays |
 
 ## Optional tokens
 

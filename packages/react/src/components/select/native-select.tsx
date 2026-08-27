@@ -29,14 +29,14 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProps>(
 					ref={ref}
 					disabled={disabled}
 					className={cn(
-						"w-full rounded-md border bg-background text-sm transition-colors theme-input",
-						"focus-ring",
+						"w-full rounded-md border bg-background text-sm transition-colors kala-surface-input",
+						"kala-focus-ring",
 						"disabled:cursor-not-allowed disabled:opacity-50",
 						"appearance-none pr-10",
 						{
 							"h-9 px-3 py-2": size === "default",
 							"h-8 px-2 py-1 text-xs": size === "sm",
-							"border-destructive focus-ring-destructive": error,
+							"border-destructive kala-focus-ring-destructive": error,
 						},
 						className,
 					)}
@@ -81,4 +81,4 @@ const NativeSelectOptGroup = React.forwardRef<
 
 NativeSelectOptGroup.displayName = "NativeSelectOptGroup";
 
-export { NativeSelect, NativeSelectOption, NativeSelectOptGroup };
+export { NativeSelect, NativeSelectOptGroup, NativeSelectOption };

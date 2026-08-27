@@ -17,10 +17,20 @@ import {
 // then uses DrawerPrimitive.Root, DrawerPrimitive.Trigger, etc.
 vi.mock("vaul", () => {
 	const DrawerRoot = vi.fn(
-		({ children, direction, shouldScaleBackground, open, onOpenChange, ...props }: any) => (
+		({
+			children,
+			direction,
+			shouldScaleBackground,
+			open,
+			onOpenChange,
+			...props
+		}: any) => (
 			<div data-testid="drawer-root" data-direction={direction || "bottom"}>
 				{typeof children === "function"
-					? children({ open: open ?? true, onClose: onOpenChange ?? (() => {}) })
+					? children({
+							open: open ?? true,
+							onClose: onOpenChange ?? (() => {}),
+						})
 					: children}
 			</div>
 		),
@@ -31,16 +41,20 @@ vi.mock("vaul", () => {
 	const DrawerOverlay = vi.fn(({ className, ...props }: any) => (
 		<div data-testid="drawer-overlay" className={className} {...props} />
 	));
-	const DrawerTrigger = vi.fn(({ children, className, asChild, ...props }: any) => (
-		<button data-testid="drawer-trigger" className={className} {...props}>
-			{children}
-		</button>
-	));
-	const DrawerClose = vi.fn(({ children, className, asChild, ...props }: any) => (
-		<button data-testid="drawer-close" className={className} {...props}>
-			{children}
-		</button>
-	));
+	const DrawerTrigger = vi.fn(
+		({ children, className, asChild, ...props }: any) => (
+			<button data-testid="drawer-trigger" className={className} {...props}>
+				{children}
+			</button>
+		),
+	);
+	const DrawerClose = vi.fn(
+		({ children, className, asChild, ...props }: any) => (
+			<button data-testid="drawer-close" className={className} {...props}>
+				{children}
+			</button>
+		),
+	);
 	const DrawerContent = vi.fn(({ children, className, ...props }: any) => (
 		<div data-testid="drawer-content" className={className} {...props}>
 			{children}
@@ -271,7 +285,7 @@ describe("DrawerOverlay", () => {
 		const overlay = screen.getByTestId("drawer-overlay");
 		expect(overlay.className).toContain("fixed");
 		expect(overlay.className).toContain("inset-0");
-		expect(overlay.className).toContain("bg-black/50");
+		expect(overlay.className).toContain("bg-overlay");
 		expect(overlay.className).toContain("backdrop-blur-sm");
 	});
 
@@ -386,14 +400,19 @@ describe("DrawerContent", () => {
 		["sm", "h-[24rem]"],
 		["md", "h-[32rem]"],
 		["full", "h-screen"],
-	] as const)("applies %s height size for bottom direction", (size, expected) => {
-		render(
-			<Drawer direction="bottom">
-				<DrawerContent size={size}>Content</DrawerContent>
-			</Drawer>,
-		);
-		expect(screen.getByTestId("drawer-content").className).toContain(expected);
-	});
+	] as const)(
+		"applies %s height size for bottom direction",
+		(size, expected) => {
+			render(
+				<Drawer direction="bottom">
+					<DrawerContent size={size}>Content</DrawerContent>
+				</Drawer>,
+			);
+			expect(screen.getByTestId("drawer-content").className).toContain(
+				expected,
+			);
+		},
+	);
 
 	it("does not apply size class for default bottom direction without size prop", () => {
 		render(
@@ -639,9 +658,7 @@ describe("DrawerDescription", () => {
 		render(
 			<Drawer>
 				<DrawerContent>
-					<DrawerDescription className="custom-desc">
-						Desc
-					</DrawerDescription>
+					<DrawerDescription className="custom-desc">Desc</DrawerDescription>
 				</DrawerContent>
 			</Drawer>,
 		);

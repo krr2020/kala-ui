@@ -128,12 +128,19 @@ describe("SegmentedControl", () => {
 		const { container } = render(
 			<SegmentedControl data={["A", "B"]} defaultValue="A" disabled />,
 		);
-		expect(container.firstChild).toHaveClass("cursor-not-allowed", "opacity-60");
+		expect(container.firstChild).toHaveClass(
+			"cursor-not-allowed",
+			"opacity-60",
+		);
 	});
 
 	it("applies custom className", () => {
 		const { container } = render(
-			<SegmentedControl data={["A", "B"]} defaultValue="A" className="custom-sc" />,
+			<SegmentedControl
+				data={["A", "B"]}
+				defaultValue="A"
+				className="custom-sc"
+			/>,
 		);
 		expect(container.firstChild).toHaveClass("custom-sc");
 	});
@@ -142,14 +149,20 @@ describe("SegmentedControl", () => {
 		const { rerender } = render(
 			<SegmentedControl data={["A", "B"]} value="A" />,
 		);
-		expect(screen.getByText("A").closest("button")).toHaveClass("text-foreground");
+		expect(screen.getByText("A").closest("button")).toHaveClass(
+			"text-foreground",
+		);
 
 		rerender(<SegmentedControl data={["A", "B"]} value="B" />);
-		expect(screen.getByText("B").closest("button")).toHaveClass("text-foreground");
+		expect(screen.getByText("B").closest("button")).toHaveClass(
+			"text-foreground",
+		);
 	});
 
 	it("supports name prop", () => {
-		render(<SegmentedControl data={["A", "B"]} defaultValue="A" name="my-sc" />);
+		render(
+			<SegmentedControl data={["A", "B"]} defaultValue="A" name="my-sc" />,
+		);
 		expect(screen.getByText("A")).toBeInTheDocument();
 	});
 
@@ -169,7 +182,9 @@ describe("SegmentedControl", () => {
 
 	it("initializes with first string data value when no defaultValue", () => {
 		render(<SegmentedControl data={["First", "Second"]} />);
-		expect(screen.getByText("First").closest("button")).toHaveClass("text-foreground");
+		expect(screen.getByText("First").closest("button")).toHaveClass(
+			"text-foreground",
+		);
 	});
 
 	it("initializes with first object data value when no defaultValue", () => {
@@ -181,13 +196,13 @@ describe("SegmentedControl", () => {
 				]}
 			/>,
 		);
-		expect(screen.getByText("First").closest("button")).toHaveClass("text-foreground");
+		expect(screen.getByText("First").closest("button")).toHaveClass(
+			"text-foreground",
+		);
 	});
 
 	it("applies flex-1 to buttons when fullWidth is true", () => {
-		render(
-			<SegmentedControl data={["A", "B"]} defaultValue="A" fullWidth />,
-		);
+		render(<SegmentedControl data={["A", "B"]} defaultValue="A" fullWidth />);
 		const buttons = screen.getAllByRole("button");
 		expect(buttons[0]).toHaveClass("flex-1");
 		expect(buttons[1]).toHaveClass("flex-1");
@@ -202,33 +217,31 @@ describe("SegmentedControl", () => {
 	});
 
 	it("applies active text-foreground class to selected item", () => {
-		render(
-			<SegmentedControl data={["A", "B"]} defaultValue="A" />,
+		render(<SegmentedControl data={["A", "B"]} defaultValue="A" />);
+		expect(screen.getByText("A").closest("button")).toHaveClass(
+			"text-foreground",
 		);
-		expect(screen.getByText("A").closest("button")).toHaveClass("text-foreground");
 	});
 
 	it("applies inactive text-muted-foreground class to unselected item", () => {
-		render(
-			<SegmentedControl data={["A", "B"]} defaultValue="A" />,
+		render(<SegmentedControl data={["A", "B"]} defaultValue="A" />);
+		expect(screen.getByText("B").closest("button")).toHaveClass(
+			"text-muted-foreground",
 		);
-		expect(screen.getByText("B").closest("button")).toHaveClass("text-muted-foreground");
 	});
 
 	it("does not update internal value when valueProp is provided and option clicked", () => {
 		const handleChange = vi.fn();
 		render(
-			<SegmentedControl
-				data={["A", "B"]}
-				value="A"
-				onChange={handleChange}
-			/>,
+			<SegmentedControl data={["A", "B"]} value="A" onChange={handleChange} />,
 		);
 
 		fireEvent.click(screen.getByText("B"));
 		expect(handleChange).toHaveBeenCalledWith("B");
 		// Internal state should not change since valueProp is controlled
-		expect(screen.getByText("A").closest("button")).toHaveClass("text-foreground");
+		expect(screen.getByText("A").closest("button")).toHaveClass(
+			"text-foreground",
+		);
 	});
 
 	it("applies each radius variant correctly", () => {
@@ -260,9 +273,7 @@ describe("SegmentedControl", () => {
 	});
 
 	it("applies size class to individual buttons", () => {
-		render(
-			<SegmentedControl data={["A", "B"]} defaultValue="A" size="lg" />,
-		);
+		render(<SegmentedControl data={["A", "B"]} defaultValue="A" size="lg" />);
 		const buttons = screen.getAllByRole("button");
 		expect(buttons[0]).toHaveClass("h-12", "text-base");
 	});
@@ -285,11 +296,17 @@ describe("SegmentedControl", () => {
 		const { rerender } = render(
 			<SegmentedControl data={["A", "B", "C"]} value="A" />,
 		);
-		expect(screen.getByText("A").closest("button")).toHaveClass("text-foreground");
+		expect(screen.getByText("A").closest("button")).toHaveClass(
+			"text-foreground",
+		);
 
 		rerender(<SegmentedControl data={["A", "B", "C"]} value="C" />);
-		expect(screen.getByText("C").closest("button")).toHaveClass("text-foreground");
-		expect(screen.getByText("A").closest("button")).toHaveClass("text-muted-foreground");
+		expect(screen.getByText("C").closest("button")).toHaveClass(
+			"text-foreground",
+		);
+		expect(screen.getByText("A").closest("button")).toHaveClass(
+			"text-muted-foreground",
+		);
 	});
 
 	it("uses name prop in motion layoutId", () => {
@@ -303,18 +320,14 @@ describe("SegmentedControl", () => {
 	});
 
 	it("uses 'segmented-control' in layoutId when no name is provided", () => {
-		render(
-			<SegmentedControl data={["A", "B"]} defaultValue="A" />,
-		);
+		render(<SegmentedControl data={["A", "B"]} defaultValue="A" />);
 		const activeBtn = screen.getByText("A").closest("button");
 		const motionDiv = activeBtn?.querySelector(".bg-background");
 		expect(motionDiv).toBeInTheDocument();
 	});
 
 	it("does not render motion div for unselected item", () => {
-		render(
-			<SegmentedControl data={["A", "B"]} defaultValue="A" />,
-		);
+		render(<SegmentedControl data={["A", "B"]} defaultValue="A" />);
 		const inactiveBtn = screen.getByText("B").closest("button");
 		const motionDiv = inactiveBtn?.querySelector(".bg-background");
 		expect(motionDiv).not.toBeInTheDocument();

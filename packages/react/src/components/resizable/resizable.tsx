@@ -43,7 +43,7 @@ const ResizableHandle = ({
 	<ResizablePrimitive.Separator
 		data-slot="resizable-handle"
 		className={cn(
-			"bg-separator relative flex items-center justify-center focus-ring",
+			"bg-separator relative flex items-center justify-center kala-focus-ring",
 			"after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2",
 			"group-data-[orientation=vertical]:h-px group-data-[orientation=vertical]:w-full group-data-[orientation=vertical]:after:left-0 group-data-[orientation=vertical]:after:h-1 group-data-[orientation=vertical]:after:w-full group-data-[orientation=vertical]:after:-translate-y-1/2 group-data-[orientation=vertical]:after:translate-x-0",
 			"group-data-[orientation=horizontal]:w-px group-data-[orientation=horizontal]:after:h-full",
@@ -83,9 +83,6 @@ const ResizableHandle = ({
 	</ResizablePrimitive.Separator>
 );
 
-export { ResizablePanelGroup, ResizablePanel, ResizableHandle };
-export type { ResizableHandleProps };
-
 // Re-export types from react-resizable-panels for convenience
 export type {
 	GroupImperativeHandle,
@@ -94,3 +91,5 @@ export type {
 	PanelProps,
 	SeparatorProps,
 } from "react-resizable-panels";
+export type { ResizableHandleProps };
+export { ResizableHandle, ResizablePanel, ResizablePanelGroup };

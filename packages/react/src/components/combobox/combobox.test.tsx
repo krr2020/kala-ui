@@ -182,9 +182,7 @@ describe("Combobox", () => {
 	});
 
 	it("shows clear button when clearable and value is set", () => {
-		render(
-			<Combobox options={mockOptions} value="option1" clearable />,
-		);
+		render(<Combobox options={mockOptions} value="option1" clearable />);
 		expect(screen.getByLabelText("Clear selection")).toBeInTheDocument();
 	});
 
@@ -207,9 +205,7 @@ describe("Combobox", () => {
 	});
 
 	it("does not show clear button when clearable but no value", () => {
-		render(
-			<Combobox options={mockOptions} clearable />,
-		);
+		render(<Combobox options={mockOptions} clearable />);
 		expect(screen.queryByLabelText("Clear selection")).not.toBeInTheDocument();
 	});
 
@@ -261,9 +257,7 @@ describe("Combobox", () => {
 
 	it("renders with separateOptions", async () => {
 		const user = userEvent.setup();
-		render(
-			<Combobox options={mockOptions} separateOptions />,
-		);
+		render(<Combobox options={mockOptions} separateOptions />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -279,10 +273,7 @@ describe("Combobox", () => {
 		const user = userEvent.setup();
 		const handleSearchChange = vi.fn();
 		render(
-			<Combobox
-				options={mockOptions}
-				onSearchChange={handleSearchChange}
-			/>,
+			<Combobox options={mockOptions} onSearchChange={handleSearchChange} />,
 		);
 
 		const button = screen.getByRole("combobox");
@@ -296,12 +287,7 @@ describe("Combobox", () => {
 
 	it("shows empty options in async mode when search is empty", async () => {
 		const user = userEvent.setup();
-		render(
-			<Combobox
-				options={mockOptions}
-				onSearchChange={vi.fn()}
-			/>,
-		);
+		render(<Combobox options={mockOptions} onSearchChange={vi.fn()} />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -315,9 +301,7 @@ describe("Combobox", () => {
 
 	it("applies matchTriggerWidth=false style", async () => {
 		const user = userEvent.setup();
-		render(
-			<Combobox options={mockOptions} matchTriggerWidth={false} />,
-		);
+		render(<Combobox options={mockOptions} matchTriggerWidth={false} />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -343,10 +327,7 @@ describe("Combobox", () => {
 		const user = userEvent.setup();
 		const handleSearchChange = vi.fn();
 		render(
-			<Combobox
-				options={mockOptions}
-				onSearchChange={handleSearchChange}
-			/>,
+			<Combobox options={mockOptions} onSearchChange={handleSearchChange} />,
 		);
 
 		const button = screen.getByRole("combobox");
@@ -378,12 +359,7 @@ describe("Combobox", () => {
 
 	it("shows options after typing in async mode", async () => {
 		const user = userEvent.setup();
-		render(
-			<Combobox
-				options={mockOptions}
-				onSearchChange={vi.fn()}
-			/>,
-		);
+		render(<Combobox options={mockOptions} onSearchChange={vi.fn()} />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -408,9 +384,7 @@ describe("Combobox", () => {
 	});
 
 	it("displays placeholder when no value and no selectedLabel", () => {
-		render(
-			<Combobox options={mockOptions} placeholder="Pick one..." />,
-		);
+		render(<Combobox options={mockOptions} placeholder="Pick one..." />);
 		expect(screen.getByText("Pick one...")).toBeInTheDocument();
 	});
 
@@ -441,9 +415,7 @@ describe("Combobox", () => {
 
 	it("shows check mark opacity on selected option", async () => {
 		const user = userEvent.setup();
-		render(
-			<Combobox options={mockOptions} value="option1" />,
-		);
+		render(<Combobox options={mockOptions} value="option1" />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -458,19 +430,33 @@ describe("Combobox", () => {
 	});
 
 	it("applies flex-1 text-left when matchTriggerWidth is true", () => {
-		render(<Combobox options={mockOptions} value="option1" matchTriggerWidth />);
+		render(
+			<Combobox options={mockOptions} value="option1" matchTriggerWidth />,
+		);
 		const text = screen.getByText("Option 1");
 		expect(text).toHaveClass("flex-1", "text-left");
 	});
 
 	it("does not apply flex-1 when matchTriggerWidth is false", () => {
-		render(<Combobox options={mockOptions} value="option1" matchTriggerWidth={false} />);
+		render(
+			<Combobox
+				options={mockOptions}
+				value="option1"
+				matchTriggerWidth={false}
+			/>,
+		);
 		const text = screen.getByText("Option 1");
 		expect(text).not.toHaveClass("flex-1");
 	});
 
 	it("applies truncate on text when matchTriggerWidth is false", () => {
-		render(<Combobox options={mockOptions} value="option1" matchTriggerWidth={false} />);
+		render(
+			<Combobox
+				options={mockOptions}
+				value="option1"
+				matchTriggerWidth={false}
+			/>,
+		);
 		const text = screen.getByText("Option 1");
 		expect(text).toHaveClass("truncate");
 	});
@@ -513,7 +499,9 @@ describe("Combobox", () => {
 		await waitFor(() => {
 			const listbox = screen.getByRole("listbox");
 			const opts = within(listbox).getAllByTestId("ropt");
-			const selectedOpt = opts.find((o) => o.getAttribute("data-selected") === "true");
+			const selectedOpt = opts.find(
+				(o) => o.getAttribute("data-selected") === "true",
+			);
 			expect(selectedOpt).toHaveTextContent("Option 2");
 		});
 	});
@@ -553,9 +541,7 @@ describe("Combobox", () => {
 
 	it("sets Command shouldFilter to false in async mode", async () => {
 		const user = userEvent.setup();
-		render(
-			<Combobox options={mockOptions} onSearchChange={vi.fn()} />,
-		);
+		render(<Combobox options={mockOptions} onSearchChange={vi.fn()} />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -570,10 +556,7 @@ describe("Combobox", () => {
 		const user = userEvent.setup();
 		const handleSearchChange = vi.fn();
 		render(
-			<Combobox
-				options={mockOptions}
-				onSearchChange={handleSearchChange}
-			/>,
+			<Combobox options={mockOptions} onSearchChange={handleSearchChange} />,
 		);
 
 		const button = screen.getByRole("combobox");
@@ -589,9 +572,7 @@ describe("Combobox", () => {
 
 	it("uses popover content w-full when matchTriggerWidth is true", async () => {
 		const user = userEvent.setup();
-		render(
-			<Combobox options={mockOptions} matchTriggerWidth={true} />,
-		);
+		render(<Combobox options={mockOptions} matchTriggerWidth={true} />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -603,9 +584,7 @@ describe("Combobox", () => {
 
 	it("popover content has no inline width style when matchTriggerWidth is false", async () => {
 		const user = userEvent.setup();
-		render(
-			<Combobox options={mockOptions} matchTriggerWidth={false} />,
-		);
+		render(<Combobox options={mockOptions} matchTriggerWidth={false} />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -642,9 +621,7 @@ describe("Combobox", () => {
 	});
 
 	it("displays placeholder when value is empty string", () => {
-		render(
-			<Combobox options={mockOptions} value="" placeholder="Pick..." />,
-		);
+		render(<Combobox options={mockOptions} value="" placeholder="Pick..." />);
 		expect(screen.getByText("Pick...")).toBeInTheDocument();
 	});
 });

@@ -79,9 +79,9 @@ function AccordionTrigger({
 					variant === "default" &&
 						"py-4 text-base text-foreground hover:text-primary focus-visible:text-primary",
 					variant === "bordered" &&
-						"py-3.5 px-4 text-[15px] text-foreground hover:text-primary data-[state=open]:text-primary data-[state=open]:bg-accent focus-ring rounded-t-md",
+						"py-3.5 px-4 text-[15px] text-foreground hover:text-primary data-[state=open]:text-primary data-[state=open]:bg-accent kala-focus-ring rounded-t-md",
 					variant === "filled" &&
-						"py-3.5 px-4 text-[15px] text-foreground hover:bg-accent data-[state=open]:bg-primary data-[state=open]:text-primary-foreground focus-ring",
+						"py-3.5 px-4 text-[15px] text-foreground hover:bg-accent data-[state=open]:bg-primary data-[state=open]:text-primary-foreground kala-focus-ring",
 					className,
 				)}
 				{...props}
@@ -120,4 +120,4 @@ function AccordionContent({
 	);
 }
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };

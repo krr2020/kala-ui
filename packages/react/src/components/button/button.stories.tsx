@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "storybook/test";
 import { Box } from "../box";
 import { Flex } from "../flex";
-import { Stack } from "../stack";
 import { Skeleton } from "../skeleton";
+import { Stack } from "../stack";
 import { Button } from "./button";
 
 const meta: Meta<typeof Button> = {

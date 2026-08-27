@@ -12,7 +12,7 @@ describe("Container", () => {
 		render(<Container data-testid="container">Content</Container>);
 		const container = screen.getByTestId("container");
 		expect(container).toHaveClass("mx-auto");
-		expect(container).toHaveClass("max-w-screen-xl");
+		expect(container).toHaveClass("max-w-xl");
 	});
 
 	it("applies custom size class", () => {
@@ -22,7 +22,7 @@ describe("Container", () => {
 			</Container>,
 		);
 		const container = screen.getByTestId("container");
-		expect(container).toHaveClass("max-w-screen-sm");
+		expect(container).toHaveClass("max-w-sm");
 	});
 
 	it("applies centered class", () => {
@@ -38,7 +38,9 @@ describe("Container", () => {
 	});
 
 	it("renders as div by default", () => {
-		const { container } = render(<Container data-testid="container">Test</Container>);
+		const { container } = render(
+			<Container data-testid="container">Test</Container>,
+		);
 		expect(container.querySelector("div")).toBeInTheDocument();
 	});
 
@@ -59,7 +61,7 @@ describe("Container", () => {
 			</Container>,
 		);
 		const container = screen.getByTestId("container");
-		expect(container).toHaveClass("max-w-screen-md");
+		expect(container).toHaveClass("max-w-md");
 	});
 
 	it("applies lg size class", () => {
@@ -69,7 +71,7 @@ describe("Container", () => {
 			</Container>,
 		);
 		const container = screen.getByTestId("container");
-		expect(container).toHaveClass("max-w-screen-lg");
+		expect(container).toHaveClass("max-w-lg");
 	});
 
 	it("applies 2xl size class", () => {
@@ -79,7 +81,7 @@ describe("Container", () => {
 			</Container>,
 		);
 		const container = screen.getByTestId("container");
-		expect(container).toHaveClass("max-w-screen-2xl");
+		expect(container).toHaveClass("max-w-2xl");
 	});
 
 	it("applies full size class", () => {

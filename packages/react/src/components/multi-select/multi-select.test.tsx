@@ -16,7 +16,11 @@ const groupedOptions: MultiSelectOption[] = [
 ];
 
 const optionsWithIcons: MultiSelectOption[] = [
-	{ value: "opt1", label: "Opt 1", icon: <span data-testid="icon-opt1">I1</span> },
+	{
+		value: "opt1",
+		label: "Opt 1",
+		icon: <span data-testid="icon-opt1">I1</span>,
+	},
 	{ value: "opt2", label: "Opt 2" },
 ];
 
@@ -288,9 +292,7 @@ describe("MultiSelect", () => {
 	});
 
 	it("applies custom className", () => {
-		render(
-			<MultiSelect options={mockOptions} className="custom-ms" />,
-		);
+		render(<MultiSelect options={mockOptions} className="custom-ms" />);
 
 		const button = screen.getByRole("combobox");
 		expect(button).toHaveClass("custom-ms");
@@ -350,9 +352,7 @@ describe("MultiSelect", () => {
 	});
 
 	it("renders options with icons in chips", () => {
-		render(
-			<MultiSelect options={optionsWithIcons} value={["opt1"]} />,
-		);
+		render(<MultiSelect options={optionsWithIcons} value={["opt1"]} />);
 
 		expect(screen.getByTestId("icon-opt1")).toBeInTheDocument();
 		expect(screen.getByText("Opt 1")).toBeInTheDocument();
@@ -386,9 +386,7 @@ describe("MultiSelect", () => {
 
 	it("uses custom emptyText", async () => {
 		const user = userEvent.setup();
-		render(
-			<MultiSelect options={mockOptions} emptyText="No matches" />,
-		);
+		render(<MultiSelect options={mockOptions} emptyText="No matches" />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -404,9 +402,7 @@ describe("MultiSelect", () => {
 
 	it("applies matchTriggerWidth=false style", async () => {
 		const user = userEvent.setup();
-		render(
-			<MultiSelect options={mockOptions} matchTriggerWidth={false} />,
-		);
+		render(<MultiSelect options={mockOptions} matchTriggerWidth={false} />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -419,16 +415,16 @@ describe("MultiSelect", () => {
 
 	it("shows separators between options when showSeparators is true", async () => {
 		const user = userEvent.setup();
-		render(
-			<MultiSelect options={mockOptions} showSeparators />,
-		);
+		render(<MultiSelect options={mockOptions} showSeparators />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
 
 		await waitFor(() => {
 			// Separator component renders a div, not role="separator"
-			expect(document.querySelector('[data-slot="separator"]')).toBeInTheDocument();
+			expect(
+				document.querySelector('[data-slot="separator"]'),
+			).toBeInTheDocument();
 		});
 	});
 
@@ -445,13 +441,7 @@ describe("MultiSelect", () => {
 	});
 
 	it("hides clear all when no values selected", () => {
-		render(
-			<MultiSelect
-				options={mockOptions}
-				value={[]}
-				showClearAll
-			/>,
-		);
+		render(<MultiSelect options={mockOptions} value={[]} showClearAll />);
 
 		expect(screen.queryByLabelText("Clear all")).not.toBeInTheDocument();
 	});
@@ -482,12 +472,7 @@ describe("MultiSelect", () => {
 
 	it("shows indeterminate checkbox when some but not all selected", async () => {
 		const user = userEvent.setup();
-		render(
-			<MultiSelect
-				options={mockOptions}
-				value={["option1"]}
-			/>,
-		);
+		render(<MultiSelect options={mockOptions} value={["option1"]} />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -524,9 +509,7 @@ describe("MultiSelect", () => {
 
 	it("hides select all when showSelectAll is false", async () => {
 		const user = userEvent.setup();
-		render(
-			<MultiSelect options={mockOptions} showSelectAll={false} />,
-		);
+		render(<MultiSelect options={mockOptions} showSelectAll={false} />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -552,11 +535,7 @@ describe("MultiSelect", () => {
 
 	it("shows clear all when showActions is true and showClearAll not explicitly set and values selected", () => {
 		render(
-			<MultiSelect
-				options={mockOptions}
-				value={["option1"]}
-				showActions
-			/>,
+			<MultiSelect options={mockOptions} value={["option1"]} showActions />,
 		);
 		expect(screen.getByLabelText("Clear all")).toBeInTheDocument();
 	});
@@ -622,9 +601,7 @@ describe("MultiSelect", () => {
 
 	it("hides select all when maxSelected is set", async () => {
 		const user = userEvent.setup();
-		render(
-			<MultiSelect options={mockOptions} maxSelected={2} />,
-		);
+		render(<MultiSelect options={mockOptions} maxSelected={2} />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -702,7 +679,12 @@ describe("MultiSelect", () => {
 	it("renders grouped options with icons", async () => {
 		const user = userEvent.setup();
 		const groupedWithIcons: MultiSelectOption[] = [
-			{ value: "x1", label: "X1", group: "G1", icon: <span data-testid="g-icon">I</span> },
+			{
+				value: "x1",
+				label: "X1",
+				group: "G1",
+				icon: <span data-testid="g-icon">I</span>,
+			},
 			{ value: "x2", label: "X2", group: "G1" },
 		];
 
@@ -718,16 +700,16 @@ describe("MultiSelect", () => {
 
 	it("renders grouped options with separators", async () => {
 		const user = userEvent.setup();
-		render(
-			<MultiSelect options={groupedOptions} showSeparators />,
-		);
+		render(<MultiSelect options={groupedOptions} showSeparators />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
 
 		await waitFor(() => {
 			// Separator component renders a div, not role="separator"
-			expect(document.querySelector('[data-slot="separator"]')).toBeInTheDocument();
+			expect(
+				document.querySelector('[data-slot="separator"]'),
+			).toBeInTheDocument();
 		});
 	});
 
@@ -757,9 +739,7 @@ describe("MultiSelect", () => {
 
 	it("applies truncate class to grouped options when matchTriggerWidth is false", async () => {
 		const user = userEvent.setup();
-		render(
-			<MultiSelect options={groupedOptions} matchTriggerWidth={false} />,
-		);
+		render(<MultiSelect options={groupedOptions} matchTriggerWidth={false} />);
 
 		const button = screen.getByRole("combobox");
 		await user.click(button);
@@ -775,7 +755,11 @@ describe("MultiSelect", () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
 		render(
-			<MultiSelect options={groupedOptions} value={["a1"]} onValueChange={handleChange} />,
+			<MultiSelect
+				options={groupedOptions}
+				value={["a1"]}
+				onValueChange={handleChange}
+			/>,
 		);
 
 		const button = screen.getByRole("combobox");
@@ -834,7 +818,12 @@ describe("MultiSelect", () => {
 
 	it("renders chips with icons for selected grouped options", () => {
 		const groupedWithIcons: MultiSelectOption[] = [
-			{ value: "x1", label: "X1", group: "G1", icon: <span data-testid="chip-icon">I</span> },
+			{
+				value: "x1",
+				label: "X1",
+				group: "G1",
+				icon: <span data-testid="chip-icon">I</span>,
+			},
 		];
 
 		render(<MultiSelect options={groupedWithIcons} value={["x1"]} />);

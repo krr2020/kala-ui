@@ -5,10 +5,9 @@
 
 "use client";
 
+import { useDisclosure } from "@kala-ui/react-hooks";
 import { Filter, X } from "lucide-react";
 import * as React from "react";
-
-import { useDisclosure } from "@kala-ui/react-hooks";
 import { Badge } from "../badge";
 import { Button } from "../button";
 import { Checkbox } from "../checkbox";

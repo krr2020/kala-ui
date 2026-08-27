@@ -8,8 +8,8 @@
 
 import type { ApexOptions } from "apexcharts";
 import { cn } from "../../lib/utils";
-import { Chart } from "../charts/chart";
 import { useThemeAwareChart } from "../charts";
+import { Chart } from "../charts/chart";
 
 export interface SparklineChartProps {
 	/**

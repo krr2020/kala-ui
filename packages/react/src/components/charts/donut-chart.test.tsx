@@ -73,7 +73,10 @@ describe("DonutChart", () => {
 
 	it("should pass donut type to ApexChart by default", async () => {
 		render(<DonutChart {...defaultProps} />);
-		expect(await screen.findByTestId("apex-chart")).toHaveAttribute("data-type", "donut");
+		expect(await screen.findByTestId("apex-chart")).toHaveAttribute(
+			"data-type",
+			"donut",
+		);
 	});
 
 	it("should pass series data to the chart", async () => {
@@ -106,7 +109,9 @@ describe("DonutChart", () => {
 
 	it("should show loading skeleton when isLoading is true", async () => {
 		render(<DonutChart {...defaultProps} isLoading />);
-		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
 	});
 
 	it("should show empty state when series is empty", async () => {
@@ -120,21 +125,24 @@ describe("DonutChart", () => {
 	});
 
 	it("should show custom empty message", async () => {
-		render(
-			<DonutChart series={[]} labels={[]} emptyMessage="No slices" />,
-		);
+		render(<DonutChart series={[]} labels={[]} emptyMessage="No slices" />);
 		expect(screen.getByText("No slices")).toBeInTheDocument();
 	});
 
 	it("should not show empty state while loading with empty data", async () => {
 		render(<DonutChart series={[]} labels={[]} isLoading />);
-		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
 		expect(screen.queryByText("No data available")).not.toBeInTheDocument();
 	});
 
 	it("should use custom colors when provided", async () => {
 		render(
-			<DonutChart {...defaultProps} colors={["#ff0000", "#00ff00", "#0000ff", "#ffff00"]} />,
+			<DonutChart
+				{...defaultProps}
+				colors={["#ff0000", "#00ff00", "#0000ff", "#ffff00"]}
+			/>,
 		);
 		const optionsEl = screen.getByTestId("chart-options");
 		expect(optionsEl.textContent).toContain("#ff0000");
@@ -206,7 +214,10 @@ describe("PieChart", () => {
 
 	it("should render as a pie chart (not donut)", async () => {
 		render(<PieChart {...defaultProps} />);
-		expect(await screen.findByTestId("apex-chart")).toHaveAttribute("data-type", "pie");
+		expect(await screen.findByTestId("apex-chart")).toHaveAttribute(
+			"data-type",
+			"pie",
+		);
 	});
 
 	it("should pass series data to the chart", async () => {
@@ -224,7 +235,10 @@ describe("PieChart", () => {
 				colors={["#red", "#green", "#blue"]}
 			/>,
 		);
-		expect(await screen.findByTestId("apex-chart")).toHaveAttribute("data-type", "pie");
+		expect(await screen.findByTestId("apex-chart")).toHaveAttribute(
+			"data-type",
+			"pie",
+		);
 	});
 
 	it("should show empty state for pie chart", async () => {
@@ -234,6 +248,8 @@ describe("PieChart", () => {
 
 	it("should show loading for pie chart", async () => {
 		render(<PieChart {...defaultProps} isLoading />);
-		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
 	});
 });

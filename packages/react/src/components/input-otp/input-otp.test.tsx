@@ -54,7 +54,10 @@ describe("InputOTP", () => {
 		// controlled-input onChange fires. Synchronous and timer-independent,
 		// which keeps this stable under fake timers.
 		const input = screen.getByRole("textbox") as HTMLInputElement;
-		const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+		const setter = Object.getOwnPropertyDescriptor(
+			HTMLInputElement.prototype,
+			"value",
+		)?.set;
 		setter?.call(input, "123");
 		fireEvent.input(input);
 

@@ -193,10 +193,10 @@ function PopoverClose({
 
 export {
 	Popover,
-	PopoverTrigger,
+	PopoverAnchor,
+	PopoverBody,
+	PopoverClose,
 	PopoverContent,
 	PopoverHeader,
-	PopoverBody,
-	PopoverAnchor,
-	PopoverClose,
+	PopoverTrigger,
 };

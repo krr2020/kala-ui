@@ -138,17 +138,16 @@ function NumberInput({
 		currentValue >= max;
 
 	const displayValue =
-		inputText ??
-		(currentValue === "" ? "" : String(currentValue));
+		inputText ?? (currentValue === "" ? "" : String(currentValue));
 
 	return (
 		<div
 			data-slot="number-input"
 			className={cn(
-				"flex w-full rounded-md border bg-card theme-input transition-colors",
+				"flex w-full rounded-md border bg-card kala-surface-input transition-colors",
 				"focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-0",
 				size === "sm" ? "h-8" : "h-10",
-				hasError && "border-destructive focus-within:ring-destructive",
+				hasError && "border-destructive focus-within:kala-ring-destructive",
 				disabled && "opacity-50 cursor-not-allowed",
 				className,
 			)}

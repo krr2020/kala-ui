@@ -107,7 +107,9 @@ describe("RadialBarChart", () => {
 
 	it("should show loading skeleton when isLoading is true", async () => {
 		render(<RadialBarChart {...defaultProps} isLoading />);
-		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
 	});
 
 	it("should show empty state when series is empty", async () => {
@@ -129,17 +131,14 @@ describe("RadialBarChart", () => {
 
 	it("should not show empty state while loading with empty data", async () => {
 		render(<RadialBarChart series={[]} labels={[]} isLoading />);
-		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
 		expect(screen.queryByText("No data available")).not.toBeInTheDocument();
 	});
 
 	it("should use custom colors when provided", async () => {
-		render(
-			<RadialBarChart
-				{...defaultProps}
-				colors={["#ff0000"]}
-			/>,
-		);
+		render(<RadialBarChart {...defaultProps} colors={["#ff0000"]} />);
 		const optionsEl = screen.getByTestId("chart-options");
 		expect(optionsEl.textContent).toContain("#ff0000");
 	});
@@ -163,7 +162,10 @@ describe("RadialBarChart", () => {
 	});
 
 	it("should handle multiple series", async () => {
-		const multiSeries = { series: [75, 50, 90], labels: ["Task A", "Task B", "Task C"] };
+		const multiSeries = {
+			series: [75, 50, 90],
+			labels: ["Task A", "Task B", "Task C"],
+		};
 		render(<RadialBarChart {...multiSeries} />);
 		const seriesEl = screen.getByTestId("chart-series");
 		expect(seriesEl.textContent).toContain("75");

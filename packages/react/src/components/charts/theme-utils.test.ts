@@ -1,8 +1,8 @@
-import { describe, expect, it, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+	createThemeAwareChart,
 	getChartColors,
 	getThemeAwareChartOptions,
-	createThemeAwareChart,
 } from "./theme-utils";
 
 describe("theme-utils", () => {
@@ -180,5 +180,85 @@ describe("theme-utils", () => {
 			const changed = chart.updateColors(); // Second call should be false
 			expect(changed).toBe(false);
 		});
+	});
+});
+
+describe("theme-utils token resolution", () => {
+	let bust = 0;
+
+	beforeEach(() => {
+		// The module-level resolution cache is keyed on <html>'s class list;
+		// give every test a unique class so each starts with an empty cache.
+		// (This also clears dark/neutral/accent.)
+		bust += 1;
+		document.documentElement.className = `cache-bust-${bust}`;
+	});
+
+	afterEach(() => {
+		vi.unstubAllGlobals();
+		vi.restoreAllMocks();
+		document.documentElement.className = "";
+	});
+
+	/**
+	 * jsdom cannot compute var()/color-mix(), so the probe returns nothing and
+	 * the curated fallbacks apply. Stub getComputedStyle to simulate a real
+	 * CSS engine resolving the requested color from live tokens.
+	 */
+	function stubResolver(resolver: (requested: string) => string) {
+		return vi.spyOn(window, "getComputedStyle").mockImplementation(((
+			el: Element,
+		) => {
+			const requested = (el as HTMLElement).style.color;
+			return { color: resolver(requested) } as CSSStyleDeclaration;
+		}) as typeof window.getComputedStyle);
+	}
+
+	it("resolves token colors through the CSS engine when available", () => {
+		stubResolver((requested) => {
+			if (requested === "var(--primary)") return "rgb(59, 130, 246)";
+			if (requested.includes("var(--primary)")) return "rgb(147, 197, 253)";
+			if (requested === "var(--popover)") return "rgb(255, 255, 255)";
+			return "";
+		});
+
+		const colors = getChartColors();
+		expect(colors.primary[0]).toBe("rgb(59, 130, 246)");
+		expect(colors.primary[1]).toBe("rgb(147, 197, 253)");
+		expect(colors.tooltipBg).toBe("rgb(255, 255, 255)");
+		// Unresolvable colors fall back to the curated hex
+		expect(colors.grid).toBe("#e5e7eb");
+	});
+
+	it("uses curated fallbacks when the engine returns nothing", () => {
+		stubResolver(() => "");
+		const colors = getChartColors();
+		expect(colors.primary[0]).toBe("#3b82f6");
+		expect(colors.axisLabels).toBe("#6b7280");
+	});
+
+	it("treats unresolved var() passthroughs as failures", () => {
+		stubResolver((requested) => requested);
+		const colors = getChartColors();
+		expect(colors.primary[0]).toBe("#3b82f6");
+	});
+
+	it("invalidates the resolution cache when the theme class changes", () => {
+		let popover = "rgb(255, 255, 255)";
+		stubResolver((requested) =>
+			requested === "var(--popover)" ? popover : "",
+		);
+		expect(getChartColors().tooltipBg).toBe("rgb(255, 255, 255)");
+
+		popover = "rgb(30, 41, 59)"; // theme switched, same expression
+		document.documentElement.classList.add("dark");
+		expect(getChartColors().tooltipBg).toBe("rgb(30, 41, 59)");
+	});
+
+	it("returns fallbacks without touching the DOM on the server", () => {
+		vi.stubGlobal("document", undefined);
+		const colors = getChartColors();
+		expect(colors.primary[0]).toBe("#3b82f6");
+		expect(colors.grid).toBe("#e5e7eb");
 	});
 });

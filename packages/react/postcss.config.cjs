@@ -3,6 +3,5 @@ module.exports = {
     '@tailwindcss/postcss': {
       from: undefined,
     },
-    autoprefixer: {},
   },
 };

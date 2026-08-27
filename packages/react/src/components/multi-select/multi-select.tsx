@@ -218,9 +218,9 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
 						aria-disabled={disabled}
 						disabled={disabled}
 						className={cn(
-							"flex min-h-10 w-full items-center justify-between rounded-md border bg-background px-3 py-2 text-sm transition-colors theme-input",
+							"flex min-h-10 w-full items-center justify-between rounded-md border bg-background px-3 py-2 text-sm transition-colors kala-surface-input",
 							"hover:bg-accent/50",
-							"focus-ring",
+							"kala-focus-ring",
 							"disabled:cursor-not-allowed disabled:opacity-50",
 							className,
 						)}
@@ -290,7 +290,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
 					>
 						<Command
 							className={cn(
-								"rounded-lg border bg-popover text-popover-foreground theme-dropdown",
+								"rounded-lg border bg-popover text-popover-foreground kala-surface-popover",
 								matchTriggerWidth ? "w-full" : "min-w-[200px]",
 							)}
 						>
@@ -302,7 +302,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
 							<CommandList>
 								<CommandEmpty>{emptyText}</CommandEmpty>
 								{showSelectAll && !maxSelected && (
-									<CommandGroup className="sticky top-0 z-10 bg-popover p-0 theme-card">
+									<CommandGroup className="sticky top-0 z-10 bg-popover p-0 kala-surface-card">
 										<CommandItem
 											onSelect={handleSelectAll}
 											className="cursor-pointer rounded-none border-b py-2"

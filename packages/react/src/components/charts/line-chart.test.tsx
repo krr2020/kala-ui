@@ -73,7 +73,10 @@ describe("LineChart", () => {
 
 	it("should pass line type to ApexChart", async () => {
 		render(<LineChart {...defaultProps} />);
-		expect(await screen.findByTestId("apex-chart")).toHaveAttribute("data-type", "line");
+		expect(await screen.findByTestId("apex-chart")).toHaveAttribute(
+			"data-type",
+			"line",
+		);
 	});
 
 	it("should pass series data to the chart", async () => {
@@ -107,13 +110,13 @@ describe("LineChart", () => {
 
 	it("should show loading skeleton when isLoading is true", async () => {
 		render(<LineChart {...defaultProps} isLoading />);
-		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
 	});
 
 	it("should show empty state when series is empty", async () => {
-		render(
-			<LineChart series={[]} categories={defaultProps.categories} />,
-		);
+		render(<LineChart series={[]} categories={defaultProps.categories} />);
 		expect(screen.getByText("No data available")).toBeInTheDocument();
 	});
 
@@ -152,14 +155,14 @@ describe("LineChart", () => {
 		render(
 			<LineChart series={[]} categories={defaultProps.categories} isLoading />,
 		);
-		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
 		expect(screen.queryByText("No data available")).not.toBeInTheDocument();
 	});
 
 	it("should use custom colors when provided", async () => {
-		render(
-			<LineChart {...defaultProps} colors={["#ff0000", "#00ff00"]} />,
-		);
+		render(<LineChart {...defaultProps} colors={["#ff0000", "#00ff00"]} />);
 		const optionsEl = screen.getByTestId("chart-options");
 		expect(optionsEl.textContent).toContain("#ff0000");
 	});

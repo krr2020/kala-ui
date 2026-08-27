@@ -27,7 +27,7 @@ export const SectionLoaderStory: StoryObj<typeof SectionLoader> = {
 	name: "Section Loader",
 	render: () => (
 		<div className="p-8">
-			<div className="rounded-lg border bg-card text-card-foreground theme-card">
+			<div className="rounded-lg border bg-card text-card-foreground kala-surface-card">
 				<SectionLoader message="Loading section..." />
 			</div>
 		</div>
@@ -38,7 +38,7 @@ export const SectionLoaderCustomHeight: StoryObj<typeof SectionLoader> = {
 	name: "Section Loader (Custom Height)",
 	render: () => (
 		<div className="p-8">
-			<div className="rounded-lg border bg-card text-card-foreground theme-card">
+			<div className="rounded-lg border bg-card text-card-foreground kala-surface-card">
 				<SectionLoader message="Loading data..." minHeight="400px" />
 			</div>
 		</div>
@@ -53,7 +53,7 @@ export const SkeletonCardStory: StoryObj = {
 				{Array.from({ length: 3 }).map((_, i) => (
 					<div
 						key={i}
-						className="rounded-lg border bg-card text-card-foreground theme-card"
+						className="rounded-lg border bg-card text-card-foreground kala-surface-card"
 					>
 						<SkeletonCardContent showHeader showFooter />
 					</div>
@@ -71,7 +71,7 @@ export const SkeletonCardNoImage: StoryObj = {
 				{Array.from({ length: 3 }).map((_, i) => (
 					<div
 						key={i}
-						className="rounded-lg border bg-card text-card-foreground theme-card"
+						className="rounded-lg border bg-card text-card-foreground kala-surface-card"
 					>
 						<SkeletonCardContent showHeader showFooter />
 					</div>
@@ -89,7 +89,7 @@ export const SkeletonCardCustomLines: StoryObj = {
 				{Array.from({ length: 3 }).map((_, i) => (
 					<div
 						key={i}
-						className="rounded-lg border bg-card text-card-foreground theme-card"
+						className="rounded-lg border bg-card text-card-foreground kala-surface-card"
 					>
 						<SkeletonCardContent
 							showHeader
@@ -107,7 +107,7 @@ export const SkeletonTextStory: StoryObj = {
 	name: "Skeleton Text",
 	render: () => (
 		<div className="p-8">
-			<div className="max-w-2xl space-y-8 rounded-lg border bg-card p-6 text-card-foreground theme-card">
+			<div className="max-w-2xl space-y-8 rounded-lg border bg-card p-6 text-card-foreground kala-surface-card">
 				<div>
 					<h3 className="mb-4 text-sm font-medium text-muted-foreground">
 						Default (3 lines)
@@ -136,7 +136,7 @@ export const CombinedExample: StoryObj = {
 	render: () => (
 		<div className="min-h-screen bg-background p-8">
 			<div className="mx-auto max-w-7xl space-y-8">
-				<div className="rounded-lg border bg-card p-6 text-card-foreground theme-card">
+				<div className="rounded-lg border bg-card p-6 text-card-foreground kala-surface-card">
 					<h2 className="mb-4 text-lg font-semibold text-foreground">
 						Article Header
 					</h2>
@@ -147,14 +147,14 @@ export const CombinedExample: StoryObj = {
 					{Array.from({ length: 3 }).map((_, i) => (
 						<div
 							key={i}
-							className="rounded-lg border bg-card text-card-foreground theme-card"
+							className="rounded-lg border bg-card text-card-foreground kala-surface-card"
 						>
 							<SkeletonCardContent showHeader showFooter />
 						</div>
 					))}
 				</div>
 
-				<div className="rounded-lg border bg-card text-card-foreground theme-card">
+				<div className="rounded-lg border bg-card text-card-foreground kala-surface-card">
 					<SectionLoader message="Loading more content..." />
 				</div>
 			</div>

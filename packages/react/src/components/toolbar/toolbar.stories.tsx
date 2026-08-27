@@ -1,20 +1,20 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import * as React from "react";
 import {
+	AlignCenter,
+	AlignLeft,
+	AlignRight,
 	Bold,
 	Italic,
 	Underline,
-	AlignLeft,
-	AlignCenter,
-	AlignRight,
 } from "lucide-react";
+import * as React from "react";
 import {
 	Toolbar,
 	ToolbarButton,
+	ToolbarLink,
 	ToolbarSeparator,
 	ToolbarToggleGroup,
 	ToolbarToggleItem,
-	ToolbarLink,
 } from "./toolbar";
 
 const meta = {

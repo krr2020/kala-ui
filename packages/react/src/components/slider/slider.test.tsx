@@ -276,7 +276,7 @@ describe("Slider", () => {
 			const thumb = container.querySelector(
 				'[class*="rounded-full"][class*="border-2"]',
 			);
-			expect(thumb).toHaveClass("focus-ring");
+			expect(thumb).toHaveClass("kala-focus-ring");
 		});
 
 		it("announces disabled state", () => {
@@ -324,7 +324,9 @@ describe("Slider", () => {
 		it("renders loading skeleton when isLoading is true", () => {
 			const { container } = render(<Slider defaultValue={[50]} isLoading />);
 
-			expect(container.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+			expect(
+				container.querySelector('[data-slot="skeleton"]'),
+			).toBeInTheDocument();
 		});
 
 		it("applies custom className to loading skeleton", () => {
@@ -336,7 +338,9 @@ describe("Slider", () => {
 		});
 
 		it("renders normal slider when isLoading is false", () => {
-			const { container } = render(<Slider defaultValue={[50]} isLoading={false} />);
+			const { container } = render(
+				<Slider defaultValue={[50]} isLoading={false} />,
+			);
 
 			expect(container.querySelector('[role="slider"]')).toBeInTheDocument();
 		});
@@ -344,12 +348,18 @@ describe("Slider", () => {
 		it("renders loading skeleton with no defaultValue when isLoading is true", () => {
 			const { container } = render(<Slider isLoading />);
 
-			expect(container.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
-			expect(container.querySelector('[role="slider"]')).not.toBeInTheDocument();
+			expect(
+				container.querySelector('[data-slot="skeleton"]'),
+			).toBeInTheDocument();
+			expect(
+				container.querySelector('[role="slider"]'),
+			).not.toBeInTheDocument();
 		});
 
 		it("renders loading skeleton with className when isLoading is true and no defaultValue", () => {
-			const { container } = render(<Slider isLoading className="skeleton-custom" />);
+			const { container } = render(
+				<Slider isLoading className="skeleton-custom" />,
+			);
 
 			expect(container.firstChild).toHaveClass("skeleton-custom");
 		});

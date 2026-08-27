@@ -1,7 +1,7 @@
-import { renderHook, act } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { useTableState } from "./useTableState";
 import type { ColumnDef, FilterConfig, SortConfig } from "./data-table.types";
+import { useTableState } from "./useTableState";
 
 interface TestRow {
 	id: string;
@@ -41,7 +41,10 @@ describe("useTableState", () => {
 		});
 
 		it("initializes with defaultSort", () => {
-			const defaultSort: SortConfig<TestRow> = { key: "name", direction: "asc" };
+			const defaultSort: SortConfig<TestRow> = {
+				key: "name",
+				direction: "asc",
+			};
 			const { result } = renderHook(() =>
 				useTableState({ data, columns, pageSize: 10, defaultSort }),
 			);
@@ -158,8 +161,18 @@ describe("useTableState", () => {
 		it("handles null/undefined values in sorting", () => {
 			const dataWithNulls: TestRow[] = [
 				{ id: "1", name: "Alice", age: 30, status: "active" },
-				{ id: "2", name: null as unknown as string, age: 25, status: "inactive" },
-				{ id: "3", name: "Charlie", age: undefined as unknown as number, status: "active" },
+				{
+					id: "2",
+					name: null as unknown as string,
+					age: 25,
+					status: "inactive",
+				},
+				{
+					id: "3",
+					name: "Charlie",
+					age: undefined as unknown as number,
+					status: "active",
+				},
 			];
 			const { result } = renderHook(() =>
 				useTableState({ data: dataWithNulls, columns, pageSize: 10 }),
@@ -185,7 +198,9 @@ describe("useTableState", () => {
 				});
 			});
 			expect(result.current.processedData).toHaveLength(3);
-			expect(result.current.processedData.every((r) => r.status === "active")).toBe(true);
+			expect(
+				result.current.processedData.every((r) => r.status === "active"),
+			).toBe(true);
 		});
 
 		it("applies contains filter", () => {

@@ -89,7 +89,7 @@ function Calendar({
 					defaultClassNames.dropdowns,
 				),
 				dropdown_root: cn(
-					"relative focus-within:border-primary border focus-within:ring rounded-md theme-input",
+					"relative focus-within:border-primary border focus-within:ring rounded-md kala-surface-input",
 					defaultClassNames.dropdown_root,
 				),
 				dropdown: cn(

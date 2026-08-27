@@ -2,7 +2,7 @@ export const popoverStyles = {
 	base: "z-30 w-72 origin-(--radix-popover-content-transform-origin) rounded-md drop-shadow-md outline-hidden data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1 duration-200",
 	variants: {
 		variant: {
-			default: "bg-popover text-popover-foreground border theme-popover",
+			default: "bg-popover text-popover-foreground border kala-surface-popover",
 			"header-primary": "bg-popover text-popover-foreground border-0",
 			"header-secondary": "bg-popover text-popover-foreground border-0",
 			"header-success": "bg-popover text-popover-foreground border-0",
@@ -58,8 +58,7 @@ export const popoverStyles = {
 		base: "z-30 size-2.5",
 		variants: {
 			variant: {
-				default:
-					"bg-popover [border-color:var(--border)] theme-popover",
+				default: "bg-popover [border-color:var(--border)] kala-surface-popover",
 				primary: "bg-primary border-primary",
 				secondary: "bg-secondary border-secondary",
 				success: "bg-success border-success",

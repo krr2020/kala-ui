@@ -49,7 +49,10 @@ describe("Card", () => {
 
 	it("renders with isLoading and custom skeleton", () => {
 		render(
-			<Card isLoading skeleton={<div data-testid="custom-skeleton">Loading...</div>}>
+			<Card
+				isLoading
+				skeleton={<div data-testid="custom-skeleton">Loading...</div>}
+			>
 				Content
 			</Card>,
 		);
@@ -58,7 +61,11 @@ describe("Card", () => {
 	});
 
 	it("renders with isLoading and skeletonConfig (uses CardSkeleton)", () => {
-		render(<Card isLoading skeletonConfig={{ variant: "default" }}>Content</Card>);
+		render(
+			<Card isLoading skeletonConfig={{ variant: "default" }}>
+				Content
+			</Card>,
+		);
 		expect(screen.queryByText("Content")).not.toBeInTheDocument();
 	});
 
@@ -68,7 +75,11 @@ describe("Card", () => {
 	});
 
 	it("forwards additional HTML props", () => {
-		render(<Card data-testid="my-card" id="card-1">Content</Card>);
+		render(
+			<Card data-testid="my-card" id="card-1">
+				Content
+			</Card>,
+		);
 		const card = screen.getByTestId("my-card");
 		expect(card).toHaveAttribute("id", "card-1");
 	});
@@ -82,7 +93,9 @@ describe("CardTitle", () => {
 	});
 
 	it("applies custom className", () => {
-		const { container } = render(<CardTitle className="custom">Title</CardTitle>);
+		const { container } = render(
+			<CardTitle className="custom">Title</CardTitle>,
+		);
 		expect(container.firstChild).toHaveClass("custom");
 	});
 });
@@ -195,41 +208,47 @@ describe("CardMarker", () => {
 		const { container } = render(
 			<CardMarker color="primary">Badge</CardMarker>,
 		);
-		expect(container.firstChild).toHaveClass("bg-primary", "text-primary-foreground");
+		expect(container.firstChild).toHaveClass(
+			"bg-primary",
+			"text-primary-foreground",
+		);
 	});
 
 	it("renders default variant with success color", () => {
 		const { container } = render(
 			<CardMarker color="success">Badge</CardMarker>,
 		);
-		expect(container.firstChild).toHaveClass("bg-success", "text-success-foreground");
+		expect(container.firstChild).toHaveClass(
+			"bg-success",
+			"text-success-foreground",
+		);
 	});
 
 	it("renders default variant with warning color", () => {
 		const { container } = render(
 			<CardMarker color="warning">Badge</CardMarker>,
 		);
-		expect(container.firstChild).toHaveClass("bg-warning", "text-warning-foreground");
+		expect(container.firstChild).toHaveClass(
+			"bg-warning",
+			"text-warning-foreground",
+		);
 	});
 
 	it("renders default variant with danger color", () => {
-		const { container } = render(
-			<CardMarker color="danger">Badge</CardMarker>,
+		const { container } = render(<CardMarker color="danger">Badge</CardMarker>);
+		expect(container.firstChild).toHaveClass(
+			"bg-destructive",
+			"text-destructive-foreground",
 		);
-		expect(container.firstChild).toHaveClass("bg-destructive", "text-destructive-foreground");
 	});
 
 	it("renders default variant with info color", () => {
-		const { container } = render(
-			<CardMarker color="info">Badge</CardMarker>,
-		);
+		const { container } = render(<CardMarker color="info">Badge</CardMarker>);
 		expect(container.firstChild).toHaveClass("bg-info", "text-info-foreground");
 	});
 
 	it("renders icon variant", () => {
-		const { container } = render(
-			<CardMarker variant="icon">Icon</CardMarker>,
-		);
+		const { container } = render(<CardMarker variant="icon">Icon</CardMarker>);
 		const marker = container.firstChild;
 		expect(marker).toHaveClass("rounded-full", "h-10", "w-10");
 		expect(marker).toHaveClass("flex", "items-center", "justify-center");
@@ -237,14 +256,18 @@ describe("CardMarker", () => {
 
 	it("renders icon variant at bottom-right", () => {
 		const { container } = render(
-			<CardMarker variant="icon" position="bottom-right">Icon</CardMarker>,
+			<CardMarker variant="icon" position="bottom-right">
+				Icon
+			</CardMarker>,
 		);
 		expect(container.firstChild).toHaveClass("bottom-2", "right-2");
 	});
 
 	it("renders ribbon variant at top-left", () => {
 		const { container } = render(
-			<CardMarker variant="ribbon" position="top-left">Ribbon</CardMarker>,
+			<CardMarker variant="ribbon" position="top-left">
+				Ribbon
+			</CardMarker>,
 		);
 		const marker = container.firstChild;
 		expect(marker).toHaveClass("-rotate-45", "origin-top-left");
@@ -253,7 +276,9 @@ describe("CardMarker", () => {
 
 	it("renders ribbon variant at top-right", () => {
 		const { container } = render(
-			<CardMarker variant="ribbon" position="top-right">Ribbon</CardMarker>,
+			<CardMarker variant="ribbon" position="top-right">
+				Ribbon
+			</CardMarker>,
 		);
 		const marker = container.firstChild;
 		expect(marker).toHaveClass("rotate-45", "origin-top-right");
@@ -262,7 +287,9 @@ describe("CardMarker", () => {
 
 	it("renders ribbon variant at bottom-left", () => {
 		const { container } = render(
-			<CardMarker variant="ribbon" position="bottom-left">Ribbon</CardMarker>,
+			<CardMarker variant="ribbon" position="bottom-left">
+				Ribbon
+			</CardMarker>,
 		);
 		const marker = container.firstChild;
 		expect(marker).toHaveClass("rotate-45", "origin-bottom-left");
@@ -271,7 +298,9 @@ describe("CardMarker", () => {
 
 	it("renders ribbon variant at bottom-right", () => {
 		const { container } = render(
-			<CardMarker variant="ribbon" position="bottom-right">Ribbon</CardMarker>,
+			<CardMarker variant="ribbon" position="bottom-right">
+				Ribbon
+			</CardMarker>,
 		);
 		const marker = container.firstChild;
 		expect(marker).toHaveClass("-rotate-45", "origin-bottom-right");

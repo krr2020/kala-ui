@@ -66,9 +66,7 @@ describe("ColumnHeaderFilter", () => {
 			<ColumnHeaderFilter
 				{...baseProps}
 				column={textColumn}
-				activeFilters={[
-					{ key: "name", operator: "contains", value: "test" },
-				]}
+				activeFilters={[{ key: "name", operator: "contains", value: "test" }]}
 			/>,
 		);
 		expect(screen.getByText("1")).toBeInTheDocument();
@@ -77,9 +75,7 @@ describe("ColumnHeaderFilter", () => {
 	it("opens popover and renders select options when clicked", async () => {
 		const user = userEvent.setup();
 		render(<ColumnHeaderFilter {...baseProps} />);
-		await user.click(
-			screen.getByRole("button", { name: "Filter by Status" }),
-		);
+		await user.click(screen.getByRole("button", { name: "Filter by Status" }));
 		expect(screen.getByText("Filter by Status")).toBeInTheDocument();
 		expect(screen.getByText("Active")).toBeInTheDocument();
 		expect(screen.getByText("Inactive")).toBeInTheDocument();
@@ -90,14 +86,9 @@ describe("ColumnHeaderFilter", () => {
 		const user = userEvent.setup();
 		const onFilterChange = vi.fn();
 		render(
-			<ColumnHeaderFilter
-				{...baseProps}
-				onFilterChange={onFilterChange}
-			/>,
+			<ColumnHeaderFilter {...baseProps} onFilterChange={onFilterChange} />,
 		);
-		await user.click(
-			screen.getByRole("button", { name: "Filter by Status" }),
-		);
+		await user.click(screen.getByRole("button", { name: "Filter by Status" }));
 		await user.click(screen.getByText("Active"));
 		expect(onFilterChange).toHaveBeenCalledWith({
 			key: "status",
@@ -112,15 +103,11 @@ describe("ColumnHeaderFilter", () => {
 		render(
 			<ColumnHeaderFilter
 				{...baseProps}
-				activeFilters={[
-					{ key: "status", operator: "in", value: ["active"] },
-				]}
+				activeFilters={[{ key: "status", operator: "in", value: ["active"] }]}
 				onFilterRemove={onFilterRemove}
 			/>,
 		);
-		await user.click(
-			screen.getByRole("button", { name: "Filter by Status" }),
-		);
+		await user.click(screen.getByRole("button", { name: "Filter by Status" }));
 		await user.click(screen.getByText("Active"));
 		expect(onFilterRemove).toHaveBeenCalledWith("status");
 	});
@@ -131,15 +118,11 @@ describe("ColumnHeaderFilter", () => {
 		render(
 			<ColumnHeaderFilter
 				{...baseProps}
-				activeFilters={[
-					{ key: "status", operator: "in", value: ["active"] },
-				]}
+				activeFilters={[{ key: "status", operator: "in", value: ["active"] }]}
 				onFilterChange={onFilterChange}
 			/>,
 		);
-		await user.click(
-			screen.getByRole("button", { name: "Filter by Status" }),
-		);
+		await user.click(screen.getByRole("button", { name: "Filter by Status" }));
 		await user.click(screen.getByText("Pending"));
 		expect(onFilterChange).toHaveBeenCalledWith({
 			key: "status",
@@ -150,15 +133,9 @@ describe("ColumnHeaderFilter", () => {
 
 	it("renders text input for text type column", async () => {
 		const user = userEvent.setup();
-		render(
-			<ColumnHeaderFilter {...baseProps} column={textColumn} />,
-		);
-		await user.click(
-			screen.getByRole("button", { name: "Filter by Name" }),
-		);
-		expect(
-			screen.getByPlaceholderText("Filter by name"),
-		).toBeInTheDocument();
+		render(<ColumnHeaderFilter {...baseProps} column={textColumn} />);
+		await user.click(screen.getByRole("button", { name: "Filter by Name" }));
+		expect(screen.getByPlaceholderText("Filter by name")).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: /Apply/ })).toBeInTheDocument();
 	});
 
@@ -172,9 +149,7 @@ describe("ColumnHeaderFilter", () => {
 				onFilterChange={onFilterChange}
 			/>,
 		);
-		await user.click(
-			screen.getByRole("button", { name: "Filter by Name" }),
-		);
+		await user.click(screen.getByRole("button", { name: "Filter by Name" }));
 		await user.type(screen.getByPlaceholderText("Filter by name"), "test");
 		await user.click(screen.getByRole("button", { name: /Apply/ }));
 		expect(onFilterChange).toHaveBeenCalledWith({
@@ -194,10 +169,11 @@ describe("ColumnHeaderFilter", () => {
 				onFilterChange={onFilterChange}
 			/>,
 		);
-		await user.click(
-			screen.getByRole("button", { name: "Filter by Name" }),
+		await user.click(screen.getByRole("button", { name: "Filter by Name" }));
+		await user.type(
+			screen.getByPlaceholderText("Filter by name"),
+			"test{Enter}",
 		);
-		await user.type(screen.getByPlaceholderText("Filter by name"), "test{Enter}");
 		expect(onFilterChange).toHaveBeenCalledWith({
 			key: "name",
 			operator: "contains",
@@ -219,10 +195,11 @@ describe("ColumnHeaderFilter", () => {
 				onFilterChange={onFilterChange}
 			/>,
 		);
-		await user.click(
-			screen.getByRole("button", { name: "Filter by Name" }),
+		await user.click(screen.getByRole("button", { name: "Filter by Name" }));
+		await user.type(
+			screen.getByPlaceholderText("Filter by name"),
+			"abc{Enter}",
 		);
-		await user.type(screen.getByPlaceholderText("Filter by name"), "abc{Enter}");
 		expect(onFilterChange).toHaveBeenCalledWith({
 			key: "name",
 			operator: "startsWith",
@@ -240,9 +217,7 @@ describe("ColumnHeaderFilter", () => {
 				onFilterChange={onFilterChange}
 			/>,
 		);
-		await user.click(
-			screen.getByRole("button", { name: "Filter by Name" }),
-		);
+		await user.click(screen.getByRole("button", { name: "Filter by Name" }));
 		await user.click(screen.getByRole("button", { name: /Apply/ }));
 		expect(onFilterChange).not.toHaveBeenCalled();
 	});
@@ -252,14 +227,10 @@ describe("ColumnHeaderFilter", () => {
 		render(
 			<ColumnHeaderFilter
 				{...baseProps}
-				activeFilters={[
-					{ key: "status", operator: "in", value: ["active"] },
-				]}
+				activeFilters={[{ key: "status", operator: "in", value: ["active"] }]}
 			/>,
 		);
-		await user.click(
-			screen.getByRole("button", { name: "Filter by Status" }),
-		);
+		await user.click(screen.getByRole("button", { name: "Filter by Status" }));
 		expect(screen.getByRole("button", { name: /Clear/ })).toBeInTheDocument();
 	});
 
@@ -269,15 +240,11 @@ describe("ColumnHeaderFilter", () => {
 		render(
 			<ColumnHeaderFilter
 				{...baseProps}
-				activeFilters={[
-					{ key: "status", operator: "in", value: ["active"] },
-				]}
+				activeFilters={[{ key: "status", operator: "in", value: ["active"] }]}
 				onFilterRemove={onFilterRemove}
 			/>,
 		);
-		await user.click(
-			screen.getByRole("button", { name: "Filter by Status" }),
-		);
+		await user.click(screen.getByRole("button", { name: "Filter by Status" }));
 		await user.click(screen.getByRole("button", { name: /Clear/ }));
 		expect(onFilterRemove).toHaveBeenCalledWith("status");
 	});
@@ -285,9 +252,7 @@ describe("ColumnHeaderFilter", () => {
 	it("does not render Clear button when no active filter", async () => {
 		const user = userEvent.setup();
 		render(<ColumnHeaderFilter {...baseProps} />);
-		await user.click(
-			screen.getByRole("button", { name: "Filter by Status" }),
-		);
+		await user.click(screen.getByRole("button", { name: "Filter by Status" }));
 		expect(
 			screen.queryByRole("button", { name: /Clear/ }),
 		).not.toBeInTheDocument();
@@ -299,27 +264,16 @@ describe("ColumnHeaderFilter", () => {
 			...textColumn,
 			placeholder: undefined,
 		};
-		render(
-			<ColumnHeaderFilter
-				{...baseProps}
-				column={noPlaceholderColumn}
-			/>,
-		);
-		await user.click(
-			screen.getByRole("button", { name: "Filter by Name" }),
-		);
-		expect(
-			screen.getByPlaceholderText("Filter by Name"),
-		).toBeInTheDocument();
+		render(<ColumnHeaderFilter {...baseProps} column={noPlaceholderColumn} />);
+		await user.click(screen.getByRole("button", { name: "Filter by Name" }));
+		expect(screen.getByPlaceholderText("Filter by Name")).toBeInTheDocument();
 	});
 
 	it("shows filter icon in primary color when filter is active", () => {
 		const { container } = render(
 			<ColumnHeaderFilter
 				{...baseProps}
-				activeFilters={[
-					{ key: "status", operator: "in", value: ["active"] },
-				]}
+				activeFilters={[{ key: "status", operator: "in", value: ["active"] }]}
 			/>,
 		);
 		const svg = container.querySelector("svg");

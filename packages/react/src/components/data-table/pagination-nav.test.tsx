@@ -17,8 +17,12 @@ describe("PaginationNav", () => {
 	it("renders previous and next buttons", () => {
 		render(<PaginationNav {...defaultProps} />);
 
-		expect(screen.getByRole("button", { name: /previous page/i })).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: /next page/i })).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: /previous page/i }),
+		).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: /next page/i }),
+		).toBeInTheDocument();
 	});
 
 	it("renders page number buttons", () => {
@@ -31,17 +35,29 @@ describe("PaginationNav", () => {
 	it("disables previous button when hasPreviousPage is false", () => {
 		render(<PaginationNav {...defaultProps} hasPreviousPage={false} />);
 
-		expect(screen.getByRole("button", { name: /previous page/i })).toBeDisabled();
+		expect(
+			screen.getByRole("button", { name: /previous page/i }),
+		).toBeDisabled();
 	});
 
 	it("enables previous button when hasPreviousPage is true", () => {
-		render(<PaginationNav {...defaultProps} hasPreviousPage={true} currentPage={2} />);
+		render(
+			<PaginationNav
+				{...defaultProps}
+				hasPreviousPage={true}
+				currentPage={2}
+			/>,
+		);
 
-		expect(screen.getByRole("button", { name: /previous page/i })).toBeEnabled();
+		expect(
+			screen.getByRole("button", { name: /previous page/i }),
+		).toBeEnabled();
 	});
 
 	it("disables next button when hasNextPage is false", () => {
-		render(<PaginationNav {...defaultProps} hasNextPage={false} currentPage={5} />);
+		render(
+			<PaginationNav {...defaultProps} hasNextPage={false} currentPage={5} />,
+		);
 
 		expect(screen.getByRole("button", { name: /next page/i })).toBeDisabled();
 	});
@@ -54,7 +70,13 @@ describe("PaginationNav", () => {
 
 	it("calls onPreviousPage when previous button is clicked", async () => {
 		const user = userEvent.setup();
-		render(<PaginationNav {...defaultProps} hasPreviousPage={true} currentPage={2} />);
+		render(
+			<PaginationNav
+				{...defaultProps}
+				hasPreviousPage={true}
+				currentPage={2}
+			/>,
+		);
 
 		await user.click(screen.getByRole("button", { name: /previous page/i }));
 		expect(defaultProps.onPreviousPage).toHaveBeenCalledTimes(1);
@@ -120,17 +142,23 @@ describe("PaginationNav", () => {
 		);
 
 		expect(screen.getByRole("button", { name: /page 1/i })).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: /previous page/i })).toBeDisabled();
+		expect(
+			screen.getByRole("button", { name: /previous page/i }),
+		).toBeDisabled();
 		expect(screen.getByRole("button", { name: /next page/i })).toBeDisabled();
 	});
 
 	it("verifies previous button is disabled when hasPreviousPage is false", () => {
 		render(<PaginationNav {...defaultProps} hasPreviousPage={false} />);
-		expect(screen.getByRole("button", { name: /previous page/i })).toBeDisabled();
+		expect(
+			screen.getByRole("button", { name: /previous page/i }),
+		).toBeDisabled();
 	});
 
 	it("verifies next button is disabled when hasNextPage is false", () => {
-		render(<PaginationNav {...defaultProps} hasNextPage={false} currentPage={5} />);
+		render(
+			<PaginationNav {...defaultProps} hasNextPage={false} currentPage={5} />,
+		);
 		expect(screen.getByRole("button", { name: /next page/i })).toBeDisabled();
 	});
 
@@ -152,7 +180,9 @@ describe("PaginationNav", () => {
 			/>,
 		);
 
-		expect(screen.getByRole("button", { name: /previous page/i })).toBeDisabled();
+		expect(
+			screen.getByRole("button", { name: /previous page/i }),
+		).toBeDisabled();
 		expect(screen.getByRole("button", { name: /next page/i })).toBeEnabled();
 		expect(screen.getByRole("button", { name: /page 1/i })).toBeInTheDocument();
 	});
@@ -168,9 +198,14 @@ describe("PaginationNav", () => {
 			/>,
 		);
 
-		expect(screen.getByRole("button", { name: /previous page/i })).toBeEnabled();
+		expect(
+			screen.getByRole("button", { name: /previous page/i }),
+		).toBeEnabled();
 		expect(screen.getByRole("button", { name: /next page/i })).toBeDisabled();
-		expect(screen.getByRole("button", { name: /page 5/i })).toHaveAttribute("aria-current", "page");
+		expect(screen.getByRole("button", { name: /page 5/i })).toHaveAttribute(
+			"aria-current",
+			"page",
+		);
 	});
 
 	it("previous button is disabled when hasPreviousPage is false", () => {

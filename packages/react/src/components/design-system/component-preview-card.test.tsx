@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, } from "vitest";
+import { describe, expect, it } from "vitest";
 import { ComponentPreviewCard } from "./component-preview-card";
 import type { ComponentMetadata } from "./design-system-utils";
 
@@ -19,41 +19,79 @@ describe("ComponentPreviewCard", () => {
 	};
 
 	it("should render the card", () => {
-		render(<ComponentPreviewCard metadata={mockMetadata} preview={<span>Preview</span>} />);
+		render(
+			<ComponentPreviewCard
+				metadata={mockMetadata}
+				preview={<span>Preview</span>}
+			/>,
+		);
 		expect(screen.getByText("Button")).toBeInTheDocument();
 	});
 
 	it("should display the component name as the title", () => {
-		render(<ComponentPreviewCard metadata={mockMetadata} preview={<span>Preview</span>} />);
+		render(
+			<ComponentPreviewCard
+				metadata={mockMetadata}
+				preview={<span>Preview</span>}
+			/>,
+		);
 		expect(screen.getByText("Button")).toBeInTheDocument();
 	});
 
 	it("should display the component description", () => {
-		render(<ComponentPreviewCard metadata={mockMetadata} preview={<span>Preview</span>} />);
+		render(
+			<ComponentPreviewCard
+				metadata={mockMetadata}
+				preview={<span>Preview</span>}
+			/>,
+		);
 		expect(
-			screen.getByText("Primary action component with multiple variants and sizes"),
+			screen.getByText(
+				"Primary action component with multiple variants and sizes",
+			),
 		).toBeInTheDocument();
 	});
 
 	it("should render the preview content", () => {
-		render(<ComponentPreviewCard metadata={mockMetadata} preview={<span>Preview</span>} />);
+		render(
+			<ComponentPreviewCard
+				metadata={mockMetadata}
+				preview={<span>Preview</span>}
+			/>,
+		);
 		expect(screen.getByText("Preview")).toBeInTheDocument();
 	});
 
 	it("should render the View Documentation link", () => {
-		render(<ComponentPreviewCard metadata={mockMetadata} preview={<span>Preview</span>} />);
+		render(
+			<ComponentPreviewCard
+				metadata={mockMetadata}
+				preview={<span>Preview</span>}
+			/>,
+		);
 		expect(screen.getByText("View Documentation")).toBeInTheDocument();
 	});
 
 	it("should link to the correct documentation path", () => {
-		render(<ComponentPreviewCard metadata={mockMetadata} preview={<span>Preview</span>} />);
+		render(
+			<ComponentPreviewCard
+				metadata={mockMetadata}
+				preview={<span>Preview</span>}
+			/>,
+		);
 		const link = screen.getByText("View Documentation").closest("a");
-		expect(link).toHaveAttribute("href", "http://localhost:6006/?path=/docs/buttons-button--docs");
+		expect(link).toHaveAttribute(
+			"href",
+			"http://localhost:6006/?path=/docs/buttons-button--docs",
+		);
 	});
 
 	it("should apply group and hover classes to the card", () => {
 		const { container } = render(
-			<ComponentPreviewCard metadata={mockMetadata} preview={<span>Preview</span>} />,
+			<ComponentPreviewCard
+				metadata={mockMetadata}
+				preview={<span>Preview</span>}
+			/>,
 		);
 		const card = container.querySelector(".group");
 		expect(card).toBeInTheDocument();
@@ -66,7 +104,12 @@ describe("ComponentPreviewCard", () => {
 			description: "Text input field",
 			docPath: "/docs/forms-input--docs",
 		};
-		render(<ComponentPreviewCard metadata={otherMeta} preview={<div>Input Preview</div>} />);
+		render(
+			<ComponentPreviewCard
+				metadata={otherMeta}
+				preview={<div>Input Preview</div>}
+			/>,
+		);
 		expect(screen.getByText("Input")).toBeInTheDocument();
 		expect(screen.getByText("Text input field")).toBeInTheDocument();
 		expect(screen.getByText("Input Preview")).toBeInTheDocument();
@@ -90,7 +133,10 @@ describe("ComponentPreviewCard", () => {
 
 	it("should render preview in a bordered container", () => {
 		const { container } = render(
-			<ComponentPreviewCard metadata={mockMetadata} preview={<span>Preview</span>} />,
+			<ComponentPreviewCard
+				metadata={mockMetadata}
+				preview={<span>Preview</span>}
+			/>,
 		);
 		const previewContainer = container.querySelector(".rounded-md.border");
 		expect(previewContainer).toBeInTheDocument();

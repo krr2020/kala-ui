@@ -1,2 +1,2 @@
+export type { TreeItem, TreeViewProps } from "./tree-view";
 export { TreeView } from "./tree-view";
-export type { TreeViewProps, TreeItem } from "./tree-view";

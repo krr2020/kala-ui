@@ -1,4 +1,4 @@
-import { render, } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { ChartSkeleton } from "./chart-skeleton";
 
@@ -22,19 +22,25 @@ describe("ChartSkeleton", () => {
 
 	it("should render chart area skeleton", () => {
 		render(<ChartSkeleton />);
-		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
 	});
 
 	it("should render chart area with default height of 350px", () => {
 		render(<ChartSkeleton />);
-		const chartArea = document.querySelector(".rounded-lg.border.bg-card") as HTMLElement;
+		const chartArea = document.querySelector(
+			".rounded-lg.border.bg-card",
+		) as HTMLElement;
 		expect(chartArea).toBeInTheDocument();
 		expect(chartArea.style.height).toBe("350px");
 	});
 
 	it("should render chart area with custom height", () => {
 		render(<ChartSkeleton height={500} />);
-		const chartArea = document.querySelector(".rounded-lg.border.bg-card") as HTMLElement;
+		const chartArea = document.querySelector(
+			".rounded-lg.border.bg-card",
+		) as HTMLElement;
 		expect(chartArea.style.height).toBe("500px");
 	});
 
@@ -93,7 +99,9 @@ describe("ChartSkeleton", () => {
 
 	it("should render legend items with dot and text skeletons", () => {
 		render(<ChartSkeleton showLegend legendCount={1} />);
-		const legendContainer = document.querySelector(".flex.gap-4.justify-center");
+		const legendContainer = document.querySelector(
+			".flex.gap-4.justify-center",
+		);
 		expect(legendContainer).toBeInTheDocument();
 		// Each legend item has a rounded-full dot and a text skeleton
 		const dotSkeleton = legendContainer?.querySelector(".rounded-full");
@@ -101,7 +109,9 @@ describe("ChartSkeleton", () => {
 	});
 
 	it("should combine legend and table when both enabled", () => {
-		render(<ChartSkeleton showLegend showTable tableRows={1} tableColumns={1} />);
+		render(
+			<ChartSkeleton showLegend showTable tableRows={1} tableColumns={1} />,
+		);
 		expect(document.querySelector("table")).toBeInTheDocument();
 		// Legend skeletons + table skeletons + chart area skeleton
 		const skeletons = document.querySelectorAll('[data-slot="skeleton"]');

@@ -5,7 +5,7 @@
 
 "use client";
 
-import { usePagination, DOTS } from "@kala-ui/react-hooks";
+import { DOTS, usePagination } from "@kala-ui/react-hooks";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
 import { Box } from "../box";

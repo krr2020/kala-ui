@@ -170,10 +170,22 @@ describe("AppShell", () => {
 			</AppShell>,
 		);
 		const shell = container.firstChild;
-		expect((shell as HTMLElement).style.getPropertyValue("--app-shell-header-height")).toBe("64px");
-		expect((shell as HTMLElement).style.getPropertyValue("--app-shell-navbar-width")).toBe("280px");
-		expect((shell as HTMLElement).style.getPropertyValue("--app-shell-aside-width")).toBe("200px");
-		expect((shell as HTMLElement).style.getPropertyValue("--app-shell-footer-height")).toBe("48px");
+		expect(
+			(shell as HTMLElement).style.getPropertyValue(
+				"--app-shell-header-height",
+			),
+		).toBe("64px");
+		expect(
+			(shell as HTMLElement).style.getPropertyValue("--app-shell-navbar-width"),
+		).toBe("280px");
+		expect(
+			(shell as HTMLElement).style.getPropertyValue("--app-shell-aside-width"),
+		).toBe("200px");
+		expect(
+			(shell as HTMLElement).style.getPropertyValue(
+				"--app-shell-footer-height",
+			),
+		).toBe("48px");
 	});
 
 	it("supports string height values", () => {
@@ -183,7 +195,11 @@ describe("AppShell", () => {
 			</AppShell>,
 		);
 		const shell = container.firstChild;
-		expect((shell as HTMLElement).style.getPropertyValue("--app-shell-header-height")).toBe("4rem");
+		expect(
+			(shell as HTMLElement).style.getPropertyValue(
+				"--app-shell-header-height",
+			),
+		).toBe("4rem");
 	});
 
 	it("applies custom className", () => {

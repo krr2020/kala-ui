@@ -192,23 +192,20 @@ export function useTableState<TData>({
 	}, [sortedData, currentPage, pageSize, manualTotal, onPaginationChange]);
 
 	// Toggle sort
-	const toggleSort = useCallback(
-		(key: keyof TData) => {
-			setSortConfig((prev) => {
-				let newSort: SortConfig<TData> | null;
-				if (!prev || prev.key !== key) {
-					newSort = { key, direction: "asc" };
-				} else if (prev.direction === "asc") {
-					newSort = { key, direction: "desc" };
-				} else {
-					newSort = null; // Clear sort
-				}
-				return newSort;
-			});
-			setCurrentPage(1); // Reset to first page when sorting changes
-		},
-		[],
-	);
+	const toggleSort = useCallback((key: keyof TData) => {
+		setSortConfig((prev) => {
+			let newSort: SortConfig<TData> | null;
+			if (!prev || prev.key !== key) {
+				newSort = { key, direction: "asc" };
+			} else if (prev.direction === "asc") {
+				newSort = { key, direction: "desc" };
+			} else {
+				newSort = null; // Clear sort
+			}
+			return newSort;
+		});
+		setCurrentPage(1); // Reset to first page when sorting changes
+	}, []);
 
 	// Notify parent of sort changes after render. Calling the callback directly
 	// inside useEffect is safe — the setState that triggered this effect has

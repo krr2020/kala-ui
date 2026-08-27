@@ -136,7 +136,7 @@ function Rating({
 								aria-hidden="true"
 								className={cn(
 									sizeMap[size],
-									"absolute inset-0 text-yellow-400 fill-yellow-400",
+									"absolute inset-0 text-warning fill-warning",
 									fill === "half" && "clip-path-[inset(0_50%_0_0)]",
 								)}
 								style={

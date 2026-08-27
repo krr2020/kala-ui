@@ -104,5 +104,5 @@ function Timeline({ className, children, ...props }: TimelineProps) {
 	);
 }
 
-export { Timeline, TimelineItem };
 export type { TimelineItemProps, TimelineStatus };
+export { Timeline, TimelineItem };

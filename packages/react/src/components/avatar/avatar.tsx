@@ -124,8 +124,8 @@ function AvatarFallback({
 
 export {
 	Avatar,
-	AvatarImage,
 	AvatarFallback,
-	avatarVariants,
+	AvatarImage,
 	type AvatarProps,
+	avatarVariants,
 };

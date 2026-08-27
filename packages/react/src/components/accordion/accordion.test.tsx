@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
 	Accordion,
 	AccordionContent,
@@ -229,9 +229,7 @@ describe("Accordion", () => {
 		const { container } = render(
 			<Accordion type="single" collapsible>
 				<AccordionItem value="item-1">
-					<AccordionTrigger className="custom-trigger">
-						Item
-					</AccordionTrigger>
+					<AccordionTrigger className="custom-trigger">Item</AccordionTrigger>
 					<AccordionContent>Content</AccordionContent>
 				</AccordionItem>
 			</Accordion>,

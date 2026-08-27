@@ -214,7 +214,7 @@ describe("DataTable", () => {
 				<DataTable data={mockUsers} columns={mockColumns} bordered />,
 			);
 
-			const tableBox = container.querySelector("[class*='theme-card']");
+			const tableBox = container.querySelector("[class*='kala-surface-card']");
 			expect(tableBox).toHaveClass("border-2");
 		});
 
@@ -276,15 +276,13 @@ describe("DataTable", () => {
 
 		it("renders headersBelow when enough rows", () => {
 			render(
-				<DataTable
-					data={largeMockUsers}
-					columns={mockColumns}
-					headersBelow
-				/>,
+				<DataTable data={largeMockUsers} columns={mockColumns} headersBelow />,
 			);
 
 			// Should have duplicate sort buttons for bottom header
-			const sortButtons = screen.getAllByRole("button", { name: /sort by name/i });
+			const sortButtons = screen.getAllByRole("button", {
+				name: /sort by name/i,
+			});
 			// One in top header, one in bottom header
 			expect(sortButtons.length).toBe(2);
 		});
@@ -314,9 +312,7 @@ describe("DataTable", () => {
 		});
 
 		it("renders null when no data and no searchable/toolbar", () => {
-			render(
-				<DataTable data={[]} columns={mockColumns} searchable />,
-			);
+			render(<DataTable data={[]} columns={mockColumns} searchable />);
 
 			expect(screen.getByText(/no data available/i)).toBeInTheDocument();
 		});
@@ -980,9 +976,7 @@ describe("DataTable", () => {
 				<DataTable
 					data={mockUsers}
 					columns={mockColumns}
-					bulkActions={[
-						{ id: "delete", label: "Delete", onClick: vi.fn() },
-					]}
+					bulkActions={[{ id: "delete", label: "Delete", onClick: vi.fn() }]}
 				/>,
 			);
 
@@ -994,9 +988,7 @@ describe("DataTable", () => {
 				<DataTable
 					data={mockUsers}
 					columns={mockColumns}
-					bulkActions={[
-						{ id: "delete", label: "Delete", onClick: vi.fn() },
-					]}
+					bulkActions={[{ id: "delete", label: "Delete", onClick: vi.fn() }]}
 				/>,
 			);
 
@@ -1429,12 +1421,15 @@ describe("DataTable", () => {
 	describe("Non-sortable columns", () => {
 		it("does not render sort button for non-sortable columns", () => {
 			const nonSortableColumns: ColumnDef<TestUser>[] = [
-				{ id: "name", header: "Name", accessorKey: "name", enableSorting: false },
+				{
+					id: "name",
+					header: "Name",
+					accessorKey: "name",
+					enableSorting: false,
+				},
 			];
 
-			render(
-				<DataTable data={mockUsers} columns={nonSortableColumns} />,
-			);
+			render(<DataTable data={mockUsers} columns={nonSortableColumns} />);
 
 			expect(
 				screen.queryByRole("button", { name: /sort by name/i }),
@@ -1532,7 +1527,9 @@ describe("DataTable", () => {
 
 		it("renders without pagination prop", () => {
 			render(<DataTable data={mockUsers} columns={mockColumns} />);
-			expect(screen.queryByRole("button", { name: /next page/i })).not.toBeInTheDocument();
+			expect(
+				screen.queryByRole("button", { name: /next page/i }),
+			).not.toBeInTheDocument();
 		});
 
 		it("renders without selection prop", () => {
@@ -1542,9 +1539,15 @@ describe("DataTable", () => {
 
 		it("renders without stickyHeader", () => {
 			const { container } = render(
-				<DataTable data={mockUsers} columns={mockColumns} stickyHeader={false} />,
+				<DataTable
+					data={mockUsers}
+					columns={mockColumns}
+					stickyHeader={false}
+				/>,
 			);
-			expect(container.querySelector("[class*='sticky']")).not.toBeInTheDocument();
+			expect(
+				container.querySelector("[class*='sticky']"),
+			).not.toBeInTheDocument();
 		});
 
 		it("renders with stickyHeader=true (default)", () => {
@@ -1585,13 +1588,7 @@ describe("DataTable", () => {
 		});
 
 		it("renders loading state with showSearch=false when searchable is not provided", () => {
-			render(
-				<DataTable
-					data={mockUsers}
-					columns={mockColumns}
-					isLoading
-				/>,
-			);
+			render(<DataTable data={mockUsers} columns={mockColumns} isLoading />);
 
 			// Should show skeleton but no search skeleton
 			expect(screen.queryByRole("textbox")).not.toBeInTheDocument();

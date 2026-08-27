@@ -58,7 +58,7 @@ export function DonutChart({
 				style: {
 					fontSize: "14px",
 					fontWeight: 600,
-					colors: ["#fff"],
+					colors: ["var(--primary-foreground)"],
 				},
 				dropShadow: {
 					enabled: false,

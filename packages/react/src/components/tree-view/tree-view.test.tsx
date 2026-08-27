@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { TreeView } from "./tree-view";
 import type { TreeItem } from "./tree-view";
+import { TreeView } from "./tree-view";
 
 const treeData: TreeItem[] = [
 	{
@@ -121,9 +121,7 @@ describe("TreeView", () => {
 	});
 
 	it("should render with multiSelect prop", () => {
-		const { container } = render(
-			<TreeView data={treeData} multiSelect />,
-		);
+		const { container } = render(<TreeView data={treeData} multiSelect />);
 		const tree = container.querySelector('[data-slot="tree-view"]');
 		expect(tree).toHaveAttribute("aria-multiselectable", "true");
 	});
@@ -144,9 +142,11 @@ describe("TreeView", () => {
 
 	it("should render disabled tree item", () => {
 		const dataWithDisabled: typeof treeData = [
-			{ id: "1", label: "Enabled", children: [
-				{ id: "1-1", label: "Disabled Child", disabled: true },
-			] },
+			{
+				id: "1",
+				label: "Enabled",
+				children: [{ id: "1-1", label: "Disabled Child", disabled: true }],
+			},
 		];
 		render(<TreeView data={dataWithDisabled} />);
 
@@ -196,8 +196,12 @@ describe("TreeView", () => {
 
 	it("should render leaf node without chevron", () => {
 		const { container } = render(<TreeView data={treeData} />);
-		const notesNode = screen.getByText("Notes.txt").closest('[data-slot="tree-node"]');
-		expect(notesNode?.querySelector("svg.lucide-chevron-right")).not.toBeInTheDocument();
+		const notesNode = screen
+			.getByText("Notes.txt")
+			.closest('[data-slot="tree-node"]');
+		expect(
+			notesNode?.querySelector("svg.lucide-chevron-right"),
+		).not.toBeInTheDocument();
 	});
 
 	it("should handle onSelect callback not provided", async () => {
@@ -221,23 +225,29 @@ describe("TreeView", () => {
 		// Select leaf
 		await user.click(screen.getByText("Notes.txt"));
 
-		const { container } = render(<TreeView data={treeData} multiSelect selected={["3"]} />);
+		const { container } = render(
+			<TreeView data={treeData} multiSelect selected={["3"]} />,
+		);
 		let selectedNodes = container.querySelectorAll('[data-selected="true"]');
 		expect(selectedNodes.length).toBe(1);
 
 		// Select another leaf - must expand parent "2" to see "2-1"
 		const handleSelect = vi.fn();
 		const { container: c2 } = render(
-			<TreeView data={treeData} multiSelect selected={["3", "2-1"]} defaultExpanded={["2"]} onSelect={handleSelect} />,
+			<TreeView
+				data={treeData}
+				multiSelect
+				selected={["3", "2-1"]}
+				defaultExpanded={["2"]}
+				onSelect={handleSelect}
+			/>,
 		);
 		selectedNodes = c2.querySelectorAll('[data-selected="true"]');
 		expect(selectedNodes.length).toBe(2);
 	});
 
 	it("should handle controlled selected as string", () => {
-		const { container } = render(
-			<TreeView data={treeData} selected="2" />,
-		);
+		const { container } = render(<TreeView data={treeData} selected="2" />);
 		const selectedNodes = container.querySelectorAll('[data-selected="true"]');
 		expect(selectedNodes.length).toBe(1);
 	});
@@ -304,9 +314,12 @@ describe("TreeView", () => {
 		const handleSelect = vi.fn();
 		const user = userEvent.setup();
 		const dataWithDisabled: TreeItem[] = [
-			{ id: "1", label: "Parent", disabled: true, children: [
-				{ id: "1-1", label: "Child" },
-			]},
+			{
+				id: "1",
+				label: "Parent",
+				disabled: true,
+				children: [{ id: "1-1", label: "Child" }],
+			},
 		];
 		render(<TreeView data={dataWithDisabled} onSelect={handleSelect} />);
 
@@ -369,8 +382,12 @@ describe("TreeView", () => {
 	it("should apply level-based padding", () => {
 		render(<TreeView data={treeData} defaultExpanded={["1"]} />);
 
-		const docsNode = screen.getByText("Documents").closest('[data-slot="tree-node"]');
-		const childNode = screen.getByText("Resume.pdf").closest('[data-slot="tree-node"]');
+		const docsNode = screen
+			.getByText("Documents")
+			.closest('[data-slot="tree-node"]');
+		const childNode = screen
+			.getByText("Resume.pdf")
+			.closest('[data-slot="tree-node"]');
 
 		expect((docsNode as HTMLElement).style.paddingLeft).toBe("0rem");
 		expect((childNode as HTMLElement).style.paddingLeft).toBe("1.25rem");
@@ -384,7 +401,9 @@ describe("TreeView", () => {
 
 	it("should not set aria-expanded on leaf nodes", () => {
 		render(<TreeView data={treeData} />);
-		const notesItem = screen.getByText("Notes.txt").closest('[role="treeitem"]');
+		const notesItem = screen
+			.getByText("Notes.txt")
+			.closest('[role="treeitem"]');
 		expect(notesItem).not.toHaveAttribute("aria-expanded");
 	});
 
@@ -393,7 +412,9 @@ describe("TreeView", () => {
 			{ id: "1", label: "Disabled", disabled: true },
 		];
 		render(<TreeView data={dataWithDisabled} />);
-		const node = screen.getByText("Disabled").closest('[data-slot="tree-node"]');
+		const node = screen
+			.getByText("Disabled")
+			.closest('[data-slot="tree-node"]');
 		expect(node).toHaveAttribute("tabIndex", "-1");
 	});
 
@@ -420,13 +441,13 @@ describe("TreeView", () => {
 		const user = userEvent.setup();
 		const deepData: TreeItem[] = [
 			{
-				id: "1", label: "Level 0",
+				id: "1",
+				label: "Level 0",
 				children: [
 					{
-						id: "1-1", label: "Level 1",
-						children: [
-							{ id: "1-1-1", label: "Level 2" },
-						],
+						id: "1-1",
+						label: "Level 1",
+						children: [{ id: "1-1-1", label: "Level 2" }],
 					},
 				],
 			},

@@ -489,7 +489,7 @@ describe("Accessibility", () => {
 		expect(handle).toBeInTheDocument();
 	});
 
-	it("should have focus-ring class on handle", () => {
+	it("should have kala-focus-ring class on handle", () => {
 		const { container } = render(
 			<ResizablePanelGroup orientation="horizontal">
 				<ResizablePanel>Panel 1</ResizablePanel>
@@ -498,7 +498,7 @@ describe("Accessibility", () => {
 			</ResizablePanelGroup>,
 		);
 		const handle = container.querySelector('[data-slot="resizable-handle"]');
-		expect(handle).toHaveClass("focus-ring");
+		expect(handle).toHaveClass("kala-focus-ring");
 	});
 
 	it("should have proper styling for separator", () => {

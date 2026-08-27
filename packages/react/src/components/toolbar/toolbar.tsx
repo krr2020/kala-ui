@@ -1,11 +1,10 @@
 "use client";
 
 import * as ToolbarPrimitive from "@radix-ui/react-toolbar";
+import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
-
 import { cn } from "../../lib/utils";
 import { toggleVariants } from "../toggle/toggle";
-import type { VariantProps } from "class-variance-authority";
 
 function Toolbar({
 	className,
@@ -15,7 +14,7 @@ function Toolbar({
 		<ToolbarPrimitive.Root
 			data-slot="toolbar"
 			className={cn(
-				"flex h-10 items-center gap-1 rounded-md border bg-card p-1 theme-input",
+				"flex h-10 items-center gap-1 rounded-md border bg-card p-1 kala-surface-input",
 				className,
 			)}
 			{...props}
@@ -100,8 +99,8 @@ function ToolbarLink({
 export {
 	Toolbar,
 	ToolbarButton,
+	ToolbarLink,
+	ToolbarSeparator,
 	ToolbarToggleGroup,
 	ToolbarToggleItem,
-	ToolbarSeparator,
-	ToolbarLink,
 };

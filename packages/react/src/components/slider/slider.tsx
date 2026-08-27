@@ -42,7 +42,7 @@ const Slider = React.forwardRef<
 					key={`thumb-${i}`}
 					className={cn(
 						"block h-5 w-5 rounded-full border-2 border-primary bg-background transition-colors disabled:pointer-events-none disabled:opacity-50",
-						"focus-ring",
+						"kala-focus-ring",
 					)}
 				/>
 			))}

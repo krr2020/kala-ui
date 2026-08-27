@@ -64,7 +64,7 @@ export const PatternsLibrary: Story = {
 	render: () => (
 		<div className="space-y-8 max-w-2xl">
 			{/* SkeletonText */}
-			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground theme-card">
+			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground kala-surface-card">
 				<h3 className="font-semibold mb-4">SkeletonText</h3>
 				<SkeletonText />
 				<SkeletonText lines={5} lastLineWidth="40%" />
@@ -72,7 +72,7 @@ export const PatternsLibrary: Story = {
 			</div>
 
 			{/* SkeletonCircle */}
-			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground theme-card">
+			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground kala-surface-card">
 				<h3 className="font-semibold mb-4">SkeletonCircle</h3>
 				<div className="flex items-center gap-4">
 					<SkeletonCircle size="2rem" />
@@ -82,7 +82,7 @@ export const PatternsLibrary: Story = {
 			</div>
 
 			{/* SkeletonRectangle */}
-			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground theme-card">
+			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground kala-surface-card">
 				<h3 className="font-semibold mb-4">SkeletonRectangle</h3>
 				<div className="space-y-4">
 					<SkeletonRectangle width="100%" height="150px" />
@@ -91,7 +91,7 @@ export const PatternsLibrary: Story = {
 			</div>
 
 			{/* SkeletonAvatar */}
-			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground theme-card">
+			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground kala-surface-card">
 				<h3 className="font-semibold mb-4">SkeletonAvatar</h3>
 				<div className="flex items-center gap-4">
 					<SkeletonAvatar size="sm" />
@@ -101,14 +101,14 @@ export const PatternsLibrary: Story = {
 			</div>
 
 			{/* SkeletonParagraph */}
-			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground theme-card">
+			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground kala-surface-card">
 				<h3 className="font-semibold mb-4">SkeletonParagraph</h3>
 				<SkeletonParagraph />
 				<SkeletonParagraph paragraphs={3} />
 			</div>
 
 			{/* SkeletonHeader */}
-			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground theme-card">
+			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground kala-surface-card">
 				<h3 className="font-semibold mb-4">SkeletonHeader</h3>
 				<SkeletonHeader showSubtitle />
 				<SkeletonHeader showSubtitle={false} />
@@ -116,7 +116,7 @@ export const PatternsLibrary: Story = {
 			</div>
 
 			{/* SkeletonButton */}
-			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground theme-card">
+			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground kala-surface-card">
 				<h3 className="font-semibold mb-4">SkeletonButton</h3>
 				<div className="flex items-center gap-4">
 					<SkeletonButton width="6rem" size="sm" />
@@ -126,7 +126,7 @@ export const PatternsLibrary: Story = {
 			</div>
 
 			{/* SkeletonCardContent */}
-			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground theme-card">
+			<div className="space-y-4 rounded-lg border bg-card p-6 text-card-foreground kala-surface-card">
 				<h3 className="font-semibold mb-4">SkeletonCardContent</h3>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<SkeletonCardContent />
@@ -158,7 +158,7 @@ export const List: Story = {
 			{Array.from({ length: 5 }).map((_, i) => (
 				<div
 					key={`skeleton-item-${i}`}
-					className="flex items-center gap-4 rounded-lg border bg-card p-4 text-card-foreground theme-card"
+					className="flex items-center gap-4 rounded-lg border bg-card p-4 text-card-foreground kala-surface-card"
 				>
 					<SkeletonAvatar size="md" />
 					<div className="flex-1 space-y-2">
@@ -173,7 +173,7 @@ export const List: Story = {
 
 export const UserProfile: Story = {
 	render: () => (
-		<div className="flex items-center gap-4 rounded-lg border bg-card p-6 text-card-foreground theme-card">
+		<div className="flex items-center gap-4 rounded-lg border bg-card p-6 text-card-foreground kala-surface-card">
 			<SkeletonAvatar size="lg" />
 			<div className="space-y-2 flex-1">
 				<SkeletonHeader showSubtitle />
@@ -203,7 +203,7 @@ export const DataGrid: Story = {
 
 export const Article: Story = {
 	render: () => (
-		<div className="max-w-2xl space-y-4 rounded-lg border bg-card p-6 text-card-foreground theme-card">
+		<div className="max-w-2xl space-y-4 rounded-lg border bg-card p-6 text-card-foreground kala-surface-card">
 			<SkeletonHeader titleWidth="60%" />
 			<SkeletonRectangle width="100%" height="250px" rounded="lg" />
 			<SkeletonParagraph paragraphs={2} />

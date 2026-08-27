@@ -73,7 +73,10 @@ describe("AreaChart", () => {
 
 	it("should pass area type to ApexChart", async () => {
 		render(<AreaChart {...defaultProps} />);
-		expect(await screen.findByTestId("apex-chart")).toHaveAttribute("data-type", "area");
+		expect(await screen.findByTestId("apex-chart")).toHaveAttribute(
+			"data-type",
+			"area",
+		);
 	});
 
 	it("should pass series data to the chart", async () => {
@@ -107,16 +110,13 @@ describe("AreaChart", () => {
 
 	it("should show loading skeleton when isLoading is true", async () => {
 		render(<AreaChart {...defaultProps} isLoading />);
-		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
 	});
 
 	it("should show empty state when series is empty", async () => {
-		render(
-			<AreaChart
-				series={[]}
-				categories={defaultProps.categories}
-			/>,
-		);
+		render(<AreaChart series={[]} categories={defaultProps.categories} />);
 		expect(screen.getByText("No data available")).toBeInTheDocument();
 	});
 
@@ -135,19 +135,14 @@ describe("AreaChart", () => {
 		render(
 			<AreaChart series={[]} categories={defaultProps.categories} isLoading />,
 		);
-		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
 		expect(
-			screen.queryByText("No data available"),
-		).not.toBeInTheDocument();
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
+		expect(screen.queryByText("No data available")).not.toBeInTheDocument();
 	});
 
 	it("should use custom colors when provided", async () => {
-		render(
-			<AreaChart
-				{...defaultProps}
-				colors={["#ff0000", "#00ff00"]}
-			/>,
-		);
+		render(<AreaChart {...defaultProps} colors={["#ff0000", "#00ff00"]} />);
 		const optionsEl = screen.getByTestId("chart-options");
 		expect(optionsEl.textContent).toContain("#ff0000");
 		expect(optionsEl.textContent).toContain("#00ff00");

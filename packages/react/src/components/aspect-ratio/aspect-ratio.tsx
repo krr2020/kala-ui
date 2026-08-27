@@ -36,4 +36,4 @@ function AspectRatio({
 	);
 }
 
-export { AspectRatio, aspectRatioVariants, type AspectRatioProps };
+export { AspectRatio, type AspectRatioProps, aspectRatioVariants };

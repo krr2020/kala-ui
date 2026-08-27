@@ -24,7 +24,7 @@ function TableSkeleton({
 	showCheckboxes = false,
 }: TableSkeletonConfig) {
 	return (
-		<Box className="relative w-full overflow-x-auto border rounded-lg bg-card theme-card">
+		<Box className="relative w-full overflow-x-auto border rounded-lg bg-card kala-surface-card">
 			<table className="w-full caption-bottom text-sm">
 				{headers ? (
 					<thead className="border-b bg-muted/50">
@@ -159,7 +159,7 @@ function Table({
 	return (
 		<Box
 			data-slot="table-container"
-			className="relative w-full overflow-x-auto border rounded-lg bg-card theme-card"
+			className="relative w-full overflow-x-auto border rounded-lg bg-card kala-surface-card"
 		>
 			<table
 				data-slot="table"
@@ -259,20 +259,19 @@ function TableCaption({
 	);
 }
 
-export {
-	Table,
-	TableHeader,
-	TableBody,
-	TableFooter,
-	TableHead,
-	TableRow,
-	TableCell,
-	TableCaption,
-	TableSkeleton,
-};
-
 // Compound component pattern - export Table as subcomponent
 export type { TableSkeletonConfig } from "./table.types";
+export {
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableFooter,
+	TableHead,
+	TableHeader,
+	TableRow,
+	TableSkeleton,
+};
 
 // Allow Table.Skeleton syntax (using Object.defineProperty on Table function)
 Object.defineProperty(Table, "Skeleton", {

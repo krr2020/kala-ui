@@ -180,9 +180,7 @@ describe("ContextMenu", () => {
 			target: screen.getByText("Right-click here"),
 			keys: "[MouseRight]",
 		});
-		expect(
-			document.querySelector('[data-inset="true"]'),
-		).toBeInTheDocument();
+		expect(document.querySelector('[data-inset="true"]')).toBeInTheDocument();
 	});
 
 	it("should render item with custom className", async () => {
@@ -200,9 +198,7 @@ describe("ContextMenu", () => {
 			target: screen.getByText("Right-click here"),
 			keys: "[MouseRight]",
 		});
-		expect(
-			document.querySelector('.custom-class'),
-		).toBeInTheDocument();
+		expect(document.querySelector(".custom-class")).toBeInTheDocument();
 	});
 
 	it("should render label with inset prop", async () => {
@@ -363,9 +359,7 @@ describe("ContextMenu", () => {
 			target: screen.getByText("Right-click here"),
 			keys: "[MouseRight]",
 		});
-		expect(
-			document.querySelector('.custom-content'),
-		).toBeInTheDocument();
+		expect(document.querySelector(".custom-content")).toBeInTheDocument();
 	});
 
 	it("should render disabled item", async () => {
@@ -383,7 +377,10 @@ describe("ContextMenu", () => {
 			target: screen.getByText("Right-click here"),
 			keys: "[MouseRight]",
 		});
-		expect(screen.getByText("Disabled")).toHaveAttribute("aria-disabled", "true");
+		expect(screen.getByText("Disabled")).toHaveAttribute(
+			"aria-disabled",
+			"true",
+		);
 	});
 
 	it("should render portal within context menu", async () => {

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ClipboardIcon, ClipboardCheckIcon } from "lucide-react";
+import { ClipboardCheckIcon, ClipboardIcon } from "lucide-react";
 import { CopyButton } from "./copy-button";
 
 const meta = {

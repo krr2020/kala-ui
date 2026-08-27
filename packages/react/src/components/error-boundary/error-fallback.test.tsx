@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { ErrorFallback } from "./error-fallback";
 
@@ -18,7 +18,9 @@ describe("ErrorFallback", () => {
 
 	it("should render with custom description", () => {
 		render(<ErrorFallback description="Custom error description text" />);
-		expect(screen.getByText("Custom error description text")).toBeInTheDocument();
+		expect(
+			screen.getByText("Custom error description text"),
+		).toBeInTheDocument();
 	});
 
 	it("should have role alert", () => {
@@ -34,19 +36,25 @@ describe("ErrorFallback", () => {
 
 	it("should apply default page variant class", () => {
 		render(<ErrorFallback />);
-		const el = document.querySelector("[data-comp='error-fallback']") as HTMLElement;
+		const el = document.querySelector(
+			"[data-comp='error-fallback']",
+		) as HTMLElement;
 		expect(el).toHaveClass("min-h-[400px]");
 	});
 
 	it("should apply section variant class when variant is section", () => {
 		render(<ErrorFallback variant="section" />);
-		const el = document.querySelector("[data-comp='error-fallback']") as HTMLElement;
+		const el = document.querySelector(
+			"[data-comp='error-fallback']",
+		) as HTMLElement;
 		expect(el).toHaveClass("min-h-[200px]");
 	});
 
 	it("should apply custom className", () => {
 		render(<ErrorFallback className="custom-error-class" />);
-		const el = document.querySelector("[data-comp='error-fallback']") as HTMLElement;
+		const el = document.querySelector(
+			"[data-comp='error-fallback']",
+		) as HTMLElement;
 		expect(el).toHaveClass("custom-error-class");
 	});
 
@@ -86,7 +94,9 @@ describe("ErrorFallback", () => {
 
 	it("should apply animate-in fade-in-50 classes", () => {
 		render(<ErrorFallback />);
-		const el = document.querySelector("[data-comp='error-fallback']") as HTMLElement;
+		const el = document.querySelector(
+			"[data-comp='error-fallback']",
+		) as HTMLElement;
 		expect(el).toHaveClass("animate-in", "fade-in-50");
 	});
 
@@ -164,7 +174,9 @@ describe("ErrorFallback", () => {
 		expect(screen.getByText("Try Again")).toBeInTheDocument();
 		expect(screen.getByText("Error Details")).toBeInTheDocument();
 
-		const el = document.querySelector("[data-comp='error-fallback']") as HTMLElement;
+		const el = document.querySelector(
+			"[data-comp='error-fallback']",
+		) as HTMLElement;
 		expect(el).toHaveClass("combo-class", "min-h-[200px]");
 
 		fireEvent.click(screen.getByText("Try Again"));

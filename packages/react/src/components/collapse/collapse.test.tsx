@@ -40,7 +40,9 @@ describe("Collapse", () => {
 			</Collapse>,
 		);
 		expect(screen.getByText("Nested content")).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Click me" })).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: "Click me" }),
+		).toBeInTheDocument();
 	});
 
 	it("sets overflow hidden on the wrapper", () => {

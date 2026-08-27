@@ -203,7 +203,7 @@ describe("Sidebar", () => {
 			<Sidebar navSections={mockNavSections} isOpen={true} />,
 		);
 
-		const overlay = container.querySelector(".fixed.inset-0.bg-black\\/50");
+		const overlay = container.querySelector(".fixed.inset-0.bg-overlay");
 		expect(overlay).toBeInTheDocument();
 	});
 
@@ -212,7 +212,7 @@ describe("Sidebar", () => {
 			<Sidebar navSections={mockNavSections} isOpen={false} />,
 		);
 
-		const overlay = container.querySelector(".fixed.inset-0.bg-black\\/50");
+		const overlay = container.querySelector(".fixed.inset-0.bg-overlay");
 		expect(overlay).not.toBeInTheDocument();
 	});
 
@@ -223,7 +223,7 @@ describe("Sidebar", () => {
 			<Sidebar navSections={mockNavSections} isOpen={true} onClose={onClose} />,
 		);
 
-		const overlay = container.querySelector(".fixed.inset-0.bg-black\\/50");
+		const overlay = container.querySelector(".fixed.inset-0.bg-overlay");
 		if (overlay) {
 			await user.click(overlay);
 			expect(onClose).toHaveBeenCalledTimes(1);

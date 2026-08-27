@@ -24,8 +24,8 @@ function Textarea({
 			data-slot="textarea"
 			rows={rows}
 			className={cn(
-				"cursor-text flex min-h-[80px] w-full rounded-md border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 theme-input",
-				"focus-ring",
+				"cursor-text flex min-h-[80px] w-full rounded-md border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 kala-surface-input",
+				"kala-focus-ring",
 				className,
 			)}
 			{...props}

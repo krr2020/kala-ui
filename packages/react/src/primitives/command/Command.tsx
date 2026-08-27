@@ -12,8 +12,8 @@
 
 import { Command as CommandPrimitive } from "cmdk";
 import * as React from "react";
-import { cn } from "../../lib/utils";
 import { Flex } from "../../components/flex";
+import { cn } from "../../lib/utils";
 
 // ============================================================================
 // Command
@@ -151,10 +151,10 @@ CommandItem.displayName = CommandPrimitive.Item.displayName;
 
 export {
 	Command,
-	CommandInput,
-	CommandList,
 	CommandEmpty,
 	CommandGroup,
-	CommandSeparator,
+	CommandInput,
 	CommandItem,
+	CommandList,
+	CommandSeparator,
 };

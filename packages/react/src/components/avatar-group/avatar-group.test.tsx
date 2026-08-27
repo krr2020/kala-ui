@@ -94,18 +94,14 @@ describe("AvatarGroup", () => {
 	});
 
 	it("should render avatar without src (no image element)", () => {
-		const noSrc = [
-			{ fallback: "NS" },
-		];
+		const noSrc = [{ fallback: "NS" }];
 
 		render(<AvatarGroup avatars={noSrc} />);
 		expect(screen.getByText("NS")).toBeInTheDocument();
 	});
 
 	it("should render avatar without alt (uses fallback for tooltip)", () => {
-		const noAlt = [
-			{ src: "https://example.com/a.jpg", fallback: "NA" },
-		];
+		const noAlt = [{ src: "https://example.com/a.jpg", fallback: "NA" }];
 
 		render(<AvatarGroup avatars={noAlt} />);
 		expect(screen.getByText("NA")).toBeInTheDocument();

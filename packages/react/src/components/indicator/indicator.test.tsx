@@ -77,7 +77,12 @@ describe("Indicator", () => {
 			</Indicator>,
 		);
 		const indicator = container.firstChild?.firstChild;
-		expect(indicator).toHaveClass("top-0", "right-0", "translate-x-1/2", "-translate-y-1/2");
+		expect(indicator).toHaveClass(
+			"top-0",
+			"right-0",
+			"translate-x-1/2",
+			"-translate-y-1/2",
+		);
 	});
 
 	it("renders with top-left position", () => {
@@ -87,7 +92,12 @@ describe("Indicator", () => {
 			</Indicator>,
 		);
 		const indicator = container.firstChild?.firstChild;
-		expect(indicator).toHaveClass("top-0", "left-0", "-translate-x-1/2", "-translate-y-1/2");
+		expect(indicator).toHaveClass(
+			"top-0",
+			"left-0",
+			"-translate-x-1/2",
+			"-translate-y-1/2",
+		);
 	});
 
 	it("renders with top-center position", () => {
@@ -97,7 +107,12 @@ describe("Indicator", () => {
 			</Indicator>,
 		);
 		const indicator = container.firstChild?.firstChild;
-		expect(indicator).toHaveClass("top-0", "left-1/2", "-translate-x-1/2", "-translate-y-1/2");
+		expect(indicator).toHaveClass(
+			"top-0",
+			"left-1/2",
+			"-translate-x-1/2",
+			"-translate-y-1/2",
+		);
 	});
 
 	it("renders with middle-left position", () => {
@@ -107,7 +122,12 @@ describe("Indicator", () => {
 			</Indicator>,
 		);
 		const indicator = container.firstChild?.firstChild;
-		expect(indicator).toHaveClass("top-1/2", "left-0", "-translate-x-1/2", "-translate-y-1/2");
+		expect(indicator).toHaveClass(
+			"top-1/2",
+			"left-0",
+			"-translate-x-1/2",
+			"-translate-y-1/2",
+		);
 	});
 
 	it("renders with middle-center position", () => {
@@ -117,7 +137,12 @@ describe("Indicator", () => {
 			</Indicator>,
 		);
 		const indicator = container.firstChild?.firstChild;
-		expect(indicator).toHaveClass("top-1/2", "left-1/2", "-translate-x-1/2", "-translate-y-1/2");
+		expect(indicator).toHaveClass(
+			"top-1/2",
+			"left-1/2",
+			"-translate-x-1/2",
+			"-translate-y-1/2",
+		);
 	});
 
 	it("renders with middle-right position", () => {
@@ -127,7 +152,12 @@ describe("Indicator", () => {
 			</Indicator>,
 		);
 		const indicator = container.firstChild?.firstChild;
-		expect(indicator).toHaveClass("top-1/2", "right-0", "translate-x-1/2", "-translate-y-1/2");
+		expect(indicator).toHaveClass(
+			"top-1/2",
+			"right-0",
+			"translate-x-1/2",
+			"-translate-y-1/2",
+		);
 	});
 
 	it("renders with bottom-left position", () => {
@@ -137,7 +167,12 @@ describe("Indicator", () => {
 			</Indicator>,
 		);
 		const indicator = container.firstChild?.firstChild;
-		expect(indicator).toHaveClass("bottom-0", "left-0", "-translate-x-1/2", "translate-y-1/2");
+		expect(indicator).toHaveClass(
+			"bottom-0",
+			"left-0",
+			"-translate-x-1/2",
+			"translate-y-1/2",
+		);
 	});
 
 	it("renders with bottom-center position", () => {
@@ -147,7 +182,12 @@ describe("Indicator", () => {
 			</Indicator>,
 		);
 		const indicator = container.firstChild?.firstChild;
-		expect(indicator).toHaveClass("bottom-0", "left-1/2", "-translate-x-1/2", "translate-y-1/2");
+		expect(indicator).toHaveClass(
+			"bottom-0",
+			"left-1/2",
+			"-translate-x-1/2",
+			"translate-y-1/2",
+		);
 	});
 
 	it("renders with bottom-right position", () => {
@@ -157,7 +197,12 @@ describe("Indicator", () => {
 			</Indicator>,
 		);
 		const indicator = container.firstChild?.firstChild;
-		expect(indicator).toHaveClass("bottom-0", "right-0", "translate-x-1/2", "translate-y-1/2");
+		expect(indicator).toHaveClass(
+			"bottom-0",
+			"right-0",
+			"translate-x-1/2",
+			"translate-y-1/2",
+		);
 	});
 
 	it("renders with primary color (default)", () => {
@@ -187,7 +232,10 @@ describe("Indicator", () => {
 			</Indicator>,
 		);
 		const indicator = container.firstChild?.firstChild;
-		expect(indicator).toHaveClass("bg-destructive", "text-destructive-foreground");
+		expect(indicator).toHaveClass(
+			"bg-destructive",
+			"text-destructive-foreground",
+		);
 	});
 
 	it("renders with success color", () => {

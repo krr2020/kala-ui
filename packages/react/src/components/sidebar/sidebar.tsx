@@ -92,7 +92,7 @@ export function Sidebar({
 			{/* Mobile overlay */}
 			{isOpen && (
 				<div
-					className="fixed inset-0 bg-black/50 z-30 md:hidden animate-fade-in transition-opacity duration-200 ease-out"
+					className="fixed inset-0 bg-overlay z-30 md:hidden animate-fade-in transition-opacity duration-200 ease-out"
 					onClick={onClose}
 					aria-hidden="true"
 				/>
@@ -102,7 +102,7 @@ export function Sidebar({
 			<aside
 				data-comp="sidebar"
 				className={cn(
-					"fixed left-0 top-0 z-30 h-full w-64 bg-popover border-r text-foreground transition-transform duration-300 ease-out flex flex-col theme-card",
+					"fixed left-0 top-0 z-30 h-full w-64 bg-popover border-r text-foreground transition-transform duration-300 ease-out flex flex-col kala-surface-card",
 					"md:translate-x-0 md:z-10",
 					isOpen ? "animate-slide-in-from-left" : "-translate-x-full",
 					className,

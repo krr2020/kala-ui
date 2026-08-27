@@ -122,14 +122,14 @@ function ButtonGroupText({
 	);
 }
 
+export type {
+	ButtonGroupProps,
+	ButtonGroupSeparatorProps,
+	ButtonGroupTextProps,
+};
 export {
 	ButtonGroup,
 	ButtonGroupSeparator,
 	ButtonGroupText,
 	buttonGroupVariants,
-};
-export type {
-	ButtonGroupProps,
-	ButtonGroupSeparatorProps,
-	ButtonGroupTextProps,
 };

@@ -92,8 +92,8 @@ export function FileUpload({
 	return (
 		<div className={cn("w-full", className)} {...props}>
 			{value ? (
-				<div className="relative flex items-center p-4 border rounded bg-muted theme-card">
-					<div className="p-2 mr-4 bg-background rounded border theme-card">
+				<div className="relative flex items-center p-4 border rounded bg-muted kala-surface-card">
+					<div className="p-2 mr-4 bg-background rounded border kala-surface-card">
 						<FileIcon className="w-6 h-6 text-primary" />
 					</div>
 					<div className="flex-1 min-w-0">
@@ -132,8 +132,8 @@ export function FileUpload({
 					onDragLeave={handleDragLeave}
 					onDrop={handleDrop}
 					className={cn(
-						"relative flex flex-col items-center justify-center w-full p-6 border-2 border-dashed rounded transition-colors cursor-pointer theme-input",
-						"focus-ring",
+						"relative flex flex-col items-center justify-center w-full p-6 border-2 border-dashed rounded transition-colors cursor-pointer kala-surface-input",
+						"kala-focus-ring",
 						isDragging
 							? "border-primary bg-primary/10"
 							: "bg-background hover:bg-muted",

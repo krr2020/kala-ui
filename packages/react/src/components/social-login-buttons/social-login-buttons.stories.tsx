@@ -106,7 +106,7 @@ export const InForm: Story = {
 		onProviderClick: () => {},
 	},
 	render: () => (
-		<div className="w-96 space-y-6 p-6 border rounded-lg bg-card text-card-foreground theme-card">
+		<div className="w-96 space-y-6 p-6 border rounded-lg bg-card text-card-foreground kala-surface-card">
 			<div className="text-center">
 				<h2 className="text-2xl font-bold mb-2">Sign in to your account</h2>
 				<p className="text-sm text-muted-foreground">
@@ -142,7 +142,7 @@ export const Registration: Story = {
 		dividerText: "Or register with",
 	},
 	render: (args) => (
-		<div className="w-96 space-y-6 p-6 border rounded-lg bg-card text-card-foreground theme-card">
+		<div className="w-96 space-y-6 p-6 border rounded-lg bg-card text-card-foreground kala-surface-card">
 			<div className="text-center">
 				<h2 className="text-2xl font-bold mb-2">Create an account</h2>
 				<p className="text-sm text-muted-foreground">

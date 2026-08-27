@@ -37,10 +37,6 @@
 		"./styles/helpers": {
 			"default": "./dist/styles/helpers.css"
 		},
-		"./config/tailwind-base": {
-			"types": "./dist/config/tailwind-base.d.ts",
-			"default": "./dist/config/tailwind-base.js"
-		},
 		"./accordion": {
 			"types": "./dist/components/accordion/index.d.ts",
 			"default": "./dist/components/accordion/index.js"
@@ -385,6 +381,10 @@
 			"types": "./dist/components/toggle-group/index.d.ts",
 			"default": "./dist/components/toggle-group/index.js"
 		},
+		"./theme-provider": {
+			"types": "./dist/components/theme-provider/index.d.ts",
+			"default": "./dist/components/theme-provider/index.js"
+		},
 		"./toolbar": {
 			"types": "./dist/components/toolbar/index.d.ts",
 			"default": "./dist/components/toolbar/index.js"
@@ -496,7 +496,6 @@
 		"@dnd-kit/modifiers": "^9.0.0",
 		"@dnd-kit/sortable": "^10.0.0",
 		"@dnd-kit/utilities": "^3.2.2",
-		"@kala-ui/design-tokens": "workspace:*",
 		"@kala-ui/react-hooks": "workspace:*",
 		"@radix-ui/react-accordion": "~1.2.20",
 		"@radix-ui/react-alert-dialog": "~1.1.23",
@@ -556,7 +555,6 @@
 		"@types/react-dom": "~19.2.5",
 		"@vitejs/plugin-react": "~6.1.0",
 		"@vitest/coverage-v8": "~4.1.11",
-		"autoprefixer": "~10.5.4",
 		"jsdom": "^30.0.1",
 		"postcss": "~8.5.26",
 		"react": "^19.2.8",

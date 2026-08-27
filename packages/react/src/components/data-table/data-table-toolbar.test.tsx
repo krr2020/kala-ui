@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { DataTableToolbar } from "./data-table-toolbar";
 import type { BulkAction, SearchConfig } from "./data-table.types";
+import { DataTableToolbar } from "./data-table-toolbar";
 
 interface TestRow {
 	id: string;
@@ -254,7 +254,12 @@ describe("DataTableToolbar", () => {
 
 	it("renders bulk action with custom variant", () => {
 		const bulkActions: BulkAction<TestRow>[] = [
-			{ id: "delete", label: "Delete", onClick: vi.fn(), variant: "destructive" },
+			{
+				id: "delete",
+				label: "Delete",
+				onClick: vi.fn(),
+				variant: "destructive",
+			},
 		];
 		render(
 			<DataTableToolbar<TestRow>

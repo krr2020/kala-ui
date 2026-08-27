@@ -150,7 +150,7 @@ export function DataTableSkeleton<TData = unknown>({
 			{/* Table Container */}
 			<div
 				className={cn(
-					"border relative overflow-hidden theme-card",
+					"border relative overflow-hidden kala-surface-card",
 					showPagination ? "rounded-t-lg border-b-0" : "rounded-lg",
 					stickyFooter ? "flex-1 min-h-0" : "",
 				)}
@@ -270,7 +270,7 @@ export function DataTableSkeleton<TData = unknown>({
 			{showPagination && (
 				<div
 					className={cn(
-						"flex flex-col gap-3 sm:flex-row sm:gap-0 items-center sm:justify-between bg-background px-4 py-3 rounded-b-lg theme-card border-x border-b",
+						"flex flex-col gap-3 sm:flex-row sm:gap-0 items-center sm:justify-between bg-background px-4 py-3 rounded-b-lg kala-surface-card border-x border-b",
 						stickyFooter && "sticky bottom-0 z-1 shadow-xl bg-background",
 					)}
 				>
@@ -297,23 +297,13 @@ export function DataTableSkeleton<TData = unknown>({
 
 					{/* Page navigation */}
 					<div className="flex items-center justify-center gap-1 flex-wrap">
-						<Button
-							variant="outline"
-							size="sm"
-							disabled
-							className="opacity-50"
-						>
+						<Button variant="outline" size="sm" disabled className="opacity-50">
 							<Skeleton className="h-4 w-4" />
 						</Button>
 						<span className="text-sm text-muted-foreground px-2">
 							<Skeleton className="h-4 w-16 inline-block" />
 						</span>
-						<Button
-							variant="outline"
-							size="sm"
-							disabled
-							className="opacity-50"
-						>
+						<Button variant="outline" size="sm" disabled className="opacity-50">
 							<Skeleton className="h-4 w-4" />
 						</Button>
 					</div>

@@ -1,7 +1,9 @@
-
 import { describe, expect, it } from "vitest";
+import type {
+	CategoryMetadata,
+	ComponentMetadata,
+} from "./design-system-utils";
 import { designSystemComponents } from "./design-system-utils";
-import type { ComponentMetadata, CategoryMetadata } from "./design-system-utils";
 
 describe("designSystemComponents", () => {
 	it("should be a non-empty array", () => {

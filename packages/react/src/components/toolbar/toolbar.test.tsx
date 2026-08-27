@@ -137,9 +137,9 @@ describe("Toolbar", () => {
 				</ToolbarLink>
 			</Toolbar>,
 		);
-		expect(
-			container.querySelector('[data-slot="toolbar-link"]'),
-		).toHaveClass("custom-link");
+		expect(container.querySelector('[data-slot="toolbar-link"]')).toHaveClass(
+			"custom-link",
+		);
 	});
 
 	it("should render ToolbarButton with custom className", () => {
@@ -148,9 +148,9 @@ describe("Toolbar", () => {
 				<ToolbarButton className="btn-custom">B</ToolbarButton>
 			</Toolbar>,
 		);
-		expect(
-			container.querySelector('[data-slot="toolbar-button"]'),
-		).toHaveClass("btn-custom");
+		expect(container.querySelector('[data-slot="toolbar-button"]')).toHaveClass(
+			"btn-custom",
+		);
 	});
 
 	it("should render ToolbarToggleGroup with custom className", () => {
@@ -300,7 +300,9 @@ describe("Toolbar", () => {
 
 	it("should render Toolbar with no children", () => {
 		const { container } = render(<Toolbar />);
-		expect(container.querySelector('[data-slot="toolbar"]')).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="toolbar"]'),
+		).toBeInTheDocument();
 	});
 
 	it("should render ToolbarSeparator without custom className", () => {
@@ -373,31 +375,37 @@ describe("Toolbar", () => {
 				<ToolbarButton size="lg">LG</ToolbarButton>
 			</Toolbar>,
 		);
-		expect(c2.querySelector('[data-slot="toolbar-button"]')).toHaveClass("h-10");
+		expect(c2.querySelector('[data-slot="toolbar-button"]')).toHaveClass(
+			"h-10",
+		);
 	});
 
 	it("should apply size classes to ToolbarToggleItem", () => {
 		const { container: c1 } = render(
 			<Toolbar>
 				<ToolbarToggleGroup type="single">
-					<ToolbarToggleItem value="a" size="sm">SM</ToolbarToggleItem>
+					<ToolbarToggleItem value="a" size="sm">
+						SM
+					</ToolbarToggleItem>
 				</ToolbarToggleGroup>
 			</Toolbar>,
 		);
-		expect(
-			c1.querySelector('[data-slot="toolbar-toggle-item"]'),
-		).toHaveClass("h-8");
+		expect(c1.querySelector('[data-slot="toolbar-toggle-item"]')).toHaveClass(
+			"h-8",
+		);
 
 		const { container: c2 } = render(
 			<Toolbar>
 				<ToolbarToggleGroup type="single">
-					<ToolbarToggleItem value="a" size="lg">LG</ToolbarToggleItem>
+					<ToolbarToggleItem value="a" size="lg">
+						LG
+					</ToolbarToggleItem>
 				</ToolbarToggleGroup>
 			</Toolbar>,
 		);
-		expect(
-			c2.querySelector('[data-slot="toolbar-toggle-item"]'),
-		).toHaveClass("h-10");
+		expect(c2.querySelector('[data-slot="toolbar-toggle-item"]')).toHaveClass(
+			"h-10",
+		);
 	});
 
 	it("should apply base classes to ToolbarLink", () => {

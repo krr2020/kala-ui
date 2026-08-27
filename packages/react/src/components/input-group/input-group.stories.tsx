@@ -218,7 +218,7 @@ export const WithTextarea: Story = {
 				<h3 className="text-sm font-medium text-muted-foreground">
 					Textarea with Actions
 				</h3>
-				<div className="flex flex-col rounded-md border focus-within:border-primary focus-within:ring-1 focus-within:ring-primary theme-input">
+				<div className="flex flex-col rounded-md border focus-within:border-primary focus-within:ring-1 focus-within:ring-primary kala-surface-input">
 					<Textarea
 						placeholder="Type your message..."
 						className="min-h-[100px] resize-none border-0 focus:ring-0 focus:ring-offset-0"

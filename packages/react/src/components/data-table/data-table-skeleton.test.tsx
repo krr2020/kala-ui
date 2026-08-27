@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, } from "vitest";
-import { DataTableSkeleton } from "./data-table-skeleton";
+import { describe, expect, it } from "vitest";
 import type { ColumnDef } from "./data-table.types";
+import { DataTableSkeleton } from "./data-table-skeleton";
 
 interface TestRow {
 	id: string;
@@ -32,16 +32,12 @@ describe("DataTableSkeleton", () => {
 
 	it("does not render search bar by default", () => {
 		render(<DataTableSkeleton columns={columns} />);
-		expect(
-			screen.queryByPlaceholderText("Search..."),
-		).not.toBeInTheDocument();
+		expect(screen.queryByPlaceholderText("Search...")).not.toBeInTheDocument();
 	});
 
 	it("renders search bar when showSearch is true", () => {
 		render(<DataTableSkeleton columns={columns} showSearch />);
-		expect(
-			screen.getByPlaceholderText("Search..."),
-		).toBeInTheDocument();
+		expect(screen.getByPlaceholderText("Search...")).toBeInTheDocument();
 	});
 
 	it("renders disabled search input", () => {
@@ -56,9 +52,7 @@ describe("DataTableSkeleton", () => {
 	});
 
 	it("renders filter pills when showFilters is true", () => {
-		render(
-			<DataTableSkeleton columns={columns} showFilters filterCount={2} />,
-		);
+		render(<DataTableSkeleton columns={columns} showFilters filterCount={2} />);
 		expect(screen.getByText("Active filters:")).toBeInTheDocument();
 		const filterTexts = screen.getAllByText("Filter: Value");
 		expect(filterTexts).toHaveLength(2);
@@ -102,13 +96,7 @@ describe("DataTableSkeleton", () => {
 	});
 
 	it("renders bulk actions bar when showBulkActions and showSearch are true", () => {
-		render(
-			<DataTableSkeleton
-				columns={columns}
-				showSearch
-				showBulkActions
-			/>,
-		);
+		render(<DataTableSkeleton columns={columns} showSearch showBulkActions />);
 		expect(screen.getByText("0 selected")).toBeInTheDocument();
 		expect(screen.getByText("Edit")).toBeInTheDocument();
 		expect(screen.getByText("Delete")).toBeInTheDocument();
@@ -143,11 +131,7 @@ describe("DataTableSkeleton", () => {
 
 	it("renders with stickyFooter class when enabled", () => {
 		const { container } = render(
-			<DataTableSkeleton
-				columns={columns}
-				showPagination
-				stickyFooter
-			/>,
+			<DataTableSkeleton columns={columns} showPagination stickyFooter />,
 		);
 		const pagination = container.querySelector(".sticky.bottom-0");
 		expect(pagination).toBeInTheDocument();
@@ -164,9 +148,7 @@ describe("DataTableSkeleton", () => {
 	});
 
 	it("renders rounded-lg container when pagination is not shown", () => {
-		const { container } = render(
-			<DataTableSkeleton columns={columns} />,
-		);
+		const { container } = render(<DataTableSkeleton columns={columns} />);
 		const tableContainer = container.querySelector(
 			".border.relative.overflow-hidden",
 		);

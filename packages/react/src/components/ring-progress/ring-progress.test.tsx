@@ -47,13 +47,17 @@ describe("RingProgress", () => {
 	});
 
 	it("renders with custom color", () => {
-		const { container } = render(<RingProgress value={50} color="text-red-500" />);
+		const { container } = render(
+			<RingProgress value={50} color="text-red-500" />,
+		);
 		const circles = container.querySelectorAll("circle");
 		expect(circles[1]).toHaveClass("text-red-500");
 	});
 
 	it("renders with custom empty color", () => {
-		const { container } = render(<RingProgress value={50} emptyColor="text-gray-200" />);
+		const { container } = render(
+			<RingProgress value={50} emptyColor="text-gray-200" />,
+		);
 		const circles = container.querySelectorAll("circle");
 		expect(circles[0]).toHaveClass("text-gray-200");
 	});
@@ -78,7 +82,9 @@ describe("RingProgress", () => {
 	});
 
 	it("applies custom className", () => {
-		const { container } = render(<RingProgress value={50} className="custom-ring" />);
+		const { container } = render(
+			<RingProgress value={50} className="custom-ring" />,
+		);
 		expect(container.firstChild).toHaveClass("custom-ring");
 	});
 

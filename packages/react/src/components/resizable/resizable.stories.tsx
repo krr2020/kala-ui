@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useRef, useState } from "react";
-import type { GroupImperativeHandle, PanelImperativeHandle } from "react-resizable-panels";
+import type {
+	GroupImperativeHandle,
+	PanelImperativeHandle,
+} from "react-resizable-panels";
 import { Button } from "../button";
 import {
 	ResizableHandle,
@@ -265,7 +268,11 @@ export const ImperativeControls: Story = {
 		const groupRef = useRef<GroupImperativeHandle | null>(null);
 		const [layout, setLayout] = useState({ left: 33, center: 34, right: 33 });
 
-		const applyLayout = (sizes: { left: number; center: number; right: number }) => {
+		const applyLayout = (sizes: {
+			left: number;
+			center: number;
+			right: number;
+		}) => {
 			groupRef.current?.setLayout(sizes);
 			setLayout(sizes);
 		};
@@ -321,19 +328,34 @@ export const ImperativeControls: Story = {
 						})
 					}
 				>
-					<ResizablePanel id="left" defaultSize="33" minSize="15" className="p-6">
+					<ResizablePanel
+						id="left"
+						defaultSize="33"
+						minSize="15"
+						className="p-6"
+					>
 						<div className="flex h-full items-center justify-center">
 							<span className="font-semibold">Left</span>
 						</div>
 					</ResizablePanel>
 					<ResizableHandle withHandle />
-					<ResizablePanel id="center" defaultSize="34" minSize="15" className="p-6">
+					<ResizablePanel
+						id="center"
+						defaultSize="34"
+						minSize="15"
+						className="p-6"
+					>
 						<div className="flex h-full items-center justify-center">
 							<span className="font-semibold">Center</span>
 						</div>
 					</ResizablePanel>
 					<ResizableHandle withHandle />
-					<ResizablePanel id="right" defaultSize="33" minSize="15" className="p-6">
+					<ResizablePanel
+						id="right"
+						defaultSize="33"
+						minSize="15"
+						className="p-6"
+					>
 						<div className="flex h-full items-center justify-center">
 							<span className="font-semibold">Right</span>
 						</div>
@@ -556,12 +578,13 @@ export const PersistentLayout: Story = {
 						<li>
 							2. The saved layout updates:{" "}
 							<strong>
-								sidebar = {savedLayout ? `${Math.round(savedLayout.sidebar)}%` : "—"}
+								sidebar ={" "}
+								{savedLayout ? `${Math.round(savedLayout.sidebar)}%` : "—"}
 							</strong>
 						</li>
 						<li>
-							3. Persist the value from onLayoutChanged and pass it back via
-							the defaultLayout prop on the next visit
+							3. Persist the value from onLayoutChanged and pass it back via the
+							defaultLayout prop on the next visit
 						</li>
 					</ul>
 				</div>
@@ -574,7 +597,12 @@ export const PersistentLayout: Story = {
 						})
 					}
 				>
-					<ResizablePanel id="sidebar" defaultSize="30" minSize="20" className="p-6">
+					<ResizablePanel
+						id="sidebar"
+						defaultSize="30"
+						minSize="20"
+						className="p-6"
+					>
 						<div className="flex h-full items-center justify-center">
 							<span className="font-semibold">Sidebar</span>
 						</div>

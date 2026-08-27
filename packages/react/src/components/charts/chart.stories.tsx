@@ -565,7 +565,7 @@ export const CardCharts: Story = {
 		return (
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl">
 				{/* Revenue Card */}
-				<div className="rounded-lg border bg-card text-card-foreground p-6 theme-card">
+				<div className="rounded-lg border bg-card text-card-foreground p-6 kala-surface-card">
 					<div className="flex items-center justify-between mb-4">
 						<div>
 							<p className="text-sm text-muted-foreground">Total Revenue</p>
@@ -584,7 +584,7 @@ export const CardCharts: Story = {
 				</div>
 
 				{/* Orders Card */}
-				<div className="rounded-lg border bg-card text-card-foreground p-6 theme-card">
+				<div className="rounded-lg border bg-card text-card-foreground p-6 kala-surface-card">
 					<div className="flex items-center justify-between mb-4">
 						<div>
 							<p className="text-sm text-muted-foreground">Total Orders</p>
@@ -603,7 +603,7 @@ export const CardCharts: Story = {
 				</div>
 
 				{/* Customers Card */}
-				<div className="rounded-lg border bg-card text-card-foreground p-6 theme-card">
+				<div className="rounded-lg border bg-card text-card-foreground p-6 kala-surface-card">
 					<div className="flex items-center justify-between mb-4">
 						<div>
 							<p className="text-sm text-muted-foreground">New Customers</p>
@@ -622,7 +622,7 @@ export const CardCharts: Story = {
 				</div>
 
 				{/* Conversion Rate Card */}
-				<div className="rounded-lg border bg-card text-card-foreground p-6 theme-card">
+				<div className="rounded-lg border bg-card text-card-foreground p-6 kala-surface-card">
 					<div className="flex items-center justify-between mb-4">
 						<div>
 							<p className="text-sm text-muted-foreground">Conversion Rate</p>

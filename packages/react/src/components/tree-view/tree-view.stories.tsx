@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { FileText, Folder, FolderOpen, Image } from "lucide-react";
-import { TreeView } from "./tree-view";
 import type { TreeItem } from "./tree-view";
+import { TreeView } from "./tree-view";
 
 const fileTree: TreeItem[] = [
 	{

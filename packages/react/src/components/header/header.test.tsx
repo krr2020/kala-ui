@@ -113,9 +113,7 @@ describe("Header", () => {
 	});
 
 	it("renders search bar when provided", () => {
-		render(
-			<Header searchBar={<div data-testid="search-bar">Search</div>} />,
-		);
+		render(<Header searchBar={<div data-testid="search-bar">Search</div>} />);
 		expect(screen.getByTestId("search-bar")).toBeInTheDocument();
 	});
 
@@ -134,9 +132,7 @@ describe("Header", () => {
 	});
 
 	it("renders notifications when provided", () => {
-		render(
-			<Header notifications={<div data-testid="notif">Notif</div>} />,
-		);
+		render(<Header notifications={<div data-testid="notif">Notif</div>} />);
 		expect(screen.getByTestId("notif")).toBeInTheDocument();
 	});
 
@@ -218,7 +214,12 @@ describe("Header", () => {
 					email: "john@example.com",
 					links: [
 						{ label: "Settings", href: "/settings" },
-						{ label: "Logout", href: "/logout", divider: true, variant: "danger" },
+						{
+							label: "Logout",
+							href: "/logout",
+							divider: true,
+							variant: "danger",
+						},
 					],
 				}}
 			/>,
@@ -291,9 +292,7 @@ describe("Header", () => {
 			{
 				label: "Expandable",
 				href: "/expandable",
-				children: [
-					{ label: "Child 1", href: "/expandable/1" },
-				],
+				children: [{ label: "Child 1", href: "/expandable/1" }],
 			},
 		];
 		render(
@@ -321,7 +320,9 @@ describe("Header", () => {
 		);
 		// Switch to the notifications tab
 		await user.click(screen.getByRole("tab", { name: /alerts/i }));
-		expect(document.querySelector('[data-testid="mobile-notif"]')).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-testid="mobile-notif"]'),
+		).toBeInTheDocument();
 	});
 
 	it("renders userMenu fallback in mobile menu when no userProfile", () => {
@@ -440,11 +441,15 @@ describe("Header", () => {
 		render(
 			<Header
 				isMobileMenuOpen={true}
-				languageSwitcherMobile={<div data-testid="lang-mobile">Lang Mobile</div>}
+				languageSwitcherMobile={
+					<div data-testid="lang-mobile">Lang Mobile</div>
+				}
 			/>,
 		);
 		// The mobile menu portal should be present on document.body
-		expect(document.body.querySelector('[aria-label="Mobile navigation"]')).toBeInTheDocument();
+		expect(
+			document.body.querySelector('[aria-label="Mobile navigation"]'),
+		).toBeInTheDocument();
 	});
 
 	it("renders both theme and language switcher mobile (portal content exists)", () => {
@@ -452,11 +457,15 @@ describe("Header", () => {
 			<Header
 				isMobileMenuOpen={true}
 				themeSwitcherMobile={<div data-testid="theme-mobile">Theme Mobile</div>}
-				languageSwitcherMobile={<div data-testid="lang-mobile">Lang Mobile</div>}
+				languageSwitcherMobile={
+					<div data-testid="lang-mobile">Lang Mobile</div>
+				}
 			/>,
 		);
 		// The mobile menu portal should be present on document.body
-		expect(document.body.querySelector('[aria-label="Mobile navigation"]')).toBeInTheDocument();
+		expect(
+			document.body.querySelector('[aria-label="Mobile navigation"]'),
+		).toBeInTheDocument();
 	});
 
 	it("renders with no optional props", () => {

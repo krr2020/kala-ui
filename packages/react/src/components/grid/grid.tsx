@@ -183,4 +183,4 @@ const GridItem = React.forwardRef<HTMLDivElement, GridItemProps>(
 );
 GridItem.displayName = "GridItem";
 
-export { Grid, GridItem, gridVariants, gridItemVariants };
+export { Grid, GridItem, gridItemVariants, gridVariants };

@@ -116,7 +116,9 @@ describe("Tabs", () => {
 				<TabsContent value="tab1">Content 1</TabsContent>
 			</Tabs>,
 		);
-		expect(container.querySelector('[data-slot="tabs-trigger"]')).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="tabs-trigger"]'),
+		).toBeInTheDocument();
 	});
 
 	it("should set data-slot on tabs content", () => {
@@ -128,7 +130,9 @@ describe("Tabs", () => {
 				<TabsContent value="tab1">Content 1</TabsContent>
 			</Tabs>,
 		);
-		expect(container.querySelector('[data-slot="tabs-content"]')).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="tabs-content"]'),
+		).toBeInTheDocument();
 	});
 
 	it("should render vertical orientation", () => {
@@ -166,7 +170,9 @@ describe("Tabs", () => {
 				<TabsContent value="tab1">Content 1</TabsContent>
 			</Tabs>,
 		);
-		expect(container.querySelector('[data-slot="tabs"]')).toHaveClass("custom-root");
+		expect(container.querySelector('[data-slot="tabs"]')).toHaveClass(
+			"custom-root",
+		);
 	});
 
 	it("should apply custom className to TabsContent", () => {
@@ -180,7 +186,9 @@ describe("Tabs", () => {
 				</TabsContent>
 			</Tabs>,
 		);
-		expect(container.querySelector('[data-slot="tabs-content"]')).toHaveClass("custom-content");
+		expect(container.querySelector('[data-slot="tabs-content"]')).toHaveClass(
+			"custom-content",
+		);
 	});
 
 	it("should apply custom className to TabsTrigger", () => {
@@ -194,7 +202,9 @@ describe("Tabs", () => {
 				<TabsContent value="tab1">Content 1</TabsContent>
 			</Tabs>,
 		);
-		expect(container.querySelector('[data-slot="tabs-trigger"]')).toHaveClass("custom-trigger");
+		expect(container.querySelector('[data-slot="tabs-trigger"]')).toHaveClass(
+			"custom-trigger",
+		);
 	});
 
 	it("should support controlled mode with value and onValueChange", async () => {

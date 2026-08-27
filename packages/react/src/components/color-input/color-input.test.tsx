@@ -130,9 +130,14 @@ describe("ColorInput", () => {
 		await user.click(trigger);
 
 		// The popover should open and render color preset buttons
-		const colorButtons = screen.getAllByRole("button").filter(
-			(btn) => btn !== trigger && btn.getAttribute("type") === "button" && !btn.hasAttribute("aria-label"),
-		);
+		const colorButtons = screen
+			.getAllByRole("button")
+			.filter(
+				(btn) =>
+					btn !== trigger &&
+					btn.getAttribute("type") === "button" &&
+					!btn.hasAttribute("aria-label"),
+			);
 		expect(colorButtons.length).toBeGreaterThan(0);
 	});
 
@@ -145,9 +150,14 @@ describe("ColorInput", () => {
 		await user.click(trigger);
 
 		// Find a preset color button (black #000000)
-		const colorButtons = screen.getAllByRole("button").filter(
-			(btn) => btn !== trigger && btn.getAttribute("type") === "button" && !btn.hasAttribute("aria-label"),
-		);
+		const colorButtons = screen
+			.getAllByRole("button")
+			.filter(
+				(btn) =>
+					btn !== trigger &&
+					btn.getAttribute("type") === "button" &&
+					!btn.hasAttribute("aria-label"),
+			);
 		if (colorButtons.length > 0) {
 			await user.click(colorButtons[0]);
 			expect(handleChange).toHaveBeenCalled();
@@ -173,7 +183,9 @@ describe("ColorInput", () => {
 		await user.click(trigger);
 
 		// Find the native color input
-		const nativeInput = document.querySelector('input[type="color"]') as HTMLInputElement;
+		const nativeInput = document.querySelector(
+			'input[type="color"]',
+		) as HTMLInputElement;
 		if (nativeInput) {
 			fireEvent.change(nativeInput, { target: { value: "#ff0000" } });
 			expect(handleChange).toHaveBeenCalledWith("#ff0000");
@@ -230,7 +242,9 @@ describe("ColorInput", () => {
 		const trigger = screen.getByRole("button", { name: /pick a color/i });
 		await user.click(trigger);
 
-		const nativeInput = document.querySelector('input[type="color"]') as HTMLInputElement;
+		const nativeInput = document.querySelector(
+			'input[type="color"]',
+		) as HTMLInputElement;
 		if (nativeInput) {
 			expect(nativeInput.value).toBe("#000000");
 		}
@@ -243,7 +257,9 @@ describe("ColorInput", () => {
 		const trigger = screen.getByRole("button", { name: /pick a color/i });
 		await user.click(trigger);
 
-		const nativeInput = document.querySelector('input[type="color"]') as HTMLInputElement;
+		const nativeInput = document.querySelector(
+			'input[type="color"]',
+		) as HTMLInputElement;
 		if (nativeInput) {
 			expect(nativeInput.value).toBe("#ff0000");
 		}
@@ -275,9 +291,14 @@ describe("ColorInput", () => {
 		await user.click(trigger);
 
 		// Find the red preset button (#ef4444)
-		const colorButtons = screen.getAllByRole("button").filter(
-			(btn) => btn !== trigger && btn.getAttribute("type") === "button" && !btn.hasAttribute("aria-label"),
-		);
+		const colorButtons = screen
+			.getAllByRole("button")
+			.filter(
+				(btn) =>
+					btn !== trigger &&
+					btn.getAttribute("type") === "button" &&
+					!btn.hasAttribute("aria-label"),
+			);
 		if (colorButtons.length >= 3) {
 			await user.click(colorButtons[2]); // #ef4444
 			expect(handleChange).toHaveBeenCalledWith("#ef4444");
@@ -294,7 +315,9 @@ describe("ColorInput", () => {
 		const trigger = screen.getByRole("button", { name: /pick a color/i });
 		await user.click(trigger);
 
-		const nativeInput = document.querySelector('input[type="color"]') as HTMLInputElement;
+		const nativeInput = document.querySelector(
+			'input[type="color"]',
+		) as HTMLInputElement;
 		if (nativeInput) {
 			fireEvent.change(nativeInput, { target: { value: "#00ff00" } });
 			expect(handleChange).toHaveBeenCalledWith("#00ff00");

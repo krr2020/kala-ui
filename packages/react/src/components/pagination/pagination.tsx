@@ -69,7 +69,10 @@ function Pagination({
 			<Box
 				as="nav"
 				aria-label={ariaLabel}
-				className={cn("mx-auto flex w-full flex-wrap justify-center", className)}
+				className={cn(
+					"mx-auto flex w-full flex-wrap justify-center",
+					className,
+				)}
 				{...props}
 			>
 				{children}
@@ -197,7 +200,7 @@ function PaginationLink({
 
 	const baseClasses = cn(
 		"inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium transition-colors cursor-pointer",
-		"focus-ring",
+		"kala-focus-ring",
 		"disabled:pointer-events-none disabled:opacity-50",
 		"text-foreground",
 		sizeClasses[size],
@@ -386,9 +389,9 @@ const PaginationVariantContext =
 export {
 	Pagination,
 	PaginationContent,
+	PaginationEllipsis,
 	PaginationItem,
 	PaginationLink,
-	PaginationPrevious,
 	PaginationNext,
-	PaginationEllipsis,
+	PaginationPrevious,
 };

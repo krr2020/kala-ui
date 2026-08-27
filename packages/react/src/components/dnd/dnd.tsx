@@ -434,9 +434,7 @@ const SortableHandle = React.forwardRef<HTMLDivElement, SortableHandleProps>(
 		}
 
 		const content =
-			typeof children === "function"
-				? children(sortable?.listeners)
-				: children;
+			typeof children === "function" ? children(sortable?.listeners) : children;
 
 		return (
 			<div
@@ -491,44 +489,43 @@ DragOverlayComponent.displayName = "DragOverlayComponent";
 // Exports
 // ============================================================================
 
-export {
-	DragDropContext,
-	Droppable,
-	Draggable,
-	SortableContext,
-	SortableItem,
-	SortableHandle,
-	DragOverlayComponent,
-	createDragDropSensors as useDragDropSensors,
-	// Re-export useful hooks
-	useDraggable,
-	useDroppable,
-	useSortable,
-	// Re-export sensors
-	KeyboardSensor,
-	PointerSensor,
-	TouchSensor,
-	useSensor,
-	useSensors,
-	sortableKeyboardCoordinates,
-};
-
 export type {
+	Active,
+	Collision,
 	// Context types
 	DragEndEvent as DropResult,
-	DragStartEvent as DragStart,
-	DragOverEvent as DragUpdate,
-	DragOverEvent,
-	Active,
-	Over,
-	Collision,
 	// Droppable types
 	// Draggable types
 	DraggableAttributes,
-	UniqueIdentifier,
 	DraggableSyntheticListeners,
+	DragOverEvent as DragUpdate,
+	DragOverEvent,
+	DragStartEvent as DragStart,
+	Over,
 	// Sorting
 	SortingStrategy,
 	// Transform
 	Transform,
+	UniqueIdentifier,
+};
+export {
+	createDragDropSensors as useDragDropSensors,
+	DragDropContext,
+	Draggable,
+	DragOverlayComponent,
+	Droppable,
+	// Re-export sensors
+	KeyboardSensor,
+	PointerSensor,
+	SortableContext,
+	SortableHandle,
+	SortableItem,
+	sortableKeyboardCoordinates,
+	TouchSensor,
+	// Re-export useful hooks
+	useDraggable,
+	useDroppable,
+	useSensor,
+	useSensors,
+	useSortable,
 };

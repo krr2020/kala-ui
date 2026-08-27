@@ -1,144 +1,148 @@
 /*
- * helpers.css — kala-ui theme helper classes.
+ * helpers.css — kala-ui component CSS layer.
  *
- * Pure class DEFINITIONS only — NO :root values. The host owns the token
- * values; this file wires the classes to them via var(). Import this so
- * components that emit .theme-* / .focus-* / .ring-* render correctly. A host
- * never needs to vendor or edit this.
+ * Class DEFINITIONS only — NO token values. Token values (:root, .dark, …)
+ * live in globals.css and are owned by the host. Everything here is wrapped
+ * in `@layer components`, so utilities (from the host's Tailwind build or
+ * kala-ui's precompiled stylesheet) always outrank these classes — consumer
+ * `className` overrides win without any `!important` gymnastics.
+ *
+ * All class names carry the `kala-` prefix so they can never collide with
+ * host styles.
+ *
+ * Import paths:
+ *   - Precompiled CSS:  @import "@kala-ui/react/styles"   (already includes this file)
+ *   - Self-compiling:   @import "tailwindcss";
+ *                       @source "../node_modules/@kala-ui/react/dist";
+ *                       @import "@kala-ui/react/styles/helpers";
  */
 
-.theme-card {
-	background-color: var(--card);
-	border-color: color-mix(
-		in oklab,
-		var(--border),
-		transparent calc((1 - var(--card-border-alpha, var(--border-alpha, 1))) * 100%)
-	);
-	box-shadow: 0 0 var(--shadow-spread)
-		color-mix(in oklab, var(--shadow-color), transparent calc((1 - var(--shadow-alpha, 0)) * 100%))
-		!important;
-}
+@layer components {
+	/*
+	 * Surfaces — themed background / border (and card shadow) for component
+	 * chrome. Tailwind utilities like `bg-*`/`border-*` on the same element
+	 * intentionally override these.
+	 */
+	.kala-surface-card {
+		background-color: var(--card);
+		border-color: color-mix(
+			in oklab,
+			var(--border),
+			transparent
+				calc((1 - var(--card-border-alpha, var(--border-alpha, 1))) * 100%)
+		);
+		box-shadow: 0 0 var(--shadow-spread)
+			color-mix(
+				in oklab,
+				var(--shadow-color),
+				transparent calc((1 - var(--shadow-alpha, 0)) * 100%)
+			);
+	}
 
-.theme-input,
-.theme-dropdown {
-	background-color: var(--card) !important;
-	border-color: color-mix(
-		in oklab,
-		var(--border),
-		transparent calc((1 - var(--border-alpha, 1)) * 100%)
-	) !important;
-}
+	.kala-surface-input {
+		background-color: var(--card);
+		border-color: color-mix(
+			in oklab,
+			var(--border),
+			transparent calc((1 - var(--border-alpha, 1)) * 100%)
+		);
+	}
 
-.theme-popover {
-	background-color: var(--popover) !important;
-	border-color: color-mix(
-		in oklab,
-		var(--border),
-		transparent calc((1 - var(--border-alpha, 1)) * 100%)
-	) !important;
-}
+	.kala-surface-popover {
+		background-color: var(--popover);
+		border-color: color-mix(
+			in oklab,
+			var(--border),
+			transparent calc((1 - var(--border-alpha, 1)) * 100%)
+		);
+	}
 
-/* Persistent focus rings (always shown, not :focus-visible). */
-.ring-standard {
-	--tw-ring-offset-width: 2px;
-	--tw-ring-offset-color: var(--ring-offset-color);
-	--tw-ring-color: var(--ring);
-	outline: none;
-	box-shadow:
-		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
-		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-}
+	/* Persistent rings — always shown, not only while focused. */
+	.kala-ring {
+		--tw-ring-offset-width: 2px;
+		--tw-ring-offset-color: var(--ring-offset-color);
+		--tw-ring-color: var(--ring);
+		outline: none;
+		box-shadow:
+			0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+			0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+	}
 
-.ring-destructive {
-	--tw-ring-offset-width: 2px;
-	--tw-ring-offset-color: var(--ring-offset-color);
-	--tw-ring-color: var(--destructive);
-	outline: none;
-	box-shadow:
-		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
-		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-}
+	.kala-ring-destructive {
+		--tw-ring-offset-width: 2px;
+		--tw-ring-offset-color: var(--ring-offset-color);
+		--tw-ring-color: var(--destructive);
+		outline: none;
+		box-shadow:
+			0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+			0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+	}
 
-.ring-success {
-	--tw-ring-offset-width: 2px;
-	--tw-ring-offset-color: var(--ring-offset-color);
-	--tw-ring-color: var(--success);
-	outline: none;
-	box-shadow:
-		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
-		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-}
+	/* Focus rings — visible only while keyboard-focused. */
+	.kala-focus-ring {
+		outline: none;
+	}
 
-.focus-ring {
-	outline: none;
-}
-.focus-ring:focus-visible {
-	--tw-ring-offset-width: 2px;
-	--tw-ring-offset-color: var(--ring-offset-color);
-	--tw-ring-color: var(--ring);
-	box-shadow:
-		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
-		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-}
+	.kala-focus-ring:focus-visible {
+		--tw-ring-offset-width: 2px;
+		--tw-ring-offset-color: var(--ring-offset-color);
+		--tw-ring-color: var(--ring);
+		box-shadow:
+			0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+			0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+	}
 
-.focus-within-ring {
-	outline: none;
-}
-.focus-within-ring:focus-within {
-	--tw-ring-offset-width: 2px;
-	--tw-ring-offset-color: var(--ring-offset-color);
-	--tw-ring-color: var(--ring);
-	box-shadow:
-		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
-		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-}
+	.kala-focus-within-ring {
+		outline: none;
+	}
 
-.focus-ring-destructive {
-	outline: none;
-}
-.focus-ring-destructive:focus-visible {
-	--tw-ring-offset-width: 2px;
-	--tw-ring-offset-color: var(--ring-offset-color);
-	--tw-ring-color: var(--destructive);
-	box-shadow:
-		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
-		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-}
+	.kala-focus-within-ring:focus-within {
+		--tw-ring-offset-width: 2px;
+		--tw-ring-offset-color: var(--ring-offset-color);
+		--tw-ring-color: var(--ring);
+		box-shadow:
+			0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+			0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+	}
 
-.focus-ring-success {
-	outline: none;
-}
-.focus-ring-success:focus-visible {
-	--tw-ring-offset-width: 2px;
-	--tw-ring-offset-color: var(--ring-offset-color);
-	--tw-ring-color: var(--success);
-	box-shadow:
-		0 0 0 var(--tw-ring-offset-width) var(--ring-offset-color),
-		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-}
+	.kala-focus-ring-destructive {
+		outline: none;
+	}
 
-.focus-within-ring-destructive {
-	outline: none;
-}
-.focus-within-ring-destructive:focus-within {
-	--tw-ring-offset-width: 2px;
-	--tw-ring-offset-color: var(--ring-offset-color);
-	--tw-ring-color: var(--destructive);
-	box-shadow:
-		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
-		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-}
+	.kala-focus-ring-destructive:focus-visible {
+		--tw-ring-offset-width: 2px;
+		--tw-ring-offset-color: var(--ring-offset-color);
+		--tw-ring-color: var(--destructive);
+		box-shadow:
+			0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+			0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+	}
 
-.focus-visible-ring-success {
-	outline: none;
-}
-.focus-visible-ring-success:focus-visible {
-	--tw-ring-offset-width: 2px;
-	--tw-ring-offset-color: var(--ring-offset-color);
-	--tw-ring-color: var(--success);
-	box-shadow:
-		0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
-		0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+	.kala-focus-ring-success {
+		outline: none;
+	}
+
+	.kala-focus-ring-success:focus-visible {
+		--tw-ring-offset-width: 2px;
+		--tw-ring-offset-color: var(--ring-offset-color);
+		--tw-ring-color: var(--success);
+		box-shadow:
+			0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+			0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+	}
+
+	.kala-focus-within-ring-destructive {
+		outline: none;
+	}
+
+	.kala-focus-within-ring-destructive:focus-within {
+		--tw-ring-offset-width: 2px;
+		--tw-ring-offset-color: var(--ring-offset-color);
+		--tw-ring-color: var(--destructive);
+		box-shadow:
+			0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color),
+			0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {

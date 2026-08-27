@@ -1,4 +1,4 @@
-import { render, screen, } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import {
@@ -130,7 +130,9 @@ describe("Select", () => {
 				</SelectContent>
 			</Select>,
 		);
-		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
 	});
 
 	it("should render loading skeleton with sm size", () => {
@@ -256,9 +258,7 @@ describe("Select", () => {
 	});
 
 	it("should render SelectSeparator with custom className", () => {
-		const { container } = render(
-			<SelectSeparator className="custom-sep" />,
-		);
+		const { container } = render(<SelectSeparator className="custom-sep" />);
 		expect(container.firstChild).toHaveClass("custom-sep");
 	});
 
@@ -356,7 +356,9 @@ describe("Select", () => {
 		);
 		const trigger = screen.getByRole("combobox");
 		expect(trigger).toBeInTheDocument();
-		expect(document.querySelector('[data-slot="skeleton"]')).not.toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).not.toBeInTheDocument();
 	});
 
 	it("should render SelectScrollUpButton with custom className inside SelectContent", async () => {

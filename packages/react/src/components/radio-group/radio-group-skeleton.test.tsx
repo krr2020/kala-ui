@@ -28,13 +28,17 @@ describe("RadioGroupSkeleton", () => {
 	it("renders default 3 options", () => {
 		const { container } = render(<RadioGroupSkeleton />);
 		// Each option has a radio circle (h-4 w-4 rounded-full flex-shrink-0)
-		const circles = container.querySelectorAll(".h-4.w-4.rounded-full.flex-shrink-0");
+		const circles = container.querySelectorAll(
+			".h-4.w-4.rounded-full.flex-shrink-0",
+		);
 		expect(circles).toHaveLength(3);
 	});
 
 	it("renders correct number of options with optionCount prop", () => {
 		const { container } = render(<RadioGroupSkeleton optionCount={5} />);
-		const circles = container.querySelectorAll(".h-4.w-4.rounded-full.flex-shrink-0");
+		const circles = container.querySelectorAll(
+			".h-4.w-4.rounded-full.flex-shrink-0",
+		);
 		expect(circles).toHaveLength(5);
 	});
 

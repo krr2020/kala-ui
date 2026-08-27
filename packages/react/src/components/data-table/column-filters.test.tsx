@@ -191,7 +191,9 @@ describe("ColumnFilters", () => {
 				onClearAll={vi.fn()}
 			/>,
 		);
-		const input = screen.getByPlaceholderText("Search by name") as HTMLInputElement;
+		const input = screen.getByPlaceholderText(
+			"Search by name",
+		) as HTMLInputElement;
 		expect(input.value).toBe("John");
 	});
 

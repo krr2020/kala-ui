@@ -1,11 +1,11 @@
 import * as React from "react";
 import { cardStyles } from "../../config/card";
 import { cn } from "../../lib/utils";
-import type { CardSkeletonConfig } from "../skeleton/skeleton.types";
-import { CardSkeleton } from "./card-skeleton";
 import { Box } from "../box";
 import { Heading } from "../heading";
+import type { CardSkeletonConfig } from "../skeleton/skeleton.types";
 import { Text } from "../text";
+import { CardSkeleton } from "./card-skeleton";
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 	isLoading?: boolean;
@@ -58,7 +58,12 @@ function CardTitle({
 	...props
 }: React.HTMLAttributes<HTMLHeadingElement>) {
 	return (
-		<Heading as="h5" size="h6" className={cn(cardStyles.title, className)} {...props} />
+		<Heading
+			as="h5"
+			size="h6"
+			className={cn(cardStyles.title, className)}
+			{...props}
+		/>
 	);
 }
 
@@ -245,14 +250,14 @@ function CardMarker({
 
 export {
 	Card,
-	CardHeader,
-	CardFooter,
-	CardTitle,
-	CardSubtitle,
-	CardDescription,
 	CardAction,
 	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
 	CardImage,
 	CardImageOverlay,
 	CardMarker,
+	CardSubtitle,
+	CardTitle,
 };

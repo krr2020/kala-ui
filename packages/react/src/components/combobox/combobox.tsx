@@ -123,7 +123,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 					>
 						<Command
 							className={cn(
-								"rounded-lg border bg-popover text-popover-foreground theme-dropdown",
+								"rounded-lg border bg-popover text-popover-foreground kala-surface-popover",
 								matchTriggerWidth ? "w-full" : "min-w-[200px]",
 							)}
 							shouldFilter={isAsync ? false : undefined}

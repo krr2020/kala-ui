@@ -226,7 +226,7 @@ function DropdownMenuSubContent({
 			data-slot="dropdown-menu-sub-content"
 			className={cn(
 				"z-30 min-w-[10rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden",
-				"rounded-md border bg-popover p-1 text-popover-foreground theme-dropdown",
+				"rounded-md border bg-popover p-1 text-popover-foreground kala-surface-popover",
 				"data-[state=open]:animate-in data-[state=closed]:animate-out",
 				"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
 				"data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
@@ -241,18 +241,18 @@ function DropdownMenuSubContent({
 
 export {
 	DropdownMenu,
-	DropdownMenuPortal,
-	DropdownMenuTrigger,
+	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
 	DropdownMenuGroup,
-	DropdownMenuLabel,
 	DropdownMenuItem,
-	DropdownMenuCheckboxItem,
+	DropdownMenuLabel,
+	DropdownMenuPortal,
 	DropdownMenuRadioGroup,
 	DropdownMenuRadioItem,
 	DropdownMenuSeparator,
 	DropdownMenuShortcut,
 	DropdownMenuSub,
-	DropdownMenuSubTrigger,
 	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
+	DropdownMenuTrigger,
 };

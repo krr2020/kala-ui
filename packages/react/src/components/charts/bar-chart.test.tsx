@@ -73,7 +73,10 @@ describe("BarChart", () => {
 
 	it("should pass bar type to ApexChart", async () => {
 		render(<BarChart {...defaultProps} />);
-		expect(await screen.findByTestId("apex-chart")).toHaveAttribute("data-type", "bar");
+		expect(await screen.findByTestId("apex-chart")).toHaveAttribute(
+			"data-type",
+			"bar",
+		);
 	});
 
 	it("should pass series data to the chart", async () => {
@@ -106,13 +109,13 @@ describe("BarChart", () => {
 
 	it("should show loading skeleton when isLoading is true", async () => {
 		render(<BarChart {...defaultProps} isLoading />);
-		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
 	});
 
 	it("should show empty state when series has empty data", async () => {
-		render(
-			<BarChart series={[]} categories={defaultProps.categories} />,
-		);
+		render(<BarChart series={[]} categories={defaultProps.categories} />);
 		expect(screen.getByText("No data available")).toBeInTheDocument();
 	});
 
@@ -151,14 +154,14 @@ describe("BarChart", () => {
 		render(
 			<BarChart series={[]} categories={defaultProps.categories} isLoading />,
 		);
-		expect(document.querySelector('[data-slot="skeleton"]')).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-slot="skeleton"]'),
+		).toBeInTheDocument();
 		expect(screen.queryByText("No data available")).not.toBeInTheDocument();
 	});
 
 	it("should use custom colors when provided", async () => {
-		render(
-			<BarChart {...defaultProps} colors={["#ff0000", "#00ff00"]} />,
-		);
+		render(<BarChart {...defaultProps} colors={["#ff0000", "#00ff00"]} />);
 		const optionsEl = screen.getByTestId("chart-options");
 		expect(optionsEl.textContent).toContain("#ff0000");
 	});
@@ -209,9 +212,7 @@ describe("BarChart", () => {
 			{ name: "2024", data: [30, 40, 45] },
 			{ name: "2023", data: [20, 25, 30] },
 		];
-		render(
-			<BarChart series={multiSeries} categories={["Q1", "Q2", "Q3"]} />,
-		);
+		render(<BarChart series={multiSeries} categories={["Q1", "Q2", "Q3"]} />);
 		const seriesEl = screen.getByTestId("chart-series");
 		expect(seriesEl.textContent).toContain("2024");
 		expect(seriesEl.textContent).toContain("2023");

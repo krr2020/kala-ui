@@ -1,5 +1,5 @@
 export const tabsListStyles = {
-		base: "flex items-center w-fit rounded-[var(--kala-radius-card)] text-muted-foreground relative",
+	base: "flex items-center w-fit rounded-[var(--kala-radius-card)] text-muted-foreground relative",
 	variants: {
 		variant: {
 			default: "bg-muted p-1 h-[var(--kala-control-h)]",
@@ -19,7 +19,7 @@ export const tabsListStyles = {
 };
 
 export const tabsTriggerStyles = {
-	base: "inline-flex items-center justify-center whitespace-nowrap px-3 py-1.5 text-sm font-medium transition-all focus-ring disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden",
+	base: "inline-flex items-center justify-center whitespace-nowrap px-3 py-1.5 text-sm font-medium transition-all kala-focus-ring disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden",
 	variants: {
 		variant: {
 			default:
@@ -35,5 +35,5 @@ export const tabsTriggerStyles = {
 };
 
 export const tabsContentStyles = {
-	base: "mt-2 focus-ring",
+	base: "mt-2 kala-focus-ring",
 };

@@ -95,23 +95,37 @@ describe("SessionCard", () => {
 	it("renders without location when location is undefined", () => {
 		const sessionNoLocation = { ...mockSession, location: undefined };
 		render(<SessionCard session={sessionNoLocation} />);
-		expect(screen.queryByText("San Francisco, CA, USA")).not.toBeInTheDocument();
+		expect(
+			screen.queryByText("San Francisco, CA, USA"),
+		).not.toBeInTheDocument();
 	});
 
 	it("renders with mobile device icon", () => {
-		const mobileSession = { ...mockSession, device: "Mobile Phone", isCurrent: false };
+		const mobileSession = {
+			...mockSession,
+			device: "Mobile Phone",
+			isCurrent: false,
+		};
 		render(<SessionCard session={mobileSession} onRevoke={vi.fn()} />);
 		expect(screen.getByText(/Mobile Phone/)).toBeInTheDocument();
 	});
 
 	it("renders with tablet device icon", () => {
-		const tabletSession = { ...mockSession, device: "Tablet", isCurrent: false };
+		const tabletSession = {
+			...mockSession,
+			device: "Tablet",
+			isCurrent: false,
+		};
 		render(<SessionCard session={tabletSession} onRevoke={vi.fn()} />);
 		expect(screen.getByText(/Tablet/)).toBeInTheDocument();
 	});
 
 	it("renders with unknown device icon", () => {
-		const unknownSession = { ...mockSession, device: "Unknown Device", isCurrent: false };
+		const unknownSession = {
+			...mockSession,
+			device: "Unknown Device",
+			isCurrent: false,
+		};
 		render(<SessionCard session={unknownSession} onRevoke={vi.fn()} />);
 		expect(screen.getByText(/Unknown Device/)).toBeInTheDocument();
 	});
@@ -130,7 +144,11 @@ describe("SessionCard", () => {
 
 	it("renders with isLoading and skeletonConfig (uses SessionCardSkeleton)", () => {
 		render(
-			<SessionCard session={mockSession} isLoading skeletonConfig={{ showBadge: true }} />,
+			<SessionCard
+				session={mockSession}
+				isLoading
+				skeletonConfig={{ showBadge: true }}
+			/>,
 		);
 		expect(screen.queryByText("Chrome 120")).not.toBeInTheDocument();
 	});
@@ -154,7 +172,9 @@ describe("SessionCard", () => {
 
 	it("renders with data-comp attribute", () => {
 		const { container } = render(<SessionCard session={mockSession} />);
-		expect(container.querySelector('[data-comp="session-card"]')).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-comp="session-card"]'),
+		).toBeInTheDocument();
 	});
 
 	it("renders 'Just now' for very recent timestamp", () => {
@@ -243,7 +263,11 @@ describe("SessionCard", () => {
 	});
 
 	it("renders with computer device icon", () => {
-		const computerSession = { ...mockSession, device: "Computer", isCurrent: false };
+		const computerSession = {
+			...mockSession,
+			device: "Computer",
+			isCurrent: false,
+		};
 		render(<SessionCard session={computerSession} onRevoke={vi.fn()} />);
 		expect(screen.getByText(/Computer/)).toBeInTheDocument();
 	});
@@ -256,7 +280,11 @@ describe("SessionCard", () => {
 	});
 
 	it("renders with iPad device icon", () => {
-		const ipadSession = { ...mockSession, device: "iPad Pro", isCurrent: false };
+		const ipadSession = {
+			...mockSession,
+			device: "iPad Pro",
+			isCurrent: false,
+		};
 		render(<SessionCard session={ipadSession} onRevoke={vi.fn()} />);
 		expect(screen.getByText(/iPad Pro/)).toBeInTheDocument();
 	});
@@ -288,7 +316,9 @@ describe("SessionCard", () => {
 				skeleton={<div data-testid="skel">Loading</div>}
 			/>,
 		);
-		expect(container.querySelector('[data-comp="session-card"]')).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-comp="session-card"]'),
+		).toBeInTheDocument();
 	});
 
 	it("renders IP address for non-current session", () => {

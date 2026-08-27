@@ -88,13 +88,17 @@ describe("Badge", () => {
 
 	it("should render loading skeleton when isLoading is true", () => {
 		const { container } = render(<Badge isLoading>Loading</Badge>);
-		expect(container.querySelector('[class*="animate-pulse"]')).toBeInTheDocument();
+		expect(
+			container.querySelector('[class*="animate-pulse"]'),
+		).toBeInTheDocument();
 		expect(screen.queryByText("Loading")).not.toBeInTheDocument();
 	});
 
 	it("should render loading skeleton with custom className", () => {
 		const { container } = render(
-			<Badge isLoading className="custom-loading">Loading</Badge>,
+			<Badge isLoading className="custom-loading">
+				Loading
+			</Badge>,
 		);
 		const skeleton = container.querySelector('[class*="animate-pulse"]');
 		expect(skeleton?.className).toContain("custom-loading");
@@ -120,7 +124,9 @@ describe("Badge", () => {
 
 	it("should render as span when asChild is false (default)", () => {
 		const { container } = render(<Badge>Span Badge</Badge>);
-		expect(container.querySelector("span[data-slot='badge']")).toBeInTheDocument();
+		expect(
+			container.querySelector("span[data-slot='badge']"),
+		).toBeInTheDocument();
 	});
 
 	it("should not render data-slot when isLoading", () => {

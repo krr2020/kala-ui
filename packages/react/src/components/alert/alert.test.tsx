@@ -377,9 +377,7 @@ describe("Alert", () => {
 
 	it("should render built-in icon when hasCustomIcon is false and showIcon is true", () => {
 		const { container } = render(
-			<Alert variant="success">
-				Plain text only
-			</Alert>,
+			<Alert variant="success">Plain text only</Alert>,
 		);
 		const alert = container.querySelector('[data-slot="alert"]');
 		// Only text children (no AlertTitle/AlertDescription), so hasCustomIcon is false

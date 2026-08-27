@@ -6,7 +6,10 @@ describe("AlertSkeleton", () => {
 	it("renders with default variant", () => {
 		render(<AlertSkeleton />);
 		expect(screen.getByTestId("alert-skeleton")).toBeInTheDocument();
-		expect(screen.getByTestId("alert-skeleton")).toHaveAttribute("role", "alert");
+		expect(screen.getByTestId("alert-skeleton")).toHaveAttribute(
+			"role",
+			"alert",
+		);
 	});
 
 	it("renders with custom data-testid", () => {

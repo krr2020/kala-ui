@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Spoiler } from "./spoiler";
 
 // Store original scrollHeight descriptor
@@ -100,13 +100,17 @@ describe("Spoiler", () => {
 
 		// Button should appear because scrollHeight (200) > maxHeight (10)
 		await waitFor(() => {
-			expect(screen.getByRole("button", { name: /show more/i })).toBeInTheDocument();
+			expect(
+				screen.getByRole("button", { name: /show more/i }),
+			).toBeInTheDocument();
 		});
 
 		await user.click(screen.getByRole("button", { name: /show more/i }));
 
 		await waitFor(() => {
-			expect(screen.getByRole("button", { name: /show less/i })).toBeInTheDocument();
+			expect(
+				screen.getByRole("button", { name: /show less/i }),
+			).toBeInTheDocument();
 		});
 	});
 
@@ -131,7 +135,9 @@ describe("Spoiler", () => {
 		);
 
 		await waitFor(() => {
-			expect(screen.getByRole("button", { name: /expand/i })).toBeInTheDocument();
+			expect(
+				screen.getByRole("button", { name: /expand/i }),
+			).toBeInTheDocument();
 		});
 	});
 
@@ -147,18 +153,24 @@ describe("Spoiler", () => {
 
 		// Expand
 		await waitFor(() => {
-			expect(screen.getByRole("button", { name: /show more/i })).toBeInTheDocument();
+			expect(
+				screen.getByRole("button", { name: /show more/i }),
+			).toBeInTheDocument();
 		});
 		await user.click(screen.getByRole("button", { name: /show more/i }));
 
 		// Collapse
 		await waitFor(() => {
-			expect(screen.getByRole("button", { name: /show less/i })).toBeInTheDocument();
+			expect(
+				screen.getByRole("button", { name: /show less/i }),
+			).toBeInTheDocument();
 		});
 		await user.click(screen.getByRole("button", { name: /show less/i }));
 
 		await waitFor(() => {
-			expect(screen.getByRole("button", { name: /show more/i })).toBeInTheDocument();
+			expect(
+				screen.getByRole("button", { name: /show more/i }),
+			).toBeInTheDocument();
 		});
 	});
 
@@ -284,7 +296,9 @@ describe("Spoiler", () => {
 				Content
 			</Spoiler>,
 		);
-		expect(container.querySelector('[data-testid="spoiler-el"]')).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-testid="spoiler-el"]'),
+		).toBeInTheDocument();
 		expect(container.querySelector('[id="my-spoiler"]')).toBeInTheDocument();
 	});
 });

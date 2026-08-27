@@ -122,10 +122,7 @@ describe("Banner", () => {
 
 	it("should render with isLoading and custom skeleton", () => {
 		render(
-			<Banner
-				isLoading
-				skeleton={<div data-testid="custom-skel">Loading</div>}
-			>
+			<Banner isLoading skeleton={<div data-testid="custom-skel">Loading</div>}>
 				Content
 			</Banner>,
 		);

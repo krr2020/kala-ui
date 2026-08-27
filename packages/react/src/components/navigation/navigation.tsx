@@ -153,7 +153,7 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
 						// biome-ignore lint/a11y/useKeyWithClickEvents: Stop propagation is not an interactive action
 						<nav
 							data-comp="navigation"
-							className="mt-2 flex flex-col gap-2 bg-popover border rounded-md p-3 text-popover-foreground theme-popover"
+							className="mt-2 flex flex-col gap-2 bg-popover border rounded-md p-3 text-popover-foreground kala-surface-popover"
 							aria-label="Mobile navigation"
 							onClick={(e) => e.stopPropagation()}
 						>

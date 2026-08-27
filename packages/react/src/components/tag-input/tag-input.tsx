@@ -91,7 +91,10 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 					if (!transformed) continue;
 
 					// Check max tags limit
-					if (maxTags !== undefined && value.length + accepted.length >= maxTags) {
+					if (
+						maxTags !== undefined &&
+						value.length + accepted.length >= maxTags
+					) {
 						break;
 					}
 
@@ -193,9 +196,9 @@ export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 			<div className="relative w-full">
 				<div
 					className={cn(
-						"flex min-h-[2.5rem] w-full flex-wrap gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm theme-input",
-						"focus-within-ring",
-						hasError && "border-destructive focus-within-ring-destructive",
+						"flex min-h-[2.5rem] w-full flex-wrap gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm kala-surface-input",
+						"kala-focus-within-ring",
+						hasError && "border-destructive kala-focus-within-ring-destructive",
 						disabled && "cursor-not-allowed bg-muted",
 						value.length > 0 && "pr-10",
 						className,

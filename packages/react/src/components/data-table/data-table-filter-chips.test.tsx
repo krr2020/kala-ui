@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import type { FilterableColumn, FilterConfig } from "./data-table.types";
 import { DataTableFilterChips } from "./data-table-filter-chips";
-import type { FilterConfig, FilterableColumn } from "./data-table.types";
 
 interface TestRow {
 	id: string;
@@ -31,7 +31,7 @@ describe("DataTableFilterChips", () => {
 		expect(container.innerHTML).toBe("");
 	});
 
-it("renders chips for single-value filters (no matching option – shows raw value)", () => {
+	it("renders chips for single-value filters (no matching option – shows raw value)", () => {
 		const filterConfigs: FilterConfig<TestRow>[] = [
 			{ key: "status", operator: "equals", value: "active" },
 		];
@@ -50,7 +50,15 @@ it("renders chips for single-value filters (no matching option – shows raw val
 
 	it("renders option labels when options match", () => {
 		const columnsWithLabels: FilterableColumn<TestRow>[] = [
-			{ key: "status", label: "Status", type: "select", options: [{ label: "Active", value: "active" }, { label: "Pending", value: "pending" }] },
+			{
+				key: "status",
+				label: "Status",
+				type: "select",
+				options: [
+					{ label: "Active", value: "active" },
+					{ label: "Pending", value: "pending" },
+				],
+			},
 		];
 		const filterConfigs: FilterConfig<TestRow>[] = [
 			{ key: "status", operator: "equals", value: "active" },

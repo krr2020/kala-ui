@@ -93,8 +93,14 @@ describe("Rating", () => {
 
 	it("should render with controlled value", () => {
 		render(<Rating value={4} />);
-		expect(screen.getByLabelText("4 stars")).toHaveAttribute("aria-pressed", "true");
-		expect(screen.getByLabelText("5 stars")).toHaveAttribute("aria-pressed", "false");
+		expect(screen.getByLabelText("4 stars")).toHaveAttribute(
+			"aria-pressed",
+			"true",
+		);
+		expect(screen.getByLabelText("5 stars")).toHaveAttribute(
+			"aria-pressed",
+			"false",
+		);
 	});
 
 	it("should render with sm size", () => {
@@ -131,13 +137,15 @@ describe("Rating", () => {
 		const stars = screen.getAllByRole("button");
 		// Star 3 should show half fill since 2.5 >= 2.5
 		const star3 = stars[2];
-		const filledStars = star3.querySelectorAll(".clip-path-\\[inset\\(0_50\\%_0_0\\)\\]");
+		const filledStars = star3.querySelectorAll(
+			".clip-path-\\[inset\\(0_50\\%_0_0\\)\\]",
+		);
 		expect(filledStars.length).toBe(1);
 	});
 
 	it("should render empty stars for value 0", () => {
 		const { container } = render(<Rating value={0} />);
-		const filledOverlays = container.querySelectorAll(".fill-yellow-400");
+		const filledOverlays = container.querySelectorAll(".fill-warning");
 		expect(filledOverlays.length).toBe(0);
 	});
 
@@ -154,18 +162,28 @@ describe("Rating", () => {
 
 	it("should apply disabled opacity", () => {
 		const { container } = render(<Rating disabled />);
-		expect(container.querySelector('[data-slot="rating"]')).toHaveClass("opacity-50");
+		expect(container.querySelector('[data-slot="rating"]')).toHaveClass(
+			"opacity-50",
+		);
 	});
 
 	it("should not apply disabled opacity when not disabled", () => {
 		const { container } = render(<Rating />);
-		expect(container.querySelector('[data-slot="rating"]')).not.toHaveClass("opacity-50");
+		expect(container.querySelector('[data-slot="rating"]')).not.toHaveClass(
+			"opacity-50",
+		);
 	});
 
 	it("should use defaultValue for initial internal value", () => {
 		render(<Rating defaultValue={2} />);
-		expect(screen.getByLabelText("2 stars")).toHaveAttribute("aria-pressed", "true");
-		expect(screen.getByLabelText("3 stars")).toHaveAttribute("aria-pressed", "false");
+		expect(screen.getByLabelText("2 stars")).toHaveAttribute(
+			"aria-pressed",
+			"true",
+		);
+		expect(screen.getByLabelText("3 stars")).toHaveAttribute(
+			"aria-pressed",
+			"false",
+		);
 	});
 
 	it("should render cursor-default when disabled", () => {
@@ -186,7 +204,9 @@ describe("Rating", () => {
 
 		const star2 = screen.getByLabelText("2 stars");
 		const rect = { width: 20, left: 100 };
-		vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(rect as DOMRect);
+		vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(
+			rect as DOMRect,
+		);
 
 		fireEvent.click(star2, { clientX: 100 + 5 }); // left half
 
@@ -200,7 +220,9 @@ describe("Rating", () => {
 
 		const star3 = screen.getByLabelText("3 stars");
 		const rect = { width: 20, left: 100 };
-		vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(rect as DOMRect);
+		vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(
+			rect as DOMRect,
+		);
 
 		fireEvent.click(star3, { clientX: 100 + 15 }); // right half
 
@@ -231,7 +253,9 @@ describe("Rating", () => {
 
 		const star2 = screen.getByLabelText("2 stars");
 		const rect = { width: 20, left: 100 };
-		vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(rect as DOMRect);
+		vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(
+			rect as DOMRect,
+		);
 
 		fireEvent.mouseMove(star2, { clientX: 100 + 4 }); // left half
 
@@ -244,7 +268,9 @@ describe("Rating", () => {
 
 		const star2 = screen.getByLabelText("2 stars");
 		const rect = { width: 20, left: 100 };
-		vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(rect as DOMRect);
+		vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(
+			rect as DOMRect,
+		);
 
 		fireEvent.mouseMove(star2, { clientX: 100 + 16 }); // right half
 
@@ -279,7 +305,7 @@ describe("Rating", () => {
 		render(<Rating value={2.5} allowHalf />);
 		const stars = screen.getAllByRole("button");
 		const star3 = stars[2];
-		const filledOverlay = star3.querySelector(".fill-yellow-400") as HTMLElement;
+		const filledOverlay = star3.querySelector(".fill-warning") as HTMLElement;
 		expect(filledOverlay).toBeInTheDocument();
 		expect(filledOverlay.style.clipPath).toBe("inset(0 50% 0 0)");
 	});
@@ -288,7 +314,7 @@ describe("Rating", () => {
 		render(<Rating value={3} />);
 		const stars = screen.getAllByRole("button");
 		const star1 = stars[0];
-		const filledOverlay = star1.querySelector(".fill-yellow-400") as HTMLElement;
+		const filledOverlay = star1.querySelector(".fill-warning") as HTMLElement;
 		expect(filledOverlay).toBeInTheDocument();
 		expect(filledOverlay.style.clipPath).toBe("");
 	});
@@ -298,7 +324,7 @@ describe("Rating", () => {
 		const stars = screen.getAllByRole("button");
 		const star3 = stars[2];
 		// Star 3 should have no filled overlay since value=1 < 3
-		const filledOverlay = star3.querySelector(".fill-yellow-400");
+		const filledOverlay = star3.querySelector(".fill-warning");
 		expect(filledOverlay).not.toBeInTheDocument();
 	});
 
@@ -330,7 +356,7 @@ describe("Rating", () => {
 		fireEvent.mouseMove(star4);
 
 		// Star 4 should now have filled overlay visible (from hover)
-		const filledOverlay = star4.querySelector(".fill-yellow-400");
+		const filledOverlay = star4.querySelector(".fill-warning");
 		expect(filledOverlay).toBeInTheDocument();
 	});
 
@@ -344,7 +370,7 @@ describe("Rating", () => {
 		fireEvent.mouseLeave(star4.closest("fieldset")!);
 
 		// Star 4 should not have filled overlay since value=1
-		const filledOverlay = star4.querySelector(".fill-yellow-400");
+		const filledOverlay = star4.querySelector(".fill-warning");
 		expect(filledOverlay).not.toBeInTheDocument();
 	});
 

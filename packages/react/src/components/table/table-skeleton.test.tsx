@@ -6,8 +6,12 @@ describe("TableSkeleton", () => {
 	it("renders with default rows and columns", () => {
 		const { container } = render(<TableSkeleton />);
 		expect(container.querySelector('[data-slot="table"]')).toBeInTheDocument();
-		expect(container.querySelector('[data-slot="table-header"]')).toBeInTheDocument();
-		expect(container.querySelector('[data-slot="table-body"]')).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="table-header"]'),
+		).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="table-body"]'),
+		).toBeInTheDocument();
 	});
 
 	it("renders 5 rows by default", () => {
@@ -24,7 +28,9 @@ describe("TableSkeleton", () => {
 
 	it("renders custom number of columns", () => {
 		const { container } = render(<TableSkeleton columns={6} />);
-		const headerCells = container.querySelectorAll('thead [data-slot="table-head"]');
+		const headerCells = container.querySelectorAll(
+			'thead [data-slot="table-head"]',
+		);
 		expect(headerCells.length).toBe(6);
 	});
 
@@ -37,7 +43,9 @@ describe("TableSkeleton", () => {
 
 	it("renders skeleton placeholders when no headers", () => {
 		const { container } = render(<TableSkeleton columns={3} />);
-		const headerSkeletons = container.querySelectorAll('thead [data-slot="skeleton"]');
+		const headerSkeletons = container.querySelectorAll(
+			'thead [data-slot="skeleton"]',
+		);
 		expect(headerSkeletons.length).toBe(3);
 	});
 
@@ -45,14 +53,18 @@ describe("TableSkeleton", () => {
 		const { container } = render(
 			<TableSkeleton columnWidths={["200px", "300px"]} />,
 		);
-		const headerCells = container.querySelectorAll('thead [data-slot="table-head"]');
+		const headerCells = container.querySelectorAll(
+			'thead [data-slot="table-head"]',
+		);
 		expect((headerCells[0] as HTMLElement).style.width).toBe("200px");
 		expect((headerCells[1] as HTMLElement).style.width).toBe("300px");
 	});
 
 	it("renders with showActions", () => {
 		const { container } = render(<TableSkeleton showActions />);
-		const headerCells = container.querySelectorAll('thead [data-slot="table-head"]');
+		const headerCells = container.querySelectorAll(
+			'thead [data-slot="table-head"]',
+		);
 		// 4 default columns + 1 action = 5
 		expect(headerCells.length).toBe(5);
 	});
@@ -64,21 +76,27 @@ describe("TableSkeleton", () => {
 
 	it("renders with showCheckboxes", () => {
 		const { container } = render(<TableSkeleton showCheckboxes />);
-		const headerCells = container.querySelectorAll('thead [data-slot="table-head"]');
+		const headerCells = container.querySelectorAll(
+			'thead [data-slot="table-head"]',
+		);
 		// 1 checkbox + 4 default columns = 5
 		expect(headerCells.length).toBe(5);
 	});
 
 	it("renders checkbox cell in body rows", () => {
 		const { container } = render(<TableSkeleton showCheckboxes />);
-		const checkboxCells = container.querySelectorAll('tbody [data-slot="table-cell"]');
+		const checkboxCells = container.querySelectorAll(
+			'tbody [data-slot="table-cell"]',
+		);
 		// Each row has 1 checkbox + 4 columns = 5 cells, 5 rows = 25
 		expect(checkboxCells.length).toBe(25);
 	});
 
 	it("renders action cell in body rows", () => {
 		const { container } = render(<TableSkeleton showActions />);
-		const actionCells = container.querySelectorAll('tbody [data-slot="table-cell"]');
+		const actionCells = container.querySelectorAll(
+			'tbody [data-slot="table-cell"]',
+		);
 		// Each row has 4 columns + 1 action = 5 cells, 5 rows = 25
 		expect(actionCells.length).toBe(25);
 	});
@@ -106,7 +124,9 @@ describe("TableSkeleton", () => {
 				stickyHeader
 			/>,
 		);
-		const headerCells = container.querySelectorAll('thead [data-slot="table-head"]');
+		const headerCells = container.querySelectorAll(
+			'thead [data-slot="table-head"]',
+		);
 		// 1 checkbox + 3 columns + 1 action = 5
 		expect(headerCells.length).toBe(5);
 		const rows = container.querySelectorAll('tbody [data-slot="table-row"]');
@@ -116,7 +136,11 @@ describe("TableSkeleton", () => {
 	it("renders data-slot attributes on all elements", () => {
 		const { container } = render(<TableSkeleton />);
 		expect(container.querySelector('[data-slot="table"]')).toBeInTheDocument();
-		expect(container.querySelector('[data-slot="table-header"]')).toBeInTheDocument();
-		expect(container.querySelector('[data-slot="table-body"]')).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="table-header"]'),
+		).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-slot="table-body"]'),
+		).toBeInTheDocument();
 	});
 });
