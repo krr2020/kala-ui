@@ -41,6 +41,7 @@ export function MetricCardSkeleton({
 }: MetricCardSkeletonProps) {
 	return (
 		<Card
+			data-kala-component="metric-card-skeleton"
 			ref={React.createRef<HTMLDivElement>()}
 			data-testid={dataTestId || "metric-card-skeleton"}
 			className={cn(className)}

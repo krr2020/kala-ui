@@ -229,7 +229,11 @@ function MultiSelect({
 	};
 
 	return (
-		<PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
+		<PopoverPrimitive.Root
+			data-kala-component="multi-select"
+			open={open}
+			onOpenChange={handleOpenChange}
+		>
 			<div
 				data-slot="multi-select"
 				className={cn(

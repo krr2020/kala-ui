@@ -15,6 +15,7 @@ function Stack({
 }: StackProps) {
 	return (
 		<Flex
+			data-kala-component="stack"
 			ref={ref}
 			direction={direction}
 			gap={gap}

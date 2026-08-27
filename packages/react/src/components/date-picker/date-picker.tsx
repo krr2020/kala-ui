@@ -52,12 +52,19 @@ export function DatePicker({
 
 	if (isLoading) {
 		return (
-			<Skeleton className={cn("h-10 w-[280px] rounded-md", buttonClassName)} />
+			<Skeleton
+				data-kala-component="date-picker"
+				className={cn("h-10 w-[280px] rounded-md", buttonClassName)}
+			/>
 		);
 	}
 
 	return (
-		<Popover open={open} onOpenChange={setOpen}>
+		<Popover
+			data-kala-component="date-picker"
+			open={open}
+			onOpenChange={setOpen}
+		>
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
@@ -147,12 +154,19 @@ export function DateRangePicker({
 
 	if (isLoading) {
 		return (
-			<Skeleton className={cn("h-10 w-[300px] rounded-md", buttonClassName)} />
+			<Skeleton
+				data-kala-component="date-picker-date-range-picker"
+				className={cn("h-10 w-[300px] rounded-md", buttonClassName)}
+			/>
 		);
 	}
 
 	return (
-		<Popover open={open} onOpenChange={handleOpenChange}>
+		<Popover
+			data-kala-component="date-picker-date-range-picker"
+			open={open}
+			onOpenChange={handleOpenChange}
+		>
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"

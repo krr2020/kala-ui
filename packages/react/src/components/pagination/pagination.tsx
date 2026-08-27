@@ -39,7 +39,10 @@ function Pagination({
 	});
 
 	return (
-		<PaginationContext.Provider value={pagination}>
+		<PaginationContext.Provider
+			data-kala-component="pagination"
+			value={pagination}
+		>
 			<Box
 				as="nav"
 				aria-label={ariaLabel}
@@ -81,7 +84,10 @@ function PaginationContent({
 	...props
 }: PaginationContentProps) {
 	return (
-		<PaginationVariantContext.Provider value={variant}>
+		<PaginationVariantContext.Provider
+			data-kala-component="pagination-content"
+			value={variant}
+		>
 			<Flex
 				as="ul"
 				align="center"
@@ -101,7 +107,14 @@ function PaginationContent({
 // ============================================================================
 
 function PaginationItem({ className, ...props }: React.ComponentProps<"li">) {
-	return <Box as="li" className={cn("", className)} {...props} />;
+	return (
+		<Box
+			data-kala-component="pagination-item"
+			as="li"
+			className={cn("", className)}
+			{...props}
+		/>
+	);
 }
 
 // ============================================================================
@@ -174,6 +187,7 @@ function PaginationLink({
 	if (href) {
 		return (
 			<Box
+				data-kala-component="pagination-link"
 				as="a"
 				href={href}
 				aria-current={isActive ? "page" : undefined}
@@ -193,6 +207,7 @@ function PaginationLink({
 
 	return (
 		<Box
+			data-kala-component="pagination-link"
 			as="button"
 			type="button"
 			disabled={disabled}
@@ -227,6 +242,7 @@ function PaginationPrevious({
 
 	return (
 		<PaginationLink
+			data-kala-component="pagination-previous"
 			aria-label="Go to previous page"
 			isIconButton={!showLabel}
 			className={cn("gap-1", className)}
@@ -260,6 +276,7 @@ function PaginationNext({
 
 	return (
 		<PaginationLink
+			data-kala-component="pagination-next"
 			aria-label="Go to next page"
 			isIconButton={!showLabel}
 			className={cn("gap-1", className)}
@@ -283,6 +300,7 @@ function PaginationEllipsis({
 }: React.ComponentProps<"span">) {
 	return (
 		<Flex
+			data-kala-component="pagination-ellipsis"
 			as="span"
 			align="center"
 			justify="center"

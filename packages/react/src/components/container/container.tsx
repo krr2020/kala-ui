@@ -39,6 +39,7 @@ function Container({
 	const Comp = asChild ? Slot : "div";
 	return (
 		<Comp
+			data-kala-component="container"
 			className={cn(containerVariants({ size, centered, className }))}
 			ref={ref}
 			{...props}

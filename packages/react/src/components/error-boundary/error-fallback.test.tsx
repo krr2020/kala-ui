@@ -28,16 +28,16 @@ describe("ErrorFallback", () => {
 		expect(screen.getByRole("alert")).toBeInTheDocument();
 	});
 
-	it("should have data-comp attribute", () => {
+	it("should have data-kala-component attribute", () => {
 		render(<ErrorFallback />);
-		const el = document.querySelector("[data-comp='error-fallback']");
+		const el = document.querySelector("[data-kala-component='error-fallback']");
 		expect(el).toBeInTheDocument();
 	});
 
 	it("should apply default page variant class", () => {
 		render(<ErrorFallback />);
 		const el = document.querySelector(
-			"[data-comp='error-fallback']",
+			"[data-kala-component='error-fallback']",
 		) as HTMLElement;
 		expect(el).toHaveClass("min-h-[400px]");
 	});
@@ -45,7 +45,7 @@ describe("ErrorFallback", () => {
 	it("should apply section variant class when variant is section", () => {
 		render(<ErrorFallback variant="section" />);
 		const el = document.querySelector(
-			"[data-comp='error-fallback']",
+			"[data-kala-component='error-fallback']",
 		) as HTMLElement;
 		expect(el).toHaveClass("min-h-[200px]");
 	});
@@ -53,7 +53,7 @@ describe("ErrorFallback", () => {
 	it("should apply custom className", () => {
 		render(<ErrorFallback className="custom-error-class" />);
 		const el = document.querySelector(
-			"[data-comp='error-fallback']",
+			"[data-kala-component='error-fallback']",
 		) as HTMLElement;
 		expect(el).toHaveClass("custom-error-class");
 	});
@@ -79,7 +79,7 @@ describe("ErrorFallback", () => {
 	it("should render the warning icon container", () => {
 		render(<ErrorFallback />);
 		const iconContainer = document.querySelector(
-			"[data-comp='error-fallback'] > div:first-child",
+			"[data-kala-component='error-fallback'] > div:first-child",
 		) as HTMLElement;
 		expect(iconContainer).toHaveClass(
 			"mb-4",
@@ -95,7 +95,7 @@ describe("ErrorFallback", () => {
 	it("should apply animate-in fade-in-50 classes", () => {
 		render(<ErrorFallback />);
 		const el = document.querySelector(
-			"[data-comp='error-fallback']",
+			"[data-kala-component='error-fallback']",
 		) as HTMLElement;
 		expect(el).toHaveClass("animate-in", "fade-in-50");
 	});
@@ -175,7 +175,7 @@ describe("ErrorFallback", () => {
 		expect(screen.getByText("Error Details")).toBeInTheDocument();
 
 		const el = document.querySelector(
-			"[data-comp='error-fallback']",
+			"[data-kala-component='error-fallback']",
 		) as HTMLElement;
 		expect(el).toHaveClass("combo-class", "min-h-[200px]");
 

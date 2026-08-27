@@ -17,7 +17,10 @@ function Slider({
 	// Show loading skeleton
 	if (isLoading) {
 		return (
-			<div className={cn("relative w-full py-4", className)}>
+			<div
+				data-kala-component="slider"
+				className={cn("relative w-full py-4", className)}
+			>
 				<Skeleton className="h-2 w-full rounded-full" />
 				<Skeleton className="h-4 w-4 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
 			</div>
@@ -30,6 +33,7 @@ function Slider({
 
 	return (
 		<SliderPrimitive.Root
+			data-kala-component="slider"
 			ref={ref}
 			className={cn(
 				"relative flex w-full touch-none select-none items-center",

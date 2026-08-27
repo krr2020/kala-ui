@@ -28,6 +28,7 @@ function Badge({
 	if (isLoading) {
 		return (
 			<Skeleton
+				data-kala-component="badge"
 				className={cn(
 					"inline-flex h-5 w-16 items-center rounded-full",
 					className,
@@ -40,6 +41,7 @@ function Badge({
 
 	return (
 		<Comp
+			data-kala-component="badge"
 			data-slot="badge"
 			className={cn(badgeVariants({ variant, color, shape }), className)}
 			{...props}

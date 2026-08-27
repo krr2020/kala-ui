@@ -63,6 +63,7 @@ export function PageTransition({
 
 	return (
 		<div
+			data-kala-component="page-transition"
 			data-slot="page-transition"
 			ref={ref}
 			className={cn(

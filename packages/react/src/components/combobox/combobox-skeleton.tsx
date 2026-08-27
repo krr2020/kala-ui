@@ -55,6 +55,7 @@ export function ComboboxSkeleton({
 
 	return (
 		<div
+			data-kala-component="combobox-skeleton"
 			data-testid={dataTestId || "combobox-skeleton"}
 			className={cn(
 				"flex items-center gap-2 border rounded-md px-3",

@@ -37,7 +37,7 @@ export function Collapse({
 	animateOpacity = true,
 }: CollapseProps) {
 	return (
-		<AnimatePresence initial={false}>
+		<AnimatePresence data-kala-component="collapse" initial={false}>
 			{opened && (
 				<motion.div
 					ref={ref}

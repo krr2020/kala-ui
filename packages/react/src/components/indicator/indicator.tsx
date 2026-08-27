@@ -131,6 +131,7 @@ function Indicator({
 
 	return (
 		<Box
+			data-kala-component="indicator"
 			ref={ref}
 			className={cn("relative", inline ? "inline-block" : "block")}
 		>

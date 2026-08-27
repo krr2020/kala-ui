@@ -17,7 +17,10 @@ function Drawer({
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) {
 	const direction = props.direction;
 	return (
-		<DrawerContext.Provider value={direction ? { direction } : {}}>
+		<DrawerContext.Provider
+			data-kala-component="drawer"
+			value={direction ? { direction } : {}}
+		>
 			<DrawerPrimitive.Root
 				shouldScaleBackground={shouldScaleBackground}
 				{...props}
@@ -29,19 +32,25 @@ function Drawer({
 function DrawerTrigger({
 	...props
 }: React.ComponentProps<typeof DrawerPrimitive.Trigger>) {
-	return <DrawerPrimitive.Trigger {...props} />;
+	return (
+		<DrawerPrimitive.Trigger data-kala-component="drawer-trigger" {...props} />
+	);
 }
 
 function DrawerPortal({
 	...props
 }: React.ComponentProps<typeof DrawerPrimitive.Portal>) {
-	return <DrawerPrimitive.Portal {...props} />;
+	return (
+		<DrawerPrimitive.Portal data-kala-component="drawer-portal" {...props} />
+	);
 }
 
 function DrawerClose({
 	...props
 }: React.ComponentProps<typeof DrawerPrimitive.Close>) {
-	return <DrawerPrimitive.Close {...props} />;
+	return (
+		<DrawerPrimitive.Close data-kala-component="drawer-close" {...props} />
+	);
 }
 
 function DrawerOverlay({
@@ -50,6 +59,7 @@ function DrawerOverlay({
 }: React.ComponentProps<typeof DrawerPrimitive.Overlay>) {
 	return (
 		<DrawerPrimitive.Overlay
+			data-kala-component="drawer-overlay"
 			data-slot="drawer-overlay"
 			className={cn(
 				"fixed inset-0 z-30 bg-overlay backdrop-blur-sm",
@@ -104,7 +114,10 @@ function DrawerContent({
 		? SIZE_WIDTH_CLASSES[size]
 		: SIZE_HEIGHT_CLASSES[size];
 	return (
-		<DrawerPortal data-slot="drawer-portal">
+		<DrawerPortal
+			data-kala-component="drawer-content"
+			data-slot="drawer-portal"
+		>
 			<DrawerOverlay />
 			<DrawerPrimitive.Content
 				data-slot="drawer-content"
@@ -132,6 +145,7 @@ function DrawerContent({
 function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
+			data-kala-component="drawer-header"
 			className={cn(
 				"grid gap-1.5 px-6 py-5 text-center sm:text-left",
 				className,
@@ -144,6 +158,7 @@ function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
 function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
+			data-kala-component="drawer-footer"
 			className={cn(
 				"mt-auto flex flex-col gap-2 border-t px-6 py-5",
 				className,
@@ -159,6 +174,7 @@ function DrawerTitle({
 }: React.ComponentProps<typeof DrawerPrimitive.Title>) {
 	return (
 		<DrawerPrimitive.Title
+			data-kala-component="drawer-title"
 			className={cn(
 				"text-lg font-semibold leading-none tracking-tight text-foreground",
 				className,
@@ -174,6 +190,7 @@ function DrawerDescription({
 }: React.ComponentProps<typeof DrawerPrimitive.Description>) {
 	return (
 		<DrawerPrimitive.Description
+			data-kala-component="drawer-description"
 			className={cn("text-sm text-muted-foreground", className)}
 			{...props}
 		/>

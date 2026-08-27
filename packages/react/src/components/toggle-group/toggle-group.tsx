@@ -24,7 +24,10 @@ function ToggleGroup({
 }: React.ComponentProps<typeof ToggleGroupPrimitive.Root> &
 	VariantProps<typeof toggleVariants>) {
 	return (
-		<ToggleGroupContext.Provider value={{ variant, size }}>
+		<ToggleGroupContext.Provider
+			data-kala-component="toggle-group"
+			value={{ variant, size }}
+		>
 			<ToggleGroupPrimitive.Root
 				ref={ref}
 				data-slot="toggle-group"
@@ -50,6 +53,7 @@ function ToggleGroupItem({
 
 	return (
 		<ToggleGroupPrimitive.Item
+			data-kala-component="toggle-group-item"
 			ref={ref}
 			data-slot="toggle-group-item"
 			className={cn(

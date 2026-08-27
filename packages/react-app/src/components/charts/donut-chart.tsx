@@ -167,6 +167,7 @@ export function DonutChart({
 
 	return (
 		<Chart
+			data-kala-component="charts-donut-chart"
 			className={cn("w-full", className)}
 			options={chartOptions}
 			series={series}
@@ -182,5 +183,11 @@ export function DonutChart({
 
 // Convenience alias for Pie charts
 export function PieChart(props: DonutChartProps) {
-	return <DonutChart {...props} donut={false} />;
+	return (
+		<DonutChart
+			data-kala-component="charts-pie-chart"
+			{...props}
+			donut={false}
+		/>
+	);
 }

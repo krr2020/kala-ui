@@ -82,6 +82,7 @@ function Text({
 	const Comp = asChild ? Slot : Tag;
 	return (
 		<Comp
+			data-kala-component="text"
 			className={cn(
 				textVariants({ size, weight, align, color, truncate, className }),
 			)}

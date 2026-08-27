@@ -69,7 +69,10 @@ export function ColorInput({
 	};
 
 	return (
-		<div className="relative flex items-center">
+		<div
+			data-kala-component="color-input"
+			className="relative flex items-center"
+		>
 			{withPreview && (
 				<div className="absolute left-3 top-1/2 -translate-y-1/2 z-10">
 					<Popover open={open} onOpenChange={setOpen}>

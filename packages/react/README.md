@@ -54,6 +54,24 @@ Six built-in themes (light, neutral, accent, dark, high-contrast-light, high-con
 }
 ```
 
+## Identifying components in the DOM
+
+Every component renders a stable `data-kala-component="<name>"` attribute on its root element (compound parts carry their own name: `dialog-content`, `card-header`, `data-table-toolbar`, …). It is a public API kept stable across releases — use it for DevTools debugging, e2e selectors, and targeted consumer CSS:
+
+```ts
+// Playwright
+await page.locator("[data-kala-component='button']").first().click();
+```
+
+```css
+/* targeted override without fighting utility classes */
+[data-kala-component='card'] {
+  --kala-radius-card: 0;
+}
+```
+
+When components compose (a `Card` renders a `Box`), the most specific component's name wins. The `data-slot` attributes found on some parts are shadcn-compatible styling hooks kept for ecosystem CSS snippets; prefer `data-kala-component` for identification.
+
 ## React Server Components
 
 All component modules ship with a `"use client"` banner, so they import cleanly into RSC apps (`dist/lib` stays server-safe for `cn()`).

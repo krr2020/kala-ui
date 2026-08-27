@@ -118,8 +118,8 @@ export function SocialLoginButton({
 
 	return (
 		<Button
+			data-kala-component="social-login-button"
 			ref={ref}
-			data-comp="social-login-button"
 			type="button"
 			variant="outline"
 			className={cn(

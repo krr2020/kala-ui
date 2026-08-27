@@ -50,6 +50,7 @@ export function PopoverSkeleton({
 }: PopoverSkeletonProps) {
 	return (
 		<aside
+			data-kala-component="popover-skeleton"
 			data-testid={dataTestId || "popover-skeleton"}
 			className={cn("space-y-2", compact ? "p-2" : "p-4", className)}
 			aria-label="Loading popover"

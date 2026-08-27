@@ -89,6 +89,7 @@ export function Flex<T extends React.ElementType = "div">(props: FlexProps<T>) {
 	const Comp = (asChild ? Slot : Tag) as React.ElementType;
 	return (
 		<Comp
+			data-kala-component="flex"
 			className={cn(
 				flexVariants({
 					direction,

@@ -187,6 +187,7 @@ export function LineChart({
 
 	return (
 		<Chart
+			data-kala-component="charts-line-chart"
 			className={cn("w-full", className)}
 			options={chartOptions}
 			series={series}

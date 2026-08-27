@@ -32,6 +32,7 @@ function SectionLoader({
 }: SectionLoaderProps) {
 	return (
 		<div
+			data-kala-component="loading-section-loader"
 			ref={ref}
 			data-slot="section-loader"
 			className={cn(

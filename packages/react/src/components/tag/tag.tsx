@@ -166,6 +166,7 @@ function Tag({
 }: TagProps) {
 	return (
 		<span
+			data-kala-component="tag"
 			data-slot="tag"
 			className={cn(tagVariants({ variant, color, size }), className)}
 			{...props}

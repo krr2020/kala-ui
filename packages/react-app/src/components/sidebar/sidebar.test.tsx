@@ -178,14 +178,14 @@ describe("Sidebar", () => {
 			<Sidebar navSections={mockNavSections} className="custom-sidebar" />,
 		);
 
-		const sidebar = container.querySelector('[data-comp="sidebar"]');
+		const sidebar = container.querySelector('[data-kala-component="sidebar"]');
 		expect(sidebar).toHaveClass("custom-sidebar");
 	});
 
 	it("should be open by default", () => {
 		const { container } = render(<Sidebar navSections={mockNavSections} />);
 
-		const sidebar = container.querySelector('[data-comp="sidebar"]');
+		const sidebar = container.querySelector('[data-kala-component="sidebar"]');
 		expect(sidebar).not.toHaveClass("-translate-x-full");
 	});
 
@@ -194,7 +194,7 @@ describe("Sidebar", () => {
 			<Sidebar navSections={mockNavSections} isOpen={false} />,
 		);
 
-		const sidebar = container.querySelector('[data-comp="sidebar"]');
+		const sidebar = container.querySelector('[data-kala-component="sidebar"]');
 		expect(sidebar).toHaveClass("-translate-x-full");
 	});
 

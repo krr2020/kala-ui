@@ -27,6 +27,7 @@ function PageLoader({
 }: PageLoaderProps) {
 	return (
 		<div
+			data-kala-component="loading-page-loader"
 			ref={ref}
 			data-slot="page-loader"
 			className={cn(

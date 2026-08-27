@@ -52,6 +52,7 @@ function Progress({
 
 	return (
 		<ProgressPrimitive.Root
+			data-kala-component="progress"
 			ref={ref}
 			className={cn(
 				"relative w-full overflow-hidden rounded-full bg-primary/20",
@@ -107,6 +108,7 @@ function ProgressBar({
 }: ProgressBarProps) {
 	return (
 		<div
+			data-kala-component="progress-bar"
 			ref={ref}
 			role="progressbar"
 			aria-valuenow={value}
@@ -152,6 +154,7 @@ function ProgressGroup({
 }: React.ComponentProps<"div"> & { size?: ProgressSize }) {
 	return (
 		<div
+			data-kala-component="progress-group"
 			ref={ref}
 			role="presentation"
 			className={cn(

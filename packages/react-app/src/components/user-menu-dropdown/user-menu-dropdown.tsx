@@ -78,6 +78,7 @@ export function UserMenuDropdown({
 
 	return (
 		<DropdownMenu
+			data-kala-component="user-menu-dropdown"
 			{...(isOpen !== undefined && { open: isOpen })}
 			{...(onOpenChange && { onOpenChange })}
 		>

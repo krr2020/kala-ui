@@ -50,6 +50,7 @@ function Paper({
 	const Comp = asChild ? Slot : "div";
 	return (
 		<Comp
+			data-kala-component="paper"
 			className={cn(paperVariants({ shadow, radius, withBorder, className }))}
 			ref={ref}
 			{...props}

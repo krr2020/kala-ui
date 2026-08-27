@@ -228,10 +228,10 @@ describe("EmptyState", () => {
 	});
 
 	describe("Accessibility", () => {
-		it("has proper data-comp attribute", () => {
+		it("has proper data-kala-component attribute", () => {
 			const { container } = render(<EmptyState title="No data" />);
 			expect(
-				container.querySelector('[data-comp="empty-state"]'),
+				container.querySelector('[data-kala-component="empty-state"]'),
 			).toBeInTheDocument();
 		});
 

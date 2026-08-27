@@ -91,7 +91,11 @@ export function ColumnHeaderFilter<TData>({
 	};
 
 	return (
-		<Popover open={open} onOpenChange={setOpen}>
+		<Popover
+			data-kala-component="data-table-column-header-filter"
+			open={open}
+			onOpenChange={setOpen}
+		>
 			<PopoverTrigger asChild>
 				<Button
 					variant="ghost"

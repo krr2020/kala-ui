@@ -38,14 +38,25 @@ function Calendar({
 }: CalendarProps) {
 	if (isLoading) {
 		if (skeleton) {
-			return <div className={cn("p-3", className)}>{skeleton}</div>;
+			return (
+				<div data-kala-component="calendar" className={cn("p-3", className)}>
+					{skeleton}
+				</div>
+			);
 		}
-		return <CalendarSkeleton {...skeletonConfig} className={className} />;
+		return (
+			<CalendarSkeleton
+				data-kala-component="calendar"
+				{...skeletonConfig}
+				className={className}
+			/>
+		);
 	}
 	const defaultClassNames = getDefaultClassNames();
 
 	return (
 		<DayPicker
+			data-kala-component="calendar"
 			showOutsideDays={showOutsideDays}
 			className={cn(
 				"bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
@@ -210,6 +221,7 @@ function CalendarDayButton({
 
 	return (
 		<Button
+			data-kala-component="calendar-day-button"
 			ref={ref}
 			variant="ghost"
 			size="icon"

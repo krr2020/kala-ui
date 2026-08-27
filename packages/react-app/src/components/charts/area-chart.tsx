@@ -202,6 +202,7 @@ export function AreaChart({
 
 	return (
 		<Chart
+			data-kala-component="charts-area-chart"
 			className={cn("w-full", className)}
 			options={chartOptions}
 			series={series}

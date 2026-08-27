@@ -65,7 +65,7 @@ export function Navigation({
 	if (orientation === "vertical") {
 		return (
 			<nav
-				data-comp="navigation"
+				data-kala-component="navigation"
 				className={cn(
 					orientation === "vertical"
 						? "hidden md:flex md:flex-col gap-2"
@@ -100,7 +100,7 @@ export function Navigation({
 		return (
 			<>
 				<nav
-					data-comp="navigation"
+					data-kala-component="navigation"
 					className={cn(
 						"hidden md:flex flex-row items-center gap-6",
 						className,
@@ -125,7 +125,7 @@ export function Navigation({
 				</nav>
 
 				<nav
-					data-comp="navigation"
+					data-kala-component="navigation"
 					className={cn("flex md:hidden flex-col gap-2", className)}
 					aria-label="Mobile navigation"
 				>
@@ -154,7 +154,7 @@ export function Navigation({
 		<>
 			{/* Desktop Horizontal Navigation */}
 			<nav
-				data-comp="navigation"
+				data-kala-component="navigation"
 				className={cn("hidden md:flex flex-row items-center gap-6", className)}
 				aria-label="Main navigation"
 				{...props}
@@ -176,7 +176,11 @@ export function Navigation({
 			</nav>
 
 			{/* Mobile Dropdown Navigation */}
-			<div className="md:hidden" data-mobile-nav>
+			<div
+				data-kala-component="navigation"
+				className="md:hidden"
+				data-mobile-nav
+			>
 				<button
 					type="button"
 					onClick={(e) => {
@@ -198,7 +202,6 @@ export function Navigation({
 				{isMobileOpen && (
 					// biome-ignore lint/a11y/useKeyWithClickEvents: Stop propagation is not an interactive action
 					<nav
-						data-comp="navigation"
 						className="mt-2 flex flex-col gap-2 bg-popover border rounded-md p-3 text-popover-foreground kala-surface-popover"
 						aria-label="Mobile navigation"
 						onClick={(e) => e.stopPropagation()}

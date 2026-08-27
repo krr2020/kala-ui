@@ -56,7 +56,10 @@ export function ChartSkeleton({
 	className,
 }: ChartSkeletonProps) {
 	return (
-		<div className={cn("w-full space-y-4", className)}>
+		<div
+			data-kala-component="charts-chart-skeleton"
+			className={cn("w-full space-y-4", className)}
+		>
 			{/* Chart area skeleton */}
 			<div
 				className="w-full rounded-lg border bg-card kala-surface-card"

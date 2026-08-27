@@ -115,7 +115,11 @@ export function FileUpload({
 	};
 
 	return (
-		<div className={cn("w-full", className)} {...props}>
+		<div
+			data-kala-component="file-upload"
+			className={cn("w-full", className)}
+			{...props}
+		>
 			{/* Native file input lives outside the trigger so no interactive
 			    elements nest; the button opens it programmatically. */}
 			<input

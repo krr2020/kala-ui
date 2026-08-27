@@ -34,7 +34,11 @@ function TimelineItem({
 	className,
 }: TimelineItemProps) {
 	return (
-		<div data-slot="timeline-item" className={cn("flex gap-4", className)}>
+		<div
+			data-kala-component="timeline-item"
+			data-slot="timeline-item"
+			className={cn("flex gap-4", className)}
+		>
 			{/* Connector column */}
 			<div className="flex flex-col items-center">
 				<div
@@ -89,6 +93,7 @@ function Timeline({ className, children, ref, ...props }: TimelineProps) {
 
 	return (
 		<div
+			data-kala-component="timeline"
 			ref={ref}
 			data-slot="timeline"
 			className={cn("flex flex-col", className)}

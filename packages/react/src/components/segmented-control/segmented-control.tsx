@@ -128,6 +128,7 @@ export function SegmentedControl({
 
 	return (
 		<div
+			data-kala-component="segmented-control"
 			ref={ref}
 			role="radiogroup"
 			className={cn(

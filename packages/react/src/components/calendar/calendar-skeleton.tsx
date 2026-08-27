@@ -58,6 +58,7 @@ export function CalendarSkeleton({
 
 	return (
 		<section
+			data-kala-component="calendar-skeleton"
 			data-testid={dataTestId || "calendar-skeleton"}
 			className={cn("p-4", className)}
 			aria-label="Loading calendar"

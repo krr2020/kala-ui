@@ -57,6 +57,7 @@ export function StepsSkeleton({
 }: StepsSkeletonProps) {
 	return (
 		<nav
+			data-kala-component="steps-skeleton"
 			data-testid={dataTestId || "steps-skeleton"}
 			className={cn(
 				"flex",

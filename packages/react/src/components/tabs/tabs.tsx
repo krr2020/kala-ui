@@ -35,7 +35,10 @@ function Tabs({
 	});
 
 	return (
-		<TabsContext.Provider value={{ activeTab, setActiveTab, uniqueId }}>
+		<TabsContext.Provider
+			data-kala-component="tabs"
+			value={{ activeTab, setActiveTab, uniqueId }}
+		>
 			<TabsPrimitive.Root
 				ref={ref}
 				value={activeTab}
@@ -70,7 +73,10 @@ function TabsList({
 }: React.ComponentProps<typeof TabsPrimitive.List> &
 	VariantProps<typeof tabsListVariants>) {
 	return (
-		<TabsListContext.Provider value={{ variant }}>
+		<TabsListContext.Provider
+			data-kala-component="tabs-list"
+			value={{ variant }}
+		>
 			<TabsPrimitive.List
 				ref={ref}
 				data-slot="tabs-list"
@@ -98,6 +104,7 @@ function TabsTrigger({
 
 	return (
 		<TabsPrimitive.Trigger
+			data-kala-component="tabs-trigger"
 			ref={ref}
 			data-slot="tabs-trigger"
 			className={cn(tabsTriggerVariants({ variant: finalVariant }), className)}
@@ -114,6 +121,7 @@ function TabsContent({
 }: React.ComponentProps<typeof TabsPrimitive.Content>) {
 	return (
 		<TabsPrimitive.Content
+			data-kala-component="tabs-content"
 			ref={ref}
 			data-slot="tabs-content"
 			className={cn(tabsContentStyles.base, className)}

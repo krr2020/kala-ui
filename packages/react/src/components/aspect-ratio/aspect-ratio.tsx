@@ -28,6 +28,7 @@ function AspectRatio({
 }: AspectRatioProps) {
 	return (
 		<AspectRatioPrimitive.Root
+			data-kala-component="aspect-ratio"
 			data-slot="aspect-ratio"
 			ratio={ratio}
 			className={cn(aspectRatioVariants({ rounded, bordered }), className)}

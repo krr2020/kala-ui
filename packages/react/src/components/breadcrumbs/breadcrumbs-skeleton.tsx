@@ -57,6 +57,7 @@ export function BreadcrumbsSkeleton({
 }: BreadcrumbsSkeletonProps) {
 	return (
 		<nav
+			data-kala-component="breadcrumbs-skeleton"
 			data-testid={dataTestId || "breadcrumbs-skeleton"}
 			className={cn("flex items-center gap-2 text-sm", className)}
 			aria-label="Loading breadcrumbs"

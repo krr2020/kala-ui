@@ -11,6 +11,7 @@ const ResizablePanelGroup = ({
 	...props
 }: React.ComponentProps<typeof ResizablePrimitive.Group>) => (
 	<ResizablePrimitive.Group
+		data-kala-component="resizable-panel-group"
 		data-slot="resizable-panel-group"
 		data-orientation={orientation}
 		className={cn("group flex h-full w-full", className)}
@@ -24,6 +25,7 @@ const ResizablePanel = ({
 	...props
 }: React.ComponentProps<typeof ResizablePrimitive.Panel>) => (
 	<ResizablePrimitive.Panel
+		data-kala-component="resizable-panel"
 		data-slot="resizable-panel"
 		className={cn("relative", className)}
 		{...props}
@@ -41,6 +43,7 @@ const ResizableHandle = ({
 	...props
 }: ResizableHandleProps) => (
 	<ResizablePrimitive.Separator
+		data-kala-component="resizable-handle"
 		data-slot="resizable-handle"
 		className={cn(
 			"bg-separator relative flex items-center justify-center kala-focus-ring",

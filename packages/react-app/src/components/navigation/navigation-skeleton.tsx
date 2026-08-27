@@ -68,6 +68,7 @@ export function NavigationSkeleton({
 }: NavigationSkeletonProps) {
 	return (
 		<nav
+			data-kala-component="navigation-skeleton"
 			data-testid={dataTestId || "navigation-skeleton"}
 			className={cn(
 				"flex",

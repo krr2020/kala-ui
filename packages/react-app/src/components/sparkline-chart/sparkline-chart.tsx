@@ -203,7 +203,10 @@ export function SparklineChart({
 	];
 
 	return (
-		<div className={cn("sparkline-chart", className)}>
+		<div
+			data-kala-component="sparkline-chart"
+			className={cn("sparkline-chart", className)}
+		>
 			<Chart
 				options={options}
 				series={series}

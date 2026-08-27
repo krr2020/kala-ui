@@ -59,6 +59,7 @@ function Steps({
 
 	return (
 		<ol
+			data-kala-component="steps"
 			ref={ref}
 			className={cn(stepsVariants({ orientation }), className)}
 			{...props}

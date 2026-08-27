@@ -17,6 +17,7 @@ function InputGroup({
 	return (
 		// biome-ignore lint/a11y/useSemanticElements: div[role=group] is the correct generic grouping element here; fieldset is for form legend groups and brings default styles
 		<div
+			data-kala-component="input-group"
 			ref={ref}
 			role="group"
 			className={cn(
@@ -44,6 +45,7 @@ function InputGroupText({
 }: React.ComponentProps<"div">) {
 	return (
 		<div
+			data-kala-component="input-group-text"
 			ref={ref}
 			className={cn(
 				"flex items-center justify-center whitespace-nowrap rounded-md border bg-muted px-3 text-sm text-muted-foreground kala-surface-card",

@@ -12,14 +12,24 @@ import { Text } from "../text";
 function AlertDialog({
 	...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
-	return <AlertDialogPrimitive.Root data-slot="alert-dialog" {...props} />;
+	return (
+		<AlertDialogPrimitive.Root
+			data-kala-component="alert-dialog"
+			data-slot="alert-dialog"
+			{...props}
+		/>
+	);
 }
 
 function AlertDialogTrigger({
 	...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Trigger>) {
 	return (
-		<AlertDialogPrimitive.Trigger data-slot="alert-dialog-trigger" {...props} />
+		<AlertDialogPrimitive.Trigger
+			data-kala-component="alert-dialog-trigger"
+			data-slot="alert-dialog-trigger"
+			{...props}
+		/>
 	);
 }
 
@@ -27,7 +37,11 @@ function AlertDialogPortal({
 	...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Portal>) {
 	return (
-		<AlertDialogPrimitive.Portal data-slot="alert-dialog-portal" {...props} />
+		<AlertDialogPrimitive.Portal
+			data-kala-component="alert-dialog-portal"
+			data-slot="alert-dialog-portal"
+			{...props}
+		/>
 	);
 }
 
@@ -37,6 +51,7 @@ function AlertDialogOverlay({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Overlay>) {
 	return (
 		<AlertDialogPrimitive.Overlay
+			data-kala-component="alert-dialog-overlay"
 			data-slot="alert-dialog-overlay"
 			className={cn(
 				"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-30 bg-overlay backdrop-blur-sm",
@@ -52,7 +67,7 @@ function AlertDialogContent({
 	...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
 	return (
-		<AlertDialogPortal>
+		<AlertDialogPortal data-kala-component="alert-dialog-content">
 			<AlertDialogOverlay />
 			<AlertDialogPrimitive.Content
 				data-slot="alert-dialog-content"
@@ -72,6 +87,7 @@ function AlertDialogHeader({
 }: React.ComponentProps<"div">) {
 	return (
 		<Box
+			data-kala-component="alert-dialog-header"
 			data-slot="alert-dialog-header"
 			className={cn("flex flex-col gap-1.5 px-6 py-4 border-b", className)}
 			{...props}
@@ -85,6 +101,7 @@ function AlertDialogFooter({
 }: React.ComponentProps<"div">) {
 	return (
 		<Box
+			data-kala-component="alert-dialog-footer"
 			data-slot="alert-dialog-footer"
 			className={cn(
 				"flex flex-col-reverse gap-2 sm:flex-row sm:justify-end px-6 py-4 border-t bg-muted/50 rounded-b-lg",
@@ -101,6 +118,7 @@ function AlertDialogTitle({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Title>) {
 	return (
 		<AlertDialogPrimitive.Title
+			data-kala-component="alert-dialog-title"
 			data-slot="alert-dialog-title"
 			className={cn(
 				"text-lg font-semibold leading-none tracking-tight text-foreground",
@@ -120,6 +138,7 @@ function AlertDialogDescription({
 >) {
 	return (
 		<AlertDialogPrimitive.Description
+			data-kala-component="alert-dialog-description"
 			asChild
 			data-slot="alert-dialog-description"
 		>
@@ -137,6 +156,7 @@ function AlertDialogDescription({
 function AlertDialogBody({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<Box
+			data-kala-component="alert-dialog-body"
 			data-slot="alert-dialog-body"
 			className={cn("flex-1 overflow-y-auto px-6 py-4 min-h-0", className)}
 			{...props}
@@ -153,6 +173,7 @@ function AlertDialogAction({
 	VariantProps<typeof buttonVariants>) {
 	return (
 		<AlertDialogPrimitive.Action
+			data-kala-component="alert-dialog-action"
 			className={cn(buttonVariants({ variant, size }), className)}
 			{...props}
 		/>
@@ -165,6 +186,7 @@ function AlertDialogCancel({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Cancel>) {
 	return (
 		<AlertDialogPrimitive.Cancel
+			data-kala-component="alert-dialog-cancel"
 			className={cn(buttonVariants({ variant: "outline" }), className)}
 			{...props}
 		/>

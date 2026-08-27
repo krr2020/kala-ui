@@ -40,7 +40,10 @@ export function SkeletonText({
 	}));
 
 	return (
-		<div className={cn("space-y-2", className)}>
+		<div
+			data-kala-component="skeleton-text"
+			className={cn("space-y-2", className)}
+		>
 			{lineElements.map((line) => (
 				<Skeleton
 					key={line.id}
@@ -76,6 +79,7 @@ export function SkeletonCircle({
 }: SkeletonCircleProps) {
 	return (
 		<Skeleton
+			data-kala-component="skeleton-circle"
 			className={cn("rounded-full", className)}
 			style={{ width: size, height: size }}
 		/>
@@ -123,6 +127,7 @@ export function SkeletonRectangle({
 
 	return (
 		<Skeleton
+			data-kala-component="skeleton-rectangle"
 			className={cn(roundedClass[rounded], className)}
 			style={{ width, height }}
 		/>
@@ -156,7 +161,13 @@ export function SkeletonAvatar({
 		lg: "4rem",
 	};
 
-	return <SkeletonCircle size={sizes[size]} className={className} />;
+	return (
+		<SkeletonCircle
+			data-kala-component="skeleton-avatar"
+			size={sizes[size]}
+			className={className}
+		/>
+	);
 }
 
 /**
@@ -189,7 +200,10 @@ export function SkeletonParagraph({
 	const effectiveParagraphs = lines ? lines.length : paragraphs;
 
 	return (
-		<div className={cn("space-y-4", className)}>
+		<div
+			data-kala-component="skeleton-paragraph"
+			className={cn("space-y-4", className)}
+		>
 			{Array.from({ length: effectiveParagraphs }).map((_, paragraphIndex) => {
 				// Default to 4 lines for first paragraph, 3 for others
 				const paragraphLines =
@@ -245,7 +259,10 @@ export function SkeletonHeader({
 	className,
 }: SkeletonHeaderProps) {
 	return (
-		<div className={cn("space-y-2", className)}>
+		<div
+			data-kala-component="skeleton-header"
+			className={cn("space-y-2", className)}
+		>
 			<Skeleton
 				data-testid="skeleton-text-line-0"
 				className="h-6"
@@ -294,7 +311,13 @@ export function SkeletonButton({
 		lg: "h-12 px-6 text-lg",
 	};
 
-	return <Skeleton className={cn(sizes[size], className)} style={{ width }} />;
+	return (
+		<Skeleton
+			data-kala-component="skeleton-button"
+			className={cn(sizes[size], className)}
+			style={{ width }}
+		/>
+	);
 }
 
 /**
@@ -329,7 +352,10 @@ export function SkeletonCardContent({
 	className,
 }: SkeletonCardContentProps) {
 	return (
-		<div className={cn("space-y-4", className)}>
+		<div
+			data-kala-component="skeleton-card-content"
+			className={cn("space-y-4", className)}
+		>
 			{showHeader && <SkeletonHeader showSubtitle />}
 			<SkeletonText lines={contentLines} />
 			{showFooter && (

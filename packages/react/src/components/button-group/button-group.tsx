@@ -42,6 +42,7 @@ function ButtonGroup({
 
 	return (
 		<div
+			data-kala-component="button-group"
 			className={cn(buttonGroupVariants({ orientation }), className)}
 			{...props}
 		>
@@ -87,6 +88,7 @@ function ButtonGroupSeparator({
 }: ButtonGroupSeparatorProps) {
 	return (
 		<hr
+			data-kala-component="button-group-separator"
 			{...(orientation && { "aria-orientation": orientation })}
 			className={cn(buttonGroupSeparatorVariants({ orientation }), className)}
 			{...props}
@@ -108,6 +110,7 @@ function ButtonGroupText({
 
 	return (
 		<Comp
+			data-kala-component="button-group-text"
 			className={cn(
 				"inline-flex items-center justify-center whitespace-nowrap px-3 py-2 text-sm font-medium transition-colors",
 				"text-foreground bg-muted border",

@@ -67,7 +67,10 @@ function RadioGroup({
 	...props
 }: RadioGroupProps) {
 	return (
-		<RadioGroupContext.Provider value={{ variant, size }}>
+		<RadioGroupContext.Provider
+			data-kala-component="radio-group"
+			value={{ variant, size }}
+		>
 			<RadioGroupPrimitive.Root
 				ref={ref}
 				data-slot="radio-group"
@@ -131,7 +134,10 @@ function RadioGroupItem({
 	// For default variant with label/description or custom children
 	if (variant === "default" && hasContent) {
 		return (
-			<div className={cn(radioGroupItemWrapperStyles.default, className)}>
+			<div
+				data-kala-component="radio-group-item"
+				className={cn(radioGroupItemWrapperStyles.default, className)}
+			>
 				{radioButton}
 				{children || (
 					<div className="grid gap-1.5 leading-none">
@@ -166,6 +172,7 @@ function RadioGroupItem({
 	if (variant === "cards") {
 		return (
 			<label
+				data-kala-component="radio-group-item"
 				htmlFor={itemId}
 				className={cn(
 					radioGroupItemWrapperStyles.cards,
@@ -208,6 +215,7 @@ function RadioGroupItem({
 	if (variant === "buttons") {
 		return (
 			<label
+				data-kala-component="radio-group-item"
 				htmlFor={itemId}
 				className={cn(
 					radioGroupItemWrapperStyles.buttons,

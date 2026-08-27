@@ -34,7 +34,10 @@ function Accordion({
 }: React.ComponentProps<typeof AccordionPrimitive.Root> &
 	VariantProps<typeof accordionVariants>) {
 	return (
-		<AccordionContext.Provider value={{ variant: variant || "default" }}>
+		<AccordionContext.Provider
+			data-kala-component="accordion"
+			value={{ variant: variant || "default" }}
+		>
 			<AccordionPrimitive.Root
 				data-slot="accordion"
 				className={cn(accordionVariants({ variant }), className)}
@@ -51,6 +54,7 @@ function AccordionItem({
 	const { variant } = React.useContext(AccordionContext);
 	return (
 		<AccordionPrimitive.Item
+			data-kala-component="accordion-item"
 			data-slot="accordion-item"
 			className={cn(
 				"bg-card",
@@ -71,7 +75,10 @@ function AccordionTrigger({
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
 	const { variant } = React.useContext(AccordionContext);
 	return (
-		<AccordionPrimitive.Header className="flex">
+		<AccordionPrimitive.Header
+			data-kala-component="accordion-trigger"
+			className="flex"
+		>
 			<AccordionPrimitive.Trigger
 				data-slot="accordion-trigger"
 				className={cn(
@@ -101,6 +108,7 @@ function AccordionContent({
 	const { variant } = React.useContext(AccordionContext);
 	return (
 		<AccordionPrimitive.Content
+			data-kala-component="accordion-content"
 			data-slot="accordion-content"
 			className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden"
 			{...props}

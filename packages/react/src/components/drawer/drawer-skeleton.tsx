@@ -47,6 +47,7 @@ export function DrawerSkeleton({
 }: DrawerSkeletonProps) {
 	return (
 		<DialogSkeleton
+			data-kala-component="drawer-skeleton"
 			data-testid={dataTestId || "drawer-skeleton"}
 			className={cn(className)}
 			showHeader={showHeader}

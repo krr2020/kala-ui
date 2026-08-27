@@ -73,6 +73,7 @@ export function Banner({
 		if (skeleton) {
 			return (
 				<div
+					data-kala-component="banner"
 					className={cn(bannerVariants({ color, position }), className)}
 					role={role}
 					{...props}
@@ -83,6 +84,7 @@ export function Banner({
 		}
 		return (
 			<BannerSkeleton
+				data-kala-component="banner"
 				className={cn(bannerVariants({ color, position }), className)}
 				{...skeletonConfig}
 			/>
@@ -91,6 +93,7 @@ export function Banner({
 
 	return (
 		<div
+			data-kala-component="banner"
 			className={cn(bannerVariants({ color, position }), className)}
 			role={role}
 			{...props}

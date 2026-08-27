@@ -30,7 +30,12 @@ export function DataTableFilterChips<TData>({
 	if (filterConfigs.length === 0) return null;
 
 	return (
-		<Flex align="center" gap={2} className="mb-4 flex-wrap">
+		<Flex
+			data-kala-component="data-table-filter-chips"
+			align="center"
+			gap={2}
+			className="mb-4 flex-wrap"
+		>
 			<Text size="sm" className="text-muted-foreground">
 				Active filters:
 			</Text>

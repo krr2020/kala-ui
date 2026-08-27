@@ -53,6 +53,7 @@ export function RadioGroupSkeleton({
 }: RadioGroupSkeletonProps) {
 	return (
 		<div
+			data-kala-component="radio-group-skeleton"
 			data-testid={dataTestId || "radio-group-skeleton"}
 			className={cn(
 				"flex",

@@ -5,6 +5,7 @@ type ToastProps = React.ComponentProps<typeof Sonner>;
 const Toast = ({ ...props }: ToastProps) => {
 	return (
 		<Sonner
+			data-kala-component="toast"
 			className="toaster group"
 			closeButton
 			toastOptions={{

@@ -71,6 +71,7 @@ function AppShellBase({
 
 	return (
 		<AppShellContext.Provider
+			data-kala-component="app-shell-base"
 			value={{ header, navbar, aside, footer, padding }}
 		>
 			<Box
@@ -115,6 +116,7 @@ function AppShellHeader({
 
 	return (
 		<Box
+			data-kala-component="app-shell-header"
 			as="header"
 			ref={ref}
 			className={cn(
@@ -147,6 +149,7 @@ function AppShellNavbar({
 
 	return (
 		<Box
+			data-kala-component="app-shell-navbar"
 			as="nav"
 			ref={ref}
 			className={cn(
@@ -184,6 +187,7 @@ function AppShellAside({
 
 	return (
 		<Box
+			data-kala-component="app-shell-aside"
 			as="aside"
 			ref={ref}
 			className={cn(
@@ -221,6 +225,7 @@ function AppShellMain({ ref, className, ...props }: AppShellMainProps) {
 
 	return (
 		<Box
+			data-kala-component="app-shell-main"
 			as="main"
 			ref={ref}
 			className={cn(
@@ -257,6 +262,7 @@ function AppShellFooter({
 
 	return (
 		<Box
+			data-kala-component="app-shell-footer"
 			as="footer"
 			ref={ref}
 			className={cn(

@@ -25,23 +25,38 @@ function Card({
 	if (isLoading) {
 		if (skeleton) {
 			return (
-				<Box ref={ref} className={cn(cardStyles.base, className)}>
+				<Box
+					data-kala-component="card"
+					ref={ref}
+					className={cn(cardStyles.base, className)}
+				>
 					{skeleton}
 				</Box>
 			);
 		}
-		return <CardSkeleton {...skeletonConfig} />;
+		return <CardSkeleton data-kala-component="card" {...skeletonConfig} />;
 	}
 
 	return (
-		<Box ref={ref} className={cn(cardStyles.base, className)} {...props}>
+		<Box
+			data-kala-component="card"
+			ref={ref}
+			className={cn(cardStyles.base, className)}
+			{...props}
+		>
 			{children}
 		</Box>
 	);
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
-	return <Box className={cn(cardStyles.header, className)} {...props} />;
+	return (
+		<Box
+			data-kala-component="card-header"
+			className={cn(cardStyles.header, className)}
+			{...props}
+		/>
+	);
 }
 
 function CardTitle({
@@ -50,6 +65,7 @@ function CardTitle({
 }: React.HTMLAttributes<HTMLHeadingElement>) {
 	return (
 		<Heading
+			data-kala-component="card-title"
 			as="h5"
 			size="h6"
 			className={cn(cardStyles.title, className)}
@@ -64,6 +80,7 @@ function CardSubtitle({
 }: React.HTMLAttributes<HTMLHeadingElement>) {
 	return (
 		<Heading
+			data-kala-component="card-subtitle"
 			as="h6"
 			className={cn(cardStyles.subtitle, className)}
 			{...props}
@@ -75,19 +92,43 @@ function CardDescription({
 	className,
 	...props
 }: Omit<React.ComponentProps<"p">, "color">) {
-	return <Text className={cn(cardStyles.description, className)} {...props} />;
+	return (
+		<Text
+			data-kala-component="card-description"
+			className={cn(cardStyles.description, className)}
+			{...props}
+		/>
+	);
 }
 
 function CardAction({ className, ...props }: React.ComponentProps<"div">) {
-	return <Box className={cn("ml-auto", className)} {...props} />;
+	return (
+		<Box
+			data-kala-component="card-action"
+			className={cn("ml-auto", className)}
+			{...props}
+		/>
+	);
 }
 
 function CardContent({ className, ...props }: React.ComponentProps<"div">) {
-	return <Box className={cn(cardStyles.content, className)} {...props} />;
+	return (
+		<Box
+			data-kala-component="card-content"
+			className={cn(cardStyles.content, className)}
+			{...props}
+		/>
+	);
 }
 
 function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
-	return <Box className={cn(cardStyles.footer, className)} {...props} />;
+	return (
+		<Box
+			data-kala-component="card-footer"
+			className={cn(cardStyles.footer, className)}
+			{...props}
+		/>
+	);
 }
 
 function CardImage({
@@ -102,6 +143,7 @@ function CardImage({
 	}
 	return (
 		<Box
+			data-kala-component="card-image"
 			as="img"
 			alt={alt}
 			className={cn(cardStyles.image, className)}
@@ -114,7 +156,13 @@ function CardImageOverlay({
 	className,
 	...props
 }: React.ComponentProps<"div">) {
-	return <Box className={cn(cardStyles.overlay, className)} {...props} />;
+	return (
+		<Box
+			data-kala-component="card-image-overlay"
+			className={cn(cardStyles.overlay, className)}
+			{...props}
+		/>
+	);
 }
 
 export interface CardMarkerProps extends React.ComponentProps<"div"> {
@@ -171,6 +219,7 @@ function CardMarker({
 	if (variant === "default") {
 		return (
 			<Box
+				data-kala-component="card-marker"
 				className={cn(
 					"absolute z-10 rounded px-2 py-1 text-xs font-semibold shadow-sm",
 					positionClasses[position],
@@ -188,6 +237,7 @@ function CardMarker({
 	if (variant === "icon") {
 		return (
 			<Box
+				data-kala-component="card-marker"
 				className={cn(
 					"absolute z-10 flex h-10 w-10 items-center justify-center rounded-full shadow-lg",
 					position === "top-left" && "top-2 left-2",
@@ -211,6 +261,7 @@ function CardMarker({
 
 		return (
 			<Box
+				data-kala-component="card-marker"
 				className={cn(
 					"absolute z-10 px-8 py-1 text-xs font-semibold shadow-lg",
 					ribbonPosition === "top" &&

@@ -41,6 +41,7 @@ function CopyButton({
 
 	return (
 		<Button
+			data-kala-component="copy-button"
 			data-slot="copy-button"
 			data-copied={copied || undefined}
 			size={size}

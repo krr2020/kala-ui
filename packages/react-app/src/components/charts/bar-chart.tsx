@@ -182,6 +182,7 @@ export function BarChart({
 
 	return (
 		<Chart
+			data-kala-component="charts-bar-chart"
 			className={cn("w-full", className)}
 			options={chartOptions}
 			series={series}

@@ -28,7 +28,13 @@ export const popoverArrowVariants = cva(popoverStyles.arrow.base, {
 function Popover({
 	...props
 }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
-	return <PopoverPrimitive.Root data-slot="popover" {...props} />;
+	return (
+		<PopoverPrimitive.Root
+			data-kala-component="popover"
+			data-slot="popover"
+			{...props}
+		/>
+	);
 }
 
 // ============================================================================
@@ -38,7 +44,13 @@ function Popover({
 function PopoverTrigger({
 	...props
 }: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
-	return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />;
+	return (
+		<PopoverPrimitive.Trigger
+			data-kala-component="popover-trigger"
+			data-slot="popover-trigger"
+			{...props}
+		/>
+	);
 }
 
 // ============================================================================
@@ -95,7 +107,10 @@ function PopoverContent({
 	const arrowColor = headerColor ?? (variant === "solid" ? color : undefined);
 
 	return (
-		<PopoverColorContext.Provider value={{ variant, color, headerColor }}>
+		<PopoverColorContext.Provider
+			data-kala-component="popover-content"
+			value={{ variant, color, headerColor }}
+		>
 			<PopoverPrimitive.Portal>
 				<PopoverPrimitive.Content
 					data-slot="popover-content"
@@ -156,6 +171,7 @@ function PopoverHeader({ className, color, ...props }: PopoverHeaderProps) {
 
 	return (
 		<div
+			data-kala-component="popover-header"
 			className={cn(
 				popoverHeaderVariants({ color: effectiveColor }),
 				className,
@@ -177,6 +193,7 @@ function PopoverBody({ className, ...props }: React.ComponentProps<"div">) {
 
 	return (
 		<div
+			data-kala-component="popover-body"
 			className={cn("text-sm", hasColoredHeader ? "p-4" : "", className)}
 			{...props}
 		/>
@@ -190,7 +207,13 @@ function PopoverBody({ className, ...props }: React.ComponentProps<"div">) {
 function PopoverAnchor({
 	...props
 }: React.ComponentProps<typeof PopoverPrimitive.Anchor>) {
-	return <PopoverPrimitive.Anchor data-slot="popover-anchor" {...props} />;
+	return (
+		<PopoverPrimitive.Anchor
+			data-kala-component="popover-anchor"
+			data-slot="popover-anchor"
+			{...props}
+		/>
+	);
 }
 
 // ============================================================================
@@ -200,7 +223,13 @@ function PopoverAnchor({
 function PopoverClose({
 	...props
 }: React.ComponentProps<typeof PopoverPrimitive.Close>) {
-	return <PopoverPrimitive.Close data-slot="popover-close" {...props} />;
+	return (
+		<PopoverPrimitive.Close
+			data-kala-component="popover-close"
+			data-slot="popover-close"
+			{...props}
+		/>
+	);
 }
 
 export {

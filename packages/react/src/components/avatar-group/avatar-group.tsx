@@ -59,7 +59,7 @@ function AvatarGroup({
 	);
 
 	return (
-		<TooltipProvider>
+		<TooltipProvider data-kala-component="avatar-group">
 			<div
 				data-slot="avatar-group"
 				ref={ref}

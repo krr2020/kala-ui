@@ -59,11 +59,20 @@ function Avatar({
 	if (isLoading) {
 		const skeletonSize =
 			AVATAR_SKELETON_SIZES[size ?? "md"] ?? AVATAR_SKELETON_SIZES.md;
-		return <SkeletonCircle size={skeletonSize} className={className} />;
+		return (
+			<SkeletonCircle
+				data-kala-component="avatar"
+				size={skeletonSize}
+				className={className}
+			/>
+		);
 	}
 
 	return (
-		<AvatarContext.Provider value={{ shape: shape || "circle" }}>
+		<AvatarContext.Provider
+			data-kala-component="avatar"
+			value={{ shape: shape || "circle" }}
+		>
 			<AvatarPrimitive.Root
 				data-slot="avatar"
 				className={cn(avatarVariants({ size, shape, status }), className)}
@@ -94,6 +103,7 @@ function AvatarImage({
 
 	return (
 		<AvatarPrimitive.Image
+			data-kala-component="avatar-image"
 			data-slot="avatar-image"
 			className={cn(avatarImageVariants({ shape }), className)}
 			{...props}
@@ -121,6 +131,7 @@ function AvatarFallback({
 
 	return (
 		<AvatarPrimitive.Fallback
+			data-kala-component="avatar-fallback"
 			data-slot="avatar-fallback"
 			className={cn(avatarFallbackVariants({ shape, color }), className)}
 			{...props}

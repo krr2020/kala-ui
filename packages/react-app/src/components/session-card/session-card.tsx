@@ -98,7 +98,7 @@ export function SessionCard({
 		if (skeleton) {
 			return (
 				<Card
-					data-comp="session-card"
+					data-kala-component="session-card"
 					ref={ref}
 					className={cn("relative", className)}
 					{...props}
@@ -107,7 +107,13 @@ export function SessionCard({
 				</Card>
 			);
 		}
-		return <SessionCardSkeleton className={className} {...skeletonConfig} />;
+		return (
+			<SessionCardSkeleton
+				data-kala-component="session-card"
+				className={className}
+				{...skeletonConfig}
+			/>
+		);
 	}
 
 	const DeviceIcon = getDeviceIcon(session.device);
@@ -121,7 +127,7 @@ export function SessionCard({
 
 	return (
 		<Card
-			data-comp="session-card"
+			data-kala-component="session-card"
 			ref={ref}
 			className={cn("relative", className)}
 			{...props}

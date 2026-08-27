@@ -50,7 +50,13 @@ export function Chart({
 		if (skeleton) {
 			return <>{skeleton}</>;
 		}
-		return <ChartSkeleton {...(skeletonConfig || {})} className={className} />;
+		return (
+			<ChartSkeleton
+				data-kala-component="charts-chart"
+				{...(skeletonConfig || {})}
+				className={className}
+			/>
+		);
 	}
 
 	// Render empty state when no data
@@ -64,6 +70,7 @@ export function Chart({
 				: configuredHeight;
 		return (
 			<div
+				data-kala-component="charts-chart"
 				className={cn(
 					"w-full flex flex-col items-center justify-center text-center rounded-lg border bg-card text-muted-foreground",
 					className,
@@ -92,7 +99,7 @@ export function Chart({
 	}
 
 	return (
-		<div className={cn("w-full", className)}>
+		<div data-kala-component="charts-chart" className={cn("w-full", className)}>
 			<Suspense
 				fallback={
 					skeleton ?? (

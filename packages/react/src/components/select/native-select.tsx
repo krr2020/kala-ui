@@ -28,7 +28,7 @@ function NativeSelect({
 	...props
 }: NativeSelectProps) {
 	return (
-		<div className="relative w-full">
+		<div data-kala-component="select-native-select" className="relative w-full">
 			<select
 				ref={ref}
 				disabled={disabled}
@@ -66,7 +66,13 @@ function NativeSelectOption({
 	className,
 	...props
 }: NativeSelectOptionProps) {
-	return <option ref={ref} {...props} />;
+	return (
+		<option
+			data-kala-component="select-native-select-option"
+			ref={ref}
+			{...props}
+		/>
+	);
 }
 
 export interface NativeSelectOptGroupProps
@@ -77,7 +83,14 @@ function NativeSelectOptGroup({
 	className,
 	...props
 }: NativeSelectOptGroupProps) {
-	return <optgroup ref={ref} className={className} {...props} />;
+	return (
+		<optgroup
+			data-kala-component="select-native-select-opt-group"
+			ref={ref}
+			className={className}
+			{...props}
+		/>
+	);
 }
 
 export { NativeSelect, NativeSelectOptGroup, NativeSelectOption };

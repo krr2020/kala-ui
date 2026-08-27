@@ -22,6 +22,7 @@ export function Code({
 
 	return (
 		<Comp
+			data-kala-component="code"
 			// biome-ignore lint/suspicious/noExplicitAny: polymorphic ref
 			ref={ref as any}
 			className={cn(

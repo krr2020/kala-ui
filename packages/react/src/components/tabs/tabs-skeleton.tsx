@@ -62,6 +62,7 @@ export function TabsSkeleton({
 }: TabsSkeletonProps) {
 	return (
 		<section
+			data-kala-component="tabs-skeleton"
 			data-testid={dataTestId || "tabs-skeleton"}
 			className={cn("w-full", className)}
 			aria-label="Loading tabs"

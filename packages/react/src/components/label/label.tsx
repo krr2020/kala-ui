@@ -13,6 +13,7 @@ const labelVariants = cva(
 function Label({ ref, className, required, children, ...props }: LabelProps) {
 	return (
 		<LabelPrimitive.Root
+			data-kala-component="label"
 			ref={ref}
 			className={cn(labelVariants(), className)}
 			{...props}

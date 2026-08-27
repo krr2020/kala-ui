@@ -40,6 +40,7 @@ export function BannerSkeleton({
 }: BannerSkeletonProps) {
 	return (
 		<div
+			data-kala-component="banner-skeleton"
 			data-testid={dataTestId || "banner-skeleton"}
 			className={cn(
 				"w-full px-4 py-3 text-sm font-medium flex items-center justify-between gap-4",

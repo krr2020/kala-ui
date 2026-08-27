@@ -43,6 +43,7 @@ export function CardSkeleton({
 }: CardSkeletonProps) {
 	return (
 		<div
+			data-kala-component="card-skeleton"
 			data-testid={dataTestId || "card-skeleton"}
 			className={cn("rounded-md border bg-card overflow-hidden", className)}
 		>
@@ -121,7 +122,10 @@ function DefaultCardSkeleton({
 					<Skeleton className="h-4 w-2/5" />
 				</div>
 			)}
-			<div className={cn("p-6", hasHeader ? "pt-0" : "py-6")}>
+			<div
+				data-kala-component="card-default-card-skeleton"
+				className={cn("p-6", hasHeader ? "pt-0" : "py-6")}
+			>
 				<SkeletonText lines={contentRows} />
 			</div>
 			{(hasFooter || showActions) && (
@@ -150,14 +154,20 @@ function WithImageCardSkeleton({
 }) {
 	return (
 		<>
-			<Skeleton className="h-48 w-full" />
+			<Skeleton
+				data-kala-component="card-with-image-card-skeleton"
+				className="h-48 w-full"
+			/>
 			{hasHeader && (
 				<div className="flex flex-col space-y-1.5 p-6">
 					<Skeleton className="h-8 w-3/5" />
 					<Skeleton className="h-4 w-2/5" />
 				</div>
 			)}
-			<div className={cn("p-6", hasHeader ? "pt-0" : "py-6")}>
+			<div
+				data-kala-component="card-with-image-card-skeleton"
+				className={cn("p-6", hasHeader ? "pt-0" : "py-6")}
+			>
 				<SkeletonText lines={contentRows} />
 			</div>
 			{(hasFooter || showActions) && (
@@ -186,13 +196,19 @@ function WithImageTopCardSkeleton({
 }) {
 	return (
 		<>
-			<Skeleton className="h-48 w-full" />
+			<Skeleton
+				data-kala-component="card-with-image-top-card-skeleton"
+				className="h-48 w-full"
+			/>
 			{hasHeader && (
 				<div className="flex flex-col space-y-1.5 p-6">
 					<Skeleton className="h-8 w-3/5" />
 				</div>
 			)}
-			<div className={cn("p-6", hasHeader ? "pt-0" : "py-6")}>
+			<div
+				data-kala-component="card-with-image-top-card-skeleton"
+				className={cn("p-6", hasHeader ? "pt-0" : "py-6")}
+			>
 				<SkeletonText lines={contentRows} />
 			</div>
 			{(hasFooter || showActions) && (
@@ -222,7 +238,7 @@ function HorizontalCardSkeleton({
 	showActions?: boolean;
 }) {
 	return (
-		<div className="flex">
+		<div data-kala-component="card-horizontal-card-skeleton" className="flex">
 			{imagePosition === "left" && (
 				<Skeleton className="h-48 w-48 flex-shrink-0" />
 			)}
@@ -270,7 +286,10 @@ function WithFooterCardSkeleton({
 					<Skeleton className="h-4 w-2/5" />
 				</div>
 			)}
-			<div className={cn("p-6", hasHeader ? "pt-0" : "py-6")}>
+			<div
+				data-kala-component="card-with-footer-card-skeleton"
+				className={cn("p-6", hasHeader ? "pt-0" : "py-6")}
+			>
 				<SkeletonText lines={contentRows} />
 			</div>
 			{showActions && (
@@ -288,7 +307,7 @@ function WithFooterCardSkeleton({
  */
 function MinimalCardSkeleton({ contentRows = 3 }: { contentRows?: number }) {
 	return (
-		<div className="py-6 px-6">
+		<div data-kala-component="card-minimal-card-skeleton" className="py-6 px-6">
 			<SkeletonText lines={contentRows} />
 		</div>
 	);

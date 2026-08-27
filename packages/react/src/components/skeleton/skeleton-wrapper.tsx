@@ -76,7 +76,11 @@ export function SkeletonWrapper({
 	}, [isLoading, showSkeleton, duration, transition]);
 
 	return (
-		<div data-slot="skeleton-wrapper" className={cn("relative", className)}>
+		<div
+			data-kala-component="skeleton-wrapper"
+			data-slot="skeleton-wrapper"
+			className={cn("relative", className)}
+		>
 			{/* Skeleton layer - fades out when loading completes */}
 			{showSkeleton && (
 				<div

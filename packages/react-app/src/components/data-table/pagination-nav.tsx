@@ -40,7 +40,13 @@ export function PaginationNav({
 	});
 
 	return (
-		<Flex align="center" justify="center" wrap="wrap" gap={1}>
+		<Flex
+			data-kala-component="data-table-pagination-nav"
+			align="center"
+			justify="center"
+			wrap="wrap"
+			gap={1}
+		>
 			<Button
 				variant="outline"
 				size="sm"

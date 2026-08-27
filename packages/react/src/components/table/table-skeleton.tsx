@@ -67,7 +67,10 @@ export function TableSkeleton({
 	};
 
 	return (
-		<div className="relative w-full overflow-x-auto border rounded-lg bg-card kala-surface-card shadow-sm">
+		<div
+			data-kala-component="table-skeleton"
+			className="relative w-full overflow-x-auto border rounded-lg bg-card kala-surface-card shadow-sm"
+		>
 			<table data-slot="table" className="w-full caption-bottom text-sm">
 				<thead
 					data-slot="table-header"

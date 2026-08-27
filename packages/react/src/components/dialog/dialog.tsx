@@ -10,25 +10,49 @@ import { Text } from "../text";
 function Dialog({
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Root>) {
-	return <DialogPrimitive.Root data-slot="dialog" {...props} />;
+	return (
+		<DialogPrimitive.Root
+			data-kala-component="dialog"
+			data-slot="dialog"
+			{...props}
+		/>
+	);
 }
 
 function DialogTrigger({
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
-	return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />;
+	return (
+		<DialogPrimitive.Trigger
+			data-kala-component="dialog-trigger"
+			data-slot="dialog-trigger"
+			{...props}
+		/>
+	);
 }
 
 function DialogPortal({
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Portal>) {
-	return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />;
+	return (
+		<DialogPrimitive.Portal
+			data-kala-component="dialog-portal"
+			data-slot="dialog-portal"
+			{...props}
+		/>
+	);
 }
 
 function DialogClose({
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Close>) {
-	return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
+	return (
+		<DialogPrimitive.Close
+			data-kala-component="dialog-close"
+			data-slot="dialog-close"
+			{...props}
+		/>
+	);
 }
 
 function DialogOverlay({
@@ -37,6 +61,7 @@ function DialogOverlay({
 }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
 	return (
 		<DialogPrimitive.Overlay
+			data-kala-component="dialog-overlay"
 			data-slot="dialog-overlay"
 			className={cn(
 				"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-30 bg-overlay backdrop-blur-sm",
@@ -70,7 +95,10 @@ function DialogContent({
 	};
 
 	return (
-		<DialogPortal data-slot="dialog-portal">
+		<DialogPortal
+			data-kala-component="dialog-content"
+			data-slot="dialog-portal"
+		>
 			<DialogOverlay />
 			<DialogPrimitive.Content
 				data-slot="dialog-content"
@@ -111,6 +139,7 @@ function DialogHeader({
 }) {
 	return (
 		<Box
+			data-kala-component="dialog-header"
 			data-slot="dialog-header"
 			className={cn(
 				"flex flex-col gap-1.5 px-6 py-4 border-b",
@@ -132,6 +161,7 @@ function DialogFooter({
 }) {
 	return (
 		<Box
+			data-kala-component="dialog-footer"
 			data-slot="dialog-footer"
 			className={cn(
 				"flex flex-col-reverse gap-2 sm:flex-row sm:justify-end px-6 py-4 border-t bg-muted/50 rounded-b-lg",
@@ -153,6 +183,7 @@ function DialogTitle({
 }) {
 	return (
 		<DialogPrimitive.Title
+			data-kala-component="dialog-title"
 			data-slot="dialog-title"
 			className={cn(
 				"text-lg font-semibold leading-none tracking-tight text-foreground",
@@ -173,6 +204,7 @@ function DialogDescription({
 }) {
 	return (
 		<DialogPrimitive.Description
+			data-kala-component="dialog-description"
 			data-slot="dialog-description"
 			className={cn("text-sm leading-relaxed text-muted-foreground", className)}
 			{...props}
@@ -182,6 +214,7 @@ function DialogDescription({
 function DialogBody({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<Box
+			data-kala-component="dialog-body"
 			data-slot="dialog-body"
 			className={cn("flex-auto overflow-y-auto px-6 py-4 min-h-0", className)}
 			{...props}

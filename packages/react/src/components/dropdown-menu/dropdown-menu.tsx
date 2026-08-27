@@ -10,14 +10,24 @@ import { cn } from "../../lib/utils";
 function DropdownMenu({
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
-	return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />;
+	return (
+		<DropdownMenuPrimitive.Root
+			data-kala-component="dropdown-menu"
+			data-slot="dropdown-menu"
+			{...props}
+		/>
+	);
 }
 
 function DropdownMenuPortal({
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Portal>) {
 	return (
-		<DropdownMenuPrimitive.Portal data-slot="dropdown-menu-portal" {...props} />
+		<DropdownMenuPrimitive.Portal
+			data-kala-component="dropdown-menu-portal"
+			data-slot="dropdown-menu-portal"
+			{...props}
+		/>
 	);
 }
 
@@ -26,6 +36,7 @@ function DropdownMenuTrigger({
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
 	return (
 		<DropdownMenuPrimitive.Trigger
+			data-kala-component="dropdown-menu-trigger"
 			data-slot="dropdown-menu-trigger"
 			{...props}
 		/>
@@ -38,7 +49,7 @@ function DropdownMenuContent({
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
 	return (
-		<DropdownMenuPrimitive.Portal>
+		<DropdownMenuPrimitive.Portal data-kala-component="dropdown-menu-content">
 			<DropdownMenuPrimitive.Content
 				data-slot="dropdown-menu-content"
 				sideOffset={sideOffset}
@@ -53,7 +64,11 @@ function DropdownMenuGroup({
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Group>) {
 	return (
-		<DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />
+		<DropdownMenuPrimitive.Group
+			data-kala-component="dropdown-menu-group"
+			data-slot="dropdown-menu-group"
+			{...props}
+		/>
 	);
 }
 
@@ -68,6 +83,7 @@ function DropdownMenuItem({
 }) {
 	return (
 		<DropdownMenuPrimitive.Item
+			data-kala-component="dropdown-menu-item"
 			data-slot="dropdown-menu-item"
 			data-inset={inset}
 			data-color={color}
@@ -89,6 +105,7 @@ function DropdownMenuCheckboxItem({
 }: React.ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>) {
 	return (
 		<DropdownMenuPrimitive.CheckboxItem
+			data-kala-component="dropdown-menu-checkbox-item"
 			data-slot="dropdown-menu-checkbox-item"
 			className={cn(dropdownMenuStyles.checkboxItem, className)}
 			{...props}
@@ -108,6 +125,7 @@ function DropdownMenuRadioGroup({
 }: React.ComponentProps<typeof DropdownMenuPrimitive.RadioGroup>) {
 	return (
 		<DropdownMenuPrimitive.RadioGroup
+			data-kala-component="dropdown-menu-radio-group"
 			data-slot="dropdown-menu-radio-group"
 			{...props}
 		/>
@@ -121,6 +139,7 @@ function DropdownMenuRadioItem({
 }: React.ComponentProps<typeof DropdownMenuPrimitive.RadioItem>) {
 	return (
 		<DropdownMenuPrimitive.RadioItem
+			data-kala-component="dropdown-menu-radio-item"
 			data-slot="dropdown-menu-radio-item"
 			className={cn(dropdownMenuStyles.radioItem, className)}
 			{...props}
@@ -144,6 +163,7 @@ function DropdownMenuLabel({
 }) {
 	return (
 		<DropdownMenuPrimitive.Label
+			data-kala-component="dropdown-menu-label"
 			data-slot="dropdown-menu-label"
 			data-inset={inset}
 			className={cn(
@@ -162,6 +182,7 @@ function DropdownMenuSeparator({
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
 	return (
 		<DropdownMenuPrimitive.Separator
+			data-kala-component="dropdown-menu-separator"
 			data-slot="dropdown-menu-separator"
 			className={cn(dropdownMenuStyles.separator, className)}
 			{...props}
@@ -175,6 +196,7 @@ function DropdownMenuShortcut({
 }: React.ComponentProps<"span">) {
 	return (
 		<span
+			data-kala-component="dropdown-menu-shortcut"
 			data-slot="dropdown-menu-shortcut"
 			className={cn(dropdownMenuStyles.shortcut, className)}
 			{...props}
@@ -185,7 +207,13 @@ function DropdownMenuShortcut({
 function DropdownMenuSub({
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Sub>) {
-	return <DropdownMenuPrimitive.Sub data-slot="dropdown-menu-sub" {...props} />;
+	return (
+		<DropdownMenuPrimitive.Sub
+			data-kala-component="dropdown-menu-sub"
+			data-slot="dropdown-menu-sub"
+			{...props}
+		/>
+	);
 }
 
 function DropdownMenuSubTrigger({
@@ -198,6 +226,7 @@ function DropdownMenuSubTrigger({
 }) {
 	return (
 		<DropdownMenuPrimitive.SubTrigger
+			data-kala-component="dropdown-menu-sub-trigger"
 			data-slot="dropdown-menu-sub-trigger"
 			data-inset={inset}
 			className={cn(
@@ -223,6 +252,7 @@ function DropdownMenuSubContent({
 }: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
 	return (
 		<DropdownMenuPrimitive.SubContent
+			data-kala-component="dropdown-menu-sub-content"
 			data-slot="dropdown-menu-sub-content"
 			className={cn(
 				"z-30 min-w-[10rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden",

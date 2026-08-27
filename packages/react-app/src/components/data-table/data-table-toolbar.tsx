@@ -44,6 +44,7 @@ export function DataTableToolbar<TData>({
 
 	return (
 		<Flex
+			data-kala-component="data-table-toolbar"
 			align="center"
 			justify="between"
 			gap={4}

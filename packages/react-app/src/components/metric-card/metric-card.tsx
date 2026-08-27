@@ -44,8 +44,8 @@ function MetricCard({
 		if (skeleton) {
 			return (
 				<Card
+					data-kala-component="metric-card"
 					ref={ref}
-					data-comp="metric-card"
 					className={cn(className)}
 					{...props}
 				>
@@ -53,7 +53,13 @@ function MetricCard({
 				</Card>
 			);
 		}
-		return <MetricCardSkeleton className={className} {...skeletonConfig} />;
+		return (
+			<MetricCardSkeleton
+				data-kala-component="metric-card"
+				className={className}
+				{...skeletonConfig}
+			/>
+		);
 	}
 
 	const getChangeColor = (changeValue: number) => {
@@ -100,8 +106,8 @@ function MetricCard({
 
 	return (
 		<Card
+			data-kala-component="metric-card"
 			ref={ref}
-			data-comp="metric-card"
 			className={cn(getColorStyles(), className)}
 			{...props}
 		>

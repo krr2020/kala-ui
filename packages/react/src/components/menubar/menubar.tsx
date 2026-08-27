@@ -9,7 +9,13 @@ import { cn } from "../../lib/utils";
 function MenubarMenu({
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.Menu>) {
-	return <MenubarPrimitive.Menu data-slot="menubar-menu" {...props} />;
+	return (
+		<MenubarPrimitive.Menu
+			data-kala-component="menubar-menu"
+			data-slot="menubar-menu"
+			{...props}
+		/>
+	);
 }
 
 function Menubar({
@@ -18,6 +24,7 @@ function Menubar({
 }: React.ComponentProps<typeof MenubarPrimitive.Root>) {
 	return (
 		<MenubarPrimitive.Root
+			data-kala-component="menubar"
 			data-slot="menubar"
 			className={cn(
 				"flex h-10 items-center space-x-1 rounded-md border bg-background p-1 kala-surface-card",
@@ -34,6 +41,7 @@ function MenubarTrigger({
 }: React.ComponentProps<typeof MenubarPrimitive.Trigger>) {
 	return (
 		<MenubarPrimitive.Trigger
+			data-kala-component="menubar-trigger"
 			data-slot="menubar-trigger"
 			className={cn(
 				"flex cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none transition-colors",
@@ -57,6 +65,7 @@ function MenubarSubTrigger({
 }) {
 	return (
 		<MenubarPrimitive.SubTrigger
+			data-kala-component="menubar-sub-trigger"
 			data-slot="menubar-sub-trigger"
 			data-inset={inset}
 			className={cn(
@@ -83,6 +92,7 @@ function MenubarSubContent({
 }: React.ComponentProps<typeof MenubarPrimitive.SubContent>) {
 	return (
 		<MenubarPrimitive.SubContent
+			data-kala-component="menubar-sub-content"
 			data-slot="menubar-sub-content"
 			className={cn(
 				"z-30 min-w-[10rem] max-h-(--radix-menubar-content-available-height) origin-(--radix-menubar-content-transform-origin) overflow-x-hidden overflow-y-auto",
@@ -107,7 +117,7 @@ function MenubarContent({
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.Content>) {
 	return (
-		<MenubarPrimitive.Portal>
+		<MenubarPrimitive.Portal data-kala-component="menubar-content">
 			<MenubarPrimitive.Content
 				data-slot="menubar-content"
 				align={align}
@@ -140,6 +150,7 @@ function MenubarItem({
 }) {
 	return (
 		<MenubarPrimitive.Item
+			data-kala-component="menubar-item"
 			data-slot="menubar-item"
 			data-inset={inset}
 			data-color={color}
@@ -166,6 +177,7 @@ function MenubarCheckboxItem({
 }: React.ComponentProps<typeof MenubarPrimitive.CheckboxItem>) {
 	return (
 		<MenubarPrimitive.CheckboxItem
+			data-kala-component="menubar-checkbox-item"
 			data-slot="menubar-checkbox-item"
 			className={cn(
 				"relative flex cursor-pointer select-none items-center gap-2 rounded-sm py-2 pl-8 pr-3 text-sm outline-none transition-colors",
@@ -190,7 +202,11 @@ function MenubarRadioGroup({
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.RadioGroup>) {
 	return (
-		<MenubarPrimitive.RadioGroup data-slot="menubar-radio-group" {...props} />
+		<MenubarPrimitive.RadioGroup
+			data-kala-component="menubar-radio-group"
+			data-slot="menubar-radio-group"
+			{...props}
+		/>
 	);
 }
 
@@ -201,6 +217,7 @@ function MenubarRadioItem({
 }: React.ComponentProps<typeof MenubarPrimitive.RadioItem>) {
 	return (
 		<MenubarPrimitive.RadioItem
+			data-kala-component="menubar-radio-item"
 			data-slot="menubar-radio-item"
 			className={cn(
 				"relative flex cursor-pointer select-none items-center gap-2 rounded-sm py-2 pl-8 pr-3 text-sm outline-none transition-colors",
@@ -230,6 +247,7 @@ function MenubarLabel({
 }) {
 	return (
 		<MenubarPrimitive.Label
+			data-kala-component="menubar-label"
 			data-slot="menubar-label"
 			data-inset={inset}
 			className={cn(
@@ -248,6 +266,7 @@ function MenubarSeparator({
 }: React.ComponentProps<typeof MenubarPrimitive.Separator>) {
 	return (
 		<MenubarPrimitive.Separator
+			data-kala-component="menubar-separator"
 			data-slot="menubar-separator"
 			className={cn("-mx-1 my-1 h-px bg-separator", className)}
 			{...props}
@@ -261,6 +280,7 @@ function MenubarShortcut({
 }: React.HTMLAttributes<HTMLSpanElement>) {
 	return (
 		<span
+			data-kala-component="menubar-shortcut"
 			className={cn(
 				"ml-auto text-xs tracking-widest text-muted-foreground",
 				className,
@@ -273,19 +293,37 @@ function MenubarShortcut({
 function MenubarSub({
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.Sub>) {
-	return <MenubarPrimitive.Sub data-slot="menubar-sub" {...props} />;
+	return (
+		<MenubarPrimitive.Sub
+			data-kala-component="menubar-sub"
+			data-slot="menubar-sub"
+			{...props}
+		/>
+	);
 }
 
 function MenubarGroup({
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.Group>) {
-	return <MenubarPrimitive.Group data-slot="menubar-group" {...props} />;
+	return (
+		<MenubarPrimitive.Group
+			data-kala-component="menubar-group"
+			data-slot="menubar-group"
+			{...props}
+		/>
+	);
 }
 
 function MenubarPortal({
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.Portal>) {
-	return <MenubarPrimitive.Portal data-slot="menubar-portal" {...props} />;
+	return (
+		<MenubarPrimitive.Portal
+			data-kala-component="menubar-portal"
+			data-slot="menubar-portal"
+			{...props}
+		/>
+	);
 }
 
 export {

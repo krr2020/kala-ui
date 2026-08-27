@@ -35,6 +35,7 @@ function useField(): FieldContextValue | null {
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
 	return (
 		<fieldset
+			data-kala-component="field-set"
 			data-slot="field-set"
 			className={cn(
 				"flex flex-col gap-6",
@@ -53,6 +54,7 @@ function FieldLegend({
 }: React.ComponentProps<"legend"> & { variant?: "legend" | "label" }) {
 	return (
 		<legend
+			data-kala-component="field-legend"
 			data-slot="field-legend"
 			data-variant={variant}
 			className={cn(
@@ -69,6 +71,7 @@ function FieldLegend({
 function FieldGroup({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
+			data-kala-component="field-group"
 			data-slot="field-group"
 			className={cn(
 				"group/field-group @container/field-group flex w-full flex-col gap-7 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4",
@@ -141,6 +144,7 @@ function Field({
 
 	return (
 		<fieldset
+			data-kala-component="field"
 			data-slot="field"
 			data-orientation={orientation}
 			className={cn(fieldVariants({ orientation }), className)}
@@ -178,7 +182,11 @@ function FieldControl({
 
 	if (!field) {
 		return (
-			<Slot data-slot="field-control" {...props}>
+			<Slot
+				data-kala-component="field-control"
+				data-slot="field-control"
+				{...props}
+			>
 				{children}
 			</Slot>
 		);
@@ -210,7 +218,11 @@ function FieldControl({
 	} as Record<string, unknown>);
 
 	return (
-		<Slot data-slot="field-control" {...props}>
+		<Slot
+			data-kala-component="field-control"
+			data-slot="field-control"
+			{...props}
+		>
 			{merged}
 		</Slot>
 	);
@@ -219,6 +231,7 @@ function FieldControl({
 function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
+			data-kala-component="field-content"
 			data-slot="field-content"
 			className={cn(
 				"group/field-content flex flex-1 flex-col gap-1.5 leading-snug",
@@ -237,6 +250,7 @@ function FieldLabel({
 	const field = useField();
 	return (
 		<Label
+			data-kala-component="field-label"
 			data-slot="field-label"
 			htmlFor={htmlFor ?? field?.registeredControlId ?? undefined}
 			className={cn(
@@ -253,6 +267,7 @@ function FieldLabel({
 function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
+			data-kala-component="field-title"
 			data-slot="field-label"
 			className={cn(
 				"flex w-fit items-center gap-2 text-sm leading-snug font-medium group-data-[disabled=true]/field:opacity-50",
@@ -274,6 +289,7 @@ function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
 
 	return (
 		<p
+			data-kala-component="field-description"
 			data-slot="field-description"
 			id={field?.descriptionId}
 			className={cn(
@@ -296,6 +312,7 @@ function FieldSeparator({
 }) {
 	return (
 		<div
+			data-kala-component="field-separator"
 			data-slot="field-separator"
 			data-content={!!children}
 			className={cn(
@@ -368,6 +385,7 @@ function FieldError({
 
 	return (
 		<div
+			data-kala-component="field-error"
 			role="alert"
 			data-slot="field-error"
 			id={field?.errorId}

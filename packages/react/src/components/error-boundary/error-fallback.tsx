@@ -70,7 +70,7 @@ export function ErrorFallback({
 
 	return (
 		<div
-			data-comp="error-fallback"
+			data-kala-component="error-fallback"
 			className={cn(errorFallbackVariants({ variant }), className)}
 			role="alert"
 		>

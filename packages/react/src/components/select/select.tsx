@@ -16,20 +16,32 @@ import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton";
 
 function Select(props: React.ComponentProps<typeof SelectPrimitive.Root>) {
-	return <SelectPrimitive.Root {...props} />;
+	return <SelectPrimitive.Root data-kala-component="select" {...props} />;
 }
 
 function SelectGroup({
 	ref,
 	...props
 }: React.ComponentProps<typeof SelectPrimitive.Group>) {
-	return <SelectPrimitive.Group ref={ref} {...props} />;
+	return (
+		<SelectPrimitive.Group
+			data-kala-component="select-group"
+			ref={ref}
+			{...props}
+		/>
+	);
 }
 function SelectValue({
 	ref,
 	...props
 }: React.ComponentProps<typeof SelectPrimitive.Value>) {
-	return <SelectPrimitive.Value ref={ref} {...props} />;
+	return (
+		<SelectPrimitive.Value
+			data-kala-component="select-value"
+			ref={ref}
+			{...props}
+		/>
+	);
 }
 
 import { cva } from "class-variance-authority";
@@ -53,6 +65,7 @@ function SelectTrigger({
 	if (isLoading) {
 		return (
 			<Skeleton
+				data-kala-component="select-trigger"
 				className={cn(
 					"w-full rounded-md flex items-center justify-between",
 					size === "sm" ? "h-9" : "h-10",
@@ -64,6 +77,7 @@ function SelectTrigger({
 
 	return (
 		<SelectPrimitive.Trigger
+			data-kala-component="select-trigger"
 			ref={ref}
 			data-slot="select-trigger"
 			data-size={size}
@@ -84,6 +98,7 @@ function SelectScrollUpButton({
 }: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
 	return (
 		<SelectPrimitive.ScrollUpButton
+			data-kala-component="select-scroll-up-button"
 			ref={ref}
 			data-slot="select-scroll-up-button"
 			className={cn(selectScrollButtonStyles.base, className)}
@@ -100,6 +115,7 @@ function SelectScrollDownButton({
 }: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
 	return (
 		<SelectPrimitive.ScrollDownButton
+			data-kala-component="select-scroll-down-button"
 			ref={ref}
 			data-slot="select-scroll-down-button"
 			className={cn(selectScrollButtonStyles.base, className)}
@@ -124,7 +140,7 @@ function SelectContent({
 	matchTriggerWidth?: boolean;
 }) {
 	return (
-		<SelectPrimitive.Portal>
+		<SelectPrimitive.Portal data-kala-component="select-content">
 			<SelectPrimitive.Content
 				ref={ref}
 				data-slot="select-content"
@@ -162,6 +178,7 @@ function SelectLabel({
 }: React.ComponentProps<typeof SelectPrimitive.Label>) {
 	return (
 		<SelectPrimitive.Label
+			data-kala-component="select-label"
 			ref={ref}
 			data-slot="select-label"
 			className={cn(selectLabelStyles.base, className)}
@@ -177,6 +194,7 @@ function SelectItem({
 }: React.ComponentProps<typeof SelectPrimitive.Item>) {
 	return (
 		<SelectPrimitive.Item
+			data-kala-component="select-item"
 			ref={ref}
 			data-slot="select-item"
 			className={cn(selectItemStyles.base, className)}
@@ -198,6 +216,7 @@ function SelectSeparator({
 }: React.ComponentProps<typeof SelectPrimitive.Separator>) {
 	return (
 		<SelectPrimitive.Separator
+			data-kala-component="select-separator"
 			ref={ref}
 			data-slot="select-separator"
 			className={cn(selectSeparatorStyles.base, className)}

@@ -24,5 +24,12 @@ export function Box<T extends React.ElementType = "div">(props: BoxProps<T>) {
 		...rest
 	} = props as BoxProps<"div">;
 	const Comp = (asChild ? Slot : Tag) as React.ElementType;
-	return <Comp className={cn(className)} ref={ref} {...rest} />;
+	return (
+		<Comp
+			data-kala-component="box"
+			className={cn(className)}
+			ref={ref}
+			{...rest}
+		/>
+	);
 }

@@ -42,6 +42,7 @@ function Spinner({
 }: SpinnerProps) {
 	return (
 		<output
+			data-kala-component="spinner"
 			className={cn("inline-flex items-center justify-center", className)}
 		>
 			<Loader2

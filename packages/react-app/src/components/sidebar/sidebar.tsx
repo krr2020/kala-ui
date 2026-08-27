@@ -239,7 +239,7 @@ export function Sidebar({
 			{overlayActive ? (
 				<div
 					ref={shellRef}
-					data-comp="sidebar"
+					data-kala-component="sidebar"
 					role="dialog"
 					aria-modal="true"
 					aria-label="Sidebar"
@@ -251,7 +251,7 @@ export function Sidebar({
 			) : (
 				<aside
 					ref={shellRef}
-					data-comp="sidebar"
+					data-kala-component="sidebar"
 					className={shellClassName}
 					{...props}
 				>

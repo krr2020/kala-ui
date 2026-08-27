@@ -38,6 +38,7 @@ function LoadingOverlay({
 
 	return (
 		<Box
+			data-kala-component="loading-overlay"
 			ref={ref}
 			className={cn(
 				"absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity",

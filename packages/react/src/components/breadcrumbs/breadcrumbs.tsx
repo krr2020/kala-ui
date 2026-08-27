@@ -39,7 +39,11 @@ export function Breadcrumbs({
 	const separatorElement = getDefaultSeparator();
 
 	return (
-		<nav aria-label="breadcrumb" className={className}>
+		<nav
+			data-kala-component="breadcrumbs"
+			aria-label="breadcrumb"
+			className={className}
+		>
 			<ol
 				className={cn(
 					"flex items-center gap-0 list-none p-0 m-0",

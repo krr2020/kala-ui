@@ -33,6 +33,7 @@ export function Burger({
 
 	return (
 		<button
+			data-kala-component="burger"
 			ref={ref}
 			type="button"
 			className={cn(

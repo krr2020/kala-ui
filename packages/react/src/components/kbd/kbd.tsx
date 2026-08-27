@@ -55,7 +55,10 @@ function Kbd({ className, size, keys, children, ...props }: KbdProps) {
 
 		if (keyArray.length > 1) {
 			return (
-				<span className="inline-flex items-center gap-0.5">
+				<span
+					data-kala-component="kbd"
+					className="inline-flex items-center gap-0.5"
+				>
 					{keyArray.map((k, i) => (
 						<kbd
 							key={i}
@@ -73,6 +76,7 @@ function Kbd({ className, size, keys, children, ...props }: KbdProps) {
 		const key = keyArray[0];
 		return (
 			<kbd
+				data-kala-component="kbd"
 				data-slot="kbd"
 				className={cn(kbdVariants({ size }), className)}
 				{...props}
@@ -84,6 +88,7 @@ function Kbd({ className, size, keys, children, ...props }: KbdProps) {
 
 	return (
 		<kbd
+			data-kala-component="kbd"
 			data-slot="kbd"
 			className={cn(kbdVariants({ size }), className)}
 			{...props}

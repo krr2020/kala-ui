@@ -51,6 +51,7 @@ export function DataTableHeaderRow<TData>({
 }: DataTableHeaderRowProps<TData>) {
 	return (
 		<TableHeader
+			data-kala-component="data-table-header-row"
 			className={
 				stickyHeader
 					? "sticky top-0 z-1 bg-muted/95 backdrop-blur-sm [&_tr]:border-0"

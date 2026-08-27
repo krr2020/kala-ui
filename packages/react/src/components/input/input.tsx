@@ -48,13 +48,19 @@ export function Input({
 
 	// Show loading skeleton
 	if (isLoading) {
-		return <Skeleton className={cn("h-10 w-full rounded-md", className)} />;
+		return (
+			<Skeleton
+				data-kala-component="input"
+				className={cn("h-10 w-full rounded-md", className)}
+			/>
+		);
 	}
 
 	// Simple input without wrapper (for InputGroup compatibility)
 	if (unstyled || (!hasPrefix && !hasSuffix)) {
 		return (
 			<input
+				data-kala-component="input"
 				type={internalType}
 				className={cn(
 					inputStyles.base,
@@ -71,7 +77,7 @@ export function Input({
 
 	// Input with wrapper for icons and password toggle
 	return (
-		<div data-comp="input" className="relative w-full">
+		<div data-kala-component="input" className="relative w-full">
 			{hasPrefix && (
 				<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
 					{prefixIcon}

@@ -138,6 +138,7 @@ export function RadialBarChart({
 
 	return (
 		<Chart
+			data-kala-component="charts-radial-bar-chart"
 			className={cn("w-full", className)}
 			options={chartOptions}
 			series={series}

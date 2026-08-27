@@ -57,6 +57,7 @@ function Heading({
 
 	return (
 		<Tag
+			data-kala-component="heading"
 			className={cn(headingVariants({ size, align, weight, className }))}
 			ref={ref}
 			{...props}

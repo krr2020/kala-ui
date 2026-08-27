@@ -39,6 +39,7 @@ export function SessionCardSkeleton({
 }: SessionCardSkeletonProps) {
 	return (
 		<Card
+			data-kala-component="session-card-skeleton"
 			data-testid={dataTestId || "session-card-skeleton"}
 			className={cn("relative", className)}
 		>

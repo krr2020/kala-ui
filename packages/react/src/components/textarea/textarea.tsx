@@ -12,6 +12,7 @@ function Textarea({
 	if (isLoading) {
 		return (
 			<Skeleton
+				data-kala-component="textarea"
 				className={cn("min-h-[80px] w-full rounded-md", className)}
 				style={{ height: rows ? `${rows * 1.5}rem` : undefined }}
 			/>
@@ -20,6 +21,7 @@ function Textarea({
 
 	return (
 		<textarea
+			data-kala-component="textarea"
 			ref={ref}
 			data-slot="textarea"
 			rows={rows}

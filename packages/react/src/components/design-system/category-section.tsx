@@ -12,7 +12,7 @@ export const CategorySection = ({
 	renderPreview,
 }: CategorySectionProps) => {
 	return (
-		<div className="mb-12">
+		<div data-kala-component="design-system-category-section" className="mb-12">
 			<div className="mb-4 flex items-center justify-between">
 				<div>
 					<h2

@@ -15,11 +15,17 @@ function Checkbox({
 	...props
 }: CheckboxProps) {
 	if (isLoading) {
-		return <Skeleton className={cn("h-4 w-4 rounded", className)} />;
+		return (
+			<Skeleton
+				data-kala-component="checkbox"
+				className={cn("h-4 w-4 rounded", className)}
+			/>
+		);
 	}
 
 	return (
 		<CheckboxPrimitive.Root
+			data-kala-component="checkbox"
 			ref={ref}
 			data-slot="checkbox"
 			className={cn(checkboxStyles.base, className)}

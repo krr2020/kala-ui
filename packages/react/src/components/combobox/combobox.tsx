@@ -71,7 +71,11 @@ function Combobox({
 	};
 
 	return (
-		<PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
+		<PopoverPrimitive.Root
+			data-kala-component="combobox"
+			open={open}
+			onOpenChange={handleOpenChange}
+		>
 			<div className="relative w-full">
 				<PopoverPrimitive.Trigger asChild>
 					<Button

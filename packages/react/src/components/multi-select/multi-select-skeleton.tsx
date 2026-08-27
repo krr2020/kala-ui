@@ -50,6 +50,7 @@ export function MultiSelectSkeleton({
 
 	return (
 		<div
+			data-kala-component="multi-select-skeleton"
 			data-testid={dataTestId || "multi-select-skeleton"}
 			className={cn(
 				"flex flex-wrap gap-2 border rounded-md p-2",

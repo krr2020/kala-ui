@@ -62,7 +62,7 @@ export function PasswordStrengthIndicator({
 
 	return (
 		<div
-			data-comp="password-strength-indicator"
+			data-kala-component="password-strength-indicator"
 			ref={ref}
 			className={cn("mt-3", className)}
 			aria-live="polite"

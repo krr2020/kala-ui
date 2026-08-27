@@ -68,6 +68,7 @@ export function SidebarSkeleton({
 }: SidebarSkeletonProps) {
 	return (
 		<aside
+			data-kala-component="sidebar-skeleton"
 			data-testid={dataTestId || "sidebar-skeleton"}
 			className={cn(
 				"flex flex-col h-full bg-popover border-r",

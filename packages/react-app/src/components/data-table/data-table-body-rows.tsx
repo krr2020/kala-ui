@@ -44,7 +44,7 @@ export function DataTableBodyRows<TData>({
 	hasFooter,
 }: DataTableBodyRowsProps<TData>) {
 	return (
-		<TableBody>
+		<TableBody data-kala-component="data-table-body-rows">
 			{displayData.map((row, rowIndex) => {
 				const isSelectable =
 					!selection?.isRowSelectable || selection.isRowSelectable(row);

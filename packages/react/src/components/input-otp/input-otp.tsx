@@ -13,6 +13,7 @@ function InputOTP({
 }: React.ComponentProps<typeof OTPInput>) {
 	return (
 		<OTPInput
+			data-kala-component="input-otp"
 			ref={ref}
 			containerClassName={cn(
 				"flex items-center gap-2 has-[:disabled]:opacity-50",
@@ -30,7 +31,12 @@ function InputOTPGroup({
 	...props
 }: React.ComponentProps<"div">) {
 	return (
-		<div ref={ref} className={cn("flex items-center", className)} {...props} />
+		<div
+			data-kala-component="input-otp-group"
+			ref={ref}
+			className={cn("flex items-center", className)}
+			{...props}
+		/>
 	);
 }
 function InputOTPSlot({
@@ -49,6 +55,7 @@ function InputOTPSlot({
 
 	return (
 		<div
+			data-kala-component="input-otp-slot"
 			ref={ref}
 			className={cn(
 				"relative flex h-10 w-10 items-center justify-center border-y border-r text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md kala-surface-input",
@@ -71,7 +78,14 @@ function InputOTPSeparator({
 	className,
 	...props
 }: React.ComponentProps<"hr">) {
-	return <hr ref={ref} className={cn(className)} {...props} />;
+	return (
+		<hr
+			data-kala-component="input-otp-separator"
+			ref={ref}
+			className={cn(className)}
+			{...props}
+		/>
+	);
 }
 
 export { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot };

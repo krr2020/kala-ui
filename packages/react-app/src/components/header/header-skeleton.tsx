@@ -68,6 +68,7 @@ export function HeaderSkeleton({
 }: HeaderSkeletonProps) {
 	return (
 		<header
+			data-kala-component="header-skeleton"
 			data-testid={dataTestId || "header-skeleton"}
 			className={cn(
 				"flex items-center justify-between p-4 border-b bg-background",

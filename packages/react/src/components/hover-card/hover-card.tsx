@@ -12,6 +12,7 @@ function HoverCard({
 }: React.ComponentProps<typeof HoverCardPrimitive.Root>) {
 	return (
 		<HoverCardPrimitive.Root
+			data-kala-component="hover-card"
 			data-slot="hover-card"
 			openDelay={openDelay}
 			closeDelay={closeDelay}
@@ -24,7 +25,11 @@ function HoverCardTrigger({
 	...props
 }: React.ComponentProps<typeof HoverCardPrimitive.Trigger>) {
 	return (
-		<HoverCardPrimitive.Trigger data-slot="hover-card-trigger" {...props} />
+		<HoverCardPrimitive.Trigger
+			data-kala-component="hover-card-trigger"
+			data-slot="hover-card-trigger"
+			{...props}
+		/>
 	);
 }
 
@@ -35,7 +40,7 @@ function HoverCardContent({
 	...props
 }: React.ComponentProps<typeof HoverCardPrimitive.Content>) {
 	return (
-		<HoverCardPrimitive.Portal>
+		<HoverCardPrimitive.Portal data-kala-component="hover-card-content">
 			<HoverCardPrimitive.Content
 				data-slot="hover-card-content"
 				align={align}

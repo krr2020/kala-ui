@@ -55,7 +55,10 @@ function TimeColumn({
 	}, [selected]);
 
 	return (
-		<div className="flex flex-col items-center gap-1 min-w-0">
+		<div
+			data-kala-component="time-picker-time-column"
+			className="flex flex-col items-center gap-1 min-w-0"
+		>
 			<span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">
 				{label}
 			</span>
@@ -147,12 +150,16 @@ function TimePicker({
 
 	if (isLoading) {
 		return (
-			<Skeleton className={cn("h-[216px] w-full rounded-md", className)} />
+			<Skeleton
+				data-kala-component="time-picker"
+				className={cn("h-[216px] w-full rounded-md", className)}
+			/>
 		);
 	}
 
 	return (
 		<div
+			data-kala-component="time-picker"
 			data-slot="time-picker"
 			className={cn(
 				"inline-flex flex-col rounded-md border bg-card p-3 kala-surface-input",

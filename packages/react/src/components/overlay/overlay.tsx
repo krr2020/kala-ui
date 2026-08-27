@@ -72,6 +72,7 @@ function Overlay({
 
 	return (
 		<Box
+			data-kala-component="overlay"
 			ref={ref}
 			className={cn(fixed ? "fixed" : "absolute", "inset-0", className)}
 			style={{

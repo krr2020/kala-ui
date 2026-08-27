@@ -39,7 +39,10 @@ export function ColumnFilters<TData>({
 	const hasActiveFilters = activeFilters.length > 0;
 
 	return (
-		<div className="flex flex-wrap items-center gap-2">
+		<div
+			data-kala-component="data-table-column-filters"
+			className="flex flex-wrap items-center gap-2"
+		>
 			{filterableColumns.map((column) => {
 				const activeFilter = activeFilters.find((f) => f.key === column.key);
 				const filterValue = activeFilter?.value;

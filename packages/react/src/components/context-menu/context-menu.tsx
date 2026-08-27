@@ -10,14 +10,24 @@ import { cn } from "../../lib/utils";
 function ContextMenu({
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Root>) {
-	return <ContextMenuPrimitive.Root data-slot="context-menu" {...props} />;
+	return (
+		<ContextMenuPrimitive.Root
+			data-kala-component="context-menu"
+			data-slot="context-menu"
+			{...props}
+		/>
+	);
 }
 
 function ContextMenuTrigger({
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Trigger>) {
 	return (
-		<ContextMenuPrimitive.Trigger data-slot="context-menu-trigger" {...props} />
+		<ContextMenuPrimitive.Trigger
+			data-kala-component="context-menu-trigger"
+			data-slot="context-menu-trigger"
+			{...props}
+		/>
 	);
 }
 
@@ -25,7 +35,11 @@ function ContextMenuPortal({
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Portal>) {
 	return (
-		<ContextMenuPrimitive.Portal data-slot="context-menu-portal" {...props} />
+		<ContextMenuPrimitive.Portal
+			data-kala-component="context-menu-portal"
+			data-slot="context-menu-portal"
+			{...props}
+		/>
 	);
 }
 
@@ -34,7 +48,7 @@ function ContextMenuContent({
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Content>) {
 	return (
-		<ContextMenuPrimitive.Portal>
+		<ContextMenuPrimitive.Portal data-kala-component="context-menu-content">
 			<ContextMenuPrimitive.Content
 				data-slot="context-menu-content"
 				className={cn(
@@ -56,7 +70,11 @@ function ContextMenuGroup({
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Group>) {
 	return (
-		<ContextMenuPrimitive.Group data-slot="context-menu-group" {...props} />
+		<ContextMenuPrimitive.Group
+			data-kala-component="context-menu-group"
+			data-slot="context-menu-group"
+			{...props}
+		/>
 	);
 }
 
@@ -71,6 +89,7 @@ function ContextMenuItem({
 }) {
 	return (
 		<ContextMenuPrimitive.Item
+			data-kala-component="context-menu-item"
 			data-slot="context-menu-item"
 			data-inset={inset}
 			data-color={color}
@@ -92,6 +111,7 @@ function ContextMenuCheckboxItem({
 }: React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem>) {
 	return (
 		<ContextMenuPrimitive.CheckboxItem
+			data-kala-component="context-menu-checkbox-item"
 			data-slot="context-menu-checkbox-item"
 			className={cn(dropdownMenuStyles.checkboxItem, className)}
 			{...props}
@@ -111,6 +131,7 @@ function ContextMenuRadioGroup({
 }: React.ComponentProps<typeof ContextMenuPrimitive.RadioGroup>) {
 	return (
 		<ContextMenuPrimitive.RadioGroup
+			data-kala-component="context-menu-radio-group"
 			data-slot="context-menu-radio-group"
 			{...props}
 		/>
@@ -124,6 +145,7 @@ function ContextMenuRadioItem({
 }: React.ComponentProps<typeof ContextMenuPrimitive.RadioItem>) {
 	return (
 		<ContextMenuPrimitive.RadioItem
+			data-kala-component="context-menu-radio-item"
 			data-slot="context-menu-radio-item"
 			className={cn(dropdownMenuStyles.radioItem, className)}
 			{...props}
@@ -147,6 +169,7 @@ function ContextMenuLabel({
 }) {
 	return (
 		<ContextMenuPrimitive.Label
+			data-kala-component="context-menu-label"
 			data-slot="context-menu-label"
 			data-inset={inset}
 			className={cn(
@@ -165,6 +188,7 @@ function ContextMenuSeparator({
 }: React.ComponentProps<typeof ContextMenuPrimitive.Separator>) {
 	return (
 		<ContextMenuPrimitive.Separator
+			data-kala-component="context-menu-separator"
 			data-slot="context-menu-separator"
 			className={cn(dropdownMenuStyles.separator, className)}
 			{...props}
@@ -178,6 +202,7 @@ function ContextMenuShortcut({
 }: React.ComponentProps<"span">) {
 	return (
 		<span
+			data-kala-component="context-menu-shortcut"
 			data-slot="context-menu-shortcut"
 			className={cn(dropdownMenuStyles.shortcut, className)}
 			{...props}
@@ -188,7 +213,13 @@ function ContextMenuShortcut({
 function ContextMenuSub({
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Sub>) {
-	return <ContextMenuPrimitive.Sub data-slot="context-menu-sub" {...props} />;
+	return (
+		<ContextMenuPrimitive.Sub
+			data-kala-component="context-menu-sub"
+			data-slot="context-menu-sub"
+			{...props}
+		/>
+	);
 }
 
 function ContextMenuSubTrigger({
@@ -201,6 +232,7 @@ function ContextMenuSubTrigger({
 }) {
 	return (
 		<ContextMenuPrimitive.SubTrigger
+			data-kala-component="context-menu-sub-trigger"
 			data-slot="context-menu-sub-trigger"
 			data-inset={inset}
 			className={cn(
@@ -226,6 +258,7 @@ function ContextMenuSubContent({
 }: React.ComponentProps<typeof ContextMenuPrimitive.SubContent>) {
 	return (
 		<ContextMenuPrimitive.SubContent
+			data-kala-component="context-menu-sub-content"
 			data-slot="context-menu-sub-content"
 			className={cn(
 				"z-30 min-w-[10rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground kala-surface-popover",

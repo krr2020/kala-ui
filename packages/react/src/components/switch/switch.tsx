@@ -9,11 +9,17 @@ import type { SwitchProps } from "./switch.types";
 
 function Switch({ className, isLoading = false, ref, ...props }: SwitchProps) {
 	if (isLoading) {
-		return <Skeleton className={cn("h-6 w-11 rounded-full", className)} />;
+		return (
+			<Skeleton
+				data-kala-component="switch"
+				className={cn("h-6 w-11 rounded-full", className)}
+			/>
+		);
 	}
 
 	return (
 		<SwitchPrimitive.Root
+			data-kala-component="switch"
 			ref={ref}
 			data-slot="switch"
 			className={cn(switchStyles.base, className)}

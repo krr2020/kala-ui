@@ -59,8 +59,8 @@ export function Footer({
 
 	return (
 		<footer
+			data-kala-component="footer"
 			ref={ref}
-			data-comp="footer"
 			className={cn(
 				"w-full bg-muted text-muted-foreground border-t",
 				className,

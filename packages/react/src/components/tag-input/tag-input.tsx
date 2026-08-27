@@ -201,7 +201,7 @@ export function TagInput({
 	};
 
 	return (
-		<div className="relative w-full">
+		<div data-kala-component="tag-input" className="relative w-full">
 			{/* biome-ignore lint/a11y/noStaticElementInteractions: click/keyboard anywhere in the chip container routes focus to the embedded input, which is the interactive element */}
 			<div
 				className={cn(

@@ -67,6 +67,7 @@ export function RingProgress({
 
 	return (
 		<div
+			data-kala-component="ring-progress"
 			ref={ref}
 			role="progressbar"
 			aria-valuenow={Math.min(100, Math.round(accumulatedValue))}

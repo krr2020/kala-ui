@@ -32,6 +32,7 @@ function Skeleton({
 }: SkeletonProps) {
 	return (
 		<div
+			data-kala-component="skeleton"
 			ref={ref}
 			data-slot="skeleton"
 			data-testid={dataTestId}

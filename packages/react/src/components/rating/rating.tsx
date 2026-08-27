@@ -43,7 +43,7 @@ function RatingStar({
 	size: keyof typeof sizeMap;
 }) {
 	return (
-		<span className="relative inline-flex">
+		<span data-kala-component="rating-star" className="relative inline-flex">
 			{/* Background (empty) star */}
 			<Star
 				aria-hidden="true"
@@ -154,6 +154,7 @@ function Rating({
 		// announced once through role="img", stars are decorative.
 		return (
 			<fieldset
+				data-kala-component="rating"
 				data-slot="rating"
 				ref={ref}
 				role="img"
@@ -173,6 +174,7 @@ function Rating({
 
 	return (
 		<fieldset
+			data-kala-component="rating"
 			data-slot="rating"
 			ref={ref}
 			aria-label={ariaLabel}

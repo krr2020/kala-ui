@@ -13,6 +13,7 @@ function ScrollArea({
 }: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
 	return (
 		<ScrollAreaPrimitive.Root
+			data-kala-component="scroll-area"
 			ref={ref}
 			data-slot="scroll-area"
 			className={cn("relative overflow-hidden", className)}
@@ -34,6 +35,7 @@ function ScrollBar({
 }: React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>) {
 	return (
 		<ScrollAreaPrimitive.ScrollAreaScrollbar
+			data-kala-component="scroll-area-scroll-bar"
 			ref={ref}
 			data-slot="scroll-bar"
 			orientation={orientation}

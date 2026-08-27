@@ -17,7 +17,10 @@ export const ComponentPreviewCard = ({
 	preview,
 }: ComponentPreviewCardProps) => {
 	return (
-		<Card className="group transition-all hover:shadow-lg">
+		<Card
+			data-kala-component="design-system-component-preview-card"
+			className="group transition-all hover:shadow-lg"
+		>
 			<CardHeader>
 				<CardTitle className="text-lg">{metadata.name}</CardTitle>
 				<CardDescription className="line-clamp-2">

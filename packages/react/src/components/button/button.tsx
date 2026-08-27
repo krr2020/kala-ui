@@ -33,6 +33,7 @@ export function Button({
 	const effectiveDisabled = isLoading || disabled;
 	return (
 		<Comp
+			data-kala-component="button"
 			className={cn(
 				buttonVariants({
 					variant,

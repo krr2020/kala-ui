@@ -24,7 +24,10 @@ function TableSkeleton({
 	showCheckboxes = false,
 }: TableSkeletonConfig) {
 	return (
-		<Box className="relative w-full overflow-x-auto border rounded-lg bg-card kala-surface-card">
+		<Box
+			data-kala-component="table-skeleton"
+			className="relative w-full overflow-x-auto border rounded-lg bg-card kala-surface-card"
+		>
 			<table className="w-full caption-bottom text-sm">
 				{headers ? (
 					<thead className="border-b bg-muted/50">
@@ -153,11 +156,12 @@ function Table({
 			showActions: loadingShowActions,
 		};
 
-		return <TableSkeleton {...config} />;
+		return <TableSkeleton data-kala-component="table" {...config} />;
 	}
 
 	return (
 		<Box
+			data-kala-component="table"
 			data-slot="table-container"
 			className="relative w-full overflow-x-auto border rounded-lg bg-card kala-surface-card"
 		>
@@ -173,6 +177,7 @@ function Table({
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
 	return (
 		<thead
+			data-kala-component="table-header"
 			data-slot="table-header"
 			className={cn(tableHeaderStyles.base, className)}
 			{...props}
@@ -183,6 +188,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
 function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
 	return (
 		<tbody
+			data-kala-component="table-body"
 			data-slot="table-body"
 			className={cn(tableBodyStyles.base, className)}
 			{...props}
@@ -193,6 +199,7 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
 function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
 	return (
 		<tfoot
+			data-kala-component="table-footer"
 			data-slot="table-footer"
 			className={cn(tableFooterStyles.base, className)}
 			{...props}
@@ -203,6 +210,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
 function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
 	return (
 		<tr
+			data-kala-component="table-row"
 			data-slot="table-row"
 			className={cn(tableRowStyles.base, className)}
 			{...props}
@@ -222,6 +230,7 @@ function TableHead({
 }) {
 	return (
 		<th
+			data-kala-component="table-head"
 			data-slot="table-head"
 			className={cn(tableHeadStyles.base, className)}
 			{...props}
@@ -232,6 +241,7 @@ function TableHead({
 function TableCell({ className, ...props }: React.ComponentProps<"td">) {
 	return (
 		<td
+			data-kala-component="table-cell"
 			data-slot="table-cell"
 			className={cn(tableCellStyles.base, className)}
 			{...props}
@@ -252,6 +262,7 @@ function TableCaption({
 }) {
 	return (
 		<caption
+			data-kala-component="table-caption"
 			data-slot="table-caption"
 			className={cn(tableCaptionStyles.base, className)}
 			{...props}

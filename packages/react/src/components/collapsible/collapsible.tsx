@@ -10,7 +10,12 @@ function Collapsible({
 	...props
 }: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {
 	return (
-		<CollapsiblePrimitive.Root ref={ref} data-slot="collapsible" {...props} />
+		<CollapsiblePrimitive.Root
+			data-kala-component="collapsible"
+			ref={ref}
+			data-slot="collapsible"
+			{...props}
+		/>
 	);
 }
 
@@ -20,6 +25,7 @@ function CollapsibleTrigger({
 }: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleTrigger>) {
 	return (
 		<CollapsiblePrimitive.CollapsibleTrigger
+			data-kala-component="collapsible-trigger"
 			ref={ref}
 			data-slot="collapsible-trigger"
 			{...props}
@@ -34,6 +40,7 @@ function CollapsibleContent({
 }: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent>) {
 	return (
 		<CollapsiblePrimitive.CollapsibleContent
+			data-kala-component="collapsible-content"
 			ref={ref}
 			data-slot="collapsible-content"
 			className={cn(

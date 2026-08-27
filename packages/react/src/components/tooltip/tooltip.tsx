@@ -11,6 +11,7 @@ function TooltipProvider({
 }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
 	return (
 		<TooltipPrimitive.Provider
+			data-kala-component="tooltip-provider"
 			data-slot="tooltip-provider"
 			delayDuration={delayDuration}
 			{...props}
@@ -21,13 +22,25 @@ function TooltipProvider({
 function Tooltip({
 	...props
 }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
-	return <TooltipPrimitive.Root data-slot="tooltip" {...props} />;
+	return (
+		<TooltipPrimitive.Root
+			data-kala-component="tooltip"
+			data-slot="tooltip"
+			{...props}
+		/>
+	);
 }
 
 function TooltipTrigger({
 	...props
 }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-	return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
+	return (
+		<TooltipPrimitive.Trigger
+			data-kala-component="tooltip-trigger"
+			data-slot="tooltip-trigger"
+			{...props}
+		/>
+	);
 }
 
 function TooltipContent({
@@ -37,7 +50,7 @@ function TooltipContent({
 	...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
 	return (
-		<TooltipPrimitive.Portal>
+		<TooltipPrimitive.Portal data-kala-component="tooltip-content">
 			<TooltipPrimitive.Content
 				data-slot="tooltip-content"
 				sideOffset={sideOffset}

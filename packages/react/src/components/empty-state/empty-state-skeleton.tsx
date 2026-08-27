@@ -39,6 +39,7 @@ export function EmptyStateSkeleton({
 }: EmptyStateSkeletonProps) {
 	return (
 		<div
+			data-kala-component="empty-state-skeleton"
 			data-testid={dataTestId || "empty-state-skeleton"}
 			className={cn(
 				"flex flex-col items-center justify-center rounded-lg border p-8 text-center",

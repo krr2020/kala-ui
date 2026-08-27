@@ -170,10 +170,10 @@ describe("SessionCard", () => {
 		expect(screen.getByText(/Last active/i)).toBeInTheDocument();
 	});
 
-	it("renders with data-comp attribute", () => {
+	it("renders with data-kala-component attribute", () => {
 		const { container } = render(<SessionCard session={mockSession} />);
 		expect(
-			container.querySelector('[data-comp="session-card"]'),
+			container.querySelector('[data-kala-component="session-card"]'),
 		).toBeInTheDocument();
 	});
 
@@ -308,7 +308,7 @@ describe("SessionCard", () => {
 		expect(container.firstChild).toHaveClass("custom-loading");
 	});
 
-	it("renders data-comp attribute on loading state with custom skeleton", () => {
+	it("renders data-kala-component attribute on loading state with custom skeleton", () => {
 		const { container } = render(
 			<SessionCard
 				session={mockSession}
@@ -317,7 +317,7 @@ describe("SessionCard", () => {
 			/>,
 		);
 		expect(
-			container.querySelector('[data-comp="session-card"]'),
+			container.querySelector('[data-kala-component="session-card"]'),
 		).toBeInTheDocument();
 	});
 

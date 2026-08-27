@@ -41,6 +41,7 @@ export function ListSkeleton({
 }: ListSkeletonProps) {
 	return (
 		<ul
+			data-kala-component="list-skeleton"
 			data-testid={dataTestId || "list-skeleton"}
 			className={cn(
 				"flex flex-col bg-card rounded-lg border overflow-hidden",
@@ -75,7 +76,10 @@ export function ListSkeleton({
  */
 function SimpleListItemSkeleton({ dense = false }: { dense?: boolean }) {
 	return (
-		<div className="flex-1 min-w-0">
+		<div
+			data-kala-component="list-simple-list-item-skeleton"
+			className="flex-1 min-w-0"
+		>
 			<Skeleton
 				className={cn(dense ? "h-4" : "h-5")}
 				style={{ width: "60%" }}
@@ -90,8 +94,14 @@ function SimpleListItemSkeleton({ dense = false }: { dense?: boolean }) {
 function AvatarListItemSkeleton({ dense = false }: { dense?: boolean }) {
 	return (
 		<>
-			<SkeletonAvatar size={dense ? "sm" : "md"} />
-			<div className="flex-1 min-w-0">
+			<SkeletonAvatar
+				data-kala-component="list-avatar-list-item-skeleton"
+				size={dense ? "sm" : "md"}
+			/>
+			<div
+				data-kala-component="list-avatar-list-item-skeleton"
+				className="flex-1 min-w-0"
+			>
 				<Skeleton
 					className={cn(dense ? "h-4" : "h-5")}
 					style={{ width: "70%" }}
@@ -108,10 +118,14 @@ function IconListItemSkeleton({ dense = false }: { dense?: boolean }) {
 	return (
 		<>
 			<SkeletonCircle
+				data-kala-component="list-icon-list-item-skeleton"
 				size={dense ? "1.25rem" : "1.5rem"}
 				className="rounded-md"
 			/>
-			<div className="flex-1 min-w-0">
+			<div
+				data-kala-component="list-icon-list-item-skeleton"
+				className="flex-1 min-w-0"
+			>
 				<Skeleton
 					className={cn(dense ? "h-4" : "h-5")}
 					style={{ width: "60%" }}
@@ -127,13 +141,17 @@ function IconListItemSkeleton({ dense = false }: { dense?: boolean }) {
 function BadgeListItemSkeleton({ dense = false }: { dense?: boolean }) {
 	return (
 		<>
-			<div className="flex-1 min-w-0">
+			<div
+				data-kala-component="list-badge-list-item-skeleton"
+				className="flex-1 min-w-0"
+			>
 				<Skeleton
 					className={cn(dense ? "h-4" : "h-5")}
 					style={{ width: "65%" }}
 				/>
 			</div>
 			<Skeleton
+				data-kala-component="list-badge-list-item-skeleton"
 				className={cn(dense ? "h-5" : "h-6", "rounded-full")}
 				style={{ width: "3rem" }}
 			/>
@@ -149,8 +167,14 @@ function BadgeListItemSkeleton({ dense = false }: { dense?: boolean }) {
 function MultiLineListItemSkeleton({ dense = false }: { dense?: boolean }) {
 	return (
 		<>
-			<SkeletonAvatar size={dense ? "sm" : "md"} />
-			<div className="flex-1 min-w-0">
+			<SkeletonAvatar
+				data-kala-component="list-multi-line-list-item-skeleton"
+				size={dense ? "sm" : "md"}
+			/>
+			<div
+				data-kala-component="list-multi-line-list-item-skeleton"
+				className="flex-1 min-w-0"
+			>
 				<Skeleton
 					className={cn(dense ? "h-4" : "h-5", "mb-1")}
 					style={{ width: "75%" }}

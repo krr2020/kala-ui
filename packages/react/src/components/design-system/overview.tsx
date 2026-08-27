@@ -418,7 +418,10 @@ export const DesignSystemOverview = () => {
 	};
 
 	return (
-		<div className="container mx-auto px-4 py-8">
+		<div
+			data-kala-component="design-system-overview"
+			className="container mx-auto px-4 py-8"
+		>
 			{/* Components Grid */}
 			<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
 				{designSystemComponents.map((component) => (

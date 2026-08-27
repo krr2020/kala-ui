@@ -54,7 +54,12 @@ export function Spoiler({
 	}, [maxHeight]);
 
 	return (
-		<Box ref={ref} className={cn("relative", className)} {...props}>
+		<Box
+			data-kala-component="spoiler"
+			ref={ref}
+			className={cn("relative", className)}
+			{...props}
+		>
 			<motion.div
 				initial={false}
 				animate={{ height: expanded ? "auto" : maxHeight }}

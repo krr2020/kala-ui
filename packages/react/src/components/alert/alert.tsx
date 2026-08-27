@@ -61,6 +61,7 @@ function Alert({
 		if (skeleton) {
 			return (
 				<Box
+					data-kala-component="alert"
 					data-slot="alert"
 					className={cn(alertVariants({ variant, color }), className)}
 					{...props}
@@ -71,6 +72,7 @@ function Alert({
 		}
 		return (
 			<AlertSkeleton
+				data-kala-component="alert"
 				variant={variant ?? "subtle"}
 				color={color ?? "primary"}
 				showIcon={showIcon}
@@ -110,6 +112,7 @@ function Alert({
 
 	return (
 		<Box
+			data-kala-component="alert"
 			data-slot="alert"
 			role="alert"
 			className={cn(
@@ -141,6 +144,7 @@ function Alert({
 function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<Box
+			data-kala-component="alert-title"
 			data-slot="alert-title"
 			className={cn(
 				"col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight",
@@ -157,6 +161,7 @@ function AlertDescription({
 }: React.ComponentProps<"div">) {
 	return (
 		<Box
+			data-kala-component="alert-description"
 			data-slot="alert-description"
 			className={cn("col-start-2 text-sm [&_p]:leading-relaxed", className)}
 			{...props}

@@ -13,6 +13,7 @@ function Separator({
 }: React.ComponentProps<typeof SeparatorPrimitive.Root>) {
 	return (
 		<SeparatorPrimitive.Root
+			data-kala-component="separator"
 			data-slot="separator"
 			decorative={decorative}
 			orientation={orientation}

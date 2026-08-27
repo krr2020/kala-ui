@@ -136,6 +136,7 @@ function NumberInput({
 	if (isLoading) {
 		return (
 			<Skeleton
+				data-kala-component="number-input"
 				className={cn(
 					"w-full rounded-md",
 					size === "sm" ? "h-8" : "h-10",
@@ -159,6 +160,7 @@ function NumberInput({
 
 	return (
 		<div
+			data-kala-component="number-input"
 			data-slot="number-input"
 			className={cn(
 				"flex w-full rounded-md border bg-card kala-surface-input transition-colors",

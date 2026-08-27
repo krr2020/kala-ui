@@ -61,7 +61,7 @@ export function SocialLoginButtons({
 }: SocialLoginButtonsProps): React.JSX.Element {
 	return (
 		<div
-			data-comp="social-login-buttons"
+			data-kala-component="social-login-buttons"
 			className={cn("w-full space-y-3", className)}
 		>
 			{showDivider && (

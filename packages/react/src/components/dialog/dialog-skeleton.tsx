@@ -56,6 +56,7 @@ export function DialogSkeleton({
 }: DialogSkeletonProps) {
 	return (
 		<section
+			data-kala-component="dialog-skeleton"
 			data-testid={dataTestId || "dialog-skeleton"}
 			className={cn("space-y-4", className)}
 			aria-label="Loading dialog"

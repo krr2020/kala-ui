@@ -41,6 +41,7 @@ export function FieldSkeleton({
 }: FieldSkeletonProps) {
 	return (
 		<div
+			data-kala-component="field-skeleton"
 			data-testid={dataTestId || "field-skeleton"}
 			className={cn("flex w-full flex-col gap-2", className)}
 		>

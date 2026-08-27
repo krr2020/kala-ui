@@ -16,6 +16,7 @@ function Group({
 }: GroupProps) {
 	return (
 		<Flex
+			data-kala-component="group"
 			ref={ref}
 			direction={direction}
 			gap={gap}

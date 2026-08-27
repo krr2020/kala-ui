@@ -57,6 +57,7 @@ function DefaultErrorFallback({
 }) {
 	return (
 		<div
+			data-kala-component="error-boundary-default-error-fallback"
 			role="alert"
 			className="rounded-md border border-destructive/50 bg-destructive/5 p-4 text-sm kala-surface-card"
 		>

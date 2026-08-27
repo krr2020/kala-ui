@@ -12,6 +12,7 @@ function Toolbar({
 }: React.ComponentProps<typeof ToolbarPrimitive.Root>) {
 	return (
 		<ToolbarPrimitive.Root
+			data-kala-component="toolbar"
 			data-slot="toolbar"
 			className={cn(
 				"flex h-10 items-center gap-1 rounded-md border bg-card p-1 kala-surface-input",
@@ -31,6 +32,7 @@ function ToolbarButton({
 	VariantProps<typeof toggleVariants>) {
 	return (
 		<ToolbarPrimitive.Button
+			data-kala-component="toolbar-button"
 			data-slot="toolbar-button"
 			className={cn(toggleVariants({ variant, size }), className)}
 			{...props}
@@ -44,6 +46,7 @@ function ToolbarToggleGroup({
 }: React.ComponentProps<typeof ToolbarPrimitive.ToggleGroup>) {
 	return (
 		<ToolbarPrimitive.ToggleGroup
+			data-kala-component="toolbar-toggle-group"
 			data-slot="toolbar-toggle-group"
 			className={cn("flex items-center gap-1", className)}
 			{...props}
@@ -60,6 +63,7 @@ function ToolbarToggleItem({
 	VariantProps<typeof toggleVariants>) {
 	return (
 		<ToolbarPrimitive.ToggleItem
+			data-kala-component="toolbar-toggle-item"
 			data-slot="toolbar-toggle-item"
 			className={cn(toggleVariants({ variant, size }), className)}
 			{...props}
@@ -73,6 +77,7 @@ function ToolbarSeparator({
 }: React.ComponentProps<typeof ToolbarPrimitive.Separator>) {
 	return (
 		<ToolbarPrimitive.Separator
+			data-kala-component="toolbar-separator"
 			data-slot="toolbar-separator"
 			className={cn("mx-1 h-6 w-px bg-border", className)}
 			{...props}
@@ -86,6 +91,7 @@ function ToolbarLink({
 }: React.ComponentProps<typeof ToolbarPrimitive.Link>) {
 	return (
 		<ToolbarPrimitive.Link
+			data-kala-component="toolbar-link"
 			data-slot="toolbar-link"
 			className={cn(
 				"text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-2",

@@ -124,9 +124,9 @@ export function Header({
 
 	return (
 		<Box
+			data-kala-component="header"
 			as="header"
 			ref={ref}
-			data-comp="header"
 			className={cn(
 				"w-full bg-popover border-b sticky top-0 z-20 kala-surface-popover",
 				className,

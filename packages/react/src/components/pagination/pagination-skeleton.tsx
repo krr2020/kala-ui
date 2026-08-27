@@ -56,6 +56,7 @@ export function PaginationSkeleton({
 }: PaginationSkeletonProps) {
 	return (
 		<nav
+			data-kala-component="pagination-skeleton"
 			data-testid={dataTestId || "pagination-skeleton"}
 			className={cn("flex items-center gap-4", className)}
 			aria-label="Loading pagination"

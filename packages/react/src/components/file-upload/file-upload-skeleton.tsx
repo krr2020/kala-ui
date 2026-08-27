@@ -48,6 +48,7 @@ export function FileUploadSkeleton({
 }: FileUploadSkeletonProps) {
 	return (
 		<div
+			data-kala-component="file-upload-skeleton"
 			data-testid={dataTestId || "file-upload-skeleton"}
 			className={cn(
 				"border-2 border-dashed rounded-lg p-8 text-center",

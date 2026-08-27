@@ -109,6 +109,7 @@ const TreeNode = React.memo(function TreeNode({ item, level }: TreeNodeProps) {
 		<li
 			ref={liRef}
 			role="treeitem"
+			data-kala-component="tree-node"
 			data-slot="tree-node"
 			data-selected={isSelected || undefined}
 			tabIndex={isActive ? 0 : -1}
@@ -358,7 +359,10 @@ function TreeView({
 	);
 
 	return (
-		<TreeViewContext.Provider value={contextValue}>
+		<TreeViewContext.Provider
+			data-kala-component="tree-view"
+			value={contextValue}
+		>
 			<ul
 				role="tree"
 				data-slot="tree-view"

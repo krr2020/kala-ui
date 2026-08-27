@@ -62,7 +62,7 @@ function EmptyState({
 		if (skeleton) {
 			return (
 				<div
-					data-comp="empty-state"
+					data-kala-component="empty-state"
 					ref={ref}
 					className={cn(emptyStateVariants({ color, size }), className)}
 					{...props}
@@ -73,6 +73,7 @@ function EmptyState({
 		}
 		return (
 			<EmptyStateSkeleton
+				data-kala-component="empty-state"
 				className={cn(emptyStateVariants({ color, size }), className)}
 				{...skeletonConfig}
 			/>
@@ -84,8 +85,8 @@ function EmptyState({
 
 	return (
 		<div
+			data-kala-component="empty-state"
 			ref={ref}
-			data-comp="empty-state"
 			className={cn(emptyStateVariants({ color, size }), className)}
 			{...props}
 		>

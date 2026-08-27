@@ -17,6 +17,7 @@ function Center({
 	const Comp = asChild ? Slot : "div";
 	return (
 		<Comp
+			data-kala-component="center"
 			className={cn(
 				"flex items-center justify-center",
 				inline ? "inline-flex" : "flex",

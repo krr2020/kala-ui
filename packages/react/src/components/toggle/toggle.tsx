@@ -38,6 +38,7 @@ function Toggle({
 	VariantProps<typeof toggleVariants>) {
 	return (
 		<TogglePrimitive.Root
+			data-kala-component="toggle"
 			ref={ref}
 			className={cn(toggleVariants({ variant, size, className }))}
 			{...props}

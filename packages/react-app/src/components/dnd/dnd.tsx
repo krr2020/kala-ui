@@ -154,7 +154,11 @@ function DragDropContext({
 	const sensors = sensorsProp ?? defaultSensors;
 
 	return (
-		<DndKitContext sensors={sensors} {...props}>
+		<DndKitContext
+			data-kala-component="dnd-drag-drop-context"
+			sensors={sensors}
+			{...props}
+		>
 			{children}
 		</DndKitContext>
 	);
@@ -197,6 +201,7 @@ function Droppable({
 
 	return (
 		<div
+			data-kala-component="dnd-droppable"
 			ref={useMergedRef(ref, setNodeRef)}
 			className={cn(className)}
 			{...props}
@@ -258,6 +263,7 @@ function Draggable({
 
 	return (
 		<div
+			data-kala-component="dnd-draggable"
 			ref={useMergedRef(ref, setNodeRef)}
 			style={style}
 			className={cn(className)}
@@ -295,7 +301,11 @@ function SortableContext({
 	);
 
 	return (
-		<SortableContextKit items={itemIds} strategy={strategy}>
+		<SortableContextKit
+			data-kala-component="dnd-sortable-context"
+			items={itemIds}
+			strategy={strategy}
+		>
 			{children}
 		</SortableContextKit>
 	);
@@ -384,6 +394,7 @@ function SortableItem({
 
 	return (
 		<SortableHandleContext.Provider
+			data-kala-component="dnd-sortable-item"
 			value={{ attributes, listeners, setActivatorNodeRef }}
 		>
 			<div
@@ -431,6 +442,7 @@ function SortableHandle({
 
 	return (
 		<div
+			data-kala-component="dnd-sortable-handle"
 			ref={useMergedRef(ref, sortable?.setActivatorNodeRef)}
 			className={cn("cursor-grab active:cursor-grabbing", className)}
 			{...(sortable?.attributes ?? {})}
@@ -462,7 +474,11 @@ function DragOverlayComponent({
 	...props
 }: DragOverlayComponentProps) {
 	return (
-		<DragOverlay dropAnimation={dropAnimation} {...props}>
+		<DragOverlay
+			data-kala-component="dnd-drag-overlay-component"
+			dropAnimation={dropAnimation}
+			{...props}
+		>
 			{children ? <div className={cn(className)}>{children}</div> : null}
 		</DragOverlay>
 	);

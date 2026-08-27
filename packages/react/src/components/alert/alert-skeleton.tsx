@@ -41,6 +41,7 @@ export function AlertSkeleton({
 }: AlertSkeletonProps) {
 	return (
 		<div
+			data-kala-component="alert-skeleton"
 			data-testid={dataTestId || "alert-skeleton"}
 			role="alert"
 			className={cn(

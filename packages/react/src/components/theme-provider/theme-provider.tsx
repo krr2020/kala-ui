@@ -150,7 +150,9 @@ export function ThemeProvider({
 	);
 
 	return (
-		<ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+		<ThemeContext.Provider data-kala-component="theme-provider" value={value}>
+			{children}
+		</ThemeContext.Provider>
 	);
 }
 

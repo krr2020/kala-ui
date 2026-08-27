@@ -22,6 +22,7 @@ export function SkipToContent({
 }: SkipToContentProps) {
 	return (
 		<a
+			data-kala-component="skip-to-content"
 			href={`#${targetId}`}
 			className={cn(
 				// Screen reader only by default

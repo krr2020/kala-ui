@@ -56,6 +56,7 @@ export function AccordionSkeleton({
 }: AccordionSkeletonProps) {
 	return (
 		<section
+			data-kala-component="accordion-skeleton"
 			data-testid={dataTestId || "accordion-skeleton"}
 			className={cn("w-full", className)}
 			aria-label="Loading accordion"

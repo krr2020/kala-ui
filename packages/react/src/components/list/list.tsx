@@ -38,6 +38,7 @@ function List({
 		if (skeleton) {
 			return (
 				<ul
+					data-kala-component="list"
 					className={cn(
 						"flex flex-col bg-card rounded-lg border overflow-hidden",
 						className,
@@ -50,6 +51,7 @@ function List({
 		}
 		return (
 			<ListSkeleton
+				data-kala-component="list"
 				className={className}
 				showDividers={divided}
 				dense={dense}
@@ -60,6 +62,7 @@ function List({
 
 	return (
 		<ul
+			data-kala-component="list"
 			className={cn(
 				"flex flex-col bg-card rounded-lg border overflow-hidden",
 				divided && "[&>li:not(:last-child)]:border-b",
@@ -132,7 +135,7 @@ function ListItem({
 
 	if (href) {
 		return (
-			<li>
+			<li data-kala-component="list-item">
 				<a
 					href={href}
 					aria-disabled={disabled || undefined}
@@ -153,7 +156,7 @@ function ListItem({
 
 	if (interactive) {
 		return (
-			<li>
+			<li data-kala-component="list-item">
 				<button
 					type="button"
 					disabled={disabled}
@@ -177,6 +180,7 @@ function ListItem({
 	// `interactive` (real button, keyboard accessible) or `href` (real link).
 	return (
 		<li
+			data-kala-component="list-item"
 			className={rowClassName}
 			aria-disabled={disabled || undefined}
 			{...stateProps}
@@ -207,6 +211,7 @@ function ListItemIcon({
 }: ListItemIconProps) {
 	return (
 		<div
+			data-kala-component="list-item-icon"
 			className={cn(
 				"shrink-0 flex items-center justify-center text-muted-foreground",
 				size === "sm" && "w-4 h-4 text-sm",
@@ -258,6 +263,7 @@ function ListItemAvatar({
 
 	return (
 		<div
+			data-kala-component="list-item-avatar"
 			className={cn(
 				"shrink-0 rounded-full overflow-hidden bg-muted flex items-center justify-center",
 				size === "sm" && "w-8 h-8 text-xs",
@@ -300,6 +306,7 @@ function ListItemContent({
 }: ListItemContentProps) {
 	return (
 		<div
+			data-kala-component="list-item-content"
 			className={cn("flex-1 min-w-0", truncate && "overflow-hidden", className)}
 			{...props}
 		/>
@@ -332,6 +339,7 @@ function ListItemTitle({
 }: ListItemTitleProps) {
 	return (
 		<Component
+			data-kala-component="list-item-title"
 			className={cn(
 				"text-sm font-medium text-foreground",
 				truncate && "truncate",
@@ -382,6 +390,7 @@ function ListItemText({
 		lines !== undefined ? LINE_CLAMP_CLASSES[lines] : undefined;
 	return (
 		<p
+			data-kala-component="list-item-text"
 			className={cn(
 				"text-sm text-muted-foreground",
 				truncate && !lines && "truncate",
@@ -407,6 +416,7 @@ export interface ListItemActionProps extends React.ComponentProps<"div"> {}
 function ListItemAction({ className, ...props }: ListItemActionProps) {
 	return (
 		<div
+			data-kala-component="list-item-action"
 			className={cn("shrink-0 flex items-center gap-2", className)}
 			{...props}
 		/>
@@ -440,6 +450,7 @@ function ListItemBadge({
 }: ListItemBadgeProps) {
 	return (
 		<Badge
+			data-kala-component="list-item-badge"
 			variant="subtle"
 			color={color}
 			shape="pill"

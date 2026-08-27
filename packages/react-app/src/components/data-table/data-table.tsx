@@ -312,7 +312,7 @@ export function DataTable<TData>({
 	if (isLoading) {
 		if (skeleton) {
 			return (
-				<Stack gap={4} className={className}>
+				<Stack data-kala-component="data-table" gap={4} className={className}>
 					{skeleton}
 				</Stack>
 			);
@@ -327,7 +327,7 @@ export function DataTable<TData>({
 		const skeletonRows = skeletonConfig?.rows ?? loadingConfig?.rows ?? 5;
 
 		return (
-			<Stack gap={4} className={className}>
+			<Stack data-kala-component="data-table" gap={4} className={className}>
 				<DataTableSkeleton<TData>
 					rows={skeletonRows}
 					columns={columns}
@@ -354,6 +354,7 @@ export function DataTable<TData>({
 
 	return (
 		<Stack
+			data-kala-component="data-table"
 			className={cn(stickyFooter ? "h-full min-h-0" : "", className)}
 			aria-label={ariaLabel}
 			role={ariaLabel ? "region" : undefined}

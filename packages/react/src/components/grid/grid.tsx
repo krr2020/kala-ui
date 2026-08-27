@@ -82,6 +82,7 @@ function Grid({
 	const Comp = asChild ? Slot : "div";
 	return (
 		<Comp
+			data-kala-component="grid"
 			className={cn(
 				gridVariants({ cols, gap, flow, align, justify, className }),
 			)}
@@ -172,6 +173,7 @@ function GridItem({
 	const Comp = asChild ? Slot : "div";
 	return (
 		<Comp
+			data-kala-component="grid-item"
 			className={cn(
 				gridItemVariants({ colSpan, rowSpan, colStart, colEnd, className }),
 			)}
