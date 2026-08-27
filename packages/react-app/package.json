@@ -5,7 +5,7 @@
 	"sideEffects": [
 		"**/*.css"
 	],
-	"description": "App-level composite components for Kala UI — AppShell, Sidebar, Header, DataTable, ApexCharts wrappers, drag-and-drop and dashboard widgets — built on @kala-ui/react primitives.",
+	"description": "App-level composite components for Kala UI \u2014 AppShell, Sidebar, Header, DataTable, ApexCharts wrappers, drag-and-drop and dashboard widgets \u2014 built on @kala-ui/react primitives.",
 	"keywords": [
 		"react",
 		"ui",
@@ -158,6 +158,7 @@
 		"tailwindcss-animate": "~1.0.7",
 		"typescript": "~7.0.2",
 		"vite": "~8.2.2",
-		"vitest": "~4.1.11"
+		"vitest": "~4.1.11",
+		"vitest-axe": "^0.1.0"
 	}
 }

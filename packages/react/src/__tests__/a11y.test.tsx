@@ -1,8 +1,8 @@
 /**
- * Automated accessibility sweep: every kala-ui component rendered in a
+ * Automated accessibility sweep: every kala-ui core component rendered in a
  * minimal realistic composition and checked with axe-core.
  *
- * When adding a component to the library, add a case here. A failure means
+ * When adding a component to this package, add a case here. A failure means
  * the default markup violates WCAG (axe's ruleset) — fix the component,
  * not the test.
  */
@@ -47,14 +47,6 @@ const cases: Array<[string, () => ReactElement]> = [
 					<K.AlertDialogAction>Continue</K.AlertDialogAction>
 				</K.AlertDialogContent>
 			</K.AlertDialog>
-		),
-	],
-	[
-		"AppShell",
-		() => (
-			<K.AppShell>
-				<K.AppShell.Main>Main content</K.AppShell.Main>
-			</K.AppShell>
 		),
 	],
 	["AspectRatio", () => <K.AspectRatio ratio={16 / 9}>media</K.AspectRatio>],
@@ -110,15 +102,6 @@ const cases: Array<[string, () => ReactElement]> = [
 		),
 	],
 	["Center", () => <K.Center>centered</K.Center>],
-	[
-		"Chart (wrapper)",
-		() => (
-			<K.Chart
-				options={{ chart: { id: "a11y-chart" } }}
-				series={[{ name: "S", data: [1, 2] }]}
-			/>
-		),
-	],
 	["Checkbox", () => <K.Checkbox aria-label="Accept terms" />],
 	["Collapse", () => <K.Collapse>collapsed content</K.Collapse>],
 	[
@@ -169,21 +152,6 @@ const cases: Array<[string, () => ReactElement]> = [
 		),
 	],
 	["CopyButton", () => <K.CopyButton value="text" />],
-	[
-		"DataTable",
-		() => (
-			<K.DataTable
-				columns={[
-					{ id: "name", header: "Name", accessorKey: "name" },
-					{ id: "role", header: "Role", accessorKey: "role" },
-				]}
-				data={[
-					{ name: "Ada", role: "admin" },
-					{ name: "Linus", role: "user" },
-				]}
-			/>
-		),
-	],
 	["DatePicker", () => <K.DatePicker aria-label="Pick a date" />],
 	[
 		"Dialog",
@@ -194,14 +162,6 @@ const cases: Array<[string, () => ReactElement]> = [
 					<K.DialogDescription>Description</K.DialogDescription>
 				</K.DialogContent>
 			</K.Dialog>
-		),
-	],
-	[
-		"DndContext",
-		() => (
-			<K.DragDropContext onDragEnd={() => {}}>
-				<div>Drag area</div>
-			</K.DragDropContext>
 		),
 	],
 	[
@@ -251,17 +211,7 @@ const cases: Array<[string, () => ReactElement]> = [
 	],
 	["FileUpload", () => <K.FileUpload onFileSelect={() => {}} />],
 	["Flex", () => <K.Flex>flex</K.Flex>],
-	["Footer", () => <K.Footer>footer</K.Footer>],
 	["Grid", () => <K.Grid>grid</K.Grid>],
-	[
-		"Header",
-		() => (
-			<K.Header
-				logo={<a href="/">App</a>}
-				navLinks={[{ label: "Home", href: "/" }]}
-			/>
-		),
-	],
 	["Heading", () => <K.Heading level={2}>Heading</K.Heading>],
 	[
 		"HoverCard",
@@ -323,16 +273,6 @@ const cases: Array<[string, () => ReactElement]> = [
 		),
 	],
 	[
-		"MetricCard",
-		() => (
-			<K.MetricCard
-				title="Revenue"
-				value="$12k"
-				trend={{ value: 12, isPositive: true }}
-			/>
-		),
-	],
-	[
 		"MultiSelect",
 		() => (
 			<K.MultiSelect
@@ -343,8 +283,6 @@ const cases: Array<[string, () => ReactElement]> = [
 			/>
 		),
 	],
-	["NavLink", () => <K.NavLink label="Docs" active />],
-	["Navigation", () => <K.Navigation links={[{ label: "Home", href: "/" }]} />],
 	[
 		"NavigationMenu",
 		() => (
@@ -437,45 +375,9 @@ const cases: Array<[string, () => ReactElement]> = [
 		),
 	],
 	["Separator", () => <K.Separator />],
-	[
-		"SessionCard",
-		() => (
-			<K.SessionCard
-				session={{
-					id: "s1",
-					device: "Desktop",
-					browser: "Chrome",
-					os: "macOS",
-					ip: "192.168.1.1",
-					lastActiveAt: new Date().toISOString(),
-					createdAt: new Date().toISOString(),
-					isCurrent: true,
-				}}
-			/>
-		),
-	],
-	[
-		"Sidebar",
-		() => (
-			<K.Sidebar
-				logo={<span>Kala</span>}
-				navSections={[{ title: "Main", links: [{ label: "Home", href: "/" }] }]}
-				onClose={() => {}}
-			/>
-		),
-	],
 	["Skeleton", () => <K.Skeleton />],
 	["SkipToContent", () => <K.SkipToContent />],
 	["Slider", () => <K.Slider aria-label="Volume" defaultValue={[50]} />],
-	[
-		"SocialLoginButton",
-		() => <K.SocialLoginButton provider="google" onClick={() => {}} />,
-	],
-	[
-		"SocialLoginButtons",
-		() => <K.SocialLoginButtons onProviderClick={() => {}} />,
-	],
-	["SparklineChart", () => <K.SparklineChart data={[1, 2, 3, 2]} />],
 	["Spinner", () => <K.Spinner />],
 	[
 		"Spoiler",
@@ -590,14 +492,6 @@ const cases: Array<[string, () => ReactElement]> = [
 		),
 	],
 	[
-		"UserMenuDropdown",
-		() => (
-			<K.UserMenuDropdown
-				user={{ name: "Jane Doe", email: "jane@example.com" }}
-			/>
-		),
-	],
-	[
 		"ThemeProvider",
 		() => (
 			<K.ThemeProvider>
@@ -605,35 +499,6 @@ const cases: Array<[string, () => ReactElement]> = [
 			</K.ThemeProvider>
 		),
 	],
-	// Charts
-	[
-		"AreaChart",
-		() => (
-			<K.AreaChart
-				series={[{ name: "S", data: [1, 2] }]}
-				categories={["A", "B"]}
-			/>
-		),
-	],
-	[
-		"BarChart",
-		() => (
-			<K.BarChart
-				series={[{ name: "S", data: [2, 3] }]}
-				categories={["A", "B"]}
-			/>
-		),
-	],
-	[
-		"LineChart",
-		() => (
-			<K.LineChart
-				series={[{ name: "S", data: [1, 2] }]}
-				categories={["A", "B"]}
-			/>
-		),
-	],
-	["DonutChart", () => <K.DonutChart labels={["A", "B"]} series={[4, 6]} />],
 ];
 
 describe("axe accessibility sweep", () => {

@@ -1,0 +1,186 @@
+/**
+ * Donut/Pie Chart Component
+ * Circular charts for showing proportions and percentages
+ */
+
+"use client";
+
+import { cn } from "@kala-ui/react/lib/utils";
+import type { ApexOptions } from "apexcharts";
+import { useMemo } from "react";
+import { Chart, getTooltipTheme } from "./chart";
+import type { DonutChartProps } from "./chart.types";
+import { useThemeAwareChart } from "./use-theme-aware-chart";
+import { getDefaultChartOptions } from "./utils";
+
+export function DonutChart({
+	series,
+	labels,
+	colors,
+	height = 350,
+	width = "100%",
+	className,
+	title,
+	subtitle,
+	animations = true,
+	donut = true,
+	donutSize = 65,
+	dataLabels = true,
+	legend = true,
+	isLoading,
+	emptyMessage,
+	options: customOptions,
+}: DonutChartProps) {
+	const { colors: themeColors } = useThemeAwareChart();
+
+	const isEmpty = !isLoading && (series.length === 0 || labels.length === 0);
+
+	const chartOptions: ApexOptions = useMemo(() => {
+		const baseOptions = getDefaultChartOptions();
+
+		// Use theme-aware colors if not provided
+		const chartColors = colors || themeColors.mixed;
+
+		const options: ApexOptions = {
+			...baseOptions,
+			chart: {
+				...baseOptions.chart,
+				type: donut ? "donut" : "pie",
+				animations: {
+					enabled: animations,
+					speed: 800,
+				},
+			},
+			colors: chartColors,
+			labels,
+			dataLabels: {
+				enabled: dataLabels,
+				style: {
+					fontSize: "14px",
+					fontWeight: 600,
+					colors: ["var(--primary-foreground)"],
+				},
+				dropShadow: {
+					enabled: false,
+				},
+			},
+			plotOptions: {
+				pie: {
+					...(donut && {
+						donut: {
+							size: `${donutSize}%`,
+							labels: {
+								show: true,
+								name: {
+									show: true,
+									fontSize: "16px",
+									fontWeight: 600,
+									color: "var(--foreground)",
+								},
+								value: {
+									show: true,
+									fontSize: "24px",
+									fontWeight: 700,
+									color: "var(--foreground)",
+									formatter: (value: string) =>
+										parseInt(value, 10).toLocaleString(),
+								},
+								total: {
+									show: true,
+									label: "Total",
+									fontSize: "14px",
+									color: "var(--muted-foreground)",
+									formatter: (w: { globals: { seriesTotals: number[] } }) => {
+										return w.globals.seriesTotals
+											.reduce((a: number, b: number) => a + b, 0)
+											.toLocaleString();
+									},
+								},
+							},
+						},
+					}),
+				},
+			},
+			legend: {
+				show: legend,
+				position: "bottom",
+				horizontalAlign: "center",
+				labels: {
+					colors: "var(--foreground)",
+				},
+			},
+			tooltip: {
+				theme: getTooltipTheme(),
+				y: {
+					formatter: (value: number) => value.toLocaleString(),
+				},
+			},
+			responsive: [
+				{
+					breakpoint: 480,
+					options: {
+						chart: {
+							height: 300,
+						},
+						legend: {
+							position: "bottom",
+						},
+					},
+				},
+			],
+			...(title && {
+				title: {
+					text: title,
+					style: {
+						fontSize: "16px",
+						fontWeight: "600",
+						color: "var(--foreground)",
+					},
+				},
+			}),
+			...(subtitle && {
+				subtitle: {
+					text: subtitle,
+					style: {
+						fontSize: "12px",
+						color: "var(--muted-foreground)",
+					},
+				},
+			}),
+			...customOptions,
+		};
+
+		return options;
+	}, [
+		colors,
+		themeColors,
+		labels,
+		donut,
+		donutSize,
+		dataLabels,
+		legend,
+		animations,
+		title,
+		subtitle,
+		customOptions,
+	]);
+
+	return (
+		<Chart
+			className={cn("w-full", className)}
+			options={chartOptions}
+			series={series}
+			type={donut ? "donut" : "pie"}
+			height={height}
+			width={width}
+			isLoading={isLoading}
+			isEmpty={isEmpty}
+			emptyMessage={emptyMessage}
+		/>
+	);
+}
+
+// Convenience alias for Pie charts
+export function PieChart(props: DonutChartProps) {
+	return <DonutChart {...props} donut={false} />;
+}

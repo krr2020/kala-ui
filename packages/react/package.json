@@ -55,10 +55,6 @@
 			"types": "./dist/components/alert-dialog/index.d.ts",
 			"default": "./dist/components/alert-dialog/index.js"
 		},
-		"./app-shell": {
-			"types": "./dist/components/app-shell/index.d.ts",
-			"default": "./dist/components/app-shell/index.js"
-		},
 		"./aspect-ratio": {
 			"types": "./dist/components/aspect-ratio/index.d.ts",
 			"default": "./dist/components/aspect-ratio/index.js"
@@ -86,10 +82,6 @@
 		"./calendar": {
 			"types": "./dist/components/calendar/index.d.ts",
 			"default": "./dist/components/calendar/index.js"
-		},
-		"./charts": {
-			"types": "./dist/components/charts/index.d.ts",
-			"default": "./dist/components/charts/index.js"
 		},
 		"./checkbox": {
 			"types": "./dist/components/checkbox/index.d.ts",
@@ -151,17 +143,9 @@
 			"types": "./dist/components/file-upload/index.d.ts",
 			"default": "./dist/components/file-upload/index.js"
 		},
-		"./footer": {
-			"types": "./dist/components/footer/index.d.ts",
-			"default": "./dist/components/footer/index.js"
-		},
 		"./grid": {
 			"types": "./dist/components/grid/index.d.ts",
 			"default": "./dist/components/grid/index.js"
-		},
-		"./header": {
-			"types": "./dist/components/header/index.d.ts",
-			"default": "./dist/components/header/index.js"
 		},
 		"./hover-card": {
 			"types": "./dist/components/hover-card/index.d.ts",
@@ -195,10 +179,6 @@
 			"types": "./dist/components/list/index.d.ts",
 			"default": "./dist/components/list/index.js"
 		},
-		"./dnd": {
-			"types": "./dist/components/dnd/index.d.ts",
-			"default": "./dist/components/dnd/index.js"
-		},
 		"./menubar": {
 			"types": "./dist/components/menubar/index.d.ts",
 			"default": "./dist/components/menubar/index.js"
@@ -206,10 +186,6 @@
 		"./navigation-menu": {
 			"types": "./dist/components/navigation-menu/index.d.ts",
 			"default": "./dist/components/navigation-menu/index.js"
-		},
-		"./nav-link": {
-			"types": "./dist/components/nav-link/index.d.ts",
-			"default": "./dist/components/nav-link/index.js"
 		},
 		"./number-input": {
 			"types": "./dist/components/number-input/index.d.ts",
@@ -311,18 +287,6 @@
 			"types": "./dist/components/skip-to-content/index.d.ts",
 			"default": "./dist/components/skip-to-content/index.js"
 		},
-		"./social-login-button": {
-			"types": "./dist/components/social-login-button/index.d.ts",
-			"default": "./dist/components/social-login-button/index.js"
-		},
-		"./social-login-buttons": {
-			"types": "./dist/components/social-login-buttons/index.d.ts",
-			"default": "./dist/components/social-login-buttons/index.js"
-		},
-		"./sparkline-chart": {
-			"types": "./dist/components/sparkline-chart/index.d.ts",
-			"default": "./dist/components/sparkline-chart/index.js"
-		},
 		"./spoiler": {
 			"types": "./dist/components/spoiler/index.d.ts",
 			"default": "./dist/components/spoiler/index.js"
@@ -342,10 +306,6 @@
 		"./table": {
 			"types": "./dist/components/table/index.d.ts",
 			"default": "./dist/components/table/index.js"
-		},
-		"./data-table": {
-			"types": "./dist/components/data-table/index.d.ts",
-			"default": "./dist/components/data-table/index.js"
 		},
 		"./tabs": {
 			"types": "./dist/components/tabs/index.d.ts",
@@ -415,21 +375,9 @@
 			"types": "./dist/components/command/index.d.ts",
 			"default": "./dist/components/command/index.js"
 		},
-		"./metric-card": {
-			"types": "./dist/components/metric-card/index.d.ts",
-			"default": "./dist/components/metric-card/index.js"
-		},
 		"./multi-select": {
 			"types": "./dist/components/multi-select/index.d.ts",
 			"default": "./dist/components/multi-select/index.js"
-		},
-		"./navigation": {
-			"types": "./dist/components/navigation/index.d.ts",
-			"default": "./dist/components/navigation/index.js"
-		},
-		"./sidebar": {
-			"types": "./dist/components/sidebar/index.d.ts",
-			"default": "./dist/components/sidebar/index.js"
 		},
 		"./breadcrumbs": {
 			"types": "./dist/components/breadcrumbs/index.d.ts",
@@ -442,14 +390,6 @@
 		"./button": {
 			"types": "./dist/components/button/index.d.ts",
 			"default": "./dist/components/button/index.js"
-		},
-		"./user-menu-dropdown": {
-			"types": "./dist/components/user-menu-dropdown/index.d.ts",
-			"default": "./dist/components/user-menu-dropdown/index.js"
-		},
-		"./session-card": {
-			"types": "./dist/components/session-card/index.d.ts",
-			"default": "./dist/components/session-card/index.js"
 		},
 		"./loading": {
 			"types": "./dist/components/loading/index.d.ts",
@@ -498,10 +438,6 @@
 		"react-dom": "^19.2.0"
 	},
 	"dependencies": {
-		"@dnd-kit/core": "^6.3.1",
-		"@dnd-kit/modifiers": "^9.0.0",
-		"@dnd-kit/sortable": "^10.0.0",
-		"@dnd-kit/utilities": "^3.2.2",
 		"@kala-ui/react-hooks": "workspace:*",
 		"@radix-ui/react-accordion": "~1.2.20",
 		"@radix-ui/react-alert-dialog": "~1.1.23",
@@ -530,7 +466,6 @@
 		"@radix-ui/react-toggle-group": "^1.1.19",
 		"@radix-ui/react-toolbar": "^1.1.19",
 		"@radix-ui/react-tooltip": "~1.2.16",
-		"apexcharts": "~7.0.0",
 		"class-variance-authority": "~0.7.1",
 		"clsx": "~2.1.1",
 		"cmdk": "~1.1.1",
@@ -538,10 +473,8 @@
 		"framer-motion": "~13.1.1",
 		"input-otp": "~1.5.0",
 		"lucide-react": "~1.34.0",
-		"react-apexcharts": "~2.1.1",
 		"react-day-picker": "~10.0.1",
 		"react-resizable-panels": "~4.12.3",
-		"simple-icons": "~16.28.0",
 		"sonner": "~2.0.8",
 		"tailwind-merge": "~3.6.0",
 		"vaul": "~1.1.2"
@@ -566,6 +499,7 @@
 		"playwright": "^1.62.1",
 		"postcss": "~8.5.26",
 		"react": "^19.2.8",
+		"simple-icons": "~16.28.0",
 		"react-dom": "^19.2.8",
 		"storybook": "~10.5.10",
 		"tailwindcss": "~4.3.3",
