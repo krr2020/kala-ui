@@ -2,7 +2,9 @@
 	"name": "@kala-ui/react",
 	"version": "0.0.1-beta.8",
 	"type": "module",
-	"sideEffects": ["**/*.css"],
+	"sideEffects": [
+		"**/*.css"
+	],
 	"description": "65+ accessible React components built with Radix UI and Tailwind CSS. Includes DataTable with server-side support, charts, drag-and-drop, and comprehensive form controls.",
 	"keywords": [
 		"react",
@@ -547,6 +549,7 @@
 		"@storybook/addon-themes": "~10.5.10",
 		"@storybook/react": "~10.5.10",
 		"@storybook/react-vite": "~10.5.10",
+		"@storybook/test-runner": "0.24.4",
 		"@tailwindcss/postcss": "~4.3.3",
 		"@testing-library/jest-dom": "~7.0.1",
 		"@testing-library/react": "~16.3.2",
@@ -557,6 +560,7 @@
 		"@vitejs/plugin-react": "~6.1.0",
 		"@vitest/coverage-v8": "~4.1.11",
 		"jsdom": "^30.0.1",
+		"playwright": "^1.62.1",
 		"postcss": "~8.5.26",
 		"react": "^19.2.8",
 		"react-dom": "^19.2.8",

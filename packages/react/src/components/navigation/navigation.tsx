@@ -100,7 +100,10 @@ export function Navigation({
 			<>
 				<nav
 					data-comp="navigation"
-					className={cn("hidden md:flex flex-row items-center gap-6", className)}
+					className={cn(
+						"hidden md:flex flex-row items-center gap-6",
+						className,
+					)}
 					aria-label="Main navigation"
 					{...props}
 					ref={ref}

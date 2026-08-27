@@ -174,12 +174,8 @@ describe("AppShell", () => {
 		const main = screen.getByRole("main");
 		expect(main.className).toContain("pt-[var(--app-shell-header-height)]");
 		expect(main.className).toContain("pb-[var(--app-shell-footer-height)]");
-		expect(main.className).toContain(
-			"lg:pl-[var(--app-shell-navbar-width)]",
-		);
-		expect(main.className).toContain(
-			"xl:pr-[var(--app-shell-aside-width)]",
-		);
+		expect(main.className).toContain("lg:pl-[var(--app-shell-navbar-width)]");
+		expect(main.className).toContain("xl:pr-[var(--app-shell-aside-width)]");
 	});
 
 	it("applies CSS variables for all layout sections", () => {

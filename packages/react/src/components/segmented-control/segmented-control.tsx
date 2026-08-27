@@ -47,6 +47,11 @@ export function SegmentedControl({
 		onChange: onValueChange,
 	});
 
+	// layoutId must be unique per instance: sharing one across unnamed
+	// controls makes framer-motion treat every indicator as the same shared
+	// layout element, so multiple controls on a page fight over it.
+	const indicatorGroup = name ?? React.useId();
+
 	const items = data.map((item) =>
 		typeof item === "string" ? { label: item, value: item } : item,
 	);
@@ -165,7 +170,7 @@ export function SegmentedControl({
 					>
 						{isActive && (
 							<motion.div
-								layoutId={`indicator-${name ?? "segmented-control"}`}
+								layoutId={`indicator-${indicatorGroup}`}
 								className={cn(
 									"absolute inset-0 -z-10 bg-background shadow-sm",
 									radiusClasses[radius],

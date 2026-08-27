@@ -55,10 +55,7 @@ interface TreeNodeProps {
 	level: number;
 }
 
-const TreeNode = React.memo(function TreeNode({
-	item,
-	level,
-}: TreeNodeProps) {
+const TreeNode = React.memo(function TreeNode({ item, level }: TreeNodeProps) {
 	const {
 		selected,
 		expanded,
@@ -350,7 +347,14 @@ function TreeView({
 			focusNode,
 			navigate,
 		}),
-		[currentSelected, expandedIds, effectiveActiveId, handleSelect, handleToggle, navigate],
+		[
+			currentSelected,
+			expandedIds,
+			effectiveActiveId,
+			handleSelect,
+			handleToggle,
+			navigate,
+		],
 	);
 
 	return (

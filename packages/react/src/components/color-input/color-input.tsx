@@ -84,30 +84,30 @@ export function ColorInput({
 							</button>
 						</PopoverTrigger>
 						<PopoverContent className="w-auto p-3" align="start">
-								<div className="flex flex-col gap-2">
-									<fieldset className="flex gap-2 border-0 p-0 m-0">
-										<legend className="sr-only">Preset colors</legend>
-										{PRESET_COLORS.map(({ value, label }) => (
-											<button
-												key={value}
-												type="button"
-												aria-label={label}
-												aria-pressed={
-													internalValue.toLowerCase() === value ? true : undefined
-												}
-												className={cn(
-													"h-6 w-6 rounded border shadow-sm hover:scale-110 transition-transform",
-													internalValue.toLowerCase() === value &&
-														"ring-2 ring-ring ring-offset-1",
-												)}
-												style={{ backgroundColor: value }}
-												onClick={() => {
-													setInternalValue(value);
-													setOpen(false);
-												}}
-											/>
-										))}
-									</fieldset>
+							<div className="flex flex-col gap-2">
+								<fieldset className="flex gap-2 border-0 p-0 m-0">
+									<legend className="sr-only">Preset colors</legend>
+									{PRESET_COLORS.map(({ value, label }) => (
+										<button
+											key={value}
+											type="button"
+											aria-label={label}
+											aria-pressed={
+												internalValue.toLowerCase() === value ? true : undefined
+											}
+											className={cn(
+												"h-6 w-6 rounded border shadow-sm hover:scale-110 transition-transform",
+												internalValue.toLowerCase() === value &&
+													"ring-2 ring-ring ring-offset-1",
+											)}
+											style={{ backgroundColor: value }}
+											onClick={() => {
+												setInternalValue(value);
+												setOpen(false);
+											}}
+										/>
+									))}
+								</fieldset>
 								<input
 									type="color"
 									value={internalValue.length === 7 ? internalValue : "#000000"}

@@ -323,11 +323,24 @@ describe("SegmentedControl", () => {
 		expect(motionDiv).toBeInTheDocument();
 	});
 
-	it("uses 'segmented-control' in layoutId when no name is provided", () => {
+	it("renders the active indicator without a name", () => {
 		render(<SegmentedControl data={["A", "B"]} defaultValue="A" />);
 		const activeBtn = screen.getByText("A").closest("button");
 		const motionDiv = activeBtn?.querySelector(".bg-background");
 		expect(motionDiv).toBeInTheDocument();
+	});
+
+	it("renders an indicator per control when several unnamed controls coexist", () => {
+		// Unnamed controls used to share one framer layoutId, so their
+		// indicators fought over a single shared-layout element.
+		const { container } = render(
+			<div>
+				<SegmentedControl data={["A", "B"]} defaultValue="A" />
+				<SegmentedControl data={["A", "B"]} defaultValue="A" />
+			</div>,
+		);
+		const indicators = container.querySelectorAll(".bg-background");
+		expect(indicators).toHaveLength(2);
 	});
 
 	it("does not render motion div for unselected item", () => {

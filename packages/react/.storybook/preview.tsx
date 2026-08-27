@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/react';
 import type { StoryContext } from '@storybook/react';
+import { MotionConfig } from 'framer-motion';
 import '../src/styles/globals.css';
 
 const preview: Preview = {
@@ -68,16 +69,18 @@ const preview: Preview = {
       }
 
       return (
-        <div className={themeClass} style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          padding: '2rem',
-          minHeight: '100vh',
-          width: '100%'
-        }}>
-          <Story />
-        </div>
+        <MotionConfig reducedMotion="user">
+          <div className={themeClass} style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            padding: '2rem',
+            minHeight: '100vh',
+            width: '100%'
+          }}>
+            <Story />
+          </div>
+        </MotionConfig>
       );
     },
   ],
