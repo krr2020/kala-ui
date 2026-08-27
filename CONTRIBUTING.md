@@ -6,8 +6,8 @@ Thank you for your interest in contributing to Kala UI! This document provides g
 
 ### Prerequisites
 
-- Node.js 18+ 
-- pnpm (recommended) or npm
+- Node.js 18+ (CI runs on 24)
+- pnpm 10+ (`corepack enable` picks up the pinned version)
 - Git
 
 ### Setting Up the Development Environment
@@ -160,12 +160,23 @@ pnpm test:coverage
 ```
 kala-ui/
 ├── packages/
-│   ├── react/           # React components
-│   └── react-hooks/     # React hooks
+│   ├── react/           # @kala-ui/react — standard UI components + Storybook
+│   ├── react-app/       # @kala-ui/react-app — app-level composites
+│   └── react-hooks/     # @kala-ui/react-hooks — utility hooks
+├── apps/
+│   └── playground/      # Next.js App Router consumer gate
+├── scripts/             # postbuild, boundary guard, storybook test harness
+├── docs/                # RELEASING.md, MIGRATION-0.1.md, audit records
 ├── THEMING.md           # Theming documentation
 ├── CONTRIBUTING.md      # This file
 └── README.md            # Project overview
 ```
+
+Dependency direction is enforced by `scripts/check-package-boundaries.mjs`
+(runs in `pnpm lint`): `react-app` → `react` → `react-hooks`, never the other
+way around. App-level code imports the core via `@kala-ui/react/*` subpaths,
+which resolve from the built `dist` — build `@kala-ui/react` (and
+`@kala-ui/react-hooks`) before testing or type-checking `react-app`.
 
 ## Adding Components
 
@@ -175,28 +186,30 @@ Create a new component in `packages/react/src/components/your-component/`:
 
 ```
 packages/react/src/components/your-component/
-├── index.tsx           # Main component
-├── your-component.tsx # Component implementation
-└── types.ts           # TypeScript types
+├── your-component.tsx  # Component implementation
+├── your-component.stories.tsx  # Storybook stories
+├── your-component.test.tsx     # Unit tests
+└── index.ts            # Re-exports
 ```
 
 ### Step 2: Export from Index
 
-Add exports to `packages/react/src/components/your-component/index.tsx`:
+Add exports to `packages/react/src/components/your-component/index.ts`:
 
-```tsx
+```ts
 export { YourComponent } from './your-component';
-export type { YourComponentProps } from './types';
+export type { YourComponentProps } from './your-component.types';
 ```
 
 ### Step 3: Update Package Exports
 
-Add the component to `packages/react/package.json` exports:
+Add the component to `packages/react/package.json` exports (and the barrel in
+`src/index.ts`):
 
 ```json
 "./your-component": {
-  "types": "./dist/src/components/your-component/index.d.ts",
-  "default": "./dist/src/components/your-component/index.js"
+  "types": "./dist/components/your-component/index.d.ts",
+  "default": "./dist/components/your-component/index.js"
 }
 ```
 
@@ -241,6 +254,17 @@ describe('YourComponent', () => {
   });
 });
 ```
+
+## Dependencies & the pnpm catalog
+
+Versions shared by two or more workspace packages live in the `catalog:` block
+of `pnpm-workspace.yaml`. Reference them as `"react": "catalog:"` from any
+package.json — bump the version once in the catalog and every package
+follows. Single-package dependencies stay literal in that package's
+package.json, and consumer-facing `peerDependencies` stay literal ranges.
+
+When adding a dependency that already exists in the catalog, always use
+`catalog:` instead of pinning a version.
 
 ## Design Tokens
 

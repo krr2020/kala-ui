@@ -7,10 +7,13 @@ Standard UI components for [Kala UI](https://github.com/krr2020/kala-ui) — the
 ## Installation
 
 ```bash
-npm install @kala-ui/react
+npm install @kala-ui/react@beta
 # optional: app-level composites
-npm install @kala-ui/react-app
+npm install @kala-ui/react-app@beta
 ```
+
+Requires React 19.2+. The `@kala-ui/react-hooks` dependency installs
+automatically.
 
 Import the compiled stylesheet once (no Tailwind required in your app):
 

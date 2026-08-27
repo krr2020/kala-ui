@@ -229,3 +229,8 @@ the single source of truth.
 
 **How do I make dialog scrims less dark?**
 `:root { --overlay: hsl(0 0% 0%); --overlay-alpha: 0.3; }`
+
+**What font does kala-ui use?** The `--font-sans` stack leads with
+*IBM Plex Sans* and falls back to system fonts. No font files ship with the
+library — self-host IBM Plex Sans (OFL licensed) or point `--font-sans` at
+your own typeface; components inherit whatever the token resolves to.
