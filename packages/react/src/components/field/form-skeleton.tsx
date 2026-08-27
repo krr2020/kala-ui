@@ -6,8 +6,8 @@
  */
 
 import { cn } from "../../lib/utils";
-import { FieldSkeleton } from "../field/field-skeleton";
-import { Skeleton } from "./skeleton";
+import { FieldSkeleton } from "./field-skeleton";
+import { Skeleton } from "../skeleton";
 
 /**
  * Field type for form skeleton
