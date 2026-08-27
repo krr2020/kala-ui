@@ -1,5 +1,11 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
-import { useState } from "react";
+import {
+	act,
+	fireEvent,
+	render,
+	screen,
+	waitFor,
+} from "@testing-library/react";
+import { useEffect, useState } from "react";
 import { describe, expect, it } from "vitest";
 import { useFocusTrap } from "../use-focus-trap/use-focus-trap";
 
@@ -83,5 +89,29 @@ describe("useFocusTrap", () => {
 		});
 		// Deactivation restored the pre-trap focus target.
 		expect(document.activeElement).toBe(screen.getByText("Outside"));
+	});
+});
+
+describe("useFocusTrap late-mounting node", () => {
+	it("moves focus into a node that attaches after activation (portal pattern)", async () => {
+		function LateOverlay() {
+			const trapRef = useFocusTrap(true);
+			const [mounted, setMounted] = useState(false);
+			useEffect(() => {
+				const id = setTimeout(() => setMounted(true), 0);
+				return () => clearTimeout(id);
+			}, []);
+			return mounted ? (
+				<div ref={trapRef}>
+					<button type="button">Inside</button>
+				</div>
+			) : null;
+		}
+		render(<LateOverlay />);
+		await waitFor(() => {
+			expect(document.activeElement).toBe(
+				screen.getByRole("button", { name: "Inside" }),
+			);
+		});
 	});
 });

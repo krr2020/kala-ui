@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const FOCUSABLE_SELECTOR =
 	'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -18,25 +18,35 @@ function isFocusable(element: HTMLElement): boolean {
  * node's visible, enabled focusable elements; focus moves into the node on
  * activation and is restored to the previously focused element on release.
  *
+ * The returned callback ref re-engages when the node mounts later than the
+ * trap activates (e.g. overlays rendered through portals on the next commit).
+ *
  * @example
  * ```tsx
  * const ref = useFocusTrap(active);
  * ```
  */
 export function useFocusTrap(active = true) {
-	const ref = useRef<HTMLElement>(null);
+	const nodeRef = useRef<HTMLElement | null>(null);
 	const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+	// Triggers re-engagement when the trapped node attaches/detaches.
+	const [node, setNode] = useState<HTMLElement | null>(null);
+
+	const ref = useCallback((element: HTMLElement | null) => {
+		nodeRef.current = element;
+		setNode(element);
+	}, []);
 
 	const getFocusableElements = useCallback(() => {
-		if (!ref.current) return [];
+		if (!nodeRef.current) return [];
 		return Array.from(
-			ref.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+			nodeRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
 		).filter(isFocusable);
 	}, []);
 
 	const handleKeyDown = useCallback(
 		(event: KeyboardEvent) => {
-			if (event.key !== "Tab" || !ref.current) {
+			if (event.key !== "Tab" || !nodeRef.current) {
 				return;
 			}
 
@@ -61,14 +71,17 @@ export function useFocusTrap(active = true) {
 	);
 
 	useEffect(() => {
-		if (!active) {
+		if (!active || !node) {
 			return;
 		}
 
-		previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+		if (!previouslyFocusedRef.current) {
+			previouslyFocusedRef.current =
+				document.activeElement as HTMLElement | null;
+		}
 
-		// Move focus into the trap once it activates.
-		const focusTarget = getFocusableElements()[0] ?? ref.current;
+		// Move focus into the trap once it activates (or the node attaches).
+		const focusTarget = getFocusableElements()[0] ?? node;
 		focusTarget?.focus();
 
 		document.addEventListener("keydown", handleKeyDown);
@@ -82,7 +95,7 @@ export function useFocusTrap(active = true) {
 			}
 			previouslyFocusedRef.current = null;
 		};
-	}, [active, getFocusableElements, handleKeyDown]);
+	}, [active, node, getFocusableElements, handleKeyDown]);
 
 	return ref;
 }

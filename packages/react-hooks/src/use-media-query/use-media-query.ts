@@ -34,7 +34,7 @@ export function useMediaQuery(
 			return initialValue;
 		}
 
-		if (typeof window !== "undefined" && "matchMedia" in window) {
+		if (typeof window !== "undefined" && typeof window.matchMedia === "function") {
 			return window.matchMedia(query).matches;
 		}
 
@@ -46,7 +46,7 @@ export function useMediaQuery(
 	);
 
 	useEffect(() => {
-		if (typeof window === "undefined" || !("matchMedia" in window)) {
+		if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
 			return undefined;
 		}
 
