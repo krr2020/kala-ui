@@ -26,7 +26,7 @@ const tagVariants = cva(
 			},
 			size: {
 				sm: "text-xs px-2 py-0.5 [&_svg]:size-3",
-				default: "text-sm px-2.5 py-1 [&_svg]:size-3.5",
+				md: "text-sm px-2.5 py-1 [&_svg]:size-3.5",
 				lg: "text-base px-3 py-1.5 [&_svg]:size-4",
 			},
 		},
@@ -135,7 +135,7 @@ const tagVariants = cva(
 		defaultVariants: {
 			variant: "soft",
 			color: "default",
-			size: "default",
+			size: "md",
 		},
 	},
 );

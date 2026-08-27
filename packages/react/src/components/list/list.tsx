@@ -198,12 +198,12 @@ export interface ListItemIconProps
 	 * Icon size variant
 	 * @default 'default'
 	 */
-	size?: "sm" | "default" | "lg";
+	size?: "sm" | "md" | "lg";
 }
 
 function ListItemIcon({
 	className,
-	size = "default",
+	size = "md",
 	children,
 	...props
 }: ListItemIconProps) {
@@ -212,7 +212,7 @@ function ListItemIcon({
 			className={cn(
 				"shrink-0 flex items-center justify-center text-muted-foreground",
 				size === "sm" && "w-4 h-4 text-sm",
-				size === "default" && "w-5 h-5 text-base",
+				size === "md" && "w-5 h-5 text-base",
 				size === "lg" && "w-6 h-6 text-lg",
 				className,
 			)}
@@ -246,7 +246,7 @@ export interface ListItemAvatarProps
 	 * Avatar size
 	 * @default 'default'
 	 */
-	size?: "sm" | "default" | "lg";
+	size?: "sm" | "md" | "lg";
 }
 
 function ListItemAvatar({
@@ -254,7 +254,7 @@ function ListItemAvatar({
 	src,
 	alt = "",
 	fallback,
-	size = "default",
+	size = "md",
 	...props
 }: ListItemAvatarProps) {
 	const [imgError, setImgError] = React.useState(false);
@@ -264,7 +264,7 @@ function ListItemAvatar({
 			className={cn(
 				"shrink-0 rounded-full overflow-hidden bg-muted flex items-center justify-center",
 				size === "sm" && "w-8 h-8 text-xs",
-				size === "default" && "w-10 h-10 text-sm",
+				size === "md" && "w-10 h-10 text-sm",
 				size === "lg" && "w-12 h-12 text-base",
 				className,
 			)}

@@ -20,12 +20,12 @@ export const badgeStyles = {
 			outline: "border text-foreground [a&]:hover:bg-accent",
 		},
 		shape: {
-			default: "rounded",
+			rounded: "rounded",
 			pill: "rounded-full",
 		},
 	},
 	defaultVariants: {
 		variant: "primary",
-		shape: "default",
+		shape: "rounded",
 	} as const,
 };

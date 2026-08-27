@@ -36,7 +36,7 @@ export interface AvatarGroupProps {
 function AvatarGroup({
 	avatars,
 	max = 4,
-	size = "default",
+	size = "md",
 	showTooltip = true,
 	className,
 }: AvatarGroupProps) {

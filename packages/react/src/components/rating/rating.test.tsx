@@ -116,7 +116,7 @@ describe("Rating", () => {
 	});
 
 	it("should render with default size", () => {
-		const { container } = render(<Rating size="default" />);
+		const { container } = render(<Rating size="md" />);
 		const stars = container.querySelectorAll(".h-5.w-5");
 		expect(stars.length).toBeGreaterThan(0);
 	});

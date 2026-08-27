@@ -76,7 +76,7 @@ describe("NativeSelect", () => {
 
 	it("applies default size classes", () => {
 		render(
-			<NativeSelect size="default">
+			<NativeSelect size="md">
 				<NativeSelectOption value="1">Option 1</NativeSelectOption>
 			</NativeSelect>,
 		);

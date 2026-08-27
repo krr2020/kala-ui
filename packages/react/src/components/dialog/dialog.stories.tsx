@@ -115,7 +115,7 @@ export const Sizes: Story = {
 				<DialogTrigger asChild>
 					<Button variant="outline">Default</Button>
 				</DialogTrigger>
-				<DialogContent size="default">
+				<DialogContent size="md">
 					<DialogHeader>
 						<DialogTitle>Default Modal</DialogTitle>
 					</DialogHeader>

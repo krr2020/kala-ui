@@ -15,14 +15,14 @@ const emptyStateVariants = cva(
 				destructive: "border-destructive/20 bg-destructive/10",
 			},
 			size: {
-				default: "min-h-[300px]",
+				md: "min-h-[300px]",
 				sm: "min-h-[150px] p-4",
 				lg: "min-h-[500px]",
 			},
 		},
 		defaultVariants: {
 			variant: "default",
-			size: "default",
+			size: "md",
 		},
 	},
 );

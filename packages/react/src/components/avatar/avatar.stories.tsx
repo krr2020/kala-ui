@@ -32,14 +32,7 @@ export const Sizes: Story = {
 				/>
 				<AvatarFallback>RK</AvatarFallback>
 			</Avatar>
-			<Avatar size="default">
-				<AvatarImage
-					src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-					alt="kala-ui"
-				/>
-				<AvatarFallback>RK</AvatarFallback>
-			</Avatar>
-			<Avatar size="md">
+			<Avatar size="lg">
 				<AvatarImage
 					src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
 					alt="kala-ui"
@@ -60,7 +53,14 @@ export const Sizes: Story = {
 				/>
 				<AvatarFallback>RK</AvatarFallback>
 			</Avatar>
-			<Avatar size="xxl">
+			<Avatar size="xl">
+				<AvatarImage
+					src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+					alt="kala-ui"
+				/>
+				<AvatarFallback>RK</AvatarFallback>
+			</Avatar>
+			<Avatar size="xl">
 				<AvatarImage
 					src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
 					alt="kala-ui"
@@ -75,15 +75,15 @@ export const Sizes: Story = {
 export const Shapes: Story = {
 	render: () => (
 		<div className="flex gap-4 items-center">
-			<Avatar shape="circle" size="lg">
+			<Avatar shape="circle" size="xl">
 				<AvatarImage src="https://i.pravatar.cc/150?img=68" alt="Circle" />
 				<AvatarFallback>CI</AvatarFallback>
 			</Avatar>
-			<Avatar shape="rounded" size="lg">
+			<Avatar shape="rounded" size="xl">
 				<AvatarImage src="https://i.pravatar.cc/150?img=68" alt="Rounded" />
 				<AvatarFallback>RD</AvatarFallback>
 			</Avatar>
-			<Avatar shape="square" size="lg">
+			<Avatar shape="square" size="xl">
 				<AvatarImage src="https://i.pravatar.cc/150?img=68" alt="Square" />
 				<AvatarFallback>SQ</AvatarFallback>
 			</Avatar>
@@ -101,10 +101,7 @@ export const Initials: Story = {
 			<Avatar size="sm">
 				<AvatarFallback variant="primary">DF</AvatarFallback>
 			</Avatar>
-			<Avatar size="default">
-				<AvatarFallback variant="primary">DF</AvatarFallback>
-			</Avatar>
-			<Avatar size="md">
+			<Avatar size="lg">
 				<AvatarFallback variant="primary">DF</AvatarFallback>
 			</Avatar>
 			<Avatar size="lg">
@@ -113,7 +110,10 @@ export const Initials: Story = {
 			<Avatar size="xl">
 				<AvatarFallback variant="primary">DF</AvatarFallback>
 			</Avatar>
-			<Avatar size="xxl">
+			<Avatar size="xl">
+				<AvatarFallback variant="primary">DF</AvatarFallback>
+			</Avatar>
+			<Avatar size="xl">
 				<AvatarFallback variant="primary">DF</AvatarFallback>
 			</Avatar>
 		</div>
@@ -124,22 +124,22 @@ export const Initials: Story = {
 export const InitialsVariants: Story = {
 	render: () => (
 		<div className="flex gap-4 items-center">
-			<Avatar size="md">
+			<Avatar size="lg">
 				<AvatarFallback variant="primary">PR</AvatarFallback>
 			</Avatar>
-			<Avatar size="md">
+			<Avatar size="lg">
 				<AvatarFallback variant="secondary">SE</AvatarFallback>
 			</Avatar>
-			<Avatar size="md">
+			<Avatar size="lg">
 				<AvatarFallback variant="success">SU</AvatarFallback>
 			</Avatar>
-			<Avatar size="md">
+			<Avatar size="lg">
 				<AvatarFallback variant="danger">DA</AvatarFallback>
 			</Avatar>
-			<Avatar size="md">
+			<Avatar size="lg">
 				<AvatarFallback variant="warning">WA</AvatarFallback>
 			</Avatar>
-			<Avatar size="md">
+			<Avatar size="lg">
 				<AvatarFallback variant="info">IN</AvatarFallback>
 			</Avatar>
 		</div>
@@ -150,15 +150,15 @@ export const InitialsVariants: Story = {
 export const StatusIndicators: Story = {
 	render: () => (
 		<div className="flex gap-4 items-center">
-			<Avatar size="lg" status="online">
+			<Avatar size="xl" status="online">
 				<AvatarImage src="https://i.pravatar.cc/150?img=65" alt="Online" />
 				<AvatarFallback>ON</AvatarFallback>
 			</Avatar>
-			<Avatar size="lg" status="offline">
+			<Avatar size="xl" status="offline">
 				<AvatarImage src="https://i.pravatar.cc/150?img=65" alt="Offline" />
 				<AvatarFallback>OF</AvatarFallback>
 			</Avatar>
-			<Avatar size="lg" status="online">
+			<Avatar size="xl" status="online">
 				<AvatarFallback variant="primary">DF</AvatarFallback>
 			</Avatar>
 		</div>
@@ -171,11 +171,11 @@ export const Combined: Story = {
 		<div className="flex flex-col gap-8">
 			{/* Basic combination with different shapes */}
 			<div className="flex gap-4 items-center">
-				<Avatar size="md" shape="circle">
+				<Avatar size="lg" shape="circle">
 					<AvatarImage src="https://i.pravatar.cc/150?img=65" alt="kala-ui" />
 					<AvatarFallback>RK</AvatarFallback>
 				</Avatar>
-				<Avatar size="md" shape="rounded">
+				<Avatar size="lg" shape="rounded">
 					<AvatarImage src="https://i.pravatar.cc/150?img=64" alt="kala-ui" />
 					<AvatarFallback>ER</AvatarFallback>
 				</Avatar>
@@ -199,14 +199,14 @@ export const Combined: Story = {
 
 			{/* With status indicators */}
 			<div className="flex gap-4 items-center">
-				<Avatar size="md" status="online">
+				<Avatar size="lg" status="online">
 					<AvatarImage
 						src="https://i.pravatar.cc/150?img=65"
 						alt="Online user"
 					/>
 					<AvatarFallback>ON</AvatarFallback>
 				</Avatar>
-				<Avatar size="md" status="offline">
+				<Avatar size="lg" status="offline">
 					<AvatarImage
 						src="https://i.pravatar.cc/150?img=64"
 						alt="Offline user"

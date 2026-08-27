@@ -18,7 +18,7 @@ export interface NumberInputProps
 	/** Amount to increment/decrement per step */
 	step?: number;
 	/** Size variant */
-	size?: "sm" | "default";
+	size?: "sm" | "md";
 	/** Error state styling */
 	hasError?: boolean;
 	/** Show loading skeleton */

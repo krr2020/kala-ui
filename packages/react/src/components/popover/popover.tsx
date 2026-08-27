@@ -88,7 +88,7 @@ function PopoverContent({
 	...props
 }: PopoverContentProps) {
 	const hasColoredHeader = variant.startsWith("header-");
-	const padding = hasColoredHeader ? "none" : "default";
+	const padding = hasColoredHeader ? "none" : "md";
 
 	return (
 		<PopoverVariantContext.Provider value={variant}>

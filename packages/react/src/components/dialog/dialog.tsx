@@ -51,16 +51,15 @@ function DialogContent({
 	className,
 	children,
 	showCloseButton = true,
-	size = "default",
+	size = "md",
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
 	showCloseButton?: boolean;
-	size?: "sm" | "default" | "lg" | "xl" | "full";
+	size?: "sm" | "md" | "lg" | "xl" | "full";
 }) {
 	const sizeClasses = {
 		sm: "sm:inset-auto sm:h-auto sm:w-[90vw] sm:max-w-sm sm:max-h-[90vh] sm:rounded-lg sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]",
-		default:
-			"sm:inset-auto sm:h-auto sm:w-[90vw] sm:max-w-lg sm:max-h-[90vh] sm:rounded-lg sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]",
+		md: "sm:inset-auto sm:h-auto sm:w-[90vw] sm:max-w-lg sm:max-h-[90vh] sm:rounded-lg sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]",
 		lg: "sm:inset-auto sm:h-auto sm:w-[90vw] sm:max-w-2xl sm:max-h-[90vh] sm:rounded-lg sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]",
 		xl: "sm:inset-auto sm:h-auto sm:w-[90vw] sm:max-w-4xl sm:max-h-[90vh] sm:rounded-lg sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]",
 		// The base styling is the mobile full-bleed layout (inset-0, w-full

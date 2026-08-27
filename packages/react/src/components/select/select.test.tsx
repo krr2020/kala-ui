@@ -153,7 +153,7 @@ describe("Select", () => {
 	it("should render loading skeleton with default size", () => {
 		render(
 			<Select>
-				<SelectTrigger isLoading size="default">
+				<SelectTrigger isLoading size="md">
 					<SelectValue placeholder="Select" />
 				</SelectTrigger>
 				<SelectContent>
@@ -502,7 +502,7 @@ describe("Select", () => {
 		expect(group).toBeInTheDocument();
 	});
 
-	it("should render SelectTrigger with data-size default", () => {
+	it("should render SelectTrigger with data-size md", () => {
 		const { container } = render(
 			<Select>
 				<SelectTrigger>
@@ -514,7 +514,7 @@ describe("Select", () => {
 			</Select>,
 		);
 		const trigger = container.querySelector('[data-slot="select-trigger"]');
-		expect(trigger).toHaveAttribute("data-size", "default");
+		expect(trigger).toHaveAttribute("data-size", "md");
 	});
 
 	it("should render SelectScrollUpButton inside SelectContent", async () => {

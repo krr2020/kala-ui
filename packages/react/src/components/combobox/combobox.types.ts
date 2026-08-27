@@ -29,8 +29,8 @@ export interface ComboboxProps {
 	disabled?: boolean;
 	/** Additional CSS classes for the trigger button. */
 	className?: string;
-	/** Size variant. @default "default" */
-	size?: "sm" | "default";
+	/** Size variant. @default "md" */
+	size?: "sm" | "md";
 	/** Match dropdown width to the trigger width. When true, also wraps long
 	 *  text inside options. @default true */
 	matchTriggerWidth?: boolean;

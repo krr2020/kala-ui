@@ -9,12 +9,12 @@ export const kbdVariants = cva(
 		variants: {
 			size: {
 				sm: "text-[10px] px-1 py-0.5 min-w-[1.25rem] h-5",
-				default: "text-xs px-1.5 py-0.5 min-w-[1.5rem] h-6",
+				md: "text-xs px-1.5 py-0.5 min-w-[1.5rem] h-6",
 				lg: "text-sm px-2 py-1 min-w-[2rem] h-8",
 			},
 		},
 		defaultVariants: {
-			size: "default",
+			size: "md",
 		},
 	},
 );

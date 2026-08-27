@@ -4,11 +4,9 @@ export const avatarStyles = {
 		size: {
 			xs: "size-6 text-xs",
 			sm: "size-8 text-sm",
-			default: "size-10 text-sm",
-			md: "size-12 text-base",
-			lg: "size-14 text-lg",
+			md: "size-10 text-sm",
+			lg: "size-12 text-base",
 			xl: "size-16 text-xl",
-			xxl: "size-20 text-2xl",
 		},
 		shape: {
 			circle: "rounded-full",
@@ -22,95 +20,69 @@ export const avatarStyles = {
 		},
 	},
 	compoundVariants: [
-		// Online status indicators scaled by size
 		{
 			status: "online",
 			size: "xs",
 			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-1.5 before:rounded-full before:bg-success before:ring-1 before:ring-background before:z-10',
+				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-1.5 before:rounded-full before:bg-online before:ring-1 before:ring-background before:z-10',
 		},
 		{
 			status: "online",
 			size: "sm",
 			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-2 before:rounded-full before:bg-success before:ring-1 before:ring-background before:z-10',
-		},
-		{
-			status: "online",
-			size: "default",
-			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-2.5 before:rounded-full before:bg-success before:ring-2 before:ring-background before:z-10',
+				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-2 before:rounded-full before:bg-online before:ring-1 before:ring-background before:z-10',
 		},
 		{
 			status: "online",
 			size: "md",
 			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-3 before:rounded-full before:bg-success before:ring-2 before:ring-background before:z-10',
+				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-2.5 before:rounded-full before:bg-online before:ring-2 before:ring-background before:z-10',
 		},
 		{
 			status: "online",
 			size: "lg",
 			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-3.5 before:rounded-full before:bg-success before:ring-2 before:ring-background before:z-10',
+				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-3 before:rounded-full before:bg-online before:ring-2 before:ring-background before:z-10',
 		},
 		{
 			status: "online",
 			size: "xl",
 			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-4 before:rounded-full before:bg-success before:ring-2 before:ring-background before:z-10',
+				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-4 before:rounded-full before:bg-online before:ring-2 before:ring-background before:z-10',
 		},
-		{
-			status: "online",
-			size: "xxl",
-			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-5 before:rounded-full before:bg-success before:ring-2 before:ring-background before:z-10',
-		},
-		// Offline status indicators scaled by size
 		{
 			status: "offline",
 			size: "xs",
 			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-1.5 before:rounded-full before:bg-muted-foreground before:ring-1 before:ring-background before:z-10',
+				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-1.5 before:rounded-full before:bg-offline before:ring-1 before:ring-background before:z-10',
 		},
 		{
 			status: "offline",
 			size: "sm",
 			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-2 before:rounded-full before:bg-muted-foreground before:ring-1 before:ring-background before:z-10',
-		},
-		{
-			status: "offline",
-			size: "default",
-			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-2.5 before:rounded-full before:bg-muted-foreground before:ring-2 before:ring-background before:z-10',
+				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-2 before:rounded-full before:bg-offline before:ring-1 before:ring-background before:z-10',
 		},
 		{
 			status: "offline",
 			size: "md",
 			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-3 before:rounded-full before:bg-muted-foreground before:ring-2 before:ring-background before:z-10',
+				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-2.5 before:rounded-full before:bg-offline before:ring-2 before:ring-background before:z-10',
 		},
 		{
 			status: "offline",
 			size: "lg",
 			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-3.5 before:rounded-full before:bg-muted-foreground before:ring-2 before:ring-background before:z-10',
+				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-3 before:rounded-full before:bg-offline before:ring-2 before:ring-background before:z-10',
 		},
 		{
 			status: "offline",
 			size: "xl",
 			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-4 before:rounded-full before:bg-muted-foreground before:ring-2 before:ring-background before:z-10',
-		},
-		{
-			status: "offline",
-			size: "xxl",
-			className:
-				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-5 before:rounded-full before:bg-muted-foreground before:ring-2 before:ring-background before:z-10',
+				'before:content-[""] before:absolute before:bottom-0 before:right-0 before:size-4 before:rounded-full before:bg-offline before:ring-2 before:ring-background before:z-10',
 		},
 	],
 	defaultVariants: {
-		size: "default",
+		size: "md",
 		shape: "circle",
 		status: "none",
 	} as const,

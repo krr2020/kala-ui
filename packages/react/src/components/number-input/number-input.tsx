@@ -21,7 +21,7 @@ function NumberInput({
 	defaultValue,
 	onChange,
 	disabled = false,
-	size = "default",
+	size = "md",
 	hasError = false,
 	isLoading = false,
 	onKeyDown,

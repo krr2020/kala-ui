@@ -16,7 +16,7 @@ export interface MultiSelectSkeletonConfig {
 	/**
 	 * Size variant
 	 */
-	size?: "sm" | "default";
+	size?: "sm" | "md";
 }
 
 export interface MultiSelectSkeletonProps extends MultiSelectSkeletonConfig {
@@ -42,7 +42,7 @@ export interface MultiSelectSkeletonProps extends MultiSelectSkeletonConfig {
  */
 export function MultiSelectSkeleton({
 	tagCount = 3,
-	size = "default",
+	size = "md",
 	className,
 	"data-testid": dataTestId,
 }: MultiSelectSkeletonProps) {

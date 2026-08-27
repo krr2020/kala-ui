@@ -33,12 +33,9 @@ export const avatarImageVariants = cva(avatarImageStyles.base, {
 const AVATAR_SKELETON_SIZES: Record<string, string> = {
 	xs: "1.5rem",
 	sm: "2rem",
-	default: "2.5rem",
-	md: "3rem",
-	lg: "3.5rem",
+	md: "2.5rem",
+	lg: "3rem",
 	xl: "4rem",
-	xxl: "5rem",
-	"2xl": "5rem",
 };
 
 interface AvatarProps
@@ -61,7 +58,7 @@ function Avatar({
 	// Show loading skeleton
 	if (isLoading) {
 		const skeletonSize =
-			AVATAR_SKELETON_SIZES[size ?? "default"] ?? AVATAR_SKELETON_SIZES.default;
+			AVATAR_SKELETON_SIZES[size ?? "md"] ?? AVATAR_SKELETON_SIZES.md;
 		return <SkeletonCircle size={skeletonSize} className={className} />;
 	}
 

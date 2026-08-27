@@ -68,7 +68,6 @@ const SIZE_WIDTH_CLASSES: Record<
 	md: "w-[32rem] sm:max-w-[32rem]",
 	lg: "w-[40rem] sm:max-w-[40rem]",
 	xl: "w-[48rem] sm:max-w-[48rem]",
-	"2xl": "w-[56rem] sm:max-w-[56rem]",
 	full: "w-screen sm:max-w-none",
 };
 
@@ -80,34 +79,30 @@ const SIZE_HEIGHT_CLASSES: Record<
 	md: "h-[32rem] sm:max-h-[32rem]",
 	lg: "h-[40rem] sm:max-h-[40rem]",
 	xl: "h-[48rem] sm:max-h-[48rem]",
-	"2xl": "h-[56rem] sm:max-h-[56rem]",
 	full: "h-screen sm:max-h-none",
 };
 
 type DrawerContentProps = React.ComponentProps<
 	typeof DrawerPrimitive.Content
 > & {
-	/** Width (left/right) or height (top/bottom) preset. Defaults to the legacy
-	 * `w-3/4 sm:max-w-sm` shape for left/right and auto height for top/bottom. */
-	size?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
+	/**
+	 * Width (left/right) or height (top/bottom) preset
+	 * @default "md"
+	 */
+	size?: "sm" | "md" | "lg" | "xl" | "full";
 };
 
 function DrawerContent({
 	className,
 	children,
-	size,
+	size = "md",
 	...props
 }: DrawerContentProps) {
 	const { direction } = React.useContext(DrawerContext);
 	const isHorizontal = direction === "left" || direction === "right";
-	const sizeClass =
-		size && isHorizontal
-			? SIZE_WIDTH_CLASSES[size]
-			: size
-				? SIZE_HEIGHT_CLASSES[size]
-				: isHorizontal
-					? "w-3/4 sm:max-w-sm"
-					: "";
+	const sizeClass = isHorizontal
+		? SIZE_WIDTH_CLASSES[size]
+		: SIZE_HEIGHT_CLASSES[size];
 	return (
 		<DrawerPortal data-slot="drawer-portal">
 			<DrawerOverlay />

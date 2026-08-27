@@ -44,42 +44,37 @@ export const selectTriggerVariants = cva(selectTriggerStyles.base, {
 const SelectTrigger = React.forwardRef<
 	React.ComponentRef<typeof SelectPrimitive.Trigger>,
 	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
-		size?: "sm" | "default";
+		size?: "sm" | "md";
 		isLoading?: boolean;
 	}
->(
-	(
-		{ className, size = "default", isLoading = false, children, ...props },
-		ref,
-	) => {
-		if (isLoading) {
-			return (
-				<Skeleton
-					className={cn(
-						"w-full rounded-md flex items-center justify-between",
-						size === "sm" ? "h-9" : "h-10",
-						className,
-					)}
-				/>
-			);
-		}
-
+>(({ className, size = "md", isLoading = false, children, ...props }, ref) => {
+	if (isLoading) {
 		return (
-			<SelectPrimitive.Trigger
-				ref={ref}
-				data-slot="select-trigger"
-				data-size={size}
-				className={cn(selectTriggerVariants({ size }), className)}
-				{...props}
-			>
-				{children}
-				<SelectPrimitive.Icon asChild>
-					<ChevronDown className="size-4 opacity-50" aria-hidden="true" />
-				</SelectPrimitive.Icon>
-			</SelectPrimitive.Trigger>
+			<Skeleton
+				className={cn(
+					"w-full rounded-md flex items-center justify-between",
+					size === "sm" ? "h-9" : "h-10",
+					className,
+				)}
+			/>
 		);
-	},
-);
+	}
+
+	return (
+		<SelectPrimitive.Trigger
+			ref={ref}
+			data-slot="select-trigger"
+			data-size={size}
+			className={cn(selectTriggerVariants({ size }), className)}
+			{...props}
+		>
+			{children}
+			<SelectPrimitive.Icon asChild>
+				<ChevronDown className="size-4 opacity-50" aria-hidden="true" />
+			</SelectPrimitive.Icon>
+		</SelectPrimitive.Trigger>
+	);
+});
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 
 const SelectScrollUpButton = React.forwardRef<

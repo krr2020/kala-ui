@@ -5,43 +5,17 @@ import { cn } from "../../lib/utils";
 import { Box } from "../box";
 import { Flex } from "../flex";
 import { Text } from "../text";
+import type {
+	PaginationContentProps,
+	PaginationLinkProps,
+	PaginationNextProps,
+	PaginationPreviousProps,
+	PaginationProps,
+} from "./pagination.types";
 
 // ============================================================================
 // Pagination Root
 // ============================================================================
-
-export interface PaginationProps
-	extends Omit<React.ComponentProps<"nav">, "onChange"> {
-	/**
-	 * Total amount of pages
-	 */
-	total?: number;
-	/**
-	 * Active page
-	 */
-	page?: number;
-	/**
-	 * Initial active page
-	 */
-	initialPage?: number;
-	/**
-	 * Siblings amount on left/right side of selected page
-	 */
-	siblings?: number;
-	/**
-	 * Amount of elements visible on left/right edges
-	 */
-	boundaries?: number;
-	/**
-	 * Callback fired after change of each page
-	 */
-	onChange?: (page: number) => void;
-	/**
-	 * ARIA label for the navigation
-	 * @default "Pagination"
-	 */
-	"aria-label"?: string;
-}
 
 function Pagination({
 	className,
@@ -100,19 +74,6 @@ function usePaginationContext() {
 // Pagination Content (List Container)
 // ============================================================================
 
-export interface PaginationContentProps extends React.ComponentProps<"ul"> {
-	/**
-	 * Visual variant
-	 * @default "default"
-	 */
-	variant?: "default" | "outline" | "filled" | "circle";
-	/**
-	 * Add spacing between items
-	 * @default false
-	 */
-	spaced?: boolean;
-}
-
 function PaginationContent({
 	className,
 	variant = "default",
@@ -147,46 +108,10 @@ function PaginationItem({ className, ...props }: React.ComponentProps<"li">) {
 // Pagination Link (Button or Anchor)
 // ============================================================================
 
-export interface PaginationLinkProps
-	extends Omit<React.ComponentProps<"a">, "onClick"> {
-	/**
-	 * Whether this page is currently active
-	 * @default false
-	 */
-	isActive?: boolean;
-	/**
-	 * Size variant
-	 * @default "default"
-	 */
-	size?: "default" | "sm" | "lg";
-	/**
-	 * Whether this is an icon-only button (prev/next)
-	 * @default false
-	 */
-	isIconButton?: boolean;
-	/**
-	 * Page number to navigate to (if using as button)
-	 */
-	page?: number;
-	/**
-	 * Link href (if using as anchor)
-	 */
-	href?: string;
-	/**
-	 * Disable the control (applies to the button form; links get
-	 * aria-disabled)
-	 */
-	disabled?: boolean;
-	/**
-	 * On click handler
-	 */
-	onClick?: (e: React.MouseEvent) => void;
-}
-
 function PaginationLink({
 	className,
 	isActive,
-	size = "default",
+	size = "md",
 	isIconButton = false,
 	children,
 	page,
@@ -200,7 +125,7 @@ function PaginationLink({
 
 	const sizeClasses = {
 		sm: "h-8 min-w-8 text-xs",
-		default: "h-9 min-w-9 text-sm",
+		md: "h-9 min-w-9 text-sm",
 		lg: "h-10 min-w-10 text-base",
 	};
 
@@ -286,15 +211,6 @@ function PaginationLink({
 // Pagination Previous
 // ============================================================================
 
-export interface PaginationPreviousProps
-	extends Omit<PaginationLinkProps, "isIconButton"> {
-	/**
-	 * Show label text alongside icon
-	 * @default true
-	 */
-	showLabel?: boolean;
-}
-
 function PaginationPrevious({
 	className,
 	showLabel = true,
@@ -327,15 +243,6 @@ function PaginationPrevious({
 // ============================================================================
 // Pagination Next
 // ============================================================================
-
-export interface PaginationNextProps
-	extends Omit<PaginationLinkProps, "isIconButton"> {
-	/**
-	 * Show label text alongside icon
-	 * @default true
-	 */
-	showLabel?: boolean;
-}
 
 function PaginationNext({
 	className,

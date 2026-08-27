@@ -106,7 +106,7 @@ export const Sizes: Story = {
 	render: () => (
 		<div className="flex items-center gap-2">
 			<Tag size="sm">Small</Tag>
-			<Tag size="default">Default</Tag>
+			<Tag size="md">Default</Tag>
 			<Tag size="lg">Large</Tag>
 		</div>
 	),

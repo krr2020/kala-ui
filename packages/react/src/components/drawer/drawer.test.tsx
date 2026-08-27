@@ -371,13 +371,15 @@ describe("DrawerContent", () => {
 		expect(content.className).toContain("border-b");
 	});
 
-	it("applies default width class for right direction when no size", () => {
+	it("applies md width class for right direction when no size", () => {
 		render(
 			<Drawer direction="right">
 				<DrawerContent>Content</DrawerContent>
 			</Drawer>,
 		);
-		expect(screen.getByTestId("drawer-content").className).toContain("w-3/4");
+		expect(screen.getByTestId("drawer-content").className).toContain(
+			"w-[32rem]",
+		);
 	});
 
 	it.each([
@@ -385,7 +387,6 @@ describe("DrawerContent", () => {
 		["md", "w-[32rem]"],
 		["lg", "w-[40rem]"],
 		["xl", "w-[48rem]"],
-		["2xl", "w-[56rem]"],
 		["full", "w-screen"],
 	] as const)("applies %s width size for right direction", (size, expected) => {
 		render(
@@ -414,15 +415,15 @@ describe("DrawerContent", () => {
 		},
 	);
 
-	it("does not apply size class for default bottom direction without size prop", () => {
+	it("applies md height class for bottom direction without size prop", () => {
 		render(
 			<Drawer>
 				<DrawerContent>Content</DrawerContent>
 			</Drawer>,
 		);
-		const content = screen.getByTestId("drawer-content");
-		expect(content.className).not.toContain("w-[");
-		expect(content.className).not.toContain("h-[");
+		expect(screen.getByTestId("drawer-content").className).toContain(
+			"h-[32rem]",
+		);
 	});
 
 	it("renders handle div for bottom direction", () => {

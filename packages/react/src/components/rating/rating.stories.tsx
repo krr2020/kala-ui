@@ -55,7 +55,7 @@ export const DifferentSizes: Story = {
 	render: () => (
 		<div className="flex flex-col items-start gap-4">
 			<Rating defaultValue={3} size="sm" aria-label="Small rating" />
-			<Rating defaultValue={3} size="default" aria-label="Default rating" />
+			<Rating defaultValue={3} size="md" aria-label="Default rating" />
 			<Rating defaultValue={3} size="lg" aria-label="Large rating" />
 		</div>
 	),

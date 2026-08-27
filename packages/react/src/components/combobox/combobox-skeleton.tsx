@@ -20,7 +20,7 @@ export interface ComboboxSkeletonConfig {
 	/**
 	 * Size variant
 	 */
-	size?: "sm" | "default";
+	size?: "sm" | "md";
 }
 
 export interface ComboboxSkeletonProps extends ComboboxSkeletonConfig {
@@ -47,7 +47,7 @@ export interface ComboboxSkeletonProps extends ComboboxSkeletonConfig {
 export function ComboboxSkeleton({
 	multiSelect = false,
 	selectedCount = 2,
-	size = "default",
+	size = "md",
 	className,
 	"data-testid": dataTestId,
 }: ComboboxSkeletonProps) {

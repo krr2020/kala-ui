@@ -55,7 +55,7 @@ export const LargeSize: Story = {
 	args: {
 		avatars,
 		max: 3,
-		size: "lg",
+		size: "xl",
 	},
 };
 

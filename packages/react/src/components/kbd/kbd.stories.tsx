@@ -80,7 +80,7 @@ export const Sizes: Story = {
 				<span className="text-xs text-muted-foreground">Small</span>
 			</div>
 			<div className="flex items-center gap-1">
-				<Kbd size="default" keys={["cmd", "k"]} />
+				<Kbd size="md" keys={["cmd", "k"]} />
 				<span className="text-sm text-muted-foreground">Default</span>
 			</div>
 		</div>
@@ -175,7 +175,7 @@ export const AllVariants: Story = {
 				<span className="text-sm font-medium text-muted-foreground">Sizes</span>
 				<div className="flex items-center gap-3">
 					<Kbd size="sm" keys={["cmd", "s"]} />
-					<Kbd size="default" keys={["cmd", "s"]} />
+					<Kbd size="md" keys={["cmd", "s"]} />
 				</div>
 			</div>
 		</div>

@@ -1,6 +1,31 @@
 import type * as React from "react";
 
-export interface PaginationProps extends React.ComponentProps<"nav"> {
+export interface PaginationProps
+	extends Omit<React.ComponentProps<"nav">, "onChange"> {
+	/**
+	 * Total amount of pages
+	 */
+	total?: number;
+	/**
+	 * Active page
+	 */
+	page?: number;
+	/**
+	 * Initial active page
+	 */
+	initialPage?: number;
+	/**
+	 * Siblings amount on left/right side of selected page
+	 */
+	siblings?: number;
+	/**
+	 * Amount of elements visible on left/right edges
+	 */
+	boundaries?: number;
+	/**
+	 * Callback fired after change of each page
+	 */
+	onChange?: (page: number) => void;
 	/**
 	 * ARIA label for the navigation
 	 * @default "Pagination"
@@ -21,7 +46,8 @@ export interface PaginationContentProps extends React.ComponentProps<"ul"> {
 	spaced?: boolean;
 }
 
-export interface PaginationLinkProps extends React.ComponentProps<"a"> {
+export interface PaginationLinkProps
+	extends Omit<React.ComponentProps<"a">, "onClick"> {
 	/**
 	 * Active state for current page
 	 * @default false
@@ -29,32 +55,49 @@ export interface PaginationLinkProps extends React.ComponentProps<"a"> {
 	isActive?: boolean;
 	/**
 	 * Size variant
-	 * @default "default"
+	 * @default "md"
 	 */
-	size?: "default" | "sm" | "lg" | "icon";
+	size?: "sm" | "md" | "lg";
 	/**
-	 * Visual variant
-	 * Inherits from parent PaginationContent unless overridden
+	 * Whether this is an icon-only control (prev/next)
+	 * @default false
 	 */
-	variant?: "default" | "outline" | "filled" | "circle";
+	isIconButton?: boolean;
+	/**
+	 * Page number to navigate to (button form)
+	 */
+	page?: number;
+	/**
+	 * Link href (anchor form)
+	 */
+	href?: string;
+	/**
+	 * Disable the control (applies to the button form; links get
+	 * aria-disabled)
+	 */
+	disabled?: boolean;
+	/**
+	 * On click handler
+	 */
+	onClick?: (e: React.MouseEvent) => void;
 }
 
 export interface PaginationPreviousProps
-	extends Omit<PaginationLinkProps, "children"> {
+	extends Omit<PaginationLinkProps, "isIconButton"> {
 	/**
-	 * Custom label for the previous button
-	 * @default "Previous"
+	 * Show label text alongside icon
+	 * @default true
 	 */
-	label?: string;
+	showLabel?: boolean;
 }
 
 export interface PaginationNextProps
-	extends Omit<PaginationLinkProps, "children"> {
+	extends Omit<PaginationLinkProps, "isIconButton"> {
 	/**
-	 * Custom label for the next button
-	 * @default "Next"
+	 * Show label text alongside icon
+	 * @default true
 	 */
-	label?: string;
+	showLabel?: boolean;
 }
 
 export interface PageItem {

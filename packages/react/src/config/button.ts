@@ -38,7 +38,7 @@ export const buttonStyles = {
 				"border border-accent text-accent-foreground bg-card hover:bg-accent hover:text-accent-foreground",
 		},
 		size: {
-			default: "h-[var(--kala-control-h)] px-[var(--kala-control-px)] py-2",
+			md: "h-[var(--kala-control-h)] px-[var(--kala-control-px)] py-2",
 			xs: "h-7 rounded-[var(--kala-radius-control)] px-2 text-xs",
 			sm: "h-9 rounded-[var(--kala-radius-control)] px-3",
 			lg: "h-11 rounded-[var(--kala-radius-control)] px-8",
@@ -53,7 +53,7 @@ export const buttonStyles = {
 	},
 	defaultVariants: {
 		variant: "default",
-		size: "default",
+		size: "md",
 		fullWidth: false,
 		rounded: false,
 	} as const,

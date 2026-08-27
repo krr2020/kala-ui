@@ -52,7 +52,7 @@ export interface MultiSelectProps {
 	 * Size variant
 	 * @default "default"
 	 */
-	size?: "sm" | "default";
+	size?: "sm" | "md";
 	/**
 	 * Match dropdown width to trigger width
 	 * @default true

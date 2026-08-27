@@ -103,7 +103,7 @@ describe("Avatar", () => {
 	});
 
 	it("should render loading skeleton with lg size", () => {
-		const { container } = render(<Avatar isLoading size="lg" />);
+		const { container } = render(<Avatar isLoading size="xl" />);
 
 		const skeleton = container.querySelector('[data-slot="skeleton"]');
 		expect(skeleton).toBeInTheDocument();
@@ -117,14 +117,14 @@ describe("Avatar", () => {
 	});
 
 	it("should render loading skeleton with xxl size", () => {
-		const { container } = render(<Avatar isLoading size="xxl" />);
+		const { container } = render(<Avatar isLoading size="xl" />);
 
 		const skeleton = container.querySelector('[data-slot="skeleton"]');
 		expect(skeleton).toBeInTheDocument();
 	});
 
 	it("should render loading skeleton with 2xl size", () => {
-		const { container } = render(<Avatar isLoading size="2xl" />);
+		const { container } = render(<Avatar isLoading size="xl" />);
 
 		const skeleton = container.querySelector('[data-slot="skeleton"]');
 		expect(skeleton).toBeInTheDocument();
@@ -174,7 +174,7 @@ describe("Avatar", () => {
 
 	it("should render avatar with lg size", () => {
 		const { container } = render(
-			<Avatar size="lg">
+			<Avatar size="xl">
 				<AvatarFallback>LG</AvatarFallback>
 			</Avatar>,
 		);

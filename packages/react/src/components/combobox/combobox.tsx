@@ -30,7 +30,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 			emptyText = "No results found.",
 			disabled = false,
 			className,
-			size = "default",
+			size = "md",
 			matchTriggerWidth = true,
 			clearable = false,
 			onSearchChange,

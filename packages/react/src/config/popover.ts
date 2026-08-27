@@ -17,13 +17,13 @@ export const popoverStyles = {
 			info: "bg-info text-info-foreground border-0",
 		},
 		padding: {
-			default: "p-4",
+			md: "p-4",
 			none: "",
 		},
 	},
 	defaultVariants: {
 		variant: "default",
-		padding: "default",
+		padding: "md",
 	},
 	header: {
 		base: "font-semibold border-b border-muted-foreground rounded-t-md",

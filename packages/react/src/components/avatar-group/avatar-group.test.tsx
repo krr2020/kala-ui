@@ -113,7 +113,7 @@ describe("AvatarGroup", () => {
 	});
 
 	it("should render with lg size", () => {
-		render(<AvatarGroup avatars={avatars.slice(0, 2)} size="lg" />);
+		render(<AvatarGroup avatars={avatars.slice(0, 2)} size="xl" />);
 		expect(screen.getByText("AB")).toBeInTheDocument();
 	});
 

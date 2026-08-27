@@ -1,17 +1,20 @@
 export {
 	Pagination,
 	PaginationContent,
-	type PaginationContentProps,
 	PaginationEllipsis,
 	PaginationItem,
 	PaginationLink,
-	type PaginationLinkProps,
 	PaginationNext,
-	type PaginationNextProps,
 	PaginationPrevious,
-	type PaginationPreviousProps,
-	type PaginationProps,
 } from "./pagination";
+export type {
+	PageItem,
+	PaginationContentProps,
+	PaginationLinkProps,
+	PaginationNextProps,
+	PaginationPreviousProps,
+	PaginationProps,
+} from "./pagination.types";
 export type {
 	PaginationSkeletonConfig,
 	PaginationSkeletonProps,

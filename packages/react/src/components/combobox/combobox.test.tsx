@@ -86,7 +86,7 @@ describe("Combobox", () => {
 	});
 
 	it("applies default size classes", () => {
-		render(<Combobox options={mockOptions} size="default" />);
+		render(<Combobox options={mockOptions} size="md" />);
 
 		const button = screen.getByRole("combobox");
 		expect(button).toHaveClass("h-10");

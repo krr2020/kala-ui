@@ -21,7 +21,7 @@ export interface RatingProps {
 	/** Disable the input */
 	disabled?: boolean;
 	/** Size of stars */
-	size?: "sm" | "default" | "lg";
+	size?: "sm" | "md" | "lg";
 	/** Additional className */
 	className?: string;
 	/** Accessible label */
@@ -30,7 +30,7 @@ export interface RatingProps {
 
 const sizeMap = {
 	sm: "h-4 w-4",
-	default: "h-5 w-5",
+	md: "h-5 w-5",
 	lg: "h-7 w-7",
 };
 
@@ -42,7 +42,7 @@ function Rating({
 	allowHalf = false,
 	readOnly = false,
 	disabled = false,
-	size = "default",
+	size = "md",
 	className,
 	"aria-label": ariaLabel = "Rating",
 }: RatingProps) {
