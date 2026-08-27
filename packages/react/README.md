@@ -333,10 +333,6 @@ packages/ui/
 - **Testing**: [`docs/TESTING.md`](../../docs/TESTING.md)
 - **Development Workflow**: [`docs/DEVELOPMENT.md`](../../docs/DEVELOPMENT.md)
 
-## Related Packages
-
-- `@kala-ui/design-tokens` - Design system tokens
-
 ## Credits
 
 This component library is built using excellent open-source libraries. We'd like to thank the following projects:

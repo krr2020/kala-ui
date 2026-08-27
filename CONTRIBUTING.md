@@ -160,7 +160,6 @@ pnpm test:coverage
 ```
 kala-ui/
 ├── packages/
-│   ├── design-tokens/    # Design system tokens
 │   ├── react/           # React components
 │   └── react-hooks/     # React hooks
 ├── THEMING.md           # Theming documentation
@@ -243,19 +242,12 @@ describe('YourComponent', () => {
 });
 ```
 
-## Adding Design Tokens
+## Design Tokens
 
-Design tokens are defined in `packages/design-tokens/src/`:
-
-- `colors.ts` - Color palettes
-- `spacing.ts` - Spacing scale
-- `typography.ts` - Font sizes, weights, line heights
-- `shadows.ts` - Shadow definitions
-- `breakpoints.ts` - Responsive breakpoints
-- `transitions.ts` - Animation and transition tokens
-- `themes.ts` - Theme definitions
-
-Add new tokens following the existing pattern and export them from `index.ts`.
+Tokens live in CSS: `packages/react/src/styles/globals.css`. Theme values are
+the `:root` / `.dark` / … custom properties; Tailwind utility mappings and
+primitive scales (color ramps, fonts, text sizes, shadows, container widths)
+are in the `@theme` block. See THEMING.md for the full reference.
 
 ## Documentation
 

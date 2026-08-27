@@ -6,7 +6,6 @@ A modern React component library and design system built with Radix UI primitive
 
 This monorepo contains:
 
-- **[@kala-ui/design-tokens](./packages/design-tokens)** - Design system tokens (colors, spacing, typography, shadows, breakpoints, transitions)
 - **[@kala-ui/react](./packages/react)** - 65+ accessible React UI components
 - **[@kala-ui/react-hooks](./packages/react-hooks)** - 18+ essential React hooks
 
@@ -71,15 +70,19 @@ function App() {
 }
 ```
 
-### Using design tokens
+### Theming
 
-```tsx
-import { colors, spacing, typography, themes } from '@kala-ui/design-tokens';
+Every component, chart, and scrim reads from CSS custom properties — override
+them and the whole library follows. See **[THEMING.md](./THEMING.md)** for the
+full token reference, the `ThemeProvider`, and host recipes.
 
-// Access design tokens programmatically
-const primaryColor = colors.primary;
-const padding = spacing.md;
-const fontSize = typography.text.lg;
+```css
+@import "@kala-ui/react/styles";
+
+:root {
+  --primary: oklch(0.55 0.22 264);
+  --primary-foreground: white;
+}
 ```
 
 ## Documentation

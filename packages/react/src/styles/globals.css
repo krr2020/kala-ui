@@ -17,7 +17,7 @@
  * Tailwind v4 theme mapping. Semantic colors point at the tokens above, so
  * utilities (bg-primary, text-warning, border-border-strong, bg-overlay, …)
  * stay in sync with whatever the host defines. Primitive palette scales are
- * the fixed design-tokens hex ramps.
+ * the fixed palette hex ramps.
  */
 @theme {
 	/* Semantic colors (token-driven, theme-reactive) */

@@ -200,10 +200,10 @@ Charts (`Chart`, `LineChart`, `AreaChart`, `BarChart`, `DonutChart`,
 
 ## FAQ
 
-**Do I need `@kala-ui/design-tokens`?** Only if you want the primitive
-palette scales (hex ramps, spacing, typography) in JS — e.g. for canvas
-rendering or non-CSS contexts. Theming itself never requires it; CSS is the
-source of truth.
+**Where do the palette scales live?** In CSS: the `@theme` block of
+`@kala-ui/react/styles` defines the primitive color ramps, fonts, text scale,
+shadows, and container widths. There is no separate tokens package — CSS is
+the single source of truth.
 
 **How do I remove the rounded look globally?**
 `:root { --kala-radius-control: 0; --kala-radius-card: 0; }`

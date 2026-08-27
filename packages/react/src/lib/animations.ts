@@ -2,7 +2,6 @@
  * Animation Utilities
  *
  * Reusable CSS-based animation utilities with support for prefers-reduced-motion.
- * Uses design tokens from @repo/design-tokens for consistency.
  */
 
 /**

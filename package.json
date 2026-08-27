@@ -1,14 +1,13 @@
 {
 	"name": "kala-ui",
 	"private": true,
-	"description": "Kala UI - A React component library with design tokens",
+	"description": "Kala UI - A React component library with a token-driven theming system",
 	"license": "MIT",
 	"author": "Kala UI",
 	"homepage": "https://krr2020.com/kala-ui",
 	"scripts": {
 		"dev": "pnpm --filter @kala-ui/react dev",
 		"build": "pnpm --filter \"./packages/**\" build",
-		"build:tokens": "pnpm --filter @kala-ui/design-tokens build",
 		"build:react": "pnpm --filter @kala-ui/react build",
 		"type-check": "pnpm --filter \"./packages/**\" type-check",
 		"lint": "pnpm --filter \"./packages/**\" lint",
