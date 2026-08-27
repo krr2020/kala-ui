@@ -6,8 +6,8 @@
  */
 
 import { cn } from "../../lib/utils";
-import { FieldSkeleton } from "./field-skeleton";
 import { Skeleton } from "../skeleton";
+import { FieldSkeleton } from "./field-skeleton";
 
 /**
  * Field type for form skeleton
@@ -99,6 +99,7 @@ export function FormSkeleton({
 
 	return (
 		<div
+			data-kala-component="field-form-skeleton"
 			data-testid="form-skeleton"
 			className={cn("grid gap-4", gridCols[columns], className)}
 		>
@@ -157,6 +158,7 @@ export function FieldGroupSkeleton({
 }: FieldGroupSkeletonConfig) {
 	return (
 		<div
+			data-kala-component="field-group-skeleton"
 			data-testid="field-group-skeleton"
 			className={cn("space-y-4 p-4 border rounded-lg", className)}
 		>
