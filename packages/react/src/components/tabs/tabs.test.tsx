@@ -107,6 +107,40 @@ describe("Tabs", () => {
 		expect(container.querySelector('[data-slot="tabs"]')).toBeInTheDocument();
 	});
 
+	it("should gap icon and text inside the trigger wrapper span", () => {
+		const { container } = render(
+			<Tabs defaultValue="tab1">
+				<TabsList>
+					<TabsTrigger value="tab1">
+						<span data-testid="icon" />
+						Label
+					</TabsTrigger>
+				</TabsList>
+				<TabsContent value="tab1">Content 1</TabsContent>
+			</Tabs>,
+		);
+		const wrapper = container.querySelector('[data-slot="tabs-trigger"] > span');
+		expect(wrapper).not.toBeNull();
+		expect(wrapper).toHaveClass("gap-1.5");
+		expect(wrapper).toHaveClass("inline-flex");
+		expect(wrapper?.childNodes.length).toBeGreaterThan(1);
+	});
+
+	it("should keep a single-child trigger unchanged", () => {
+		const { container } = render(
+			<Tabs defaultValue="tab1">
+				<TabsList>
+					<TabsTrigger value="tab1">Only</TabsTrigger>
+				</TabsList>
+				<TabsContent value="tab1">Content 1</TabsContent>
+			</Tabs>,
+		);
+		const wrapper = container.querySelector('[data-slot="tabs-trigger"] > span');
+		expect(wrapper).toHaveClass("gap-1.5");
+		expect(wrapper?.textContent).toBe("Only");
+		expect(wrapper?.children.length).toBe(0);
+	});
+
 	it("should set data-slot on tabs trigger", () => {
 		const { container } = render(
 			<Tabs defaultValue="tab1">

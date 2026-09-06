@@ -1,5 +1,12 @@
 # @kala-ui/react-app
 
+## 0.1.0-beta.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @kala-ui/react@0.1.0-beta.2
+
 ## 0.1.0-beta.1
 
 ### Minor Changes
