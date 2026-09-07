@@ -23,12 +23,17 @@ vi.mock("sonner", async () => {
 });
 
 import { toast } from "sonner";
+import { Button } from "../button";
+import { ThemeProvider, useTheme } from "../theme-provider";
 import { Toast } from "./toast";
 
 // Sonner's toast store lives outside React, so toasts created in one test
 // re-render when the next test mounts a fresh <Toaster>; clear it between tests.
+// ThemeProvider persists its choice to localStorage — clear that too, or a
+// previous test's stored theme overrides later defaultTheme props.
 afterEach(() => {
 	toast.dismiss();
+	window.localStorage.clear();
 });
 
 describe("Toast", () => {
@@ -558,6 +563,110 @@ describe("Toast", () => {
 				const announcement = screen.getByText("Screen reader announcement");
 				expect(announcement).toBeInTheDocument();
 			});
+		});
+	});
+
+	describe("Theming", () => {
+		// Sonner only mounts the <ol data-sonner-toaster data-sonner-theme=…>
+		// while at least one toast is on screen, so each check fires one first.
+		const findToaster = () => document.querySelector("[data-sonner-toaster]");
+
+		async function renderThemedToast(ui: React.ReactElement) {
+			render(ui);
+			toast("Themed message");
+			const toaster = await waitFor(() => {
+				expect(findToaster()).not.toBeNull();
+				return findToaster();
+			});
+			return toaster as HTMLElement;
+		}
+
+		it("defaults to the light sonner theme when no ThemeProvider is present", async () => {
+			const toaster = await renderThemedToast(<Toast />);
+			expect(toaster).toHaveAttribute("data-sonner-theme", "light");
+		});
+
+		it("follows the kala-ui dark theme via ThemeProvider", async () => {
+			const toaster = await renderThemedToast(
+				<ThemeProvider defaultTheme="dark">
+					<Toast />
+				</ThemeProvider>,
+			);
+			expect(toaster).toHaveAttribute("data-sonner-theme", "dark");
+		});
+
+		it("re-renders when the theme switches from dark back to light", async () => {
+			function SwitchButton() {
+				const { setTheme } = useTheme();
+				return (
+					<Button variant="outline" onClick={() => setTheme("light")}>
+						Switch
+					</Button>
+				);
+			}
+			const toaster = await renderThemedToast(
+				<ThemeProvider defaultTheme="dark">
+					<Toast />
+					<SwitchButton />
+				</ThemeProvider>,
+			);
+			expect(toaster).toHaveAttribute("data-sonner-theme", "dark");
+
+			await userEvent.click(screen.getByRole("button", { name: "Switch" }));
+
+			// Same DOM node (no remount), only the attribute flips.
+			expect(findToaster()).toBe(toaster);
+			expect(toaster).toHaveAttribute("data-sonner-theme", "light");
+		});
+
+		it("resolves system theme through prefers-color-scheme via resolvedTheme", async () => {
+			window.matchMedia = vi.fn().mockReturnValue({
+				matches: true,
+				addEventListener: vi.fn(),
+				removeEventListener: vi.fn(),
+			});
+
+			const toaster = await renderThemedToast(
+				<ThemeProvider defaultTheme="system">
+					<Toast />
+				</ThemeProvider>,
+			);
+			expect(toaster).toHaveAttribute("data-sonner-theme", "dark");
+		});
+
+		it("maps high-contrast-dark to the dark sonner theme", async () => {
+			const toaster = await renderThemedToast(
+				<ThemeProvider defaultTheme="high-contrast-dark">
+					<Toast />
+				</ThemeProvider>,
+			);
+			expect(toaster).toHaveAttribute("data-sonner-theme", "dark");
+		});
+
+		it("maps neutral, accent and high-contrast-light to the light sonner theme", async () => {
+			for (const theme of ["neutral", "accent", "high-contrast-light"] as const) {
+				const { unmount } = render(
+					<ThemeProvider defaultTheme={theme}>
+						<Toast />
+					</ThemeProvider>,
+				);
+				toast(`Themed ${theme}`);
+				const toaster = await waitFor(() => {
+					expect(findToaster()).not.toBeNull();
+					return findToaster();
+				});
+				expect(toaster).toHaveAttribute("data-sonner-theme", "light");
+				unmount();
+			}
+		});
+
+		it("lets an explicit theme prop win over the provider", async () => {
+			const toaster = await renderThemedToast(
+				<ThemeProvider defaultTheme="dark">
+					<Toast theme="light" />
+				</ThemeProvider>,
+			);
+			expect(toaster).toHaveAttribute("data-sonner-theme", "light");
 		});
 	});
 

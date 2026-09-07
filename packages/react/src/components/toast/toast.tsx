@@ -1,12 +1,37 @@
 import { Toaster as Sonner } from "sonner";
+import * as React from "react";
+import { useTheme, type ResolvedTheme } from "../theme-provider";
 
 type ToastProps = React.ComponentProps<typeof Sonner>;
 
-const Toast = ({ ...props }: ToastProps) => {
+const DARK_THEMES: readonly ResolvedTheme[] = ["dark", "high-contrast-dark"];
+
+// useTheme throws without a provider; toasts must still render in apps that
+// toggle theme classes by hand, so fall back to a static light toaster there.
+function useOptionalResolvedTheme(): ResolvedTheme | null {
+	try {
+		return useTheme().resolvedTheme;
+	} catch {
+		return null;
+	}
+}
+
+const Toast = ({ theme, ...props }: ToastProps) => {
+	// Sonner paints its own light/dark surfaces from data-sonner-theme, so it
+	// must be told which kala-ui theme is active or toasts stay light while the
+	// app goes dark. resolvedTheme is concrete from the provider's first render
+	// (getSystemTheme initializes synchronously from matchMedia), so there is no
+	// undefined window; the provider is optional for apps toggling classes by hand.
+	const resolvedTheme = useOptionalResolvedTheme();
+	const sonnerTheme =
+		theme ??
+		(resolvedTheme && DARK_THEMES.includes(resolvedTheme) ? "dark" : "light");
+
 	return (
 		<Sonner
 			data-kala-component="toast"
 			className="toaster group"
+			theme={sonnerTheme}
 			closeButton
 			toastOptions={{
 				classNames: {
