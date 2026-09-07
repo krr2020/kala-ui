@@ -1,5 +1,11 @@
 # @kala-ui/react-app
 
+## 0.1.0-beta.3
+
+### Minor Changes
+
+- NavLink: optional anchor mode. Passing `href` renders a real `<a>` (default button behavior unchanged otherwise) so top-level navigation targets keep native middle-click/clone-tab semantics. In anchor mode: `active` sets `aria-current="page"`; button-only props (`type`, `disabled`) are never spread onto the anchor (`disabled` degrades to `aria-disabled` + pointer-events styling); a plain left-click is preventDefaulted for client-side routing while modifier/middle clicks stay native. Nested-collapse (chevron toggle) remains button-mode-only.
+
 ## 0.1.0-beta.2
 
 ### Patch Changes
