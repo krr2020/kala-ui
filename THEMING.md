@@ -93,7 +93,9 @@ engine exists, e.g. SSR).
 | Focus | `--ring`, `--ring-offset-color` |
 | Scrim | `--overlay`, `--overlay-alpha` (dialog/drawer/sidebar overlays; `bg-overlay` utility, `/40`-style modifiers work) |
 | Shadows | `--shadow-color`, `--shadow-alpha`, `--shadow-spread` |
-| Shape/density | `--kala-radius-control`, `--kala-radius-card`, `--kala-control-h`, `--kala-control-px`, `--kala-card-pad` |
+| Shape/density | `--kala-radius-control`, `--kala-radius-card`, `--kala-radius-input`, `--kala-control-h`, `--kala-control-px`, `--kala-card-pad` |
+| Typography | `--font-heading` (defaults to the `--font-sans` stack; `Heading` and title treatments read it via the `font-heading` utility) |
+| Motion | `--kala-duration-fast` (120ms), `--kala-duration-base` (150ms), `--kala-duration-slow` (200ms), `--kala-ease` — wired into Tailwind's `--default-transition-duration` / `--default-transition-timing-function`, so every `transition-*` utility in the library retunes from these four vars |
 
 Notes:
 
@@ -125,10 +127,29 @@ Add your own class and redefine whatever the theme changes:
   --kala-radius-control: 9999px; /* pill controls */
 }
 ```
-
 ```tsx
 document.documentElement.classList.add("my-brand");
 ```
+
+### Signature shapes & motion without forking components
+
+The radius tokens accept a full CSS shorthand, not just a single length — put an
+asymmetric corner in the token and every control/card follows:
+
+```css
+:root {
+  /* squared top-left corner on every control */
+  --kala-radius-control: 0 6px 6px 6px;
+  --kala-radius-input: 0 4px 4px 4px; /* falls back to --kala-radius-control if unset */
+  /* retune every transition in the library at once */
+  --kala-duration-base: 200ms;
+  --kala-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+```
+
+For variant shapes beyond what tokens express, compose the exported cva configs
+from `@kala-ui/react/config` (e.g. `buttonStyles`) in your own wrapper — don't
+fork the components.
 
 ## Component CSS classes
 

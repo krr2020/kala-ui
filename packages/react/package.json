@@ -43,6 +43,10 @@
 		"./tailwind": {
 			"default": "./dist/styles/theme.css"
 		},
+		"./config": {
+			"types": "./dist/config/index.d.ts",
+			"default": "./dist/config/index.js"
+		},
 		"./accordion": {
 			"types": "./dist/components/accordion/index.d.ts",
 			"default": "./dist/components/accordion/index.js"
@@ -414,6 +418,7 @@
 		"lint": "biome lint .",
 		"lint:fix": "biome lint . --write",
 		"lint:fix-unsafe": "biome lint . --write --unsafe",
+		"test:tokens": "pnpm build && vitest run src/styles/tokens.test.ts",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"test:coverage": "vitest run --coverage",
