@@ -24,7 +24,8 @@ describe('Design-extension tokens (src)', () => {
     expect(globalsCss).toMatch(/--default-transition-timing-function:\s*var\(--kala-ease\)/);
   });
 
-  it('defines --kala-radius-input falling back to the control radius', () => {
+  it('defines --kala-radius-input on a single declaration line falling back to the control radius', () => {
+    // Single-line form: tooling greps the raw declaration, so var( must not wrap.
     expect(globalsCss).toMatch(/--kala-radius-input:\s*var\(--kala-radius-control\)/);
   });
 
