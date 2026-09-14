@@ -1,9 +1,9 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import { motion } from "../motion";
-import { themes } from "../themes";
-import type { ThemeName } from "../types";
+import { motion, tokens } from "../tokens/index";
+import { themes } from "../themes/index";
+import type { ThemeName } from "../types/index";
 
 /**
  * Token parity contract: packages/react-native themes must match the web

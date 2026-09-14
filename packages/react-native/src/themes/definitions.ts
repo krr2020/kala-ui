@@ -1,4 +1,4 @@
-import type { KalaTheme, ThemeName } from "./types";
+import type { KalaTheme, ThemeName } from "../types";
 
 // Transcribed from packages/react/src/styles/globals.css — regenerate with
 // `node scripts/generate-themes.mjs`; parity with the CSS is enforced by

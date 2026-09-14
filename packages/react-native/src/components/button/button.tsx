@@ -4,7 +4,7 @@
  * runs the motion.spring.snappy spring on the UI thread; every size
  * enforces the 44dp touch floor from the design specs.
  */
-import type { ReactElement, ReactNode } from "react";
+import type { ReactElement } from "react";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import Animated, {
 	useAnimatedStyle,
@@ -12,44 +12,31 @@ import Animated, {
 	withSpring,
 } from "react-native-reanimated";
 import { useUnistyles } from "react-native-unistyles";
-import { motion } from "../../motion";
-import { tokens } from "../../tokens";
+import { motion, tokens } from "../../tokens";
+import type {
+	ButtonColor,
+	ButtonProps,
+	ButtonSize,
+	ButtonVariant,
+} from "./button.types";
 
 export const BUTTON_SPRING = motion.spring.snappy;
 
-type Variant = "solid" | "outline" | "ghost" | "subtle" | "link";
-type Color = "primary" | "secondary" | "destructive" | "muted";
-type Size = "xs" | "sm" | "md" | "lg" | "icon";
-
-export interface ButtonProps {
-	children: ReactNode;
-	variant?: Variant;
-	color?: Color;
-	size?: Size;
-	fullWidth?: boolean;
-	rounded?: boolean;
-	isLoading?: boolean;
-	disabled?: boolean;
-	onPress?: () => void;
-	accessibilityLabel?: string;
-	testID?: string;
-}
-
-const HEIGHT: Record<Exclude<Size, "icon">, number> = {
+const HEIGHT: Record<Exclude<ButtonSize, "icon">, number> = {
 	xs: 28,
 	sm: 36,
 	md: tokens.size.controlH,
 	lg: 44,
 };
 
-const PAD_X: Record<Exclude<Size, "icon">, number> = {
+const PAD_X: Record<Exclude<ButtonSize, "icon">, number> = {
 	xs: 8,
 	sm: 12,
 	md: tokens.space.controlPx,
 	lg: 32,
 };
 
-const FONT: Record<Exclude<Size, "icon">, number> = {
+const FONT: Record<Exclude<ButtonSize, "icon">, number> = {
 	xs: 12,
 	sm: 14,
 	md: 14,
@@ -72,11 +59,14 @@ const ICON_BOX = 44;
 
 /** 'muted' has no ramp of its own — it borrows accent and mutes the fg. */
 const baseColor = (
-	color: Color,
+	color: ButtonColor,
 ): "primary" | "secondary" | "destructive" | "accent" =>
 	color === "muted" ? "accent" : color;
 
-function foregroundKey(variant: Variant, color: Color): string {
+function foregroundKey(
+	variant: ButtonVariant,
+	color: ButtonColor,
+): string {
 	const base = baseColor(color);
 	if (variant === "solid") return `${base}Foreground`;
 	if (variant === "subtle" || color === "muted") return "mutedForeground";
@@ -84,8 +74,8 @@ function foregroundKey(variant: Variant, color: Color): string {
 }
 
 function variantLook(
-	variant: Variant,
-	color: Color,
+	variant: ButtonVariant,
+	color: ButtonColor,
 	theme: KalaThemeShape,
 ): VariantLook {
 	const base = baseColor(color);
@@ -105,7 +95,7 @@ function variantLook(
 }
 
 function baseStyle(
-	size: Size,
+	size: ButtonSize,
 	fullWidth: boolean,
 	rounded: boolean,
 	look: VariantLook,

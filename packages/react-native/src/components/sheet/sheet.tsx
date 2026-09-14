@@ -13,8 +13,7 @@ import Animated, {
 	withSpring,
 } from "react-native-reanimated";
 import { useUnistyles } from "react-native-unistyles";
-import { motion } from "../../motion";
-import { tokens } from "../../tokens";
+import { motion, tokens } from "../../tokens";
 
 type Snap = "peek" | "half" | "full";
 

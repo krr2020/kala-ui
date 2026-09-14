@@ -1,11 +1,14 @@
-import { motion } from "./motion";
+import type { motion } from "./motion";
+
+export type Motion = typeof motion;
 
 /**
  * Non-themed shape/density tokens (globals.css `--kala-*`, rem → dp at
  * 16dp per rem). Control height intentionally carries the verbatim web
  * value for parity; the 48dp touch-target floor is a component-layer rule.
+ * Composed with the motion tokens in `../tokens/index.ts`.
  */
-export const tokens = {
+export const shape = {
 	radius: {
 		control: 6,
 		card: 8,
@@ -19,5 +22,4 @@ export const tokens = {
 	size: {
 		controlH: 40,
 	},
-	motion,
 } as const;

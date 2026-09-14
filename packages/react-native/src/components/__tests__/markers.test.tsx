@@ -6,7 +6,7 @@
  */
 import { fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
-import { motion } from "../../motion";
+import { motion } from "../../tokens";
 import { BUTTON_SPRING, Button } from "../button/button";
 import { Icon } from "../icon/icon";
 import { Sheet } from "../sheet/sheet";
