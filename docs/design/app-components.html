@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kala UI — App Components &amp; Screen Patterns</title>
+<meta name="description" content="kala-ui app-level composites: screen architecture, the layout catalog, chrome (header, tab bar, FAB), overlays (sheet, dialog) and flow composites (lists, banners, search, states, auth, dashboard) — built from the foundation tokens in design-specs.html.">
+<script>
+/* Same docs-only chrome toggle as design-specs.html. */
+(() => {
+  const stored = localStorage.getItem("kala-spec-theme");
+  const prefers = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  document.documentElement.classList.add(stored || prefers);
+  document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("themeToggle");
+    if (!btn) return;
+    const sync = () => { btn.textContent = document.documentElement.classList.contains("dark") ? "Light mode" : "Dark mode"; };
+    btn.addEventListener("click", () => {
+      const dark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem("kala-spec-theme", dark ? "dark" : "light");
+      sync();
+    });
+    sync();
+  });
+})();
+</script>
+<style>
+  /* Chrome is styled WITH the kala tokens — identical values to
+     design-specs.html / components.html (transcribed from packages/react
+     globals.css). No value in this file may leave this set. */
+  :root {
+    --background: hsl(0 0% 100%);
+    --foreground: hsl(220 100% 11%);
+    --card: hsl(0 0% 100%);
+    --card-foreground: hsl(222.2 84% 4.9%);
+    --popover: hsl(0 0% 100%);
+    --popover-foreground: hsl(222.2 84% 4.9%);
+    --primary: hsl(221.2 83.2% 53.3%);
+    --primary-foreground: hsl(210 40% 98%);
+    --secondary: hsl(219 18% 55%);
+    --secondary-foreground: hsl(0 0% 100%);
+    --muted: hsl(210 40% 96.1%);
+    --muted-foreground: hsl(215.4 16.3% 46.9%);
+    --accent: hsl(210 40% 96.1%);
+    --accent-foreground: hsl(222.2 47.4% 11.2%);
+    --destructive: hsl(0 84.2% 60.2%);
+    --destructive-foreground: hsl(210 40% 98%);
+    --success: hsl(142 76% 36%);
+    --success-foreground: hsl(355.7 100% 97.3%);
+    --warning: hsl(38 92% 50%);
+    --warning-foreground: hsl(355.7 100% 97.3%);
+    --error: hsl(0 72% 51%);
+    --error-foreground: hsl(355.7 100% 97.3%);
+    --info: hsl(190 90% 45%);
+    --info-foreground: hsl(355.7 100% 97.3%);
+    --border: hsl(211 27% 81%);
+    --border-strong: hsl(211 27% 60%);
+    --input: hsl(214.3 31.8% 91.4%);
+    --ring: hsl(221.2 83.2% 53.3%);
+    --ring-offset-color: hsl(0 0% 100%);
+    --separator: hsl(211 27% 81%);
+    --overlay: hsl(0 0% 0%);
+    --overlay-alpha: 0.5;
+    --kala-radius-control: 0.375rem;
+    --kala-radius-card: 0.5rem;
+    --kala-control-h: 2.5rem;
+    --kala-control-px: 1rem;
+    --kala-card-pad: 1.5rem;
+    --kala-duration-fast: 120ms;
+    --kala-duration-base: 150ms;
+    --kala-duration-slow: 200ms;
+    --kala-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  html.dark {
+    --background: hsl(219 33% 12%);
+    --foreground: hsl(215 18% 66%);
+    --card: hsl(219 31% 17%);
+    --card-foreground: hsl(210 40% 98%);
+    --popover: hsl(219 31% 17%);
+    --popover-foreground: hsl(210 40% 98%);
+    --primary: hsl(217.2 91.2% 59.8%);
+    --primary-foreground: hsl(222.2 47.4% 11.2%);
+    --secondary: hsl(217.2 32.6% 17.5%);
+    --secondary-foreground: hsl(210 40% 98%);
+    --muted: hsl(217.2 32.6% 17.5%);
+    --muted-foreground: hsl(215 20.2% 65.1%);
+    --accent: hsl(217.2 32.6% 17.5%);
+    --accent-foreground: hsl(210 40% 98%);
+    --destructive: hsl(0 62.8% 30.6%);
+    --destructive-foreground: hsl(210 40% 98%);
+    --success: hsl(142 71% 45%);
+    --warning: hsl(48 96% 53%);
+    --error: hsl(0 91% 71%);
+    --error-foreground: hsl(0 72% 10%);
+    --info: hsl(190 80% 60%);
+    --info-foreground: hsl(221 83% 10%);
+    --border: hsl(221 32% 43%);
+    --border-strong: hsl(221 15% 60%);
+    --input: hsl(217.2 32.6% 17.5%);
+    --ring: hsl(224.3 76.3% 48%);
+    --ring-offset-color: hsl(219 33% 12%);
+    --separator: hsl(221 32% 43%);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+  code, .mono { font-family: var(--font-mono); font-size: 0.86em; }
+
+  .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.5rem 6rem; }
+  .topbar { position: sticky; top: 0; z-index: 10; background: color-mix(in oklab, var(--background) 88%, transparent); backdrop-filter: saturate(1.2); border-bottom: 1px solid var(--separator); }
+  .topbar-inner { max-width: 68rem; margin: 0 auto; padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .brand { font-weight: 700; letter-spacing: -0.01em; }
+  .brand small { color: var(--muted-foreground); font-weight: 500; }
+  .topbar nav { display: flex; gap: 0.25rem; flex-wrap: wrap; margin-inline-start: auto; }
+  .topbar nav a { color: var(--muted-foreground); text-decoration: none; font-size: 0.86rem; padding: 0.35rem 0.6rem; border-radius: var(--kala-radius-control); }
+  .topbar nav a:hover { color: var(--accent-foreground); background: var(--accent); }
+  #themeToggle { font: inherit; font-size: 0.86rem; cursor: pointer; padding: 0.35rem 0.75rem; border-radius: var(--kala-radius-control); border: 1px solid var(--border-strong); background: var(--card); color: var(--card-foreground); }
+
+  h1 { font-size: 2rem; line-height: 1.1; letter-spacing: -0.02em; margin: 1.5rem 0 0.5rem; }
+  h2 { font-size: 1.3rem; letter-spacing: -0.01em; margin: 0 0 0.25rem; display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
+  h2 .anchor { color: var(--primary); text-decoration: none; font-weight: 400; }
+  h2 .tag { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground); border: 1px solid var(--separator); border-radius: 999px; padding: 0.15rem 0.6rem; }
+  .lede, .sublede { color: var(--muted-foreground); max-width: 64ch; }
+  .meta { color: var(--muted-foreground); font-size: 0.85rem; }
+  section { margin-top: 3.5rem; }
+  hr { border: 0; border-top: 1px solid var(--separator); margin: 2.5rem 0 0; }
+
+  table { border-collapse: collapse; width: 100%; margin: 0.75rem 0 0.25rem; font-size: 0.88rem; }
+  th, td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--separator); vertical-align: middle; }
+  th { color: var(--muted-foreground); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .tablewrap { overflow-x: auto; }
+
+  .note { border: 1px solid var(--separator); border-radius: var(--kala-radius-card); padding: 0.85rem 1rem; margin: 1.25rem 0; font-size: 0.92rem; max-width: 72ch; background: var(--card); color: var(--card-foreground); }
+  .note strong { display: block; margin-bottom: 0.15rem; }
+
+  .comp { border: 1px solid var(--separator); border-radius: var(--kala-radius-card); margin-top: 1rem; overflow: hidden; }
+  .comp-specimen { padding: 1.25rem 1.25rem 1.35rem; display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: flex-start; justify-content: center; background: var(--card); }
+  .comp-specimen.col { flex-direction: column; align-items: stretch; }
+  .comp table { margin: 0; }
+  .comp td, .comp th { border-bottom: 1px solid var(--separator); }
+  .comp tr:last-child td { border-bottom: 0; }
+  .comp .slotline { padding: 0.6rem 1rem; font-size: 0.82rem; color: var(--muted-foreground); border-top: 1px solid var(--separator); background: var(--background); }
+
+  /* ---- phone frames ------------------------------------------------
+     Docs presentation, NOT a component: the frame, status bar and home
+     indicator are illustrative context so composites read at real
+     proportions. Only the composite inside is specified. Mini frames are
+     aria-hidden illustrations; full frames keep real semantics. */
+  .frames { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-start; justify-content: center; }
+  .phone { width: 19rem; min-height: 33rem; flex: none; display: flex; flex-direction: column; position: relative; overflow: hidden; background: var(--background); border: 1px solid var(--border-strong); border-radius: 1.75rem; }
+  .phone.mini { width: 11.75rem; min-height: 20.5rem; border-radius: 1.1rem; }
+  .statusbar { display: flex; justify-content: space-between; padding: 0.55rem 1.25rem 0.3rem; font-size: 0.72rem; font-weight: 600; color: var(--foreground); }
+  .phone.mini .statusbar { padding: 0.35rem 0.8rem 0.2rem; font-size: 0.62rem; }
+  .homebar { width: 7.5rem; height: 0.28rem; border-radius: 999px; background: var(--foreground); opacity: 0.85; margin: 0.45rem auto 0.55rem; }
+  .phone.mini .homebar { display: none; }
+  .sc-body { flex: 1; min-height: 0; padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .phone.mini .sc-body { padding: 0.5rem 0.75rem; gap: 0.5rem; }
+  .figcap { font-size: 0.8rem; color: var(--muted-foreground); text-align: center; margin-top: 0.5rem; }
+  .figcap strong { color: var(--foreground); }
+
+  .blk { background: var(--card); border: 1px solid var(--separator); border-radius: var(--kala-radius-card); padding: 0.8rem 0.9rem; }
+  .sk { height: 0.65rem; border-radius: 0.25rem; background: var(--muted); }
+  .sk.w80 { width: 80%; }
+  .sk.w60 { width: 60%; }
+  .sk.mt { margin-top: 0.5rem; }
+
+  .rail { border: 0; padding: 0; margin: 0 -1rem; min-width: 0; display: flex; gap: 0.5rem; overflow: hidden; }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .chip { height: 2rem; padding: 0 0.9rem; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--card); color: var(--card-foreground); font: inherit; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+  .chip.on { background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); }
+
+  /* Screen header */
+  .scheader { display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem 1rem 0.65rem; border-bottom: 1px solid var(--separator); }
+  .scheader .title { font-size: 1.05rem; font-weight: 600; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .scheader .sub { font-size: 0.78rem; color: var(--muted-foreground); font-weight: 400; }
+  .scheader.plain { border-bottom: 0; }
+  .hbtn { height: 2.75rem; min-width: 2.75rem; padding: 0 0.5rem; display: inline-flex; align-items: center; justify-content: center; background: none; border: 0; border-radius: var(--kala-radius-control); color: var(--foreground); font: inherit; font-size: 1.1rem; line-height: 1; cursor: pointer; }
+  .hbtn:hover { background: var(--accent); color: var(--accent-foreground); }
+  .hbtn:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
+  .htext { height: 2.75rem; padding: 0 0.35rem; display: inline-flex; align-items: center; background: none; border: 0; font: inherit; font-size: 0.9rem; color: var(--primary); cursor: pointer; }
+  .large-title { padding: 0.85rem 1rem 0.75rem; }
+  .large-title .big { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; }
+  .searchbar { display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 1rem 0.55rem; border-bottom: 1px solid var(--separator); }
+  .searchbar input { flex: 1; height: 2.5rem; padding: 0 0.9rem; border-radius: var(--kala-radius-control); border: 1px solid var(--input); background: var(--muted); color: var(--foreground); font: inherit; font-size: 0.9rem; }
+  .searchbar input:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; border-color: var(--ring); }
+
+  /* Tab bar + FAB */
+  .tabbar { display: flex; border-top: 1px solid var(--separator); background: color-mix(in oklab, var(--background) 90%, transparent); padding: 0.3rem 0.5rem 0; }
+  .tb { position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; padding: 0.45rem 0 0.7rem; background: none; border: 0; font: inherit; font-size: 0.68rem; font-weight: 500; color: var(--muted-foreground); cursor: pointer; }
+  .tb.on { color: var(--primary); font-weight: 600; }
+  .tb:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; border-radius: var(--kala-radius-control); }
+  .tbdg { position: absolute; top: 0.15rem; left: calc(50% + 0.4rem); min-width: 0.95rem; height: 0.95rem; padding: 0 0.25rem; border-radius: 999px; background: var(--destructive); color: var(--destructive-foreground); font-size: 0.6rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .tbdg.dot { min-width: 0.55rem; width: 0.55rem; height: 0.55rem; padding: 0; }
+  .ti { width: 1.35rem; height: 1.35rem; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .sh-square { width: 0.95rem; height: 0.95rem; border: 2px solid currentColor; border-radius: 0.25rem; }
+  .sh-circle { width: 0.95rem; height: 0.95rem; border: 2px solid currentColor; border-radius: 999px; }
+  .sh-bars { width: 1rem; height: 2px; border-radius: 1px; background: currentColor; box-shadow: 0 -5px 0 currentColor, 0 5px 0 currentColor; }
+  .sh-tri { width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 10px solid currentColor; }
+  .tb.on .sh-square, .tb.on .sh-circle { background: currentColor; }
+  .mtabs { margin-top: auto; display: flex; border-top: 1px solid var(--separator); padding: 0.4rem 0.5rem 0.55rem; gap: 0.25rem; }
+  .mtabs span { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; font-size: 0.58rem; color: var(--muted-foreground); }
+  .mtabs span.on { color: var(--primary); font-weight: 600; }
+  .mtabs i { width: 0.85rem; height: 0.85rem; border: 1.5px solid currentColor; border-radius: 0.25rem; }
+  .mtabs i.round { border-radius: 999px; }
+  .mtabs span.on i { background: currentColor; }
+  .fab { height: 3.5rem; min-width: 3.5rem; border-radius: 999px; background: var(--primary); color: var(--primary-foreground); display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0 1.25rem; font: inherit; font-weight: 600; font-size: 0.9rem; border: 0; cursor: pointer; box-shadow: 0 6px 16px hsl(0 0% 0% / 0.22); }
+  .fab.icon { padding: 0; }
+  .fab:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .fab-doc { position: absolute; right: 1rem; bottom: 5.75rem; }
+
+  /* Overlays */
+  .scrim { position: absolute; inset: 0; background: hsl(0 0% 0% / 0.5); }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--background); border-radius: 1rem 1rem 0 0; padding: 0.4rem 1rem 1rem; }
+  .handle { width: 2.25rem; height: 0.25rem; border-radius: 999px; background: var(--border-strong); margin: 0.3rem auto 0.85rem; }
+  .sheet h3 { margin: 0 0 0.25rem; font-size: 1.05rem; }
+  .dlgwrap { position: absolute; inset: 0; background: hsl(0 0% 0% / 0.5); display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+  .dlg { background: var(--background); border-radius: var(--kala-radius-card); padding: 1.25rem; width: 100%; }
+  .dlg h3 { margin: 0 0 0.35rem; font-size: 1.05rem; }
+  .dlg p { margin: 0 0 1rem; font-size: 0.88rem; color: var(--muted-foreground); }
+  .dlgrow { display: flex; justify-content: flex-end; gap: 0.5rem; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; height: var(--kala-control-h); padding: 0 var(--kala-control-px); border-radius: var(--kala-radius-control); border: 1px solid transparent; font: inherit; font-size: 0.875rem; font-weight: 500; cursor: pointer; white-space: nowrap; }
+  .btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .btn-solid { background: var(--primary); color: var(--primary-foreground); }
+  .btn-ghost { background: none; color: var(--primary); }
+  .btn-ghost.destr { color: var(--destructive); }
+  .btn-ghost:hover, .btn-ghost.destr:hover { background: var(--accent); color: var(--accent-foreground); }
+
+  /* Lists & rows */
+  .seclabel { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground); padding: 0 0.25rem; }
+  .group { background: var(--card); border: 1px solid var(--separator); border-radius: var(--kala-radius-card); overflow: hidden; }
+  .row { display: flex; align-items: center; gap: 0.75rem; padding: 0.8rem 0.9rem; min-height: 3rem; }
+  .row + .row { border-top: 1px solid var(--separator); }
+  .lead { width: 2.25rem; height: 2.25rem; border-radius: var(--kala-radius-control); background: var(--muted); color: var(--muted-foreground); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .r-main { flex: 1; min-width: 0; }
+  .r-title { font-size: 0.9rem; font-weight: 500; }
+  .r-sub { font-size: 0.78rem; color: var(--muted-foreground); }
+  .chev { color: var(--muted-foreground); flex: none; }
+  .r-val { font-size: 0.85rem; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+  .sw { width: 2.6rem; height: 1.45rem; border-radius: 999px; background: var(--input); position: relative; flex: none; border: 0; cursor: pointer; transition: background-color var(--kala-duration-base) var(--kala-ease); }
+  .sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: calc(1.45rem - 4px); height: calc(1.45rem - 4px); border-radius: 999px; background: var(--background); transition: transform var(--kala-duration-base) var(--kala-ease); }
+  .sw[aria-checked="true"] { background: var(--primary); }
+  .sw[aria-checked="true"]::after { transform: translateX(1.15rem); }
+  .sw:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .swipe { position: relative; border-radius: var(--kala-radius-card); overflow: hidden; }
+  .swipe .acts { position: absolute; top: 0; bottom: 0; right: 0; display: flex; }
+  .act { width: 4.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem; font-size: 0.72rem; font-weight: 600; border: 0; cursor: pointer; }
+  .act-del { background: var(--destructive); color: var(--destructive-foreground); }
+  .act-mut { background: var(--muted); color: var(--muted-foreground); }
+  .swipe .fore { position: relative; background: var(--card); margin-right: 0; transition: margin-right var(--kala-duration-base) var(--kala-ease); }
+  .swipe.revealed .fore { margin-right: 4.5rem; }
+
+  /* Banners & snackbar */
+  .banner { display: flex; gap: 0.6rem; align-items: flex-start; border-radius: var(--kala-radius-card); padding: 0.8rem 0.9rem; font-size: 0.85rem; width: 19rem; }
+  .banner .b-ic { flex: none; width: 1.1rem; height: 1.1rem; border-radius: 999px; border: 2px solid currentColor; margin-top: 0.1rem; }
+  .banner .b-main { flex: 1; }
+  .banner strong { display: block; font-size: 0.85rem; }
+  .banner span { font-size: 0.8rem; color: var(--muted-foreground); }
+  .bn-info { background: color-mix(in oklab, var(--info) 10%, var(--background)); border: 1px solid color-mix(in oklab, var(--info) 35%, var(--background)); color: var(--info); }
+  .bn-warning { background: color-mix(in oklab, var(--warning) 12%, var(--background)); border: 1px solid color-mix(in oklab, var(--warning) 40%, var(--background)); color: color-mix(in oklab, var(--warning) 75%, var(--foreground)); }
+  .bn-destr { background: color-mix(in oklab, var(--destructive) 10%, var(--background)); border: 1px solid color-mix(in oklab, var(--destructive) 35%, var(--background)); color: var(--destructive); }
+  html.dark .bn-destr { color: hsl(0 91% 71%); }
+  .bn-x { background: none; border: 0; font: inherit; font-size: 1rem; line-height: 1; color: var(--muted-foreground); width: 2.75rem; height: 2.75rem; margin: -0.6rem -0.65rem 0 0; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; border-radius: var(--kala-radius-control); }
+  .bn-x:hover { background: var(--accent); color: var(--accent-foreground); }
+  .snack { background: var(--foreground); color: var(--background); border-radius: var(--kala-radius-control); padding: 0.8rem 1rem; font-size: 0.85rem; width: 19rem; display: flex; align-items: center; gap: 1rem; }
+  .snack .b-main { flex: 1; }
+  .snack .act-link { background: none; border: 0; font: inherit; font-size: 0.85rem; font-weight: 600; color: var(--primary); cursor: pointer; padding: 0; }
+
+  /* Auth */
+  .wordmark { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; }
+  .tagline { font-size: 0.85rem; color: var(--muted-foreground); }
+  .session { display: flex; align-items: center; gap: 0.75rem; background: var(--card); border: 1px solid var(--separator); border-radius: var(--kala-radius-card); padding: 0.8rem 0.9rem; }
+  .avatar { width: 2.4rem; height: 2.4rem; border-radius: 999px; background: var(--primary); color: var(--primary-foreground); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; flex: none; }
+  .btn-outline { background: var(--card); color: var(--card-foreground); border-color: var(--border-strong); height: 3rem; width: 100%; }
+  .btn-outline:hover { background: var(--accent); color: var(--accent-foreground); }
+  .orline { display: flex; align-items: center; gap: 0.75rem; color: var(--muted-foreground); font-size: 0.78rem; }
+  .orline::before, .orline::after { content: ""; flex: 1; height: 1px; background: var(--separator); }
+
+  /* Dashboard */
+  .metric { background: var(--card); border: 1px solid var(--separator); border-radius: var(--kala-radius-card); padding: 0.9rem 1rem; width: 14rem; }
+  .metric .m-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground); }
+  .metric .m-val { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; margin: 0.15rem 0 0.35rem; }
+  .m-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 0.75rem; }
+  .bdg { display: inline-flex; align-items: center; height: 1.4rem; padding: 0 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+  .bdg-up { background: color-mix(in oklab, var(--success) 18%, var(--background)); color: var(--success); }
+  .bdg-down { background: color-mix(in oklab, var(--destructive) 15%, var(--background)); color: var(--destructive); }
+  .spark { display: flex; align-items: flex-end; gap: 3px; height: 2.2rem; }
+  .spark i { flex: 1; background: var(--primary); opacity: 0.85; border-radius: 2px 2px 0 0; }
+  .qgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; flex: 1; }
+  .qt { background: var(--card); border: 1px solid var(--separator); border-radius: var(--kala-radius-card); padding: 0.8rem; display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; cursor: pointer; font: inherit; text-align: left; }
+  .qt:hover { background: var(--accent); color: var(--accent-foreground); }
+  .qt .q-ic { width: 2.25rem; height: 2.25rem; border-radius: var(--kala-radius-control); background: var(--muted); color: var(--muted-foreground); display: inline-flex; align-items: center; justify-content: center; }
+  .qt .q-label { font-size: 0.85rem; font-weight: 500; }
+  .seg { display: inline-flex; background: var(--muted); border: 0; padding: 2px; margin: 0; min-width: 0; border-radius: var(--kala-radius-control); }
+  .seg span { height: 1.9rem; padding: 0 0.9rem; display: inline-flex; align-items: center; border-radius: calc(var(--kala-radius-control) - 2px); font-size: 0.8rem; color: var(--muted-foreground); }
+  .seg .on { background: var(--card); color: var(--foreground); box-shadow: 0 1px 2px hsl(0 0% 0% / 0.12); }
+
+  /* States */
+  .estate { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; text-align: center; padding: 0 1rem; }
+  .eshape { width: 3.5rem; height: 3.5rem; border-radius: 999px; border: 2px solid var(--border-strong); display: flex; align-items: center; justify-content: center; margin-bottom: 0.4rem; }
+  .eshape i { width: 1rem; height: 1rem; border-radius: 999px; background: var(--primary); }
+  .estate h3 { margin: 0; font-size: 1.05rem; }
+  .estate p { margin: 0 0 0.75rem; font-size: 0.85rem; color: var(--muted-foreground); }
+
+  /* Mini pattern internals */
+  .mhead { display: flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.75rem 0.45rem; border-bottom: 1px solid var(--separator); font-size: 0.78rem; font-weight: 600; color: var(--foreground); }
+  .mhead .mt { flex: 1; }
+  .mhead .mbtn { color: var(--muted-foreground); font-weight: 400; font-size: 0.95rem; }
+  .mfill { flex: 1; background: var(--muted); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; }
+  .mfill i { width: 1.75rem; height: 1.75rem; border-radius: 999px; background: var(--primary); }
+  .minput { height: 2.6rem; border-radius: var(--kala-radius-control); border: 1px solid var(--input); background: var(--background); }
+  .mcta { margin-top: auto; background: var(--background); border-top: 1px solid var(--separator); padding: 0.5rem 0.75rem 0.6rem; }
+  .mcta i { display: block; height: 2.75rem; border-radius: var(--kala-radius-control); background: var(--primary); }
+  .mscrim { position: absolute; inset: 0; background: hsl(0 0% 0% / 0.5); }
+  .mmodal { position: absolute; left: 1rem; right: 1rem; top: 32%; background: var(--background); border-radius: var(--kala-radius-card); padding: 0.7rem 0.8rem; }
+  .brandmini { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; }
+  .brandmini .wm { font-size: 1.05rem; font-weight: 700; }
+  .brandmini .tg { font-size: 0.62rem; color: var(--muted-foreground); }
+  .mbtn-o { height: 2.4rem; border-radius: var(--kala-radius-control); border: 1px solid var(--border-strong); background: var(--card); width: 100%; }
+  .mbtn-p { height: 2.6rem; border-radius: var(--kala-radius-control); background: var(--primary); width: 100%; }
+
+  footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--separator); color: var(--muted-foreground); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">Kala UI <small>· app components</small></span>
+    <nav aria-label="Spec sections">
+      <a href="#layouts">Layouts</a>
+      <a href="#chrome">Chrome</a>
+      <a href="#overlays">Overlays</a>
+      <a href="#flows">Flows</a>
+      <a href="./design-specs.html">Foundation ↗</a>
+      <a href="./components.html">Components ↗</a>
+    </nav>
+    <button id="themeToggle" type="button">Dark mode</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<h1>App components &amp; screen patterns</h1>
+<p class="lede">
+  The composites that assemble whole screens — the layer above
+  <code>components.html</code>. A standard component answers <em>“what does one
+  control look like in every state”</em>; a composite answers <em>“how is a screen
+  laid out, and what chrome does it carry”</em>. This file is built exclusively
+  from the tokens and rules of <code>design-specs.html</code> and composes the
+  standard components — it introduces no new visual values.
+</p>
+<p class="meta">
+  Order is deliberate: layouts first (§1–2) because screen architecture is the
+  highest-leverage shared surface across paisa trak, ntele and roadpulse —
+  then the chrome pieces (§3–4), overlays (§5–6), and flow composites (§7–12).
+</p>
+
+<div class="note" role="note">
+  <strong>How to read this file</strong>
+  Composites render inside phone frames at proportions native apps use. The
+  frame itself — status bar, home indicator, device radius — is
+  <strong>presentation, not spec</strong>; only the composite inside the frame is
+  specified. As everywhere in this set, every specimen is rendered with the kala
+  tokens themselves and the header toggle flips the whole page.
+</div>
+
+<!-- ======================= LAYOUTS ======================= -->
+<section id="layouts">
+<hr>
+<h2>1 · Screen <span class="tag">layouts</span><a class="anchor" href="#layouts">§</a></h2>
+<p class="sublede">The atomic unit of a native app. Every screen is <code>Screen</code>: safe-area-respecting frame, optional header, one scrolling body with a 16px gutter, optional bottom dock.</p>
+
+<div class="comp">
+  <div class="comp-specimen">
+    <div class="phone">
+      <div class="statusbar" aria-hidden="true"><span>9:41</span><span>5G · 100%</span></div>
+      <header class="scheader plain">
+        <span class="title">Overview</span>
+        <button class="hbtn" type="button" aria-label="Add">＋</button>
+        <button class="hbtn" type="button" aria-label="More options">⋯</button>
+      </header>
+      <div class="sc-body">
+        <div class="blk">
+          <div class="sk w60"></div>
+          <div class="sk w80 mt"></div>
+        </div>
+        <fieldset class="rail">
+          <legend class="vh">Filter chips</legend>
+          <button class="chip on" type="button" aria-pressed="true">This month</button>
+          <button class="chip" type="button" aria-pressed="false">Last month</button>
+          <button class="chip" type="button" aria-pressed="false">Custom…</button>
+        </fieldset>
+        <div class="group">
+          <div class="row">
+            <span class="lead" aria-hidden="true"><span class="sh-circle"></span></span>
+            <div class="r-main"><div class="r-title">Groceries</div><div class="r-sub">Today · 14:02</div></div>
+            <span class="r-val">−₹412</span>
+          </div>
+          <div class="row">
+            <span class="lead" aria-hidden="true"><span class="sh-square"></span></span>
+            <div class="r-main"><div class="r-title">Salary credit</div><div class="r-sub">1 Sep</div></div>
+            <span class="r-val">+₹52,000</span>
+          </div>
+        </div>
+      </div>
+      <nav class="tabbar" aria-label="Primary">
+        <button class="tb on" type="button" aria-current="page"><span class="ti" aria-hidden="true"><span class="sh-square"></span></span>Home</button>
+        <button class="tb" type="button"><span class="ti" aria-hidden="true"><span class="sh-bars"></span></span>Activity</button>
+        <button class="tb" type="button"><span class="ti" aria-hidden="true"><span class="sh-tri"></span></span>Budgets</button>
+        <button class="tb" type="button"><span class="ti" aria-hidden="true"><span class="sh-circle"></span></span>Profile</button>
+      </nav>
+      <div class="homebar" aria-hidden="true"></div>
+    </div>
+    <div class="tablewrap"><table style="width:22rem;margin:0">
+      <thead><tr><th>Zone</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>Safe area</td><td>Content clears status-bar and home insets top &amp; bottom on every screen — never hardcoded offsets, always insets</td></tr>
+        <tr><td>Header</td><td>Optional; bleeds edge-to-edge, sits directly under the top inset (§3)</td></tr>
+        <tr><td>Body</td><td><strong>One scroll container per screen.</strong> 16px gutter (<code>space-4</code>) left/right; pull-to-refresh tinted <code>--primary</code> on data screens</td></tr>
+        <tr><td>Bleed rails</td><td>Chip rails and carousels span edge-to-edge — the gutter becomes their scroll-content padding (foundation §6.1)</td></tr>
+        <tr><td>Bottom dock</td><td>Optional tab bar (§4) or sticky footer (form pattern, §2); bleeds, respects bottom inset</td></tr>
+        <tr><td>Keyboard</td><td>Keyboard-aware padding; the scroll body never hides the focused input</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Screen state</th><th>Behavior</th></tr></thead>
+    <tbody>
+      <tr><td>content</td><td>As above</td></tr>
+      <tr><td>loading</td><td>Skeleton layout that preserves the final structure — never a centered spinner swap (§10)</td></tr>
+      <tr><td>empty / error</td><td>Full-screen state composites (§10); chrome stays mounted</td></tr>
+    </tbody>
+  </table></div>
+  <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>header</code> · <code>body</code> · <code>footer</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-screen-root</code></div>
+</div>
+
+<h2 style="margin-top:2.5rem">2 · Screen layout catalog <span class="tag">layouts</span><a class="anchor" href="#layouts">§</a></h2>
+<p class="sublede">The eight screen patterns the three apps need. Pick from this table before writing any screen — an unlisted combination is a design review, not an improvisation.</p>
+
+<div class="comp">
+  <div class="comp-specimen col">
+    <div class="frames">
+      <figure class="phone mini" aria-hidden="true" style="margin:0">
+        <div class="statusbar"><span>9:41</span><span>5G</span></div>
+        <div class="sc-body"><div class="mfill"><i></i></div></div>
+      </figure>
+      <figure class="phone mini" aria-hidden="true" style="margin:0">
+        <div class="statusbar"><span>9:41</span><span>5G</span></div>
+        <div class="mhead"><span class="mt">Wallet</span><span class="mbtn">⋯</span></div>
+        <div class="sc-body"><div class="blk"><div class="sk w60"></div><div class="sk w80 mt"></div></div><div class="blk"><div class="sk w80"></div></div></div>
+      </figure>
+      <figure class="phone mini" aria-hidden="true" style="margin:0">
+        <div class="statusbar"><span>9:41</span><span>5G</span></div>
+        <div class="sc-body"><div class="blk"><div class="sk w80"></div></div><div class="blk"><div class="sk w60"></div></div></div>
+        <div class="mtabs"><span class="on"><i></i>Home</span><span><i class="round"></i>Feed</span><span><i></i>You</span></div>
+      </figure>
+      <figure class="phone mini" aria-hidden="true" style="margin:0">
+        <div class="statusbar"><span>9:41</span><span>5G</span></div>
+        <div class="mhead"><span class="mt">Overview</span><span class="mbtn">＋</span></div>
+        <div class="sc-body"><div class="blk"><div class="sk w60"></div><div class="sk w80 mt"></div></div></div>
+        <div class="mtabs"><span class="on"><i></i>Home</span><span><i class="round"></i>Feed</span><span><i></i>You</span></div>
+      </figure>
+    </div>
+    <div class="frames" style="margin-top:0.75rem">
+      <figure class="phone mini" aria-hidden="true" style="margin:0">
+        <div class="statusbar"><span>9:41</span><span>5G</span></div>
+        <div class="sc-body"><div class="blk"><div class="sk w80"></div></div></div>
+        <div class="mscrim"></div>
+        <div class="mmodal">
+          <div style="display:flex;align-items:center"><span style="flex:1;font-weight:600;font-size:0.78rem">Share trip</span><span style="color:var(--muted-foreground)">✕</span></div>
+          <div class="sk w80" style="margin-top:0.5rem"></div>
+        </div>
+      </figure>
+      <figure class="phone mini" aria-hidden="true" style="margin:0">
+        <div class="statusbar"><span>9:41</span><span>5G</span></div>
+        <div class="mhead"><span class="mbtn">‹</span><span class="mt">Transaction</span><span class="mbtn">⋯</span></div>
+        <div class="sc-body"><div class="blk"><div class="sk w60"></div><div class="sk w80 mt"></div></div></div>
+      </figure>
+      <figure class="phone mini" aria-hidden="true" style="margin:0">
+        <div class="statusbar"><span>9:41</span><span>5G</span></div>
+        <div class="mhead"><span class="mbtn">‹</span><span class="mt">Add expense</span></div>
+        <div class="sc-body" style="padding-bottom:0"><div class="minput"></div><div class="minput"></div><div class="minput"></div></div>
+        <div class="mcta"><i></i></div>
+      </figure>
+      <figure class="phone mini" aria-hidden="true" style="margin:0">
+        <div class="statusbar"><span>9:41</span><span>5G</span></div>
+        <div class="sc-body">
+          <div class="brandmini"><span class="wm">Paisa Trak</span><span class="tg">Money, calmly.</span></div>
+          <div class="mbtn-p"></div>
+          <div class="mbtn-o"></div>
+        </div>
+      </figure>
+    </div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>#</th><th>Pattern</th><th>Chrome</th><th>Back / exit</th><th>Primary CTA</th><th>Use for</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>Plain</strong></td><td>none — content owns the edges</td><td>system gesture</td><td>in-content, if any</td><td>immersive single content: map, media, camera, onboarding pager</td></tr>
+      <tr><td>2</td><td><strong>Header</strong></td><td>title + ≤2 actions (§3)</td><td>system gesture</td><td>in-content</td><td>the default app screen</td></tr>
+      <tr><td>3</td><td><strong>Bottom tabs</strong></td><td>tab bar only (§4)</td><td>system gesture; switching tabs keeps per-tab scroll</td><td>in-content or FAB</td><td>content-first feeds where a title adds nothing</td></tr>
+      <tr><td>4</td><td><strong>Header + tabs</strong></td><td>both — the app frame</td><td>system gesture</td><td>in-content or FAB</td><td>the home/dashboard destination of a tabbed app</td></tr>
+      <tr><td>5</td><td><strong>Modal</strong></td><td>scrim + centered card or sheet (§5–6), <code>✕</code> trailing</td><td><code>✕</code>, scrim press (non-destructive only)</td><td>inside the modal</td><td>transient task over context: share, pick, compose</td></tr>
+      <tr><td>6</td><td><strong>Drill-in</strong></td><td><code>‹</code> back + title + ≤1 action</td><td><code>‹</code> = pop</td><td>in-content</td><td>detail screens reached from a list</td></tr>
+      <tr><td>7</td><td><strong>Form</strong></td><td>drill-in header + sticky footer</td><td><code>‹</code> = discard (confirm if dirty)</td><td>sticky footer, full-width, above keyboard</td><td>create/edit flows, login step, OTP</td></tr>
+      <tr><td>8</td><td><strong>Auth / onboarding</strong></td><td>none — brand owns the screen</td><td>none (first-run gate)</td><td>the screen’s single primary (§11)</td><td>login, signup, first-run</td></tr>
+    </tbody>
+  </table></div>
+  <div class="slotline"><strong>Decision rule:</strong> chrome answers two questions — <em>where am I</em> (title) and <em>what can I do here</em> (actions). A screen that needs neither is pattern 1; one that needs only “where am I” is 2 or 6 (6 if pushed onto a stack); peer destinations add 3/4; tasks that must finish are 5 or 7.</div>
+</div>
+
+<div class="note" role="note">
+  <strong>2.1 · Fixed chrome, scrolling body</strong>
+  Header and tab bar never scroll — only the body does. The one sanctioned
+  exception is the collapsing large-title header (§3.1), which trades height for
+  context as the body scrolls, and translucent tab-bar blur when content scrolls
+  under it. Anything else is a layout bug.
+</div>
+</section>
+
+<!-- ======================= CHROME ======================= -->
+<section id="chrome">
+<hr>
+<h2>3 · Screen header <span class="tag">chrome</span><a class="anchor" href="#chrome">§</a></h2>
+<p class="sublede">Identity and actions of one screen. Composes standard buttons (components §1) and the overflow menu (components §17). Web provenance: <code>react-app</code> Header.</p>
+
+<div class="comp">
+  <div class="comp-specimen col">
+    <div style="width:19rem;border:1px solid var(--separator);border-radius:var(--kala-radius-card);overflow:hidden">
+      <header class="scheader">
+        <button class="hbtn" type="button" aria-label="Back">‹</button>
+        <span class="title">Transaction</span>
+        <button class="hbtn" type="button" aria-label="More options">⋯</button>
+      </header>
+      <div style="padding:.6rem .9rem .8rem;font-size:.78rem;color:var(--muted-foreground)">standard · back variant</div>
+    </div>
+    <div style="width:19rem;border:1px solid var(--separator);border-radius:var(--kala-radius-card);overflow:hidden">
+      <div class="large-title">
+        <div class="big">Overview</div>
+        <div class="sub" style="font-size:.8rem;color:var(--muted-foreground)">September so far</div>
+      </div>
+      <div style="padding:.6rem .9rem .8rem;font-size:.78rem;color:var(--muted-foreground)">large-title · collapses on scroll (§3.1)</div>
+    </div>
+    <div style="width:19rem;border:1px solid var(--separator);border-radius:var(--kala-radius-card);overflow:hidden">
+      <div class="searchbar">
+        <input type="text" placeholder="Search transactions" aria-label="Search transactions">
+        <button class="htext" type="button">Cancel</button>
+      </div>
+      <div style="padding:.6rem .9rem .8rem;font-size:.78rem;color:var(--muted-foreground)">search variant · §9</div>
+    </div>
+    <div style="width:19rem;border:1px solid var(--separator);border-radius:var(--kala-radius-card);overflow:hidden">
+      <header class="scheader">
+        <span class="title" style="flex:none">Share trip</span>
+        <span style="flex:1"></span>
+        <button class="hbtn" type="button" aria-label="Close">✕</button>
+      </header>
+      <div style="padding:.6rem .9rem .8rem;font-size:.78rem;color:var(--muted-foreground)">modal variant · centered title, ✕ trailing</div>
+    </div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Variant</th><th>Leading</th><th>Title</th><th>Trailing</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>standard</td><td>none</td><td>left, <code>text-lg</code>/600</td><td>≤2 icon actions, then ⋯ overflow</td><td>default for tab-root screens</td></tr>
+      <tr><td>back</td><td><code>‹</code>, 44pt target, label “Back” to a11y</td><td>left, truncates middle</td><td>≤1 icon action</td><td>drill-in screens; leading is back, never both</td></tr>
+      <tr><td>large-title</td><td>none</td><td><code>text-2xl</code>/700 + optional sub</td><td>≤2 actions</td><td>collapses to standard on scroll — §3.1</td></tr>
+      <tr><td>search</td><td>none</td><td>— input fills the row</td><td>“Cancel” text button</td><td>opens as its own screen (§9), auto-focuses</td></tr>
+      <tr><td>modal</td><td>none</td><td>centered, <code>text-base</code>/600</td><td><code>✕</code> icon button</td><td>pattern 5 chrome; never mixes with back</td></tr>
+    </tbody>
+  </table></div>
+  <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>leading</code> · <code>title</code> · <code>subtitle</code> · <code>actions</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-header-root</code></div>
+</div>
+
+<div class="tablewrap"><table>
+  <thead><tr><th>Rule</th><th>Spec</th></tr></thead>
+  <tbody>
+    <tr><td>Targets</td><td>44pt/48dp minimum for every header action, including invisible hit-area padding (foundation §8.1)</td></tr>
+    <tr><td>Edges</td><td>Bleeds edge-to-edge; 16px internal padding aligning to the body gutter</td></tr>
+    <tr><td>Hairline</td><td>Separator only when content scrolls directly beneath (standard, search). Large-title and modal variants go hairless</td></tr>
+    <tr><td>Actions</td><td>Icon-only actions carry a11y labels; more than two collapse into <code>⋯</code> → menu (components §17)</td></tr>
+    <tr><td>Loading</td><td>Title slot takes a skeleton of its own width; actions stay interactive (web: header-skeleton parity)</td></tr>
+  </tbody>
+</table></div>
+
+<div class="note" role="note">
+  <strong>3.1 · Large-title collapse</strong>
+  Scrolling the body shrinks the header to the standard row: title crossfades
+  into place, sub and trailing actions slide up <code>--kala-duration-slow</code>
+  / <code>motion.spring.gentle</code>, hairline fades in. Reverse on overscroll
+  to top. Reduced Motion: instant swap between the two states.
+</div>
+
+<h2 style="margin-top:2.5rem">4 · Bottom tab bar &amp; FAB <span class="tag">chrome</span><a class="anchor" href="#chrome">§</a></h2>
+<p class="sublede">Peer navigation (destinations — the underline/navigation family from components §10) plus the one element allowed to float above content. Web provenance: <code>react-app</code> Navigation/NavLink active-state contract.</p>
+
+<div class="comp">
+  <div class="comp-specimen">
+    <div class="phone" style="min-height:22rem">
+      <div class="statusbar" aria-hidden="true"><span>9:41</span><span>5G · 100%</span></div>
+      <div class="sc-body" style="flex:1"><div class="blk"><div class="sk w60"></div><div class="sk w80 mt"></div></div></div>
+      <button class="fab icon fab-doc" type="button" aria-label="Add expense">＋</button>
+      <nav class="tabbar" aria-label="Primary">
+        <button class="tb on" type="button" aria-current="page"><span class="ti" aria-hidden="true"><span class="sh-square"></span></span>Home</button>
+        <button class="tb" type="button"><span class="ti" aria-hidden="true"><span class="sh-bars"></span></span>Activity<span class="tbdg">3</span></button>
+        <button class="tb" type="button"><span class="ti" aria-hidden="true"><span class="sh-tri"></span></span>Budgets</button>
+        <button class="tb" type="button"><span class="ti" aria-hidden="true"><span class="sh-circle"></span></span>Profile<span class="tbdg dot"></span></button>
+      </nav>
+      <div class="homebar" aria-hidden="true"></div>
+    </div>
+    <div class="tablewrap"><table style="width:26rem;margin:0">
+      <thead><tr><th>Tab state</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>default</td><td>glyph outline + label in <code>--muted-foreground</code>, <code>text-xs</code> label always visible</td></tr>
+        <tr><td>selected</td><td>glyph filled + label in <code>--primary</code>, weight 600; announced as current destination (<code>aria-current</code>)</td></tr>
+        <tr><td>badge</td><td>count pill on the glyph (<code>--destructive</code>), 1–99 then <code>99+</code>; presence-only uses a dot</td></tr>
+        <tr><td>switch</td><td>no transition between screens beyond the content’s own; selection state itself is instant (motion is not decoration)</td></tr>
+        <tr><td>disabled</td><td><strong>never</strong> — a destination that can disappear is removed, not disabled</td></tr>
+        <tr><td>scroll-under</td><td>translucent: <code>color-mix(--background 90%)</code> + blur; hairline top edge</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>FAB</th><th>Spec</th></tr></thead>
+    <tbody>
+      <tr><td>size</td><td>56dp circle (icon) or 56dp-high pill (extended, label + icon); radius pill — the semantic-pill exception from foundation §1</td></tr>
+      <tr><td>fill</td><td><code>--primary</code> container, <code>--primary-foreground</code> content</td></tr>
+      <tr><td>shadow</td><td><strong>the one always-on shadow exception</strong>: <code>0 6px 16px</code> at 22% — it must float (foundation §1 depth)</td></tr>
+      <tr><td>position</td><td>16dp from right, 16dp above the tab bar (or bottom inset on tabless screens); centered dock slot is a variant, not a second pattern</td></tr>
+      <tr><td>motion</td><td>press scale 0.96 <code>motion.spring.snappy</code>; hides on scroll-down, returns on scroll-up (<code>motion.spring.gentle</code>)</td></tr>
+      <tr><td>rules</td><td>one FAB per screen; it is the screen’s primary action — a screen with a sticky-footer CTA (pattern 7) takes no FAB</td></tr>
+    </tbody>
+  </table></div>
+  <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>item</code> · <code>itemIcon</code> · <code>itemLabel</code> · <code>badge</code> &nbsp;·&nbsp; <strong>Markers:</strong> <code>k-tabbar-root</code>, <code>k-tab-item</code>, <code>k-fab-root</code></div>
+</div>
+
+<div class="note" role="note">
+  <strong>4.1 · Tab count and order</strong> Three to five destinations, five is
+  the ceiling. Order: most-used first, Profile last. Destinations are
+  named by what they show, not verbs (“Activity”, not “Manage”). Each tab
+  remembers its own scroll position; switching tabs never animates content
+  between destinations.
+</div>
+</section>
+
+<!-- ======================= OVERLAYS ======================= -->
+<section id="overlays">
+<hr>
+<h2>5 · Bottom sheet <span class="tag">overlays</span><a class="anchor" href="#overlays">§</a></h2>
+<p class="sublede">The primary task surface on native: pickers, quick forms, filter sets, action menus. Composes standard list rows (§7) and buttons (components §1).</p>
+
+<div class="comp">
+  <div class="comp-specimen">
+    <div class="phone" style="min-height:26rem">
+      <div class="statusbar" aria-hidden="true"><span>9:41</span><span>5G · 100%</span></div>
+      <div class="sc-body" style="flex:1"><div class="blk"><div class="sk w80"></div><div class="sk w60 mt"></div></div></div>
+      <div class="scrim"></div>
+      <div class="sheet" role="dialog" aria-modal="true" aria-label="Move transaction">
+        <div class="handle" aria-hidden="true"></div>
+        <h3>Move to…</h3>
+        <div class="group" style="border:0">
+          <div class="row" style="padding:.7rem .25rem">
+            <span class="lead" aria-hidden="true"><span class="sh-square"></span></span>
+            <div class="r-main"><div class="r-title">Groceries</div></div>
+            <span class="chev" aria-hidden="true">✓</span>
+          </div>
+          <div class="row" style="padding:.7rem .25rem">
+            <span class="lead" aria-hidden="true"><span class="sh-circle"></span></span>
+            <div class="r-main"><div class="r-title">Transport</div></div>
+          </div>
+          <div class="row" style="padding:.7rem .25rem">
+            <span class="lead" aria-hidden="true"><span class="sh-bars"></span></span>
+            <div class="r-main"><div class="r-title">Eating out</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tablewrap"><table style="width:26rem;margin:0">
+      <thead><tr><th>Snap point</th><th>Height</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td>peek</td><td>≈25% — handle + one row visible</td><td>action menus, confirm-with-context</td></tr>
+        <tr><td>half</td><td>≈50% — the default</td><td>pickers, short forms, filter sets</td></tr>
+        <tr><td>full</td><td>≈92% — content + safe area</td><td>long forms; only when the task deserves the whole screen</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Interaction</th><th>Spec</th></tr></thead>
+    <tbody>
+      <tr><td>open</td><td>scrim fades (<code>--kala-duration-base</code>), sheet translates up <code>motion.spring.gentle</code> to its initial detent</td></tr>
+      <tr><td>drag</td><td>the handle always drags the sheet; body content drags it only when scrolled to top — otherwise the content scrolls (scroll coupling)</td></tr>
+      <tr><td>fling</td><td>velocity chooses the detent; upward fling expands one step, downward past peek dismisses</td></tr>
+      <tr><td>dismiss</td><td>scrim press, system back, or drag — <code>motion.spring.bouncy</code> (the sanctioned bounce: a gesture being undone)</td></tr>
+      <tr><td>keyboard</td><td>sheet rises to sit above the keyboard; content scrolls to the focused input; never auto-jumps to full</td></tr>
+      <tr><td>geometry</td><td>top radius = 2 × <code>--kala-radius-card</code> (16px); handle <code>--border-strong</code>, 36×4, centered</td></tr>
+      <tr><td>a11y</td><td><code>role="dialog"</code> + modal; focus trapped inside; opening announced; drag has a visible fallback (dismiss affordance in content when handle-only)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>overlay</code> · <code>handle</code> · <code>content</code> &nbsp;·&nbsp; <strong>Markers:</strong> <code>k-sheet-root</code>, <code>k-sheet-overlay</code>, <code>k-sheet-handle</code></div>
+</div>
+
+<div class="note" role="note">
+  <strong>5.1 · Sheet vs dialog vs menu</strong> Quick task with context →
+  sheet. Confirmation or alert that must be answered → dialog (§6). Command
+  list anchored to a control → menu (components §17); the same list
+  presented globally becomes a peek sheet (action-sheet). A side-anchored
+  sheet (navigation drawer) is a future variant of this component, same
+  contract mirrored — deferred, see provenance.
+</div>
+
+<h2 style="margin-top:2.5rem">6 · Dialog <span class="tag">overlays</span><a class="anchor" href="#overlays">§</a></h2>
+<p class="sublede">A question that blocks: confirmations, destructive warnings, forced choices. Small, centered, and rare — most “dialogs” on native should be sheets.</p>
+
+<div class="comp">
+  <div class="comp-specimen">
+    <div class="phone" style="min-height:22rem">
+      <div class="statusbar" aria-hidden="true"><span>9:41</span><span>5G · 100%</span></div>
+      <div class="sc-body" style="flex:1"><div class="blk"><div class="sk w80"></div></div></div>
+      <div class="dlgwrap">
+        <div class="dlg" role="alertdialog" aria-modal="true" aria-labelledby="dlg-t">
+          <h3 id="dlg-t">Delete transaction?</h3>
+          <p>This can’t be undone. The amount returns to your balance.</p>
+          <div class="dlgrow">
+            <button class="btn btn-ghost destr" type="button">Delete</button>
+            <button class="btn btn-ghost" type="button">Keep</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tablewrap"><table style="width:26rem;margin:0">
+      <thead><tr><th>Rule</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>size</td><td>280–320dp wide, never full-bleed; radius <code>--kala-radius-card</code>; padding 20</td></tr>
+        <tr><td>content</td><td>title (<code>text-lg</code>/600) + one short body line. More than two lines of body → wrong component, use a sheet</td></tr>
+        <tr><td>actions</td><td>≤2, side by side, text buttons; confirm is trailing. More than two choices → sheet list</td></tr>
+        <tr><td>destructive</td><td>confirm renders in <code>--destructive</code>; scrim press and system back do <strong>not</strong> confirm — they cancel</td></tr>
+        <tr><td>motion</td><td>scrim fade + card scale 0.97→1, <code>motion.spring.gentle</code> / <code>--kala-duration-base</code>; Reduced Motion: fade only</td></tr>
+        <tr><td>a11y</td><td><code>alertdialog</code> + labelled title; focus moves to the safe action first; Escape/back = cancel</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>overlay</code> · <code>title</code> · <code>body</code> · <code>actions</code> &nbsp;·&nbsp; <strong>Markers:</strong> <code>k-dialog-root</code>, <code>k-dialog-overlay</code>, <code>k-dialog-actions</code></div>
+</div>
+</section>
+
+<!-- ======================= FLOWS ======================= -->
+<section id="flows">
+<hr>
+<h2>7 · Grouped lists &amp; rows <span class="tag">flows</span><a class="anchor" href="#flows">§</a></h2>
+<p class="sublede">How records read on native — the containment rules of foundation §6.1 made concrete. One wrapper surface, hairline dividers, never a card per record.</p>
+
+<div class="comp">
+  <div class="comp-specimen">
+    <div style="width:19rem;display:flex;flex-direction:column;gap:.75rem">
+      <div class="seclabel">Preferences</div>
+      <div class="group">
+        <div class="row">
+          <span class="lead" aria-hidden="true"><span class="sh-circle"></span></span>
+          <div class="r-main"><div class="r-title">Notifications</div><div class="r-sub">Muted categories, digest</div></div>
+          <span class="chev" aria-hidden="true">›</span>
+        </div>
+        <div class="row">
+          <span class="lead" aria-hidden="true"><span class="sh-bars"></span></span>
+          <div class="r-main"><div class="r-title">Currency</div></div>
+          <span class="r-val">INR ₹</span>
+          <span class="chev" aria-hidden="true">›</span>
+        </div>
+        <div class="row">
+          <span class="lead" aria-hidden="true"><span class="sh-tri"></span></span>
+          <div class="r-main"><div class="r-title">Auto-categorise</div><div class="r-sub">Suggests categories as you type</div></div>
+          <button class="sw" type="button" role="switch" aria-checked="true" aria-label="Auto-categorise"></button>
+        </div>
+      </div>
+      <div class="seclabel">Danger zone</div>
+      <div class="swipe revealed">
+        <div class="acts">
+          <button class="act act-del" type="button" aria-label="Delete transaction">✕ Delete</button>
+        </div>
+        <div class="fore">
+          <div class="row">
+            <span class="lead" aria-hidden="true"><span class="sh-square"></span></span>
+            <div class="r-main"><div class="r-title" style="color:var(--destructive)">Delete all data</div></div>
+          </div>
+        </div>
+      </div>
+      <p class="meta" style="margin:0">↑ swipe row shown revealed — drag left to expose actions</p>
+    </div>
+    <div class="tablewrap"><table style="width:26rem;margin:0">
+      <thead><tr><th>Row variant</th><th>Leading</th><th>Trailing</th><th>Behavior</th></tr></thead>
+      <tbody>
+        <tr><td>navigation</td><td>36dp tile, glyph or avatar</td><td><code>›</code> chevron</td><td>press → push (pattern 6)</td></tr>
+        <tr><td>value</td><td>tile optional</td><td>current value (tabular-nums) + <code>›</code></td><td>press → picker sheet (§5)</td></tr>
+        <tr><td>control</td><td>tile optional</td><td>inline switch / radio — no chevron</td><td>state changes in place, row press toggles too</td></tr>
+        <tr><td>action</td><td>tile</td><td>none</td><td>fires immediately; destructive tint on label</td></tr>
+        <tr><td>swipeable</td><td>tile</td><td>hidden until swiped</td><td>see below</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Swipe actions</th><th>Spec</th></tr></thead>
+    <tbody>
+      <tr><td>reveal</td><td>drag left exposes trailing actions pinned to the row’s right edge — <code>motion.spring.snappy</code></td></tr>
+      <tr><td>full swipe</td><td>completes the first (primary) action with a haptic; destructive full-swipe still confirms via dialog (§6) when irreversible</td></tr>
+      <tr><td>tint</td><td>destructive = solid <code>--destructive</code>; all others <code>--muted</code> quiet treatments</td></tr>
+      <tr><td>count</td><td>≤2 actions per side; text label + glyph each</td></tr>
+      <tr><td>a11y</td><td>swipe actions always have a visible equivalent (row detail or overflow menu); haptic on open</td></tr>
+    </tbody>
+  </table></div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Grouping</th><th>Spec</th></tr></thead>
+    <tbody>
+      <tr><td>wrapper</td><td>one <code>--card</code> surface, radius card, rows divided by <code>hairlineWidth</code> separators — never card-per-record, never card-in-card</td></tr>
+      <tr><td>row height</td><td>≥48dp (title-only) / ≥56dp (title+sub); leading tile 36dp; press state = <code>--accent</code> fill</td></tr>
+      <tr><td>section labels</td><td><code>text-xs</code>/600 caps, sticky against scroll with <code>--background</code> + blur under content</td></tr>
+      <tr><td>loading</td><td>group skeleton: wrapper + row-height placeholder lines; empty group is omitted entirely, never rendered empty</td></tr>
+    </tbody>
+  </table></div>
+  <div class="slotline"><strong>Slots:</strong> <code>root</code> (list) · <code>row</code> · <code>leading</code> · <code>content</code> · <code>trailing</code> · <code>swipeActions</code> &nbsp;·&nbsp; <strong>Markers:</strong> <code>k-list-root</code>, <code>k-row-root</code>, <code>k-swipe-actions</code></div>
+</div>
+
+<h2 style="margin-top:2.5rem">8 · Banner &amp; snackbar <span class="tag">flows</span><a class="anchor" href="#flows">§</a></h2>
+<p class="sublede">Two different jobs that must not be conflated: a banner reports state the screen is in; a snackbar confirms something that just happened.</p>
+
+<div class="comp">
+  <div class="comp-specimen col" style="align-items:center">
+    <div class="banner bn-info">
+      <span class="b-ic" aria-hidden="true"></span>
+      <span class="b-main"><strong style="color:inherit">Syncing…</strong><span style="color:var(--muted-foreground)">2 of 14 receipts left</span></span>
+      <button class="bn-x" type="button" aria-label="Dismiss banner">✕</button>
+    </div>
+    <div class="banner bn-warning">
+      <span class="b-ic" aria-hidden="true"></span>
+      <span class="b-main"><strong style="color:inherit">Budget nearly spent</strong><span style="color:var(--muted-foreground)">₹800 left of ₹6,000 in Eating out</span></span>
+      <button class="bn-x" type="button" aria-label="Dismiss banner">✕</button>
+    </div>
+    <div class="banner bn-destr">
+      <span class="b-ic" aria-hidden="true"></span>
+      <span class="b-main"><strong style="color:inherit">Trip recording stopped</strong><span style="color:var(--muted-foreground)">GPS signal lost at 14:02</span></span>
+      <button class="bn-x" type="button" aria-label="Dismiss banner">✕</button>
+    </div>
+    <div class="snack" role="status">
+      <span class="b-main">Expense saved</span>
+      <button class="act-link" type="button">Undo</button>
+    </div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th></th><th>Banner</th><th>Snackbar</th></tr></thead>
+    <tbody>
+      <tr><td><strong>means</strong></td><td>a state the screen is currently in</td><td>a transient confirmation of an action</td></tr>
+      <tr><td><strong>position</strong></td><td>inline, first item of the body — under the header, pushes content down</td><td>floating, bottom, above tab bar + insets; never pushes content</td></tr>
+      <tr><td><strong>lifetime</strong></td><td>persistent until the state resolves or the user dismisses</td><td>4s auto-dismiss; swipe-up or action dismisses sooner; max one at a time</td></tr>
+      <tr><td><strong>actions</strong></td><td>one quiet action (optional) + <code>✕</code> 44pt</td><td>one action max (“Undo”-class); no close glyph</td></tr>
+      <tr><td><strong>tone</strong></td><td>info / warning / destructive — 10–12% tint fill + tone border + tone ink (same recipe as badge tints, components §6)</td><td>inverse: <code>--foreground</code> fill, <code>--background</code> text — it must read above any content</td></tr>
+      <tr><td><strong>motion</strong></td><td>slides in from top, <code>--kala-duration-base</code>; content shifts, no overlap</td><td>slides up + fade; never bounces</td></tr>
+      <tr><td><strong>a11y</strong></td><td>announced on arrival; dismiss is a real button</td><td><code>role="status"</code> (polite); the action stays reachable for its full lifetime</td></tr>
+    </tbody>
+  </table></div>
+  <div class="slotline"><strong>Markers:</strong> <code>k-banner-root</code>, <code>k-snackbar-root</code> &nbsp;·&nbsp; <strong>Rule:</strong> errors from <em>user input</em> are neither — they attach to the field (components §2).</div>
+</div>
+
+<h2 style="margin-top:2.5rem">9 · Search screen <span class="tag">flows</span><a class="anchor" href="#flows">§</a></h2>
+<p class="sublede">Search opens as its own screen (pattern 2, search-header variant) so context is never occluded while typing.</p>
+
+<div class="comp">
+  <div class="comp-specimen">
+    <div class="phone" style="min-height:26rem">
+      <div class="statusbar" aria-hidden="true"><span>9:41</span><span>5G · 100%</span></div>
+      <div class="searchbar">
+        <input type="text" value="chai" aria-label="Search transactions">
+        <button class="htext" type="button">Cancel</button>
+      </div>
+      <div class="sc-body">
+        <fieldset class="rail">
+          <legend class="vh">Recent searches</legend>
+          <button class="chip" type="button">chai point</button>
+          <button class="chip" type="button">october rent</button>
+          <button class="chip" type="button">salary</button>
+        </fieldset>
+        <div class="seclabel">Results</div>
+        <div class="group">
+          <div class="row">
+            <span class="lead" aria-hidden="true"><span class="sh-circle"></span></span>
+            <div class="r-main"><div class="r-title">Chai Point</div><div class="r-sub">Today · 14:02 · Card</div></div>
+            <span class="r-val">−₹180</span>
+          </div>
+          <div class="row">
+            <span class="lead" aria-hidden="true"><span class="sh-circle"></span></span>
+            <div class="r-main"><div class="r-title">Chai Point</div><div class="r-sub">28 Aug · 10:15 · Cash</div></div>
+            <span class="r-val">−₹160</span>
+          </div>
+          <div class="row" aria-busy="true">
+            <span class="lead" aria-hidden="true"></span>
+            <div class="r-main"><div class="sk w60"></div><div class="sk w80 mt" style="height:.55rem"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="homebar" aria-hidden="true"></div>
+    </div>
+    <div class="tablewrap"><table style="width:26rem;margin:0">
+      <thead><tr><th>State</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>idle</td><td>auto-focused input; recent searches as chips + suggestions group (§7 rows)</td></tr>
+        <tr><td>typing</td><td>debounced query (300ms); prior results stay while fetching, new rows skeleton in place — layout never jumps</td></tr>
+        <tr><td>results</td><td>grouped rows with match context in <code>r-sub</code>; count in the section label (“Results · 12”)</td></tr>
+        <tr><td>no results</td><td>inline empty state (§10 pattern, compact): query echoed, one action “Clear search”; never a blank screen</td></tr>
+        <tr><td>exit</td><td><code>Cancel</code> or system back — results are discarded, they are not history</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>input</code> · <code>recents</code> · <code>results</code> &nbsp;·&nbsp; <strong>Markers:</strong> <code>k-search-root</code>, <code>k-search-input</code>, <code>k-search-results</code></div>
+</div>
+
+<h2 style="margin-top:2.5rem">10 · Screen states <span class="tag">flows</span><a class="anchor" href="#flows">§</a></h2>
+<p class="sublede">Loading, empty and error as full-screen composites — the screen-level versions of the component states in components §15–16. Chrome stays mounted in all three.</p>
+
+<div class="comp">
+  <div class="comp-specimen col">
+    <div class="frames">
+      <div class="phone mini" aria-hidden="true">
+        <div class="statusbar"><span>9:41</span><span>5G</span></div>
+        <div class="mhead"><span class="mt">Overview</span></div>
+        <div class="sc-body">
+          <div class="blk"><div class="sk w60"></div><div class="sk w80 mt"></div></div>
+          <div class="blk" style="flex:1"><div class="sk"></div><div class="sk w80 mt"></div><div class="sk w60 mt"></div></div>
+          <div class="blk"><div class="sk w80"></div></div>
+        </div>
+      </div>
+      <div class="phone mini">
+        <div class="statusbar" aria-hidden="true"><span>9:41</span><span>5G</span></div>
+        <div class="mhead" aria-hidden="true"><span class="mt">Budgets</span></div>
+        <div class="estate">
+          <span class="eshape" aria-hidden="true"><i></i></span>
+          <h3>No budgets yet</h3>
+          <p>Set a monthly cap and we’ll watch it for you.</p>
+          <button class="btn btn-solid" type="button">Create budget</button>
+        </div>
+      </div>
+      <div class="phone mini">
+        <div class="statusbar" aria-hidden="true"><span>9:41</span><span>5G</span></div>
+        <div class="mhead" aria-hidden="true"><span class="mt">Overview</span></div>
+        <div class="estate">
+          <span class="eshape" style="border-color:var(--destructive)" aria-hidden="true"><i style="background:var(--destructive)"></i></span>
+          <h3>Couldn’t load</h3>
+          <p>The server didn’t respond. Your data is safe.</p>
+          <button class="btn btn-solid" type="button">Retry</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>State</th><th>Spec</th></tr></thead>
+    <tbody>
+      <tr><td>loading</td><td>skeleton preserves the <em>final layout’s shape</em> — same header, same blocks, shimmer 1.6s (components §15). Never a spinner replacing structure; the user should predict the screen before it arrives</td></tr>
+      <tr><td>empty</td><td>glyph shape + one-line title + one-line explanation + <strong>one</strong> primary CTA that creates the thing that’s missing. Teaching tone, never an apology wall</td></tr>
+      <tr><td>error</td><td>destructive-tinted glyph + what happened + one reassurance line + <code>Retry</code> primary; “Report” as quiet secondary when actionable</td></tr>
+      <tr><td>offline</td><td>variant of error with a banner (§8) instead of full-screen when cached content still renders</td></tr>
+      <tr><td>motion</td><td>state → content crossfade <code>--kala-duration-base</code>; no slide-ins; Reduced Motion: instant</td></tr>
+    </tbody>
+  </table></div>
+  <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>glyph</code> · <code>title</code> · <code>body</code> · <code>action</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-state-root</code> (variant <code>loading|empty|error</code>)</div>
+</div>
+
+<h2 style="margin-top:2.5rem">11 · Auth composite <span class="tag">flows</span><a class="anchor" href="#flows">§</a></h2>
+<p class="sublede">Pattern 8 made concrete. Web provenance: <code>react-app</code> social-login-buttons + session-card.</p>
+
+<div class="comp">
+  <div class="comp-specimen">
+    <div class="phone" style="min-height:30rem">
+      <div class="statusbar" aria-hidden="true"><span>9:41</span><span>5G · 100%</span></div>
+      <div class="sc-body" style="justify-content:center;gap:1rem">
+        <div style="text-align:center;margin-bottom:1rem">
+          <div class="wordmark">Paisa Trak</div>
+          <div class="tagline">Money, calmly.</div>
+        </div>
+        <div class="session">
+          <span class="avatar" aria-hidden="true">RK</span>
+          <div class="r-main"><div class="r-title">Ravi Kumar</div><div class="r-sub">rk@example.com</div></div>
+          <span class="chev" aria-hidden="true">›</span>
+        </div>
+        <button class="btn btn-solid" type="button" style="height:3rem">Continue</button>
+        <div class="orline">or</div>
+        <button class="btn btn-outline" type="button">Continue with Google</button>
+        <button class="btn btn-outline" type="button">Continue with Apple</button>
+        <p class="meta" style="text-align:center;margin:0.5rem 0 0;font-size:0.75rem">By continuing you agree to the Terms and Privacy Policy.</p>
+      </div>
+      <div class="homebar" aria-hidden="true"></div>
+    </div>
+    <div class="tablewrap"><table style="width:26rem;margin:0">
+      <thead><tr><th>Element</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>brand block</td><td>wordmark <code>text-3xl</code>/700 + one tagline; centered in the upper third — the only decoration on the screen</td></tr>
+        <tr><td>session card</td><td>returning-user shortcut: avatar + name + account, whole card press = continue; “switch” is the card’s overflow → full form</td></tr>
+        <tr><td>primary</td><td>session continue is the screen’s <strong>single</strong> primary (solid, 48dp); without a session the primary is the local form’s submit</td></tr>
+        <tr><td>social buttons</td><td>outline, 48dp, full-width, one per provider; brand marks come from the icon set — never hand-inlined</td></tr>
+        <tr><td>legal</td><td><code>text-xs</code> muted, links underlined; tappable despite size via inline links</td></tr>
+        <tr><td>failure</td><td>auth errors surface as a banner (§8) above the buttons — never inline-red on the wrong field, never a bare alert</td></tr>
+        <tr><td>submitting</td><td>all actions disabled + spinner in the pressed button; double-submit impossible</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>brand</code> · <code>session</code> · <code>primary</code> · <code>social</code> · <code>legal</code> &nbsp;·&nbsp; <strong>Markers:</strong> <code>k-auth-root</code>, <code>k-auth-session</code>, <code>k-auth-social</code></div>
+</div>
+
+<h2 style="margin-top:2.5rem">12 · Dashboard composites <span class="tag">flows</span><a class="anchor" href="#flows">§</a></h2>
+<p class="sublede">The at-a-glance blocks paisa trak and roadpulse open on: metric cards, quick actions, period selection. Web provenance: <code>react-app</code> metric-card + sparkline-chart.</p>
+
+<div class="comp">
+  <div class="comp-specimen">
+    <div style="width:19rem;display:flex;flex-direction:column;gap:.75rem">
+      <fieldset class="seg">
+        <legend class="vh">Period</legend>
+        <span class="on">Week</span><span>Month</span><span>Year</span>
+      </fieldset>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+        <div class="metric">
+          <div class="m-label">Spent</div>
+          <div class="m-val">₹18,420</div>
+          <div class="m-row">
+            <span class="bdg bdg-down">▼ 8%</span>
+            <span class="spark" aria-hidden="true"><i style="height:40%"></i><i style="height:65%"></i><i style="height:50%"></i><i style="height:80%"></i><i style="height:60%"></i><i style="height:95%"></i><i style="height:70%"></i></span>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="m-label">Saved</div>
+          <div class="m-val">₹6,130</div>
+          <div class="m-row">
+            <span class="bdg bdg-up">▲ 12%</span>
+            <span class="spark" aria-hidden="true"><i style="height:30%"></i><i style="height:45%"></i><i style="height:40%"></i><i style="height:70%"></i><i style="height:65%"></i><i style="height:85%"></i><i style="height:100%"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="seclabel">Quick actions</div>
+      <div class="qgrid">
+        <button class="qt" type="button"><span class="q-ic" aria-hidden="true"><span class="sh-square"></span></span><span class="q-label">Add expense</span></button>
+        <button class="qt" type="button"><span class="q-ic" aria-hidden="true"><span class="sh-bars"></span></span><span class="q-label">Scan receipt</span></button>
+        <button class="qt" type="button"><span class="q-ic" aria-hidden="true"><span class="sh-tri"></span></span><span class="q-label">Set budget</span></button>
+        <button class="qt" type="button"><span class="q-ic" aria-hidden="true"><span class="sh-circle"></span></span><span class="q-label">Reports</span></button>
+      </div>
+    </div>
+    <div class="tablewrap"><table style="width:26rem;margin:0">
+      <thead><tr><th>Composite</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>metric card</td><td>label (<code>text-xs</code>/600 caps) + value (<code>text-2xl</code>/700, tabular-nums — it changes in place) + delta + trend; one <code>--card</code> surface, radius card, flat</td></tr>
+        <tr><td>delta</td><td>tinted badge (components §6 recipe): up=success, down=destructive, flat=muted — semantics decided by the metric’s polarity (spending down is good), never by the arrow alone</td></tr>
+        <tr><td>trend</td><td>bar sparkline ≤8 bars, single <code>--primary</code> at 85%; decorative — the delta badge carries the information</td></tr>
+        <tr><td>period control</td><td>segmented control (components §4) — it changes the <em>view of the same data</em>, which is exactly its contract; never tabs here</td></tr>
+        <tr><td>quick actions</td><td>2×2 (or 4-across ≥360dp) tiles: 36dp glyph tile + <code>text-sm</code> label; press = the screen’s quickest verbs; the grid never scrolls</td></tr>
+        <tr><td>live values</td><td>value changes animate by count-up only when the delta is the point (roadpulse telemetry); otherwise instant + tabular-nums</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>label</code> · <code>value</code> · <code>delta</code> · <code>trend</code> (metric) · <code>icon</code> · <code>label</code> (quick action) &nbsp;·&nbsp; <strong>Markers:</strong> <code>k-metric-root</code>, <code>k-quickaction-root</code></div>
+</div>
+</section>
+
+<!-- ======================= PROVENANCE ======================= -->
+<section id="provenance">
+<hr>
+<h2>Provenance, governance &amp; deferrals <a class="anchor" href="#provenance">§</a></h2>
+<p class="sublede">Where each composite comes from on the web side, and what is deliberately not specified yet.</p>
+
+<div class="tablewrap"><table>
+  <thead><tr><th>Web composite (<code>packages/react-app</code>)</th><th>Native counterpart here</th><th>Deltas worth knowing</th></tr></thead>
+  <tbody>
+    <tr><td><code>AppShell</code></td><td>Screen (§1) + layout catalog (§2)</td><td>web composes header/sidebar/footer regions; native composes safe-area + header + one scroll body + dock — the shell is the screen, not a window frame</td></tr>
+    <tr><td><code>Header</code> (+ skeleton)</td><td>Screen header (§3)</td><td>web slots (searchBar, themeSwitcher, languageSwitcher…) collapse to ≤2 actions + overflow; large-title collapse is native-only</td></tr>
+    <tr><td><code>Navigation</code> / <code>NavLink</code> / active-path</td><td>Tab bar (§4)</td><td>active-state contract ports; path matching becomes stack/tab state</td></tr>
+    <tr><td><code>Sidebar</code>, <code>menubar</code>, breadcrumbs</td><td>— deferred</td><td>phone-first navigation is tabs + stacks; revisit for tablet/landscape</td></tr>
+    <tr><td><code>Footer</code></td><td>sticky footer in the form pattern (§2)</td><td>demoted from chrome to form CTA dock</td></tr>
+    <tr><td><code>data-table</code></td><td>grouped lists (§7)</td><td>tables become lists on phones; the web table remains the desktop story</td></tr>
+    <tr><td><code>social-login-buttons</code></td><td>Auth composite (§11)</td><td>same providers, 48dp floor</td></tr>
+    <tr><td><code>session-card</code></td><td>Auth composite (§11)</td><td>identical contract</td></tr>
+    <tr><td><code>metric-card</code>, <code>sparkline-chart</code></td><td>Dashboard composites (§12)</td><td>sparkline restricted to bars ≤8; full charts stay app-side</td></tr>
+    <tr><td><code>user-menu-dropdown</code></td><td>overflow menu via components §17</td><td>composed, not restated</td></tr>
+  </tbody>
+</table></div>
+
+<div class="note" role="note">
+  <strong>Deferrals (deliberate, documented)</strong>
+  Navigation drawer (side-anchored sheet variant of §5) · rating · copy button ·
+  tablet / landscape split layouts · charts beyond the bar sparkline ·
+  pull-to-refresh customization beyond the <code>--primary</code> tint. Each has a
+  place to land without new architecture — none blocks the pilot.
+</div>
+
+<div class="note" role="note">
+  <strong>Governance</strong>
+  Same contract as the rest of the set: this file may only reference tokens and
+  rules defined in <code>design-specs.html</code>, and composes components
+  specified in <code>components.html</code>. A composite introducing a new color,
+  radius, duration, spring, or size fails spec review. Phone frames, status
+  bars and home indicators are page presentation and carry no spec weight.
+</div>
+</section>
+
+<footer>
+  <p><strong>kala-ui app components &amp; screen patterns</strong> — third file of the design documentation set. Upstream: <code>design-specs.html</code> (foundation) → <code>components.html</code> (standard components) → this file (app-level composites).</p>
+  <p class="meta">Sources: <code>packages/react/src/styles/globals.css</code> · <code>packages/react/TOKEN_SPEC.md</code> · <code>packages/react-app</code> composites · <code>docs/REACT-NATIVE-STRATEGY.md</code>. No external dependencies; styled entirely by the tokens it specifies.</p>
+</footer>
+
+</div>
+</body>
+</html>
