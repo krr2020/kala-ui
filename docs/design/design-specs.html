@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kala UI — Design Specs (Foundation)</title>
+<meta name="description" content="Foundation design specs for kala-ui: color tokens, shape, density, motion, typography, and the React Native token mapping. Source of truth for components.html and app-components.html.">
+<script>
+/* Docs-only chrome toggle. The spec tables below carry fixed light/dark
+   scopes so they are always accurate regardless of this toggle. */
+(() => {
+  const stored = localStorage.getItem("kala-spec-theme");
+  const prefers = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  document.documentElement.classList.add(stored || prefers);
+  document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("themeToggle");
+    if (!btn) return;
+    const sync = () => { btn.textContent = document.documentElement.classList.contains("dark") ? "Light mode" : "Dark mode"; };
+    btn.addEventListener("click", () => {
+      const dark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem("kala-spec-theme", dark ? "dark" : "light");
+      sync();
+    });
+    sync();
+  });
+})();
+</script>
+<style>
+  /* ------------------------------------------------------------------
+     Page chrome is styled WITH the kala tokens — this document renders
+     in the system it documents. Values mirror packages/react globals.css.
+     ------------------------------------------------------------------ */
+  .scope-light, :root:not(.dark) {
+    --background: hsl(0 0% 100%);
+    --foreground: hsl(220 100% 11%);
+    --card: hsl(0 0% 100%);
+    --card-foreground: hsl(222.2 84% 4.9%);
+    --muted: hsl(210 40% 96.1%);
+    --muted-foreground: hsl(215.4 16.3% 46.9%);
+    --primary: hsl(221.2 83.2% 53.3%);
+    --primary-foreground: hsl(210 40% 98%);
+    --secondary: hsl(219 18% 55%);
+    --secondary-foreground: hsl(0 0% 100%);
+    --accent: hsl(210 40% 96.1%);
+    --accent-foreground: hsl(222.2 47.4% 11.2%);
+    --destructive: hsl(0 84.2% 60.2%);
+    --success: hsl(142 76% 36%);
+    --warning: hsl(38 92% 50%);
+    --info: hsl(190 90% 45%);
+    --border: hsl(211 27% 81%);
+    --border-strong: hsl(211 27% 60%);
+    --separator: hsl(211 27% 81%);
+  }
+  .scope-dark, html.dark {
+    --background: hsl(219 33% 12%);
+    --foreground: hsl(215 18% 66%);
+    --card: hsl(219 31% 17%);
+    --card-foreground: hsl(210 40% 98%);
+    --muted: hsl(217.2 32.6% 17.5%);
+    --muted-foreground: hsl(215 20.2% 65.1%);
+    --primary: hsl(217.2 91.2% 59.8%);
+    --primary-foreground: hsl(222.2 47.4% 11.2%);
+    --secondary: hsl(217.2 32.6% 17.5%);
+    --secondary-foreground: hsl(210 40% 98%);
+    --accent: hsl(217.2 32.6% 17.5%);
+    --accent-foreground: hsl(210 40% 98%);
+    --destructive: hsl(0 62.8% 30.6%);
+    --success: hsl(142 71% 45%);
+    --warning: hsl(48 96% 53%);
+    --info: hsl(180 90% 45%);
+    --border: hsl(221 32% 43%);
+    --border-strong: hsl(221 15% 60%);
+    --separator: hsl(221 32% 43%);
+  }
+
+  :root {
+    --kala-radius-control: 0.375rem;
+    --kala-radius-card: 0.5rem;
+    --kala-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+  }
+  code, .mono { font-family: var(--font-mono); font-size: 0.86em; }
+
+  /* Layout */
+  .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.5rem 6rem; }
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in oklab, var(--background) 88%, transparent);
+    backdrop-filter: saturate(1.2);
+    border-bottom: 1px solid var(--separator);
+  }
+  .topbar-inner {
+    max-width: 68rem; margin: 0 auto; padding: 0.75rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+  .brand { font-weight: 700; letter-spacing: -0.01em; }
+  .brand small { color: var(--muted-foreground); font-weight: 500; }
+  .topbar nav { display: flex; gap: 0.25rem; flex-wrap: wrap; margin-inline-start: auto; }
+  .topbar nav a {
+    color: var(--muted-foreground); text-decoration: none; font-size: 0.86rem;
+    padding: 0.35rem 0.6rem; border-radius: var(--kala-radius-control);
+  }
+  .topbar nav a:hover { color: var(--accent-foreground); background: var(--accent); }
+  .topbar nav a[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; text-decoration: line-through; }
+  #themeToggle {
+    font: inherit; font-size: 0.86rem; cursor: pointer;
+    padding: 0.35rem 0.75rem; border-radius: var(--kala-radius-control);
+    border: 1px solid var(--border-strong); background: var(--card); color: var(--card-foreground);
+  }
+
+  /* Sections */
+  section { margin-top: 4rem; }
+  h1 { font-size: 2rem; line-height: 1.1; letter-spacing: -0.02em; margin: 1.5rem 0 0.5rem; }
+  h2 { font-size: 1.35rem; letter-spacing: -0.01em; margin: 0 0 0.25rem; }
+  h2 .anchor { color: var(--primary); text-decoration: none; margin-inline-start: 0.35rem; font-weight: 400; }
+  h3 { font-size: 1.02rem; margin: 1.75rem 0 0.5rem; }
+  .lede { color: var(--muted-foreground); max-width: 62ch; margin: 0 0 0.5rem; }
+  p { max-width: 72ch; }
+  .sublede { color: var(--muted-foreground); font-size: 0.92rem; margin-top: 0; }
+  .meta { color: var(--muted-foreground); font-size: 0.85rem; }
+  hr { border: 0; border-top: 1px solid var(--separator); margin: 2.5rem 0 0; }
+
+  /* Callouts */
+  .note {
+    border: 1px solid var(--separator); border-radius: var(--kala-radius-card);
+    padding: 0.85rem 1rem; margin: 1.25rem 0; font-size: 0.92rem; max-width: 72ch;
+    background: var(--card); color: var(--card-foreground);
+  }
+  .note strong { display: block; margin-bottom: 0.15rem; }
+  .note.rule { border-inline-start: none; }
+
+  /* Tables */
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0 0.5rem; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--separator); vertical-align: middle; }
+  th { color: var(--muted-foreground); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  td.num, th.num { text-align: right; }
+  .tablewrap { overflow-x: auto; }
+
+  /* Swatches */
+  .swatch { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .chip {
+    width: 2rem; height: 2rem; min-width: 2rem; border-radius: 0.375rem;
+    border: 1px solid color-mix(in oklab, var(--separator) 70%, transparent);
+  }
+  .pair { display: flex; border-radius: 0.375rem; overflow: hidden; border: 1px solid var(--separator); }
+  .pair span { padding: 0.3rem 0.6rem; font-size: 0.78rem; font-weight: 600; }
+
+  /* Theme panels */
+  .theme-panel {
+    border: 1px solid var(--separator); border-radius: var(--kala-radius-card);
+    overflow: hidden; margin-top: 1rem;
+  }
+  .theme-panel > header {
+    padding: 0.6rem 1rem; font-size: 0.85rem; font-weight: 600;
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+    border-bottom: 1px solid var(--separator);
+  }
+  .theme-panel > header .mono { font-weight: 400; }
+  .theme-panel table { margin: 0; }
+  .theme-panel td, .theme-panel th { border-bottom: 1px solid var(--separator); }
+  .theme-panel tr:last-child td { border-bottom: 0; }
+
+  /* Tokens living inside a themed scope */
+  .scope-light, .scope-dark { display: block; }
+  .scope-light { color: hsl(220 100% 11%); }
+  .scope-dark { color: hsl(215 18% 66%); }
+
+  /* Shape / density demos */
+  .shape-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; margin-top: 1rem; }
+  .shape-demo {
+    background: var(--card); border: 1px solid var(--border-strong);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--card-foreground); font-size: 0.8rem;
+  }
+  .demo-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    background: var(--primary); color: var(--primary-foreground);
+    border: 0; border-radius: var(--kala-radius-control);
+    height: 2.5rem; padding: 0 1rem; font: inherit; font-weight: 600;
+    transition: transform var(--kala-duration-base, 150ms) var(--kala-ease);
+    cursor: pointer;
+  }
+  .demo-btn:active { transform: scale(0.98); }
+  .demo-input {
+    height: 2.5rem; padding: 0 1rem; border-radius: var(--kala-radius-control);
+    border: 1px solid var(--border-strong); background: var(--background);
+    color: var(--foreground); font: inherit; width: 14rem;
+  }
+  .demo-card {
+    background: var(--card); border: 1px solid var(--separator);
+    border-radius: var(--kala-radius-card); padding: 1.5rem; max-width: 24rem;
+    color: var(--card-foreground);
+  }
+
+  /* Type ramp */
+  .type-row { display: flex; align-items: baseline; gap: 1.25rem; border-bottom: 1px solid var(--separator); padding: 0.6rem 0; }
+  .type-row:last-child { border-bottom: 0; }
+  .type-row .label { min-width: 9rem; color: var(--muted-foreground); font-size: 0.8rem; }
+  .type-row .sample { letter-spacing: -0.01em; }
+
+  /* Spacing scale */
+  .space-row { display: flex; align-items: center; gap: 1rem; padding: 0.3rem 0; }
+  .space-row .label { min-width: 6rem; color: var(--muted-foreground); font-size: 0.82rem; }
+  .space-bar { height: 1rem; background: var(--primary); border-radius: 2px; opacity: 0.85; }
+
+  /* Motion */
+  .motion-demo { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+  .motion-pill {
+    padding: 0.5rem 1rem; border-radius: 999px; border: 1px solid var(--border-strong);
+    background: var(--card); color: var(--card-foreground); font-size: 0.85rem; cursor: pointer;
+    transition-property: transform, background-color, color;
+    transition-timing-function: var(--kala-ease);
+  }
+  .motion-pill:hover { transform: translateY(-2px); background: var(--accent); color: var(--accent-foreground); }
+  .d-fast { transition-duration: 120ms; }
+  .d-base { transition-duration: 150ms; }
+  .d-slow { transition-duration: 200ms; }
+
+  /* Tier ladder */
+  .ladder { border: 1px solid var(--separator); border-radius: var(--kala-radius-card); overflow: hidden; margin-top: 1rem; }
+  .ladder .tier { display: grid; grid-template-columns: 8rem 1fr; }
+  .ladder .tier > div { padding: 0.9rem 1rem; border-bottom: 1px solid var(--separator); }
+  .ladder .tier:last-child > div { border-bottom: 0; }
+  .ladder .tier-head { background: var(--muted); font-weight: 600; font-size: 0.9rem; display: flex; flex-direction: column; justify-content: center; gap: 0.15rem; }
+  .ladder .tier-head small { font-weight: 400; color: var(--muted-foreground); }
+  @media (max-width: 40rem) { .ladder .tier { grid-template-columns: 1fr; } }
+
+  footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--separator); color: var(--muted-foreground); font-size: 0.85rem; }
+  .focusable:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">Kala UI <small>· design specs</small></span>
+    <nav aria-label="Spec sections">
+      <a href="#identity">Identity</a>
+      <a href="#color">Color</a>
+      <a href="#themes">Themes</a>
+      <a href="#shape">Shape</a>
+      <a href="#type">Type</a>
+      <a href="#space">Space</a>
+      <a href="#motion">Motion</a>
+      <a href="#native">Native</a>
+      <a href="#customize">Customize</a>
+      <a href="./components.html" aria-disabled="true" title="Pending foundation approval">Components ↗</a>
+      <a href="./app-components.html" aria-disabled="true" title="Pending foundation approval">App components ↗</a>
+    </nav>
+    <button id="themeToggle" class="focusable" type="button">Dark mode</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<h1>Foundation design specs</h1>
+<p class="lede">
+  The design standard underneath every kala-ui component, web and React Native.
+  This file is the <strong>dependency root</strong>:
+  <code>components.html</code> (standard components + states) and
+  <code>app-components.html</code> (app-level composites) are built exclusively
+  from the tokens and rules defined here — no component may introduce a color,
+  radius, duration, or size that this file does not declare.
+</p>
+<p class="meta">
+  Values are transcribed from the working web implementation —
+  <code>packages/react/src/styles/globals.css</code> and
+  <code>packages/react/TOKEN_SPEC.md</code> — so what ships in code today and
+  what is specified here cannot drift silently. React Native mapping per
+  <code>docs/RELEASING.md</code>-adjacent decision record
+  <code>docs/REACT-NATIVE-STRATEGY.md</code>.
+</p>
+
+<div class="note" role="note">
+  <strong>How to read this file</strong>
+  Every swatch, button, and card on this page is rendered <em>with the tokens
+  themselves</em> — the document is a live consumer of the system it specifies.
+  The tables inside <em>Light</em> / <em>Dark</em> panels use fixed scopes (always
+  accurate); the page chrome follows the toggle in the header.
+</div>
+
+<!-- ============================ IDENTITY ============================ -->
+<section id="identity">
+  <hr>
+  <h2>1 · Visual identity <a class="anchor" href="#identity">§</a></h2>
+  <p class="sublede">What makes a kala-ui surface recognizable — the rules a component author applies before reaching for any token.</p>
+
+  <h3>Shape voice: crisp</h3>
+  <p>
+    Controls at <code>6px</code>, cards at <code>8px</code> (via
+    <code>--kala-radius-control</code> / <code>--kala-radius-card</code>). Small
+    pill radii are reserved for semantic elements only — badges, switches, tags —
+    and are deliberately <em>not</em> tokenized; pill-everywhere is a look kala
+    rejects.
+  </p>
+
+  <h3>Depth: flat, hairlines carry structure</h3>
+  <p>
+    Default elevation is <code>--shadow-alpha: 0</code> — <strong>flat</strong>.
+    Separation comes from 1px hairlines (<code>--border</code>,
+    <code>--separator</code>), tinted surface steps (<code>--background</code> →
+    <code>--muted</code> → <code>--card</code>), and ink. Shadows appear only
+    where platform convention demands lift: popovers, dropdowns, dialogs
+    (<code>--shadow-alpha</code> &gt; 0 per theme). No card-in-card; grouped
+    records are one wrapper surface with hairline dividers.
+  </p>
+
+  <h3>Color character</h3>
+  <p>
+    One saturated ink-blue action color (<code>--primary</code>), a slate-tinted
+    neutral ramp (borders and muted text sit at hue ≈ 211–221, never pure gray),
+    and semantic hues biased to read as one family. One primary action per
+    screen — secondary placements become quiet text or outline treatments.
+  </p>
+
+  <h3>Density</h3>
+  <p>
+    Compact, tool-like: 40px default controls (<code>--kala-control-h</code>),
+    24px card padding. Touch contexts scale <em>up</em> via the native
+    adaptation rules in <a href="#native">§8</a>, never down.
+  </p>
+</section>
+
+<!-- ============================ COLOR ============================ -->
+<section id="color">
+  <hr>
+  <h2>2 · Color tokens <a class="anchor" href="#color">§</a></h2>
+  <p class="sublede">
+    Format-agnostic whole-CSS-color values consumed as <code>var(--token)</code>.
+    Every fill is paired with a <code>*-foreground</code>; the pairing contract is in <a href="#contrast">§2.2</a>.
+  </p>
+
+  <div class="theme-panel scope-light">
+    <header><span>Light — default</span><span class="mono">:root</span></header>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Token</th><th>Value</th><th>Sample</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td><code>--background</code></td><td class="mono">hsl(0 0% 100%)</td><td><span class="chip" style="background:hsl(0 0% 100%)"></span></td><td>App canvas</td></tr>
+        <tr><td><code>--foreground</code></td><td class="mono">hsl(220 100% 11%)</td><td><span class="pair"><span style="background:hsl(0 0% 100%);color:hsl(220 100% 11%)">Aa</span></span></td><td>Base text</td></tr>
+        <tr><td><code>--card</code></td><td class="mono">hsl(0 0% 100%)</td><td><span class="chip" style="background:hsl(0 0% 100%)"></span></td><td>Card surfaces</td></tr>
+        <tr><td><code>--card-foreground</code></td><td class="mono">hsl(222.2 84% 4.9%)</td><td><span class="pair"><span style="background:hsl(222.2 84% 4.9%);color:hsl(0 0% 100%)">Aa</span></span></td><td>Text on cards</td></tr>
+        <tr><td><code>--popover</code> / <code>--popover-foreground</code></td><td class="mono">hsl(0 0% 100%) / hsl(222.2 84% 4.9%)</td><td><span class="chip" style="background:hsl(0 0% 100%)"></span></td><td>Menus, dropdowns, popovers</td></tr>
+        <tr><td><code>--primary</code></td><td class="mono">hsl(221.2 83.2% 53.3%)</td><td><span class="chip" style="background:hsl(221.2 83.2% 53.3%)"></span></td><td>Main action</td></tr>
+        <tr><td><code>--primary-foreground</code></td><td class="mono">hsl(210 40% 98%)</td><td><span class="pair"><span style="background:hsl(221.2 83.2% 53.3%);color:hsl(210 40% 98%)">Aa</span></span></td><td>Text/icons on primary</td></tr>
+        <tr><td><code>--secondary</code></td><td class="mono">hsl(219 18% 55%)</td><td><span class="chip" style="background:hsl(219 18% 55%)"></span></td><td>Secondary action</td></tr>
+        <tr><td><code>--secondary-foreground</code></td><td class="mono">hsl(0 0% 100%)</td><td><span class="pair"><span style="background:hsl(219 18% 55%);color:hsl(0 0% 100%)">Aa</span></span></td><td>Text on secondary</td></tr>
+        <tr><td><code>--muted</code></td><td class="mono">hsl(210 40% 96.1%)</td><td><span class="chip" style="background:hsl(210 40% 96.1%)"></span></td><td>Recessed background</td></tr>
+        <tr><td><code>--muted-foreground</code></td><td class="mono">hsl(215.4 16.3% 46.9%)</td><td><span class="pair"><span style="background:hsl(210 40% 96.1%);color:hsl(215.4 16.3% 46.9%)">Aa</span></span></td><td>Muted text</td></tr>
+        <tr><td><code>--accent</code></td><td class="mono">hsl(210 40% 96.1%)</td><td><span class="chip" style="background:hsl(210 40% 96.1%)"></span></td><td>Hover/active bg (ghost, outline)</td></tr>
+        <tr><td><code>--accent-foreground</code></td><td class="mono">hsl(222.2 47.4% 11.2%)</td><td><span class="pair"><span style="background:hsl(210 40% 96.1%);color:hsl(222.2 47.4% 11.2%)">Aa</span></span></td><td>Text on accent</td></tr>
+        <tr><td><code>--destructive</code></td><td class="mono">hsl(0 84.2% 60.2%)</td><td><span class="chip" style="background:hsl(0 84.2% 60.2%)"></span></td><td>Danger action</td></tr>
+        <tr><td><code>--success</code></td><td class="mono">hsl(142 76% 36%)</td><td><span class="chip" style="background:hsl(142 76% 36%)"></span></td><td>Success semantic</td></tr>
+        <tr><td><code>--warning</code></td><td class="mono">hsl(38 92% 50%)</td><td><span class="chip" style="background:hsl(38 92% 50%)"></span></td><td>Warning semantic</td></tr>
+        <tr><td><code>--error</code></td><td class="mono">hsl(0 72% 51%)</td><td><span class="chip" style="background:hsl(0 72% 51%)"></span></td><td>Error semantic</td></tr>
+        <tr><td><code>--info</code></td><td class="mono">hsl(190 90% 45%)</td><td><span class="chip" style="background:hsl(190 90% 45%)"></span></td><td>Info semantic</td></tr>
+        <tr><td><code>--border</code></td><td class="mono">hsl(211 27% 81%)</td><td><span class="chip" style="background:hsl(211 27% 81%)"></span></td><td>Default 1px hairline</td></tr>
+        <tr><td><code>--border-strong</code></td><td class="mono">hsl(211 27% 60%)</td><td><span class="chip" style="background:hsl(211 27% 60%)"></span></td><td>Stronger hairline (table headers)</td></tr>
+        <tr><td><code>--input</code></td><td class="mono">hsl(214.3 31.8% 91.4%)</td><td><span class="chip" style="background:hsl(214.3 31.8% 91.4%)"></span></td><td>Input border</td></tr>
+        <tr><td><code>--ring</code></td><td class="mono">hsl(221.2 83.2% 53.3%)</td><td><span class="chip" style="background:hsl(221.2 83.2% 53.3%)"></span></td><td>Focus ring</td></tr>
+        <tr><td><code>--separator</code></td><td class="mono">hsl(211 27% 81%)</td><td><span class="chip" style="background:hsl(211 27% 81%)"></span></td><td>Dividers</td></tr>
+        <tr><td><code>--overlay</code> / <code>--overlay-alpha</code></td><td class="mono">hsl(0 0% 0%) / 0.5</td><td><span class="chip" style="background:hsl(0 0% 0% / 0.5)"></span></td><td>Dialog/drawer scrim</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="theme-panel scope-dark">
+    <header><span>Dark</span><span class="mono">.dark</span></header>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Token</th><th>Value</th><th>Sample</th><th>Δ vs light</th></tr></thead>
+      <tbody>
+        <tr><td><code>--background</code></td><td class="mono">hsl(219 33% 12%)</td><td><span class="chip" style="background:hsl(219 33% 12%)"></span></td><td>Deep slate canvas</td></tr>
+        <tr><td><code>--foreground</code></td><td class="mono">hsl(215 18% 66%)</td><td><span class="pair"><span style="background:hsl(219 33% 12%);color:hsl(215 18% 66%)">Aa</span></span></td><td>Softened body text</td></tr>
+        <tr><td><code>--card</code></td><td class="mono">hsl(219 31% 17%)</td><td><span class="chip" style="background:hsl(219 31% 17%)"></span></td><td>One step above canvas</td></tr>
+        <tr><td><code>--card-foreground</code></td><td class="mono">hsl(210 40% 98%)</td><td><span class="pair"><span style="background:hsl(219 31% 17%);color:hsl(210 40% 98%)">Aa</span></span></td><td>Full-contrast on-card text</td></tr>
+        <tr><td><code>--popover</code> / <code>--popover-foreground</code></td><td class="mono">hsl(219 31% 17%) / hsl(210 40% 98%)</td><td><span class="chip" style="background:hsl(219 31% 17%)"></span></td><td>Matches card</td></tr>
+        <tr><td><code>--primary</code></td><td class="mono">hsl(217.2 91.2% 59.8%)</td><td><span class="chip" style="background:hsl(217.2 91.2% 59.8%)"></span></td><td>Lightness +6.5pt — stays vivid on slate</td></tr>
+        <tr><td><code>--primary-foreground</code></td><td class="mono">hsl(222.2 47.4% 11.2%)</td><td><span class="pair"><span style="background:hsl(217.2 91.2% 59.8%);color:hsl(222.2 47.4% 11.2%)">Aa</span></span></td><td><strong>Dark ink on light-blue fill</strong>, not white</td></tr>
+        <tr><td><code>--secondary</code> / <code>--secondary-foreground</code></td><td class="mono">hsl(217.2 32.6% 17.5%) / hsl(210 40% 98%)</td><td><span class="pair"><span style="background:hsl(217.2 32.6% 17.5%);color:hsl(210 40% 98%)">Aa</span></span></td><td>Low-chroma fill</td></tr>
+        <tr><td><code>--muted</code> / <code>--muted-foreground</code></td><td class="mono">hsl(217.2 32.6% 17.5%) / hsl(215 20.2% 65.1%)</td><td><span class="pair"><span style="background:hsl(217.2 32.6% 17.5%);color:hsl(215 20.2% 65.1%)">Aa</span></span></td><td>Recessed surface, lifted text</td></tr>
+        <tr><td><code>--accent</code> / <code>--accent-foreground</code></td><td class="mono">hsl(217.2 32.6% 17.5%) / hsl(210 40% 98%)</td><td><span class="pair"><span style="background:hsl(217.2 32.6% 17.5%);color:hsl(210 40% 98%)">Aa</span></span></td><td>Same as secondary in dark</td></tr>
+        <tr><td><code>--destructive</code></td><td class="mono">hsl(0 62.8% 30.6%)</td><td><span class="chip" style="background:hsl(0 62.8% 30.6%)"></span></td><td>Deepened — large red fields glare in dark</td></tr>
+        <tr><td><code>--error</code> / <code>--error-foreground</code></td><td class="mono">hsl(0 91% 71%) / hsl(0 72% 10%)</td><td><span class="pair"><span style="background:hsl(0 91% 71%);color:hsl(0 72% 10%)">Aa</span></span></td><td>Lightened fill, dark ink</td></tr>
+        <tr><td><code>--info</code> / <code>--info-foreground</code></td><td class="mono">hsl(190 80% 60%) / hsl(221 83% 10%)</td><td><span class="pair"><span style="background:hsl(190 80% 60%);color:hsl(221 83% 10%)">Aa</span></span></td><td>Lightened fill, dark ink</td></tr>
+        <tr><td><code>--border</code></td><td class="mono">hsl(221 32% 43%)</td><td><span class="chip" style="background:hsl(221 32% 43%)"></span></td><td>Visible on dark canvas</td></tr>
+        <tr><td><code>--border-strong</code></td><td class="mono">hsl(221 15% 60%)</td><td><span class="chip" style="background:hsl(221 15% 60%)"></span></td><td>Same as light</td></tr>
+        <tr><td><code>--border-alpha</code></td><td class="mono">0.16</td><td><span class="chip" style="background:hsl(221 32% 43% / 0.16)"></span></td><td>Hairlines go translucent</td></tr>
+        <tr><td><code>--input</code></td><td class="mono">hsl(217.2 32.6% 17.5%)</td><td><span class="chip" style="background:hsl(217.2 32.6% 17.5%)"></span></td><td>Matches muted</td></tr>
+        <tr><td><code>--ring</code></td><td class="mono">hsl(224.3 76.3% 48%)</td><td><span class="chip" style="background:hsl(224.3 76.3% 48%)"></span></td><td>Deeper than primary</td></tr>
+        <tr><td><code>--separator</code></td><td class="mono">hsl(221 32% 43%)</td><td><span class="chip" style="background:hsl(221 32% 43%)"></span></td><td>Matches border</td></tr>
+      </tbody>
+    </table></div>
+    <div style="padding: 0.75rem 1rem; font-size: 0.85rem; border-top: 1px solid hsl(221 32% 43%)">
+      Inherits from <code>:root</code> when not overridden: <code>--success</code>, <code>--warning</code>,
+      semantic <code>*-foreground</code> values, <code>--overlay</code>/<code>--overlay-alpha</code>.
+      Themes override <em>subsets</em>; unspecified tokens cascade.
+    </div>
+  </div>
+
+  <h3>2.1 · Optional tuning tokens</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Token</th><th>Default</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td><code>--background-alpha</code></td><td class="mono">1</td><td>Canvas translucency</td></tr>
+      <tr><td><code>--border-alpha</code></td><td class="mono">1</td><td>Hairline translucency (dark themes use 0.16)</td></tr>
+      <tr><td><code>--card-border-alpha</code></td><td class="mono">= <code>--border-alpha</code></td><td>Per-card border translucency</td></tr>
+      <tr><td><code>--shadow-color</code></td><td class="mono">black</td><td>Elevation tint</td></tr>
+      <tr><td><code>--shadow-alpha</code></td><td class="mono">0</td><td>Elevation strength — <strong>0 = flat</strong>, the kala default</td></tr>
+      <tr><td><code>--shadow-spread</code></td><td class="mono">0px</td><td>Elevation spread</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="note" id="contrast">
+    <strong>2.2 · Contrast contract</strong>
+    kala-ui pairs every fill with a <code>*-foreground</code>. The consuming app owns
+    AA contrast between each pair: body text ≥ 4.5:1, large text/UI ≥ 3:1, in <em>both</em>
+    themes. Saturated fills take a <strong>dark</strong> foreground where that clears the
+    bar — see dark <code>--primary-foreground</code> and <code>--warning-foreground</code>.
+    A rebranded theme that ships only fills, without re-checked foregrounds, is broken by definition.
+  </div>
+</section>
+
+<!-- ============================ THEMES ============================ -->
+<section id="themes">
+  <hr>
+  <h2>3 · Theme inventory <a class="anchor" href="#themes">§</a></h2>
+  <p class="sublede">Six shipped themes. Web: class on <code>&lt;html&gt;</code> (via <code>ThemeProvider</code> or manually). Native: named Unistyles themes, switched with <code>unistyles.setTheme()</code>.</p>
+
+  <div class="tablewrap"><table>
+    <thead><tr><th>Theme</th><th>Character</th><th>Use when</th></tr></thead>
+    <tbody>
+      <tr><td><code>light</code></td><td>White canvas, ink-blue primary, flat</td><td>Default</td></tr>
+      <tr><td><code>neutral</code></td><td>Near-black primary, translucent hairlines (0.16), faint shadows</td><td>Editorial / monochrome products</td></tr>
+      <tr><td><code>accent</code></td><td>Light + blue-tinted diffuse shadow, borderless cards</td><td>Marketing surfaces, onboarding</td></tr>
+      <tr><td><code>dark</code></td><td>Slate canvas (hsl 219 33% 12%), borderless card separation</td><td>Default dark</td></tr>
+      <tr><td><code>high-contrast-light</code></td><td>Pure black hairlines and separators, same palette</td><td>Accessibility preference</td></tr>
+      <tr><td><code>high-contrast-dark</code></td><td>Near-black canvas, pure white hairlines</td><td>Accessibility preference</td></tr>
+    </tbody>
+  </table></div>
+  <p class="meta">Apps add rebrands as <em>additional</em> named themes that override token values (tier 1 of the ladder in <a href="#customize">§9</a>) — never by editing components.</p>
+</section>
+
+<!-- ============================ SHAPE ============================ -->
+<section id="shape">
+  <hr>
+  <h2>4 · Shape &amp; density <a class="anchor" href="#shape">§</a></h2>
+  <p class="sublede">Component shape is token-driven — a host sets the shape language once. Not tokenized: checkbox/switch/badge radii (small/pill are semantic, not part of the shape language).</p>
+
+  <div class="tablewrap"><table>
+    <thead><tr><th>Token</th><th class="num">Default</th><th class="num">px</th><th>Applies to</th></tr></thead>
+    <tbody>
+      <tr><td><code>--kala-radius-control</code></td><td class="num mono">0.375rem</td><td class="num">6</td><td>Buttons, inputs, select triggers, tab triggers</td></tr>
+      <tr><td><code>--kala-radius-card</code></td><td class="num mono">0.5rem</td><td class="num">8</td><td>Cards, alerts, popovers, dialogs</td></tr>
+      <tr><td><code>--kala-radius-input</code></td><td class="num mono">= control</td><td class="num">6</td><td>Inputs, selects — falls back to control radius when unset</td></tr>
+      <tr><td><code>--kala-control-h</code></td><td class="num mono">2.5rem</td><td class="num">40</td><td>Default control height (button/input/select)</td></tr>
+      <tr><td><code>--kala-control-px</code></td><td class="num mono">1rem</td><td class="num">16</td><td>Default control horizontal padding</td></tr>
+      <tr><td><code>--kala-card-pad</code></td><td class="num mono">1.5rem</td><td class="num">24</td><td>Card header/body/footer padding</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>4.1 · Rendered</h3>
+  <div class="shape-row">
+    <button class="demo-btn focusable" type="button">Primary button</button>
+    <input class="demo-input focusable" type="text" placeholder="Input — 40px tall" aria-label="Density demo input">
+  </div>
+  <div class="shape-row" style="margin-top:1.5rem">
+    <div class="demo-card">
+      <strong>Card</strong> — 8px radius, 24px padding, hairline border, flat.
+      <div class="meta" style="margin-top:0.5rem">Depth from the border and surface tint, not shadow.</div>
+    </div>
+    <div style="display:grid;gap:0.5rem;min-width:10rem">
+      <span class="shape-demo" style="height:2.5rem;width:2.5rem;border-radius:0.375rem">6</span>
+      <span class="shape-demo" style="height:2.5rem;width:2.5rem;border-radius:0.5rem">8</span>
+      <span class="shape-demo" style="height:2.5rem;width:2.5rem;border-radius:999px">pill</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TYPE ============================ -->
+<section id="type">
+  <hr>
+  <h2>5 · Typography <a class="anchor" href="#type">§</a></h2>
+  <p class="sublede">
+    kala-ui does not ship a font family — components inherit the host's. The scale
+    below is the size/weight ramp components are built against (the Tailwind
+    defaults the web library consumes). Native maps it to the platform system
+    faces: SF Pro (iOS) / Roboto (Android), with Dynamic Type scalars.
+  </p>
+
+  <div class="tablewrap"><table>
+    <thead><tr><th>Step</th><th class="num">Size</th><th class="num">Line</th><th class="num">Weight (default)</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">text-xs</td><td class="num">12px</td><td class="num">1.35</td><td class="num">500</td><td>Badges, timestamps, table metadata</td></tr>
+      <tr><td class="mono">text-sm</td><td class="num">14px</td><td class="num">1.45</td><td class="num">400</td><td>Dense body, inputs, table cells</td></tr>
+      <tr><td class="mono">text-base</td><td class="num">16px</td><td class="num">1.5</td><td class="num">400</td><td>Default body</td></tr>
+      <tr><td class="mono">text-lg</td><td class="num">18px</td><td class="num">1.45</td><td class="num">400</td><td>Card titles, list headers</td></tr>
+      <tr><td class="mono">text-xl</td><td class="num">20px</td><td class="num">1.3</td><td class="num">600</td><td>Section headings</td></tr>
+      <tr><td class="mono">text-2xl</td><td class="num">24px</td><td class="num">1.25</td><td class="num">600</td><td>Page titles, dialog headings</td></tr>
+      <tr><td class="mono">text-3xl</td><td class="num">30px</td><td class="num">1.2</td><td class="num">700</td><td>Display / empty-state headlines</td></tr>
+      <tr><td class="mono">text-4xl</td><td class="num">36px</td><td class="num">1.1</td><td class="num">700</td><td>Marketing display only</td></tr>
+    </tbody>
+  </table></div>
+  <p class="meta">Tracking: 0 on body, −0.01 … −0.02em on display sizes, +0.05–0.15em on uppercase micro-labels. Tabular numerals (<code>font-variant-numeric: tabular-nums</code>) wherever values change in place — amounts in paisa trak, distances in roadpulse.</p>
+
+  <div style="border:1px solid var(--separator);border-radius:var(--kala-radius-card);padding:1.25rem;margin-top:1rem">
+    <div class="type-row"><span class="label mono">text-2xl / 600</span><span class="sample" style="font-size:24px;line-height:1.25;font-weight:600">Send ₹2,500 to Chai Point</span></div>
+    <div class="type-row"><span class="label mono">text-base / 400</span><span class="sample" style="font-size:16px">Body copy sits at sixteen pixels with relaxed leading for scan-reading.</span></div>
+    <div class="type-row"><span class="label mono">text-sm / 400</span><span class="sample" style="font-size:14px">Secondary text and table cells use fourteen.</span></div>
+    <div class="type-row"><span class="label mono">text-xs / 500 · caps</span><span class="sample" style="font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em">Section label · meta</span></div>
+  </div>
+</section>
+
+<!-- ============================ SPACE ============================ -->
+<section id="space">
+  <hr>
+  <h2>6 · Spacing &amp; layout rhythm <a class="anchor" href="#space">§</a></h2>
+  <p class="sublede">4px base scale — identical values for web utilities and native <code>gap</code>/<code>padding</code>. Steps are deliberately varied: tight inside components, roomy between sections.</p>
+
+  <div>
+    <div class="space-row"><span class="label mono">space-1 · 4px</span><span class="space-bar" style="width:4px"></span></div>
+    <div class="space-row"><span class="label mono">space-2 · 8px</span><span class="space-bar" style="width:8px"></span></div>
+    <div class="space-row"><span class="label mono">space-3 · 12px</span><span class="space-bar" style="width:12px"></span></div>
+    <div class="space-row"><span class="label mono">space-4 · 16px</span><span class="space-bar" style="width:16px"></span></div>
+    <div class="space-row"><span class="label mono">space-6 · 24px</span><span class="space-bar" style="width:24px"></span></div>
+    <div class="space-row"><span class="label mono">space-8 · 32px</span><span class="space-bar" style="width:32px"></span></div>
+    <div class="space-row"><span class="label mono">space-12 · 48px</span><span class="space-bar" style="width:48px"></span></div>
+    <div class="space-row"><span class="label mono">space-16 · 64px</span><span class="space-bar" style="width:64px"></span></div>
+  </div>
+
+  <h3>6.1 · Containment rules</h3>
+  <ul style="max-width:72ch">
+    <li><strong>One containing box</strong> between the page/screen and any content block. Grouped records = one wrapper surface with hairline dividers — never a card per record, never card-in-card.</li>
+    <li><strong>Horizontal scrollers bleed</strong>: chip/filter rails and carousels span edge-to-edge; the page gutter becomes the rail's internal scroll-content padding, so the first item aligns at rest and the last can arrive. Padding the items instead is a bug.</li>
+    <li><strong>One primary action per screen</strong>. Secondary placements are quiet text or outline treatments.</li>
+    <li><strong>Native screens</strong> own a 16px screen gutter (<code>space-4</code>); headers and tab bars bleed edge-to-edge; all screens respect safe-area insets (§8).</li>
+  </ul>
+</section>
+
+<!-- ============================ MOTION ============================ -->
+<section id="motion">
+  <hr>
+  <h2>7 · Motion <a class="anchor" href="#motion">§</a></h2>
+  <p class="sublede">
+    Motion is specified as tokens, not per-component code. Web consumes
+    <code>--kala-duration-*</code> / <code>--kala-ease</code>; native consumes the
+    mirrored Unistyles <code>motion</code> section and the spring configs below.
+  </p>
+
+  <div class="tablewrap"><table>
+    <thead><tr><th>Token</th><th class="num">Value</th><th>Applies to</th></tr></thead>
+    <tbody>
+      <tr><td><code>--kala-duration-fast</code></td><td class="num mono">120ms</td><td>Hover, press, toggle color swaps</td></tr>
+      <tr><td><code>--kala-duration-base</code></td><td class="num mono">150ms</td><td>Default — fades, small slides</td></tr>
+      <tr><td><code>--kala-duration-slow</code></td><td class="num mono">200ms</td><td>Sheets, drawers, collapsibles</td></tr>
+      <tr><td><code>--kala-ease</code></td><td class="num mono">cubic-bezier(0.4, 0, 0.2, 1)</td><td>Everything — standard ease-in-out</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>7.1 · Native spring tokens (Reanimated)</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Token</th><th>Config</th><th>Applies to</th></tr></thead>
+    <tbody>
+      <tr><td><code>motion.spring.gentle</code></td><td class="mono">damping 18 · stiffness 120</td><td>Sheets, dialogs, page transitions</td></tr>
+      <tr><td><code>motion.spring.snappy</code></td><td class="mono">damping 14 · stiffness 220</td><td>Pressed states, toggles, chips</td></tr>
+      <tr><td><code>motion.spring.bouncy</code></td><td class="mono">damping 10 · stiffness 180</td><td>Swipe-to-dismiss, pull gestures only</td></tr>
+    </tbody>
+  </table></div>
+  <p class="meta">Bans: no bounce on informative transitions, no pulsing status dots, no elastic easing, no auto-scroll. Motion explains state change — it is never decoration. Users with <code>prefers-reduced-motion</code> / iOS Reduce Motion get instant state swaps (<code>duration 0</code>).</p>
+
+  <div class="motion-demo">
+    <button class="motion-pill d-fast focusable" type="button">fast · 120ms</button>
+    <button class="motion-pill d-base focusable" type="button">base · 150ms</button>
+    <button class="motion-pill d-slow focusable" type="button">slow · 200ms</button>
+  </div>
+</section>
+
+<!-- ============================ NATIVE ============================ -->
+<section id="native">
+  <hr>
+  <h2>8 · React Native adaptation <a class="anchor" href="#native">§</a></h2>
+  <p class="sublede">
+    Token parity is the deliverable — same semantic names as web, delivered as
+    named Unistyles themes. Components consume tokens; apps never touch styling
+    syntax. Engine + decisions: <code>docs/REACT-NATIVE-STRATEGY.md</code>.
+  </p>
+
+  <div class="tablewrap"><table>
+    <thead><tr><th>Web token</th><th>Native theme key</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">--background / --foreground</td><td class="mono">colors.background / foreground</td><td>Screen canvas</td></tr>
+      <tr><td class="mono">--card / --card-foreground</td><td class="mono">colors.card / cardForeground</td><td>Flat cards, hairline bordered</td></tr>
+      <tr><td class="mono">--primary / --primary-foreground</td><td class="mono">colors.primary / primaryForeground</td><td>Same ink-blue; dark theme keeps dark-on-light fill</td></tr>
+      <tr><td class="mono">--muted(-foreground), --accent(-foreground), --secondary(-foreground)</td><td class="mono">colors.muted…</td><td>Same pairings</td></tr>
+      <tr><td class="mono">--destructive / --success / --warning / --error / --info</td><td class="mono">colors.destructive…</td><td>Each with its foreground</td></tr>
+      <tr><td class="mono">--border / --border-strong / --input / --separator</td><td class="mono">colors.border…</td><td>1px hairlines via <code>StyleSheet.hairlineWidth</code></td></tr>
+      <tr><td class="mono">--overlay / --overlay-alpha</td><td class="mono">colors.overlay + opacity</td><td>Scrim for sheets/dialogs</td></tr>
+      <tr><td class="mono">--kala-radius-*</td><td class="mono">radii.control / card</td><td>6 / 8 — identical shape voice</td></tr>
+      <tr><td class="mono">--kala-control-h / -px / --kala-card-pad</td><td class="mono">space.controlH …</td><td>Scaled per §8.1</td></tr>
+      <tr><td class="mono">--kala-duration-* / --kala-ease</td><td class="mono">motion.duration… / motion.ease</td><td>Plus §7.1 springs</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>8.1 · Platform deltas (the only allowed differences)</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Concern</th><th>Web</th><th>Native</th></tr></thead>
+    <tbody>
+      <tr><td>Touch targets</td><td>32–40px controls, ≥24px hit area</td><td><strong>44pt (iOS) / 48dp (Android)</strong> minimum — controls grow, labels and radii do not</td></tr>
+      <tr><td>Font</td><td>Host's family</td><td>SF Pro / Roboto; Dynamic Type via <code>allowFontScaling</code> — never disabled</td></tr>
+      <tr><td>Hairlines</td><td>1px</td><td><code>StyleSheet.hairlineWidth</code></td></tr>
+      <tr><td>Screen edges</td><td>Container gutters</td><td>16px gutter + safe-area insets on every screen; headers/tab bars bleed</td></tr>
+      <tr><td>Hover states</td><td>First-class</td><td>None — pressed/selected/focused only</td></tr>
+      <tr><td>Focus rings</td><td><code>:focus-visible</code></td><td>Keyboard-parity only; primary a11y is roles/labels/announcements</td></tr>
+      <tr><td>Shadows</td><td>Tokenized elevation</td><td>Flat by default; iOS <code>shadow*</code> / Android elevation only for overlays</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>8.2 · Component hard floors (native)</h3>
+  <ul style="max-width:72ch">
+    <li>Interactive elements: <code>accessibilityRole</code> + label always; state announced (<code>accessibilityState</code>).</li>
+    <li>Minimum target 44×44pt including invisible hit-area padding.</li>
+    <li><code>testID</code> convention <code>k-&lt;component&gt;-&lt;part&gt;</code> (<code>k-button-root</code>, <code>k-sheet-overlay</code>) — contractual, mirrors the web marker classes.</li>
+  </ul>
+</section>
+
+<!-- ============================ CUSTOMIZE ============================ -->
+<section id="customize">
+  <hr>
+  <h2>9 · Customization model <a class="anchor" href="#customize">§</a></h2>
+  <p class="sublede">How an app adapts the standard without forking components. The ladder is ordered — every tier must exist, none may be skipped past.</p>
+
+  <div class="ladder">
+    <div class="tier">
+      <div class="tier-head">Tier 1<small>theme override</small></div>
+      <div>App registers a theme that overrides <strong>token values</strong> (colors, radii, spacing, motion). paisa trak gets its green; roadpulse its high-contrast. One registration rebrands everything. Web: <code>:root</code> custom properties. Native: a named Unistyles theme.</div>
+    </div>
+    <div class="tier">
+      <div class="tier-head">Tier 2<small>variant props</small></div>
+      <div>Per-usage intent through the component API: <code>variant</code>, <code>size</code>, <code>tone</code>. The variant matrix is specified per component in <code>components.html</code> — components ship no styling props outside it.</div>
+    </div>
+    <div class="tier">
+      <div class="tier-head">Tier 3<small>slot styles</small></div>
+      <div>Surgical escape hatch: a styles object keyed by part — <code>styles="{ root: …, label: … }"</code> — the native equivalent of Radix per-part <code>className</code>. <strong>Rule: if an app reaches for slots twice for the same need, that need becomes a variant in the library.</strong></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>9.1 · Web override surface</strong>
+    Import <code>@kala-ui/react/styles</code> once <em>or</em> define <code>:root</code> yourself and skip it; provide a dark block (kala expects both); flip themes by toggling the class/attribute on <code>&lt;html&gt;</code>. That is the whole surface — no <code>!important</code>, no re-vendoring.
+  </div>
+
+  <div class="note">
+    <strong>9.2 · Governance</strong>
+    Changing a token <em>value</em> here = a kala-ui release + changeset. Changing a token <em>name</em> = a breaking change with a migration doc (see <code>docs/MIGRATION-0.1.md</code> pattern). Components referencing values not in this file fail spec review. The two downstream spec files (<code>components.html</code>, <code>app-components.html</code>) may only reference tokens defined above.
+  </div>
+</section>
+
+<footer>
+  <p><strong>kala-ui foundation design specs</strong> — dependency root of the design documentation set. Downstream: <code>components.html</code> (standard components + states), <code>app-components.html</code> (app-level composites) — both pending approval of this file.</p>
+  <p class="meta">Sources: <code>packages/react/src/styles/globals.css</code> · <code>packages/react/TOKEN_SPEC.md</code> · <code>THEMING.md</code> · <code>docs/REACT-NATIVE-STRATEGY.md</code>. This page carries no external dependencies and is styled entirely by the tokens it specifies.</p>
+</footer>
+
+</div>
+</body>
+</html>
