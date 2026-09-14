@@ -5,11 +5,10 @@
  * Sizes are tokens, never raw px; color accepts a theme token key or a
  * raw string.
  */
-import type { LucideIcon } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import type { KalaTheme } from "../../types";
+import type { IconProps } from "./icon.types";
 
 const SIZE_PX = {
 	xs: 14,
@@ -18,17 +17,6 @@ const SIZE_PX = {
 	lg: 24,
 	xl: 32,
 } as const;
-
-export interface IconProps {
-	/** lucide icon component, e.g. `Sun` from lucide-react-native */
-	icon: LucideIcon;
-	size?: keyof typeof SIZE_PX;
-	/** theme token key (`'primary'`) or any raw color string */
-	color?: keyof KalaTheme | (string & {});
-	/** when set, the icon joins the accessibility tree as an image */
-	label?: string;
-	testID?: string;
-}
 
 export function Icon({
 	icon: Component,

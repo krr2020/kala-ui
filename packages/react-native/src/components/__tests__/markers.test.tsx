@@ -7,9 +7,9 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
 import { motion } from "../../tokens";
-import { BUTTON_SPRING, Button } from "../button/button";
-import { Icon } from "../icon/icon";
-import { Sheet } from "../sheet/sheet";
+import { BUTTON_SPRING, Button } from "../button";
+import { Icon } from "../icon";
+import { Sheet } from "../sheet";
 
 const pkg = require("../../../package.json");
 
@@ -24,6 +24,41 @@ const flatStyle = (node: {
 	props: { style?: unknown };
 }): Record<string, number | string> =>
 	require("react-native").StyleSheet.flatten(node.props.style) ?? {};
+
+describe("component barrels", () => {
+	// Barrels re-export both the component and its named prop types; the
+	// typed fixtures below fail to compile if either drops off the barrel.
+	const buttonProps: import("../button").ButtonProps = { children: "x" };
+	const iconProps: import("../icon").IconProps = {
+		icon: Sun,
+		size: "sm",
+	};
+	const sheetProps: import("../sheet").SheetProps = {
+		open: true,
+		onClose: () => undefined,
+		children: "x",
+	};
+	const bodyProps: import("../sheet").SheetBodyProps = { children: "x" };
+
+	it("re-export each component through its folder barrel", async () => {
+		expect(buttonProps).toBeTruthy();
+		expect(iconProps).toBeTruthy();
+		expect(sheetProps).toBeTruthy();
+		expect(bodyProps).toBeTruthy();
+		const screen = await render(
+			<>
+				<Button>Go</Button>
+				<Icon icon={Sun} />
+				<Sheet open onClose={() => undefined}>
+					<Sheet.Body>x</Sheet.Body>
+				</Sheet>
+			</>,
+		);
+		expect(screen.getByTestId("k-button-root")).toBeTruthy();
+		expect(screen.getByTestId("k-icon", inclHidden)).toBeTruthy();
+		expect(screen.getByTestId("k-sheet-content")).toBeTruthy();
+	});
+});
 
 describe("component markers", () => {
 	it("Button renders k-button-root", async () => {

@@ -99,7 +99,7 @@ const varNames = {
 };
 
 const lines = [
-	'import type { KalaTheme, ThemeName } from "./types";',
+	'import type { KalaTheme, ThemeName } from "../types";',
 	'',
 	'// Transcribed from packages/react/src/styles/globals.css — regenerate with',
 	'// `node scripts/generate-themes.mjs`; parity with the CSS is enforced by',
@@ -142,7 +142,7 @@ lines.push(
 );
 
 writeFileSync(
-	resolve(root, 'packages/react-native/src/themes.ts'),
+	resolve(root, 'packages/react-native/src/themes/definitions.ts'),
 	`${lines.join('\n')}\n`,
 );
-console.log('packages/react-native/src/themes.ts written');
+console.log('packages/react-native/src/themes/definitions.ts written');

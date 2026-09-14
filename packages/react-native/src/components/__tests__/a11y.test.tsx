@@ -6,9 +6,9 @@
  */
 import { fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
-import { Button } from "../button/button";
-import { Icon } from "../icon/icon";
-import { Sheet } from "../sheet/sheet";
+import { Button } from "../button";
+import { Icon } from "../icon";
+import { Sheet } from "../sheet";
 
 // TLB v14 queries are a11y-aware: deliberately-hidden elements (Icon without
 // a label) and siblings of an accessibilityViewIsModal container (the Sheet

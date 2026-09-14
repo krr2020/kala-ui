@@ -1,9 +1,9 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import { motion, tokens } from "../tokens/index";
-import { themes } from "../themes/index";
-import type { ThemeName } from "../types/index";
+import { themes } from "../themes";
+import { motion, tokens } from "../tokens";
+import type { ThemeName } from "../types";
 
 /**
  * Token parity contract: packages/react-native themes must match the web
@@ -250,6 +250,68 @@ describe("theme parity with globals.css", () => {
 				expect(value, `${name}.${key}`).toBeLessThanOrEqual(1);
 			}
 		}
+	});
+});
+
+describe("layout restructure pins", () => {
+	it("tokens object keeps the pre-restructure public shape", () => {
+		expect(tokens).toEqual({
+			radius: { control: 6, card: 8, input: 6 },
+			space: { controlPx: 16, cardPad: 24, gutter: 16 },
+			size: { controlH: 40 },
+			motion: {
+				duration: { fast: 120, base: 150, slow: 200 },
+				ease: { standard: [0.4, 0, 0.2, 1] },
+				spring: {
+					gentle: { damping: 18, stiffness: 120 },
+					snappy: { damping: 14, stiffness: 220 },
+					bouncy: { damping: 10, stiffness: 180 },
+				},
+			},
+		});
+	});
+
+	it("src/index.ts public export names are unchanged", () => {
+		// Static parse (not import): the entry pulls in react-native, which
+		// vitest cannot execute — the export LIST is the contract anyway.
+			const entry = readFileSync(resolve(__dirname, "../index.ts"), "utf8");
+			// `export *` and default exports are outside this pin's vocabulary —
+			// fail loudly instead of silently under-collecting.
+			expect(entry).not.toMatch(/export\s+\*/);
+			expect(entry).not.toMatch(/export\s+default/);
+			const names = new Set<string>();
+			for (const m of entry.matchAll(
+				/export\s+(?:type\s+)?\{([^}]*)\}\s*from\s*"[^"]+";/g,
+			)) {
+				for (const part of m[1].split(",")) {
+					const name = part
+					.trim()
+					.replace(/^type /, "")
+					.split(" as ")
+					.pop();
+					if (name) names.add(name);
+				}
+			}
+			// An empty set means the entry stopped matching the re-export shape —
+			// that is a parse failure, not a passing pin.
+			expect(names.size).toBeGreaterThan(0);
+		expect([...names].sort()).toEqual(
+			[
+				"Button",
+				"ButtonProps",
+				"Icon",
+				"IconProps",
+				"KalaTheme",
+				"Sheet",
+				"SheetBodyProps",
+				"SheetProps",
+				"ThemeName",
+				"motion",
+				"themeNames",
+				"themes",
+				"tokens",
+			].sort(),
+		);
 	});
 });
 

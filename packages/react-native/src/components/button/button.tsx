@@ -63,10 +63,7 @@ const baseColor = (
 ): "primary" | "secondary" | "destructive" | "accent" =>
 	color === "muted" ? "accent" : color;
 
-function foregroundKey(
-	variant: ButtonVariant,
-	color: ButtonColor,
-): string {
+function foregroundKey(variant: ButtonVariant, color: ButtonColor): string {
 	const base = baseColor(color);
 	if (variant === "solid") return `${base}Foreground`;
 	if (variant === "subtle" || color === "muted") return "mutedForeground";

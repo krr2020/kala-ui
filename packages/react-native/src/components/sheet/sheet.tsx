@@ -3,7 +3,7 @@
  * press-to-dismiss gated by `dismissable`, grabber handle, and drag-to-
  * dismiss via RNGH Pan + Reanimated springs from the motion tokens.
  */
-import type { ReactElement, ReactNode } from "react";
+import type { ReactElement } from "react";
 import { Pressable, Text, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
@@ -14,23 +14,9 @@ import Animated, {
 } from "react-native-reanimated";
 import { useUnistyles } from "react-native-unistyles";
 import { motion, tokens } from "../../tokens";
+import type { SheetBodyProps, SheetProps, SheetSnap } from "./sheet.types";
 
-type Snap = "peek" | "half" | "full";
-
-export interface SheetProps {
-	open: boolean;
-	onClose: () => void;
-	snap?: Snap;
-	/** false blocks overlay-press dismissal (back/escape paths still fire) */
-	dismissable?: boolean;
-	children: ReactNode;
-}
-
-export interface SheetBodyProps {
-	children: ReactNode;
-}
-
-const SNAP_HEIGHT: Record<Snap, number | `${number}%`> = {
+const SNAP_HEIGHT: Record<SheetSnap, number | `${number}%`> = {
 	peek: 120,
 	half: "50%",
 	full: "90%",

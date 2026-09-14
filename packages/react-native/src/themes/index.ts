@@ -1,4 +1,4 @@
-import { themes, themeNames } from "./definitions";
+import { themeNames, themes } from "./definitions";
 
-export { themes, themeNames };
 export type { KalaTheme, ThemeName } from "../types";
+export { themeNames, themes };

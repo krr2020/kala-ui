@@ -1,9 +1,9 @@
-export { Button } from "./components/button";
 export type { ButtonProps } from "./components/button";
-export { Icon } from "./components/icon";
+export { Button } from "./components/button";
 export type { IconProps } from "./components/icon";
-export { Sheet } from "./components/sheet";
+export { Icon } from "./components/icon";
 export type { SheetBodyProps, SheetProps } from "./components/sheet";
-export { motion, tokens } from "./tokens";
+export { Sheet } from "./components/sheet";
 export { themeNames, themes } from "./themes";
+export { motion, tokens } from "./tokens";
 export type { KalaTheme, ThemeName } from "./types";
