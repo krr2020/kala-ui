@@ -7,7 +7,11 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
 import { motion } from "../../tokens";
+import { Avatar } from "../avatar";
+import { Badge } from "../badge";
 import { BUTTON_SPRING, Button } from "../button";
+import { Checkbox } from "../checkbox";
+import { Switch } from "../switch";
 import { Card } from "../card";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
@@ -387,6 +391,290 @@ describe("component markers", () => {
 				child.props.style,
 			) as Record<string, unknown>;
 			expect(String(childStyle.color).startsWith("#")).toBe(true);
+		});
+	});
+
+	describe("wave 3: Badge, Avatar, Checkbox, Switch", () => {
+		const badgeSig = (node: {
+			props: { style?: unknown };
+		}) => {
+			const s = flatStyle(node);
+			return JSON.stringify([s.backgroundColor, s.color, s.borderColor]);
+		};
+
+		it("Badge/Avatar/Checkbox/Switch render their k-* markers", async () => {
+			const screen = await render(
+				<>
+					<Badge>new</Badge>
+					<Avatar name="Ada Lovelace" />
+					<Checkbox accessibilityLabel="agree" />
+					<Switch accessibilityLabel="sync" />
+				</>,
+			);
+			expect(screen.getByTestId("k-badge")).toBeTruthy();
+			expect(screen.getByTestId("k-avatar")).toBeTruthy();
+			expect(screen.getByTestId("k-checkbox")).toBeTruthy();
+			expect(screen.getByTestId("k-switch")).toBeTruthy();
+		});
+
+		it("every Badge variant×color arm produces a distinct style triple", async () => {
+			const variants = ["solid", "outline", "subtle"] as const;
+			const colors = [
+				"primary",
+				"secondary",
+				"destructive",
+				"success",
+				"warning",
+				"info",
+				"muted",
+			] as const;
+			const seen = new Map<string, string>();
+			const screen = await render(
+				<Badge variant="solid" color="primary">
+					x
+				</Badge>,
+			);
+			for (const variant of variants) {
+				for (const color of colors) {
+					await screen.rerender(
+						<Badge variant={variant} color={color}>
+							x
+						</Badge>,
+					);
+				const badge = screen.getByTestId("k-badge");
+				const sig = badgeSig(badge);
+				expect(seen.has(sig)).toBe(false);
+				seen.set(sig, `${variant}/${color}`);
+					// every arm resolves real colors, never undefined
+					const s = flatStyle(badge);
+					expect(s.backgroundColor).toBeDefined();
+					expect(s.borderColor).toBeDefined();
+			}
+			}
+			expect(seen.size).toBe(variants.length * colors.length);
+		});
+
+		it("Badge shape pill vs rounded gives distinct radii; text child is themed", async () => {
+			const screen = await render(
+				<Badge shape="rounded">new</Badge>,
+			);
+			const rounded = Number(flatStyle(screen.getByTestId("k-badge")).borderRadius);
+			await screen.rerender(<Badge shape="pill">new</Badge>);
+			const pill = Number(flatStyle(screen.getByTestId("k-badge")).borderRadius);
+			expect(rounded).toBeGreaterThan(0);
+			expect(pill).not.toBe(rounded);
+			const child = screen.getByTestId("k-badge")
+				.children[0] as { props: { style?: unknown } };
+			const childStyle = require("react-native").StyleSheet.flatten(
+					child.props.style,
+			) as Record<string, unknown>;
+			expect(Number(childStyle.fontSize)).toBe(12);
+			expect(String(childStyle.color).startsWith("#")).toBe(true);
+		});
+
+		it("Badge with no children still renders its marker", async () => {
+			const screen = await render(<Badge />);
+			expect(screen.getByTestId("k-badge")).toBeTruthy();
+		});
+
+		it("each Avatar size maps to a distinct box size", async () => {
+			const sizes = ["xs", "sm", "md", "lg", "xl"] as const;
+			const seen = new Set<number>();
+			const screen = await render(<Avatar name="A" size="xs" />);
+			for (const size of sizes) {
+				await screen.rerender(<Avatar name="A" size={size} />);
+				const s = flatStyle(screen.getByTestId("k-avatar"));
+				expect(Number(s.width)).toBeGreaterThan(0);
+					seen.add(Number(s.width));
+			}
+			expect(seen.size).toBe(sizes.length);
+		});
+
+		it("each Avatar shape maps to a distinct borderRadius", async () => {
+			const shapes = ["circle", "rounded", "square"] as const;
+			const seen = new Set<number>();
+			const screen = await render(
+				<Avatar name="A" shape="circle" />,
+			);
+			for (const shape of shapes) {
+				await screen.rerender(<Avatar name="A" shape={shape} />);
+				seen.add(Number(flatStyle(screen.getByTestId("k-avatar")).borderRadius));
+			}
+			expect(seen.size).toBe(shapes.length);
+		});
+
+		it("Avatar status dot colors differ between online and offline", async () => {
+			const screen = await render(<Avatar name="A" status="online" />);
+			const online = String(
+				flatStyle(screen.getByTestId("k-avatar-status")).backgroundColor,
+			);
+			await screen.rerender(<Avatar name="A" status="offline" />);
+			const offline = String(
+				flatStyle(screen.getByTestId("k-avatar-status")).backgroundColor,
+			);
+			expect(online.startsWith("#")).toBe(true);
+			expect(offline.startsWith("#")).toBe(true);
+			expect(offline).not.toBe(online);
+			// dot is absolutely positioned inside the avatar
+			expect(flatStyle(screen.getByTestId("k-avatar-status")).position).toBe(
+				"absolute",
+			);
+		});
+
+		it("Avatar without source renders uppercase initials on a themed bg", async () => {
+			const screen = await render(<Avatar name="ada lovelace" />);
+			expect(screen.getByText("AL")).toBeTruthy();
+			const s = flatStyle(screen.getByTestId("k-avatar-fallback"));
+			expect(String(s.backgroundColor).startsWith("#")).toBe(true);
+			expect(String(s.color).startsWith("#")).toBe(true);
+		});
+
+		it("Avatar with a source renders the image; onError flips to fallback", async () => {
+			const screen = await render(
+				<Avatar name="Ada" source={{ uri: "https://x/y.png" }} />,
+			);
+			expect(screen.getByTestId("k-avatar-image")).toBeTruthy();
+			const image = screen.getByTestId("k-avatar-image");
+			(image.props as { onError?: (e: unknown) => void }).onError?.(
+				new Error("load failed"),
+			);
+			// state flip happens on the next render tick
+			await screen.findByTestId("k-avatar-fallback");
+		});
+
+		it("Checkbox states map to distinct box backgrounds and icons", async () => {
+			const screen = await render(
+				<Checkbox accessibilityLabel="c" value={false} />,
+			);
+			const unchecked = String(
+				flatStyle(screen.getByTestId("k-checkbox-box")).backgroundColor,
+			);
+			// unchecked: no indicator child at all
+			expect(
+				screen.getByTestId("k-checkbox-box").children?.length ?? 0,
+			).toBe(0);
+
+			await screen.rerender(<Checkbox accessibilityLabel="c" value />);
+			const checked = String(
+				flatStyle(screen.getByTestId("k-checkbox-box")).backgroundColor,
+			);
+			expect(checked).not.toBe(unchecked);
+			expect(checked.startsWith("#")).toBe(true);
+			// checked renders a Check indicator inside the box
+			expect(
+				screen.getByTestId("k-checkbox-box").children?.length ?? 0,
+			).toBeGreaterThan(0);
+
+			await screen.rerender(
+				<Checkbox accessibilityLabel="c" value="indeterminate" />,
+			);
+			const indeterminate = String(
+				flatStyle(screen.getByTestId("k-checkbox-box")).backgroundColor,
+			);
+			expect(indeterminate).toBe(checked);
+			expect(
+				screen.getByTestId("k-checkbox-box").children?.length ?? 0,
+			).toBeGreaterThan(0);
+		});
+
+		it("Checkbox keeps the 44dp floor and toggles onValueChange", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Checkbox
+					accessibilityLabel="c"
+					value={false}
+					onValueChange={onValueChange}
+				/>,
+			);
+			const pressable = flatStyle(screen.getByTestId("k-checkbox"));
+			expect(Number(pressable.minHeight)).toBeGreaterThanOrEqual(44);
+			expect(Number(pressable.minWidth)).toBeGreaterThanOrEqual(44);
+			await fireEvent.press(screen.getByTestId("k-checkbox"));
+			expect(onValueChange).toHaveBeenCalledTimes(1);
+			expect(onValueChange).toHaveBeenLastCalledWith(true);
+		});
+
+		it("Checkbox indeterminate press moves to checked (web convention)", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Checkbox
+					accessibilityLabel="c"
+					value="indeterminate"
+					onValueChange={onValueChange}
+				/>,
+			);
+			await fireEvent.press(screen.getByTestId("k-checkbox"));
+			expect(onValueChange).toHaveBeenLastCalledWith(true);
+		});
+
+		it("Checkbox disabled press is a no-op and announces disabled", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Checkbox
+					accessibilityLabel="c"
+					disabled
+					value={false}
+					onValueChange={onValueChange}
+				/>,
+			);
+			await fireEvent.press(screen.getByTestId("k-checkbox"));
+			expect(onValueChange).not.toHaveBeenCalled();
+			expect(
+				screen.getByTestId("k-checkbox").props.accessibilityState?.disabled,
+			).toBe(true);
+		});
+
+		it("Switch track color and thumb offset differ per state", async () => {
+			const screen = await render(<Switch accessibilityLabel="s" value={false} />);
+			const offTrack = String(
+				flatStyle(screen.getByTestId("k-switch-track")).backgroundColor,
+			);
+		const offThumb = flatStyle(screen.getByTestId("k-switch-thumb")).transform as unknown as Array<Record<string, number>>;
+
+			await screen.rerender(<Switch accessibilityLabel="s" value />);
+			const onTrack = String(
+				flatStyle(screen.getByTestId("k-switch-track")).backgroundColor,
+			);
+		const onThumb = flatStyle(screen.getByTestId("k-switch-thumb")).transform as unknown as Array<Record<string, number>>;
+
+			expect(onTrack).not.toBe(offTrack);
+			expect(onTrack.startsWith("#")).toBe(true);
+			expect(offThumb[0].translateX).toBe(0);
+			expect(onThumb[0].translateX).toBeGreaterThan(0);
+		});
+
+		it("Switch keeps the 44dp floor and toggles onValueChange", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Switch
+					accessibilityLabel="s"
+					value={false}
+					onValueChange={onValueChange}
+				/>,
+			);
+			const pressable = flatStyle(screen.getByTestId("k-switch"));
+			expect(Number(pressable.minHeight)).toBeGreaterThanOrEqual(44);
+			expect(Number(pressable.minWidth)).toBeGreaterThanOrEqual(44);
+			await fireEvent.press(screen.getByTestId("k-switch"));
+			expect(onValueChange).toHaveBeenCalledTimes(1);
+			expect(onValueChange).toHaveBeenLastCalledWith(true);
+		});
+
+		it("Switch disabled press is a no-op and announces disabled", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Switch
+					accessibilityLabel="s"
+					disabled
+					value={false}
+					onValueChange={onValueChange}
+				/>,
+			);
+			await fireEvent.press(screen.getByTestId("k-switch"));
+			expect(onValueChange).not.toHaveBeenCalled();
+			expect(
+				screen.getByTestId("k-switch").props.accessibilityState?.disabled,
+			).toBe(true);
 		});
 	});
 });

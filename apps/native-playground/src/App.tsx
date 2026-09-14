@@ -8,11 +8,15 @@ import {
 	useUnistyles,
 } from "react-native-unistyles";
 import {
+	Avatar,
+	Badge,
 	Button,
 	Card,
+	Checkbox,
 	Heading,
 	Icon,
 	Sheet,
+	Switch,
 	Text as KText,
 	TextInput,
 } from "@kala-ui/react-native";
@@ -114,6 +118,8 @@ export default function App() {
 	const { theme } = useUnistyles();
 	const current = UnistylesRuntime.themeName;
 	const [sheetOpen, setSheetOpen] = useState(false);
+	const [agree, setAgree] = useState(false);
+	const [sync, setSync] = useState(true);
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
@@ -219,6 +225,39 @@ export default function App() {
 						Themed surface with card tokens.
 					</KText>
 				</Card>
+				<View style={stylesheet.componentRow} testID="k-demo-badges">
+					<Badge>solid</Badge>
+					<Badge variant="outline" color="success">
+						outline
+					</Badge>
+					<Badge variant="subtle" color="info">
+						subtle
+					</Badge>
+					<Badge variant="subtle" color="destructive" shape="pill">
+						pill
+					</Badge>
+				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-avatars">
+					{(["xs", "sm", "md", "lg"] as const).map((size) => (
+						<Avatar key={size} name="Ada Lovelace" size={size} />
+					))}
+					<Avatar name="Grace Hopper" size="lg" status="online" />
+					<Avatar name="Alan Turing" size="lg" status="offline" />
+				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-controls">
+					<Checkbox
+						accessibilityLabel="agree to terms"
+						value={agree}
+						onValueChange={setAgree}
+					/>
+					<KText size="sm">agree</KText>
+					<Switch
+						accessibilityLabel="auto sync"
+						value={sync}
+						onValueChange={setSync}
+					/>
+					<KText size="sm">sync</KText>
+				</View>
 				<Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}>
 					<Sheet.Body>
 						<Text style={stylesheet.current}>

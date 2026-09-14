@@ -13,6 +13,16 @@ module.exports = {
   moduleNameMapper: {
     '^lucide-react-native$':
       '<rootDir>/node_modules/lucide-react-native/dist/cjs/lucide-react-native.js',
+    // pnpm-hoisted unistyles resolves fine from the old component dirs but
+    // the resolver intermittently misses it for newly created ones — pin the
+    // CJS entries so resolution never depends on the haste cache state.
+    '^react-native-unistyles$': require.resolve('react-native-unistyles'),
+    // The /mocks subpath is gated by the package exports map for plain
+    // require.resolve, so it is derived from the resolved main entry.
+    '^react-native-unistyles/mocks$': require('path').join(
+      require('path').dirname(require.resolve('react-native-unistyles')),
+      'mocks.js'
+    ),
   },
   // Based on jest-expo's own defaults (incl. the .pnpm escape and the
   // reentrant-plugin exclusions) plus the kala native deps.

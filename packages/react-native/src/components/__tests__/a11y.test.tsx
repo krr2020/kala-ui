@@ -6,10 +6,13 @@
  */
 import { fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
+import { Avatar } from "../avatar";
 import { Button } from "../button";
+import { Checkbox } from "../checkbox";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
 import { Sheet } from "../sheet";
+import { Switch } from "../switch";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 
@@ -145,6 +148,84 @@ describe("a11y contract", () => {
 			const input = screen.getByTestId("k-text-input");
 			expect(input.props.accessibilityState?.disabled).toBe(true);
 			expect(input.props.editable).toBe(false);
+		});
+	});
+
+	describe("Avatar", () => {
+		it("announces as an image named after the person", async () => {
+			const screen = await render(<Avatar name="Ada Lovelace" />);
+			expect(
+				screen.getByRole("image", { name: "Ada Lovelace" }),
+			).toBeTruthy();
+		});
+	});
+
+	describe("Checkbox", () => {
+		it("exposes role=checkbox with checked and indeterminate states", async () => {
+			const screen = await render(
+				<Checkbox accessibilityLabel="Accept terms" value />,
+			);
+			expect(
+				screen.getByRole("checkbox", { name: "Accept terms" }),
+			).toBeTruthy();
+			expect(
+				screen.getByRole("checkbox").props.accessibilityState?.checked,
+			).toBe(true);
+
+			await screen.rerender(
+				<Checkbox accessibilityLabel="Accept terms" value="indeterminate" />,
+			);
+			expect(
+				screen.getByRole("checkbox").props.accessibilityState?.checked,
+			).toBe("mixed");
+		});
+
+		it("announces disabled state and blocks toggling", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Checkbox
+					accessibilityLabel="a"
+					disabled
+					value={false}
+					onValueChange={onValueChange}
+				/>,
+			);
+			await fireEvent.press(screen.getByRole("checkbox"));
+			expect(onValueChange).not.toHaveBeenCalled();
+			expect(
+				screen.getByRole("checkbox").props.accessibilityState?.disabled,
+			).toBe(true);
+		});
+	});
+
+	describe("Switch", () => {
+		it("exposes role=switch with the checked state", async () => {
+			const screen = await render(
+				<Switch accessibilityLabel="Auto sync" value />,
+			);
+			expect(
+				screen.getByRole("switch", { name: "Auto sync" }),
+			).toBeTruthy();
+			expect(
+				screen.getByRole("switch").props.accessibilityState?.checked,
+			).toBe(true);
+		});
+
+		it("announces disabled state and blocks toggling", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Switch
+					accessibilityLabel="s"
+					disabled
+					value={false}
+					onValueChange={onValueChange}
+			/>,
+			);
+			await fireEvent.press(screen.getByRole("switch"));
+			expect(onValueChange).not.toHaveBeenCalled();
+			expect(
+				screen.getByRole("switch").props.accessibilityState?.disabled,
+			).toBe(true);
 		});
 	});
 });

@@ -1,7 +1,23 @@
+export type {
+	AvatarProps,
+	AvatarShape,
+	AvatarSize,
+	AvatarStatus,
+} from "./components/avatar";
+export { Avatar } from "./components/avatar";
+export type {
+	BadgeColor,
+	BadgeProps,
+	BadgeShape,
+	BadgeVariant,
+} from "./components/badge";
+export { Badge } from "./components/badge";
 export type { ButtonProps } from "./components/button";
 export { Button } from "./components/button";
 export type { CardProps } from "./components/card";
 export { Card } from "./components/card";
+export type { CheckboxProps } from "./components/checkbox";
+export { Checkbox } from "./components/checkbox";
 export type {
 	HeadingAlign,
 	HeadingProps,
@@ -13,6 +29,8 @@ export type { IconProps } from "./components/icon";
 export { Icon } from "./components/icon";
 export type { SheetBodyProps, SheetProps } from "./components/sheet";
 export { Sheet } from "./components/sheet";
+export type { SwitchProps } from "./components/switch";
+export { Switch } from "./components/switch";
 export type {
 	TextAlign,
 	TextColor,
