@@ -1,0 +1,39 @@
+{
+	"name": "@kala-ui/native-playground",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Expo app exercising @kala-ui/react-native tokens — living docs for the native theming system",
+	"main": "index.js",
+	"scripts": {
+		"start": "expo start",
+		"android": "expo start --android",
+		"ios": "expo start --ios",
+		"web": "expo start --web",
+		"export": "expo export --platform web"
+	},
+	"dependencies": {
+		"@expo/metro-runtime": "catalog:",
+		"@kala-ui/react-native": "workspace:*",
+		"@react-native/normalize-colors": "catalog:",
+		"expo": "catalog:",
+		"react": "19.2.3",
+		"react-dom": "19.2.3",
+		"react-native": "catalog:",
+		"react-native-edge-to-edge": "catalog:",
+		"react-native-gesture-handler": "catalog:",
+		"react-native-nitro-modules": "catalog:",
+		"react-native-reanimated": "catalog:",
+		"react-native-safe-area-context": "catalog:",
+		"react-native-screens": "catalog:",
+		"react-native-svg": "catalog:",
+		"react-native-unistyles": "catalog:",
+		"react-native-web": "catalog:"
+	},
+	"devDependencies": {
+		"@react-native/metro-config": "catalog:",
+		"@types/react": "catalog:",
+		"babel-preset-expo": "catalog:",
+		"jest-expo": "catalog:",
+		"typescript": "catalog:"
+	}
+}

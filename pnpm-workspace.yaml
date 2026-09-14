@@ -2,37 +2,70 @@ packages:
   - 'packages/*'
   - 'apps/*'
 
+# Peer-range registry lag fixes (metadata, not install pins):
+# - jest-watch-typeahead 2.2.1 declares jest ^27||^28||^29 but works on 30;
+#   allowedVersions silences the unmet-peer warning without loosening any pin.
+peerDependencyRules:
+  allowedVersions:
+    jest-watch-typeahead:
+      jest: '*'
+
 # Single source of truth for dependency versions shared across workspace
-# packages — reference as "catalog:" from any package.json. Bump a version
-# here and every package follows. Entries belong here when two or more
-# packages use them; single-package deps stay literal in that package.
+# packages — reference as "catalog:" from any package.json. Every entry is an
+# EXACT pin (no ^/~): this repo develops and tests against locked versions,
+# and "latest" is a deliberate bump, never a surprise resolution.
 # Consumer-facing peerDependencies stay literal ranges (^19.2.0) on purpose:
-# the catalog pins what we develop and test against, peers declare what
-# consumers may install.
+# the catalog pins what we develop against, peers declare what consumers may
+# install. The one exception below: react/react-dom in the native playground.
 catalog:
-  # React + types
-  react: ^19.2.8
-  react-dom: ^19.2.8
-  '@types/react': ~19.2.18
-  '@types/react-dom': ~19.2.5
+  # React + types (web; the native playground pins react 19.2.3 inline —
+  # Expo SDK 57's tested matrix — and cannot use these entries)
+  react: 19.3.0
+  react-dom: 19.3.0
+  '@types/react': 19.3.0
+  '@types/react-dom': 19.3.0
   # Toolchain
-  typescript: ~7.0.2
-  vite: ~8.2.2
-  '@vitejs/plugin-react': ~6.1.0
-  '@types/node': ~26.4.0
-  postcss: ~8.5.26
+  typescript: 7.0.2
+  vite: 8.3.0
+  '@vitejs/plugin-react': 6.1.1
+  '@types/node': 26.5.1
+  postcss: 8.5.28
   # Test stack
-  vitest: ~4.1.11
-  '@vitest/coverage-v8': ~4.1.11
-  jsdom: ^30.0.1
-  '@testing-library/react': ~16.3.2
-  '@testing-library/jest-dom': ~7.0.1
-  '@testing-library/user-event': ~14.6.6
-  vitest-axe: ^0.1.0
+  vitest: 5.0.0
+  '@vitest/coverage-v8': 5.0.0
+  jsdom: 30.0.1
+  '@testing-library/react': 16.3.3
+  '@testing-library/jest-dom': 7.0.1
+  '@testing-library/user-event': 14.6.7
+  vitest-axe: 0.1.0
   # Tailwind
-  tailwindcss: ~4.3.3
-  '@tailwindcss/postcss': ~4.3.3
-  tailwindcss-animate: ~1.0.7
+  tailwindcss: 4.3.3
+  '@tailwindcss/postcss': 4.3.3
+  tailwindcss-animate: 1.0.7
   # Shared runtime dependencies
-  lucide-react: ~1.34.0
-  simple-icons: ~16.28.0
+  lucide-react: 1.46.0
+  simple-icons: 16.31.0
+  # Expo / React Native (SDK 57 matrix) — EXACT pins, no ranges. Each is the
+  # latest release inside expo@57.0.22 bundledNativeModules.json; going newer
+  # (react-native 0.87.x, react 19.3, reanimated 4.6.0) is outside the SDK's
+  # tested matrix and is deliberately not taken. Verified by
+  # packages/react-native/scripts/check-sdk-compat.mjs.
+  # react / react-dom stay inline in apps/native-playground (SDK pins 19.2.3;
+  # the catalog's web react is 19.3.0 and a split react/react-dom pair inside
+  # one app breaks the bundle — catalog is one version per name).
+  expo: 57.0.22
+  react-native: 0.86.3
+  react-native-reanimated: 4.5.1
+  react-native-gesture-handler: 2.32.0
+  react-native-screens: 4.26.2
+  react-native-safe-area-context: 5.7.0
+  react-native-svg: 15.15.4
+  react-native-unistyles: 3.3.0
+  react-native-nitro-modules: 0.37.1
+  react-native-edge-to-edge: 1.8.1
+  '@react-native/normalize-colors': 0.87.1
+  react-native-web: 0.21.2
+  '@expo/metro-runtime': 57.0.15
+  babel-preset-expo: 57.0.11
+  jest-expo: 57.0.5
+  '@react-native/metro-config': 0.86.3

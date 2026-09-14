@@ -1,0 +1,14 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"lib": ["ES2022", "DOM"],
+		"types": [],
+		"noEmit": true,
+		"paths": {
+			"@/*": ["./*"]
+		}
+	},
+	"include": ["src/**/*.tsx", "src/**/*.ts", "*.d.ts"],
+	"exclude": ["node_modules", "dist", ".expo"]
+}
