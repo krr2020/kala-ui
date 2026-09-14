@@ -1,0 +1,4171 @@
+{
+  "version": 2,
+  "generatedAt": "2026-09-14T11:45:48.978Z",
+  "knowledgeHash": "9d9b582c644de1186a6475d2f366b632529feff087298099206df4aea358ed02",
+  "pages": {
+    "README.md": {
+      "title": "Project overview",
+      "kind": "overview",
+      "summary": "What Kala UI is, who it serves, and the main capabilities.",
+      "generatedAt": "2026-09-14T11:39:19.086Z",
+      "inputs": [
+        "README.md",
+        "apps/playground/app/globals.css",
+        "apps/playground/app/layout.tsx",
+        "dark-mode-theme-switching",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "docs/RELEASING.md",
+        "dom-component-identification",
+        "form-controls",
+        "layout-primitives",
+        "navigation-components",
+        "overlays-menus",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/components/data-table/README.md",
+        "packages/react-hooks/CHANGELOG.md",
+        "packages/react-hooks/EXAMPLES.md",
+        "packages/react-hooks/README.md",
+        "packages/react/CHANGELOG.md",
+        "packages/react/README.md",
+        "packages/react/src/components/skeleton/README.md",
+        "playground-app",
+        "react-server-components-support",
+        "scripts/add-js-extensions.mjs",
+        "scripts/add-kala-markers.mjs"
+      ],
+      "inputSig": "90783cf8d7755f59ef4ff7e8f5fa8638a2eb81886199179c514b1e3bfcee33ac",
+      "concepts": [
+        "DOM Component Identification",
+        "Dark Mode & Theme Switching",
+        "Form Controls",
+        "Layout Primitives",
+        "Navigation Components",
+        "Overlays & Menus",
+        "Playground App",
+        "React Server Components Support",
+        "kala-ui"
+      ],
+      "files": [
+        "README.md",
+        "apps/playground/app/globals.css",
+        "apps/playground/app/layout.tsx",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "docs/RELEASING.md",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/components/data-table/README.md",
+        "packages/react-hooks/CHANGELOG.md",
+        "packages/react-hooks/EXAMPLES.md",
+        "packages/react-hooks/README.md",
+        "packages/react/CHANGELOG.md",
+        "packages/react/README.md",
+        "packages/react/src/components/skeleton/README.md",
+        "scripts/add-js-extensions.mjs",
+        "scripts/add-kala-markers.mjs"
+      ],
+      "userEdited": false
+    },
+    "architecture.md": {
+      "title": "Architecture",
+      "kind": "architecture",
+      "summary": "How source areas, runtime surfaces, data contracts, and features fit together.",
+      "generatedAt": "2026-09-14T11:39:40.899Z",
+      "inputs": [
+        "CONTRIBUTING.md",
+        "README.md",
+        "THEMING.md",
+        "apps/playground",
+        "apps/playground/app/globals.css",
+        "apps/playground/app/layout.tsx",
+        "apps/playground/app/page.tsx",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "docs/RELEASING.md",
+        "docs/migrations",
+        "docs/migrations/acalumi-t1.2.0-deviation-approval.md",
+        "package.json",
+        "packages/react",
+        "packages/react-app",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/biome.json",
+        "packages/react-hooks",
+        "packages/react-hooks/CHANGELOG.md",
+        "packages/react-hooks/EXAMPLES.md",
+        "packages/react-hooks/README.md",
+        "packages/react/CHANGELOG.md",
+        "packages/react/README.md",
+        "packages/react/TOKEN_SPEC.md",
+        "pnpm-workspace.yaml",
+        "scripts",
+        "scripts/add-js-extensions.mjs",
+        "scripts/add-kala-markers.mjs",
+        "scripts/check-package-boundaries.mjs"
+      ],
+      "inputSig": "9b62545c51226b086730328135817a5e6b89ee110c146fbab5b716d49fd2ca9e",
+      "concepts": [
+        "AUDIT 2026 08 27.md",
+        "MIGRATION 0.1.md",
+        "Migrations",
+        "Playground",
+        "README.md",
+        "RELEASING.md",
+        "React",
+        "React App",
+        "React Hooks",
+        "Scripts",
+        "god node: Alert",
+        "god node: AppShell",
+        "god node: Avatar",
+        "god node: Badge",
+        "god node: Box",
+        "god node: Button",
+        "god node: DataTable",
+        "god node: DesignSystemOverview",
+        "god node: Flex",
+        "god node: Header",
+        "god node: Home",
+        "god node: Label",
+        "god node: MenubarItem",
+        "god node: PaginationItem",
+        "god node: PaginationLink",
+        "god node: Skeleton",
+        "god node: TableCell",
+        "god node: TableHead",
+        "god node: TableRow",
+        "god node: Text",
+        "packages/react · constant cluster",
+        "packages/react · function cluster",
+        "packages/react · interface cluster",
+        "packages/react-app · constant cluster",
+        "packages/react-app · function cluster",
+        "packages/react-hooks · function cluster"
+      ],
+      "files": [
+        "CONTRIBUTING.md",
+        "README.md",
+        "THEMING.md",
+        "apps/playground/app/globals.css",
+        "apps/playground/app/layout.tsx",
+        "apps/playground/app/page.tsx",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "docs/RELEASING.md",
+        "docs/migrations/acalumi-t1.2.0-deviation-approval.md",
+        "package.json",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/biome.json",
+        "packages/react-app/src/__tests__/a11y.test.tsx",
+        "packages/react-app/src/__tests__/setup.ts",
+        "packages/react-app/src/components/app-shell/app-shell.stories.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.tsx",
+        "packages/react-app/src/components/charts/area-chart.test.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.test.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.tsx",
+        "packages/react-app/src/components/data-table/column-filters.test.tsx",
+        "packages/react-app/src/components/data-table/column-filters.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.test.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.tsx",
+        "packages/react-app/src/components/data-table/data-table-body-rows.tsx",
+        "packages/react-app/src/components/data-table/data-table.types.ts",
+        "packages/react-app/src/components/data-table/pagination-nav.test.tsx",
+        "packages/react-app/src/components/data-table/pagination-nav.tsx",
+        "packages/react-app/src/components/header/header.stories.tsx",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-app/src/components/metric-card/index.ts",
+        "packages/react-app/src/components/nav-link/nav-link.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/__tests__/user-menu-dropdown.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/index.ts",
+        "packages/react-hooks/CHANGELOG.md",
+        "packages/react-hooks/EXAMPLES.md",
+        "packages/react-hooks/README.md",
+        "packages/react-hooks/src/__tests__/use-click-outside.test.ts",
+        "packages/react/CHANGELOG.md",
+        "packages/react/README.md",
+        "packages/react/TOKEN_SPEC.md",
+        "packages/react/src/__tests__/component-markers.test.tsx",
+        "packages/react/src/__tests__/setup.ts",
+        "packages/react/src/components/accordion/accordion-skeleton.test.tsx",
+        "packages/react/src/components/accordion/accordion-skeleton.tsx",
+        "packages/react/src/components/accordion/accordion.stories.tsx",
+        "packages/react/src/components/alert/alert-skeleton.test.tsx",
+        "packages/react/src/components/center/center.stories.tsx",
+        "packages/react/src/components/center/center.test.tsx",
+        "packages/react/src/components/command/command.stories.tsx",
+        "packages/react/src/components/dialog/dialog.stories.tsx",
+        "packages/react/src/components/field/field-skeleton.test.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.stories.tsx",
+        "pnpm-workspace.yaml",
+        "scripts/add-js-extensions.mjs",
+        "scripts/add-kala-markers.mjs",
+        "scripts/check-package-boundaries.mjs"
+      ],
+      "userEdited": false
+    },
+    "getting-started.md": {
+      "title": "Getting started",
+      "kind": "development",
+      "summary": "Install, run, build, and test commands for local development.",
+      "generatedAt": "2026-09-14T11:39:58.564Z",
+      "inputs": [
+        "apps/playground/package.json",
+        "build",
+        "build-storybook",
+        "build:apps",
+        "build:react",
+        "dev",
+        "format",
+        "lint",
+        "lint:fix",
+        "lint:fix-unsafe",
+        "package.json",
+        "packages/react-app/package.json",
+        "packages/react-hooks/package.json",
+        "packages/react/package.json",
+        "start",
+        "storybook",
+        "test",
+        "test-storybook",
+        "test:coverage",
+        "test:tokens",
+        "test:watch"
+      ],
+      "inputSig": "18383d094eaa0e0c3a588b727fc7dc309e8da949eacaeee29bbc02e1da964e8f",
+      "concepts": [
+        "commands",
+        "pnpm",
+        "setup"
+      ],
+      "files": [
+        "apps/playground/package.json",
+        "package.json",
+        "packages/react-app/package.json",
+        "packages/react-hooks/package.json",
+        "packages/react/package.json"
+      ],
+      "userEdited": false
+    },
+    "features/form-controls.md": {
+      "title": "Form Controls",
+      "kind": "feature",
+      "summary": "Rich form input suite: inputs, selects, comboboxes, checkboxes, date/time pickers, multi-select, tag-input, password-strength-indicator, OTP input.",
+      "generatedAt": "2026-09-14T11:40:20.377Z",
+      "inputs": [
+        "Input Otp",
+        "Multi Select",
+        "Password Strength Indicator",
+        "controls",
+        "form",
+        "form-controls",
+        "packages/react-app/src/components/data-table/column-filters.test.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-toolbar.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card.test.tsx",
+        "packages/react/src/components/calendar/calendar.test.tsx",
+        "packages/react/src/components/checkbox/checkbox.stories.tsx",
+        "packages/react/src/components/color-input/color-input.test.tsx",
+        "packages/react/src/components/color-input/color-input.tsx",
+        "packages/react/src/components/combobox/combobox-skeleton.test.tsx",
+        "packages/react/src/components/combobox/combobox.test.tsx",
+        "packages/react/src/components/command/command.test.tsx",
+        "packages/react/src/components/field/field.test.tsx",
+        "packages/react/src/components/field/form-skeleton.test.tsx",
+        "packages/react/src/components/field/form-skeleton.tsx",
+        "packages/react/src/components/file-upload/file-upload.test.tsx",
+        "packages/react/src/components/file-upload/file-upload.tsx",
+        "packages/react/src/components/indicator/indicator.test.tsx",
+        "packages/react/src/components/indicator/indicator.tsx",
+        "packages/react/src/components/input-group/input-group.stories.tsx",
+        "packages/react/src/components/input-otp/input-otp.test.tsx",
+        "packages/react/src/components/input-otp/input-otp.tsx",
+        "packages/react/src/components/input/input.stories.tsx",
+        "packages/react/src/components/input/input.test.tsx",
+        "packages/react/src/components/input/input.tsx",
+        "packages/react/src/components/multi-select/multi-select-skeleton.test.tsx",
+        "packages/react/src/components/multi-select/multi-select-skeleton.tsx",
+        "packages/react/src/components/multi-select/multi-select.test.tsx",
+        "packages/react/src/components/multi-select/multi-select.tsx",
+        "packages/react/src/components/multi-select/multi-select.types.ts",
+        "packages/react/src/components/navigation-menu/navigation-menu.test.tsx",
+        "packages/react/src/components/number-input/number-input.test.tsx",
+        "packages/react/src/components/number-input/number-input.tsx",
+        "packages/react/src/components/password-strength-indicator/password-strength-indicator.stories.tsx",
+        "packages/react/src/components/password-strength-indicator/password-strength-indicator.test.tsx",
+        "packages/react/src/components/password-strength-indicator/password-strength-indicator.tsx",
+        "packages/react/src/components/progress/progress.test.tsx",
+        "packages/react/src/components/radio-group/radio-group.test.tsx",
+        "packages/react/src/components/resizable/resizable.test.tsx",
+        "packages/react/src/components/select/native-select.test.tsx",
+        "packages/react/src/components/select/native-select.tsx",
+        "packages/react/src/components/select/select.test.tsx",
+        "packages/react/src/components/select/select.tsx",
+        "packages/react/src/components/steps/steps.stories.tsx",
+        "packages/react/src/components/steps/steps.test.tsx",
+        "packages/react/src/components/tag-input/tag-input.test.tsx",
+        "packages/react/src/components/tag-input/tag-input.tsx",
+        "packages/react/src/components/tree-view/tree-view.test.tsx",
+        "packages/react/src/styles/tokens.test.ts"
+      ],
+      "inputSig": "97bc7fa5814e920817ead2bf3c99feb119591d482f642e8fbc31bb5138eb899b",
+      "concepts": [
+        "Input Otp",
+        "Multi Select",
+        "Password Strength Indicator",
+        "controls",
+        "form"
+      ],
+      "files": [
+        "packages/react-app/src/components/data-table/column-filters.test.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-toolbar.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card.test.tsx",
+        "packages/react/src/components/calendar/calendar.test.tsx",
+        "packages/react/src/components/checkbox/checkbox.stories.tsx",
+        "packages/react/src/components/color-input/color-input.test.tsx",
+        "packages/react/src/components/color-input/color-input.tsx",
+        "packages/react/src/components/combobox/combobox-skeleton.test.tsx",
+        "packages/react/src/components/combobox/combobox.test.tsx",
+        "packages/react/src/components/command/command.test.tsx",
+        "packages/react/src/components/field/field.test.tsx",
+        "packages/react/src/components/field/form-skeleton.test.tsx",
+        "packages/react/src/components/field/form-skeleton.tsx",
+        "packages/react/src/components/file-upload/file-upload.test.tsx",
+        "packages/react/src/components/file-upload/file-upload.tsx",
+        "packages/react/src/components/indicator/indicator.test.tsx",
+        "packages/react/src/components/indicator/indicator.tsx",
+        "packages/react/src/components/input-group/input-group.stories.tsx",
+        "packages/react/src/components/input-otp/input-otp.test.tsx",
+        "packages/react/src/components/input-otp/input-otp.tsx",
+        "packages/react/src/components/input/input.stories.tsx",
+        "packages/react/src/components/input/input.test.tsx",
+        "packages/react/src/components/input/input.tsx",
+        "packages/react/src/components/multi-select/multi-select-skeleton.test.tsx",
+        "packages/react/src/components/multi-select/multi-select-skeleton.tsx",
+        "packages/react/src/components/multi-select/multi-select.test.tsx",
+        "packages/react/src/components/multi-select/multi-select.tsx",
+        "packages/react/src/components/multi-select/multi-select.types.ts",
+        "packages/react/src/components/navigation-menu/navigation-menu.test.tsx",
+        "packages/react/src/components/number-input/number-input.test.tsx",
+        "packages/react/src/components/number-input/number-input.tsx",
+        "packages/react/src/components/password-strength-indicator/password-strength-indicator.stories.tsx",
+        "packages/react/src/components/password-strength-indicator/password-strength-indicator.test.tsx",
+        "packages/react/src/components/password-strength-indicator/password-strength-indicator.tsx",
+        "packages/react/src/components/progress/progress.test.tsx",
+        "packages/react/src/components/radio-group/radio-group.test.tsx",
+        "packages/react/src/components/resizable/resizable.test.tsx",
+        "packages/react/src/components/select/native-select.test.tsx",
+        "packages/react/src/components/select/native-select.tsx",
+        "packages/react/src/components/select/select.test.tsx",
+        "packages/react/src/components/select/select.tsx",
+        "packages/react/src/components/steps/steps.stories.tsx",
+        "packages/react/src/components/steps/steps.test.tsx",
+        "packages/react/src/components/tag-input/tag-input.test.tsx",
+        "packages/react/src/components/tag-input/tag-input.tsx",
+        "packages/react/src/components/tree-view/tree-view.test.tsx",
+        "packages/react/src/styles/tokens.test.ts"
+      ],
+      "userEdited": false
+    },
+    "features/layout-primitives.md": {
+      "title": "Layout Primitives",
+      "kind": "feature",
+      "summary": "Box, Flex, Grid, Stack, Center, Container, Group, and Paper for composing layouts.",
+      "generatedAt": "2026-09-14T11:40:36.978Z",
+      "inputs": [
+        "Container",
+        "Paper",
+        "Stack",
+        "layout",
+        "layout-primitives",
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-skeleton.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/dnd/dnd.test.tsx",
+        "packages/react-app/src/components/header/header-skeleton.test.tsx",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar-skeleton.test.tsx",
+        "packages/react/src/components/accordion/accordion.test.tsx",
+        "packages/react/src/components/alert/alert.test.tsx",
+        "packages/react/src/components/avatar/avatar.test.tsx",
+        "packages/react/src/components/badge/badge.test.tsx",
+        "packages/react/src/components/banner/banner-skeleton.test.tsx",
+        "packages/react/src/components/card/card-skeleton.test.tsx",
+        "packages/react/src/components/card/card.test.tsx",
+        "packages/react/src/components/container/container.test.tsx",
+        "packages/react/src/components/empty-state/empty-state-skeleton.test.tsx",
+        "packages/react/src/components/empty-state/empty-state.test.tsx",
+        "packages/react/src/components/field/field-skeleton.test.tsx",
+        "packages/react/src/components/field/field.test.tsx",
+        "packages/react/src/components/field/form-skeleton.test.tsx",
+        "packages/react/src/components/file-upload/file-upload.test.tsx",
+        "packages/react/src/components/indicator/indicator.test.tsx",
+        "packages/react/src/components/list/list.test.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.test.tsx",
+        "packages/react/src/components/page-transition/page-transition.test.tsx",
+        "packages/react/src/components/password-strength-indicator/password-strength-indicator.test.tsx",
+        "packages/react/src/components/progress/progress.test.tsx",
+        "packages/react/src/components/radio-group/radio-group.test.tsx",
+        "packages/react/src/components/rating/rating.test.tsx",
+        "packages/react/src/components/resizable/resizable.stories.tsx",
+        "packages/react/src/components/resizable/resizable.test.tsx",
+        "packages/react/src/components/ring-progress/ring-progress.test.tsx",
+        "packages/react/src/components/scroll-area/scroll-area.test.tsx",
+        "packages/react/src/components/segmented-control/segmented-control.test.tsx",
+        "packages/react/src/components/skeleton/skeleton-patterns.test.tsx",
+        "packages/react/src/components/skeleton/skeleton-wrapper.test.tsx",
+        "packages/react/src/components/skeleton/skeleton.test.tsx",
+        "packages/react/src/components/slider/slider.test.tsx",
+        "packages/react/src/components/steps/steps.test.tsx",
+        "packages/react/src/components/switch/switch.test.tsx",
+        "packages/react/src/components/table/table-skeleton.test.tsx",
+        "packages/react/src/components/table/table.test.tsx",
+        "packages/react/src/components/tabs/tabs-skeleton.test.tsx",
+        "packages/react/src/components/tabs/tabs.test.tsx",
+        "packages/react/src/components/timeline/timeline.test.tsx",
+        "packages/react/src/components/toast/toast.test.tsx",
+        "packages/react/src/components/toolbar/toolbar.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.test.tsx",
+        "primitives"
+      ],
+      "inputSig": "2a671a079889b0846f549da31bee87101db1ff051e47797fe0ee36c2bd8e8d6d",
+      "concepts": [
+        "Container",
+        "Paper",
+        "Stack",
+        "layout",
+        "primitives"
+      ],
+      "files": [
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-skeleton.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/dnd/dnd.test.tsx",
+        "packages/react-app/src/components/header/header-skeleton.test.tsx",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar-skeleton.test.tsx",
+        "packages/react/src/components/accordion/accordion.test.tsx",
+        "packages/react/src/components/alert/alert.test.tsx",
+        "packages/react/src/components/avatar/avatar.test.tsx",
+        "packages/react/src/components/badge/badge.test.tsx",
+        "packages/react/src/components/banner/banner-skeleton.test.tsx",
+        "packages/react/src/components/card/card-skeleton.test.tsx",
+        "packages/react/src/components/card/card.test.tsx",
+        "packages/react/src/components/container/container.test.tsx",
+        "packages/react/src/components/empty-state/empty-state-skeleton.test.tsx",
+        "packages/react/src/components/empty-state/empty-state.test.tsx",
+        "packages/react/src/components/field/field-skeleton.test.tsx",
+        "packages/react/src/components/field/field.test.tsx",
+        "packages/react/src/components/field/form-skeleton.test.tsx",
+        "packages/react/src/components/file-upload/file-upload.test.tsx",
+        "packages/react/src/components/indicator/indicator.test.tsx",
+        "packages/react/src/components/list/list.test.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.test.tsx",
+        "packages/react/src/components/page-transition/page-transition.test.tsx",
+        "packages/react/src/components/password-strength-indicator/password-strength-indicator.test.tsx",
+        "packages/react/src/components/progress/progress.test.tsx",
+        "packages/react/src/components/radio-group/radio-group.test.tsx",
+        "packages/react/src/components/rating/rating.test.tsx",
+        "packages/react/src/components/resizable/resizable.stories.tsx",
+        "packages/react/src/components/resizable/resizable.test.tsx",
+        "packages/react/src/components/ring-progress/ring-progress.test.tsx",
+        "packages/react/src/components/scroll-area/scroll-area.test.tsx",
+        "packages/react/src/components/segmented-control/segmented-control.test.tsx",
+        "packages/react/src/components/skeleton/skeleton-patterns.test.tsx",
+        "packages/react/src/components/skeleton/skeleton-wrapper.test.tsx",
+        "packages/react/src/components/skeleton/skeleton.test.tsx",
+        "packages/react/src/components/slider/slider.test.tsx",
+        "packages/react/src/components/steps/steps.test.tsx",
+        "packages/react/src/components/switch/switch.test.tsx",
+        "packages/react/src/components/table/table-skeleton.test.tsx",
+        "packages/react/src/components/table/table.test.tsx",
+        "packages/react/src/components/tabs/tabs-skeleton.test.tsx",
+        "packages/react/src/components/tabs/tabs.test.tsx",
+        "packages/react/src/components/timeline/timeline.test.tsx",
+        "packages/react/src/components/toast/toast.test.tsx",
+        "packages/react/src/components/toolbar/toolbar.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.test.tsx"
+      ],
+      "userEdited": false
+    },
+    "features/navigation-components.md": {
+      "title": "Navigation Components",
+      "kind": "feature",
+      "summary": "Breadcrumbs, navigation-menu, menubar, pagination, tabs, and tree-view navigation primitives.",
+      "generatedAt": "2026-09-14T11:40:56.739Z",
+      "inputs": [
+        "Breadcrumbs",
+        "Navigation Menu",
+        "Tree View",
+        "components",
+        "docs/MIGRATION-0.1.md",
+        "navigation",
+        "navigation-components",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/header/header-skeleton.test.tsx",
+        "packages/react-app/src/components/header/header.stories.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/navigation/navigation-skeleton.test.tsx",
+        "packages/react-app/src/components/navigation/navigation-skeleton.tsx",
+        "packages/react-app/src/components/navigation/navigation.stories.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.tsx",
+        "packages/react-app/src/components/sidebar/__tests__/sidebar.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/__tests__/user-menu-dropdown.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.stories.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.tsx",
+        "packages/react/README.md",
+        "packages/react/scripts/flatten-dts.cjs",
+        "packages/react/src/components/breadcrumbs/__tests__/breadcrumbs.test.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs-skeleton.test.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs-skeleton.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs.stories.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs.test.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs.types.ts",
+        "packages/react/src/components/button-group/button-group.test.tsx",
+        "packages/react/src/components/calendar/calendar.test.tsx",
+        "packages/react/src/components/context-menu/context-menu.stories.tsx",
+        "packages/react/src/components/context-menu/context-menu.test.tsx",
+        "packages/react/src/components/context-menu/context-menu.tsx",
+        "packages/react/src/components/design-system/category-section.test.tsx",
+        "packages/react/src/components/design-system/component-preview-card.test.tsx",
+        "packages/react/src/components/design-system/design-system-utils.test.ts",
+        "packages/react/src/components/design-system/design-system-utils.ts",
+        "packages/react/src/components/design-system/overview.test.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.stories.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.test.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/list/list.test.tsx",
+        "packages/react/src/components/menubar/menubar.test.tsx",
+        "packages/react/src/components/menubar/menubar.tsx",
+        "packages/react/src/components/navigation-menu/index.ts",
+        "packages/react/src/components/navigation-menu/navigation-menu.stories.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.test.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.tsx",
+        "packages/react/src/components/slider/slider.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.stories.tsx",
+        "packages/react/src/components/tree-view/tree-view.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.tsx",
+        "packages/react/src/config/navigation-menu.ts"
+      ],
+      "inputSig": "dd1bc5665529961d4ce7a5cd38d851712f675eef3a9d1c3c18ddb043c26f7aef",
+      "concepts": [
+        "Breadcrumbs",
+        "Navigation Menu",
+        "Tree View",
+        "components",
+        "navigation"
+      ],
+      "files": [
+        "docs/MIGRATION-0.1.md",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/header/header-skeleton.test.tsx",
+        "packages/react-app/src/components/header/header.stories.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/navigation/navigation-skeleton.test.tsx",
+        "packages/react-app/src/components/navigation/navigation-skeleton.tsx",
+        "packages/react-app/src/components/navigation/navigation.stories.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.tsx",
+        "packages/react-app/src/components/sidebar/__tests__/sidebar.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/__tests__/user-menu-dropdown.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.stories.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.tsx",
+        "packages/react/README.md",
+        "packages/react/scripts/flatten-dts.cjs",
+        "packages/react/src/components/breadcrumbs/__tests__/breadcrumbs.test.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs-skeleton.test.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs-skeleton.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs.stories.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs.test.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs.types.ts",
+        "packages/react/src/components/button-group/button-group.test.tsx",
+        "packages/react/src/components/calendar/calendar.test.tsx",
+        "packages/react/src/components/context-menu/context-menu.stories.tsx",
+        "packages/react/src/components/context-menu/context-menu.test.tsx",
+        "packages/react/src/components/context-menu/context-menu.tsx",
+        "packages/react/src/components/design-system/category-section.test.tsx",
+        "packages/react/src/components/design-system/component-preview-card.test.tsx",
+        "packages/react/src/components/design-system/design-system-utils.test.ts",
+        "packages/react/src/components/design-system/design-system-utils.ts",
+        "packages/react/src/components/design-system/overview.test.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.stories.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.test.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/list/list.test.tsx",
+        "packages/react/src/components/menubar/menubar.test.tsx",
+        "packages/react/src/components/menubar/menubar.tsx",
+        "packages/react/src/components/navigation-menu/index.ts",
+        "packages/react/src/components/navigation-menu/navigation-menu.stories.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.test.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.tsx",
+        "packages/react/src/components/slider/slider.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.stories.tsx",
+        "packages/react/src/components/tree-view/tree-view.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.tsx",
+        "packages/react/src/config/navigation-menu.ts"
+      ],
+      "userEdited": false
+    },
+    "features/dark-mode-theme-switching.md": {
+      "title": "Dark Mode & Theme Switching",
+      "kind": "feature",
+      "summary": "ThemeProvider with resolvedTheme awareness; toasts and components follow the active dark theme.",
+      "generatedAt": "2026-09-14T11:41:14.807Z",
+      "inputs": [
+        "Fix Toast (Sonner Toaster) Not Following The Active Kala Ui Theme — Toasts Stayed Light When A Dark Theme Was Selected",
+        "`dark` And `high Contrast Dark` Map To Sonner `dark`",
+        "dark",
+        "dark-mode-theme-switching",
+        "docs/AUDIT-2026-08-27.md",
+        "mode",
+        "packages/react-app/src/components/charts/bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/chart.stories.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/charts/theme-utils.ts",
+        "packages/react-app/src/components/charts/use-theme-aware-chart.test.ts",
+        "packages/react-app/src/components/charts/use-theme-aware-chart.ts",
+        "packages/react-app/src/components/charts/utils.test.ts",
+        "packages/react-app/src/components/charts/utils.ts",
+        "packages/react-app/src/components/data-table/column-filters.test.tsx",
+        "packages/react-app/src/components/data-table/column-filters.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.test.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.tsx",
+        "packages/react-app/src/components/data-table/data-table-toolbar.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.tsx",
+        "packages/react-app/src/components/dnd/dnd.stories.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/nav-link/nav-link.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-app/src/components/session-card/session-card.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.tsx",
+        "packages/react-app/src/components/sparkline-chart/sparkline-chart.test.tsx",
+        "packages/react-hooks/src/__tests__/use-color-scheme.test.ts",
+        "packages/react-hooks/src/__tests__/use-uncontrolled.test.ts",
+        "packages/react-hooks/src/use-interval/use-interval.ts",
+        "packages/react/.storybook/preview.tsx",
+        "packages/react/src/components/button-group/button-group.test.tsx",
+        "packages/react/src/components/calendar/calendar.test.tsx",
+        "packages/react/src/components/combobox/combobox-skeleton.test.tsx",
+        "packages/react/src/components/combobox/combobox.test.tsx",
+        "packages/react/src/components/date-picker/date-picker.test.tsx",
+        "packages/react/src/components/file-upload/file-upload.test.tsx",
+        "packages/react/src/components/list/list-skeleton.test.tsx",
+        "packages/react/src/components/multi-select/multi-select.test.tsx",
+        "packages/react/src/components/multi-select/multi-select.tsx",
+        "packages/react/src/components/pagination/pagination.test.tsx",
+        "packages/react/src/components/password-strength-indicator/password-strength-indicator.test.tsx",
+        "packages/react/src/components/rating/rating.test.tsx",
+        "packages/react/src/components/segmented-control/segmented-control.test.tsx",
+        "packages/react/src/components/steps/steps.test.tsx",
+        "packages/react/src/components/theme-provider/theme-provider.test.tsx",
+        "packages/react/src/components/theme-provider/theme-provider.tsx",
+        "packages/react/src/components/time-picker/time-picker.test.tsx",
+        "packages/react/src/components/toast/toast.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.tsx",
+        "packages/react/src/styles/tokens.test.ts",
+        "switching",
+        "theme"
+      ],
+      "inputSig": "d9c1b46c9b97ca4e073875fa74d55889cd3aeed911256cec4f1fa5074e2ef8f2",
+      "concepts": [
+        "Fix Toast (Sonner Toaster) Not Following The Active Kala Ui Theme — Toasts Stayed Light When A Dark Theme Was Selected",
+        "`dark` And `high Contrast Dark` Map To Sonner `dark`",
+        "dark",
+        "mode",
+        "switching",
+        "theme"
+      ],
+      "files": [
+        "docs/AUDIT-2026-08-27.md",
+        "packages/react-app/src/components/charts/bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/chart.stories.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/charts/theme-utils.ts",
+        "packages/react-app/src/components/charts/use-theme-aware-chart.test.ts",
+        "packages/react-app/src/components/charts/use-theme-aware-chart.ts",
+        "packages/react-app/src/components/charts/utils.test.ts",
+        "packages/react-app/src/components/charts/utils.ts",
+        "packages/react-app/src/components/data-table/column-filters.test.tsx",
+        "packages/react-app/src/components/data-table/column-filters.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.test.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.tsx",
+        "packages/react-app/src/components/data-table/data-table-toolbar.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.tsx",
+        "packages/react-app/src/components/dnd/dnd.stories.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/nav-link/nav-link.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-app/src/components/session-card/session-card.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.tsx",
+        "packages/react-app/src/components/sparkline-chart/sparkline-chart.test.tsx",
+        "packages/react-hooks/src/__tests__/use-color-scheme.test.ts",
+        "packages/react-hooks/src/__tests__/use-uncontrolled.test.ts",
+        "packages/react-hooks/src/use-interval/use-interval.ts",
+        "packages/react/.storybook/preview.tsx",
+        "packages/react/src/components/button-group/button-group.test.tsx",
+        "packages/react/src/components/calendar/calendar.test.tsx",
+        "packages/react/src/components/combobox/combobox-skeleton.test.tsx",
+        "packages/react/src/components/combobox/combobox.test.tsx",
+        "packages/react/src/components/date-picker/date-picker.test.tsx",
+        "packages/react/src/components/file-upload/file-upload.test.tsx",
+        "packages/react/src/components/list/list-skeleton.test.tsx",
+        "packages/react/src/components/multi-select/multi-select.test.tsx",
+        "packages/react/src/components/multi-select/multi-select.tsx",
+        "packages/react/src/components/pagination/pagination.test.tsx",
+        "packages/react/src/components/password-strength-indicator/password-strength-indicator.test.tsx",
+        "packages/react/src/components/rating/rating.test.tsx",
+        "packages/react/src/components/segmented-control/segmented-control.test.tsx",
+        "packages/react/src/components/steps/steps.test.tsx",
+        "packages/react/src/components/theme-provider/theme-provider.test.tsx",
+        "packages/react/src/components/theme-provider/theme-provider.tsx",
+        "packages/react/src/components/time-picker/time-picker.test.tsx",
+        "packages/react/src/components/toast/toast.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.tsx",
+        "packages/react/src/styles/tokens.test.ts"
+      ],
+      "userEdited": false
+    },
+    "features/dom-component-identification.md": {
+      "title": "DOM Component Identification",
+      "kind": "feature",
+      "summary": "Components identifiable in the DOM via documented CSS class naming.",
+      "generatedAt": "2026-09-14T11:41:34.083Z",
+      "inputs": [
+        "Component CSS Classes",
+        "Identifying Components In The DOM",
+        "component",
+        "docs/MIGRATION-0.1.md",
+        "dom",
+        "dom-component-identification",
+        "identification",
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.test.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/charts/use-theme-aware-chart.test.ts",
+        "packages/react-app/src/components/dnd/dnd.test.tsx",
+        "packages/react-app/src/components/dnd/dnd.tsx",
+        "packages/react-app/src/components/footer/footer.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card-skeleton.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card.test.tsx",
+        "packages/react-app/src/components/session-card/session-card-skeleton.test.tsx",
+        "packages/react-app/src/components/session-card/session-card.test.tsx",
+        "packages/react/README.md",
+        "packages/react/scripts/flatten-dts.cjs",
+        "packages/react/src/__tests__/component-markers.test.tsx",
+        "packages/react/src/__tests__/utils.test.ts",
+        "packages/react/src/components/alert/alert-skeleton.test.tsx",
+        "packages/react/src/components/alert/alert.test.tsx",
+        "packages/react/src/components/alert/alert.tsx",
+        "packages/react/src/components/banner/banner-skeleton.test.tsx",
+        "packages/react/src/components/burger/burger.tsx",
+        "packages/react/src/components/button-group/button-group.test.tsx",
+        "packages/react/src/components/card/card-skeleton.test.tsx",
+        "packages/react/src/components/card/card.tsx",
+        "packages/react/src/components/color-input/color-input.test.tsx",
+        "packages/react/src/components/combobox/combobox.test.tsx",
+        "packages/react/src/components/design-system/category-section.test.tsx",
+        "packages/react/src/components/design-system/component-preview-card.test.tsx",
+        "packages/react/src/components/design-system/design-system-utils.test.ts",
+        "packages/react/src/components/design-system/design-system-utils.ts",
+        "packages/react/src/components/design-system/overview.test.tsx",
+        "packages/react/src/components/drawer/drawer.test.tsx",
+        "packages/react/src/components/drawer/drawer.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.tsx",
+        "packages/react/src/components/error-boundary/error-fallback.test.tsx",
+        "packages/react/src/components/field/field.test.tsx",
+        "packages/react/src/components/list/list.test.tsx",
+        "packages/react/src/components/pagination/pagination.tsx",
+        "packages/react/src/components/progress/progress.tsx",
+        "packages/react/src/components/segmented-control/segmented-control.tsx",
+        "packages/react/src/components/select/native-select.test.tsx",
+        "packages/react/src/components/table/table.test.tsx",
+        "packages/react/src/components/theme-provider/theme-provider.test.tsx",
+        "packages/react/src/components/theme-provider/theme-provider.tsx",
+        "packages/react/src/components/toolbar/toolbar.test.tsx",
+        "packages/react/src/styles/tokens.test.ts",
+        "packages/react/tsup.config.ts"
+      ],
+      "inputSig": "282519e13f4a44d1c64263cbc9ae1144986d4e82c6dc23bed6833b1eb737269e",
+      "concepts": [
+        "Component CSS Classes",
+        "Identifying Components In The DOM",
+        "component",
+        "dom",
+        "identification"
+      ],
+      "files": [
+        "docs/MIGRATION-0.1.md",
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.test.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/charts/use-theme-aware-chart.test.ts",
+        "packages/react-app/src/components/dnd/dnd.test.tsx",
+        "packages/react-app/src/components/dnd/dnd.tsx",
+        "packages/react-app/src/components/footer/footer.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card-skeleton.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card.test.tsx",
+        "packages/react-app/src/components/session-card/session-card-skeleton.test.tsx",
+        "packages/react-app/src/components/session-card/session-card.test.tsx",
+        "packages/react/README.md",
+        "packages/react/scripts/flatten-dts.cjs",
+        "packages/react/src/__tests__/component-markers.test.tsx",
+        "packages/react/src/__tests__/utils.test.ts",
+        "packages/react/src/components/alert/alert-skeleton.test.tsx",
+        "packages/react/src/components/alert/alert.test.tsx",
+        "packages/react/src/components/alert/alert.tsx",
+        "packages/react/src/components/banner/banner-skeleton.test.tsx",
+        "packages/react/src/components/burger/burger.tsx",
+        "packages/react/src/components/button-group/button-group.test.tsx",
+        "packages/react/src/components/card/card-skeleton.test.tsx",
+        "packages/react/src/components/card/card.tsx",
+        "packages/react/src/components/color-input/color-input.test.tsx",
+        "packages/react/src/components/combobox/combobox.test.tsx",
+        "packages/react/src/components/design-system/category-section.test.tsx",
+        "packages/react/src/components/design-system/component-preview-card.test.tsx",
+        "packages/react/src/components/design-system/design-system-utils.test.ts",
+        "packages/react/src/components/design-system/design-system-utils.ts",
+        "packages/react/src/components/design-system/overview.test.tsx",
+        "packages/react/src/components/drawer/drawer.test.tsx",
+        "packages/react/src/components/drawer/drawer.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.tsx",
+        "packages/react/src/components/error-boundary/error-fallback.test.tsx",
+        "packages/react/src/components/field/field.test.tsx",
+        "packages/react/src/components/list/list.test.tsx",
+        "packages/react/src/components/pagination/pagination.tsx",
+        "packages/react/src/components/progress/progress.tsx",
+        "packages/react/src/components/segmented-control/segmented-control.tsx",
+        "packages/react/src/components/select/native-select.test.tsx",
+        "packages/react/src/components/table/table.test.tsx",
+        "packages/react/src/components/theme-provider/theme-provider.test.tsx",
+        "packages/react/src/components/theme-provider/theme-provider.tsx",
+        "packages/react/src/components/toolbar/toolbar.test.tsx",
+        "packages/react/src/styles/tokens.test.ts",
+        "packages/react/tsup.config.ts"
+      ],
+      "userEdited": false
+    },
+    "features/overlays-menus.md": {
+      "title": "Overlays & Menus",
+      "kind": "feature",
+      "summary": "Dialogs, drawers, popovers, tooltips, dropdown/context menus, command palette, and toasts.",
+      "generatedAt": "2026-09-14T11:41:52.418Z",
+      "inputs": [
+        "Command",
+        "React Context Menu",
+        "docs/MIGRATION-0.1.md",
+        "menus",
+        "overlays",
+        "overlays-menus",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/components/app-shell/app-shell.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/chart.tsx",
+        "packages/react-app/src/components/dnd/dnd.test.tsx",
+        "packages/react-app/src/components/dnd/dnd.tsx",
+        "packages/react-app/src/components/header/header-skeleton.test.tsx",
+        "packages/react-app/src/components/header/header.stories.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/__tests__/user-menu-dropdown.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.stories.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.tsx",
+        "packages/react-hooks/README.md",
+        "packages/react-hooks/src/use-id/use-id.ts",
+        "packages/react/README.md",
+        "packages/react/src/components/accordion/accordion.tsx",
+        "packages/react/src/components/avatar/avatar.test.tsx",
+        "packages/react/src/components/avatar/avatar.tsx",
+        "packages/react/src/components/combobox/combobox.test.tsx",
+        "packages/react/src/components/command/command.stories.tsx",
+        "packages/react/src/components/command/command.test.tsx",
+        "packages/react/src/components/command/command.tsx",
+        "packages/react/src/components/context-menu/context-menu.stories.tsx",
+        "packages/react/src/components/context-menu/context-menu.test.tsx",
+        "packages/react/src/components/context-menu/context-menu.tsx",
+        "packages/react/src/components/context-menu/index.ts",
+        "packages/react/src/components/drawer/drawer.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.stories.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.test.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/field/field.test.tsx",
+        "packages/react/src/components/field/field.tsx",
+        "packages/react/src/components/menubar/menubar.test.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.stories.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.test.tsx",
+        "packages/react/src/components/pagination/pagination.tsx",
+        "packages/react/src/components/popover/popover.tsx",
+        "packages/react/src/components/rating/rating.test.tsx",
+        "packages/react/src/components/spoiler/spoiler.test.tsx",
+        "packages/react/src/components/tabs/tabs.tsx",
+        "packages/react/src/components/theme-provider/theme-provider.tsx",
+        "packages/react/src/components/toggle-group/toggle-group.tsx",
+        "packages/react/src/components/tree-view/tree-view.tsx",
+        "packages/react/src/config/navigation-menu.ts"
+      ],
+      "inputSig": "29cc241bc34aac5139eef90dbed73ea67bec410d49f0c79d8e84feaea3c5efc2",
+      "concepts": [
+        "Command",
+        "React Context Menu",
+        "menus",
+        "overlays"
+      ],
+      "files": [
+        "docs/MIGRATION-0.1.md",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/components/app-shell/app-shell.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/chart.tsx",
+        "packages/react-app/src/components/dnd/dnd.test.tsx",
+        "packages/react-app/src/components/dnd/dnd.tsx",
+        "packages/react-app/src/components/header/header-skeleton.test.tsx",
+        "packages/react-app/src/components/header/header.stories.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/__tests__/user-menu-dropdown.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.stories.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.tsx",
+        "packages/react-hooks/README.md",
+        "packages/react-hooks/src/use-id/use-id.ts",
+        "packages/react/README.md",
+        "packages/react/src/components/accordion/accordion.tsx",
+        "packages/react/src/components/avatar/avatar.test.tsx",
+        "packages/react/src/components/avatar/avatar.tsx",
+        "packages/react/src/components/combobox/combobox.test.tsx",
+        "packages/react/src/components/command/command.stories.tsx",
+        "packages/react/src/components/command/command.test.tsx",
+        "packages/react/src/components/command/command.tsx",
+        "packages/react/src/components/context-menu/context-menu.stories.tsx",
+        "packages/react/src/components/context-menu/context-menu.test.tsx",
+        "packages/react/src/components/context-menu/context-menu.tsx",
+        "packages/react/src/components/context-menu/index.ts",
+        "packages/react/src/components/drawer/drawer.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.stories.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.test.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/field/field.test.tsx",
+        "packages/react/src/components/field/field.tsx",
+        "packages/react/src/components/menubar/menubar.test.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.stories.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.test.tsx",
+        "packages/react/src/components/pagination/pagination.tsx",
+        "packages/react/src/components/popover/popover.tsx",
+        "packages/react/src/components/rating/rating.test.tsx",
+        "packages/react/src/components/spoiler/spoiler.test.tsx",
+        "packages/react/src/components/tabs/tabs.tsx",
+        "packages/react/src/components/theme-provider/theme-provider.tsx",
+        "packages/react/src/components/toggle-group/toggle-group.tsx",
+        "packages/react/src/components/tree-view/tree-view.tsx",
+        "packages/react/src/config/navigation-menu.ts"
+      ],
+      "userEdited": false
+    },
+    "features/playground-app.md": {
+      "title": "Playground App",
+      "kind": "feature",
+      "summary": "Next.js playground app for exercising the library with client and server routes.",
+      "generatedAt": "2026-09-14T11:42:11.433Z",
+      "inputs": [
+        "Page",
+        "app",
+        "apps/playground/app/globals.css",
+        "apps/playground/app/layout.tsx",
+        "apps/playground/app/page.tsx",
+        "apps/playground/app/server/page.tsx",
+        "apps/playground/next-env.d.ts",
+        "apps/playground/next.config.ts",
+        "apps/playground/package.json",
+        "apps/playground/tsconfig.json",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/__tests__/a11y.test.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.stories.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.tsx",
+        "packages/react-app/src/components/app-shell/index.ts",
+        "packages/react-app/src/components/charts/area-chart.test.tsx",
+        "packages/react-app/src/components/charts/area-chart.tsx",
+        "packages/react-app/src/components/charts/bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/bar-chart.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.test.tsx",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/data-table/data-table.stories.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.tsx",
+        "packages/react-app/src/components/data-table/pagination-nav.test.tsx",
+        "packages/react-app/src/components/data-table/useTableState.test.ts",
+        "packages/react-app/src/components/data-table/useTableState.ts",
+        "packages/react-app/src/components/nav-link/nav-link.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-hooks/src/__tests__/use-pagination.test.ts",
+        "packages/react-hooks/src/__tests__/use-scroll-lock.test.tsx",
+        "packages/react-hooks/src/use-pagination/use-pagination.ts",
+        "packages/react/src/components/breadcrumbs/__tests__/breadcrumbs.test.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs.test.tsx",
+        "packages/react/src/components/error-boundary/error-fallback.test.tsx",
+        "packages/react/src/components/loading/loading.stories.tsx",
+        "packages/react/src/components/loading/loading.test.tsx",
+        "packages/react/src/components/loading/page-loader.tsx",
+        "packages/react/src/components/page-transition/page-transition.stories.tsx",
+        "packages/react/src/components/page-transition/page-transition.test.tsx",
+        "packages/react/src/components/page-transition/page-transition.tsx",
+        "packages/react/src/components/page-transition/page-transition.types.ts",
+        "packages/react/src/components/pagination/pagination-skeleton.test.tsx",
+        "packages/react/src/components/pagination/pagination.stories.tsx",
+        "packages/react/src/components/pagination/pagination.test.tsx",
+        "playground",
+        "playground-app",
+        "scripts/check-package-boundaries.mjs",
+        "scripts/clean.mjs",
+        "scripts/test-storybook.mjs"
+      ],
+      "inputSig": "57d37b1707f7075eb30685e72c0f142a8d3c2e2b10b56d56acc3858451c291f9",
+      "concepts": [
+        "Page",
+        "app",
+        "playground"
+      ],
+      "files": [
+        "apps/playground/app/globals.css",
+        "apps/playground/app/layout.tsx",
+        "apps/playground/app/page.tsx",
+        "apps/playground/app/server/page.tsx",
+        "apps/playground/next-env.d.ts",
+        "apps/playground/next.config.ts",
+        "apps/playground/package.json",
+        "apps/playground/tsconfig.json",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/__tests__/a11y.test.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.stories.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.tsx",
+        "packages/react-app/src/components/app-shell/index.ts",
+        "packages/react-app/src/components/charts/area-chart.test.tsx",
+        "packages/react-app/src/components/charts/area-chart.tsx",
+        "packages/react-app/src/components/charts/bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/bar-chart.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.test.tsx",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/data-table/data-table.stories.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.tsx",
+        "packages/react-app/src/components/data-table/pagination-nav.test.tsx",
+        "packages/react-app/src/components/data-table/useTableState.test.ts",
+        "packages/react-app/src/components/data-table/useTableState.ts",
+        "packages/react-app/src/components/nav-link/nav-link.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-hooks/src/__tests__/use-pagination.test.ts",
+        "packages/react-hooks/src/__tests__/use-scroll-lock.test.tsx",
+        "packages/react-hooks/src/use-pagination/use-pagination.ts",
+        "packages/react/src/components/breadcrumbs/__tests__/breadcrumbs.test.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs.test.tsx",
+        "packages/react/src/components/error-boundary/error-fallback.test.tsx",
+        "packages/react/src/components/loading/loading.stories.tsx",
+        "packages/react/src/components/loading/loading.test.tsx",
+        "packages/react/src/components/loading/page-loader.tsx",
+        "packages/react/src/components/page-transition/page-transition.stories.tsx",
+        "packages/react/src/components/page-transition/page-transition.test.tsx",
+        "packages/react/src/components/page-transition/page-transition.tsx",
+        "packages/react/src/components/page-transition/page-transition.types.ts",
+        "packages/react/src/components/pagination/pagination-skeleton.test.tsx",
+        "packages/react/src/components/pagination/pagination.stories.tsx",
+        "packages/react/src/components/pagination/pagination.test.tsx",
+        "scripts/check-package-boundaries.mjs",
+        "scripts/clean.mjs",
+        "scripts/test-storybook.mjs"
+      ],
+      "userEdited": false
+    },
+    "features/react-server-components-support.md": {
+      "title": "React Server Components Support",
+      "kind": "feature",
+      "summary": "Components ready for React Server Components usage.",
+      "generatedAt": "2026-09-14T11:42:38.133Z",
+      "inputs": [
+        "React 19 And React Server Components Ready",
+        "React Server Components",
+        "apps/playground/app/server/page.tsx",
+        "components",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/components/app-shell/app-shell.stories.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.tsx",
+        "packages/react-app/src/components/app-shell/index.ts",
+        "packages/react-app/src/components/charts/area-chart.test.tsx",
+        "packages/react-app/src/components/charts/area-chart.tsx",
+        "packages/react-app/src/components/charts/bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/bar-chart.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.test.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.tsx",
+        "packages/react-app/src/components/charts/chart.stories.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/chart.tsx",
+        "packages/react-app/src/components/charts/chart.types.ts",
+        "packages/react-app/src/components/charts/donut-chart.test.tsx",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/data-table/SERVER_SIDE_GUIDE.md",
+        "packages/react-app/src/components/data-table/data-table.stories.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/data-table/useTableState.test.ts",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-hooks/README.md",
+        "packages/react-hooks/src/use-id/use-id.ts",
+        "packages/react/CHANGELOG.md",
+        "packages/react/README.md",
+        "packages/react/scripts/flatten-dts.cjs",
+        "packages/react/src/components/button-group/button-group.test.tsx",
+        "packages/react/src/components/design-system/category-section.test.tsx",
+        "packages/react/src/components/design-system/design-system-utils.test.ts",
+        "packages/react/src/components/design-system/design-system-utils.ts",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/list/list.test.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.stories.tsx",
+        "packages/react/src/components/popover/popover.test.tsx",
+        "packages/react/src/components/progress/progress.test.tsx",
+        "packages/react/src/components/rating/rating.test.tsx",
+        "packages/react/src/components/resizable/resizable.test.tsx",
+        "packages/react/src/components/scroll-area/scroll-area.test.tsx",
+        "packages/react/src/components/spoiler/spoiler.test.tsx",
+        "packages/react/src/components/table/table.test.tsx",
+        "packages/react/src/components/tabs/tabs.test.tsx",
+        "packages/react/src/components/toggle/toggle.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.test.tsx",
+        "packages/react/tsup.config.ts",
+        "react",
+        "react-server-components-support",
+        "scripts/test-storybook.mjs",
+        "server",
+        "support"
+      ],
+      "inputSig": "2ffc0399b0c55fa8f18bd2c636e31990ed9f8122d33958c86a90b4fa525007d3",
+      "concepts": [
+        "React 19 And React Server Components Ready",
+        "React Server Components",
+        "components",
+        "react",
+        "server",
+        "support"
+      ],
+      "files": [
+        "apps/playground/app/server/page.tsx",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/components/app-shell/app-shell.stories.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.tsx",
+        "packages/react-app/src/components/app-shell/index.ts",
+        "packages/react-app/src/components/charts/area-chart.test.tsx",
+        "packages/react-app/src/components/charts/area-chart.tsx",
+        "packages/react-app/src/components/charts/bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/bar-chart.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.test.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.tsx",
+        "packages/react-app/src/components/charts/chart.stories.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/chart.tsx",
+        "packages/react-app/src/components/charts/chart.types.ts",
+        "packages/react-app/src/components/charts/donut-chart.test.tsx",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/data-table/SERVER_SIDE_GUIDE.md",
+        "packages/react-app/src/components/data-table/data-table.stories.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/data-table/useTableState.test.ts",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-hooks/README.md",
+        "packages/react-hooks/src/use-id/use-id.ts",
+        "packages/react/CHANGELOG.md",
+        "packages/react/README.md",
+        "packages/react/scripts/flatten-dts.cjs",
+        "packages/react/src/components/button-group/button-group.test.tsx",
+        "packages/react/src/components/design-system/category-section.test.tsx",
+        "packages/react/src/components/design-system/design-system-utils.test.ts",
+        "packages/react/src/components/design-system/design-system-utils.ts",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/list/list.test.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.stories.tsx",
+        "packages/react/src/components/popover/popover.test.tsx",
+        "packages/react/src/components/progress/progress.test.tsx",
+        "packages/react/src/components/rating/rating.test.tsx",
+        "packages/react/src/components/resizable/resizable.test.tsx",
+        "packages/react/src/components/scroll-area/scroll-area.test.tsx",
+        "packages/react/src/components/spoiler/spoiler.test.tsx",
+        "packages/react/src/components/table/table.test.tsx",
+        "packages/react/src/components/tabs/tabs.test.tsx",
+        "packages/react/src/components/toggle/toggle.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.test.tsx",
+        "packages/react/tsup.config.ts",
+        "scripts/test-storybook.mjs"
+      ],
+      "userEdited": false
+    },
+    "features/storybook-documentation.md": {
+      "title": "Storybook Documentation",
+      "kind": "feature",
+      "summary": "Component docs and interactive stories via Storybook.",
+      "generatedAt": "2026-09-14T11:42:57.362Z",
+      "inputs": [
+        "README.md",
+        "Start Storybook To See Components In Action",
+        "Storybook, Build Storybook, Test Storybook",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "documentation",
+        "packages/react-app/src/components/charts/theme-utils.ts",
+        "packages/react-app/src/components/data-table/column-filters.test.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-filter-chips.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-skeleton.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-toolbar.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.stories.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.types.ts",
+        "packages/react-app/src/components/data-table/useTableState.test.ts",
+        "packages/react-app/src/components/data-table/useTableState.ts",
+        "packages/react-app/src/components/dnd/dnd.stories.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.test.tsx",
+        "packages/react-app/src/components/sparkline-chart/sparkline-chart.test.tsx",
+        "packages/react-hooks/src/__tests__/use-interval.test.ts",
+        "packages/react-hooks/src/__tests__/use-move.test.ts",
+        "packages/react-hooks/src/__tests__/use-pagination.test.ts",
+        "packages/react/CHANGELOG.md",
+        "packages/react/README.md",
+        "packages/react/scripts/flatten-dts.cjs",
+        "packages/react/src/components/alert-dialog/alert-dialog.test.tsx",
+        "packages/react/src/components/button-group/button-group.test.tsx",
+        "packages/react/src/components/calendar/calendar.test.tsx",
+        "packages/react/src/components/card/card.test.tsx",
+        "packages/react/src/components/card/card.tsx",
+        "packages/react/src/components/combobox/combobox-skeleton.test.tsx",
+        "packages/react/src/components/date-picker/date-picker.test.tsx",
+        "packages/react/src/components/design-system/category-section.test.tsx",
+        "packages/react/src/components/design-system/component-preview-card.test.tsx",
+        "packages/react/src/components/design-system/design-system-utils.test.ts",
+        "packages/react/src/components/design-system/design-system-utils.ts",
+        "packages/react/src/components/empty-state/empty-state-skeleton.test.tsx",
+        "packages/react/src/components/empty-state/empty-state.stories.tsx",
+        "packages/react/src/components/empty-state/empty-state.test.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/file-upload/file-upload-skeleton.test.tsx",
+        "packages/react/src/components/flex/flex.test.tsx",
+        "packages/react/src/components/grid/grid.test.tsx",
+        "packages/react/src/components/list/list.test.tsx",
+        "packages/react/src/components/list/list.tsx",
+        "packages/react/src/components/multi-select/multi-select-skeleton.test.tsx",
+        "packages/react/src/components/multi-select/multi-select.test.tsx",
+        "packages/react/src/components/radio-group/radio-group-skeleton.test.tsx",
+        "packages/react/src/components/table/table-skeleton.test.tsx",
+        "packages/react/src/components/table/table.test.tsx",
+        "packages/react/src/components/tabs/tabs.test.tsx",
+        "packages/react/src/components/toast/toast.test.tsx",
+        "storybook",
+        "storybook-documentation"
+      ],
+      "inputSig": "6048f6e3f3fa195cf149b37f613f0849a7a5b4265c25a04c886390162d3ae253",
+      "concepts": [
+        "Start Storybook To See Components In Action",
+        "Storybook, Build Storybook, Test Storybook",
+        "documentation",
+        "storybook"
+      ],
+      "files": [
+        "README.md",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "packages/react-app/src/components/charts/theme-utils.ts",
+        "packages/react-app/src/components/data-table/column-filters.test.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-filter-chips.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-skeleton.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-toolbar.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.stories.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.types.ts",
+        "packages/react-app/src/components/data-table/useTableState.test.ts",
+        "packages/react-app/src/components/data-table/useTableState.ts",
+        "packages/react-app/src/components/dnd/dnd.stories.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.test.tsx",
+        "packages/react-app/src/components/sparkline-chart/sparkline-chart.test.tsx",
+        "packages/react-hooks/src/__tests__/use-interval.test.ts",
+        "packages/react-hooks/src/__tests__/use-move.test.ts",
+        "packages/react-hooks/src/__tests__/use-pagination.test.ts",
+        "packages/react/CHANGELOG.md",
+        "packages/react/README.md",
+        "packages/react/scripts/flatten-dts.cjs",
+        "packages/react/src/components/alert-dialog/alert-dialog.test.tsx",
+        "packages/react/src/components/button-group/button-group.test.tsx",
+        "packages/react/src/components/calendar/calendar.test.tsx",
+        "packages/react/src/components/card/card.test.tsx",
+        "packages/react/src/components/card/card.tsx",
+        "packages/react/src/components/combobox/combobox-skeleton.test.tsx",
+        "packages/react/src/components/date-picker/date-picker.test.tsx",
+        "packages/react/src/components/design-system/category-section.test.tsx",
+        "packages/react/src/components/design-system/component-preview-card.test.tsx",
+        "packages/react/src/components/design-system/design-system-utils.test.ts",
+        "packages/react/src/components/design-system/design-system-utils.ts",
+        "packages/react/src/components/empty-state/empty-state-skeleton.test.tsx",
+        "packages/react/src/components/empty-state/empty-state.stories.tsx",
+        "packages/react/src/components/empty-state/empty-state.test.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/file-upload/file-upload-skeleton.test.tsx",
+        "packages/react/src/components/flex/flex.test.tsx",
+        "packages/react/src/components/grid/grid.test.tsx",
+        "packages/react/src/components/list/list.test.tsx",
+        "packages/react/src/components/list/list.tsx",
+        "packages/react/src/components/multi-select/multi-select-skeleton.test.tsx",
+        "packages/react/src/components/multi-select/multi-select.test.tsx",
+        "packages/react/src/components/radio-group/radio-group-skeleton.test.tsx",
+        "packages/react/src/components/table/table-skeleton.test.tsx",
+        "packages/react/src/components/table/table.test.tsx",
+        "packages/react/src/components/tabs/tabs.test.tsx",
+        "packages/react/src/components/toast/toast.test.tsx"
+      ],
+      "userEdited": false
+    },
+    "features/application-chrome-composites.md": {
+      "title": "Application Chrome Composites",
+      "kind": "feature",
+      "summary": "AppShell, Header, Sidebar, Footer, Navigation, and NavLink composites for full application layouts.",
+      "generatedAt": "2026-09-14T11:43:17.337Z",
+      "inputs": [
+        "Active Path`)",
+        "application",
+        "application-chrome-composites",
+        "chrome",
+        "composites",
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.tsx",
+        "packages/react-app/src/components/data-table/column-filters.test.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.test.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.tsx",
+        "packages/react-app/src/components/data-table/data-table-skeleton.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.stories.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/dnd/dnd.stories.tsx",
+        "packages/react-app/src/components/footer/footer.test.tsx",
+        "packages/react-app/src/components/footer/footer.tsx",
+        "packages/react-app/src/components/header/header-skeleton.test.tsx",
+        "packages/react-app/src/components/header/header-skeleton.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/header/header.tsx",
+        "packages/react-app/src/components/header/header.types.ts",
+        "packages/react-app/src/components/nav-link/nav-link.test.tsx",
+        "packages/react-app/src/components/nav-link/nav-link.tsx",
+        "packages/react-app/src/components/navigation/navigation-skeleton.test.tsx",
+        "packages/react-app/src/components/navigation/navigation-skeleton.tsx",
+        "packages/react-app/src/components/navigation/navigation.stories.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.tsx",
+        "packages/react-app/src/components/sidebar/__tests__/sidebar.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar-skeleton.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar-skeleton.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.stories.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.tsx",
+        "packages/react-app/src/lib/active-path.ts",
+        "packages/react/scripts/flatten-dts.cjs",
+        "packages/react/src/components/breadcrumbs/__tests__/breadcrumbs.test.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs.test.tsx",
+        "packages/react/src/components/calendar/calendar-skeleton.test.tsx",
+        "packages/react/src/components/calendar/calendar.test.tsx",
+        "packages/react/src/components/card/card-skeleton.test.tsx",
+        "packages/react/src/components/dialog/dialog-skeleton.test.tsx",
+        "packages/react/src/components/drawer/drawer-skeleton.test.tsx",
+        "packages/react/src/components/drawer/drawer.test.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.stories.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.test.tsx",
+        "packages/react/src/components/pagination/pagination.test.tsx",
+        "packages/react/src/components/password-strength-indicator/password-strength-indicator.test.tsx",
+        "packages/react/src/components/popover/popover.tsx",
+        "packages/react/src/components/skeleton/skeleton-patterns.test.tsx",
+        "packages/react/src/components/skip-to-content/skip-to-content.test.tsx",
+        "packages/react/src/components/steps/steps.test.tsx",
+        "packages/react/src/components/table/table-skeleton.test.tsx",
+        "packages/react/src/components/toolbar/toolbar.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.tsx"
+      ],
+      "inputSig": "e138c0066d2856fb00a83ea3e21ccef868fdb26ceca58388802fb55704a50573",
+      "concepts": [
+        "Active Path`)",
+        "application",
+        "chrome",
+        "composites"
+      ],
+      "files": [
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/app-shell/app-shell.tsx",
+        "packages/react-app/src/components/data-table/column-filters.test.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.test.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.tsx",
+        "packages/react-app/src/components/data-table/data-table-skeleton.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.stories.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/dnd/dnd.stories.tsx",
+        "packages/react-app/src/components/footer/footer.test.tsx",
+        "packages/react-app/src/components/footer/footer.tsx",
+        "packages/react-app/src/components/header/header-skeleton.test.tsx",
+        "packages/react-app/src/components/header/header-skeleton.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/header/header.tsx",
+        "packages/react-app/src/components/header/header.types.ts",
+        "packages/react-app/src/components/nav-link/nav-link.test.tsx",
+        "packages/react-app/src/components/nav-link/nav-link.tsx",
+        "packages/react-app/src/components/navigation/navigation-skeleton.test.tsx",
+        "packages/react-app/src/components/navigation/navigation-skeleton.tsx",
+        "packages/react-app/src/components/navigation/navigation.stories.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.tsx",
+        "packages/react-app/src/components/sidebar/__tests__/sidebar.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar-skeleton.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar-skeleton.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.stories.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.tsx",
+        "packages/react-app/src/lib/active-path.ts",
+        "packages/react/scripts/flatten-dts.cjs",
+        "packages/react/src/components/breadcrumbs/__tests__/breadcrumbs.test.tsx",
+        "packages/react/src/components/breadcrumbs/breadcrumbs.test.tsx",
+        "packages/react/src/components/calendar/calendar-skeleton.test.tsx",
+        "packages/react/src/components/calendar/calendar.test.tsx",
+        "packages/react/src/components/card/card-skeleton.test.tsx",
+        "packages/react/src/components/dialog/dialog-skeleton.test.tsx",
+        "packages/react/src/components/drawer/drawer-skeleton.test.tsx",
+        "packages/react/src/components/drawer/drawer.test.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.stories.tsx",
+        "packages/react/src/components/navigation-menu/navigation-menu.test.tsx",
+        "packages/react/src/components/pagination/pagination.test.tsx",
+        "packages/react/src/components/password-strength-indicator/password-strength-indicator.test.tsx",
+        "packages/react/src/components/popover/popover.tsx",
+        "packages/react/src/components/skeleton/skeleton-patterns.test.tsx",
+        "packages/react/src/components/skip-to-content/skip-to-content.test.tsx",
+        "packages/react/src/components/steps/steps.test.tsx",
+        "packages/react/src/components/table/table-skeleton.test.tsx",
+        "packages/react/src/components/toolbar/toolbar.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.tsx"
+      ],
+      "userEdited": false
+    },
+    "features/charts.md": {
+      "title": "Charts",
+      "kind": "feature",
+      "summary": "Area, Bar, Line, Donut, RadialBar, and Sparkline chart components for data visualization.",
+      "generatedAt": "2026-09-14T11:43:35.761Z",
+      "inputs": [
+        "**Charts** — `AreaChart`, `BarChart`, `LineChart`, `DonutChart`, `RadialBarChart`",
+        "apps/playground/app/page.tsx",
+        "charts",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "packages/react-app/src/components/charts/area-chart.test.tsx",
+        "packages/react-app/src/components/charts/area-chart.tsx",
+        "packages/react-app/src/components/charts/bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/bar-chart.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.test.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.tsx",
+        "packages/react-app/src/components/charts/chart.stories.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/chart.tsx",
+        "packages/react-app/src/components/charts/chart.types.ts",
+        "packages/react-app/src/components/charts/donut-chart.test.tsx",
+        "packages/react-app/src/components/charts/donut-chart.tsx",
+        "packages/react-app/src/components/charts/line-chart.test.tsx",
+        "packages/react-app/src/components/charts/line-chart.tsx",
+        "packages/react-app/src/components/charts/radial-bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/radial-bar-chart.tsx",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/charts/theme-utils.ts",
+        "packages/react-app/src/components/charts/use-theme-aware-chart.test.ts",
+        "packages/react-app/src/components/charts/use-theme-aware-chart.ts",
+        "packages/react-app/src/components/charts/utils.test.ts",
+        "packages/react-app/src/components/charts/utils.ts",
+        "packages/react-app/src/components/data-table/data-table-skeleton.test.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/sparkline-chart/sparkline-chart.stories.tsx",
+        "packages/react-app/src/components/sparkline-chart/sparkline-chart.test.tsx",
+        "packages/react-app/src/components/sparkline-chart/sparkline-chart.tsx",
+        "packages/react-hooks/src/use-scroll-lock/use-scroll-lock.ts",
+        "packages/react/src/components/burger/burger.tsx",
+        "packages/react/src/components/card/card-skeleton.test.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.stories.tsx",
+        "packages/react/src/components/file-upload/file-upload.test.tsx",
+        "packages/react/src/components/list/list-skeleton.test.tsx",
+        "packages/react/src/components/list/list-skeleton.tsx",
+        "packages/react/src/components/list/list.tsx",
+        "packages/react/src/components/progress/progress.test.tsx",
+        "packages/react/src/components/progress/progress.tsx",
+        "packages/react/src/components/progress/progress.types.ts",
+        "packages/react/src/components/scroll-area/scroll-area.stories.tsx",
+        "packages/react/src/components/scroll-area/scroll-area.test.tsx",
+        "packages/react/src/components/scroll-area/scroll-area.tsx",
+        "packages/react/src/components/skeleton/skeleton-patterns.test.tsx",
+        "packages/react/src/components/skeleton/skeleton-patterns.tsx",
+        "packages/react/src/components/steps/steps.test.tsx",
+        "packages/react/src/components/tabs/tabs.stories.tsx",
+        "packages/react/src/components/tabs/tabs.test.tsx",
+        "packages/react/src/components/timeline/timeline.test.tsx"
+      ],
+      "inputSig": "c8abdd4df896626c9aeae10963d09368671339a0f891e643049c10568bbd6b0d",
+      "concepts": [
+        "**Charts** — `AreaChart`, `BarChart`, `LineChart`, `DonutChart`, `RadialBarChart`",
+        "charts"
+      ],
+      "files": [
+        "apps/playground/app/page.tsx",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "packages/react-app/src/components/charts/area-chart.test.tsx",
+        "packages/react-app/src/components/charts/area-chart.tsx",
+        "packages/react-app/src/components/charts/bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/bar-chart.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.test.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.tsx",
+        "packages/react-app/src/components/charts/chart.stories.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/chart.tsx",
+        "packages/react-app/src/components/charts/chart.types.ts",
+        "packages/react-app/src/components/charts/donut-chart.test.tsx",
+        "packages/react-app/src/components/charts/donut-chart.tsx",
+        "packages/react-app/src/components/charts/line-chart.test.tsx",
+        "packages/react-app/src/components/charts/line-chart.tsx",
+        "packages/react-app/src/components/charts/radial-bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/radial-bar-chart.tsx",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/charts/theme-utils.ts",
+        "packages/react-app/src/components/charts/use-theme-aware-chart.test.ts",
+        "packages/react-app/src/components/charts/use-theme-aware-chart.ts",
+        "packages/react-app/src/components/charts/utils.test.ts",
+        "packages/react-app/src/components/charts/utils.ts",
+        "packages/react-app/src/components/data-table/data-table-skeleton.test.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/sparkline-chart/sparkline-chart.stories.tsx",
+        "packages/react-app/src/components/sparkline-chart/sparkline-chart.test.tsx",
+        "packages/react-app/src/components/sparkline-chart/sparkline-chart.tsx",
+        "packages/react-hooks/src/use-scroll-lock/use-scroll-lock.ts",
+        "packages/react/src/components/burger/burger.tsx",
+        "packages/react/src/components/card/card-skeleton.test.tsx",
+        "packages/react/src/components/dropdown-menu/dropdown-menu.stories.tsx",
+        "packages/react/src/components/file-upload/file-upload.test.tsx",
+        "packages/react/src/components/list/list-skeleton.test.tsx",
+        "packages/react/src/components/list/list-skeleton.tsx",
+        "packages/react/src/components/list/list.tsx",
+        "packages/react/src/components/progress/progress.test.tsx",
+        "packages/react/src/components/progress/progress.tsx",
+        "packages/react/src/components/progress/progress.types.ts",
+        "packages/react/src/components/scroll-area/scroll-area.stories.tsx",
+        "packages/react/src/components/scroll-area/scroll-area.test.tsx",
+        "packages/react/src/components/scroll-area/scroll-area.tsx",
+        "packages/react/src/components/skeleton/skeleton-patterns.test.tsx",
+        "packages/react/src/components/skeleton/skeleton-patterns.tsx",
+        "packages/react/src/components/steps/steps.test.tsx",
+        "packages/react/src/components/tabs/tabs.stories.tsx",
+        "packages/react/src/components/tabs/tabs.test.tsx",
+        "packages/react/src/components/timeline/timeline.test.tsx"
+      ],
+      "userEdited": false
+    },
+    "features/core-ui-component-library.md": {
+      "title": "Core UI Component Library",
+      "kind": "feature",
+      "summary": "~90 accessible, production-ready primitives built on Radix UI and Tailwind CSS (buttons, dialogs, selects, etc.).",
+      "generatedAt": "2026-09-14T11:43:57.525Z",
+      "inputs": [
+        "React Dialog",
+        "component",
+        "core",
+        "core-ui-component-library",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "library",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/chart.tsx",
+        "packages/react-app/src/components/dnd/dnd.test.tsx",
+        "packages/react-app/src/components/dnd/dnd.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card-skeleton.test.tsx",
+        "packages/react-app/src/components/session-card/session-card-skeleton.test.tsx",
+        "packages/react-app/src/components/session-card/session-card.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.test.tsx",
+        "packages/react-hooks/README.md",
+        "packages/react-hooks/src/use-id/use-id.ts",
+        "packages/react/README.md",
+        "packages/react/scripts/flatten-dts.cjs",
+        "packages/react/src/__tests__/component-markers.test.tsx",
+        "packages/react/src/components/alert-dialog/alert-dialog.stories.tsx",
+        "packages/react/src/components/alert-dialog/alert-dialog.test.tsx",
+        "packages/react/src/components/alert-dialog/alert-dialog.tsx",
+        "packages/react/src/components/alert/alert-skeleton.test.tsx",
+        "packages/react/src/components/alert/alert.test.tsx",
+        "packages/react/src/components/alert/alert.tsx",
+        "packages/react/src/components/banner/banner-skeleton.test.tsx",
+        "packages/react/src/components/card/card-skeleton.test.tsx",
+        "packages/react/src/components/command/command.stories.tsx",
+        "packages/react/src/components/command/command.test.tsx",
+        "packages/react/src/components/design-system/category-section.test.tsx",
+        "packages/react/src/components/design-system/component-preview-card.test.tsx",
+        "packages/react/src/components/design-system/design-system-utils.test.ts",
+        "packages/react/src/components/design-system/design-system-utils.ts",
+        "packages/react/src/components/design-system/overview.test.tsx",
+        "packages/react/src/components/design-system/overview.tsx",
+        "packages/react/src/components/dialog/dialog-skeleton.test.tsx",
+        "packages/react/src/components/dialog/dialog-skeleton.tsx",
+        "packages/react/src/components/dialog/dialog.stories.tsx",
+        "packages/react/src/components/dialog/dialog.test.tsx",
+        "packages/react/src/components/dialog/dialog.tsx",
+        "packages/react/src/components/drawer/drawer-skeleton.test.tsx",
+        "packages/react/src/components/empty-state/empty-state.test.tsx",
+        "packages/react/src/components/empty-state/empty-state.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.tsx",
+        "packages/react/src/components/error-boundary/error-fallback.test.tsx",
+        "packages/react/src/components/file-upload/file-upload.test.tsx",
+        "packages/react/src/components/spoiler/spoiler.test.tsx",
+        "scripts/check-package-boundaries.mjs"
+      ],
+      "inputSig": "6c624dbb2b043c45eca7907bc6b3f8f478a4b4746ff257fed439400b95c187cd",
+      "concepts": [
+        "React Dialog",
+        "component",
+        "core",
+        "library"
+      ],
+      "files": [
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/chart.tsx",
+        "packages/react-app/src/components/dnd/dnd.test.tsx",
+        "packages/react-app/src/components/dnd/dnd.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card-skeleton.test.tsx",
+        "packages/react-app/src/components/session-card/session-card-skeleton.test.tsx",
+        "packages/react-app/src/components/session-card/session-card.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.test.tsx",
+        "packages/react-hooks/README.md",
+        "packages/react-hooks/src/use-id/use-id.ts",
+        "packages/react/README.md",
+        "packages/react/scripts/flatten-dts.cjs",
+        "packages/react/src/__tests__/component-markers.test.tsx",
+        "packages/react/src/components/alert-dialog/alert-dialog.stories.tsx",
+        "packages/react/src/components/alert-dialog/alert-dialog.test.tsx",
+        "packages/react/src/components/alert-dialog/alert-dialog.tsx",
+        "packages/react/src/components/alert/alert-skeleton.test.tsx",
+        "packages/react/src/components/alert/alert.test.tsx",
+        "packages/react/src/components/alert/alert.tsx",
+        "packages/react/src/components/banner/banner-skeleton.test.tsx",
+        "packages/react/src/components/card/card-skeleton.test.tsx",
+        "packages/react/src/components/command/command.stories.tsx",
+        "packages/react/src/components/command/command.test.tsx",
+        "packages/react/src/components/design-system/category-section.test.tsx",
+        "packages/react/src/components/design-system/component-preview-card.test.tsx",
+        "packages/react/src/components/design-system/design-system-utils.test.ts",
+        "packages/react/src/components/design-system/design-system-utils.ts",
+        "packages/react/src/components/design-system/overview.test.tsx",
+        "packages/react/src/components/design-system/overview.tsx",
+        "packages/react/src/components/dialog/dialog-skeleton.test.tsx",
+        "packages/react/src/components/dialog/dialog-skeleton.tsx",
+        "packages/react/src/components/dialog/dialog.stories.tsx",
+        "packages/react/src/components/dialog/dialog.test.tsx",
+        "packages/react/src/components/dialog/dialog.tsx",
+        "packages/react/src/components/drawer/drawer-skeleton.test.tsx",
+        "packages/react/src/components/empty-state/empty-state.test.tsx",
+        "packages/react/src/components/empty-state/empty-state.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/error-boundary/error-boundary.tsx",
+        "packages/react/src/components/error-boundary/error-fallback.test.tsx",
+        "packages/react/src/components/file-upload/file-upload.test.tsx",
+        "packages/react/src/components/spoiler/spoiler.test.tsx",
+        "scripts/check-package-boundaries.mjs"
+      ],
+      "userEdited": false
+    },
+    "features/react-hooks-collection.md": {
+      "title": "React Hooks Collection",
+      "kind": "feature",
+      "summary": "37 SSR-safe, React 19 typed hooks covering state, debounce/timing, DOM, and browser APIs.",
+      "generatedAt": "2026-09-14T11:44:19.970Z",
+      "inputs": [
+        "37 Reusable React Hooks For Building Modern Web Applications",
+        "collection",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "hooks",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/chart.tsx",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-hooks/CHANGELOG.md",
+        "packages/react-hooks/EXAMPLES.md",
+        "packages/react-hooks/README.md",
+        "packages/react-hooks/biome.json",
+        "packages/react-hooks/package.json",
+        "packages/react-hooks/src/__tests__/setup.ts",
+        "packages/react-hooks/src/__tests__/use-click-outside.test.ts",
+        "packages/react-hooks/src/__tests__/use-clipboard.test.ts",
+        "packages/react-hooks/src/__tests__/use-color-scheme.test.ts",
+        "packages/react-hooks/src/__tests__/use-counter.test.ts",
+        "packages/react-hooks/src/__tests__/use-debounce.test.ts",
+        "packages/react-hooks/src/__tests__/use-debounced-value.test.ts",
+        "packages/react-hooks/src/__tests__/use-disclosure.test.ts",
+        "packages/react-hooks/src/__tests__/use-document-title.test.ts",
+        "packages/react-hooks/src/__tests__/use-element-size.test.ts",
+        "packages/react-hooks/src/__tests__/use-focus-trap.test.tsx",
+        "packages/react-hooks/src/__tests__/use-hotkeys.test.tsx",
+        "packages/react-hooks/src/__tests__/use-hover.test.ts",
+        "packages/react-hooks/src/__tests__/use-id.test.ts",
+        "packages/react-hooks/src/__tests__/use-idle.test.ts",
+        "packages/react-hooks/src/__tests__/use-intersection.test.ts",
+        "packages/react-hooks/src/__tests__/use-interval.test.ts",
+        "packages/react-hooks/src/__tests__/use-isomorphic-effect.test.ts",
+        "packages/react-hooks/src/__tests__/use-list-state.test.ts",
+        "packages/react-hooks/src/__tests__/use-local-storage.test.ts",
+        "packages/react-hooks/src/__tests__/use-media-query.test.ts",
+        "packages/react-hooks/src/__tests__/use-merged-ref.test.ts",
+        "packages/react-hooks/src/__tests__/use-mounted.test.tsx",
+        "packages/react-hooks/src/__tests__/use-mouse.test.ts",
+        "packages/react-hooks/src/__tests__/use-move.test.ts",
+        "packages/react-hooks/src/__tests__/use-network.test.ts",
+        "packages/react-hooks/src/__tests__/use-os.test.ts",
+        "packages/react-hooks/src/__tests__/use-pagination.test.ts",
+        "packages/react-hooks/src/__tests__/use-previous.test.ts",
+        "packages/react-hooks/src/__tests__/use-reduced-motion.test.ts",
+        "packages/react-hooks/src/__tests__/use-scroll-lock.test.tsx",
+        "packages/react-hooks/src/__tests__/use-timeout.test.ts",
+        "packages/react-hooks/src/use-id/use-id.ts",
+        "packages/react/README.md",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/rating/rating.test.tsx",
+        "packages/react/src/components/spoiler/spoiler.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.test.tsx",
+        "react",
+        "react-hooks-collection"
+      ],
+      "inputSig": "576b7eaf0d6dc31c38ebe15365840462b65f8407cc3b2fd9f7f48576a8a5172f",
+      "concepts": [
+        "37 Reusable React Hooks For Building Modern Web Applications",
+        "collection",
+        "hooks",
+        "react"
+      ],
+      "files": [
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/chart.tsx",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-hooks/CHANGELOG.md",
+        "packages/react-hooks/EXAMPLES.md",
+        "packages/react-hooks/README.md",
+        "packages/react-hooks/biome.json",
+        "packages/react-hooks/package.json",
+        "packages/react-hooks/src/__tests__/setup.ts",
+        "packages/react-hooks/src/__tests__/use-click-outside.test.ts",
+        "packages/react-hooks/src/__tests__/use-clipboard.test.ts",
+        "packages/react-hooks/src/__tests__/use-color-scheme.test.ts",
+        "packages/react-hooks/src/__tests__/use-counter.test.ts",
+        "packages/react-hooks/src/__tests__/use-debounce.test.ts",
+        "packages/react-hooks/src/__tests__/use-debounced-value.test.ts",
+        "packages/react-hooks/src/__tests__/use-disclosure.test.ts",
+        "packages/react-hooks/src/__tests__/use-document-title.test.ts",
+        "packages/react-hooks/src/__tests__/use-element-size.test.ts",
+        "packages/react-hooks/src/__tests__/use-focus-trap.test.tsx",
+        "packages/react-hooks/src/__tests__/use-hotkeys.test.tsx",
+        "packages/react-hooks/src/__tests__/use-hover.test.ts",
+        "packages/react-hooks/src/__tests__/use-id.test.ts",
+        "packages/react-hooks/src/__tests__/use-idle.test.ts",
+        "packages/react-hooks/src/__tests__/use-intersection.test.ts",
+        "packages/react-hooks/src/__tests__/use-interval.test.ts",
+        "packages/react-hooks/src/__tests__/use-isomorphic-effect.test.ts",
+        "packages/react-hooks/src/__tests__/use-list-state.test.ts",
+        "packages/react-hooks/src/__tests__/use-local-storage.test.ts",
+        "packages/react-hooks/src/__tests__/use-media-query.test.ts",
+        "packages/react-hooks/src/__tests__/use-merged-ref.test.ts",
+        "packages/react-hooks/src/__tests__/use-mounted.test.tsx",
+        "packages/react-hooks/src/__tests__/use-mouse.test.ts",
+        "packages/react-hooks/src/__tests__/use-move.test.ts",
+        "packages/react-hooks/src/__tests__/use-network.test.ts",
+        "packages/react-hooks/src/__tests__/use-os.test.ts",
+        "packages/react-hooks/src/__tests__/use-pagination.test.ts",
+        "packages/react-hooks/src/__tests__/use-previous.test.ts",
+        "packages/react-hooks/src/__tests__/use-reduced-motion.test.ts",
+        "packages/react-hooks/src/__tests__/use-scroll-lock.test.tsx",
+        "packages/react-hooks/src/__tests__/use-timeout.test.ts",
+        "packages/react-hooks/src/use-id/use-id.ts",
+        "packages/react/README.md",
+        "packages/react/src/components/error-boundary/error-boundary.test.tsx",
+        "packages/react/src/components/rating/rating.test.tsx",
+        "packages/react/src/components/spoiler/spoiler.test.tsx",
+        "packages/react/src/components/tree-view/tree-view.test.tsx"
+      ],
+      "userEdited": false
+    },
+    "features/token-driven-theming.md": {
+      "title": "Token-Driven Theming",
+      "kind": "feature",
+      "summary": "Whole-CSS-color custom-property token system with light/dark/high-contrast themes, overridable on :root and dark selectors, Tailwind not required.",
+      "generatedAt": "2026-09-14T11:44:41.292Z",
+      "inputs": [
+        "README.md",
+        "THEMING.md",
+        "You Do Not Need Tailwind To Use Kala Ui.",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "driven",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/session-card/session-card.test.tsx",
+        "packages/react-hooks/README.md",
+        "packages/react/README.md",
+        "packages/react/TOKEN_SPEC.md",
+        "packages/react/src/__tests__/component-markers.test.tsx",
+        "packages/react/src/__tests__/utils.test.ts",
+        "packages/react/src/components/button/button.test.tsx",
+        "packages/react/src/components/empty-state/empty-state.test.tsx",
+        "packages/react/src/components/error-boundary/error-fallback.test.tsx",
+        "packages/react/src/components/heading/heading.test.tsx",
+        "packages/react/src/components/input/input.test.tsx",
+        "packages/react/src/components/resizable/resizable.test.tsx",
+        "packages/react/src/components/tabs/tabs.test.tsx",
+        "packages/react/src/components/toast/toast.test.tsx",
+        "packages/react/src/styles/tokens.test.ts",
+        "packages/react/storybook-static/assets/theming-BgT2grXK.js",
+        "scripts/add-kala-markers.mjs",
+        "theming",
+        "token",
+        "token-driven-theming"
+      ],
+      "inputSig": "5d7044753f79fa0919b5d237016ed80c3570c24f1450fd88177bd8321349a381",
+      "concepts": [
+        "You Do Not Need Tailwind To Use Kala Ui.",
+        "driven",
+        "theming",
+        "token"
+      ],
+      "files": [
+        "README.md",
+        "THEMING.md",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/session-card/session-card.test.tsx",
+        "packages/react-hooks/README.md",
+        "packages/react/README.md",
+        "packages/react/TOKEN_SPEC.md",
+        "packages/react/src/__tests__/component-markers.test.tsx",
+        "packages/react/src/__tests__/utils.test.ts",
+        "packages/react/src/components/button/button.test.tsx",
+        "packages/react/src/components/empty-state/empty-state.test.tsx",
+        "packages/react/src/components/error-boundary/error-fallback.test.tsx",
+        "packages/react/src/components/heading/heading.test.tsx",
+        "packages/react/src/components/input/input.test.tsx",
+        "packages/react/src/components/resizable/resizable.test.tsx",
+        "packages/react/src/components/tabs/tabs.test.tsx",
+        "packages/react/src/components/toast/toast.test.tsx",
+        "packages/react/src/styles/tokens.test.ts",
+        "packages/react/storybook-static/assets/theming-BgT2grXK.js",
+        "scripts/add-kala-markers.mjs"
+      ],
+      "userEdited": false
+    },
+    "development.md": {
+      "title": "Development guide",
+      "kind": "development",
+      "summary": "Repository layout, conventions, and contribution surfaces.",
+      "generatedAt": "2026-09-14T11:45:05.686Z",
+      "inputs": [
+        "CONTRIBUTING.md",
+        "THEMING.md",
+        "development",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "docs/RELEASING.md",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/src/components/data-table/SERVER_SIDE_GUIDE.md",
+        "packages/react-hooks/CHANGELOG.md",
+        "packages/react-hooks/EXAMPLES.md",
+        "packages/react/CHANGELOG.md",
+        "packages/react/TOKEN_SPEC.md"
+      ],
+      "inputSig": "2d8f68b03be1a020da612390ef781ce0d87d26b21eb96911ab04e9d76b50133e",
+      "concepts": [
+        "conventions",
+        "development",
+        "repository layout"
+      ],
+      "files": [
+        "CONTRIBUTING.md",
+        "THEMING.md",
+        "apps/playground/package.json",
+        "docs/AUDIT-2026-08-27.md",
+        "docs/MIGRATION-0.1.md",
+        "docs/RELEASING.md",
+        "package.json",
+        "packages/react-app/CHANGELOG.md",
+        "packages/react-app/package.json",
+        "packages/react-app/src/components/data-table/SERVER_SIDE_GUIDE.md",
+        "packages/react-hooks/CHANGELOG.md",
+        "packages/react-hooks/EXAMPLES.md",
+        "packages/react-hooks/package.json",
+        "packages/react/CHANGELOG.md",
+        "packages/react/TOKEN_SPEC.md",
+        "packages/react/package.json"
+      ],
+      "userEdited": false
+    },
+    "testing.md": {
+      "title": "Testing strategy",
+      "kind": "testing",
+      "summary": "Test commands, test files, and validation surfaces.",
+      "generatedAt": "2026-09-14T11:45:26.113Z",
+      "inputs": [
+        "package.json",
+        "packages/react-app/package.json",
+        "packages/react-app/src/__tests__/a11y.test.tsx",
+        "packages/react-app/src/__tests__/setup.ts",
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/charts/area-chart.test.tsx",
+        "packages/react-app/src/components/charts/bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.test.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/donut-chart.test.tsx",
+        "packages/react-app/src/components/charts/line-chart.test.tsx",
+        "packages/react-app/src/components/charts/radial-bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/charts/use-theme-aware-chart.test.ts",
+        "packages/react-app/src/components/charts/utils.test.ts",
+        "packages/react-app/src/components/data-table/column-filters.test.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-filter-chips.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-skeleton.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-toolbar.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/data-table/pagination-nav.test.tsx",
+        "packages/react-app/src/components/data-table/useTableState.test.ts",
+        "packages/react-app/src/components/dnd/dnd.test.tsx",
+        "packages/react-app/src/components/footer/footer.test.tsx",
+        "packages/react-app/src/components/header/header-skeleton.test.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card-skeleton.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card.test.tsx",
+        "packages/react-app/src/components/nav-link/nav-link.test.tsx",
+        "packages/react-app/src/components/navigation/navigation-skeleton.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-app/src/components/session-card/session-card-skeleton.test.tsx",
+        "packages/react-app/src/components/session-card/session-card.test.tsx",
+        "packages/react-app/src/components/sidebar/__tests__/sidebar.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar-skeleton.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.test.tsx",
+        "packages/react-app/src/components/social-login-button/social-login-button.test.tsx",
+        "packages/react-app/src/components/social-login-buttons/social-login-buttons.test.tsx",
+        "packages/react-app/src/components/sparkline-chart/sparkline-chart.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/__tests__/user-menu-dropdown.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.test.tsx",
+        "packages/react-app/vitest.config.ts",
+        "packages/react-hooks/package.json",
+        "packages/react-hooks/src/__tests__/setup.ts",
+        "packages/react-hooks/src/__tests__/use-click-outside.test.ts",
+        "packages/react-hooks/src/__tests__/use-clipboard.test.ts",
+        "packages/react-hooks/src/__tests__/use-color-scheme.test.ts",
+        "packages/react-hooks/src/__tests__/use-counter.test.ts",
+        "packages/react-hooks/src/__tests__/use-debounce.test.ts",
+        "packages/react-hooks/src/__tests__/use-debounced-value.test.ts",
+        "packages/react-hooks/src/__tests__/use-disclosure.test.ts",
+        "packages/react-hooks/src/__tests__/use-document-title.test.ts",
+        "packages/react-hooks/src/__tests__/use-element-size.test.ts",
+        "packages/react-hooks/src/__tests__/use-focus-trap.test.tsx",
+        "packages/react-hooks/src/__tests__/use-hotkeys.test.tsx",
+        "packages/react-hooks/src/__tests__/use-hover.test.ts",
+        "packages/react-hooks/src/__tests__/use-id.test.ts",
+        "packages/react-hooks/src/__tests__/use-idle.test.ts",
+        "packages/react-hooks/src/__tests__/use-intersection.test.ts",
+        "packages/react-hooks/src/__tests__/use-interval.test.ts",
+        "packages/react-hooks/src/__tests__/use-isomorphic-effect.test.ts",
+        "packages/react-hooks/src/__tests__/use-list-state.test.ts",
+        "packages/react-hooks/src/__tests__/use-local-storage.test.ts",
+        "packages/react-hooks/src/__tests__/use-media-query.test.ts",
+        "packages/react-hooks/src/__tests__/use-merged-ref.test.ts",
+        "packages/react-hooks/src/__tests__/use-mounted.test.tsx",
+        "packages/react-hooks/src/__tests__/use-mouse.test.ts",
+        "packages/react-hooks/src/__tests__/use-move.test.ts",
+        "packages/react-hooks/src/__tests__/use-network.test.ts",
+        "packages/react-hooks/src/__tests__/use-os.test.ts",
+        "packages/react-hooks/src/__tests__/use-pagination.test.ts",
+        "packages/react-hooks/src/__tests__/use-previous.test.ts",
+        "packages/react-hooks/src/__tests__/use-reduced-motion.test.ts",
+        "packages/react-hooks/src/__tests__/use-scroll-lock.test.tsx",
+        "packages/react-hooks/src/__tests__/use-timeout.test.ts",
+        "packages/react-hooks/src/__tests__/use-toggle.test.ts",
+        "packages/react-hooks/src/__tests__/use-uncontrolled.test.ts",
+        "packages/react-hooks/src/__tests__/use-viewport-size.test.ts",
+        "packages/react-hooks/src/__tests__/use-window-event.test.ts",
+        "packages/react-hooks/src/__tests__/use-window-scroll.test.ts",
+        "packages/react-hooks/vitest.config.ts",
+        "packages/react/package.json",
+        "test",
+        "test-storybook",
+        "test:coverage",
+        "test:tokens",
+        "test:watch",
+        "testing"
+      ],
+      "inputSig": "421ed9867a115ca49d93e07cc7cf334d990a3fb8c8516f2163297776a3077f12",
+      "concepts": [
+        "testing",
+        "validation"
+      ],
+      "files": [
+        "package.json",
+        "packages/react-app/package.json",
+        "packages/react-app/src/__tests__/a11y.test.tsx",
+        "packages/react-app/src/__tests__/setup.ts",
+        "packages/react-app/src/components/app-shell/app-shell.test.tsx",
+        "packages/react-app/src/components/charts/area-chart.test.tsx",
+        "packages/react-app/src/components/charts/bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/chart-skeleton.test.tsx",
+        "packages/react-app/src/components/charts/chart.test.tsx",
+        "packages/react-app/src/components/charts/donut-chart.test.tsx",
+        "packages/react-app/src/components/charts/line-chart.test.tsx",
+        "packages/react-app/src/components/charts/radial-bar-chart.test.tsx",
+        "packages/react-app/src/components/charts/theme-utils.test.ts",
+        "packages/react-app/src/components/charts/use-theme-aware-chart.test.ts",
+        "packages/react-app/src/components/charts/utils.test.ts",
+        "packages/react-app/src/components/data-table/column-filters.test.tsx",
+        "packages/react-app/src/components/data-table/column-header-filter.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-filter-chips.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-skeleton.test.tsx",
+        "packages/react-app/src/components/data-table/data-table-toolbar.test.tsx",
+        "packages/react-app/src/components/data-table/data-table.test.tsx",
+        "packages/react-app/src/components/data-table/pagination-nav.test.tsx",
+        "packages/react-app/src/components/data-table/useTableState.test.ts",
+        "packages/react-app/src/components/dnd/dnd.test.tsx",
+        "packages/react-app/src/components/footer/footer.test.tsx",
+        "packages/react-app/src/components/header/header-skeleton.test.tsx",
+        "packages/react-app/src/components/header/header.test.tsx",
+        "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card-skeleton.test.tsx",
+        "packages/react-app/src/components/metric-card/metric-card.test.tsx",
+        "packages/react-app/src/components/nav-link/nav-link.test.tsx",
+        "packages/react-app/src/components/navigation/navigation-skeleton.test.tsx",
+        "packages/react-app/src/components/navigation/navigation.test.tsx",
+        "packages/react-app/src/components/session-card/session-card-skeleton.test.tsx",
+        "packages/react-app/src/components/session-card/session-card.test.tsx",
+        "packages/react-app/src/components/sidebar/__tests__/sidebar.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar-skeleton.test.tsx",
+        "packages/react-app/src/components/sidebar/sidebar.test.tsx",
+        "packages/react-app/src/components/social-login-button/social-login-button.test.tsx",
+        "packages/react-app/src/components/social-login-buttons/social-login-buttons.test.tsx",
+        "packages/react-app/src/components/sparkline-chart/sparkline-chart.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/__tests__/user-menu-dropdown.test.tsx",
+        "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.test.tsx",
+        "packages/react-app/vitest.config.ts",
+        "packages/react-hooks/package.json",
+        "packages/react-hooks/src/__tests__/setup.ts",
+        "packages/react-hooks/src/__tests__/use-click-outside.test.ts",
+        "packages/react-hooks/src/__tests__/use-clipboard.test.ts",
+        "packages/react-hooks/src/__tests__/use-color-scheme.test.ts",
+        "packages/react-hooks/src/__tests__/use-counter.test.ts",
+        "packages/react-hooks/src/__tests__/use-debounce.test.ts",
+        "packages/react-hooks/src/__tests__/use-debounced-value.test.ts",
+        "packages/react-hooks/src/__tests__/use-disclosure.test.ts",
+        "packages/react-hooks/src/__tests__/use-document-title.test.ts",
+        "packages/react-hooks/src/__tests__/use-element-size.test.ts",
+        "packages/react-hooks/src/__tests__/use-focus-trap.test.tsx",
+        "packages/react-hooks/src/__tests__/use-hotkeys.test.tsx",
+        "packages/react-hooks/src/__tests__/use-hover.test.ts",
+        "packages/react-hooks/src/__tests__/use-id.test.ts",
+        "packages/react-hooks/src/__tests__/use-idle.test.ts",
+        "packages/react-hooks/src/__tests__/use-intersection.test.ts",
+        "packages/react-hooks/src/__tests__/use-interval.test.ts",
+        "packages/react-hooks/src/__tests__/use-isomorphic-effect.test.ts",
+        "packages/react-hooks/src/__tests__/use-list-state.test.ts",
+        "packages/react-hooks/src/__tests__/use-local-storage.test.ts",
+        "packages/react-hooks/src/__tests__/use-media-query.test.ts",
+        "packages/react-hooks/src/__tests__/use-merged-ref.test.ts",
+        "packages/react-hooks/src/__tests__/use-mounted.test.tsx",
+        "packages/react-hooks/src/__tests__/use-mouse.test.ts",
+        "packages/react-hooks/src/__tests__/use-move.test.ts",
+        "packages/react-hooks/src/__tests__/use-network.test.ts",
+        "packages/react-hooks/src/__tests__/use-os.test.ts",
+        "packages/react-hooks/src/__tests__/use-pagination.test.ts",
+        "packages/react-hooks/src/__tests__/use-previous.test.ts",
+        "packages/react-hooks/src/__tests__/use-reduced-motion.test.ts",
+        "packages/react-hooks/src/__tests__/use-scroll-lock.test.tsx",
+        "packages/react-hooks/src/__tests__/use-timeout.test.ts",
+        "packages/react-hooks/src/__tests__/use-toggle.test.ts",
+        "packages/react-hooks/src/__tests__/use-uncontrolled.test.ts",
+        "packages/react-hooks/src/__tests__/use-viewport-size.test.ts",
+        "packages/react-hooks/src/__tests__/use-window-event.test.ts",
+        "packages/react-hooks/src/__tests__/use-window-scroll.test.ts",
+        "packages/react-hooks/vitest.config.ts",
+        "packages/react/package.json"
+      ],
+      "userEdited": false
+    },
+    "glossary.md": {
+      "title": "Glossary",
+      "kind": "glossary",
+      "summary": "Domain language and key implementation terms.",
+      "generatedAt": "2026-09-14T11:45:48.976Z",
+      "inputs": [
+        "Application",
+        "Charts",
+        "Chrome",
+        "Collection",
+        "Component",
+        "Components",
+        "Composites",
+        "Controls",
+        "Core",
+        "Dark",
+        "Documentation",
+        "Driven",
+        "Form",
+        "Hooks",
+        "Identification",
+        "Layout",
+        "Library",
+        "Menus",
+        "Migrations",
+        "Mode",
+        "Navigation",
+        "Overlays",
+        "Playground",
+        "Primitives",
+        "React",
+        "Server",
+        "Storybook",
+        "Support",
+        "Switching",
+        "Theme",
+        "Theming",
+        "Token"
+      ],
+      "inputSig": "0627f0126a9e9a704e3524b4cb5e9acfc78f109ebb69cb83d0fd7600a2241d43",
+      "concepts": [
+        "Application",
+        "Charts",
+        "Chrome",
+        "Collection",
+        "Component",
+        "Components",
+        "Composites",
+        "Controls",
+        "Core",
+        "Dark",
+        "Documentation",
+        "Driven",
+        "Form",
+        "Hooks",
+        "Identification",
+        "Layout",
+        "Library",
+        "Menus",
+        "Migrations",
+        "Mode",
+        "Navigation",
+        "Overlays",
+        "Playground",
+        "Primitives",
+        "React",
+        "Server",
+        "Storybook",
+        "Support",
+        "Switching",
+        "Theme",
+        "Theming",
+        "Token"
+      ],
+      "files": [
+        "README.md",
+        "docs/migrations/acalumi-t1.2.0-deviation-approval.md",
+        "packages/react-app/README.md",
+        "packages/react-app/src/components/data-table/README.md",
+        "packages/react-hooks/README.md",
+        "packages/react/README.md",
+        "packages/react/src/components/skeleton/README.md"
+      ],
+      "userEdited": false
+    }
+  },
+  "conceptIndex": {
+    "dom component identification": [
+      "README.md"
+    ],
+    "dark mode & theme switching": [
+      "README.md"
+    ],
+    "form controls": [
+      "README.md"
+    ],
+    "layout primitives": [
+      "README.md"
+    ],
+    "navigation components": [
+      "README.md"
+    ],
+    "overlays & menus": [
+      "README.md"
+    ],
+    "playground app": [
+      "README.md"
+    ],
+    "react server components support": [
+      "README.md"
+    ],
+    "kala-ui": [
+      "README.md"
+    ],
+    "audit 2026 08 27.md": [
+      "architecture.md"
+    ],
+    "migration 0.1.md": [
+      "architecture.md"
+    ],
+    "migrations": [
+      "architecture.md",
+      "glossary.md"
+    ],
+    "playground": [
+      "architecture.md",
+      "features/playground-app.md",
+      "glossary.md"
+    ],
+    "readme.md": [
+      "architecture.md"
+    ],
+    "releasing.md": [
+      "architecture.md"
+    ],
+    "react": [
+      "architecture.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md",
+      "glossary.md"
+    ],
+    "react app": [
+      "architecture.md"
+    ],
+    "react hooks": [
+      "architecture.md"
+    ],
+    "scripts": [
+      "architecture.md"
+    ],
+    "god node: alert": [
+      "architecture.md"
+    ],
+    "god node: appshell": [
+      "architecture.md"
+    ],
+    "god node: avatar": [
+      "architecture.md"
+    ],
+    "god node: badge": [
+      "architecture.md"
+    ],
+    "god node: box": [
+      "architecture.md"
+    ],
+    "god node: button": [
+      "architecture.md"
+    ],
+    "god node: datatable": [
+      "architecture.md"
+    ],
+    "god node: designsystemoverview": [
+      "architecture.md"
+    ],
+    "god node: flex": [
+      "architecture.md"
+    ],
+    "god node: header": [
+      "architecture.md"
+    ],
+    "god node: home": [
+      "architecture.md"
+    ],
+    "god node: label": [
+      "architecture.md"
+    ],
+    "god node: menubaritem": [
+      "architecture.md"
+    ],
+    "god node: paginationitem": [
+      "architecture.md"
+    ],
+    "god node: paginationlink": [
+      "architecture.md"
+    ],
+    "god node: skeleton": [
+      "architecture.md"
+    ],
+    "god node: tablecell": [
+      "architecture.md"
+    ],
+    "god node: tablehead": [
+      "architecture.md"
+    ],
+    "god node: tablerow": [
+      "architecture.md"
+    ],
+    "god node: text": [
+      "architecture.md"
+    ],
+    "packages/react · constant cluster": [
+      "architecture.md"
+    ],
+    "packages/react · function cluster": [
+      "architecture.md"
+    ],
+    "packages/react · interface cluster": [
+      "architecture.md"
+    ],
+    "packages/react-app · constant cluster": [
+      "architecture.md"
+    ],
+    "packages/react-app · function cluster": [
+      "architecture.md"
+    ],
+    "packages/react-hooks · function cluster": [
+      "architecture.md"
+    ],
+    "commands": [
+      "getting-started.md"
+    ],
+    "pnpm": [
+      "getting-started.md"
+    ],
+    "setup": [
+      "getting-started.md"
+    ],
+    "input otp": [
+      "features/form-controls.md"
+    ],
+    "multi select": [
+      "features/form-controls.md"
+    ],
+    "password strength indicator": [
+      "features/form-controls.md"
+    ],
+    "controls": [
+      "features/form-controls.md",
+      "glossary.md"
+    ],
+    "form": [
+      "features/form-controls.md",
+      "glossary.md"
+    ],
+    "container": [
+      "features/layout-primitives.md"
+    ],
+    "paper": [
+      "features/layout-primitives.md"
+    ],
+    "stack": [
+      "features/layout-primitives.md"
+    ],
+    "layout": [
+      "features/layout-primitives.md",
+      "glossary.md"
+    ],
+    "primitives": [
+      "features/layout-primitives.md",
+      "glossary.md"
+    ],
+    "breadcrumbs": [
+      "features/navigation-components.md"
+    ],
+    "navigation menu": [
+      "features/navigation-components.md"
+    ],
+    "tree view": [
+      "features/navigation-components.md"
+    ],
+    "components": [
+      "features/navigation-components.md",
+      "features/react-server-components-support.md",
+      "glossary.md"
+    ],
+    "navigation": [
+      "features/navigation-components.md",
+      "glossary.md"
+    ],
+    "fix toast (sonner toaster) not following the active kala ui theme — toasts stayed light when a dark theme was selected": [
+      "features/dark-mode-theme-switching.md"
+    ],
+    "`dark` and `high contrast dark` map to sonner `dark`": [
+      "features/dark-mode-theme-switching.md"
+    ],
+    "dark": [
+      "features/dark-mode-theme-switching.md",
+      "glossary.md"
+    ],
+    "mode": [
+      "features/dark-mode-theme-switching.md",
+      "glossary.md"
+    ],
+    "switching": [
+      "features/dark-mode-theme-switching.md",
+      "glossary.md"
+    ],
+    "theme": [
+      "features/dark-mode-theme-switching.md",
+      "glossary.md"
+    ],
+    "component css classes": [
+      "features/dom-component-identification.md"
+    ],
+    "identifying components in the dom": [
+      "features/dom-component-identification.md"
+    ],
+    "component": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "glossary.md"
+    ],
+    "dom": [
+      "features/dom-component-identification.md"
+    ],
+    "identification": [
+      "features/dom-component-identification.md",
+      "glossary.md"
+    ],
+    "command": [
+      "features/overlays-menus.md"
+    ],
+    "react context menu": [
+      "features/overlays-menus.md"
+    ],
+    "menus": [
+      "features/overlays-menus.md",
+      "glossary.md"
+    ],
+    "overlays": [
+      "features/overlays-menus.md",
+      "glossary.md"
+    ],
+    "page": [
+      "features/playground-app.md"
+    ],
+    "app": [
+      "features/playground-app.md"
+    ],
+    "react 19 and react server components ready": [
+      "features/react-server-components-support.md"
+    ],
+    "react server components": [
+      "features/react-server-components-support.md"
+    ],
+    "server": [
+      "features/react-server-components-support.md",
+      "glossary.md"
+    ],
+    "support": [
+      "features/react-server-components-support.md",
+      "glossary.md"
+    ],
+    "start storybook to see components in action": [
+      "features/storybook-documentation.md"
+    ],
+    "storybook, build storybook, test storybook": [
+      "features/storybook-documentation.md"
+    ],
+    "documentation": [
+      "features/storybook-documentation.md",
+      "glossary.md"
+    ],
+    "storybook": [
+      "features/storybook-documentation.md",
+      "glossary.md"
+    ],
+    "active path`)": [
+      "features/application-chrome-composites.md"
+    ],
+    "application": [
+      "features/application-chrome-composites.md",
+      "glossary.md"
+    ],
+    "chrome": [
+      "features/application-chrome-composites.md",
+      "glossary.md"
+    ],
+    "composites": [
+      "features/application-chrome-composites.md",
+      "glossary.md"
+    ],
+    "**charts** — `areachart`, `barchart`, `linechart`, `donutchart`, `radialbarchart`": [
+      "features/charts.md"
+    ],
+    "charts": [
+      "features/charts.md",
+      "glossary.md"
+    ],
+    "react dialog": [
+      "features/core-ui-component-library.md"
+    ],
+    "core": [
+      "features/core-ui-component-library.md",
+      "glossary.md"
+    ],
+    "library": [
+      "features/core-ui-component-library.md",
+      "glossary.md"
+    ],
+    "37 reusable react hooks for building modern web applications": [
+      "features/react-hooks-collection.md"
+    ],
+    "collection": [
+      "features/react-hooks-collection.md",
+      "glossary.md"
+    ],
+    "hooks": [
+      "features/react-hooks-collection.md",
+      "glossary.md"
+    ],
+    "you do not need tailwind to use kala ui.": [
+      "features/token-driven-theming.md"
+    ],
+    "driven": [
+      "features/token-driven-theming.md",
+      "glossary.md"
+    ],
+    "theming": [
+      "features/token-driven-theming.md",
+      "glossary.md"
+    ],
+    "token": [
+      "features/token-driven-theming.md",
+      "glossary.md"
+    ],
+    "conventions": [
+      "development.md"
+    ],
+    "development": [
+      "development.md"
+    ],
+    "repository layout": [
+      "development.md"
+    ],
+    "testing": [
+      "testing.md"
+    ],
+    "validation": [
+      "testing.md"
+    ]
+  },
+  "fileIndex": {
+    "README.md": [
+      "README.md",
+      "architecture.md",
+      "features/storybook-documentation.md",
+      "features/token-driven-theming.md",
+      "glossary.md"
+    ],
+    "apps/playground/app/globals.css": [
+      "README.md",
+      "architecture.md",
+      "features/playground-app.md"
+    ],
+    "apps/playground/app/layout.tsx": [
+      "README.md",
+      "architecture.md",
+      "features/playground-app.md"
+    ],
+    "docs/AUDIT-2026-08-27.md": [
+      "README.md",
+      "architecture.md",
+      "development.md",
+      "features/charts.md",
+      "features/core-ui-component-library.md",
+      "features/dark-mode-theme-switching.md",
+      "features/playground-app.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md",
+      "features/token-driven-theming.md"
+    ],
+    "docs/MIGRATION-0.1.md": [
+      "README.md",
+      "architecture.md",
+      "development.md",
+      "features/charts.md",
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/navigation-components.md",
+      "features/overlays-menus.md",
+      "features/playground-app.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md",
+      "features/token-driven-theming.md"
+    ],
+    "docs/RELEASING.md": [
+      "README.md",
+      "architecture.md",
+      "development.md"
+    ],
+    "packages/react-app/CHANGELOG.md": [
+      "README.md",
+      "architecture.md",
+      "development.md",
+      "features/core-ui-component-library.md",
+      "features/overlays-menus.md",
+      "features/playground-app.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md",
+      "features/token-driven-theming.md"
+    ],
+    "packages/react-app/README.md": [
+      "README.md",
+      "architecture.md",
+      "features/core-ui-component-library.md",
+      "features/overlays-menus.md",
+      "features/playground-app.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md",
+      "features/token-driven-theming.md",
+      "glossary.md"
+    ],
+    "packages/react-app/src/components/data-table/README.md": [
+      "README.md",
+      "glossary.md"
+    ],
+    "packages/react-hooks/CHANGELOG.md": [
+      "README.md",
+      "architecture.md",
+      "development.md",
+      "features/react-hooks-collection.md"
+    ],
+    "packages/react-hooks/EXAMPLES.md": [
+      "README.md",
+      "architecture.md",
+      "development.md",
+      "features/react-hooks-collection.md"
+    ],
+    "packages/react-hooks/README.md": [
+      "README.md",
+      "architecture.md",
+      "features/core-ui-component-library.md",
+      "features/overlays-menus.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md",
+      "features/token-driven-theming.md",
+      "glossary.md"
+    ],
+    "packages/react/CHANGELOG.md": [
+      "README.md",
+      "architecture.md",
+      "development.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/README.md": [
+      "README.md",
+      "architecture.md",
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/navigation-components.md",
+      "features/overlays-menus.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md",
+      "features/token-driven-theming.md",
+      "glossary.md"
+    ],
+    "packages/react/src/components/skeleton/README.md": [
+      "README.md",
+      "glossary.md"
+    ],
+    "scripts/add-js-extensions.mjs": [
+      "README.md",
+      "architecture.md"
+    ],
+    "scripts/add-kala-markers.mjs": [
+      "README.md",
+      "architecture.md",
+      "features/token-driven-theming.md"
+    ],
+    "CONTRIBUTING.md": [
+      "architecture.md",
+      "development.md"
+    ],
+    "THEMING.md": [
+      "architecture.md",
+      "development.md",
+      "features/token-driven-theming.md"
+    ],
+    "apps/playground/app/page.tsx": [
+      "architecture.md",
+      "features/charts.md",
+      "features/playground-app.md"
+    ],
+    "docs/migrations/acalumi-t1.2.0-deviation-approval.md": [
+      "architecture.md",
+      "glossary.md"
+    ],
+    "package.json": [
+      "architecture.md",
+      "development.md",
+      "getting-started.md",
+      "testing.md"
+    ],
+    "packages/react-app/biome.json": [
+      "architecture.md"
+    ],
+    "packages/react-app/src/__tests__/a11y.test.tsx": [
+      "architecture.md",
+      "features/playground-app.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/__tests__/setup.ts": [
+      "architecture.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/app-shell/app-shell.stories.tsx": [
+      "architecture.md",
+      "features/playground-app.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react-app/src/components/app-shell/app-shell.test.tsx": [
+      "architecture.md",
+      "features/application-chrome-composites.md",
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/layout-primitives.md",
+      "features/playground-app.md",
+      "features/react-server-components-support.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/app-shell/app-shell.tsx": [
+      "architecture.md",
+      "features/application-chrome-composites.md",
+      "features/dom-component-identification.md",
+      "features/overlays-menus.md",
+      "features/playground-app.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react-app/src/components/charts/area-chart.test.tsx": [
+      "architecture.md",
+      "features/charts.md",
+      "features/playground-app.md",
+      "features/react-server-components-support.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/charts/chart-skeleton.test.tsx": [
+      "architecture.md",
+      "features/charts.md",
+      "features/dom-component-identification.md",
+      "features/playground-app.md",
+      "features/react-server-components-support.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/charts/chart-skeleton.tsx": [
+      "architecture.md",
+      "features/charts.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react-app/src/components/data-table/column-filters.test.tsx": [
+      "architecture.md",
+      "features/application-chrome-composites.md",
+      "features/dark-mode-theme-switching.md",
+      "features/form-controls.md",
+      "features/storybook-documentation.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/data-table/column-filters.tsx": [
+      "architecture.md",
+      "features/dark-mode-theme-switching.md"
+    ],
+    "packages/react-app/src/components/data-table/column-header-filter.test.tsx": [
+      "architecture.md",
+      "features/application-chrome-composites.md",
+      "features/dark-mode-theme-switching.md",
+      "features/form-controls.md",
+      "features/storybook-documentation.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/data-table/column-header-filter.tsx": [
+      "architecture.md",
+      "features/application-chrome-composites.md",
+      "features/dark-mode-theme-switching.md"
+    ],
+    "packages/react-app/src/components/data-table/data-table-body-rows.tsx": [
+      "architecture.md"
+    ],
+    "packages/react-app/src/components/data-table/data-table.types.ts": [
+      "architecture.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react-app/src/components/data-table/pagination-nav.test.tsx": [
+      "architecture.md",
+      "features/playground-app.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/data-table/pagination-nav.tsx": [
+      "architecture.md"
+    ],
+    "packages/react-app/src/components/header/header.stories.tsx": [
+      "architecture.md",
+      "features/navigation-components.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react-app/src/components/metric-card/__tests__/metric-card.test.tsx": [
+      "architecture.md",
+      "features/core-ui-component-library.md",
+      "features/form-controls.md",
+      "features/layout-primitives.md",
+      "features/overlays-menus.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/metric-card/index.ts": [
+      "architecture.md"
+    ],
+    "packages/react-app/src/components/nav-link/nav-link.test.tsx": [
+      "architecture.md",
+      "features/application-chrome-composites.md",
+      "features/dark-mode-theme-switching.md",
+      "features/playground-app.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/user-menu-dropdown/__tests__/user-menu-dropdown.test.tsx": [
+      "architecture.md",
+      "features/navigation-components.md",
+      "features/overlays-menus.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/user-menu-dropdown/index.ts": [
+      "architecture.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-click-outside.test.ts": [
+      "architecture.md",
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react/TOKEN_SPEC.md": [
+      "architecture.md",
+      "development.md",
+      "features/token-driven-theming.md"
+    ],
+    "packages/react/src/__tests__/component-markers.test.tsx": [
+      "architecture.md",
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/token-driven-theming.md"
+    ],
+    "packages/react/src/__tests__/setup.ts": [
+      "architecture.md"
+    ],
+    "packages/react/src/components/accordion/accordion-skeleton.test.tsx": [
+      "architecture.md"
+    ],
+    "packages/react/src/components/accordion/accordion-skeleton.tsx": [
+      "architecture.md"
+    ],
+    "packages/react/src/components/accordion/accordion.stories.tsx": [
+      "architecture.md"
+    ],
+    "packages/react/src/components/alert/alert-skeleton.test.tsx": [
+      "architecture.md",
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md"
+    ],
+    "packages/react/src/components/center/center.stories.tsx": [
+      "architecture.md"
+    ],
+    "packages/react/src/components/center/center.test.tsx": [
+      "architecture.md"
+    ],
+    "packages/react/src/components/command/command.stories.tsx": [
+      "architecture.md",
+      "features/core-ui-component-library.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/dialog/dialog.stories.tsx": [
+      "architecture.md",
+      "features/core-ui-component-library.md"
+    ],
+    "packages/react/src/components/field/field-skeleton.test.tsx": [
+      "architecture.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/navigation-menu/navigation-menu.stories.tsx": [
+      "architecture.md",
+      "features/application-chrome-composites.md",
+      "features/navigation-components.md",
+      "features/overlays-menus.md",
+      "features/react-server-components-support.md"
+    ],
+    "pnpm-workspace.yaml": [
+      "architecture.md"
+    ],
+    "scripts/check-package-boundaries.mjs": [
+      "architecture.md",
+      "features/core-ui-component-library.md",
+      "features/playground-app.md"
+    ],
+    "apps/playground/package.json": [
+      "development.md",
+      "features/playground-app.md",
+      "getting-started.md"
+    ],
+    "packages/react-app/package.json": [
+      "development.md",
+      "getting-started.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/package.json": [
+      "development.md",
+      "features/react-hooks-collection.md",
+      "getting-started.md",
+      "testing.md"
+    ],
+    "packages/react/package.json": [
+      "development.md",
+      "getting-started.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/data-table/data-table-toolbar.test.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/form-controls.md",
+      "features/storybook-documentation.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/data-table/data-table.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/dark-mode-theme-switching.md",
+      "features/form-controls.md",
+      "features/layout-primitives.md",
+      "features/navigation-components.md",
+      "features/playground-app.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/metric-card/metric-card.test.tsx": [
+      "features/dom-component-identification.md",
+      "features/form-controls.md",
+      "features/layout-primitives.md",
+      "testing.md"
+    ],
+    "packages/react/src/components/calendar/calendar.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/dark-mode-theme-switching.md",
+      "features/form-controls.md",
+      "features/navigation-components.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/checkbox/checkbox.stories.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/color-input/color-input.test.tsx": [
+      "features/dom-component-identification.md",
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/color-input/color-input.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/combobox/combobox-skeleton.test.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/form-controls.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/combobox/combobox.test.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/dom-component-identification.md",
+      "features/form-controls.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/command/command.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/form-controls.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/field/field.test.tsx": [
+      "features/dom-component-identification.md",
+      "features/form-controls.md",
+      "features/layout-primitives.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/field/form-skeleton.test.tsx": [
+      "features/form-controls.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/field/form-skeleton.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/file-upload/file-upload.test.tsx": [
+      "features/charts.md",
+      "features/core-ui-component-library.md",
+      "features/dark-mode-theme-switching.md",
+      "features/form-controls.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/file-upload/file-upload.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/indicator/indicator.test.tsx": [
+      "features/form-controls.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/indicator/indicator.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/input-group/input-group.stories.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/input-otp/input-otp.test.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/input-otp/input-otp.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/input/input.stories.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/input/input.test.tsx": [
+      "features/form-controls.md",
+      "features/token-driven-theming.md"
+    ],
+    "packages/react/src/components/input/input.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/multi-select/multi-select-skeleton.test.tsx": [
+      "features/form-controls.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/multi-select/multi-select-skeleton.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/multi-select/multi-select.test.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/form-controls.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/multi-select/multi-select.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/multi-select/multi-select.types.ts": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/navigation-menu/navigation-menu.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/form-controls.md",
+      "features/layout-primitives.md",
+      "features/navigation-components.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/number-input/number-input.test.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/number-input/number-input.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/password-strength-indicator/password-strength-indicator.stories.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/password-strength-indicator/password-strength-indicator.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/dark-mode-theme-switching.md",
+      "features/form-controls.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/password-strength-indicator/password-strength-indicator.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/progress/progress.test.tsx": [
+      "features/charts.md",
+      "features/form-controls.md",
+      "features/layout-primitives.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react/src/components/radio-group/radio-group.test.tsx": [
+      "features/form-controls.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/resizable/resizable.test.tsx": [
+      "features/form-controls.md",
+      "features/layout-primitives.md",
+      "features/react-server-components-support.md",
+      "features/token-driven-theming.md"
+    ],
+    "packages/react/src/components/select/native-select.test.tsx": [
+      "features/dom-component-identification.md",
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/select/native-select.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/select/select.test.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/select/select.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/steps/steps.stories.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/steps/steps.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/charts.md",
+      "features/dark-mode-theme-switching.md",
+      "features/form-controls.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/tag-input/tag-input.test.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/tag-input/tag-input.tsx": [
+      "features/form-controls.md"
+    ],
+    "packages/react/src/components/tree-view/tree-view.test.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/form-controls.md",
+      "features/layout-primitives.md",
+      "features/navigation-components.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react/src/styles/tokens.test.ts": [
+      "features/dark-mode-theme-switching.md",
+      "features/dom-component-identification.md",
+      "features/form-controls.md",
+      "features/token-driven-theming.md"
+    ],
+    "packages/react-app/src/components/data-table/data-table-skeleton.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/charts.md",
+      "features/layout-primitives.md",
+      "features/storybook-documentation.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/dnd/dnd.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/layout-primitives.md",
+      "features/overlays-menus.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/header/header-skeleton.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/layout-primitives.md",
+      "features/navigation-components.md",
+      "features/overlays-menus.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/navigation/navigation.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/dark-mode-theme-switching.md",
+      "features/layout-primitives.md",
+      "features/navigation-components.md",
+      "features/overlays-menus.md",
+      "features/playground-app.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/sidebar/sidebar-skeleton.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/layout-primitives.md",
+      "testing.md"
+    ],
+    "packages/react/src/components/accordion/accordion.test.tsx": [
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/alert/alert.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/avatar/avatar.test.tsx": [
+      "features/layout-primitives.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/badge/badge.test.tsx": [
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/banner/banner-skeleton.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/card/card-skeleton.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/charts.md",
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/card/card.test.tsx": [
+      "features/layout-primitives.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/container/container.test.tsx": [
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/empty-state/empty-state-skeleton.test.tsx": [
+      "features/layout-primitives.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/empty-state/empty-state.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/layout-primitives.md",
+      "features/storybook-documentation.md",
+      "features/token-driven-theming.md"
+    ],
+    "packages/react/src/components/list/list.test.tsx": [
+      "features/dom-component-identification.md",
+      "features/layout-primitives.md",
+      "features/navigation-components.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/page-transition/page-transition.test.tsx": [
+      "features/layout-primitives.md",
+      "features/playground-app.md"
+    ],
+    "packages/react/src/components/rating/rating.test.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/layout-primitives.md",
+      "features/overlays-menus.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react/src/components/resizable/resizable.stories.tsx": [
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/ring-progress/ring-progress.test.tsx": [
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/scroll-area/scroll-area.test.tsx": [
+      "features/charts.md",
+      "features/layout-primitives.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react/src/components/segmented-control/segmented-control.test.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/skeleton/skeleton-patterns.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/charts.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/skeleton/skeleton-wrapper.test.tsx": [
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/skeleton/skeleton.test.tsx": [
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/slider/slider.test.tsx": [
+      "features/layout-primitives.md",
+      "features/navigation-components.md"
+    ],
+    "packages/react/src/components/switch/switch.test.tsx": [
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/table/table-skeleton.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/layout-primitives.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/table/table.test.tsx": [
+      "features/dom-component-identification.md",
+      "features/layout-primitives.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/tabs/tabs-skeleton.test.tsx": [
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/tabs/tabs.test.tsx": [
+      "features/charts.md",
+      "features/layout-primitives.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md",
+      "features/token-driven-theming.md"
+    ],
+    "packages/react/src/components/timeline/timeline.test.tsx": [
+      "features/charts.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react/src/components/toast/toast.test.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/layout-primitives.md",
+      "features/storybook-documentation.md",
+      "features/token-driven-theming.md"
+    ],
+    "packages/react/src/components/toolbar/toolbar.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/dom-component-identification.md",
+      "features/layout-primitives.md"
+    ],
+    "packages/react-app/src/components/header/header.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/charts.md",
+      "features/core-ui-component-library.md",
+      "features/dark-mode-theme-switching.md",
+      "features/navigation-components.md",
+      "features/overlays-menus.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/navigation/navigation-skeleton.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/navigation-components.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/navigation/navigation-skeleton.tsx": [
+      "features/application-chrome-composites.md",
+      "features/navigation-components.md"
+    ],
+    "packages/react-app/src/components/navigation/navigation.stories.tsx": [
+      "features/application-chrome-composites.md",
+      "features/navigation-components.md"
+    ],
+    "packages/react-app/src/components/navigation/navigation.tsx": [
+      "features/application-chrome-composites.md",
+      "features/navigation-components.md"
+    ],
+    "packages/react-app/src/components/sidebar/__tests__/sidebar.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/navigation-components.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.stories.tsx": [
+      "features/navigation-components.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.test.tsx": [
+      "features/navigation-components.md",
+      "features/overlays-menus.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/user-menu-dropdown/user-menu-dropdown.tsx": [
+      "features/navigation-components.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/scripts/flatten-dts.cjs": [
+      "features/application-chrome-composites.md",
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/navigation-components.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/breadcrumbs/__tests__/breadcrumbs.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/navigation-components.md",
+      "features/playground-app.md"
+    ],
+    "packages/react/src/components/breadcrumbs/breadcrumbs-skeleton.test.tsx": [
+      "features/navigation-components.md"
+    ],
+    "packages/react/src/components/breadcrumbs/breadcrumbs-skeleton.tsx": [
+      "features/navigation-components.md"
+    ],
+    "packages/react/src/components/breadcrumbs/breadcrumbs.stories.tsx": [
+      "features/navigation-components.md"
+    ],
+    "packages/react/src/components/breadcrumbs/breadcrumbs.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/navigation-components.md",
+      "features/playground-app.md"
+    ],
+    "packages/react/src/components/breadcrumbs/breadcrumbs.tsx": [
+      "features/navigation-components.md"
+    ],
+    "packages/react/src/components/breadcrumbs/breadcrumbs.types.ts": [
+      "features/navigation-components.md"
+    ],
+    "packages/react/src/components/button-group/button-group.test.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/dom-component-identification.md",
+      "features/navigation-components.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/context-menu/context-menu.stories.tsx": [
+      "features/navigation-components.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/context-menu/context-menu.test.tsx": [
+      "features/navigation-components.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/context-menu/context-menu.tsx": [
+      "features/navigation-components.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/design-system/category-section.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/navigation-components.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/design-system/component-preview-card.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/navigation-components.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/design-system/design-system-utils.test.ts": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/navigation-components.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/design-system/design-system-utils.ts": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/navigation-components.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/design-system/overview.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/navigation-components.md"
+    ],
+    "packages/react/src/components/dropdown-menu/dropdown-menu.stories.tsx": [
+      "features/charts.md",
+      "features/navigation-components.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/dropdown-menu/dropdown-menu.test.tsx": [
+      "features/navigation-components.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/dropdown-menu/dropdown-menu.tsx": [
+      "features/navigation-components.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/error-boundary/error-boundary.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/navigation-components.md",
+      "features/overlays-menus.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/menubar/menubar.test.tsx": [
+      "features/navigation-components.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/menubar/menubar.tsx": [
+      "features/navigation-components.md"
+    ],
+    "packages/react/src/components/navigation-menu/index.ts": [
+      "features/navigation-components.md"
+    ],
+    "packages/react/src/components/navigation-menu/navigation-menu.tsx": [
+      "features/navigation-components.md"
+    ],
+    "packages/react/src/components/tree-view/tree-view.stories.tsx": [
+      "features/navigation-components.md"
+    ],
+    "packages/react/src/components/tree-view/tree-view.tsx": [
+      "features/application-chrome-composites.md",
+      "features/dark-mode-theme-switching.md",
+      "features/navigation-components.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/config/navigation-menu.ts": [
+      "features/navigation-components.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react-app/src/components/charts/bar-chart.test.tsx": [
+      "features/charts.md",
+      "features/dark-mode-theme-switching.md",
+      "features/playground-app.md",
+      "features/react-server-components-support.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/charts/chart.stories.tsx": [
+      "features/charts.md",
+      "features/dark-mode-theme-switching.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react-app/src/components/charts/chart.test.tsx": [
+      "features/charts.md",
+      "features/core-ui-component-library.md",
+      "features/dark-mode-theme-switching.md",
+      "features/dom-component-identification.md",
+      "features/overlays-menus.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/charts/theme-utils.test.ts": [
+      "features/charts.md",
+      "features/dark-mode-theme-switching.md",
+      "features/dom-component-identification.md",
+      "features/playground-app.md",
+      "features/react-server-components-support.md",
+      "features/token-driven-theming.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/charts/theme-utils.ts": [
+      "features/charts.md",
+      "features/dark-mode-theme-switching.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react-app/src/components/charts/use-theme-aware-chart.test.ts": [
+      "features/charts.md",
+      "features/dark-mode-theme-switching.md",
+      "features/dom-component-identification.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/charts/use-theme-aware-chart.ts": [
+      "features/charts.md",
+      "features/dark-mode-theme-switching.md"
+    ],
+    "packages/react-app/src/components/charts/utils.test.ts": [
+      "features/charts.md",
+      "features/dark-mode-theme-switching.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/charts/utils.ts": [
+      "features/charts.md",
+      "features/dark-mode-theme-switching.md"
+    ],
+    "packages/react-app/src/components/data-table/data-table.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/playground-app.md"
+    ],
+    "packages/react-app/src/components/dnd/dnd.stories.tsx": [
+      "features/application-chrome-composites.md",
+      "features/dark-mode-theme-switching.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react-app/src/components/session-card/session-card.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dark-mode-theme-switching.md",
+      "features/dom-component-identification.md",
+      "features/token-driven-theming.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/sidebar/sidebar.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/core-ui-component-library.md",
+      "features/dark-mode-theme-switching.md",
+      "features/storybook-documentation.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/sidebar/sidebar.tsx": [
+      "features/application-chrome-composites.md",
+      "features/dark-mode-theme-switching.md"
+    ],
+    "packages/react-app/src/components/sparkline-chart/sparkline-chart.test.tsx": [
+      "features/charts.md",
+      "features/dark-mode-theme-switching.md",
+      "features/storybook-documentation.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-color-scheme.test.ts": [
+      "features/dark-mode-theme-switching.md",
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-uncontrolled.test.ts": [
+      "features/dark-mode-theme-switching.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/use-interval/use-interval.ts": [
+      "features/dark-mode-theme-switching.md"
+    ],
+    "packages/react/.storybook/preview.tsx": [
+      "features/dark-mode-theme-switching.md"
+    ],
+    "packages/react/src/components/date-picker/date-picker.test.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/list/list-skeleton.test.tsx": [
+      "features/charts.md",
+      "features/dark-mode-theme-switching.md"
+    ],
+    "packages/react/src/components/pagination/pagination.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/dark-mode-theme-switching.md",
+      "features/playground-app.md"
+    ],
+    "packages/react/src/components/theme-provider/theme-provider.test.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/dom-component-identification.md"
+    ],
+    "packages/react/src/components/theme-provider/theme-provider.tsx": [
+      "features/dark-mode-theme-switching.md",
+      "features/dom-component-identification.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/time-picker/time-picker.test.tsx": [
+      "features/dark-mode-theme-switching.md"
+    ],
+    "packages/react-app/src/components/dnd/dnd.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react-app/src/components/footer/footer.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/dom-component-identification.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/metric-card/metric-card-skeleton.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/session-card/session-card-skeleton.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "testing.md"
+    ],
+    "packages/react/src/__tests__/utils.test.ts": [
+      "features/dom-component-identification.md",
+      "features/token-driven-theming.md"
+    ],
+    "packages/react/src/components/alert/alert.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md"
+    ],
+    "packages/react/src/components/burger/burger.tsx": [
+      "features/charts.md",
+      "features/dom-component-identification.md"
+    ],
+    "packages/react/src/components/card/card.tsx": [
+      "features/dom-component-identification.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/drawer/drawer.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/dom-component-identification.md"
+    ],
+    "packages/react/src/components/drawer/drawer.tsx": [
+      "features/dom-component-identification.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/error-boundary/error-boundary.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md"
+    ],
+    "packages/react/src/components/error-boundary/error-fallback.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/dom-component-identification.md",
+      "features/playground-app.md",
+      "features/token-driven-theming.md"
+    ],
+    "packages/react/src/components/pagination/pagination.tsx": [
+      "features/dom-component-identification.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/progress/progress.tsx": [
+      "features/charts.md",
+      "features/dom-component-identification.md"
+    ],
+    "packages/react/src/components/segmented-control/segmented-control.tsx": [
+      "features/dom-component-identification.md"
+    ],
+    "packages/react/tsup.config.ts": [
+      "features/dom-component-identification.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react-app/src/components/charts/chart.tsx": [
+      "features/charts.md",
+      "features/core-ui-component-library.md",
+      "features/overlays-menus.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react-hooks/src/use-id/use-id.ts": [
+      "features/core-ui-component-library.md",
+      "features/overlays-menus.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react/src/components/accordion/accordion.tsx": [
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/avatar/avatar.tsx": [
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/command/command.tsx": [
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/context-menu/index.ts": [
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/field/field.tsx": [
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/popover/popover.tsx": [
+      "features/application-chrome-composites.md",
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/spoiler/spoiler.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/overlays-menus.md",
+      "features/react-hooks-collection.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react/src/components/tabs/tabs.tsx": [
+      "features/overlays-menus.md"
+    ],
+    "packages/react/src/components/toggle-group/toggle-group.tsx": [
+      "features/overlays-menus.md"
+    ],
+    "apps/playground/app/server/page.tsx": [
+      "features/playground-app.md",
+      "features/react-server-components-support.md"
+    ],
+    "apps/playground/next-env.d.ts": [
+      "features/playground-app.md"
+    ],
+    "apps/playground/next.config.ts": [
+      "features/playground-app.md"
+    ],
+    "apps/playground/tsconfig.json": [
+      "features/playground-app.md"
+    ],
+    "packages/react-app/src/components/app-shell/index.ts": [
+      "features/playground-app.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react-app/src/components/charts/area-chart.tsx": [
+      "features/charts.md",
+      "features/playground-app.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react-app/src/components/charts/bar-chart.tsx": [
+      "features/charts.md",
+      "features/playground-app.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react-app/src/components/data-table/data-table.stories.tsx": [
+      "features/application-chrome-composites.md",
+      "features/playground-app.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react-app/src/components/data-table/useTableState.test.ts": [
+      "features/playground-app.md",
+      "features/react-server-components-support.md",
+      "features/storybook-documentation.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/data-table/useTableState.ts": [
+      "features/playground-app.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-pagination.test.ts": [
+      "features/playground-app.md",
+      "features/react-hooks-collection.md",
+      "features/storybook-documentation.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-scroll-lock.test.tsx": [
+      "features/playground-app.md",
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/use-pagination/use-pagination.ts": [
+      "features/playground-app.md"
+    ],
+    "packages/react/src/components/loading/loading.stories.tsx": [
+      "features/playground-app.md"
+    ],
+    "packages/react/src/components/loading/loading.test.tsx": [
+      "features/playground-app.md"
+    ],
+    "packages/react/src/components/loading/page-loader.tsx": [
+      "features/playground-app.md"
+    ],
+    "packages/react/src/components/page-transition/page-transition.stories.tsx": [
+      "features/playground-app.md"
+    ],
+    "packages/react/src/components/page-transition/page-transition.tsx": [
+      "features/playground-app.md"
+    ],
+    "packages/react/src/components/page-transition/page-transition.types.ts": [
+      "features/playground-app.md"
+    ],
+    "packages/react/src/components/pagination/pagination-skeleton.test.tsx": [
+      "features/playground-app.md"
+    ],
+    "packages/react/src/components/pagination/pagination.stories.tsx": [
+      "features/playground-app.md"
+    ],
+    "scripts/clean.mjs": [
+      "features/playground-app.md"
+    ],
+    "scripts/test-storybook.mjs": [
+      "features/playground-app.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react-app/src/components/charts/chart.types.ts": [
+      "features/charts.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react-app/src/components/charts/donut-chart.test.tsx": [
+      "features/charts.md",
+      "features/react-server-components-support.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/data-table/SERVER_SIDE_GUIDE.md": [
+      "development.md",
+      "features/react-server-components-support.md"
+    ],
+    "packages/react/src/components/popover/popover.test.tsx": [
+      "features/react-server-components-support.md"
+    ],
+    "packages/react/src/components/toggle/toggle.test.tsx": [
+      "features/react-server-components-support.md"
+    ],
+    "packages/react-app/src/components/data-table/data-table-filter-chips.test.tsx": [
+      "features/storybook-documentation.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-interval.test.ts": [
+      "features/react-hooks-collection.md",
+      "features/storybook-documentation.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-move.test.ts": [
+      "features/react-hooks-collection.md",
+      "features/storybook-documentation.md",
+      "testing.md"
+    ],
+    "packages/react/src/components/alert-dialog/alert-dialog.test.tsx": [
+      "features/core-ui-component-library.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/empty-state/empty-state.stories.tsx": [
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/file-upload/file-upload-skeleton.test.tsx": [
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/flex/flex.test.tsx": [
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/grid/grid.test.tsx": [
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/list/list.tsx": [
+      "features/charts.md",
+      "features/storybook-documentation.md"
+    ],
+    "packages/react/src/components/radio-group/radio-group-skeleton.test.tsx": [
+      "features/storybook-documentation.md"
+    ],
+    "packages/react-app/src/components/footer/footer.tsx": [
+      "features/application-chrome-composites.md"
+    ],
+    "packages/react-app/src/components/header/header-skeleton.tsx": [
+      "features/application-chrome-composites.md"
+    ],
+    "packages/react-app/src/components/header/header.tsx": [
+      "features/application-chrome-composites.md"
+    ],
+    "packages/react-app/src/components/header/header.types.ts": [
+      "features/application-chrome-composites.md"
+    ],
+    "packages/react-app/src/components/nav-link/nav-link.tsx": [
+      "features/application-chrome-composites.md"
+    ],
+    "packages/react-app/src/components/sidebar/sidebar-skeleton.tsx": [
+      "features/application-chrome-composites.md"
+    ],
+    "packages/react-app/src/components/sidebar/sidebar.stories.tsx": [
+      "features/application-chrome-composites.md"
+    ],
+    "packages/react-app/src/lib/active-path.ts": [
+      "features/application-chrome-composites.md"
+    ],
+    "packages/react/src/components/calendar/calendar-skeleton.test.tsx": [
+      "features/application-chrome-composites.md"
+    ],
+    "packages/react/src/components/dialog/dialog-skeleton.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/core-ui-component-library.md"
+    ],
+    "packages/react/src/components/drawer/drawer-skeleton.test.tsx": [
+      "features/application-chrome-composites.md",
+      "features/core-ui-component-library.md"
+    ],
+    "packages/react/src/components/skip-to-content/skip-to-content.test.tsx": [
+      "features/application-chrome-composites.md"
+    ],
+    "packages/react-app/src/components/charts/donut-chart.tsx": [
+      "features/charts.md"
+    ],
+    "packages/react-app/src/components/charts/line-chart.test.tsx": [
+      "features/charts.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/charts/line-chart.tsx": [
+      "features/charts.md"
+    ],
+    "packages/react-app/src/components/charts/radial-bar-chart.test.tsx": [
+      "features/charts.md",
+      "testing.md"
+    ],
+    "packages/react-app/src/components/charts/radial-bar-chart.tsx": [
+      "features/charts.md"
+    ],
+    "packages/react-app/src/components/sparkline-chart/sparkline-chart.stories.tsx": [
+      "features/charts.md"
+    ],
+    "packages/react-app/src/components/sparkline-chart/sparkline-chart.tsx": [
+      "features/charts.md"
+    ],
+    "packages/react-hooks/src/use-scroll-lock/use-scroll-lock.ts": [
+      "features/charts.md"
+    ],
+    "packages/react/src/components/list/list-skeleton.tsx": [
+      "features/charts.md"
+    ],
+    "packages/react/src/components/progress/progress.types.ts": [
+      "features/charts.md"
+    ],
+    "packages/react/src/components/scroll-area/scroll-area.stories.tsx": [
+      "features/charts.md"
+    ],
+    "packages/react/src/components/scroll-area/scroll-area.tsx": [
+      "features/charts.md"
+    ],
+    "packages/react/src/components/skeleton/skeleton-patterns.tsx": [
+      "features/charts.md"
+    ],
+    "packages/react/src/components/tabs/tabs.stories.tsx": [
+      "features/charts.md"
+    ],
+    "packages/react/src/components/alert-dialog/alert-dialog.stories.tsx": [
+      "features/core-ui-component-library.md"
+    ],
+    "packages/react/src/components/alert-dialog/alert-dialog.tsx": [
+      "features/core-ui-component-library.md"
+    ],
+    "packages/react/src/components/design-system/overview.tsx": [
+      "features/core-ui-component-library.md"
+    ],
+    "packages/react/src/components/dialog/dialog-skeleton.tsx": [
+      "features/core-ui-component-library.md"
+    ],
+    "packages/react/src/components/dialog/dialog.test.tsx": [
+      "features/core-ui-component-library.md"
+    ],
+    "packages/react/src/components/dialog/dialog.tsx": [
+      "features/core-ui-component-library.md"
+    ],
+    "packages/react/src/components/empty-state/empty-state.tsx": [
+      "features/core-ui-component-library.md"
+    ],
+    "packages/react-hooks/biome.json": [
+      "features/react-hooks-collection.md"
+    ],
+    "packages/react-hooks/src/__tests__/setup.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-clipboard.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-counter.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-debounce.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-debounced-value.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-disclosure.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-document-title.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-element-size.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-focus-trap.test.tsx": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-hotkeys.test.tsx": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-hover.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-id.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-idle.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-intersection.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-isomorphic-effect.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-list-state.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-local-storage.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-media-query.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-merged-ref.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-mounted.test.tsx": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-mouse.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-network.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-os.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-previous.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-reduced-motion.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-timeout.test.ts": [
+      "features/react-hooks-collection.md",
+      "testing.md"
+    ],
+    "packages/react/src/components/button/button.test.tsx": [
+      "features/token-driven-theming.md"
+    ],
+    "packages/react/src/components/heading/heading.test.tsx": [
+      "features/token-driven-theming.md"
+    ],
+    "packages/react/storybook-static/assets/theming-BgT2grXK.js": [
+      "features/token-driven-theming.md"
+    ],
+    "packages/react-app/src/components/social-login-button/social-login-button.test.tsx": [
+      "testing.md"
+    ],
+    "packages/react-app/src/components/social-login-buttons/social-login-buttons.test.tsx": [
+      "testing.md"
+    ],
+    "packages/react-app/vitest.config.ts": [
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-toggle.test.ts": [
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-viewport-size.test.ts": [
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-window-event.test.ts": [
+      "testing.md"
+    ],
+    "packages/react-hooks/src/__tests__/use-window-scroll.test.ts": [
+      "testing.md"
+    ],
+    "packages/react-hooks/vitest.config.ts": [
+      "testing.md"
+    ]
+  }
+}
