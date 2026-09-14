@@ -11,7 +11,10 @@ import { Button } from "../button";
 import { Checkbox } from "../checkbox";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
+import { Progress } from "../progress";
+import { Separator } from "../separator";
 import { Sheet } from "../sheet";
+import { Spinner } from "../spinner";
 import { Switch } from "../switch";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
@@ -126,6 +129,43 @@ describe("a11y contract", () => {
 			expect(
 				screen.getByRole("header", { name: "Section title" }),
 			).toBeTruthy();
+		});
+	});
+
+	describe("Separator", () => {
+		it("decorative default is hidden from the a11y tree", async () => {
+			const screen = await render(<Separator />);
+			expect(
+				screen.getByTestId("k-separator").props.accessibilityElementsHidden,
+			).toBe(true);
+		});
+
+		it("non-decorative separator stays discoverable with its label", async () => {
+			const screen = await render(
+				<Separator decorative={false} accessibilityLabel="section break" />,
+			);
+			const sep = screen.getByTestId("k-separator");
+			expect(sep.props.accessibilityElementsHidden).toBeUndefined();
+			expect(sep.props.accessibilityLabel).toBe("section break");
+		});
+	});
+
+	describe("Spinner", () => {
+		it("announces its loading label", async () => {
+			const screen = await render(<Spinner size="sm" label="Syncing" />);
+			expect(
+				screen.getByLabelText("Syncing", inclHidden),
+			).toBeTruthy();
+		});
+	});
+
+	describe("Progress", () => {
+		it("announces as a progressbar with min/max/now", async () => {
+			const screen = await render(
+				<Progress value={30} accessibilityLabel="upload" />,
+			);
+			const bar = screen.getByRole("progressbar", { name: "upload" });
+			expect(bar.props.accessibilityValue).toEqual({ min: 0, max: 100, now: 30 });
 		});
 	});
 

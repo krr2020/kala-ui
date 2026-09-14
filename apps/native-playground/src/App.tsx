@@ -15,7 +15,11 @@ import {
 	Checkbox,
 	Heading,
 	Icon,
+	Label,
+	Progress,
+	Separator,
 	Sheet,
+	Spinner,
 	Switch,
 	Text as KText,
 	TextInput,
@@ -257,6 +261,22 @@ export default function App() {
 						onValueChange={setSync}
 					/>
 					<KText size="sm">sync</KText>
+				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-labels">
+					<Label required>email</Label>
+					<Label>notes</Label>
+				</View>
+				<Separator />
+				<View style={stylesheet.componentRow} testID="k-demo-spinners">
+					<Spinner size="sm" />
+					<Spinner />
+					<Spinner size="lg" variant="muted" />
+					<Spinner size="xl" variant="ghost" />
+				</View>
+				<View testID="k-demo-progress">
+					<Progress value={30} />
+					<Progress value={70} color="success" showValue />
+					<Progress value={50} color="info" label="uploading" />
 				</View>
 				<Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}>
 					<Sheet.Body>

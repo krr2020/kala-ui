@@ -15,7 +15,11 @@ import { Switch } from "../switch";
 import { Card } from "../card";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
+import { Label } from "../label";
+import { Progress } from "../progress";
+import { Separator } from "../separator";
 import { Sheet } from "../sheet";
+import { Spinner } from "../spinner";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 
@@ -675,6 +679,240 @@ describe("component markers", () => {
 			expect(
 				screen.getByTestId("k-switch").props.accessibilityState?.disabled,
 			).toBe(true);
+		});
+	});
+
+	describe("wave 4: Label, Separator, Spinner, Progress", () => {
+		const flatten = require("react-native").StyleSheet.flatten;
+		const findSvgProp = (tree: unknown, key: string): unknown[] => {
+			const found: unknown[] = [];
+			const walk = (node: unknown) => {
+				if (Array.isArray(node)) {
+					node.forEach(walk);
+					return;
+				}
+				if (node && typeof node === "object") {
+					const props = (node as { props?: Record<string, unknown> }).props;
+					if (props && key in props) found.push(props[key]);
+					walk((node as { children?: unknown }).children);
+				}
+			};
+			walk(tree);
+			return found;
+		};
+
+		it("Label/Separator/Spinner/Progress render their k-* markers", async () => {
+			const screen = await render(
+				<>
+					<Label>field</Label>
+					<Separator />
+					<Spinner size="sm" />
+					<Progress value={40} />
+				</>,
+			);
+			expect(screen.getByTestId("k-label")).toBeTruthy();
+			expect(screen.getByTestId("k-separator")).toBeTruthy();
+			expect(screen.getByTestId("k-spinner")).toBeTruthy();
+			expect(screen.getByTestId("k-progress")).toBeTruthy();
+		});
+
+		it("Label is fontSize 14 / weight 500 themed foreground", async () => {
+			const screen = await render(<Label>email</Label>);
+			const s = flatStyle(screen.getByTestId("k-label"));
+			expect(Number(s.fontSize)).toBe(14);
+			expect(s.fontWeight).toBe("500");
+			expect(String(s.color).startsWith("#")).toBe(true);
+		});
+
+		it("Label required appends a destructive *; plain label has none", async () => {
+			const screen = await render(<Label required>email</Label>);
+			expect(screen.getAllByText(" *").length).toBe(1);
+			const star = screen.getByText(" *");
+			const { themes } = require("../../themes");
+			// the marker is the destructive theme color, distinct from the
+			// label's own foreground color
+			expect(flatStyle(star).color).toBe(themes.light.destructive);
+			expect(flatStyle(star).color).not.toBe(themes.light.foreground);
+			await screen.rerender(<Label>notes</Label>);
+			expect(screen.queryAllByText(" *").length).toBe(0);
+		});
+
+		it("Separator orientations produce distinct one-pixel dimensions", async () => {
+			const screen = await render(<Separator />);
+			const h = flatStyle(screen.getByTestId("k-separator"));
+			await screen.rerender(<Separator orientation="vertical" />);
+			const v = flatStyle(screen.getByTestId("k-separator"));
+			expect(h.width).toBe("100%");
+			expect(Number(h.height)).toBe(1);
+			expect(v.height).toBe("100%");
+			expect(Number(v.width)).toBe(1);
+			expect(String(v.backgroundColor).startsWith("#")).toBe(true);
+		});
+
+		it("Separator decorative default hides from a11y; false keeps it", async () => {
+			const screen = await render(<Separator />);
+			expect(
+				screen.getByTestId("k-separator").props.accessibilityElementsHidden,
+			).toBe(true);
+			await screen.rerender(<Separator decorative={false} />);
+			expect(
+				screen.getByTestId("k-separator").props.accessibilityElementsHidden,
+			).toBeUndefined();
+		});
+
+		it("each Spinner size maps to a distinct icon size", async () => {
+			const sizes = ["sm", "md", "lg", "xl"] as const;
+			const seen = new Set<number>();
+			const screen = await render(<Spinner size="sm" />);
+			for (const size of sizes) {
+				await screen.rerender(<Spinner size={size} />);
+				const widths = findSvgProp(screen.toJSON(), "width").map(Number);
+				expect(Math.max(...widths)).toBeGreaterThan(0);
+				seen.add(Math.max(...widths));
+			}
+			expect(seen.size).toBe(sizes.length);
+		});
+
+		it("Spinner variants map to distinct themed stroke colors", async () => {
+			const variants = ["default", "muted", "white"] as const;
+			const seen = new Set<string>();
+			const screen = await render(<Spinner variant="default" />);
+			for (const variant of variants) {
+				await screen.rerender(<Spinner variant={variant} />);
+				const strokes = findSvgProp(screen.toJSON(), "stroke").map(String);
+				expect(strokes.length).toBeGreaterThan(0);
+				seen.add(strokes[0]);
+			}
+			expect(seen.size).toBe(variants.length);
+		});
+
+		it("Spinner ghost dims via wrapper opacity while muted stays full", async () => {
+			const screen = await render(<Spinner variant="muted" />);
+			expect(flatStyle(screen.getByTestId("k-spinner")).opacity).toBe(1);
+			await screen.rerender(<Spinner variant="ghost" />);
+			expect(flatStyle(screen.getByTestId("k-spinner")).opacity).toBe(0.6);
+		});
+
+		it("Spinner default label is 'Loading...' and custom labels pass through", async () => {
+			const screen = await render(<Spinner size="sm" />);
+			expect(screen.getByTestId("k-spinner").props.accessibilityLabel).toBe(
+				"Loading...",
+			);
+			await screen.rerender(<Spinner size="sm" label="Syncing" />);
+			expect(screen.getByTestId("k-spinner").props.accessibilityLabel).toBe(
+				"Syncing",
+			);
+		});
+
+		it("Progress sizes map to distinct track heights", async () => {
+			const sizes = ["sm", "md", "lg"] as const;
+			const seen = new Set<number>();
+			const screen = await render(<Progress size="sm" value={50} />);
+			for (const size of sizes) {
+				await screen.rerender(<Progress size={size} value={50} />);
+				seen.add(Number(flatStyle(screen.getByTestId("k-progress")).height));
+			}
+			expect(seen.size).toBe(sizes.length);
+		});
+
+		it("Progress indicator width follows the value", async () => {
+			const screen = await render(<Progress value={0} />);
+			const widths: string[] = []
+			for (const value of [0, 50, 100]) {
+				await screen.rerender(<Progress value={value} />);
+				widths.push(
+					String(
+						flatStyle(screen.getByTestId("k-progress-indicator")).width,
+					),
+				);
+			}
+			expect(widths).toEqual(["0%", "50%", "100%"]);
+		});
+
+		it("Progress clamps out-of-range values and honors custom min/max", async () => {
+			const screen = await render(<Progress value={-20} />);
+			expect(
+				flatStyle(screen.getByTestId("k-progress-indicator")).width,
+			).toBe("0%");
+			await screen.rerender(<Progress value={120} />);
+			expect(
+				flatStyle(screen.getByTestId("k-progress-indicator")).width,
+			).toBe("100%");
+			// (50-10)/(90-10) = 50% against non-default bounds
+			await screen.rerender(<Progress value={50} min={10} max={90} />);
+			expect(
+				flatStyle(screen.getByTestId("k-progress-indicator")).width,
+			).toBe("50%");
+		});
+
+		it("Progress defaults to 0 with no value", async () => {
+			const screen = await render(<Progress />);
+			expect(
+				flatStyle(screen.getByTestId("k-progress-indicator")).width,
+			).toBe("0%");
+		});
+
+		it("Progress color arms produce distinct indicator fills", async () => {
+			const screen = await render(<Progress value={50} color="primary" />);
+			const primary = String(
+				flatStyle(screen.getByTestId("k-progress-indicator")).backgroundColor,
+			);
+			await screen.rerender(<Progress value={50} color="success" />);
+			const success = String(
+				flatStyle(screen.getByTestId("k-progress-indicator")).backgroundColor,
+			);
+			expect(primary.startsWith("#")).toBe(true);
+			expect(success).not.toBe(primary);
+		});
+
+		it("Progress label/showValue render inner text; sm suppresses it", async () => {
+			const screen = await render(<Progress value={50} label="uploading" />);
+			expect(screen.getByText("uploading")).toBeTruthy();
+			await screen.rerender(<Progress value={50} showValue />);
+			expect(screen.getByText("50%")).toBeTruthy();
+			await screen.rerender(<Progress value={50} showValue size="sm" />);
+			expect(screen.queryByText("50%")).toBeNull();
+		});
+
+		it("Progress announces role=progressbar with accessibilityValue", async () => {
+			const screen = await render(<Progress value={30} min={0} max={100} />);
+			const track = screen.getByTestId("k-progress");
+			expect(track.props.accessibilityRole).toBe("progressbar");
+			expect(track.props.accessibilityValue).toEqual({
+				min: 0,
+				max: 100,
+				now: 30,
+			});
+			await screen.rerender(<Progress value={50} min={10} max={90} />);
+			expect(track.props.accessibilityValue).toEqual({
+				min: 10,
+				max: 90,
+				now: 50,
+			});
+		});
+
+		// last on purpose: manual unmount() poisons TLB's registry for later
+		// renders in the same file (see header note)
+		it("Spinner loop starts once per mount and stops on unmount", async () => {
+			const AnimatedRN = require("react-native").Animated;
+			const origLoop = AnimatedRN.loop;
+			const loops: Array<{ stop: ReturnType<typeof jest.fn> }> = [];
+			AnimatedRN.loop = ((...args: unknown[]) => {
+				const loop = origLoop(...(args as []));
+				const origStop = loop.stop.bind(loop);
+				(loop as { stop: unknown }).stop = jest.fn(origStop);
+				loops.push(loop as never);
+				return loop;
+			}) as typeof AnimatedRN.loop;
+			try {
+				const screen = await render(<Spinner size="sm" />);
+				await screen.rerender(<Spinner size="lg" />);
+				expect(loops.length).toBe(1);
+				screen.unmount();
+				expect(loops[0].stop).toHaveBeenCalled();
+			} finally {
+				AnimatedRN.loop = origLoop;
+			}
 		});
 	});
 });

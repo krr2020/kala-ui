@@ -10,8 +10,13 @@
 import 'react-native-unistyles/mocks';
 import { themes } from './src/themes';
 
-jest.mock('react-native-unistyles', () =>
-	require('react-native-unistyles/mocks'),
+jest.mock(
+  'react-native-unistyles',
+  () => require('react-native-unistyles/mocks'),
+  // virtual: the factory is self-contained, so jest must not try to
+  // resolve the real native package to canonicalize the mock key —
+  // pnpm's nested layout makes that resolution flaky under jest-expo.
+  { virtual: true }
 );
 
 jest.mock('react-native-reanimated', () => {
