@@ -160,7 +160,7 @@ Port the web pyramid, layer for layer:
    contract: assert `accessibilityRole`, `accessibilityLabel`, and
    state announcements for every component. This is where 44/48dp
    targets and labeled controls are caught before device QA.
-3. **Component markers** — the web `add-kala-markers.mjs` +
+3. **Component markers** — the web
    `component-markers.test.tsx` contract becomes a `testID`
    convention (`k-button-root`, `k-sheet-overlay`, …) enforced by a
    markers test. Keeps E2E and app debugging deterministic.
