@@ -1,0 +1,16 @@
+{
+  "features": {
+    "F0": {
+      "title": "Backlog & Bugs",
+      "status": "not-started"
+    }
+  },
+  "stories": {
+    "S0.1": {
+      "title": "Backlog",
+      "status": "not-started",
+      "featureId": "F0"
+    }
+  },
+  "tasks": {}
+}

@@ -1,0 +1,365 @@
+{
+  "project": {
+    "name": "kala ui",
+    "root": "/Users/rk/workspace/kala-ui"
+  },
+  "projects": {
+    "roots": [],
+    "ignore": [],
+    "overrides": {}
+  },
+  "execution": {
+    "worktrees": true
+  },
+  "agent": {
+    "defaultMode": "build",
+    "approvalPosture": "full_access",
+    "guardian": {
+      "enabled": true,
+      "timeoutMs": 30000,
+      "maxConsecutiveDenials": 3,
+      "cooldownMs": 900000
+    },
+    "compaction": {
+      "autoEnabled": false,
+      "thresholdPercent": 80,
+      "keepRecentTokens": 20000,
+      "readEarlyEnabled": false
+    },
+    "sessions": {
+      "retentionDays": 30
+    },
+    "memory": {
+      "enabled": true,
+      "overflow": "fifo",
+      "maxItems": 100,
+      "retentionDays": 90,
+      "inject": "auto",
+      "capture": "tool",
+      "pendingDays": 30,
+      "embedder": {
+        "provider": "ngram"
+      },
+      "consolidation": {
+        "enabled": false
+      }
+    },
+    "learning": {
+      "enabled": true,
+      "reviewQueue": true,
+      "maxSkills": 50,
+      "consolidationEnabled": true
+    },
+    "sessionCritique": {
+      "enabled": false,
+      "fixFindings": false,
+      "severityFloor": "high",
+      "transcriptBudgetTokens": 40000
+    },
+    "showReasoning": true,
+    "showStepNarration": false,
+    "shiftEnterToSubmit": false,
+    "chatAutoValidate": true,
+    "coordinator": {
+      "enabled": true
+    },
+    "spawns": {},
+    "debug": {
+      "llmCapture": {
+        "enabled": false,
+        "captureRequestBody": false,
+        "captureResponseBody": true,
+        "otlp": {
+          "enabled": false
+        }
+      },
+      "logsEnabled": true
+    },
+    "sandbox": {
+      "mode": "auto",
+      "extraWritableRoots": []
+    },
+    "outputCompaction": {
+      "enabled": true,
+      "gitLogLines": 10,
+      "diffContext": 1
+    }
+  },
+  "autonomy": {
+    "requireApprovalBeforeCommit": true,
+    "stopAfter": "all-done",
+    "resumeAfterApproval": true,
+    "approvalTimeoutMinutes": 120,
+    "reviewResumeTimeoutMinutes": 15,
+    "autoAdoptGates": [],
+    "workingHours": null,
+    "prioritizeBugfixes": true,
+    "laneCap": 1,
+    "budget": {
+      "warnTokens": 1500000,
+      "hardStopTokens": 3000000,
+      "scope": "run"
+    },
+    "planReviewGate": false,
+    "outageRetryLimit": 2,
+    "outageRetryBackoffSeconds": 30,
+    "outageResumeTimeoutMinutes": 15,
+    "outageMaxAutoResumes": 3
+  },
+  "approvals": {
+    "allow": [],
+    "block": []
+  },
+  "git": {
+    "autoCommit": true,
+    "snapshots": true,
+    "branchPer": "auto",
+    "baseBranch": "main",
+    "commitMessageTemplate": "chore({taskId}): {title}",
+    "autoPush": true,
+    "autoPR": false,
+    "prTitleTemplate": "{storyId}: {storyTitle}",
+    "prBodyTemplate": "Completed work on {storyTitle}.\n\n## Tasks\n"
+  },
+  "ux": {
+    "enabled": true,
+    "generation": {
+      "designSystem": true,
+      "screens": true,
+      "depth": "standard"
+    },
+    "validation": {
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844
+        }
+      ],
+      "fullPage": false,
+      "browserMatch": {
+        "enabled": true,
+        "strictness": "loose"
+      },
+      "uiValidation": {
+        "enabled": false
+      },
+      "visualBaseline": {
+        "enabled": false,
+        "threshold": 0.1,
+        "maxDiffPercent": 1,
+        "ignoreRegions": []
+      }
+    },
+    "agentBrowser": {
+      "enabled": true,
+      "advancedAutomation": true
+    }
+  },
+  "planning": {
+    "autoPlan": true
+  },
+  "codeIntel": {
+    "lsp": {
+      "enabled": true,
+      "idleShutdownMin": 15,
+      "maxServers": 4
+    },
+    "formatter": {
+      "enabled": true,
+      "autoApply": false
+    }
+  },
+  "gates": {
+    "lint": true,
+    "typecheck": true,
+    "test": true,
+    "build": false,
+    "overrides": {},
+    "order": [
+      "lint",
+      "typecheck",
+      "test",
+      "build"
+    ],
+    "timeoutMs": 300000,
+    "flakyRetries": 0,
+    "autoFix": {
+      "enabled": true
+    },
+    "isolation": {
+      "enabled": false,
+      "deps": "symlink"
+    },
+    "device": {
+      "enabled": false
+    }
+  },
+  "feedback": {
+    "readGuard": {
+      "enabled": true,
+      "maxHashLines": 3000,
+      "exempt": [
+        ".md",
+        ".markdown",
+        ".txt",
+        ".log"
+      ]
+    },
+    "format": {
+      "enabled": true,
+      "budgetMs": 5000,
+      "validateParse": true
+    },
+    "diagnostics": {
+      "mode": "block",
+      "budgetMs": 4000,
+      "maxFindings": 12,
+      "blockOn": [
+        "error"
+      ]
+    },
+    "cascade": {
+      "enabled": true,
+      "maxImporters": 10,
+      "perFileBudgetMs": 3000
+    },
+    "actionableWarnings": {
+      "autoFix": true,
+      "maxFixes": 5
+    },
+    "lineLimit": {
+      "enabled": true,
+      "mode": "warn",
+      "maxLines": 500,
+      "include": [
+        ".ts",
+        ".tsx",
+        ".js",
+        ".jsx",
+        ".mjs",
+        ".cjs",
+        ".mts",
+        ".cts",
+        ".vue",
+        ".svelte",
+        ".astro",
+        ".py",
+        ".go",
+        ".rs",
+        ".java",
+        ".kt",
+        ".rb",
+        ".php",
+        ".cs",
+        ".swift",
+        ".c",
+        ".cc",
+        ".cpp",
+        ".h",
+        ".hpp"
+      ],
+      "exclude": [
+        ".md",
+        ".mdx",
+        ".markdown",
+        ".txt",
+        ".log",
+        ".json",
+        ".jsonc",
+        ".yaml",
+        ".yml",
+        ".toml",
+        ".csv",
+        ".sql",
+        ".html",
+        ".htm",
+        ".css",
+        ".scss",
+        ".less",
+        ".svg",
+        ".lock"
+      ]
+    }
+  },
+  "wiki": {
+    "autoRefresh": false,
+    "refreshIntervalHours": 24,
+    "checkIntervalMinutes": 0
+  },
+  "codeIntelligence": {
+    "enabled": true,
+    "sources": {
+      "excludeDirs": []
+    },
+    "symbols": {
+      "enabled": true
+    },
+    "graph": {
+      "enabled": true
+    },
+    "includeNestedRepos": false,
+    "embeddings": {
+      "enabled": true,
+      "provider": "local-dense"
+    }
+  },
+  "autocomplete": {
+    "enabled": false,
+    "models": {},
+    "fimMode": "auto",
+    "debounce": "adaptive",
+    "candidates": 1,
+    "manualTriggerShortcut": "Mod-Space",
+    "symbolContext": true,
+    "promptCompletion": true,
+    "nextEdits": true
+  },
+  "fileBrowser": {
+    "hiddenFiles": [
+      "node_modules",
+      "dist",
+      "build",
+      "out",
+      "coverage",
+      ".git",
+      ".next",
+      ".nuxt",
+      ".svelte-kit",
+      ".astro",
+      ".angular",
+      ".vite",
+      ".turbo",
+      ".parcel-cache",
+      ".docusaurus",
+      ".cache",
+      ".conveyor",
+      ".expo",
+      "Pods",
+      "__pycache__",
+      ".pytest_cache",
+      ".mypy_cache",
+      ".ruff_cache",
+      ".venv",
+      ".gradle",
+      ".terraform",
+      ".dart_tool",
+      ".vscode",
+      ".idea",
+      ".vs",
+      ".history",
+      ".DS_Store",
+      "Thumbs.db",
+      "desktop.ini"
+    ],
+    "pinnedFiles": [],
+    "wordWrap": false,
+    "formatOnSave": false,
+    "openMode": "open-each"
+  }
+}

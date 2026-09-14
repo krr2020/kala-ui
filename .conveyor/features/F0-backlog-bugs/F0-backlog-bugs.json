@@ -1,0 +1,28 @@
+{
+  "id": "F0",
+  "title": "Backlog & Bugs",
+  "description": "Reserved priority bucket for backlog items and auto-spawned bug fixes.",
+  "status": "not-started",
+  "stories": [
+    "S0.1"
+  ],
+  "createdAt": "2026-09-14T11:37:53.771Z",
+  "updatedAt": "2026-09-14T11:37:53.773Z",
+  "needsUi": false,
+  "ux": {
+    "value": "not-required",
+    "rationale": "Direct board creation marked this feature as non-UI work",
+    "surfaces": [
+      "api"
+    ]
+  },
+  "requirementIds": [],
+  "evidenceIds": [],
+  "dependsOn": [],
+  "origin": {
+    "source": "direct",
+    "actor": "user",
+    "reason": "direct feature creation"
+  },
+  "planStatus": "unplanned"
+}

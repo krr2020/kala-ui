@@ -10,3 +10,14 @@ coverage
 .env.local
 *.tgz
 .zcode
+# Conveyor machine-local state (board/, specs/, wiki/, design/ stay committable)
+.conveyor/scratch/
+.conveyor/annotations/
+.conveyor/perf-audits/
+.conveyor/autocomplete-telemetry.db*
+.conveyor/terminal-state.json
+.conveyor/terminal-scrollback/
+.conveyor/browser-history.json
+.conveyor/ui-evidence/
+.conveyor/recordings/
+.conveyor/followups.json
