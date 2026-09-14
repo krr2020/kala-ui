@@ -153,7 +153,17 @@
   .swatch { display: inline-flex; align-items: center; gap: 0.5rem; }
   .chip {
     width: 2rem; height: 2rem; min-width: 2rem; border-radius: 0.375rem;
-    border: 1px solid color-mix(in oklab, var(--separator) 70%, transparent);
+    border: 3px solid color-mix(in oklab, var(--foreground) 16%, transparent);
+    /* Checkerboard underlay so white/near-white values read as swatches,
+       not empty cells. Inline styles use background-color (not the
+       background shorthand) so this image survives. */
+    background-image: conic-gradient(
+      color-mix(in oklab, var(--foreground) 10%, transparent) 25%,
+      transparent 0 50%,
+      color-mix(in oklab, var(--foreground) 10%, transparent) 0 75%,
+      transparent 0
+    );
+    background-size: 10px 10px;
   }
   .pair { display: flex; border-radius: 0.375rem; overflow: hidden; border: 1px solid var(--separator); }
   .pair span { padding: 0.3rem 0.6rem; font-size: 0.78rem; font-weight: 600; }
@@ -163,6 +173,10 @@
     border: 1px solid var(--separator); border-radius: var(--kala-radius-card);
     overflow: hidden; margin-top: 1rem;
   }
+  /* Each panel owns its theme's canvas so swatches and text stay legible
+     regardless of the page-level toggle. */
+  .theme-panel.scope-light { background: var(--card); }
+  .theme-panel.scope-dark { background: var(--background); }
   .theme-panel > header {
     padding: 0.6rem 1rem; font-size: 0.85rem; font-weight: 600;
     display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
@@ -348,30 +362,30 @@
     <div class="tablewrap"><table>
       <thead><tr><th>Token</th><th>Value</th><th>Sample</th><th>Role</th></tr></thead>
       <tbody>
-        <tr><td><code>--background</code></td><td class="mono">hsl(0 0% 100%)</td><td><span class="chip" style="background:hsl(0 0% 100%)"></span></td><td>App canvas</td></tr>
+        <tr><td><code>--background</code></td><td class="mono">hsl(0 0% 100%)</td><td><span class="chip" style="background-color:hsl(0 0% 100%)"></span></td><td>App canvas</td></tr>
         <tr><td><code>--foreground</code></td><td class="mono">hsl(220 100% 11%)</td><td><span class="pair"><span style="background:hsl(0 0% 100%);color:hsl(220 100% 11%)">Aa</span></span></td><td>Base text</td></tr>
-        <tr><td><code>--card</code></td><td class="mono">hsl(0 0% 100%)</td><td><span class="chip" style="background:hsl(0 0% 100%)"></span></td><td>Card surfaces</td></tr>
+        <tr><td><code>--card</code></td><td class="mono">hsl(0 0% 100%)</td><td><span class="chip" style="background-color:hsl(0 0% 100%)"></span></td><td>Card surfaces</td></tr>
         <tr><td><code>--card-foreground</code></td><td class="mono">hsl(222.2 84% 4.9%)</td><td><span class="pair"><span style="background:hsl(222.2 84% 4.9%);color:hsl(0 0% 100%)">Aa</span></span></td><td>Text on cards</td></tr>
-        <tr><td><code>--popover</code> / <code>--popover-foreground</code></td><td class="mono">hsl(0 0% 100%) / hsl(222.2 84% 4.9%)</td><td><span class="chip" style="background:hsl(0 0% 100%)"></span></td><td>Menus, dropdowns, popovers</td></tr>
-        <tr><td><code>--primary</code></td><td class="mono">hsl(221.2 83.2% 53.3%)</td><td><span class="chip" style="background:hsl(221.2 83.2% 53.3%)"></span></td><td>Main action</td></tr>
+        <tr><td><code>--popover</code> / <code>--popover-foreground</code></td><td class="mono">hsl(0 0% 100%) / hsl(222.2 84% 4.9%)</td><td><span class="chip" style="background-color:hsl(0 0% 100%)"></span></td><td>Menus, dropdowns, popovers</td></tr>
+        <tr><td><code>--primary</code></td><td class="mono">hsl(221.2 83.2% 53.3%)</td><td><span class="chip" style="background-color:hsl(221.2 83.2% 53.3%)"></span></td><td>Main action</td></tr>
         <tr><td><code>--primary-foreground</code></td><td class="mono">hsl(210 40% 98%)</td><td><span class="pair"><span style="background:hsl(221.2 83.2% 53.3%);color:hsl(210 40% 98%)">Aa</span></span></td><td>Text/icons on primary</td></tr>
-        <tr><td><code>--secondary</code></td><td class="mono">hsl(219 18% 55%)</td><td><span class="chip" style="background:hsl(219 18% 55%)"></span></td><td>Secondary action</td></tr>
+        <tr><td><code>--secondary</code></td><td class="mono">hsl(219 18% 55%)</td><td><span class="chip" style="background-color:hsl(219 18% 55%)"></span></td><td>Secondary action</td></tr>
         <tr><td><code>--secondary-foreground</code></td><td class="mono">hsl(0 0% 100%)</td><td><span class="pair"><span style="background:hsl(219 18% 55%);color:hsl(0 0% 100%)">Aa</span></span></td><td>Text on secondary</td></tr>
-        <tr><td><code>--muted</code></td><td class="mono">hsl(210 40% 96.1%)</td><td><span class="chip" style="background:hsl(210 40% 96.1%)"></span></td><td>Recessed background</td></tr>
+        <tr><td><code>--muted</code></td><td class="mono">hsl(210 40% 96.1%)</td><td><span class="chip" style="background-color:hsl(210 40% 96.1%)"></span></td><td>Recessed background</td></tr>
         <tr><td><code>--muted-foreground</code></td><td class="mono">hsl(215.4 16.3% 46.9%)</td><td><span class="pair"><span style="background:hsl(210 40% 96.1%);color:hsl(215.4 16.3% 46.9%)">Aa</span></span></td><td>Muted text</td></tr>
-        <tr><td><code>--accent</code></td><td class="mono">hsl(210 40% 96.1%)</td><td><span class="chip" style="background:hsl(210 40% 96.1%)"></span></td><td>Hover/active bg (ghost, outline)</td></tr>
+        <tr><td><code>--accent</code></td><td class="mono">hsl(210 40% 96.1%)</td><td><span class="chip" style="background-color:hsl(210 40% 96.1%)"></span></td><td>Hover/active bg (ghost, outline)</td></tr>
         <tr><td><code>--accent-foreground</code></td><td class="mono">hsl(222.2 47.4% 11.2%)</td><td><span class="pair"><span style="background:hsl(210 40% 96.1%);color:hsl(222.2 47.4% 11.2%)">Aa</span></span></td><td>Text on accent</td></tr>
-        <tr><td><code>--destructive</code></td><td class="mono">hsl(0 84.2% 60.2%)</td><td><span class="chip" style="background:hsl(0 84.2% 60.2%)"></span></td><td>Danger action</td></tr>
-        <tr><td><code>--success</code></td><td class="mono">hsl(142 76% 36%)</td><td><span class="chip" style="background:hsl(142 76% 36%)"></span></td><td>Success semantic</td></tr>
-        <tr><td><code>--warning</code></td><td class="mono">hsl(38 92% 50%)</td><td><span class="chip" style="background:hsl(38 92% 50%)"></span></td><td>Warning semantic</td></tr>
-        <tr><td><code>--error</code></td><td class="mono">hsl(0 72% 51%)</td><td><span class="chip" style="background:hsl(0 72% 51%)"></span></td><td>Error semantic</td></tr>
-        <tr><td><code>--info</code></td><td class="mono">hsl(190 90% 45%)</td><td><span class="chip" style="background:hsl(190 90% 45%)"></span></td><td>Info semantic</td></tr>
-        <tr><td><code>--border</code></td><td class="mono">hsl(211 27% 81%)</td><td><span class="chip" style="background:hsl(211 27% 81%)"></span></td><td>Default 1px hairline</td></tr>
-        <tr><td><code>--border-strong</code></td><td class="mono">hsl(211 27% 60%)</td><td><span class="chip" style="background:hsl(211 27% 60%)"></span></td><td>Stronger hairline (table headers)</td></tr>
-        <tr><td><code>--input</code></td><td class="mono">hsl(214.3 31.8% 91.4%)</td><td><span class="chip" style="background:hsl(214.3 31.8% 91.4%)"></span></td><td>Input border</td></tr>
-        <tr><td><code>--ring</code></td><td class="mono">hsl(221.2 83.2% 53.3%)</td><td><span class="chip" style="background:hsl(221.2 83.2% 53.3%)"></span></td><td>Focus ring</td></tr>
-        <tr><td><code>--separator</code></td><td class="mono">hsl(211 27% 81%)</td><td><span class="chip" style="background:hsl(211 27% 81%)"></span></td><td>Dividers</td></tr>
-        <tr><td><code>--overlay</code> / <code>--overlay-alpha</code></td><td class="mono">hsl(0 0% 0%) / 0.5</td><td><span class="chip" style="background:hsl(0 0% 0% / 0.5)"></span></td><td>Dialog/drawer scrim</td></tr>
+        <tr><td><code>--destructive</code></td><td class="mono">hsl(0 84.2% 60.2%)</td><td><span class="chip" style="background-color:hsl(0 84.2% 60.2%)"></span></td><td>Danger action</td></tr>
+        <tr><td><code>--success</code></td><td class="mono">hsl(142 76% 36%)</td><td><span class="chip" style="background-color:hsl(142 76% 36%)"></span></td><td>Success semantic</td></tr>
+        <tr><td><code>--warning</code></td><td class="mono">hsl(38 92% 50%)</td><td><span class="chip" style="background-color:hsl(38 92% 50%)"></span></td><td>Warning semantic</td></tr>
+        <tr><td><code>--error</code></td><td class="mono">hsl(0 72% 51%)</td><td><span class="chip" style="background-color:hsl(0 72% 51%)"></span></td><td>Error semantic</td></tr>
+        <tr><td><code>--info</code></td><td class="mono">hsl(190 90% 45%)</td><td><span class="chip" style="background-color:hsl(190 90% 45%)"></span></td><td>Info semantic</td></tr>
+        <tr><td><code>--border</code></td><td class="mono">hsl(211 27% 81%)</td><td><span class="chip" style="background-color:hsl(211 27% 81%)"></span></td><td>Default 1px hairline</td></tr>
+        <tr><td><code>--border-strong</code></td><td class="mono">hsl(211 27% 60%)</td><td><span class="chip" style="background-color:hsl(211 27% 60%)"></span></td><td>Stronger hairline (table headers)</td></tr>
+        <tr><td><code>--input</code></td><td class="mono">hsl(214.3 31.8% 91.4%)</td><td><span class="chip" style="background-color:hsl(214.3 31.8% 91.4%)"></span></td><td>Input border</td></tr>
+        <tr><td><code>--ring</code></td><td class="mono">hsl(221.2 83.2% 53.3%)</td><td><span class="chip" style="background-color:hsl(221.2 83.2% 53.3%)"></span></td><td>Focus ring</td></tr>
+        <tr><td><code>--separator</code></td><td class="mono">hsl(211 27% 81%)</td><td><span class="chip" style="background-color:hsl(211 27% 81%)"></span></td><td>Dividers</td></tr>
+        <tr><td><code>--overlay</code> / <code>--overlay-alpha</code></td><td class="mono">hsl(0 0% 0%) / 0.5</td><td><span class="chip" style="background-color:hsl(0 0% 0% / 0.5)"></span></td><td>Dialog/drawer scrim</td></tr>
       </tbody>
     </table></div>
   </div>
@@ -381,25 +395,25 @@
     <div class="tablewrap"><table>
       <thead><tr><th>Token</th><th>Value</th><th>Sample</th><th>Δ vs light</th></tr></thead>
       <tbody>
-        <tr><td><code>--background</code></td><td class="mono">hsl(219 33% 12%)</td><td><span class="chip" style="background:hsl(219 33% 12%)"></span></td><td>Deep slate canvas</td></tr>
+        <tr><td><code>--background</code></td><td class="mono">hsl(219 33% 12%)</td><td><span class="chip" style="background-color:hsl(219 33% 12%)"></span></td><td>Deep slate canvas</td></tr>
         <tr><td><code>--foreground</code></td><td class="mono">hsl(215 18% 66%)</td><td><span class="pair"><span style="background:hsl(219 33% 12%);color:hsl(215 18% 66%)">Aa</span></span></td><td>Softened body text</td></tr>
-        <tr><td><code>--card</code></td><td class="mono">hsl(219 31% 17%)</td><td><span class="chip" style="background:hsl(219 31% 17%)"></span></td><td>One step above canvas</td></tr>
+        <tr><td><code>--card</code></td><td class="mono">hsl(219 31% 17%)</td><td><span class="chip" style="background-color:hsl(219 31% 17%)"></span></td><td>One step above canvas</td></tr>
         <tr><td><code>--card-foreground</code></td><td class="mono">hsl(210 40% 98%)</td><td><span class="pair"><span style="background:hsl(219 31% 17%);color:hsl(210 40% 98%)">Aa</span></span></td><td>Full-contrast on-card text</td></tr>
-        <tr><td><code>--popover</code> / <code>--popover-foreground</code></td><td class="mono">hsl(219 31% 17%) / hsl(210 40% 98%)</td><td><span class="chip" style="background:hsl(219 31% 17%)"></span></td><td>Matches card</td></tr>
-        <tr><td><code>--primary</code></td><td class="mono">hsl(217.2 91.2% 59.8%)</td><td><span class="chip" style="background:hsl(217.2 91.2% 59.8%)"></span></td><td>Lightness +6.5pt — stays vivid on slate</td></tr>
+        <tr><td><code>--popover</code> / <code>--popover-foreground</code></td><td class="mono">hsl(219 31% 17%) / hsl(210 40% 98%)</td><td><span class="chip" style="background-color:hsl(219 31% 17%)"></span></td><td>Matches card</td></tr>
+        <tr><td><code>--primary</code></td><td class="mono">hsl(217.2 91.2% 59.8%)</td><td><span class="chip" style="background-color:hsl(217.2 91.2% 59.8%)"></span></td><td>Lightness +6.5pt — stays vivid on slate</td></tr>
         <tr><td><code>--primary-foreground</code></td><td class="mono">hsl(222.2 47.4% 11.2%)</td><td><span class="pair"><span style="background:hsl(217.2 91.2% 59.8%);color:hsl(222.2 47.4% 11.2%)">Aa</span></span></td><td><strong>Dark ink on light-blue fill</strong>, not white</td></tr>
         <tr><td><code>--secondary</code> / <code>--secondary-foreground</code></td><td class="mono">hsl(217.2 32.6% 17.5%) / hsl(210 40% 98%)</td><td><span class="pair"><span style="background:hsl(217.2 32.6% 17.5%);color:hsl(210 40% 98%)">Aa</span></span></td><td>Low-chroma fill</td></tr>
         <tr><td><code>--muted</code> / <code>--muted-foreground</code></td><td class="mono">hsl(217.2 32.6% 17.5%) / hsl(215 20.2% 65.1%)</td><td><span class="pair"><span style="background:hsl(217.2 32.6% 17.5%);color:hsl(215 20.2% 65.1%)">Aa</span></span></td><td>Recessed surface, lifted text</td></tr>
         <tr><td><code>--accent</code> / <code>--accent-foreground</code></td><td class="mono">hsl(217.2 32.6% 17.5%) / hsl(210 40% 98%)</td><td><span class="pair"><span style="background:hsl(217.2 32.6% 17.5%);color:hsl(210 40% 98%)">Aa</span></span></td><td>Same as secondary in dark</td></tr>
-        <tr><td><code>--destructive</code></td><td class="mono">hsl(0 62.8% 30.6%)</td><td><span class="chip" style="background:hsl(0 62.8% 30.6%)"></span></td><td>Deepened — large red fields glare in dark</td></tr>
+        <tr><td><code>--destructive</code></td><td class="mono">hsl(0 62.8% 30.6%)</td><td><span class="chip" style="background-color:hsl(0 62.8% 30.6%)"></span></td><td>Deepened — large red fields glare in dark</td></tr>
         <tr><td><code>--error</code> / <code>--error-foreground</code></td><td class="mono">hsl(0 91% 71%) / hsl(0 72% 10%)</td><td><span class="pair"><span style="background:hsl(0 91% 71%);color:hsl(0 72% 10%)">Aa</span></span></td><td>Lightened fill, dark ink</td></tr>
         <tr><td><code>--info</code> / <code>--info-foreground</code></td><td class="mono">hsl(190 80% 60%) / hsl(221 83% 10%)</td><td><span class="pair"><span style="background:hsl(190 80% 60%);color:hsl(221 83% 10%)">Aa</span></span></td><td>Lightened fill, dark ink</td></tr>
-        <tr><td><code>--border</code></td><td class="mono">hsl(221 32% 43%)</td><td><span class="chip" style="background:hsl(221 32% 43%)"></span></td><td>Visible on dark canvas</td></tr>
-        <tr><td><code>--border-strong</code></td><td class="mono">hsl(221 15% 60%)</td><td><span class="chip" style="background:hsl(221 15% 60%)"></span></td><td>Same as light</td></tr>
-        <tr><td><code>--border-alpha</code></td><td class="mono">0.16</td><td><span class="chip" style="background:hsl(221 32% 43% / 0.16)"></span></td><td>Hairlines go translucent</td></tr>
-        <tr><td><code>--input</code></td><td class="mono">hsl(217.2 32.6% 17.5%)</td><td><span class="chip" style="background:hsl(217.2 32.6% 17.5%)"></span></td><td>Matches muted</td></tr>
-        <tr><td><code>--ring</code></td><td class="mono">hsl(224.3 76.3% 48%)</td><td><span class="chip" style="background:hsl(224.3 76.3% 48%)"></span></td><td>Deeper than primary</td></tr>
-        <tr><td><code>--separator</code></td><td class="mono">hsl(221 32% 43%)</td><td><span class="chip" style="background:hsl(221 32% 43%)"></span></td><td>Matches border</td></tr>
+        <tr><td><code>--border</code></td><td class="mono">hsl(221 32% 43%)</td><td><span class="chip" style="background-color:hsl(221 32% 43%)"></span></td><td>Visible on dark canvas</td></tr>
+        <tr><td><code>--border-strong</code></td><td class="mono">hsl(221 15% 60%)</td><td><span class="chip" style="background-color:hsl(221 15% 60%)"></span></td><td>Same as light</td></tr>
+        <tr><td><code>--border-alpha</code></td><td class="mono">0.16</td><td><span class="chip" style="background-color:hsl(221 32% 43% / 0.16)"></span></td><td>Hairlines go translucent</td></tr>
+        <tr><td><code>--input</code></td><td class="mono">hsl(217.2 32.6% 17.5%)</td><td><span class="chip" style="background-color:hsl(217.2 32.6% 17.5%)"></span></td><td>Matches muted</td></tr>
+        <tr><td><code>--ring</code></td><td class="mono">hsl(224.3 76.3% 48%)</td><td><span class="chip" style="background-color:hsl(224.3 76.3% 48%)"></span></td><td>Deeper than primary</td></tr>
+        <tr><td><code>--separator</code></td><td class="mono">hsl(221 32% 43%)</td><td><span class="chip" style="background-color:hsl(221 32% 43%)"></span></td><td>Matches border</td></tr>
       </tbody>
     </table></div>
     <div style="padding: 0.75rem 1rem; font-size: 0.85rem; border-top: 1px solid hsl(221 32% 43%)">
