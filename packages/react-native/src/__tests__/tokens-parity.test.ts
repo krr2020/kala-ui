@@ -274,37 +274,52 @@ describe("layout restructure pins", () => {
 	it("src/index.ts public export names are unchanged", () => {
 		// Static parse (not import): the entry pulls in react-native, which
 		// vitest cannot execute — the export LIST is the contract anyway.
-			const entry = readFileSync(resolve(__dirname, "../index.ts"), "utf8");
-			// `export *` and default exports are outside this pin's vocabulary —
-			// fail loudly instead of silently under-collecting.
-			expect(entry).not.toMatch(/export\s+\*/);
-			expect(entry).not.toMatch(/export\s+default/);
-			const names = new Set<string>();
-			for (const m of entry.matchAll(
-				/export\s+(?:type\s+)?\{([^}]*)\}\s*from\s*"[^"]+";/g,
-			)) {
-				for (const part of m[1].split(",")) {
-					const name = part
+		const entry = readFileSync(resolve(__dirname, "../index.ts"), "utf8");
+		// `export *` and default exports are outside this pin's vocabulary —
+		// fail loudly instead of silently under-collecting.
+		expect(entry).not.toMatch(/export\s+\*/);
+		expect(entry).not.toMatch(/export\s+default/);
+		const names = new Set<string>();
+		for (const m of entry.matchAll(
+			/export\s+(?:type\s+)?\{([^}]*)\}\s*from\s*"[^"]+";/g,
+		)) {
+			for (const part of m[1].split(",")) {
+				const name = part
 					.trim()
 					.replace(/^type /, "")
 					.split(" as ")
 					.pop();
-					if (name) names.add(name);
-				}
+				if (name) names.add(name);
 			}
-			// An empty set means the entry stopped matching the re-export shape —
-			// that is a parse failure, not a passing pin.
-			expect(names.size).toBeGreaterThan(0);
+		}
+		// An empty set means the entry stopped matching the re-export shape —
+		// that is a parse failure, not a passing pin.
+		expect(names.size).toBeGreaterThan(0);
 		expect([...names].sort()).toEqual(
 			[
 				"Button",
 				"ButtonProps",
+				"Card",
+				"CardProps",
+				"Heading",
+				"HeadingAlign",
+				"HeadingProps",
+				"HeadingSize",
+				"HeadingWeight",
 				"Icon",
 				"IconProps",
 				"KalaTheme",
 				"Sheet",
 				"SheetBodyProps",
 				"SheetProps",
+				"Text",
+				"TextAlign",
+				"TextColor",
+				"TextProps",
+				"TextSize",
+				"TextWeight",
+				"TextInput",
+				"TextInputProps",
 				"ThemeName",
 				"motion",
 				"themeNames",

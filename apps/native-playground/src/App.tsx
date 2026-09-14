@@ -7,7 +7,15 @@ import {
 	UnistylesRuntime,
 	useUnistyles,
 } from "react-native-unistyles";
-import { Button, Icon, Sheet } from "@kala-ui/react-native";
+import {
+	Button,
+	Card,
+	Heading,
+	Icon,
+	Sheet,
+	Text as KText,
+	TextInput,
+} from "@kala-ui/react-native";
 import { themeNames } from "@kala-ui/react-native/themes";
 
 const SWATCH_TOKENS = [
@@ -186,6 +194,31 @@ export default function App() {
 						<Icon key={size} icon={Sun} size={size} />
 					))}
 				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-text">
+					<Heading size="h3">typography</Heading>
+					{(["xs", "sm", "md", "lg"] as const).map((size) => (
+						<KText key={size} size={size} color="muted">
+							size {size}
+						</KText>
+					))}
+					<KText truncate>
+						truncated line that clamps with a tail ellipsis
+					</KText>
+				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-input">
+					<TextInput placeholder="email" accessibilityLabel="email field" />
+					<TextInput
+						placeholder="error"
+						accessibilityLabel="error field"
+						hasError
+					/>
+				</View>
+				<Card testID="k-demo-card">
+					<Heading size="h6">card</Heading>
+					<KText color="muted" size="sm">
+						Themed surface with card tokens.
+					</KText>
+				</Card>
 				<Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}>
 					<Sheet.Body>
 						<Text style={stylesheet.current}>

@@ -7,8 +7,11 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
 import { Button } from "../button";
+import { Heading } from "../heading";
 import { Icon } from "../icon";
 import { Sheet } from "../sheet";
+import { Text } from "../text";
+import { TextInput } from "../text-input";
 
 // TLB v14 queries are a11y-aware: deliberately-hidden elements (Icon without
 // a label) and siblings of an accessibilityViewIsModal container (the Sheet
@@ -104,6 +107,44 @@ describe("a11y contract", () => {
 			);
 			await fireEvent.press(screen.getByTestId("k-sheet-overlay", inclHidden));
 			expect(onClose).not.toHaveBeenCalled();
+		});
+	});
+
+	describe("Text", () => {
+		it("is findable by its text content", async () => {
+			const screen = await render(<Text>Hello kala</Text>);
+			expect(screen.getByText("Hello kala")).toBeTruthy();
+		});
+	});
+
+	describe("Heading", () => {
+		it("announces as a header", async () => {
+			const screen = await render(<Heading>Section title</Heading>);
+			expect(
+				screen.getByRole("header", { name: "Section title" }),
+			).toBeTruthy();
+		});
+	});
+
+	describe("TextInput", () => {
+		// RN's AccessibilityRole vocab has no "textbox" (the native control
+		// announces itself); the assertable contract is label wiring + state.
+		it("passes the accessibility label through", async () => {
+			const screen = await render(
+				<TextInput accessibilityLabel="Email address" />,
+			);
+			expect(screen.getByTestId("k-text-input").props.accessibilityLabel).toBe(
+				"Email address",
+			);
+		});
+
+		it("announces disabled state and blocks editing", async () => {
+			const screen = await render(
+				<TextInput accessibilityLabel="e" disabled />,
+			);
+			const input = screen.getByTestId("k-text-input");
+			expect(input.props.accessibilityState?.disabled).toBe(true);
+			expect(input.props.editable).toBe(false);
 		});
 	});
 });
