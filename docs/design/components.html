@@ -166,6 +166,7 @@
   .btn-subtle:hover { background: color-mix(in oklab, var(--muted) 80%, var(--background)); }
   .btn-link { background: none; color: var(--primary); text-decoration: underline; text-underline-offset: 4px; padding-inline: 0.25rem; }
   .btn-link:hover { text-decoration-thickness: 2px; }
+  .btn-fab { height: 3.5rem; width: 3.5rem; border-radius: 999px; box-shadow: 0 6px 16px hsl(0 0% 0% / 0.22); }
 
   .field { display: flex; flex-direction: column; gap: 0.4rem; min-width: 15rem; flex: 1; }
   .label { font-size: 0.85rem; font-weight: 500; }
@@ -229,7 +230,8 @@
   .dot { width: 0.5rem; height: 0.5rem; border-radius: 999px; margin-top: 0.45rem; flex: none; }
 
   .tabs-demo { display: flex; flex-direction: column; gap: 1rem; }
-  .tablist { display: inline-flex; gap: 0.25rem; background: var(--muted); padding: 0.25rem; border-radius: var(--kala-radius-control); width: fit-content; }
+  .tablist { display: inline-flex; gap: 0.25rem; background: var(--muted); padding: 0.25rem; border-radius: var(--kala-radius-control); width: fit-content; border: 0; margin: 0; min-width: 0; }
+  fieldset.tablist legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .tab { height: 2rem; padding: 0 0.9rem; display: inline-flex; align-items: center; border-radius: calc(var(--kala-radius-control) - 2px); font-size: 0.85rem; font-weight: 500; color: var(--muted-foreground); cursor: pointer; border: 0; background: transparent; font-family: inherit; }
   .tab.on { background: var(--card); color: var(--card-foreground); box-shadow: 0 1px 2px hsl(220 43% 11% / 0.08); }
   .tab.disabled { opacity: 0.5; cursor: not-allowed; }
@@ -268,6 +270,42 @@
   .list-item.selected { background: color-mix(in oklab, var(--primary) 9%, var(--card)); }
 
   .kbd { display: inline-block; padding: 0.15rem 0.45rem; border-radius: calc(var(--kala-radius-control) - 2px); border: 1px solid var(--border-strong); border-bottom-width: 2px; background: var(--muted); color: var(--muted-foreground); font-family: var(--font-mono); font-size: 0.78rem; }
+
+  .slider-demo { max-width: 22rem; }
+  .slider-row { display: flex; justify-content: space-between; margin-bottom: 0.35rem; }
+  .slider-val { font-size: 0.82rem; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+  .slider { position: relative; height: 4px; border-radius: 999px; background: var(--input); outline-offset: 6px; }
+  .slider:focus-visible { outline: 2px solid var(--ring); }
+  .slider-fill { position: absolute; inset-block: 0; left: 0; border-radius: 999px; background: var(--primary); }
+  .slider-thumb { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 22px; height: 22px; border-radius: 999px; background: var(--card); border: 2px solid var(--primary); box-shadow: 0 1px 3px hsl(0 0% 0% / 0.18); }
+
+  .accordion-demo { max-width: 26rem; }
+  .acc-item { border: 1px solid var(--separator); border-radius: var(--kala-radius-card); background: var(--card); color: var(--card-foreground); overflow: hidden; }
+  .acc-item + .acc-item { margin-top: 0.5rem; }
+  .acc-trigger { display: flex; align-items: center; width: 100%; gap: 0.75rem; padding: 0.8rem 1rem; background: none; border: 0; font: inherit; font-size: 0.92rem; font-weight: 500; color: inherit; cursor: pointer; text-align: left; }
+  .acc-trigger:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
+  .acc-trigger .chev { margin-left: auto; transition: transform var(--kala-duration-base) var(--kala-ease); flex: none; }
+  .acc-item.open .chev { transform: rotate(180deg); }
+  .acc-body { padding: 0 1rem 0.9rem; font-size: 0.88rem; color: var(--muted-foreground); border-top: 1px solid var(--separator); padding-top: 0.75rem; }
+
+  .stepper-demo { display: flex; align-items: center; gap: 0.4rem; max-width: 30rem; }
+  .step-dot { width: 1.6rem; height: 1.6rem; border-radius: 999px; border: 2px solid var(--border-strong); color: var(--muted-foreground); display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 600; flex: none; }
+  .step-dot.done { background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); }
+  .step-dot.current { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 15%, transparent); }
+  .step-line { flex: 1; height: 2px; background: var(--border-strong); border-radius: 1px; }
+  .step-line.done { background: var(--primary); }
+  .step-label { font-size: 0.78rem; color: var(--muted-foreground); margin-top: 0.3rem; text-align: center; }
+  .step-label.current { color: var(--foreground); font-weight: 600; }
+  .step-cell { display: flex; flex-direction: column; align-items: center; flex: none; }
+
+  .img-demo { border-radius: var(--kala-radius-card); overflow: hidden; position: relative; width: 12rem; height: 7rem; background: var(--muted); border: 1px solid var(--separator); flex: none; }
+  .img-demo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .img-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem; color: var(--muted-foreground); font-size: 0.78rem; background: var(--muted); }
+
+  .hr-demo { border: 0; height: 1px; background: var(--separator); margin: 0; flex: 1; }
+  .hr-demo.strong { background: var(--border-strong); }
+  .sep-cell { display: flex; align-items: center; gap: 0.75rem; flex: 1; }
+  .sep-label { font-size: 0.82rem; color: var(--muted-foreground); flex: none; }
 
   .empty-demo { border: 1px dashed var(--border-strong); border-radius: var(--kala-radius-card); padding: 2rem 1.5rem; text-align: center; max-width: 24rem; color: var(--muted-foreground); }
   .empty-demo strong { display: block; color: var(--foreground); font-size: 1.05rem; margin-bottom: 0.3rem; }
@@ -313,6 +351,8 @@
   (<code>packages/react/src/config/button.ts</code> &amp; co.); the state columns
   define what both web and React Native builds must implement. Sizes:
   <code>xs 28 · sm 36 · md 40 · lg 44px</code> — native touch floors per foundation §8.1.
+  Inventory gap-checked against MUI, Ant Design, shadcn/ui, Mantine, RN Paper,
+  Gluestack and Tamagui.
 </p>
 <div class="legend">
   <span>Rendered = the standard</span><span>Matrix = the contract</span><span>Slots = tier-3 escape hatch</span>
@@ -351,6 +391,10 @@
       <span class="rowlabel" style="margin-left:1rem">states</span>
       <button class="btn btn-solid" type="button" disabled>Disabled</button>
       <span class="btn btn-solid" aria-disabled="true" style="pointer-events:none">Loading<span class="spinner" style="margin-left:.5rem" role="status" aria-label="loading"></span></span>
+      <span class="rowlabel" style="margin-left:1rem">FAB</span>
+      <button class="btn btn-solid btn-icon btn-fab focusable" type="button" aria-label="Add expense">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
     </div>
     <div class="tablewrap"><table>
       <thead><tr><th>Variant</th><th>Default</th><th>Hover</th><th>Pressed</th><th>Focus</th><th>Loading</th><th>Disabled</th></tr></thead>
@@ -362,7 +406,7 @@
         <tr><td class="mono">link</td><td><code>--primary</code> text, underline offset 4</td><td>underline; pressed: thickness 2</td></tr>
       </tbody>
     </table></div>
-    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>label</code> · <code>iconLeft</code> · <code>iconRight</code> · <code>spinner</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-button-root</code></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>label</code> · <code>iconLeft</code> · <code>iconRight</code> · <code>spinner</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-button-root</code> &nbsp;·&nbsp; <strong>FAB is a composition:</strong> Button <code>icon</code> + <code>rounded</code> + <code>elevated</code> — 56px, primary fill, the one always-on shadow exception (native: screen bottom-right, 16px above content, safe-area aware)</div>
   </div>
 </section>
 
@@ -393,10 +437,83 @@
         <tr><td>readonly</td><td class="mono">--input</td><td class="mono">--muted</td><td>focusable, selectable, no edits</td></tr>
       </tbody>
     </table></div>
-    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>input</code> · <code>leadingIcon</code> · <code>trailingIcon</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-input-root</code></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>input</code> · <code>leadingIcon</code> · <code>trailingIcon</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-input-root</code> &nbsp;·&nbsp; <strong>Compositions (not separate components):</strong> <em>search</em> = Input + leading icon + trailing clear + cancel-on-blur · <em>amount</em> = <code>inputMode="decimal"</code> + tabular-nums + currency formatting · <em>OTP</em> = masked input group (as web <code>input-otp</code>)</div>
   </div>
 
-  <h2 style="margin-top:2.5rem">3 · Selection controls <span class="tag">forms</span><a class="anchor" href="#forms">§</a></h2>
+  <h2 style="margin-top:2.5rem">3 · Slider <span class="tag">forms</span><a class="anchor" href="#forms">§</a></h2>
+  <p class="sublede">Single value or range. Track <code>--input</code>, active fill <code>--primary</code>, thumb 22px visual / 44pt hit target native.</p>
+
+  <div class="comp">
+    <div class="comp-specimen col">
+      <div class="slider-demo">
+        <div class="slider-row"><span class="slider-val">₹5,000</span></div>
+        <div class="slider" role="slider" aria-label="Monthly budget" aria-valuemin="0" aria-valuemax="100" aria-valuenow="45" tabindex="0">
+          <div class="slider-fill" style="width:45%"></div><div class="slider-thumb" style="left:45%"></div>
+        </div>
+      </div>
+      <div class="slider-demo">
+        <div class="slider-row"><span class="slider-val">₹2,000</span><span class="slider-val">₹8,000</span></div>
+        <div class="slider" role="slider" aria-label="Range filter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20" tabindex="0">
+          <div class="slider-fill" style="left:20%;width:60%"></div><div class="slider-thumb" style="left:20%"></div>
+        </div>
+        <div class="slider" role="slider" aria-label="Range filter upper" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80" tabindex="0" style="margin-top:-14px;background:transparent">
+          <div class="slider-thumb" style="left:80%"></div>
+        </div>
+      </div>
+      <div class="slider-demo" style="opacity:.5">
+        <div class="slider"><div class="slider-fill" style="width:30%"></div><div class="slider-thumb" style="left:30%"></div></div>
+      </div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>State</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>default</td><td>track 4px <code>--input</code>, fill <code>--primary</code>, thumb 22px <code>--card</code> + <code>--primary</code> border 2px</td></tr>
+        <tr><td>drag / active</td><td>thumb scales 1.15, <code>motion.spring.snappy</code> (native); value bubble above thumb</td></tr>
+        <tr><td>focus</td><td>2px <code>--ring</code> on thumb, arrow keys ±step, Home/End (web)</td></tr>
+        <tr><td>disabled</td><td>opacity 0.5, no drag</td></tr>
+        <tr><td>range</td><td>two thumbs, fill spans between; thumbs never cross</td></tr>
+        <tr><td>a11y</td><td>value announced as min/max/now on every change (throttled)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>track</code> · <code>fill</code> · <code>thumb</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-slider-root</code></div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">4 · Segmented control <span class="tag">forms</span><a class="anchor" href="#forms">§</a></h2>
+  <p class="sublede">Switches content views <em>in place</em> — not navigation (that's Tabs, §10). Map/list toggles, period pickers.</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <fieldset class="tablist" aria-label="View mode">
+        <legend class="vh">View mode</legend>
+        <button class="tab on" type="button" aria-pressed="true">Map</button>
+        <button class="tab" type="button" aria-pressed="false">List</button>
+        <button class="tab" type="button" aria-pressed="false">Satellite</button>
+      </fieldset>
+      <fieldset class="tablist" style="margin-left:1rem" aria-label="Period">
+        <legend class="vh">Period</legend>
+        <button class="tab" type="button" aria-pressed="false">Day</button>
+        <button class="tab on" type="button" aria-pressed="true">Week</button>
+        <button class="tab" type="button" aria-pressed="false">Month</button>
+      </fieldset>
+      <fieldset class="tablist" style="margin-left:1rem;opacity:.5" aria-label="Disabled example">
+        <legend class="vh">Disabled example</legend>
+        <button class="tab on" type="button" disabled>On</button>
+        <button class="tab" type="button" disabled>Off</button>
+      </fieldset>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>State</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>default</td><td>shared <code>--muted</code> track (radius <code>--kala-radius-control</code>), segments equal width, muted text</td></tr>
+        <tr><td>selected</td><td><code>--card</code> raised segment, full-contrast text, hairline shadow allowed; selection slides between segments (<code>--kala-duration-base</code>, native <code>motion.spring.snappy</code>)</td></tr>
+        <tr><td>disabled</td><td>opacity 0.5, selection frozen</td></tr>
+        <tr><td>keyboard / a11y</td><td>roving focus, arrows move selection; <code>aria-pressed</code> per segment; label announces group</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>segment</code> · <code>indicator</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-segmented-root</code> &nbsp;·&nbsp; 2–5 segments max; use Select beyond that</div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">5 · Selection controls <span class="tag">forms</span><a class="anchor" href="#forms">§</a></h2>
   <p class="sublede">Checkbox, switch, radio. Checkboxes = multi-select; switch = immediate binary; radio = single-select (always in a group).</p>
 
   <div class="comp">
@@ -428,7 +545,7 @@
 <!-- ===================== DISPLAY ===================== -->
 <section id="display">
   <hr>
-  <h2>4 · Badge &amp; Avatar <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
+  <h2>6 · Badge &amp; Avatar <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
   <p class="sublede">Badge: status labeling, pill radius is semantic (not the shape language). Avatar: identity, initials fallback.</p>
 
   <div class="comp">
@@ -459,7 +576,58 @@
     <div class="slotline"><strong>Slots:</strong> badge <code>root</code> · <code>dot</code> — avatar <code>root</code> · <code>image</code> · <code>fallback</code> &nbsp;·&nbsp; <strong>Markers:</strong> <code>k-badge-root</code> · <code>k-avatar-root</code></div>
   </div>
 
-  <h2 style="margin-top:2.5rem">5 · Card <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
+  <h2 style="margin-top:2.5rem">7 · Separator <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
+  <p class="sublede">Contractual hairline — Lists, Cards and menus all consume this one component. Web 1px; native <code>StyleSheet.hairlineWidth</code>. Label variant for settings groups.</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <div class="sep-cell"><span class="sep-label">default</span><hr class="hr-demo"></div>
+      <div class="sep-cell"><span class="sep-label">strong</span><hr class="hr-demo strong"></div>
+      <div class="sep-cell" style="flex-direction:column;align-items:flex-start;gap:.2rem">
+        <span class="sep-label" style="text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;font-weight:600">Preferences</span>
+        <hr class="hr-demo" style="width:100%">
+      </div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Variant</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">default</td><td>1px <code>--separator</code>, horizontal or vertical, optional label (text-xs caps, muted)</td></tr>
+        <tr><td class="mono">strong</td><td>1px <code>--border-strong</code> — section boundaries</td></tr>
+        <tr><td>spacing</td><td>16px above/below inside groups, 24px between groups (foundation §6)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>label</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-separator-root</code></div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">8 · Image <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
+  <p class="sublede">Three-state loading contract + resize modes pinned per slot. Fallback keeps layout height — never collapse.</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <span class="img-demo"><span class="skeleton" style="position:absolute;inset:0;border-radius:0"></span></span>
+      <span class="img-demo">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='140'%3E%3Crect width='240' height='140' fill='%23dcebf9'/%3E%3Ccircle cx='180' cy='40' r='18' fill='%23f5c26b'/%3E%3Cpath d='M0 140 L90 70 L150 120 L200 95 L240 140 Z' fill='%233b6ea5'/%3E%3Cpath d='M0 140 L60 105 L110 140 Z' fill='%232a507c'/%3E%3C/svg%3E" alt="Trail above Manali, loaded cover">
+      </span>
+      <span class="img-demo">
+        <span class="img-fallback">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.5-3.5L7 22"/></svg>
+          Couldn't load
+        </span>
+      </span>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>State</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>loading</td><td>skeleton or blurhash placeholder at final dimensions; fade-in on load (<code>--kala-duration-base</code>)</td></tr>
+        <tr><td>loaded</td><td><code>object-fit: cover</code> default; <code>contain</code> for diagrams; native resize modes pinned per usage slot</td></tr>
+        <tr><td>error</td><td>muted fallback surface + icon + optional retry; reserves layout height</td></tr>
+        <tr><td>a11y</td><td>meaningful <code>alt</code> required; decorative images <code>aria-hidden</code></td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>image</code> · <code>placeholder</code> · <code>fallback</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-image-root</code></div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">9 · Card <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
   <p class="sublede">Flat surface, hairline border, radius <code>--kala-radius-card</code>, padding <code>--kala-card-pad</code>. Depth from border + tint, never shadow (foundation §1).</p>
 
   <div class="comp">
@@ -486,7 +654,7 @@
     <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>header</code> · <code>body</code> · <code>footer</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-card-root</code></div>
   </div>
 
-  <h2 style="margin-top:2.5rem">6 · Tabs &amp; Chips <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
+  <h2 style="margin-top:2.5rem">10 · Tabs &amp; Chips <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
   <p class="sublede">Tabs = peer navigation (one selected, always). Chips = filters, multi- or single-select, horizontal rail bleeds edge-to-edge (foundation §6.1).</p>
 
   <div class="comp">
@@ -515,7 +683,79 @@
     <div class="slotline"><strong>Slots:</strong> tabs <code>root</code> · <code>list</code> · <code>trigger</code> — chips <code>root</code> · <code>label</code> · <code>icon</code> &nbsp;·&nbsp; <strong>Markers:</strong> <code>k-tabs-root</code> · <code>k-chip-root</code></div>
   </div>
 
-  <h2 style="margin-top:2.5rem">7 · List <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
+  <h2 style="margin-top:2.5rem">11 · Accordion <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
+  <p class="sublede">Settings groups, FAQs, expandable detail. Height animates at <code>--kala-duration-slow</code> (native: <code>motion.spring.gentle</code>); chevron rotates 180°.</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <div class="accordion-demo">
+        <div class="acc-item open">
+          <button class="acc-trigger" type="button" aria-expanded="true">Categories
+            <svg class="icon chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="acc-body">Food, transport, bills and 9 more. Rename or merge from the detail screen.</div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-trigger" type="button" aria-expanded="false">Notifications
+            <svg class="icon chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="acc-item" style="opacity:.5">
+          <button class="acc-trigger" type="button" aria-expanded="false" disabled>Export data (locked)
+            <svg class="icon chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>State</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>collapsed</td><td>trigger row 44pt (native), chevron points down (closed direction), body unmounted/collapsed</td></tr>
+        <tr><td>expanded</td><td>chevron rotated 180°, body revealed with height animation; hairline between trigger and body</td></tr>
+        <tr><td>disabled</td><td>opacity 0.5, no expand</td></tr>
+        <tr><td>multiple</td><td>default single-open per group; <code>multiple</code> prop opts into independent items</td></tr>
+        <tr><td>keyboard / a11y</td><td>trigger is a real button with <code>aria-expanded</code>; arrow keys move between triggers</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>item</code> · <code>trigger</code> · <code>body</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-accordion-root</code></div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">12 · Stepper <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
+  <p class="sublede">Onboarding and KYC progress (paisa trak account setup). Horizontal on mobile; the label of the current step is the only full-contrast one.</p>
+
+  <div class="comp">
+    <div class="comp-specimen col">
+      <div class="stepper-demo">
+        <div class="step-cell"><span class="step-dot done"><svg class="icon" style="width:.75rem;height:.75rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><title>completed</title><polyline points="20 6 9 17 4 12"/></svg></span></div>
+        <span class="step-line done"></span>
+        <div class="step-cell"><span class="step-dot current">2</span></div>
+        <span class="step-line"></span>
+        <div class="step-cell"><span class="step-dot">3</span></div>
+        <span class="step-line"></span>
+        <div class="step-cell"><span class="step-dot">4</span></div>
+      </div>
+      <div class="stepper-demo" style="margin-top:.5rem">
+        <div class="step-cell" style="flex:1"><span class="step-label current" style="margin-top:0">Phone verified</span></div>
+        <div class="step-cell" style="flex:1"><span class="step-label" style="margin-top:0">PAN check</span></div>
+        <div class="step-cell" style="flex:1"><span class="step-label" style="margin-top:0">Bank link</span></div>
+        <div class="step-cell" style="flex:1"><span class="step-label" style="margin-top:0">Preferences</span></div>
+      </div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>State</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>completed</td><td>dot <code>--primary</code> fill + check; connector <code>--primary</code></td></tr>
+        <tr><td>current</td><td>dot <code>--primary</code> ring + 15% halo, number inside; its label full-contrast + 600</td></tr>
+        <tr><td>upcoming</td><td>dot <code>--border-strong</code> ring, muted number; connector <code>--border-strong</code></td></tr>
+        <tr><td>error</td><td>current dot swaps to <code>--error</code> ring + halo; step becomes re-tappable</td></tr>
+        <tr><td>labels</td><td>text-xs; optional — show when ≤4 steps and width allows; long flows use <code>Step 2 of 4</code> text instead</td></tr>
+        <tr><td>a11y</td><td>announced as “Step 2 of 4: PAN check”; completed steps navigable</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>step</code> · <code>connector</code> · <code>label</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-stepper-root</code> &nbsp;·&nbsp; non-interactive by default — navigation is the app's job</div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">13 · List <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
   <p class="sublede">Grouped records = ONE wrapper surface with hairline dividers — never a card per record (foundation §6.1). The workhorse of every native app screen.</p>
 
   <div class="comp">
@@ -542,7 +782,7 @@
         <tr><td>selected</td><td><code>--primary</code> 9% tint on <code>--card</code></td></tr>
         <tr><td>disabled</td><td>opacity 0.5</td></tr>
         <tr><td>loading</td><td>3–5 skeleton rows at true row height</td></tr>
-        <tr><td>empty</td><td>EmptyState component (§10) inside the list wrapper</td></tr>
+        <tr><td>empty</td><td>EmptyState component (§16) inside the list wrapper</td></tr>
       </tbody>
     </table></div>
     <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>item</code> · <code>leading</code> · <code>content</code> · <code>trailing</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-list-root</code></div>
@@ -552,7 +792,7 @@
 <!-- ===================== FEEDBACK ===================== -->
 <section id="feedback">
   <hr>
-  <h2>8 · Alert <span class="tag">feedback</span><a class="anchor" href="#feedback">§</a></h2>
+  <h2>14 · Alert <span class="tag">feedback</span><a class="anchor" href="#feedback">§</a></h2>
   <p class="sublede">Inline, persistent status message. Semantic tint border + 9–14% background wash, never solid semantic fill.</p>
 
   <div class="comp">
@@ -574,7 +814,7 @@
     <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>icon</code> · <code>content</code> · <code>title</code> · <code>action</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-alert-root</code></div>
   </div>
 
-  <h2 style="margin-top:2.5rem">9 · Progress, Spinner &amp; Skeleton <span class="tag">feedback</span><a class="anchor" href="#feedback">§</a></h2>
+  <h2 style="margin-top:2.5rem">15 · Progress, Spinner &amp; Skeleton <span class="tag">feedback</span><a class="anchor" href="#feedback">§</a></h2>
   <p class="sublede">Waiting states. Determinate when a % is known, indeterminate otherwise; skeletons mirror the layout they replace.</p>
 
   <div class="comp">
@@ -609,7 +849,7 @@
     <div class="slotline"><strong>Markers:</strong> <code>k-progress-root</code> · <code>k-spinner-root</code> · <code>k-skeleton-root</code></div>
   </div>
 
-  <h2 style="margin-top:2.5rem">10 · Empty state <span class="tag">feedback</span><a class="anchor" href="#feedback">§</a></h2>
+  <h2 style="margin-top:2.5rem">16 · Empty state <span class="tag">feedback</span><a class="anchor" href="#feedback">§</a></h2>
   <p class="sublede">First-run and no-data. Not an error — helpful, one clear next action.</p>
 
   <div class="comp">
@@ -636,7 +876,7 @@
 <!-- ===================== OVERLAYS ===================== -->
 <section id="overlays">
   <hr>
-  <h2>11 · Menu (dropdown) <span class="tag">overlays</span><a class="anchor" href="#overlays">§</a></h2>
+  <h2>17 · Menu (dropdown) <span class="tag">overlays</span><a class="anchor" href="#overlays">§</a></h2>
   <p class="sublede">Actions on a target. <code>--popover</code> surface — the one place a shadow is conventional. Keyboard: full arrow/typeahead support on web; native uses bottom sheets for long lists (see app-components).</p>
 
   <div class="comp">
@@ -672,7 +912,7 @@
     <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>item</code> · <code>icon</code> · <code>shortcut</code> · <code>separator</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-menu-root</code></div>
   </div>
 
-  <h2 style="margin-top:2.5rem">12 · Tooltip &amp; Toast <span class="tag">overlays</span><a class="anchor" href="#overlays">§</a></h2>
+  <h2 style="margin-top:2.5rem">18 · Tooltip &amp; Toast <span class="tag">overlays</span><a class="anchor" href="#overlays">§</a></h2>
   <p class="sublede">Tooltip: hover/focus explanation, never interactive content. Toast: transient result confirmation, auto-dismiss, stacked bottom (web) / top (native, above tab bar).</p>
 
   <div class="comp">
@@ -714,6 +954,7 @@
       <tr><td>Sheets, headers, tab shells, screen layouts</td><td>App-level composites — <code>app-components.html</code></td></tr>
       <tr><td>Calendar, combobox, command palette, tree, data-table, charts</td><td>Web-only today; enter the native catalog only when an app needs them (then as native-first designs, not ports)</td></tr>
       <tr><td>Dialog / AlertDialog primitives</td><td>Specified in <code>app-components.html</code> §together with sheets — on native the modal surface IS the sheet family</td></tr>
+      <tr><td>Rating, copy button</td><td>Web lib ships them; no app use case yet — enter the catalog when an app needs one (OTP is an Input composition, §2)</td></tr>
     </tbody>
   </table></div>
   <div class="note" style="border:1px solid var(--separator);border-radius:var(--kala-radius-card);padding:.85rem 1rem;margin-top:1rem;max-width:72ch">
