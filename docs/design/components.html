@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kala UI — Standard Components + States</title>
+<meta name="description" content="kala-ui standard component catalog: variant × state matrices with live specimens, rendered from the foundation tokens in design-specs.html.">
+<script>
+/* Same docs-only chrome toggle as design-specs.html. */
+(() => {
+  const stored = localStorage.getItem("kala-spec-theme");
+  const prefers = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  document.documentElement.classList.add(stored || prefers);
+  document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("themeToggle");
+    if (!btn) return;
+    const sync = () => { btn.textContent = document.documentElement.classList.contains("dark") ? "Light mode" : "Dark mode"; };
+    btn.addEventListener("click", () => {
+      const dark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem("kala-spec-theme", dark ? "dark" : "light");
+      sync();
+    });
+    sync();
+  });
+})();
+</script>
+<style>
+  /* Chrome is styled WITH the kala tokens — identical values to
+     design-specs.html (transcribed from packages/react globals.css). */
+  :root {
+    --background: hsl(0 0% 100%);
+    --foreground: hsl(220 100% 11%);
+    --card: hsl(0 0% 100%);
+    --card-foreground: hsl(222.2 84% 4.9%);
+    --popover: hsl(0 0% 100%);
+    --popover-foreground: hsl(222.2 84% 4.9%);
+    --primary: hsl(221.2 83.2% 53.3%);
+    --primary-foreground: hsl(210 40% 98%);
+    --secondary: hsl(219 18% 55%);
+    --secondary-foreground: hsl(0 0% 100%);
+    --muted: hsl(210 40% 96.1%);
+    --muted-foreground: hsl(215.4 16.3% 46.9%);
+    --accent: hsl(210 40% 96.1%);
+    --accent-foreground: hsl(222.2 47.4% 11.2%);
+    --destructive: hsl(0 84.2% 60.2%);
+    --destructive-foreground: hsl(210 40% 98%);
+    --success: hsl(142 76% 36%);
+    --success-foreground: hsl(355.7 100% 97.3%);
+    --warning: hsl(38 92% 50%);
+    --warning-foreground: hsl(355.7 100% 97.3%);
+    --error: hsl(0 72% 51%);
+    --error-foreground: hsl(355.7 100% 97.3%);
+    --info: hsl(190 90% 45%);
+    --info-foreground: hsl(355.7 100% 97.3%);
+    --border: hsl(211 27% 81%);
+    --border-strong: hsl(211 27% 60%);
+    --input: hsl(214.3 31.8% 91.4%);
+    --ring: hsl(221.2 83.2% 53.3%);
+    --ring-offset-color: hsl(0 0% 100%);
+    --separator: hsl(211 27% 81%);
+    --overlay: hsl(0 0% 0%);
+    --overlay-alpha: 0.5;
+    --kala-radius-control: 0.375rem;
+    --kala-radius-card: 0.5rem;
+    --kala-control-h: 2.5rem;
+    --kala-control-px: 1rem;
+    --kala-card-pad: 1.5rem;
+    --kala-duration-fast: 120ms;
+    --kala-duration-base: 150ms;
+    --kala-duration-slow: 200ms;
+    --kala-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  html.dark {
+    --background: hsl(219 33% 12%);
+    --foreground: hsl(215 18% 66%);
+    --card: hsl(219 31% 17%);
+    --card-foreground: hsl(210 40% 98%);
+    --popover: hsl(219 31% 17%);
+    --popover-foreground: hsl(210 40% 98%);
+    --primary: hsl(217.2 91.2% 59.8%);
+    --primary-foreground: hsl(222.2 47.4% 11.2%);
+    --secondary: hsl(217.2 32.6% 17.5%);
+    --secondary-foreground: hsl(210 40% 98%);
+    --muted: hsl(217.2 32.6% 17.5%);
+    --muted-foreground: hsl(215 20.2% 65.1%);
+    --accent: hsl(217.2 32.6% 17.5%);
+    --accent-foreground: hsl(210 40% 98%);
+    --destructive: hsl(0 62.8% 30.6%);
+    --destructive-foreground: hsl(210 40% 98%);
+    --error: hsl(0 91% 71%);
+    --error-foreground: hsl(0 72% 10%);
+    --info: hsl(190 80% 60%);
+    --info-foreground: hsl(221 83% 10%);
+    --border: hsl(221 32% 43%);
+    --border-strong: hsl(221 15% 60%);
+    --input: hsl(217.2 32.6% 17.5%);
+    --ring: hsl(224.3 76.3% 48%);
+    --ring-offset-color: hsl(219 33% 12%);
+    --separator: hsl(221 32% 43%);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+  code, .mono { font-family: var(--font-mono); font-size: 0.86em; }
+
+  .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.5rem 6rem; }
+  .topbar { position: sticky; top: 0; z-index: 10; background: color-mix(in oklab, var(--background) 88%, transparent); backdrop-filter: saturate(1.2); border-bottom: 1px solid var(--separator); }
+  .topbar-inner { max-width: 68rem; margin: 0 auto; padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .brand { font-weight: 700; letter-spacing: -0.01em; }
+  .brand small { color: var(--muted-foreground); font-weight: 500; }
+  .topbar nav { display: flex; gap: 0.25rem; flex-wrap: wrap; margin-inline-start: auto; }
+  .topbar nav a { color: var(--muted-foreground); text-decoration: none; font-size: 0.86rem; padding: 0.35rem 0.6rem; border-radius: var(--kala-radius-control); }
+  .topbar nav a:hover { color: var(--accent-foreground); background: var(--accent); }
+  .topbar nav a[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; text-decoration: line-through; }
+  #themeToggle { font: inherit; font-size: 0.86rem; cursor: pointer; padding: 0.35rem 0.75rem; border-radius: var(--kala-radius-control); border: 1px solid var(--border-strong); background: var(--card); color: var(--card-foreground); }
+
+  h1 { font-size: 2rem; line-height: 1.1; letter-spacing: -0.02em; margin: 1.5rem 0 0.5rem; }
+  h2 { font-size: 1.3rem; letter-spacing: -0.01em; margin: 0 0 0.25rem; display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
+  h2 .anchor { color: var(--primary); text-decoration: none; font-weight: 400; }
+  h2 .tag { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground); border: 1px solid var(--separator); border-radius: 999px; padding: 0.15rem 0.6rem; }
+  .lede, .sublede { color: var(--muted-foreground); max-width: 64ch; }
+  .meta { color: var(--muted-foreground); font-size: 0.85rem; }
+  section { margin-top: 3.5rem; }
+  hr { border: 0; border-top: 1px solid var(--separator); margin: 2.5rem 0 0; }
+
+  table { border-collapse: collapse; width: 100%; margin: 0.75rem 0 0.25rem; font-size: 0.88rem; }
+  th, td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--separator); vertical-align: middle; }
+  th { color: var(--muted-foreground); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .tablewrap { overflow-x: auto; }
+
+  .comp { border: 1px solid var(--separator); border-radius: var(--kala-radius-card); margin-top: 1rem; overflow: hidden; }
+  .comp-specimen { padding: 1.25rem 1.25rem 1.35rem; display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; align-items: center; background: var(--card); }
+  .comp-specimen.col { flex-direction: column; align-items: stretch; }
+  .comp table { margin: 0; }
+  .comp td, .comp th { border-bottom: 1px solid var(--separator); }
+  .comp tr:last-child td { border-bottom: 0; }
+  .comp .slotline { padding: 0.6rem 1rem; font-size: 0.82rem; color: var(--muted-foreground); border-top: 1px solid var(--separator); background: var(--background); }
+  .rowlabel { min-width: 5.5rem; color: var(--muted-foreground); font-size: 0.82rem; }
+
+  /* ---- rendered specimens (the standard, token-driven) ---- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    height: var(--kala-control-h); padding: 0 var(--kala-control-px);
+    border-radius: var(--kala-radius-control); border: 1px solid transparent;
+    font: inherit; font-size: 0.875rem; font-weight: 500; cursor: pointer; white-space: nowrap;
+    transition: background-color var(--kala-duration-fast) var(--kala-ease), color var(--kala-duration-fast) var(--kala-ease), border-color var(--kala-duration-fast) var(--kala-ease), opacity var(--kala-duration-fast) var(--kala-ease);
+  }
+  .btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .btn:disabled, .btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+  .btn-xs { height: 1.75rem; padding: 0 0.5rem; font-size: 0.75rem; }
+  .btn-sm { height: 2.25rem; padding: 0 0.75rem; }
+  .btn-lg { height: 2.75rem; padding: 0 2rem; }
+  .btn-icon { width: 2.5rem; padding: 0; }
+  .btn-solid { background: var(--primary); color: var(--primary-foreground); }
+  .btn-solid:hover { background: color-mix(in oklab, var(--primary) 90%, var(--background)); }
+  .btn-solid.destructive { background: var(--destructive); color: var(--destructive-foreground); }
+  .btn-solid.success { background: var(--success); color: var(--success-foreground); }
+  .btn-outline { background: var(--card); color: var(--card-foreground); border-color: color-mix(in oklab, var(--border) 100%, transparent); }
+  .btn-outline:hover { background: var(--accent); color: var(--accent-foreground); }
+  .btn-ghost { background: transparent; color: var(--foreground); }
+  .btn-ghost:hover { background: var(--accent); color: var(--accent-foreground); }
+  .btn-subtle { background: var(--muted); color: var(--muted-foreground); }
+  .btn-subtle:hover { background: color-mix(in oklab, var(--muted) 80%, var(--background)); }
+  .btn-link { background: none; color: var(--primary); text-decoration: underline; text-underline-offset: 4px; padding-inline: 0.25rem; }
+  .btn-link:hover { text-decoration-thickness: 2px; }
+
+  .field { display: flex; flex-direction: column; gap: 0.4rem; min-width: 15rem; flex: 1; }
+  .label { font-size: 0.85rem; font-weight: 500; }
+  .input, .textarea, .select-trigger {
+    height: var(--kala-control-h); padding: 0 0.75rem; font: inherit; font-size: 0.875rem;
+    background: var(--background); color: var(--foreground);
+    border: 1px solid var(--input); border-radius: var(--kala-radius-control); width: 100%;
+    transition: border-color var(--kala-duration-fast) var(--kala-ease);
+  }
+  .textarea { height: auto; min-height: 4.5rem; padding: 0.55rem 0.75rem; resize: vertical; }
+  .input:focus-visible, .textarea:focus-visible, .select-trigger:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; border-color: var(--ring); }
+  .input:disabled, .textarea:disabled { background: var(--muted); color: var(--muted-foreground); cursor: not-allowed; }
+  .input.invalid { border-color: var(--error); }
+  .help { font-size: 0.8rem; color: var(--muted-foreground); }
+  .help.error { color: var(--error); }
+
+  .checkbox-row { display: inline-flex; align-items: center; gap: 0.55rem; cursor: pointer; font-size: 0.9rem; }
+  .checkbox-row input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+  .checkbox { width: 1.05rem; height: 1.05rem; border-radius: 0.25rem; border: 1px solid var(--border-strong); background: var(--background); display: inline-flex; align-items: center; justify-content: center; color: var(--primary-foreground); flex: none; }
+  .checkbox.on { background: var(--primary); border-color: var(--primary); }
+  .checkbox.indeterminate { background: var(--primary); border-color: var(--primary); }
+  .checkbox.disabled { opacity: 0.5; }
+  .switch { width: 2.25rem; height: 1.25rem; border-radius: 999px; background: var(--input); position: relative; flex: none; transition: background-color var(--kala-duration-base) var(--kala-ease); }
+  .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: calc(1.25rem - 4px); height: calc(1.25rem - 4px); border-radius: 999px; background: var(--background); transition: transform var(--kala-duration-base) var(--kala-ease); box-shadow: 0 1px 2px hsl(0 0% 0% / 0.2); }
+  .switch.on { background: var(--primary); }
+  .switch.on::after { transform: translateX(1rem); }
+  .switch.disabled { opacity: 0.5; }
+  .radio { width: 1.05rem; height: 1.05rem; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--background); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .radio.on { border-color: var(--primary); }
+  .radio.on::after { content: ""; width: 0.5rem; height: 0.5rem; border-radius: 999px; background: var(--primary); }
+  .radio.disabled { opacity: 0.5; }
+
+  .badge { display: inline-flex; align-items: center; gap: 0.35rem; height: 1.4rem; padding: 0 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; border: 1px solid transparent; white-space: nowrap; }
+  .b-solid { background: var(--primary); color: var(--primary-foreground); }
+  .b-secondary { background: var(--secondary); color: var(--secondary-foreground); }
+  .b-outline { border-color: var(--border-strong); color: var(--foreground); }
+  .b-subtle { background: var(--muted); color: var(--muted-foreground); }
+  .b-success { background: color-mix(in oklab, var(--success) 18%, var(--background)); color: var(--success); }
+  .b-warning { background: color-mix(in oklab, var(--warning) 22%, var(--background)); color: color-mix(in oklab, var(--warning) 70%, var(--foreground)); }
+  .b-destructive { background: color-mix(in oklab, var(--destructive) 15%, var(--background)); color: var(--destructive); }
+  html.dark .b-warning { color: var(--warning); }
+  html.dark .b-success { color: hsl(142 71% 55%); }
+  html.dark .b-destructive { color: hsl(0 91% 71%); }
+
+  .avatar { width: 2.25rem; height: 2.25rem; border-radius: 999px; background: var(--primary); color: var(--primary-foreground); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; flex: none; }
+  .avatar.lg { width: 3rem; height: 3rem; }
+  .avatar.sm { width: 1.75rem; height: 1.75rem; font-size: 0.7rem; }
+  .avatar.muted-av { background: var(--muted); color: var(--muted-foreground); }
+  .avatar-ring { box-shadow: 0 0 0 2px var(--background), 0 0 0 3.5px var(--primary); }
+
+  .card-demo { background: var(--card); color: var(--card-foreground); border: 1px solid var(--separator); border-radius: var(--kala-radius-card); padding: var(--kala-card-pad); max-width: 22rem; }
+  .card-demo h4 { margin: 0 0 0.35rem; font-size: 1.05rem; }
+  .card-demo p { margin: 0; font-size: 0.9rem; color: var(--muted-foreground); }
+
+  .alert-demo { display: flex; gap: 0.75rem; align-items: flex-start; border: 1px solid; border-radius: var(--kala-radius-card); padding: 0.9rem 1rem; font-size: 0.9rem; max-width: 26rem; }
+  .alert-demo strong { display: block; margin-bottom: 0.1rem; }
+  .a-info { border-color: color-mix(in oklab, var(--info) 45%, transparent); background: color-mix(in oklab, var(--info) 10%, var(--background)); }
+  .a-success { border-color: color-mix(in oklab, var(--success) 45%, transparent); background: color-mix(in oklab, var(--success) 10%, var(--background)); }
+  .a-warning { border-color: color-mix(in oklab, var(--warning) 55%, transparent); background: color-mix(in oklab, var(--warning) 14%, var(--background)); }
+  .a-destructive { border-color: color-mix(in oklab, var(--destructive) 45%, transparent); background: color-mix(in oklab, var(--destructive) 9%, var(--background)); }
+  .dot { width: 0.5rem; height: 0.5rem; border-radius: 999px; margin-top: 0.45rem; flex: none; }
+
+  .tabs-demo { display: flex; flex-direction: column; gap: 1rem; }
+  .tablist { display: inline-flex; gap: 0.25rem; background: var(--muted); padding: 0.25rem; border-radius: var(--kala-radius-control); width: fit-content; }
+  .tab { height: 2rem; padding: 0 0.9rem; display: inline-flex; align-items: center; border-radius: calc(var(--kala-radius-control) - 2px); font-size: 0.85rem; font-weight: 500; color: var(--muted-foreground); cursor: pointer; border: 0; background: transparent; font-family: inherit; }
+  .tab.on { background: var(--card); color: var(--card-foreground); box-shadow: 0 1px 2px hsl(220 43% 11% / 0.08); }
+  .tab.disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .chip-demo { display: inline-flex; align-items: center; gap: 0.4rem; height: 2rem; padding: 0 0.85rem; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--card); color: var(--card-foreground); font-size: 0.85rem; cursor: pointer; font-family: inherit; }
+  .chip-demo.on { background: color-mix(in oklab, var(--primary) 14%, var(--background)); border-color: var(--primary); color: var(--primary); }
+
+  .tooltip-demo { position: relative; }
+  .tooltip-pop { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: var(--popover); color: var(--popover-foreground); border: 1px solid var(--separator); border-radius: var(--kala-radius-control); padding: 0.35rem 0.6rem; font-size: 0.8rem; white-space: nowrap; box-shadow: 0 4px 12px hsl(0 0% 0% / 0.12); }
+  .tooltip-pop::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--popover); }
+
+  .spinner { width: 1.15rem; height: 1.15rem; border-radius: 999px; border: 2px solid color-mix(in oklab, currentColor 25%, transparent); border-top-color: currentColor; animation: spin 0.7s linear infinite; flex: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .skeleton { background: var(--muted); border-radius: var(--kala-radius-control); position: relative; overflow: hidden; }
+  .skeleton::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--foreground) 7%, transparent), transparent); animation: shimmer 1.6s infinite; }
+  @keyframes shimmer { 100% { transform: translateX(100%); } }
+
+  .progress-track { width: 16rem; height: 0.5rem; border-radius: 999px; background: var(--muted); overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 999px; background: var(--primary); transition: width var(--kala-duration-slow) var(--kala-ease); }
+  .progress-fill.success { background: var(--success); }
+
+  .menu-demo { background: var(--popover); color: var(--popover-foreground); border: 1px solid var(--separator); border-radius: var(--kala-radius-card); padding: 0.35rem; min-width: 15rem; box-shadow: 0 6px 16px hsl(0 0% 0% / 0.12); }
+  .menu-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0.6rem; border-radius: calc(var(--kala-radius-control) - 2px); font-size: 0.88rem; cursor: pointer; }
+  .menu-item:hover { background: var(--accent); color: var(--accent-foreground); }
+  .menu-item:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
+  .menu-item.destructive { color: var(--destructive); }
+  .menu-item.disabled { opacity: 0.5; pointer-events: none; }
+  ul.list-demo { border: 1px solid var(--separator); border-radius: var(--kala-radius-card); background: var(--card); color: var(--card-foreground); max-width: 26rem; }
+  .menu-sep { border: 0; height: 1px; background: var(--separator); margin: 0.3rem 0.4rem; }
+  button.menu-item { font: inherit; width: 100%; background: none; border: 0; text-align: left; }
+  button.menu-item:disabled { opacity: 0.5; pointer-events: none; }
+
+  ul.list-demo { list-style: none; margin: 0; padding: 0; }
+  .list-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 1rem; border-bottom: 1px solid var(--separator); font-size: 0.9rem; }
+  .list-item:last-child { border-bottom: 0; }
+  .list-item.selected { background: color-mix(in oklab, var(--primary) 9%, var(--card)); }
+
+  .kbd { display: inline-block; padding: 0.15rem 0.45rem; border-radius: calc(var(--kala-radius-control) - 2px); border: 1px solid var(--border-strong); border-bottom-width: 2px; background: var(--muted); color: var(--muted-foreground); font-family: var(--font-mono); font-size: 0.78rem; }
+
+  .empty-demo { border: 1px dashed var(--border-strong); border-radius: var(--kala-radius-card); padding: 2rem 1.5rem; text-align: center; max-width: 24rem; color: var(--muted-foreground); }
+  .empty-demo strong { display: block; color: var(--foreground); font-size: 1.05rem; margin-bottom: 0.3rem; }
+
+  .icon { width: 1.15rem; height: 1.15rem; flex: none; }
+  .icon path, .icon circle, .icon line, .icon polyline, .icon rect { vector-effect: non-scaling-stroke; }
+
+  footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--separator); color: var(--muted-foreground); font-size: 0.85rem; }
+  .focusable:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .legend { display: flex; gap: 1.25rem; flex-wrap: wrap; margin: 1rem 0 0; font-size: 0.85rem; color: var(--muted-foreground); }
+  .legend span::before { content: "● "; color: var(--primary); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">Kala UI <small>· components</small></span>
+    <nav aria-label="Spec sections">
+      <a href="./design-specs.html">Foundation ↖</a>
+      <a href="#actions">Actions</a>
+      <a href="#forms">Forms</a>
+      <a href="#display">Display</a>
+      <a href="#feedback">Feedback</a>
+      <a href="#overlays">Overlays</a>
+      <a href="./app-components.html" aria-disabled="true" title="Pending components approval">App components ↗</a>
+    </nav>
+    <button id="themeToggle" class="focusable" type="button">Dark mode</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<h1>Standard components + states</h1>
+<p class="lede">
+  The kala-ui standard component catalog. Every specimen below is rendered live
+  from the foundation tokens (<code>design-specs.html</code>) — no color, radius,
+  or duration appears here that the foundation does not declare. Each component
+  carries its variant matrix, its state contract, and its slot surface (tier 3).
+</p>
+<p class="meta">
+  Variant axes transcribed from the shipped web implementation
+  (<code>packages/react/src/config/button.ts</code> &amp; co.); the state columns
+  define what both web and React Native builds must implement. Sizes:
+  <code>xs 28 · sm 36 · md 40 · lg 44px</code> — native touch floors per foundation §8.1.
+</p>
+<div class="legend">
+  <span>Rendered = the standard</span><span>Matrix = the contract</span><span>Slots = tier-3 escape hatch</span>
+</div>
+
+<!-- ===================== ACTIONS ===================== -->
+<section id="actions">
+  <hr>
+  <h2>1 · Button <span class="tag">actions</span><a class="anchor" href="#actions">§</a></h2>
+  <p class="sublede">Two orthogonal axes — <code>variant</code> (fill style) × <code>color</code> (semantic) — plus <code>size</code>, <code>fullWidth</code>, <code>rounded</code>, <code>isLoading</code>. Omitting <code>color</code> selects the variant's neutral treatment.</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <span class="rowlabel">solid</span>
+      <button class="btn btn-solid focusable" type="button">Save changes</button>
+      <button class="btn btn-solid destructive focusable" type="button">Delete</button>
+      <button class="btn btn-solid success focusable" type="button">Confirm</button>
+      <span class="rowlabel" style="margin-left:1rem">outline</span>
+      <button class="btn btn-outline focusable" type="button">Cancel</button>
+      <span class="rowlabel">ghost</span>
+      <button class="btn btn-ghost focusable" type="button">Skip</button>
+      <span class="rowlabel">subtle</span>
+      <button class="btn btn-subtle focusable" type="button">Later</button>
+      <span class="rowlabel">link</span>
+      <button class="btn btn-link focusable" type="button">Learn more</button>
+    </div>
+    <div class="comp-specimen">
+      <span class="rowlabel">sizes</span>
+      <button class="btn btn-solid btn-xs focusable" type="button">xs</button>
+      <button class="btn btn-solid btn-sm focusable" type="button">sm</button>
+      <button class="btn btn-solid focusable" type="button">md</button>
+      <button class="btn btn-solid btn-lg focusable" type="button">lg</button>
+      <button class="btn btn-outline btn-icon focusable" type="button" aria-label="More options">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+      </button>
+      <span class="rowlabel" style="margin-left:1rem">states</span>
+      <button class="btn btn-solid" type="button" disabled>Disabled</button>
+      <span class="btn btn-solid" aria-disabled="true" style="pointer-events:none">Loading<span class="spinner" style="margin-left:.5rem" role="status" aria-label="loading"></span></span>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Variant</th><th>Default</th><th>Hover</th><th>Pressed</th><th>Focus</th><th>Loading</th><th>Disabled</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">solid</td><td>fill = color token, text = *-foreground</td><td>fill 90% toward background</td><td>fill 85%</td><td rowspan="5">2px <code>--ring</code>, offset 2px; native: role + state announced</td><td rowspan="5">spinner (label kept), <code>aria-busy</code>, pointer-events none</td><td rowspan="5">opacity 0.5, cursor not-allowed, no hover/press</td></tr>
+        <tr><td class="mono">outline</td><td><code>--card</code> fill + border</td><td colspan="2"><code>--accent</code> fill, <code>--accent-foreground</code> text</td></tr>
+        <tr><td class="mono">ghost</td><td>transparent</td><td colspan="2"><code>--accent</code> fill</td></tr>
+        <tr><td class="mono">subtle</td><td><code>--muted</code> fill, muted text</td><td colspan="2">fill 80% toward background</td></tr>
+        <tr><td class="mono">link</td><td><code>--primary</code> text, underline offset 4</td><td>underline; pressed: thickness 2</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>label</code> · <code>iconLeft</code> · <code>iconRight</code> · <code>spinner</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-button-root</code></div>
+  </div>
+</section>
+
+<!-- ===================== FORMS ===================== -->
+<section id="forms">
+  <hr>
+  <h2>2 · Input, Textarea &amp; Select <span class="tag">forms</span><a class="anchor" href="#forms">§</a></h2>
+  <p class="sublede">Text entry family sharing one state contract. Height <code>--kala-control-h</code>, radius <code>--kala-radius-input</code>, border <code>--input</code>.</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <label class="field"><span class="label">Default</span><input class="input" type="text" placeholder="you@example.com"></label>
+      <label class="field"><span class="label">Filled</span><input class="input" type="text" value="rk@paisatrak.app"></label>
+      <label class="field"><span class="label">With help</span><input class="input" type="text" value="+91 98765 43210" aria-describedby="help-1"><span class="help" id="help-1">Include country code</span></label>
+    </div>
+    <div class="comp-specimen">
+      <label class="field"><span class="label">Error</span><input class="input invalid" type="text" value="not-an-email" aria-invalid="true"><span class="help error">Enter a valid email address</span></label>
+      <label class="field"><span class="label">Disabled</span><input class="input" type="text" value="Read only" disabled></label>
+      <label class="field"><span class="label">Textarea</span><textarea class="textarea" placeholder="Notes (optional)"></textarea></label>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>State</th><th>Border</th><th>Background</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>default</td><td class="mono">--input</td><td class="mono">--background</td><td>—</td></tr>
+        <tr><td>focus</td><td class="mono">--ring</td><td class="mono">--background</td><td>2px ring outline, offset 1px</td></tr>
+        <tr><td>invalid</td><td class="mono">--error</td><td class="mono">--background</td><td><code>aria-invalid</code>; help text swaps to <code>--error</code> and is announced</td></tr>
+        <tr><td>disabled</td><td class="mono">--input</td><td class="mono">--muted</td><td>text <code>--muted-foreground</code>, not-allowed</td></tr>
+        <tr><td>readonly</td><td class="mono">--input</td><td class="mono">--muted</td><td>focusable, selectable, no edits</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>input</code> · <code>leadingIcon</code> · <code>trailingIcon</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-input-root</code></div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">3 · Selection controls <span class="tag">forms</span><a class="anchor" href="#forms">§</a></h2>
+  <p class="sublede">Checkbox, switch, radio. Checkboxes = multi-select; switch = immediate binary; radio = single-select (always in a group).</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <label class="checkbox-row"><input type="checkbox" checked onclick="return false"><span class="checkbox on" aria-hidden="true"><svg class="icon" style="width:.8rem;height:.8rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><title>checked</title><polyline points="20 6 9 17 4 12"/></svg></span>Checked</label>
+      <label class="checkbox-row"><input type="checkbox" onclick="return false"><span class="checkbox indeterminate" aria-hidden="true"><svg class="icon" style="width:.8rem;height:.8rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><title>indeterminate</title><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Indeterminate</label>
+      <label class="checkbox-row"><input type="checkbox" onclick="return false"><span class="checkbox"></span>Unchecked</label>
+      <label class="checkbox-row" style="opacity:.5"><input type="checkbox" disabled onclick="return false"><span class="checkbox disabled"></span>Disabled off</label>
+      <label class="checkbox-row" style="opacity:.5"><input type="checkbox" checked disabled onclick="return false"><span class="checkbox on disabled"></span>Disabled on</label>
+      <span style="width:1px;background:var(--separator);align-self:stretch"></span>
+      <button class="switch on" type="button" role="switch" aria-checked="true" aria-label="Notifications" style="border:0;cursor:pointer"></button>
+      <button class="switch" type="button" role="switch" aria-checked="false" aria-label="Sync" style="border:0;cursor:pointer"></button>
+      <span style="width:1px;background:var(--separator);align-self:stretch"></span>
+      <label class="checkbox-row"><input type="radio" name="spec-radio" checked onclick="return false"><span class="radio on"></span>Selected</label>
+      <label class="checkbox-row"><input type="radio" name="spec-radio" onclick="return false"><span class="radio"></span>Unselected</label>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Control</th><th>Off</th><th>On</th><th>Mixed</th><th>Disabled</th><th>Touch (native)</th></tr></thead>
+      <tbody>
+        <tr><td>Checkbox</td><td>transparent, border <code>--border-strong</code>, 4px radius</td><td><code>--primary</code> fill + check</td><td>fill + dash</td><td rowspan="3">opacity 0.5, no state change</td><td rowspan="3">44×44pt hit area incl. label; state announced (<code>accessibilityState</code>)</td></tr>
+        <tr><td>Switch</td><td>track <code>--input</code>, knob left</td><td>track <code>--primary</code>, knob right, 150ms</td><td>—</td></tr>
+        <tr><td>Radio</td><td>ring border</td><td>ring <code>--primary</code> + inner dot</td><td>—</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>control</code> · <code>indicator</code> · <code>label</code> &nbsp;·&nbsp; <strong>Markers:</strong> <code>k-checkbox-root</code> · <code>k-switch-root</code> · <code>k-radio-root</code></div>
+  </div>
+</section>
+
+<!-- ===================== DISPLAY ===================== -->
+<section id="display">
+  <hr>
+  <h2>4 · Badge &amp; Avatar <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
+  <p class="sublede">Badge: status labeling, pill radius is semantic (not the shape language). Avatar: identity, initials fallback.</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <span class="rowlabel">badge</span>
+      <span class="badge b-solid">Primary</span>
+      <span class="badge b-secondary">Secondary</span>
+      <span class="badge b-subtle">Muted</span>
+      <span class="badge b-outline">Outline</span>
+      <span class="badge b-success">● Active</span>
+      <span class="badge b-warning">● Pending</span>
+      <span class="badge b-destructive">● Failed</span>
+      <span class="rowlabel" style="margin-left:1rem">avatar</span>
+      <span class="avatar sm muted-av">PT</span>
+      <span class="avatar">RK</span>
+      <span class="avatar lg avatar-ring">NT</span>
+      <span class="avatar muted-av">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+      </span>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Element</th><th>Variants</th><th>Sizes</th><th>States</th></tr></thead>
+      <tbody>
+        <tr><td>Badge</td><td class="mono">solid · secondary · subtle · outline · success · warning · destructive</td><td>—</td><td>static; status dot optional</td></tr>
+        <tr><td>Avatar</td><td>image · initials · icon; ring (group overlap)</td><td class="mono">sm 28 · md 36 · lg 48px</td><td>loading → shimmer, error → icon fallback</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> badge <code>root</code> · <code>dot</code> — avatar <code>root</code> · <code>image</code> · <code>fallback</code> &nbsp;·&nbsp; <strong>Markers:</strong> <code>k-badge-root</code> · <code>k-avatar-root</code></div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">5 · Card <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
+  <p class="sublede">Flat surface, hairline border, radius <code>--kala-radius-card</code>, padding <code>--kala-card-pad</code>. Depth from border + tint, never shadow (foundation §1).</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <div class="card-demo">
+        <h4>Monthly spend</h4>
+        <p>₹18,240 across 4 categories — 12% lower than October.</p>
+      </div>
+      <div class="card-demo" style="border-style:dashed">
+        <h4>Dashed = loading skeleton state</h4>
+        <div class="skeleton" style="height:.85rem;width:80%;margin-bottom:.5rem"></div>
+        <div class="skeleton" style="height:.85rem;width:55%"></div>
+      </div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Part</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>surface</td><td><code>--card</code> fill, 1px <code>--separator</code> border, flat</td></tr>
+        <tr><td>header/body/footer</td><td>padding <code>--kala-card-pad</code>; header/body separated by hairline when both present</td></tr>
+        <tr><td>interactive card</td><td>whole-card press → <code>--accent</code> tint; only ONE contained primary action (never nested buttons)</td></tr>
+        <tr><td>loading</td><td>skeleton placeholders, shimmer 1.6s</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>header</code> · <code>body</code> · <code>footer</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-card-root</code></div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">6 · Tabs &amp; Chips <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
+  <p class="sublede">Tabs = peer navigation (one selected, always). Chips = filters, multi- or single-select, horizontal rail bleeds edge-to-edge (foundation §6.1).</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <div class="tabs-demo">
+        <div class="tablist" role="tablist" aria-label="View">
+          <button class="tab on" type="button" role="tab" aria-selected="true">Overview</button>
+          <button class="tab" type="button" role="tab" aria-selected="false">Transactions</button>
+          <button class="tab" type="button" role="tab" aria-selected="false">Budgets</button>
+          <button class="tab disabled" type="button" role="tab" aria-selected="false" aria-disabled="true">Archived</button>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+          <button class="chip-demo on" type="button" aria-pressed="true">This month</button>
+          <button class="chip-demo" type="button" aria-pressed="false">Last month</button>
+          <button class="chip-demo" type="button" aria-pressed="false">Custom range…</button>
+        </div>
+      </div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Element</th><th>Default</th><th>Selected</th><th>Disabled</th><th>Focus</th></tr></thead>
+      <tbody>
+        <tr><td>Tab</td><td><code>--muted</code> track, muted text</td><td><code>--card</code> raised, full-contrast text, hairline shadow allowed</td><td>opacity 0.5</td><td rowspan="2">2px <code>--ring</code>; arrow-key roving on tabs</td></tr>
+        <tr><td>Chip</td><td>outline, <code>--card</code> fill</td><td><code>--primary</code> 14% tint + primary border/text</td><td>opacity 0.5</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> tabs <code>root</code> · <code>list</code> · <code>trigger</code> — chips <code>root</code> · <code>label</code> · <code>icon</code> &nbsp;·&nbsp; <strong>Markers:</strong> <code>k-tabs-root</code> · <code>k-chip-root</code></div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">7 · List <span class="tag">display</span><a class="anchor" href="#display">§</a></h2>
+  <p class="sublede">Grouped records = ONE wrapper surface with hairline dividers — never a card per record (foundation §6.1). The workhorse of every native app screen.</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <ul class="list-demo">
+        <li class="list-item">
+          <span class="avatar sm" style="background:color-mix(in oklab,var(--success) 80%,var(--background))">SB</span>
+          <span style="flex:1">Swiggy · dinner</span><span class="meta">−₹420</span>
+        </li>
+        <li class="list-item selected">
+          <span class="avatar sm">CP</span>
+          <span style="flex:1">Chai Point · team</span><span class="meta">−₹180</span>
+        </li>
+        <li class="list-item" style="opacity:.5">
+          <span class="avatar sm muted-av">??</span>
+          <span style="flex:1">Pending merchant</span><span class="meta">−₹0</span>
+        </li>
+      </ul>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>State</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>default</td><td>44pt row (native), hairline divider between rows, leading/trailing slots</td></tr>
+        <tr><td>selected</td><td><code>--primary</code> 9% tint on <code>--card</code></td></tr>
+        <tr><td>disabled</td><td>opacity 0.5</td></tr>
+        <tr><td>loading</td><td>3–5 skeleton rows at true row height</td></tr>
+        <tr><td>empty</td><td>EmptyState component (§10) inside the list wrapper</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>item</code> · <code>leading</code> · <code>content</code> · <code>trailing</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-list-root</code></div>
+  </div>
+</section>
+
+<!-- ===================== FEEDBACK ===================== -->
+<section id="feedback">
+  <hr>
+  <h2>8 · Alert <span class="tag">feedback</span><a class="anchor" href="#feedback">§</a></h2>
+  <p class="sublede">Inline, persistent status message. Semantic tint border + 9–14% background wash, never solid semantic fill.</p>
+
+  <div class="comp">
+    <div class="comp-specimen col">
+      <div class="alert-demo a-info"><span class="dot" style="background:var(--info)"></span><div><strong>Sync scheduled</strong>Backups run nightly at 2:00 AM.</div></div>
+      <div class="alert-demo a-success"><span class="dot" style="background:var(--success)"></span><div><strong>Payment sent</strong>₹2,500 reached Chai Point.</div></div>
+      <div class="alert-demo a-warning"><span class="dot" style="background:var(--warning)"></span><div><strong>Budget 85% used</strong>₹1,200 left in Food for November.</div></div>
+      <div class="alert-demo a-destructive"><span class="dot" style="background:var(--destructive)"></span><div><strong>Card declined</strong>Try another payment method.</div></div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Tone</th><th>Border</th><th>Wash</th><th>Icon</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">info</td><td><code>--info</code> 45%</td><td><code>--info</code> 10%</td><td rowspan="4">tone color, 1.5–2px stroke; solid dot on native</td></tr>
+        <tr><td class="mono">success</td><td><code>--success</code> 45%</td><td><code>--success</code> 10%</td></tr>
+        <tr><td class="mono">warning</td><td><code>--warning</code> 55%</td><td><code>--warning</code> 14%</td></tr>
+        <tr><td class="mono">destructive</td><td><code>--destructive</code> 45%</td><td><code>--destructive</code> 9%</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>icon</code> · <code>content</code> · <code>title</code> · <code>action</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-alert-root</code></div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">9 · Progress, Spinner &amp; Skeleton <span class="tag">feedback</span><a class="anchor" href="#feedback">§</a></h2>
+  <p class="sublede">Waiting states. Determinate when a % is known, indeterminate otherwise; skeletons mirror the layout they replace.</p>
+
+  <div class="comp">
+    <div class="comp-specimen col">
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        <span class="rowlabel">determinate</span>
+        <div class="progress-track" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><div class="progress-fill" style="width:64%"></div></div>
+        <span class="meta">64%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        <span class="rowlabel">success</span>
+        <div class="progress-track"><div class="progress-fill success" style="width:100%"></div></div>
+        <span class="meta">100%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem">
+        <span class="rowlabel">spinner</span>
+        <span class="spinner" role="status" aria-label="Loading" style="color:var(--primary)"></span>
+        <span class="rowlabel" style="margin-left:1rem">skeleton</span>
+        <div class="skeleton" style="height:.85rem;width:10rem"></div>
+        <div class="skeleton" style="height:.85rem;width:6rem"></div>
+        <div class="skeleton" style="width:2.25rem;height:2.25rem;border-radius:999px"></div>
+      </div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Element</th><th>Spec</th><th>Rules</th></tr></thead>
+      <tbody>
+        <tr><td>Progress</td><td>track <code>--muted</code>, fill <code>--primary</code> (or <code>--success</code> at 100%), height 8px, pill</td><td>width animates at <code>--kala-duration-slow</code>; value announced</td></tr>
+        <tr><td>Spinner</td><td>25% currentColor ring + solid top arc, 0.7s linear</td><td>label stays visible beside it; never spinner-only screens</td></tr>
+        <tr><td>Skeleton</td><td><code>--muted</code> blocks, shimmer 1.6s, same radii as content</td><td>matches real layout dimensions; ≤3s wait — longer needs progress</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Markers:</strong> <code>k-progress-root</code> · <code>k-spinner-root</code> · <code>k-skeleton-root</code></div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">10 · Empty state <span class="tag">feedback</span><a class="anchor" href="#feedback">§</a></h2>
+  <p class="sublede">First-run and no-data. Not an error — helpful, one clear next action.</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <div class="empty-demo">
+        <strong>No transactions yet</strong>
+        Add your first expense and kala starts categorizing automatically.
+        <div style="margin-top:1rem"><button class="btn btn-solid btn-sm focusable" type="button">Add expense</button></div>
+      </div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Part</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>icon</td><td>optional, <code>--muted-foreground</code>, never animated</td></tr>
+        <tr><td>title</td><td>text-lg, full contrast</td></tr>
+        <tr><td>description</td><td>text-sm, muted, ≤2 lines</td></tr>
+        <tr><td>action</td><td>ONE primary button (foundation §6.1)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>icon</code> · <code>title</code> · <code>description</code> · <code>action</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-empty-state-root</code></div>
+  </div>
+</section>
+
+<!-- ===================== OVERLAYS ===================== -->
+<section id="overlays">
+  <hr>
+  <h2>11 · Menu (dropdown) <span class="tag">overlays</span><a class="anchor" href="#overlays">§</a></h2>
+  <p class="sublede">Actions on a target. <code>--popover</code> surface — the one place a shadow is conventional. Keyboard: full arrow/typeahead support on web; native uses bottom sheets for long lists (see app-components).</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <div class="menu-demo" role="menu">
+        <button class="menu-item" type="button" role="menuitem">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          Rename
+          <span class="kbd" style="margin-left:auto">F2</span>
+        </button>
+        <button class="menu-item" type="button" role="menuitem">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Duplicate
+        </button>
+        <hr class="menu-sep">
+        <button class="menu-item destructive" type="button" role="menuitem">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+          Delete
+        </button>
+        <button class="menu-item" type="button" disabled>Archive (locked)</button>
+      </div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>State</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>surface</td><td><code>--popover</code>, 1px <code>--separator</code>, radius <code>--kala-radius-card</code>, shadow allowed (overlay exception)</td></tr>
+        <tr><td>item hover</td><td><code>--accent</code> fill, <code>--accent-foreground</code> text, 150ms</td></tr>
+        <tr><td>item destructive</td><td><code>--destructive</code> text in every theme</td></tr>
+        <tr><td>item disabled</td><td>opacity 0.5, skipped by keyboard nav</td></tr>
+        <tr><td>open/close</td><td>fade + 4px scale-in, <code>--kala-duration-base</code>; scrim <code>--overlay</code>/<code>--overlay-alpha</code> on native</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Slots:</strong> <code>root</code> · <code>item</code> · <code>icon</code> · <code>shortcut</code> · <code>separator</code> &nbsp;·&nbsp; <strong>Marker:</strong> <code>k-menu-root</code></div>
+  </div>
+
+  <h2 style="margin-top:2.5rem">12 · Tooltip &amp; Toast <span class="tag">overlays</span><a class="anchor" href="#overlays">§</a></h2>
+  <p class="sublede">Tooltip: hover/focus explanation, never interactive content. Toast: transient result confirmation, auto-dismiss, stacked bottom (web) / top (native, above tab bar).</p>
+
+  <div class="comp">
+    <div class="comp-specimen">
+      <span class="tooltip-demo">
+        <button class="btn btn-outline btn-icon focusable" type="button" aria-label="Info">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </button>
+        <span class="tooltip-pop" role="tooltip">Exports last 30 days</span>
+      </span>
+      <span style="width:1px;background:var(--separator);align-self:stretch"></span>
+      <div class="menu-demo" style="min-width:20rem" role="status">
+        <div class="list-item" style="border:0">
+          <span class="dot" style="background:var(--success);margin-top:.35rem"></span>
+          <div style="flex:1"><strong style="font-size:.9rem">Transaction exported</strong><div class="meta">november.csv · 128 rows</div></div>
+          <button class="btn btn-ghost btn-xs focusable" type="button" aria-label="Dismiss">Undo</button>
+        </div>
+      </div>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Element</th><th>Rules</th></tr></thead>
+      <tbody>
+        <tr><td>Tooltip</td><td>delay 500ms in, 100ms out; <code>--popover</code> surface + shadow; disappears on press/scroll (native: long-press hint only); max 2 lines, no actions</td></tr>
+        <tr><td>Toast</td><td>5s auto-dismiss (errors: 8s + dismiss only); max 3 stacked; enters fade+slide <code>--kala-duration-slow</code>; swipe-to-dismiss native (<code>motion.spring.bouncy</code>); role=status / alert on error</td></tr>
+      </tbody>
+    </table></div>
+    <div class="slotline"><strong>Markers:</strong> <code>k-tooltip-root</code> · <code>k-toast-root</code></div>
+  </div>
+</section>
+
+<!-- ===================== SCOPE ===================== -->
+<section id="scope">
+  <hr>
+  <h2>Scope &amp; deferral <a class="anchor" href="#scope">§</a></h2>
+  <p class="sublede">What this catalog deliberately excludes, and where it lives instead.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Excluded from the standard kit</th><th>Why / where instead</th></tr></thead>
+    <tbody>
+      <tr><td>Sheets, headers, tab shells, screen layouts</td><td>App-level composites — <code>app-components.html</code></td></tr>
+      <tr><td>Calendar, combobox, command palette, tree, data-table, charts</td><td>Web-only today; enter the native catalog only when an app needs them (then as native-first designs, not ports)</td></tr>
+      <tr><td>Dialog / AlertDialog primitives</td><td>Specified in <code>app-components.html</code> §together with sheets — on native the modal surface IS the sheet family</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note" style="border:1px solid var(--separator);border-radius:var(--kala-radius-card);padding:.85rem 1rem;margin-top:1rem;max-width:72ch">
+    <strong>Governance</strong> — a new state or variant lands here before it lands in code; a component may not ship a state not in this matrix. Slot surfaces above are the complete tier-3 surface: anything beyond them is a library change, not an app override.
+  </div>
+</section>
+
+<footer>
+  <p><strong>kala-ui standard components + states</strong> — built exclusively on <code>design-specs.html</code>. Upstream: foundation (approved). Downstream: <code>app-components.html</code> (pending this file's approval).</p>
+  <p class="meta">Every specimen on this page is live-rendered from the foundation tokens; the toggle in the header re-themes the entire catalog in place. No external dependencies.</p>
+</footer>
+
+</div>
+</body>
+</html>
