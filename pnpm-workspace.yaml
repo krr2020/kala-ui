@@ -8,7 +8,18 @@ packages:
 peerDependencyRules:
   allowedVersions:
     jest-watch-typeahead:
-      jest: '*'
+      jest: '>=27'
+    # Expo SDK 57 matrix ships worklets 0.12 alongside reanimated 4.5.1 /
+    # expo-modules-core 57, but their published peer ranges stop at 0.10.x —
+    # registry metadata lag, not a real matrix conflict.
+    expo-modules-core:
+      react-native-worklets: '>=0.7.4'
+    react-native-reanimated:
+      react-native-worklets: '>=0.10.0'
+    # The library pins react 19.2.3 (Expo SDK 57's tested pair); react-dom's
+    # metadata asks ^19.3.0 — same lag class as the catalog's web react pin.
+    react-dom:
+      react: '>=19'
 
 # Single source of truth for dependency versions shared across workspace
 # packages — reference as "catalog:" from any package.json. Every entry is an
@@ -69,3 +80,8 @@ catalog:
   babel-preset-expo: 57.0.11
   jest-expo: 57.0.5
   '@react-native/metro-config': 0.86.3
+  '@react-native/jest-preset': 0.86.3
+  # Native component layer (not SDK-managed — peers cover compatibility)
+  lucide-react-native: 1.46.0
+  '@testing-library/react-native': 14.0.1
+  '@types/jest': 30.0.0

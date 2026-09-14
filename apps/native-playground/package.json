@@ -16,6 +16,7 @@
 		"@kala-ui/react-native": "workspace:*",
 		"@react-native/normalize-colors": "catalog:",
 		"expo": "catalog:",
+		"lucide-react-native": "catalog:",
 		"react": "19.2.3",
 		"react-dom": "19.2.3",
 		"react-native": "catalog:",

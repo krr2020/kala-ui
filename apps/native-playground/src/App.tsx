@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Check, Sun } from "lucide-react-native";
 import {
 	StyleSheet,
 	UnistylesRuntime,
 	useUnistyles,
 } from "react-native-unistyles";
+import { Button, Icon, Sheet } from "@kala-ui/react-native";
 import { themeNames } from "@kala-ui/react-native/themes";
 
 const SWATCH_TOKENS = [
@@ -86,11 +89,23 @@ const stylesheet = StyleSheet.create((theme) => ({
 		textAlign: "center",
 		paddingBottom: 6,
 	},
+	sectionTitle: {
+		color: theme.foreground,
+		fontSize: 18,
+		fontWeight: "600",
+	},
+	componentRow: {
+		flexDirection: "row",
+		flexWrap: "wrap",
+		alignItems: "center",
+		gap: 8,
+	},
 }));
 
 export default function App() {
 	const { theme } = useUnistyles();
 	const current = UnistylesRuntime.themeName;
+	const [sheetOpen, setSheetOpen] = useState(false);
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
@@ -141,6 +156,46 @@ export default function App() {
 						</View>
 					))}
 				</View>
+				<Text style={stylesheet.sectionTitle}>components</Text>
+				<View style={stylesheet.componentRow} testID="k-demo-buttons">
+					<Button
+						onPress={() => setSheetOpen(true)}
+						accessibilityLabel="open demo sheet"
+					>
+						<Icon icon={Check} size="xs" color="primaryForeground" />
+						open sheet
+					</Button>
+					<Button variant="outline" color="secondary">
+						outline
+					</Button>
+					<Button variant="ghost" color="destructive">
+						ghost
+					</Button>
+					<Button variant="subtle" color="muted" size="sm">
+						subtle
+					</Button>
+					<Button variant="link" size="sm">
+						link
+					</Button>
+					<Button size="icon" accessibilityLabel="sun">
+						<Icon icon={Sun} size="sm" />
+					</Button>
+				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-icons">
+					{(["xs", "sm", "md", "lg", "xl"] as const).map((size) => (
+						<Icon key={size} icon={Sun} size={size} />
+					))}
+				</View>
+				<Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}>
+					<Sheet.Body>
+						<Text style={stylesheet.current}>
+							Bottom sheet — press the overlay or drag to dismiss.
+						</Text>
+						<Button fullWidth onPress={() => setSheetOpen(false)}>
+							done
+						</Button>
+					</Sheet.Body>
+				</Sheet>
 			</ScrollView>
 		</GestureHandlerRootView>
 	);

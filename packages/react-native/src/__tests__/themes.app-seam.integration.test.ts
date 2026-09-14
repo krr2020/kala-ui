@@ -1,9 +1,9 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { describe, expect, it } from "vitest";
 // Package-name import (not a relative path) — exercises the library's
 // package.json exports map exactly the way the playground app consumes it.
 import { themes } from "@kala-ui/react-native/themes";
+import { describe, expect, it } from "vitest";
 
 /**
  * Integration seam: packages/react-native ↔ apps/native-playground.
@@ -12,13 +12,12 @@ import { themes } from "@kala-ui/react-native/themes";
  * StyleSheet.configure, so the contract that must never break is:
  * every exported theme is a flat map of primitive values (colors as hex
  * strings, alphas as numbers) that Unistyles can consume, and the app's
- * registration file actually passes this exact object through.
+ * registration file actually passes this exact object through. The
+ * component layer has the same shape of contract: the playground consumes
+ * Button/Icon/Sheet through the library's root entry.
  */
 
-const PLAYGROUND_DIR = resolve(
-	__dirname,
-	"../../../../apps/native-playground",
-);
+const PLAYGROUND_DIR = resolve(__dirname, "../../../../apps/native-playground");
 
 const registration = readFileSync(
 	resolve(PLAYGROUND_DIR, "src/unistyles.ts"),
@@ -80,9 +79,7 @@ describe("library → app registration seam", () => {
 					`${name}.${key} is ${typeof value}`,
 				).toBe(true);
 				expect(value, `${name}.${key}`).not.toBeUndefined();
-				expect(Number.isNaN(value as number), `${name}.${key}`).toBe(
-					false,
-				);
+				expect(Number.isNaN(value as number), `${name}.${key}`).toBe(false);
 			}
 		}
 	});
@@ -94,5 +91,23 @@ describe("library → app registration seam", () => {
 		);
 		expect(appSource).toContain("UnistylesRuntime.setTheme");
 		expect(appSource).toContain('from "@kala-ui/react-native/themes"');
+	});
+
+	it("app components section consumes the library's component exports", () => {
+		// The playground is the living-docs consumer: if it stops importing the
+		// components through the root entry, the exports map regressed.
+		const appSource = readFileSync(
+			resolve(PLAYGROUND_DIR, "src/App.tsx"),
+			"utf-8",
+		);
+		expect(appSource).toContain('from "@kala-ui/react-native"');
+		for (const component of ["Button", "Icon", "Sheet"]) {
+			expect(appSource).toContain(`<${component}`);
+		}
+		expect(appSource).toContain("k-demo-buttons");
+	});
+
+	it("playground pins lucide-react-native via the catalog", () => {
+		expect(playgroundPkg.dependencies["lucide-react-native"]).toBe("catalog:");
 	});
 });
