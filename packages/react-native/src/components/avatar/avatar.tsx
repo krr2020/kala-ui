@@ -6,10 +6,12 @@
  * success/warning at all), so online uses the STATUS_ONLINE_HUE constant
  * below and offline falls back to mutedForeground.
  */
-import { useState } from "react";
+
 import type { ReactElement } from "react";
+import { useState } from "react";
 import { Image, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type { AvatarProps, AvatarShape, AvatarSize } from "./avatar.types";
 
 const BOX: Record<AvatarSize, number> = {
@@ -63,6 +65,7 @@ export function Avatar({
 	shape = "circle",
 	status = "none",
 	style,
+	styles,
 	testID = "k-avatar",
 }: AvatarProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -86,7 +89,7 @@ export function Avatar({
 					justifyContent: "center",
 					overflow: "hidden",
 				},
-				style,
+				applySlot(applySlot({}, style), styles?.root),
 			]}
 		>
 			{showImage ? (
@@ -94,23 +97,29 @@ export function Avatar({
 					testID="k-avatar-image"
 					source={source}
 					onError={() => setFailed(true)}
-					style={{
-						width: "100%",
-						height: "100%",
-						borderRadius: RADIUS[shape],
-					}}
+					style={applySlot(
+						{
+							width: "100%",
+							height: "100%",
+							borderRadius: RADIUS[shape],
+						},
+						styles?.image,
+					)}
 				/>
 			) : (
 				<View
 					testID="k-avatar-fallback"
-					style={{
-						width: "100%",
-						height: "100%",
-						borderRadius: RADIUS[shape],
-						alignItems: "center",
-						justifyContent: "center",
-						backgroundColor: theme.primary,
-					}}
+					style={applySlot(
+						{
+							width: "100%",
+							height: "100%",
+							borderRadius: RADIUS[shape],
+							alignItems: "center",
+							justifyContent: "center",
+							backgroundColor: theme.primary,
+						},
+						styles?.fallback,
+					)}
 				>
 					<RNText
 						style={{
@@ -126,18 +135,21 @@ export function Avatar({
 			{status !== "none" && (
 				<View
 					testID="k-avatar-status"
-					style={{
-						position: "absolute",
-						right: 0,
-						bottom: 0,
-						width: DOT[size],
-						height: DOT[size],
-						borderRadius: 999,
-						backgroundColor:
-							status === "online" ? STATUS_ONLINE_HUE : theme.mutedForeground,
-						borderWidth: 2,
-						borderColor: theme.background,
-					}}
+					style={applySlot(
+						{
+							position: "absolute",
+							right: 0,
+							bottom: 0,
+							width: DOT[size],
+							height: DOT[size],
+							borderRadius: 999,
+							backgroundColor:
+								status === "online" ? STATUS_ONLINE_HUE : theme.mutedForeground,
+							borderWidth: 2,
+							borderColor: theme.background,
+						},
+						styles?.status,
+					)}
 				/>
 			)}
 		</View>

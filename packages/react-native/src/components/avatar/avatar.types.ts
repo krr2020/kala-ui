@@ -1,4 +1,9 @@
-import type { ImageSourcePropType, StyleProp, ViewStyle } from "react-native";
+import type {
+	ImageSourcePropType,
+	ImageStyle,
+	StyleProp,
+	ViewStyle,
+} from "react-native";
 
 export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type AvatarShape = "circle" | "rounded" | "square";
@@ -17,5 +22,12 @@ export interface AvatarProps {
 	shape?: AvatarShape;
 	status?: AvatarStatus;
 	style?: StyleProp<ViewStyle>;
+	/** Slot overrides: root wins over the library surface and `style`. */
+	styles?: {
+		root?: StyleProp<ViewStyle>;
+		image?: StyleProp<ImageStyle>;
+		fallback?: StyleProp<ViewStyle>;
+		status?: StyleProp<ViewStyle>;
+	};
 	testID?: string;
 }

@@ -4,14 +4,13 @@
  * radio with its own surface (Checkbox precedent: pressable owns the
  * 44dp touch floor). The container constrains nothing beyond direction.
  */
-import { createContext, useContext } from "react";
+
 import type { ReactElement } from "react";
+import { createContext, useContext } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import type {
-	RadioGroupItemProps,
-	RadioGroupProps,
-} from "./radio-group.types";
+import { applySlot } from "../slot-styles";
+import type { RadioGroupItemProps, RadioGroupProps } from "./radio-group.types";
 
 const CIRCLE = 22;
 const DOT = 12;
@@ -31,6 +30,7 @@ export function RadioGroup({
 	accessibilityLabel,
 	children,
 	style,
+	styles,
 	testID = "k-radio-group",
 }: RadioGroupProps): ReactElement {
 	const state: RadioGroupState = {
@@ -46,10 +46,13 @@ export function RadioGroup({
 				accessible={true}
 				accessibilityRole="radiogroup"
 				accessibilityLabel={accessibilityLabel}
-				style={[
-					{ flexDirection: "column", gap: 4, alignSelf: "flex-start" },
-					style,
-				]}
+				style={applySlot(
+					applySlot(
+						[{ flexDirection: "column", gap: 4, alignSelf: "flex-start" }],
+						style,
+					),
+					styles?.root,
+				)}
 			>
 				{children}
 			</View>
@@ -64,6 +67,7 @@ function RadioGroupItem({
 	disabled = false,
 	accessibilityLabel,
 	style,
+	styles,
 	testID = "k-radio-item",
 }: RadioGroupItemProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -83,17 +87,22 @@ function RadioGroupItem({
 			accessibilityRole="radio"
 			accessibilityLabel={accessibilityLabel ?? label}
 			accessibilityState={{ checked, disabled: isDisabled || undefined }}
-			style={[
-				{
-					minWidth: 44,
-					minHeight: 44,
-					flexDirection: "row",
-					alignItems: "center",
-					gap: 10,
-					opacity: isDisabled ? 0.5 : 1,
-				},
-				style,
-			]}
+			style={applySlot(
+				applySlot(
+					[
+						{
+							minWidth: 44,
+							minHeight: 44,
+							flexDirection: "row",
+							alignItems: "center",
+							gap: 10,
+							opacity: isDisabled ? 0.5 : 1,
+						},
+					],
+					style,
+				),
+				styles?.root,
+			)}
 		>
 			<View
 				testID={`${testID}-circle`}
@@ -128,9 +137,7 @@ function RadioGroupItem({
 						</RNText>
 					) : null}
 					{description !== undefined ? (
-						<RNText
-							style={{ color: theme.mutedForeground, fontSize: 13 }}
-						>
+						<RNText style={{ color: theme.mutedForeground, fontSize: 13 }}>
 							{description}
 						</RNText>
 					) : null}

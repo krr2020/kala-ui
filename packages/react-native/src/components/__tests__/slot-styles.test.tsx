@@ -5,7 +5,7 @@
  * purpose — no fireEvent.press, which leaves responder grant locks in
  * this jest environment.
  */
-import { render } from "@testing-library/react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
 import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
@@ -29,6 +29,7 @@ import { Separator } from "../separator";
 import { Sheet } from "../sheet";
 import { Skeleton } from "../skeleton";
 import { Slider } from "../slider";
+import { applySlot } from "../slot-styles";
 import { Spinner } from "../spinner";
 import { Switch } from "../switch";
 import { Tabs } from "../tabs";
@@ -38,7 +39,6 @@ import { TextInput } from "../text-input";
 import { Toast } from "../toast";
 import { Toggle } from "../toggle";
 import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
-import { applySlot } from "../slot-styles";
 
 const incl = { includeHiddenElements: true } as const;
 
@@ -92,7 +92,11 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			marker: "k-alert-dialog",
 			render: () =>
 				render(
-					<AlertDialog open onOpenChange={() => undefined} styles={{ root: { borderWidth: 7 } }} />,
+					<AlertDialog
+						open
+						onOpenChange={() => undefined}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
 				),
 		},
 		{
@@ -123,7 +127,10 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			marker: "k-checkbox",
 			render: () =>
 				render(
-					<Checkbox accessibilityLabel="c" styles={{ root: { borderWidth: 7 } }} />,
+					<Checkbox
+						accessibilityLabel="c"
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
 				),
 		},
 		{
@@ -131,7 +138,11 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			marker: "k-dialog",
 			render: () =>
 				render(
-					<Dialog open onOpenChange={() => undefined} styles={{ root: { borderWidth: 7 } }} />,
+					<Dialog
+						open
+						onOpenChange={() => undefined}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
 				),
 		},
 		{
@@ -156,19 +167,20 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		{
 			name: "Icon",
 			marker: "k-icon",
-			render: () => render(<Icon icon={Sun} styles={{ root: { borderWidth: 7 } }} />),
+			render: () =>
+				render(<Icon icon={Sun} styles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Indicator",
 			marker: "k-indicator",
-			render: () =>
-				render(<Indicator styles={{ root: { borderWidth: 7 } }} />),
+			render: () => render(<Indicator styles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Label",
 			marker: "k-label",
 			textRoot: true,
-			render: () => render(<Label styles={{ root: { fontSize: 33 } }}>l</Label>),
+			render: () =>
+				render(<Label styles={{ root: { fontSize: 33 } }}>l</Label>),
 		},
 		{
 			name: "Pagination",
@@ -187,7 +199,10 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			marker: "k-radio-group",
 			render: () =>
 				render(
-					<RadioGroup accessibilityLabel="r" styles={{ root: { borderWidth: 7 } }} />,
+					<RadioGroup
+						accessibilityLabel="r"
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
 				),
 		},
 		{
@@ -241,7 +256,9 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			name: "Slider",
 			marker: "k-slider",
 			render: () =>
-				render(<Slider defaultValue={[40]} styles={{ root: { borderWidth: 7 } }} />),
+				render(
+					<Slider defaultValue={[40]} styles={{ root: { borderWidth: 7 } }} />,
+				),
 		},
 		{
 			name: "Spinner",
@@ -252,7 +269,12 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			name: "Switch",
 			marker: "k-switch",
 			render: () =>
-				render(<Switch accessibilityLabel="s" styles={{ root: { borderWidth: 7 } }} />),
+				render(
+					<Switch
+						accessibilityLabel="s"
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
+				),
 		},
 		{
 			name: "Tabs",
@@ -279,15 +301,18 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		{
 			name: "TextInput",
 			marker: "k-text-input",
-			render: () =>
-				render(<TextInput styles={{ root: { borderWidth: 7 } }} />),
+			render: () => render(<TextInput styles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Toast",
 			marker: "k-toast",
 			render: () =>
 				render(
-					<Toast open onOpenChange={() => undefined} styles={{ root: { borderWidth: 7 } }} />,
+					<Toast
+						open
+						onOpenChange={() => undefined}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
 				),
 		},
 		{
@@ -367,8 +392,9 @@ describe("multi-part slots", () => {
 		expect(
 			Number(flatStyle(screen.getByTestId("k-slider-track")).borderWidth),
 		).toBe(2);
+		// the range view is accessibilityElementsHidden — query with incl
 		expect(
-			Number(flatStyle(screen.getByTestId("k-slider-range")).borderWidth),
+			Number(flatStyle(screen.getByTestId("k-slider-range", incl)).borderWidth),
 		).toBe(3);
 		expect(
 			Number(flatStyle(screen.getByTestId("k-slider-thumb")).borderWidth),
@@ -389,7 +415,9 @@ describe("multi-part slots", () => {
 			<Indicator size={10} styles={{ dot: { borderWidth: 3 } }} />,
 		);
 		expect(
-			Number(flatStyle(screen.getByTestId("k-indicator-dot", incl)).borderWidth),
+			Number(
+				flatStyle(screen.getByTestId("k-indicator-dot", incl)).borderWidth,
+			),
 		).toBe(3);
 	});
 
@@ -453,9 +481,11 @@ describe("multi-part slots", () => {
 				styles={{ segment: { borderWidth: 3 }, indicator: { borderWidth: 5 } }}
 			/>,
 		);
-		expect(
-			Number(flatStyle(screen.getByTestId("k-segment", incl)).borderWidth),
-		).toBe(3);
+		const segments = screen.getAllByTestId("k-segment", incl);
+		expect(segments.length).toBeGreaterThan(1);
+		for (const node of segments) {
+			expect(Number(flatStyle(node).borderWidth)).toBe(3);
+		}
 		expect(
 			Number(
 				flatStyle(screen.getByTestId("k-segment-indicator", incl)).borderWidth,
@@ -477,20 +507,26 @@ describe("multi-part slots", () => {
 				}}
 			/>,
 		);
-		expect(
-			Number(flatStyle(screen.getByTestId("k-pagination-page", incl)).borderWidth),
-		).toBe(2);
+		const pages = screen.getAllByTestId("k-pagination-page", incl);
+		expect(pages.length).toBeGreaterThan(1);
+		for (const node of pages) {
+			expect(Number(flatStyle(node).borderWidth)).toBe(2);
+		}
 		expect(
 			Number(
-				flatStyle(screen.getByTestId("k-pagination-previous", incl)).borderWidth,
+				flatStyle(screen.getByTestId("k-pagination-previous", incl))
+					.borderWidth,
 			),
 		).toBe(3);
 		expect(
-			Number(flatStyle(screen.getByTestId("k-pagination-next", incl)).borderWidth),
+			Number(
+				flatStyle(screen.getByTestId("k-pagination-next", incl)).borderWidth,
+			),
 		).toBe(4);
 		expect(
 			Number(
-				flatStyle(screen.getByTestId("k-pagination-ellipsis", incl)).borderWidth,
+				flatStyle(screen.getByTestId("k-pagination-ellipsis", incl))
+					.borderWidth,
 			),
 		).toBe(5);
 	});
@@ -499,9 +535,11 @@ describe("multi-part slots", () => {
 		const screen = await render(
 			<Rating value={3} styles={{ star: { borderWidth: 3 } }} />,
 		);
-		expect(
-			Number(flatStyle(screen.getByTestId("k-rating-star", incl)).borderWidth),
-		).toBe(3);
+		const stars = screen.getAllByTestId("k-rating-star", incl);
+		expect(stars.length).toBeGreaterThan(1);
+		for (const node of stars) {
+			expect(Number(flatStyle(node).borderWidth)).toBe(3);
+		}
 	});
 
 	it("tabs.tab and tabs.list carry distinct overrides", async () => {
@@ -557,6 +595,20 @@ describe("multi-part slots", () => {
 		).toBe(3);
 	});
 
+	it("avatar image onError flips to fallback carrying styles.fallback", async () => {
+		const screen = await render(
+			<Avatar
+				name="Ada"
+				source={{ uri: "x" }}
+				styles={{ fallback: { borderWidth: 6 } }}
+			/>,
+		);
+		await fireEvent(screen.getByTestId("k-avatar-image"), "error");
+		expect(
+			Number(flatStyle(screen.getByTestId("k-avatar-fallback")).borderWidth),
+		).toBe(6);
+	});
+
 	it("empty-state icon/title/description/action carry distinct overrides", async () => {
 		const screen = await render(
 			<EmptyState
@@ -572,7 +624,9 @@ describe("multi-part slots", () => {
 			/>,
 		);
 		expect(
-			Number(flatStyle(screen.getByTestId("k-empty-state-icon", incl)).borderWidth),
+			Number(
+				flatStyle(screen.getByTestId("k-empty-state-icon", incl)).borderWidth,
+			),
 		).toBe(2);
 		expect(
 			Number(flatStyle(screen.getByTestId("k-empty-state-title")).fontSize),
@@ -592,7 +646,9 @@ describe("multi-part slots", () => {
 			<Alert dismissable styles={{ dismiss: { borderWidth: 3 } }} />,
 		);
 		expect(
-			Number(flatStyle(screen.getByTestId("k-alert-dismiss", incl)).borderWidth),
+			Number(
+				flatStyle(screen.getByTestId("k-alert-dismiss", incl)).borderWidth,
+			),
 		).toBe(3);
 	});
 
@@ -605,7 +661,9 @@ describe("multi-part slots", () => {
 			/>,
 		);
 		expect(
-			Number(flatStyle(screen.getByTestId("k-toast-viewport", incl)).borderWidth),
+			Number(
+				flatStyle(screen.getByTestId("k-toast-viewport", incl)).borderWidth,
+			),
 		).toBe(3);
 	});
 
@@ -663,11 +721,38 @@ describe("precedence and back-compat", () => {
 		expect(Number(flatStyle(sl.getByTestId("k-slider")).opacity)).toBe(0.9);
 	});
 
+	it("styles.root beats the legacy style prop on pagination, rating, radio-group", async () => {
+		const pg = await render(
+			<Pagination
+				total={9}
+				style={{ opacity: 0.2 }}
+				styles={{ root: { opacity: 0.9 } }}
+			/>,
+		);
+		expect(Number(flatStyle(pg.getByTestId("k-pagination")).opacity)).toBe(0.9);
+
+		const rt = await render(
+			<Rating
+				value={3}
+				style={{ opacity: 0.2 }}
+				styles={{ root: { opacity: 0.9 } }}
+			/>,
+		);
+		expect(Number(flatStyle(rt.getByTestId("k-rating")).opacity)).toBe(0.9);
+
+		const rg = await render(
+			<RadioGroup style={{ opacity: 0.2 }} styles={{ root: { opacity: 0.9 } }}>
+				<RadioGroup.Item value="a" label="a" />
+			</RadioGroup>,
+		);
+		expect(Number(flatStyle(rg.getByTestId("k-radio-group")).opacity)).toBe(
+			0.9,
+		);
+	});
+
 	it("legacy style prop alone still applies (button, sheet, toggle)", async () => {
 		const btn = await render(<Button style={{ height: 99 }}>go</Button>);
-		expect(
-			Number(flatStyle(btn.getByTestId("k-button-root")).height),
-		).toBe(99);
+		expect(Number(flatStyle(btn.getByTestId("k-button-root")).height)).toBe(99);
 
 		const sheet = await render(
 			<Sheet
@@ -699,9 +784,9 @@ describe("text parts and untouched defaults", () => {
 				<Alert.Title styles={{ root: { fontSize: 44 } }}>t</Alert.Title>
 			</Alert>,
 		);
-		expect(
-			Number(flatStyle(alert.getByTestId("k-alert-title")).fontSize),
-		).toBe(44);
+		expect(Number(flatStyle(alert.getByTestId("k-alert-title")).fontSize)).toBe(
+			44,
+		);
 
 		const toast = await render(
 			<Toast open onOpenChange={() => undefined}>
@@ -729,9 +814,9 @@ describe("text parts and untouched defaults", () => {
 		expect(flatStyle(btn.getByTestId("k-button-root")).borderWidth).toBe(0);
 
 		const cb = await render(<Checkbox accessibilityLabel="c" />);
-		expect(
-			flatStyle(cb.getByTestId("k-checkbox-box", incl)).borderWidth,
-		).toBe(1);
+		expect(flatStyle(cb.getByTestId("k-checkbox-box", incl)).borderWidth).toBe(
+			1,
+		);
 
 		const sep = await render(<Separator />);
 		expect(Number(flatStyle(sep.getByTestId("k-separator", incl)).height)).toBe(

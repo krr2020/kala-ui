@@ -7,9 +7,10 @@
  * distinct from the numbered page buttons. Pressing the current page is a
  * no-op and never fires onPageChange.
  */
-import { useState } from "react";
-import type { ReactElement } from "react";
+
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react-native";
+import type { ReactElement } from "react";
+import { useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
@@ -134,7 +135,7 @@ export function Pagination({
 					gap: 4,
 					alignSelf: "flex-start",
 				},
-				applySlot(applySlot([], styles?.root), style),
+				applySlot(applySlot([], style), styles?.root),
 			]}
 		>
 			<Pressable
@@ -173,9 +174,9 @@ export function Pagination({
 								{
 									backgroundColor:
 										entry === active ? themeMap.primary : "transparent",
-									},
+								},
 							],
-								styles?.page,
+							styles?.page,
 						)}
 					>
 						<RNText

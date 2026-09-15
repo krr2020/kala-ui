@@ -6,11 +6,13 @@
  * press locationX (left half → N-0.5); a missing location falls back to the
  * whole star. readOnly drops the pressables and announces one summary.
  */
-import { useState } from "react";
-import type { ReactElement } from "react";
+
 import { Star } from "lucide-react-native";
+import type { ReactElement } from "react";
+import { useState } from "react";
 import { Pressable, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type { RatingProps, RatingSize } from "./rating.types";
 
 const STAR_PX: Record<RatingSize, number> = { sm: 16, md: 20, lg: 28 };
@@ -33,6 +35,7 @@ export function Rating({
 	size = "md",
 	accessibilityLabel = "Rating",
 	style,
+	styles,
 	testID = "k-rating",
 }: RatingProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -110,7 +113,10 @@ export function Rating({
 				accessible={true}
 				accessibilityRole="image"
 				accessibilityLabel={`${accessibilityLabel}: ${active} out of ${count} stars`}
-				style={[{ flexDirection: "row", alignItems: "center" }, style]}
+				style={applySlot(
+					applySlot([{ flexDirection: "row", alignItems: "center" }], style),
+					styles?.root,
+				)}
 			>
 				{Array.from({ length: count }, (_, i) => i + 1).map((star) => (
 					<View
@@ -130,14 +136,19 @@ export function Rating({
 		<View
 			testID={testID}
 			accessibilityLabel={accessibilityLabel}
-			style={[
-				{
-					flexDirection: "row",
-					alignItems: "center",
-					opacity: disabled ? 0.5 : 1,
-				},
-				style,
-			]}
+			style={applySlot(
+				applySlot(
+					[
+						{
+							flexDirection: "row",
+							alignItems: "center",
+							opacity: disabled ? 0.5 : 1,
+						},
+					],
+					style,
+				),
+				styles?.root,
+			)}
 		>
 			{Array.from({ length: count }, (_, i) => {
 				const star = i + 1;
@@ -153,11 +164,14 @@ export function Rating({
 						}}
 						disabled={disabled}
 						onPress={(event) => press(event, star)}
-						style={{
-							minHeight: 44,
-							justifyContent: "center",
-							paddingHorizontal: 2,
-						}}
+						style={applySlot(
+							{
+								minHeight: 44,
+								justifyContent: "center",
+								paddingHorizontal: 2,
+							},
+							styles?.star,
+						)}
 					>
 						{starVisual(star)}
 					</Pressable>
