@@ -22,6 +22,7 @@ import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Combobox } from "../combobox";
 import { ContextMenu } from "../context-menu";
+import { CopyButton } from "../copy-button";
 import { DatePicker, DateRangePicker } from "../date-picker";
 import { Dialog } from "../dialog";
 import { DropdownMenu } from "../dropdown-menu";
@@ -199,8 +200,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		{
 			name: "Calendar",
 			marker: "k-calendar",
-			render: () =>
-				render(<Calendar styles={{ root: { borderWidth: 7 } }} />),
+			render: () => render(<Calendar styles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Checkbox",
@@ -220,6 +220,18 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<Combobox
 						options={[{ value: "a", label: "A" }]}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
+				),
+		},
+		{
+			name: "CopyButton",
+			marker: "k-copy-button",
+			render: () =>
+				render(
+					<CopyButton
+						value="demo"
+						writeClipboard={async () => undefined}
 						styles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
@@ -625,8 +637,8 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		});
 	}
 
-	it("the sweep covers all 58 components", () => {
-		expect(fixtures.length).toBe(58);
+	it("the sweep covers all 59 components", () => {
+		expect(fixtures.length).toBe(59);
 	});
 });
 

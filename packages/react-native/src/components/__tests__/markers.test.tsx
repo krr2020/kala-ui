@@ -22,6 +22,7 @@ import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Combobox } from "../combobox";
 import { ContextMenu } from "../context-menu";
+import { CopyButton } from "../copy-button";
 import { DatePicker, DateRangePicker } from "../date-picker";
 import { Dialog } from "../dialog";
 import { DropdownMenu } from "../dropdown-menu";
@@ -192,10 +193,7 @@ describe("component markers", () => {
 	it("DatePicker renders k-date-picker and closes its sheet on commit", async () => {
 		const onValueChange = jest.fn();
 		const screen = await render(
-			<DatePicker
-				month={new Date(2026, 1, 1)}
-				onValueChange={onValueChange}
-			/>,
+			<DatePicker month={new Date(2026, 1, 1)} onValueChange={onValueChange} />,
 		);
 		expect(screen.getByTestId("k-date-picker")).toBeTruthy();
 		await fireEvent.press(screen.getByTestId("k-date-picker"));
@@ -208,9 +206,7 @@ describe("component markers", () => {
 		const screen = await render(
 			<DateRangePicker month={new Date(2026, 1, 1)} />,
 		);
-		expect(
-			screen.getByTestId("k-date-picker-date-range-picker"),
-		).toBeTruthy();
+		expect(screen.getByTestId("k-date-picker-date-range-picker")).toBeTruthy();
 	});
 
 	it("TimePicker renders k-time-picker with hour and minute wheels", async () => {
@@ -218,6 +214,13 @@ describe("component markers", () => {
 		expect(screen.getByTestId("k-time-picker")).toBeTruthy();
 		expect(screen.getByTestId("k-time-picker-hour")).toBeTruthy();
 		expect(screen.getByTestId("k-time-picker-minute")).toBeTruthy();
+	});
+
+	it("CopyButton renders k-copy-button", async () => {
+		const screen = await render(
+			<CopyButton value="demo" writeClipboard={async () => undefined} />,
+		);
+		expect(screen.getByTestId("k-copy-button")).toBeTruthy();
 	});
 
 	describe("behavior contract", () => {

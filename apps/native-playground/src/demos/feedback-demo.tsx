@@ -3,6 +3,7 @@ import {
 	Banner,
 	Button,
 	Combobox,
+	CopyButton,
 	ErrorBoundary,
 	Field,
 	InputOtp,
@@ -138,6 +139,9 @@ export function FeedbackDemo() {
 					onValueChange={setCity}
 					placeholder="pick a city"
 				/>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-copy-button">
+				<CopyButton value="kala-ui" writeClipboard={async () => undefined} />
 			</View>
 			<View style={demoStyles.componentRow} testID="k-demo-error-boundary">
 				<ErrorBoundary resetKeys={[crashKey]}>

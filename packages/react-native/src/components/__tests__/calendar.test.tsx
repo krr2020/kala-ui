@@ -1,5 +1,4 @@
 import { fireEvent, render } from "@testing-library/react-native";
-import { Calendar, CalendarSkeleton } from "../calendar";
 import {
 	addMonths,
 	clampTimePart,
@@ -11,6 +10,7 @@ import {
 	monthIsBefore,
 	startOfMonth,
 } from "../../lib/date-utils";
+import { Calendar, CalendarSkeleton } from "../calendar";
 
 const inclHidden = { includeHiddenElements: true } as const;
 
@@ -102,7 +102,9 @@ describe("Calendar", () => {
 		// Feb 2026: 28 days starting Sunday — 28 cells + 0 leading + 14 trailing.
 		const cells = screen.getAllByTestId(/^k-calendar-cell-/);
 		expect(cells.length).toBe(42);
-		expect(screen.getByTestId(`k-calendar-cell-${iso(new Date(2026, 1, 14))}`)).toBeTruthy();
+		expect(
+			screen.getByTestId(`k-calendar-cell-${iso(new Date(2026, 1, 14))}`),
+		).toBeTruthy();
 	});
 
 	it("single mode: tapping a day commits onValueChange and styles it selected", async () => {
@@ -147,14 +149,18 @@ describe("Calendar", () => {
 			/>,
 		);
 		await fireEvent.press(screen.getByTestId("k-calendar-day-2026-02-04"));
-		expect(onValueChange).toHaveBeenLastCalledWith({ from: new Date(2026, 1, 4) });
+		expect(onValueChange).toHaveBeenLastCalledWith({
+			from: new Date(2026, 1, 4),
+		});
 		await fireEvent.press(screen.getByTestId("k-calendar-day-2026-02-20"));
 		expect(onValueChange).toHaveBeenLastCalledWith({
 			from: new Date(2026, 1, 4),
 			to: new Date(2026, 1, 20),
 		});
 		await fireEvent.press(screen.getByTestId("k-calendar-day-2026-02-11"));
-		expect(onValueChange).toHaveBeenLastCalledWith({ from: new Date(2026, 1, 11) });
+		expect(onValueChange).toHaveBeenLastCalledWith({
+			from: new Date(2026, 1, 11),
+		});
 	});
 
 	it("range mode: tapping an earlier day after from restarts from that day", async () => {
@@ -168,7 +174,9 @@ describe("Calendar", () => {
 		);
 		await fireEvent.press(screen.getByTestId("k-calendar-day-2026-02-20"));
 		await fireEvent.press(screen.getByTestId("k-calendar-day-2026-02-04"));
-		expect(onValueChange).toHaveBeenLastCalledWith({ from: new Date(2026, 1, 4) });
+		expect(onValueChange).toHaveBeenLastCalledWith({
+			from: new Date(2026, 1, 4),
+		});
 	});
 
 	it("disabled dates render disabled-styled and never commit", async () => {
@@ -242,7 +250,7 @@ describe("Calendar", () => {
 			"February 2026",
 		);
 		// days inside the visible month stay tappable within the window
-		const onValueChange = jest.fn();
+		const _onValueChange = jest.fn();
 		await fireEvent.press(minScreen.getByTestId("k-calendar-day-2026-02-10"));
 		expect(screen.getByTestId("k-calendar-day-2026-02-10")).toBeTruthy();
 	});
@@ -266,9 +274,7 @@ describe("Calendar", () => {
 	});
 
 	it("CalendarSkeleton renders a bounded grid", async () => {
-		const screen: Screen = await render(
-			<CalendarSkeleton cellCount={35} />,
-		);
+		const screen: Screen = await render(<CalendarSkeleton cellCount={35} />);
 		expect(screen.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
 	});
 
@@ -280,9 +286,10 @@ describe("Calendar", () => {
 			/>,
 		);
 		const themes = require("../../themes").themes;
-		expect(flatStyle(screen.getByTestId("k-calendar-day-2026-02-10")).backgroundColor).toBe(
-			themes.light.primary,
-		);
+		expect(
+			flatStyle(screen.getByTestId("k-calendar-day-2026-02-10"))
+				.backgroundColor,
+		).toBe(themes.light.primary);
 		expect(
 			flatStyle(screen.getAllByTestId("k-calendar-weekday")[0]).color,
 		).toBe(themes.light.mutedForeground);

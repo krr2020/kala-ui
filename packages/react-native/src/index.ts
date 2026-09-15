@@ -52,8 +52,6 @@ export type {
 export { Breadcrumbs, BreadcrumbsSkeleton } from "./components/breadcrumbs";
 export type { ButtonProps } from "./components/button";
 export { Button } from "./components/button";
-export type { CardProps } from "./components/card";
-export { Card } from "./components/card";
 export type {
 	CalendarMode,
 	CalendarProps,
@@ -63,6 +61,8 @@ export type {
 	DateRangeValue,
 } from "./components/calendar";
 export { Calendar, CalendarSkeleton } from "./components/calendar";
+export type { CardProps } from "./components/card";
+export { Card } from "./components/card";
 export type { CheckboxProps } from "./components/checkbox";
 export { Checkbox } from "./components/checkbox";
 export type {
@@ -75,6 +75,11 @@ export type { ComboboxOption, ComboboxProps } from "./components/combobox";
 export { Combobox, ComboboxSkeleton } from "./components/combobox";
 export type { ContextMenuProps } from "./components/context-menu";
 export { ContextMenu } from "./components/context-menu";
+export type {
+	ClipboardWriter,
+	CopyButtonProps,
+} from "./components/copy-button";
+export { CopyButton } from "./components/copy-button";
 export type {
 	DatePickerProps,
 	DateRangePickerProps,

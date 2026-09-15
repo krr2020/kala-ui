@@ -14,13 +14,12 @@ import {
 	monthIsBefore,
 } from "../../lib/date-utils";
 import { applySlot } from "../slot-styles";
-import { CalendarSkeleton } from "./calendar-skeleton";
 import type {
-	CalendarMode,
 	CalendarProps,
 	CalendarValue,
 	DateRangeValue,
 } from "./calendar.types";
+import { CalendarSkeleton } from "./calendar-skeleton";
 
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"] as const;
 const CELL_SIZE = 36;
@@ -93,9 +92,7 @@ export function Calendar({
 		: defaultValue instanceof Date
 			? defaultValue
 			: (defaultValue as DateRangeValue | undefined)?.from;
-	const [view, setView] = useState(
-		month ?? seed ?? new Date(),
-	);
+	const [view, setView] = useState(month ?? seed ?? new Date());
 	const [internal, setInternal] = useState<CalendarValue | undefined>(
 		defaultValue,
 	);
@@ -177,7 +174,11 @@ export function Calendar({
 				const toSel = range.to !== undefined && isSameDay(range.to, d);
 				selected = fromSel || toSel;
 				middle =
-					!fromSel && !toSel && d > range.from && range.to !== undefined && d < range.to;
+					!fromSel &&
+					!toSel &&
+					d > range.from &&
+					range.to !== undefined &&
+					d < range.to;
 			}
 		}
 		const today = isSameDay(d, new Date());
@@ -270,9 +271,10 @@ export function Calendar({
 				</Pressable>
 			</View>
 			<View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+
 				{WEEKDAYS.map((label, i) => (
 					<RNText
-						key={i}
+						key={label}
 						testID="k-calendar-weekday"
 						style={{
 							color: theme.mutedForeground,

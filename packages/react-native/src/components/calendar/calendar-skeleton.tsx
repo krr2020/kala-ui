@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 import { View } from "react-native";
-import type { StyleProp, ViewStyle } from "react-native";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
 import type { CalendarSkeletonProps } from "./calendar.types";
@@ -22,14 +21,16 @@ export function CalendarSkeleton({
 		>
 			<Skeleton style={{ height: 20, width: 160, alignSelf: "center" }} />
 			<View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+
 				{Array.from({ length: 7 }, (_, i) => (
-					<Skeleton key={i} style={{ height: 12, width: 20 }} />
+					<Skeleton key={`weekday-${i}`} style={{ height: 12, width: 20 }} />
 				))}
 			</View>
 			<View style={{ flexDirection: "row", flexWrap: "wrap", gap: 4 }}>
 				{Array.from({ length: cellCount }, (_, i) => (
+
 					<Skeleton
-						key={i}
+						key={`cell-${i}`}
 						style={{ height: 36, width: 36, borderRadius: 999 }}
 					/>
 				))}

@@ -53,7 +53,9 @@ describe("TimePicker", () => {
 		expect(
 			flatStyle(screen.getByTestId("k-time-picker-hour-item-5")).opacity,
 		).not.toBe(1);
-		expect(flatStyle(screen.getByTestId("k-time-picker-minute-item-0")).opacity).toBe(1);
+		expect(
+			flatStyle(screen.getByTestId("k-time-picker-minute-item-0")).opacity,
+		).toBe(1);
 	});
 
 	it("pressing an hour item commits 24h-normalized values", async () => {
@@ -100,7 +102,10 @@ describe("TimePicker", () => {
 		const onValueChange = jest.fn();
 		const screen: Screen = await render(
 			<TimePicker
-				value={{ hours: 25 as unknown as number, minutes: -1 as unknown as number }}
+				value={{
+					hours: 25 as unknown as number,
+					minutes: -1 as unknown as number,
+				}}
 				onValueChange={onValueChange}
 			/>,
 		);

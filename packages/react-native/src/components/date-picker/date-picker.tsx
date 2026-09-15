@@ -2,15 +2,18 @@ import { Calendar as CalendarIcon } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
-import { Pressable, Text as RNText, View } from "react-native";
+import { Pressable, Text as RNText } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { formatDay } from "../../lib/date-utils";
-import { applySlot } from "../slot-styles";
+import type { DateRangeValue } from "../calendar";
+import { Calendar } from "../calendar";
 import { Sheet } from "../sheet";
 import { Skeleton } from "../skeleton";
-import { Calendar } from "../calendar";
-import type { DateRangeValue } from "../calendar";
-import type { DatePickerProps, DateRangePickerProps } from "./date-picker.types";
+import { applySlot } from "../slot-styles";
+import type {
+	DatePickerProps,
+	DateRangePickerProps,
+} from "./date-picker.types";
 
 const HEIGHT = { sm: 44, md: 48 } as const;
 

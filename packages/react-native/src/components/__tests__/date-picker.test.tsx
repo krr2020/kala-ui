@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@testing-library/react-native";
-import { DateRangePicker, DatePicker } from "../date-picker";
+import { DatePicker, DateRangePicker } from "../date-picker";
 
 const inclHidden = { includeHiddenElements: true } as const;
 
@@ -22,7 +22,9 @@ function flatStyle(node: {
 
 describe("DatePicker", () => {
 	it("renders the k-date-picker trigger with button role and placeholder", async () => {
-		const screen: Screen = await render(<DatePicker placeholder="Pick a date" />);
+		const screen: Screen = await render(
+			<DatePicker placeholder="Pick a date" />,
+		);
 		const trigger = screen.getByTestId("k-date-picker");
 		expect(trigger.props.accessibilityRole).toBe("button");
 		expect(trigger.props.accessibilityLabel).toContain("Pick a date");
@@ -40,19 +42,18 @@ describe("DatePicker", () => {
 	});
 
 	it("placeholder shows before selection, formatted value after commit", async () => {
-		const screen: Screen = await render(<DatePicker defaultValue={new Date(2026, 1, 10)} />);
-		expect(screen.getByTestId("k-date-picker").props.accessibilityLabel).toContain(
-			"Feb 10, 2026",
+		const screen: Screen = await render(
+			<DatePicker defaultValue={new Date(2026, 1, 10)} />,
 		);
+		expect(
+			screen.getByTestId("k-date-picker").props.accessibilityLabel,
+		).toContain("Feb 10, 2026");
 	});
 
 	it("selecting a day commits onValueChange and closes the sheet", async () => {
 		const onValueChange = jest.fn();
 		const screen: Screen = await render(
-			<DatePicker
-				month={new Date(2026, 1, 1)}
-				onValueChange={onValueChange}
-			/>,
+			<DatePicker month={new Date(2026, 1, 1)} onValueChange={onValueChange} />,
 		);
 		await fireEvent.press(screen.getByTestId("k-date-picker"));
 		await fireEvent.press(screen.getByTestId("k-calendar-day-2026-02-10"));
@@ -77,9 +78,9 @@ describe("DatePicker", () => {
 		await fireEvent.press(screen.getByTestId("k-date-picker"));
 		await fireEvent.press(screen.getByTestId("k-calendar-day-2026-02-20"));
 		expect(onValueChange).toHaveBeenCalledTimes(1);
-		expect(screen.getByTestId("k-date-picker").props.accessibilityLabel).toContain(
-			"Feb 10, 2026",
-		);
+		expect(
+			screen.getByTestId("k-date-picker").props.accessibilityLabel,
+		).toContain("Feb 10, 2026");
 	});
 
 	it("buttonDisabled blocks opening and announces disabled", async () => {
@@ -142,7 +143,9 @@ describe("DateRangePicker", () => {
 			screen.getByTestId("k-date-picker-date-range-picker"),
 		);
 		await fireEvent.press(screen.getByTestId("k-calendar-day-2026-02-04"));
-		expect(onValueChange).toHaveBeenLastCalledWith({ from: new Date(2026, 1, 4) });
+		expect(onValueChange).toHaveBeenLastCalledWith({
+			from: new Date(2026, 1, 4),
+		});
 		expect(screen.getByTestId("k-sheet-content", inclHidden)).toBeTruthy();
 		await fireEvent.press(screen.getByTestId("k-calendar-day-2026-02-20"));
 		expect(onValueChange).toHaveBeenLastCalledWith({

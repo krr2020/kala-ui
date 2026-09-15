@@ -1,10 +1,10 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
-import { Pressable, ScrollView, Text as RNText, View } from "react-native";
+import { Pressable, Text as RNText, ScrollView, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { clampTimePart, pad2 } from "../../lib/date-utils";
-import { applySlot } from "../slot-styles";
 import { Skeleton } from "../skeleton";
+import { applySlot } from "../slot-styles";
 import type { TimePickerProps, TimeValue } from "./time-picker.types";
 
 const ITEM = 40;
@@ -32,9 +32,7 @@ export function TimePicker({
 	testID = "k-time-picker",
 }: TimePickerProps): ReactElement {
 	const { theme } = useUnistyles();
-	const [internal, setInternal] = useState<TimeValue | undefined>(
-		defaultValue,
-	);
+	const [internal, setInternal] = useState<TimeValue | undefined>(defaultValue);
 
 	const raw = valueProp !== undefined ? valueProp : internal;
 	// normalization is total: absent parts collapse to 0, out-of-range clamps
@@ -57,17 +55,18 @@ export function TimePicker({
 
 	if (isLoading) {
 		return (
-			<Skeleton
-				testID={testID}
-				style={[{ height: 44, width: 200 }, style]}
-			/>
+			<Skeleton testID={testID} style={[{ height: 44, width: 200 }, style]} />
 		);
 	}
 
 	const isPM = current.hours >= 12;
 	// 12h wheel: index 0 is "12", index i is hour i. 24h wheel: index i is hour i.
 	const hourIndex =
-		hourCycle === 12 ? (current.hours % 12 === 0 ? 0 : current.hours % 12) : current.hours;
+		hourCycle === 12
+			? current.hours % 12 === 0
+				? 0
+				: current.hours % 12
+			: current.hours;
 	const hourLabel = (i: number): string =>
 		pad2(hourCycle === 12 ? (i === 0 ? 12 : i) : i);
 	const commitHourIndex = (i: number): number => {
@@ -93,8 +92,9 @@ export function TimePicker({
 				{Array.from({ length: count }, (_, i) => {
 					const selected = i === selectedIndex;
 					return (
+
 						<Pressable
-							key={i}
+							key={`${prefix}-${i}`}
 							testID={`k-time-picker-${prefix}-item-${i}`}
 							accessibilityRole="button"
 							accessibilityLabel={labelFor(i)}
@@ -159,8 +159,7 @@ export function TimePicker({
 			{hourCycle === 12 && (
 				<View testID="k-time-picker-am-pm" style={{ gap: 4, paddingLeft: 8 }}>
 					{(["am", "pm"] as const).map((period) => {
-						const selected =
-							period === "am" ? !isPM : isPM;
+						const selected = period === "am" ? !isPM : isPM;
 						return (
 							<Pressable
 								key={period}
@@ -177,9 +176,7 @@ export function TimePicker({
 									paddingVertical: 6,
 									paddingHorizontal: 10,
 									borderRadius: 6,
-									backgroundColor: selected
-										? theme.primary
-										: "transparent",
+									backgroundColor: selected ? theme.primary : "transparent",
 									alignItems: "center",
 								}}
 							>

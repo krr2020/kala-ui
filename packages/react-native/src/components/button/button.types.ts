@@ -16,6 +16,8 @@ export interface ButtonProps {
 	disabled?: boolean;
 	onPress?: () => void;
 	accessibilityLabel?: string;
+	/** Live-region politeness for label changes (e.g. CopyButton's copied flash). */
+	accessibilityLiveRegion?: "polite" | "assertive" | "none";
 	style?: StyleProp<ViewStyle>;
 	/** Slot overrides: root wins over the library surface and `style`. */
 	styles?: {

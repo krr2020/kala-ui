@@ -138,6 +138,7 @@ export function Button({
 	disabled = false,
 	onPress,
 	accessibilityLabel,
+	accessibilityLiveRegion,
 	style,
 	styles,
 	testID = "k-button-root",
@@ -170,6 +171,7 @@ export function Button({
 			}}
 			accessibilityRole="button"
 			accessibilityLabel={accessibilityLabel}
+			accessibilityLiveRegion={accessibilityLiveRegion}
 			accessibilityState={{
 				disabled: effectiveDisabled || undefined,
 				busy: isLoading || undefined,
@@ -177,7 +179,10 @@ export function Button({
 			style={[
 				pressStyle,
 				applySlot(
-					applySlot(baseStyle(size, fullWidth, rounded, look, effectiveDisabled), style),
+					applySlot(
+						baseStyle(size, fullWidth, rounded, look, effectiveDisabled),
+						style,
+					),
 					styles?.root,
 				),
 			]}

@@ -4,7 +4,7 @@
  * it ships. A failure here means the component breaks screen readers — fix
  * the component, not the test.
  */
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
 import { Accordion } from "../accordion";
 import { Alert } from "../alert";
@@ -19,6 +19,7 @@ import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Combobox } from "../combobox";
 import { ContextMenu } from "../context-menu";
+import { CopyButton } from "../copy-button";
 import { DatePicker } from "../date-picker";
 import { Dialog } from "../dialog";
 import { DropdownMenu } from "../dropdown-menu";
@@ -997,6 +998,26 @@ describe("a11y contract", () => {
 			expect(screen.getByLabelText("bold")).toBeTruthy();
 			expect(screen.getByLabelText("docs")).toBeTruthy();
 			expect(screen.getByLabelText("align left")).toBeTruthy();
+		});
+	});
+
+	describe("CopyButton", () => {
+		it("announces the copied flash on a polite live region", async () => {
+			const screen = await render(
+				<CopyButton
+					value="invite link"
+					writeClipboard={async () => undefined}
+				/>,
+			);
+			const button = screen.getByTestId("k-copy-button");
+			expect(button.props.accessibilityRole).toBe("button");
+			expect(button.props.accessibilityLabel).toBe("Copy to clipboard");
+			expect(button.props.accessibilityLiveRegion).toBe("polite");
+
+			await fireEvent.press(button);
+			await waitFor(() =>
+				expect(button.props.accessibilityLabel).toBe("Copied!"),
+			);
 		});
 	});
 
