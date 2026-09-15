@@ -1,0 +1,18 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"lib": ["ES2022"],
+		"types": ["node", "jest"],
+		"jsx": "react-jsx",
+		"noEmit": true,
+		// The composite flag from tsconfig.base makes tsc reject pulled-in
+		// files from the sibling react-native package (TS6307) — this project
+		// is type-checked stand-alone, never referenced.
+		"composite": false,
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	},
+	"include": ["src/**/*", "unistyles.d.ts", "jest.setup.ts"],
+	"exclude": ["node_modules", "dist"]
+}

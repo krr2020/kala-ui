@@ -274,8 +274,13 @@ Deliberately **not ported**:
 - Covered under other names: `input` → `TextInput`, `collapse` →
   `Collapsible`, `paper` → `Card`.
 
-Next up after the component waves: rollout step 4 (pilot in one app)
-and step 5 (`@kala-ui/react-native-app` composites).
+Step 5 started — Wave A1 app chrome in `@kala-ui/react-native-app`:
+`AppShell`, `Header`/`HeaderSkeleton`, `TabBar`/`TabBarSkeleton`
+(data-driven items, internal row renderer) and `isActivePath`, all on
+`@kala-ui/react-native` primitives with zero new third-party deps. Web
+composites with no mobile analog (Sidebar, DnD, CSS-grid shell regions)
+stay web-only. Next up: rollout step 4 (pilot in one app) and Wave A2
+(charts on the existing react-native-svg peer, data-table, metric-card).
 
 ## Open questions
 

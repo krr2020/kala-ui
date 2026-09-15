@@ -1,5 +1,6 @@
 import { ScrollView, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { AppChromeDemo } from "./demos/app-chrome-demo";
 import { UnistylesRuntime, useUnistyles } from "react-native-unistyles";
 import { BasicsDemo } from "./demos/basics-demo";
 import { FeedbackDemo } from "./demos/feedback-demo";
@@ -21,6 +22,7 @@ export default function App() {
 				<Text style={demoStyles.current}>theme: {current}</Text>
 				<Text style={demoStyles.sectionTitle}>components</Text>
 				<TokensDemo />
+				<AppChromeDemo />
 				<BasicsDemo />
 				<FeedbackDemo />
 				<NavigationDemo />

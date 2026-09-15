@@ -7,8 +7,11 @@ packages:
 #   allowedVersions silences the unmet-peer warning without loosening any pin.
 peerDependencyRules:
   allowedVersions:
+    # '>=27' crashes pnpm 10.17.1's warning filter
+    # (bareSpecifier.startsWith is not a function); the major-only range
+    # silences the same stale-peer warning for the resolved jest 30.
     jest-watch-typeahead:
-      jest: '>=27'
+      jest: '30'
     # Expo SDK 57 matrix ships worklets 0.12 alongside reanimated 4.5.1 /
     # expo-modules-core 57, but their published peer ranges stop at 0.10.x —
     # registry metadata lag, not a real matrix conflict.

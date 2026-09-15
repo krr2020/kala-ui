@@ -169,8 +169,9 @@ describe("component app seam", () => {
 		// toast/banner + agree/sync/plan + range/tab/rating/page/volume +
 		// bold/align/formats + select + loading toggle + crash toggle +
 		// otp code entry + menu auto-sync/last-action + toolbar align +
-		// tag recipients + toppings + city + stay date + reminder time.
-		expect(demoHooks).toBe(30);
+		// tag recipients + toppings + city + stay date + reminder time +
+		// app chrome tab.
+		expect(demoHooks).toBe(31);
 	});
 
 	it("render-surface census matches the pinned marker/label inventory", () => {
@@ -228,6 +229,7 @@ describe("component app seam", () => {
 					'testID="k-demo-multi-select"': 1,
 					'testID="k-demo-combobox"': 1,
 					'testID="k-demo-copy-button"': 1,
+					'testID="k-demo-app-shell"': 1,
 					'testID="k-demo-calendar"': 1,
 					'testID="k-demo-date-picker"': 1,
 					'testID="k-demo-time-picker"': 1,

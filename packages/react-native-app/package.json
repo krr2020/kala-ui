@@ -1,0 +1,75 @@
+{
+	"name": "@kala-ui/react-native-app",
+	"version": "0.1.0-beta.0",
+	"description": "App-level composite components for kala-ui on React Native — mobile application chrome built on @kala-ui/react-native primitives.",
+	"keywords": [
+		"react-native",
+		"expo",
+		"ui",
+		"design-system",
+		"theming",
+		"kala-ui",
+		"app-shell"
+	],
+	"author": "Kala UI",
+	"license": "MIT",
+	"homepage": "https://krr2020.com/kala-ui",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/krr2020/kala-ui.git",
+		"directory": "packages/react-native-app"
+	},
+	"bugs": {
+		"url": "https://github.com/krr2020/kala-ui/issues"
+	},
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"files": [
+		"src",
+		"README.md",
+		"LICENSE"
+	],
+	"scripts": {
+		"build": "tsc --noEmit",
+		"type-check": "tsc --noEmit",
+		"lint": "biome lint .",
+		"lint:fix": "biome lint . --write",
+		"lint:fix-unsafe": "biome lint . --write --unsafe",
+		"format": "biome format --write .",
+		"test": "vitest run && jest",
+		"test:watch": "jest --watch"
+	},
+	"peerDependencies": {
+		"lucide-react-native": ">=1.46.0",
+		"react": ">=19.2.0",
+		"react-native": ">=0.86.0",
+		"react-native-gesture-handler": ">=2.32.0",
+		"react-native-reanimated": ">=4.5.0",
+		"react-native-svg": ">=15.15.0",
+		"react-native-unistyles": "3.3.0"
+	},
+	"dependencies": {
+		"@kala-ui/react-native": "workspace:*"
+	},
+	"devDependencies": {
+		"@testing-library/react-native": "catalog:",
+		"@types/jest": "catalog:",
+		"@types/node": "catalog:",
+		"@react-native/jest-preset": "catalog:",
+		"babel-preset-expo": "catalog:",
+		"jest-expo": "catalog:",
+		"lucide-react-native": "catalog:",
+		"react": "19.2.3",
+		"react-native": "catalog:",
+		"react-native-gesture-handler": "catalog:",
+		"react-native-reanimated": "catalog:",
+		"react-native-svg": "catalog:",
+		"react-native-unistyles": "catalog:",
+		"test-renderer": "1.2.0",
+		"typescript": "catalog:",
+		"vitest": "catalog:"
+	}
+}

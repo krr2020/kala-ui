@@ -14,6 +14,7 @@
 	"dependencies": {
 		"@expo/metro-runtime": "catalog:",
 		"@kala-ui/react-native": "workspace:*",
+		"@kala-ui/react-native-app": "workspace:*",
 		"@react-native/normalize-colors": "catalog:",
 		"expo": "catalog:",
 		"lucide-react-native": "catalog:",
