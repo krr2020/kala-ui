@@ -33,6 +33,8 @@ import { Spinner } from "../spinner";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Toast } from "../toast";
+import { Dialog } from "../dialog";
+import { AlertDialog } from "../alert-dialog";
 
 const pkg = require("../../../package.json");
 
@@ -1684,6 +1686,240 @@ describe("component markers", () => {
 			);
 			expect(screen.queryByTestId("k-slider-track")).toBeNull();
 			expect(screen.getByTestId("k-slider", inclHidden)).toBeTruthy();
+		});
+	});
+
+	describe("wave 9: Dialog, AlertDialog", () => {
+		type Screen = Awaited<ReturnType<typeof render>>;
+
+		// hardware back: RN Modal forwards onRequestClose onto its host view,
+		// which no TLB query reaches — walk the serialized tree for it
+		type JsonNode = {
+			props?: Record<string, unknown>;
+			children?: (JsonNode | string)[];
+		};
+
+		const modalHost = (screen: Screen) => {
+			const walk = (
+				node: JsonNode | string,
+			): { props: Record<string, unknown> } | null => {
+				if (typeof node === "string") return null;
+					if (node.props && typeof node.props.onRequestClose === "function") {
+						return node as { props: Record<string, unknown> };
+					}
+				for (const child of node.children ?? []) {
+					const found = walk(child);
+					if (found) return found;
+				}
+				return null;
+			};
+			const tree = screen.toJSON();
+			const tops = Array.isArray(tree) ? tree : tree ? [tree] : [];
+			for (const top of tops) {
+				const found = walk(top);
+				if (found) return found;
+			}
+			return null;
+		};
+
+		const back = async (screen: Screen) => {
+			const host = modalHost(screen);
+			if (!host) throw new Error("modal host carries onRequestClose");
+			await act(async () => {
+				(host.props.onRequestClose as () => void)();
+			});
+		};
+
+		it("Dialog renders panel markers when open", async () => {
+			const screen = await render(
+				<Dialog open onOpenChange={() => undefined}>
+					<Dialog.Header>
+						<Dialog.Title>title</Dialog.Title>
+						<Dialog.Description>description</Dialog.Description>
+					</Dialog.Header>
+					<Dialog.Body>body</Dialog.Body>
+					<Dialog.Footer>footer</Dialog.Footer>
+				</Dialog>,
+			);
+			for (const id of [
+				"k-dialog",
+				"k-dialog-overlay",
+				"k-dialog-close",
+				"k-dialog-header",
+				"k-dialog-title",
+				"k-dialog-description",
+				"k-dialog-body",
+				"k-dialog-footer",
+			]) {
+				expect(screen.getByTestId(id, inclHidden)).toBeTruthy();
+			}
+		});
+
+		it("Dialog open={false} renders nothing", async () => {
+			const screen = await render(
+				<Dialog open={false} onOpenChange={() => undefined} />,
+			);
+			expect(screen.queryByTestId("k-dialog", inclHidden)).toBeNull();
+		});
+
+		// fireEvent's responder polyfill leaves the same grant lock the
+		// wave-8 slider hit — press through the host's onClick instead
+		// (Pressable consumes onPress; the wired click survives on the host)
+		const tap = async (el: { props: { onClick?: (e: unknown) => void } }) => {
+			await act(async () => {
+				el.props.onClick?.({ nativeEvent: {} });
+			});
+		};
+
+		it("overlay press closes only when dismissable", async () => {
+			const a = jest.fn();
+			const s1 = await render(
+				<Dialog open onOpenChange={a}>
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+			);
+			await tap(s1.getByTestId("k-dialog-overlay", inclHidden));
+			expect(a).toHaveBeenCalledWith(false);
+
+			const b = jest.fn();
+			const s2 = await render(
+				<Dialog open onOpenChange={b} dismissable={false}>
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+			);
+			await tap(s2.getByTestId("k-dialog-overlay", inclHidden));
+			expect(b).not.toHaveBeenCalled();
+		});
+
+		it("close button closes; showCloseButton={false} removes it", async () => {
+			const a = jest.fn();
+			const s1 = await render(
+				<Dialog open onOpenChange={a}>
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+			);
+			await tap(s1.getByTestId("k-dialog-close", inclHidden));
+			expect(a).toHaveBeenCalledWith(false);
+
+			const s2 = await render(
+				<Dialog open showCloseButton={false} onOpenChange={() => undefined}>
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+			);
+			expect(s2.queryByTestId("k-dialog-close", inclHidden)).toBeNull();
+		});
+
+		it("hardware back honors dismissable (Dialog)", async () => {
+			const a = jest.fn();
+			const s1 = await render(
+				<Dialog open onOpenChange={a}>
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+			);
+			await back(s1);
+			expect(a).toHaveBeenCalledWith(false);
+
+			const b = jest.fn();
+			const s2 = await render(
+				<Dialog open onOpenChange={b} dismissable={false}>
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+			);
+			await back(s2);
+			expect(b).not.toHaveBeenCalled();
+		});
+
+		it("size mapping: md clamps to 512, full bleeds edge to edge", async () => {
+			const md = await render(
+				<Dialog open onOpenChange={() => undefined} size="md">
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+			);
+			const mdStyle = flatStyle(md.getByTestId("k-dialog", inclHidden));
+			expect(String(mdStyle.width)).toBe("90%");
+			expect(mdStyle.maxWidth).toBe(512);
+
+			const full = await render(
+				<Dialog open onOpenChange={() => undefined} size="full">
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+			);
+			const fullStyle = flatStyle(full.getByTestId("k-dialog", inclHidden));
+			expect(String(fullStyle.width)).toBe("100%");
+			expect(String(fullStyle.height)).toBe("100%");
+			expect(fullStyle.borderRadius).toBe(0);
+		});
+
+		it("AlertDialog renders part markers and never dismisses by default", async () => {
+			const onOpenChange = jest.fn();
+			const screen = await render(
+				<AlertDialog open onOpenChange={onOpenChange}>
+					<AlertDialog.Header>
+						<AlertDialog.Title>delete?</AlertDialog.Title>
+						<AlertDialog.Description>permanent</AlertDialog.Description>
+					</AlertDialog.Header>
+					<AlertDialog.Body>body</AlertDialog.Body>
+					<AlertDialog.Footer>
+						<AlertDialog.Cancel onPress={() => undefined}>
+							cancel
+						</AlertDialog.Cancel>
+						<AlertDialog.Action onPress={() => undefined}>delete</AlertDialog.Action>
+					</AlertDialog.Footer>
+				</AlertDialog>,
+			);
+			for (const id of [
+				"k-alert-dialog",
+				"k-alert-dialog-header",
+				"k-alert-dialog-title",
+				"k-alert-dialog-description",
+				"k-alert-dialog-body",
+				"k-alert-dialog-footer",
+				"k-alert-dialog-cancel",
+				"k-alert-dialog-action",
+			]) {
+				expect(screen.getByTestId(id, inclHidden)).toBeTruthy();
+			}
+			await back(screen);
+			expect(onOpenChange).not.toHaveBeenCalled();
+		});
+
+		it("AlertDialog hardware back closes when dismissable", async () => {
+			const onOpenChange = jest.fn();
+			const screen = await render(
+				<AlertDialog open onOpenChange={onOpenChange} dismissable>
+					<AlertDialog.Body>body</AlertDialog.Body>
+				</AlertDialog>,
+			);
+			await back(screen);
+			expect(onOpenChange).toHaveBeenCalledWith(false);
+		});
+
+		it("Action and Cancel close before their own onPress; Cancel is outline", async () => {
+			const order: string[] = [];
+			const onOpenChange = jest.fn((next: boolean) =>
+				order.push(`open:${next}`),
+			);
+			const screen = await render(
+				<AlertDialog open onOpenChange={onOpenChange}>
+					<AlertDialog.Footer>
+						<AlertDialog.Cancel onPress={() => order.push("cancel")}>
+							cancel
+						</AlertDialog.Cancel>
+						<AlertDialog.Action onPress={() => order.push("action")}>
+							delete
+						</AlertDialog.Action>
+					</AlertDialog.Footer>
+				</AlertDialog>,
+			);
+			await tap(screen.getByTestId("k-alert-dialog-cancel", inclHidden));
+			await tap(screen.getByTestId("k-alert-dialog-action", inclHidden));
+			expect(onOpenChange).toHaveBeenCalledWith(false);
+			expect(order).toEqual(["open:false", "cancel", "open:false", "action"]);
+
+			const cancelStyle = flatStyle(
+				screen.getByTestId("k-alert-dialog-cancel", inclHidden),
+			);
+			expect(cancelStyle.borderWidth).toBe(1);
 		});
 	});
 

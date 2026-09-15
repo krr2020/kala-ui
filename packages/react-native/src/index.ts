@@ -7,6 +7,10 @@ export type {
 } from "./components/alert";
 export { Alert } from "./components/alert";
 export type {
+	AlertDialogProps,
+} from "./components/alert-dialog";
+export { AlertDialog } from "./components/alert-dialog";
+export type {
 	AvatarProps,
 	AvatarShape,
 	AvatarSize,
@@ -34,6 +38,8 @@ export type {
 	EmptyStateProps,
 } from "./components/empty-state";
 export { EmptyState } from "./components/empty-state";
+export type { DialogProps } from "./components/dialog";
+export { Dialog } from "./components/dialog";
 export type {
 	HeadingAlign,
 	HeadingProps,

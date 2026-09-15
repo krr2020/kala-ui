@@ -34,6 +34,8 @@ import {
 	TextInput,
 	Toast,
 	Slider,
+	Dialog,
+	AlertDialog,
 } from "@kala-ui/react-native";
 import { themeNames } from "@kala-ui/react-native/themes";
 
@@ -142,6 +144,8 @@ export default function App() {
 	const [rating, setRating] = useState(3);
 	const [pageNumber, setPageNumber] = useState(2);
 	const [volume, setVolume] = useState(70);
+	const [dialogOpen, setDialogOpen] = useState(false);
+	const [confirmOpen, setConfirmOpen] = useState(false);
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
@@ -393,6 +397,22 @@ export default function App() {
 					/>
 					<KText size="sm">volume {volume}</KText>
 				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-dialog">
+					<Button
+						onPress={() => setDialogOpen(true)}
+						accessibilityLabel="open demo dialog"
+					>
+						open dialog
+					</Button>
+					<Button
+						variant="outline"
+						color="destructive"
+						onPress={() => setConfirmOpen(true)}
+						accessibilityLabel="open confirm dialog"
+					>
+						delete account
+					</Button>
+				</View>
 				<Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}>
 					<Sheet.Body>
 						<Text style={stylesheet.current}>
@@ -403,6 +423,47 @@ export default function App() {
 						</Button>
 					</Sheet.Body>
 				</Sheet>
+				<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+					<Dialog.Header>
+						<Dialog.Title>session settings</Dialog.Title>
+						<Dialog.Description>
+							Adjust preferences for this device.
+						</Dialog.Description>
+					</Dialog.Header>
+					<Dialog.Body>
+						<KText size="sm" color="muted">
+							Press the overlay or the close button to dismiss.
+						</KText>
+					</Dialog.Body>
+					<Dialog.Footer>
+						<Button
+							variant="ghost"
+							size="sm"
+							onPress={() => setDialogOpen(false)}
+						>
+							cancel
+						</Button>
+						<Button size="sm" onPress={() => setDialogOpen(false)}>
+							save
+						</Button>
+					</Dialog.Footer>
+				</Dialog>
+				<AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+					<AlertDialog.Header>
+						<AlertDialog.Title>delete account?</AlertDialog.Title>
+						<AlertDialog.Description>
+							This permanently removes your data and cannot be undone.
+						</AlertDialog.Description>
+					</AlertDialog.Header>
+					<AlertDialog.Footer>
+						<AlertDialog.Cancel onPress={() => undefined}>
+							cancel
+						</AlertDialog.Cancel>
+						<AlertDialog.Action color="destructive" onPress={() => undefined}>
+							delete
+						</AlertDialog.Action>
+					</AlertDialog.Footer>
+				</AlertDialog>
 			</ScrollView>
 		</GestureHandlerRootView>
 	);

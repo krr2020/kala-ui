@@ -16,6 +16,8 @@ import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Separator } from "../separator";
 import { Sheet } from "../sheet";
+import { Dialog } from "../dialog";
+import { AlertDialog } from "../alert-dialog";
 import { EmptyState } from "../empty-state";
 import { SegmentedControl } from "../segmented-control";
 import { Pagination } from "../pagination";
@@ -583,6 +585,49 @@ describe("a11y contract", () => {
 				nativeEvent: { actionName: "increment" },
 			});
 			expect(onValueChange).not.toHaveBeenCalled();
+		});
+	});
+
+	describe("Dialog", () => {
+		const incl = { includeHiddenElements: true } as const;
+
+		it("content is a modal a11y view; title is a header", async () => {
+			const screen = await render(
+				<Dialog open onOpenChange={() => undefined}>
+					<Dialog.Header>
+						<Dialog.Title>confirm</Dialog.Title>
+						<Dialog.Description>are you sure</Dialog.Description>
+					</Dialog.Header>
+				</Dialog>,
+			);
+			expect(
+				screen.getByTestId("k-dialog", incl).props.accessibilityViewIsModal,
+			).toBe(true);
+			expect(
+				screen.getByTestId("k-dialog-title", incl).props.accessibilityRole,
+			).toBe("header");
+		});
+	});
+
+	describe("AlertDialog", () => {
+		const incl = { includeHiddenElements: true } as const;
+
+		it("container surfaces as a single alert element", async () => {
+			const screen = await render(
+				<AlertDialog
+					open
+					onOpenChange={() => undefined}
+					accessibilityLabel="confirm delete"
+				>
+					<AlertDialog.Header>
+						<AlertDialog.Title>delete?</AlertDialog.Title>
+					</AlertDialog.Header>
+				</AlertDialog>,
+			);
+			const alert = screen.getByTestId("k-alert-dialog", incl);
+			expect(alert.props.accessible).toBe(true);
+			expect(alert.props.accessibilityRole).toBe("alert");
+			expect(alert.props.accessibilityLabel).toBe("confirm delete");
 		});
 	});
 

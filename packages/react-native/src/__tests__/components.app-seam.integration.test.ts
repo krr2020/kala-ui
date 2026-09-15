@@ -72,6 +72,8 @@ describe("component app seam", () => {
 			"Rating",
 			"Pagination",
 			"Slider",
+			"Dialog",
+			"AlertDialog",
 		]) {
 			expect(imports.has(name), `App.tsx imports ${name}`).toBe(true);
 			expect(exported.has(name), `entry exports ${name}`).toBe(true);

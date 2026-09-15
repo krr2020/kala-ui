@@ -40,6 +40,32 @@ jest.mock('react-native-reanimated', () => {
 	};
 });
 
+// RN 0.86's Modal needs a native modal host view that does not exist
+// under test-renderer — it renders nothing, swallowing the whole dialog
+// subtree. Render through a plain View keyed on `visible` instead;
+// onRequestClose stays on the host so hardware-back wiring stays testable.
+// A Proxy keeps every other export lazy — spreading the real barrel would
+// trip TurboModule getters (DevMenu) that jest never registers.
+jest.mock('react-native', () => {
+	const rn = jest.requireActual('react-native');
+	const React = require('react');
+	const Modal = ({
+		visible = true,
+		children,
+		...rest
+	}: {
+		visible?: boolean;
+		children?: React.ReactNode;
+	} & Record<string, unknown>) =>
+		visible === false
+			? null
+			: React.createElement(rn.View, rest, children);
+	return new Proxy(rn, {
+		get: (target: object, prop: string | symbol) =>
+			prop === 'Modal' ? Modal : Reflect.get(target, prop),
+	});
+});
+
 jest.mock('react-native-gesture-handler', () => {
 	const React = require('react');
 

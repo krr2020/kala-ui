@@ -1,0 +1,28 @@
+import type { ReactNode } from "react";
+import type { StyleProp, TextStyle, ViewStyle } from "react-native";
+
+export interface AlertDialogProps {
+	open: boolean;
+	onOpenChange: (open: boolean) => void;
+	/**
+	 * Defaults to false — a destructive confirmation must not be
+	 * dismissable by stray taps or hardware back (the web dialog's
+	 * radix alert semantics).
+	 */
+	dismissable?: boolean;
+	accessibilityLabel?: string;
+	testID?: string;
+	children?: ReactNode;
+}
+
+export interface AlertDialogPartProps {
+	children?: ReactNode;
+	style?: StyleProp<ViewStyle>;
+	testID?: string;
+}
+
+export interface AlertDialogTextProps {
+	children?: ReactNode;
+	style?: StyleProp<TextStyle>;
+	testID?: string;
+}
