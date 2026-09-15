@@ -416,11 +416,23 @@ describe("component markers", () => {
 	});
 
 	describe("wave 3: Badge, Avatar, Checkbox, Switch", () => {
+		// (bg, wrapped-text fg, border) — the fg lives on the child text, so
+		// read it there or every solid/subtle arm collapses to a 2-tuple and
+		// same-bg arms (muted solid borrows accent = muted bg) collide
 		const badgeSig = (node: {
-			props: { style?: unknown };
+			props?: { style?: unknown };
+			children?: unknown[];
 		}) => {
-			const s = flatStyle(node);
-			return JSON.stringify([s.backgroundColor, s.color, s.borderColor]);
+			const s = node.props
+				? flatStyle(node as { props: { style?: unknown } })
+				: {};
+			const child = Array.isArray(node.children)
+				? (node.children[0] as { props?: { style?: unknown } } | undefined)
+				: undefined;
+			const fg = child
+				? flatStyle(child as { props: { style?: unknown } })
+				: {};
+			return JSON.stringify([s.backgroundColor, fg.color, s.borderColor]);
 		};
 
 		it("Badge/Avatar/Checkbox/Switch render their k-* markers", async () => {
@@ -462,15 +474,15 @@ describe("component markers", () => {
 							x
 						</Badge>,
 					);
-				const badge = screen.getByTestId("k-badge");
-				const sig = badgeSig(badge);
-				expect(seen.has(sig)).toBe(false);
-				seen.set(sig, `${variant}/${color}`);
+					const badge = screen.getByTestId("k-badge");
+					const sig = badgeSig(badge);
+					expect(seen.has(sig)).toBe(false);
+					seen.set(sig, `${variant}/${color}`);
 					// every arm resolves real colors, never undefined
 					const s = flatStyle(badge);
 					expect(s.backgroundColor).toBeDefined();
 					expect(s.borderColor).toBeDefined();
-			}
+				}
 			}
 			expect(seen.size).toBe(variants.length * colors.length);
 		});
@@ -487,7 +499,7 @@ describe("component markers", () => {
 			const child = screen.getByTestId("k-badge")
 				.children[0] as { props: { style?: unknown } };
 			const childStyle = require("react-native").StyleSheet.flatten(
-					child.props.style,
+				child.props.style,
 			) as Record<string, unknown>;
 			expect(Number(childStyle.fontSize)).toBe(12);
 			expect(String(childStyle.color).startsWith("#")).toBe(true);
@@ -506,7 +518,7 @@ describe("component markers", () => {
 				await screen.rerender(<Avatar name="A" size={size} />);
 				const s = flatStyle(screen.getByTestId("k-avatar"));
 				expect(Number(s.width)).toBeGreaterThan(0);
-					seen.add(Number(s.width));
+				seen.add(Number(s.width));
 			}
 			expect(seen.size).toBe(sizes.length);
 		});
@@ -547,7 +559,12 @@ describe("component markers", () => {
 			expect(screen.getByText("AL")).toBeTruthy();
 			const s = flatStyle(screen.getByTestId("k-avatar-fallback"));
 			expect(String(s.backgroundColor).startsWith("#")).toBe(true);
-			expect(String(s.color).startsWith("#")).toBe(true);
+			// the initials text child carries the themed foreground color
+			const initials = screen.getByText("AL");
+			const ts = require("react-native").StyleSheet.flatten(
+				initials.props.style,
+			) as Record<string, unknown>;
+			expect(String(ts.color).startsWith("#")).toBe(true);
 		});
 
 		it("Avatar with a source renders the image; onError flips to fallback", async () => {
@@ -645,18 +662,20 @@ describe("component markers", () => {
 			).toBe(true);
 		});
 
-		it("Switch track color and thumb offset differ per state", async () => {
-			const screen = await render(<Switch accessibilityLabel="s" value={false} />);
+		it("Switch states map to distinct track colors and thumb offsets", async () => {
+			const screen = await render(
+				<Switch accessibilityLabel="s" value={false} />,
+			);
 			const offTrack = String(
 				flatStyle(screen.getByTestId("k-switch-track")).backgroundColor,
 			);
-		const offThumb = flatStyle(screen.getByTestId("k-switch-thumb")).transform as unknown as Array<Record<string, number>>;
+			const offThumb = flatStyle(screen.getByTestId("k-switch-thumb")).transform as unknown as Array<Record<string, number>>;
 
 			await screen.rerender(<Switch accessibilityLabel="s" value />);
 			const onTrack = String(
 				flatStyle(screen.getByTestId("k-switch-track")).backgroundColor,
 			);
-		const onThumb = flatStyle(screen.getByTestId("k-switch-thumb")).transform as unknown as Array<Record<string, number>>;
+			const onThumb = flatStyle(screen.getByTestId("k-switch-thumb")).transform as unknown as Array<Record<string, number>>;
 
 			expect(onTrack).not.toBe(offTrack);
 			expect(onTrack.startsWith("#")).toBe(true);
@@ -777,11 +796,11 @@ describe("component markers", () => {
 					<Skeleton style={{ width: 80, height: 12 }} />,
 				);
 				await screen.rerender(
-						<Skeleton style={{ width: 120, height: 12 }} />,
+					<Skeleton style={{ width: 120, height: 12 }} />,
 				);
 				expect(loops.length).toBe(1);
 				await screen.rerender(
-						<Skeleton animated={false} style={{ width: 80, height: 12 }} />,
+					<Skeleton animated={false} style={{ width: 80, height: 12 }} />,
 				);
 				expect(loops.length).toBe(1);
 				expect(loops[0].stop).toHaveBeenCalled();
@@ -813,6 +832,31 @@ describe("component markers", () => {
 			expect(onValueChange).toHaveBeenLastCalledWith("b");
 			// labels render as themed text
 			expect(screen.getByText("Beta")).toBeTruthy();
+		});
+
+		it("RadioGroup controlled value prop flips the checked item without a press", async () => {
+			const screen = await render(
+				<RadioGroup value="a" onValueChange={() => undefined}>
+					<RadioGroup.Item value="a" label="Alpha" testID="k-radio-item-a" />
+					<RadioGroup.Item value="b" label="Beta" testID="k-radio-item-b" />
+				</RadioGroup>,
+			);
+			const [alpha, beta] = screen.getAllByRole("radio");
+			expect(alpha.props.accessibilityState?.checked).toBe(true);
+			expect(beta.props.accessibilityState?.checked).toBe(false);
+			await screen.rerender(
+				<RadioGroup value="b" onValueChange={() => undefined}>
+					<RadioGroup.Item value="a" label="Alpha" testID="k-radio-item-a" />
+					<RadioGroup.Item value="b" label="Beta" testID="k-radio-item-b" />
+				</RadioGroup>,
+			);
+			const [alpha2, beta2] = screen.getAllByRole("radio");
+			expect(alpha2.props.accessibilityState?.checked).toBe(false);
+			expect(beta2.props.accessibilityState?.checked).toBe(true);
+			// the visual surface follows the prop, not just the a11y state
+			expect(
+				screen.getByTestId("k-radio-item-b-circle").children?.length ?? 0,
+			).toBeGreaterThan(0);
 		});
 
 		it("RadioGroup items keep the 44dp floor; disabled no-ops and announces", async () => {
@@ -970,7 +1014,7 @@ describe("component markers", () => {
 				expect(onOpenChange).toHaveBeenCalledTimes(1);
 				expect(onOpenChange).toHaveBeenLastCalledWith(false);
 
-					// reopen restarts the window; close clears any pending timer
+				// reopen restarts the window; close clears any pending timer
 				await screen.rerender(tree(false, 1000));
 				jest.advanceTimersByTime(5000);
 				expect(onOpenChange).toHaveBeenCalledTimes(1);
@@ -980,14 +1024,14 @@ describe("component markers", () => {
 				jest.advanceTimersByTime(1);
 				expect(onOpenChange).toHaveBeenCalledTimes(2);
 
-					// manual close before the window: no stale fire afterwards
+				// manual close before the window: no stale fire afterwards
 				await screen.rerender(tree(true, 1000));
 				jest.advanceTimersByTime(500);
 				await screen.rerender(tree(false, 1000));
 				jest.advanceTimersByTime(5000);
 				expect(onOpenChange).toHaveBeenCalledTimes(2);
 
-					// duration change mid-open reschedules to the new window
+				// duration change mid-open reschedules to the new window
 				await screen.rerender(tree(true, 500));
 				jest.advanceTimersByTime(499);
 				expect(onOpenChange).toHaveBeenCalledTimes(2);
@@ -1047,7 +1091,8 @@ describe("component markers", () => {
 				</>,
 			);
 			expect(screen.getByTestId("k-label")).toBeTruthy();
-			expect(screen.getByTestId("k-separator")).toBeTruthy();
+			// decorative separator is hidden from a11y — opt into the raw tree
+			expect(screen.getByTestId("k-separator", inclHidden)).toBeTruthy();
 			expect(screen.getByTestId("k-spinner")).toBeTruthy();
 			expect(screen.getByTestId("k-progress")).toBeTruthy();
 		});
@@ -1075,9 +1120,9 @@ describe("component markers", () => {
 
 		it("Separator orientations produce distinct one-pixel dimensions", async () => {
 			const screen = await render(<Separator />);
-			const h = flatStyle(screen.getByTestId("k-separator"));
+			const h = flatStyle(screen.getByTestId("k-separator", inclHidden));
 			await screen.rerender(<Separator orientation="vertical" />);
-			const v = flatStyle(screen.getByTestId("k-separator"));
+			const v = flatStyle(screen.getByTestId("k-separator", inclHidden));
 			expect(h.width).toBe("100%");
 			expect(Number(h.height)).toBe(1);
 			expect(v.height).toBe("100%");
@@ -1088,7 +1133,8 @@ describe("component markers", () => {
 		it("Separator decorative default hides from a11y; false keeps it", async () => {
 			const screen = await render(<Separator />);
 			expect(
-				screen.getByTestId("k-separator").props.accessibilityElementsHidden,
+				screen.getByTestId("k-separator", inclHidden).props
+					.accessibilityElementsHidden,
 			).toBe(true);
 			await screen.rerender(<Separator decorative={false} />);
 			expect(
@@ -1230,22 +1276,31 @@ describe("component markers", () => {
 		// last on purpose: manual unmount() poisons TLB's registry for later
 		// renders in the same file (see header note)
 		it("Spinner loop starts once per mount and stops on unmount", async () => {
+			const { act } = require("react");
 			const AnimatedRN = require("react-native").Animated;
 			const origLoop = AnimatedRN.loop;
-			const loops: Array<{ stop: ReturnType<typeof jest.fn> }> = [];
+			const stops: Array<ReturnType<typeof jest.fn>> = [];
+			// wrap in a proxy animation instead of reassigning loop.stop — the
+			// composite animation instance resists property writes under the
+			// RN 0.86 jest shim
 			AnimatedRN.loop = ((...args: unknown[]) => {
 				const loop = origLoop(...(args as []));
-				const origStop = loop.stop.bind(loop);
-				(loop as { stop: unknown }).stop = jest.fn(origStop);
-				loops.push(loop as never);
-				return loop;
+				const stop = jest.fn(((...a: unknown[]) =>
+					(loop as { stop: (...s: unknown[]) => void }).stop(...a)) as never);
+				stops.push(stop);
+				return {
+					start: () => (loop as { start: () => void }).start(),
+					stop: () => stop(),
+				};
 			}) as typeof AnimatedRN.loop;
 			try {
 				const screen = await render(<Spinner size="sm" />);
 				await screen.rerender(<Spinner size="lg" />);
-				expect(loops.length).toBe(1);
-				screen.unmount();
-				expect(loops[0].stop).toHaveBeenCalled();
+				expect(stops.length).toBe(1);
+				act(() => {
+					screen.unmount();
+				});
+				expect(stops[0]).toHaveBeenCalled();
 			} finally {
 				AnimatedRN.loop = origLoop;
 			}
