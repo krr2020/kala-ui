@@ -25,6 +25,7 @@ import { Field } from "../field";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
 import { Indicator } from "../indicator";
+import { InputOtp, InputOtpSeparator, InputOtpSlot } from "../input-otp";
 import { Label } from "../label";
 import {
 	List,
@@ -39,6 +40,7 @@ import {
 } from "../list";
 import { LoadingOverlay } from "../loading-overlay";
 import { Pagination } from "../pagination";
+import { PasswordStrengthIndicator } from "../password-strength-indicator";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Rating } from "../rating";
@@ -50,6 +52,7 @@ import { Sheet } from "../sheet";
 import { Skeleton } from "../skeleton";
 import { Slider } from "../slider";
 import { Spinner } from "../spinner";
+import { Steps } from "../steps";
 import { Switch } from "../switch";
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
@@ -2319,6 +2322,44 @@ describe("component markers", () => {
 			expect(screen.getByTestId("k-error-fallback-title")).toBeTruthy();
 			expect(screen.getByTestId("k-error-fallback-description")).toBeTruthy();
 			expect(screen.getByTestId("k-error-fallback-reset")).toBeTruthy();
+		});
+	});
+
+	describe("InputOtp, PasswordStrengthIndicator, Steps", () => {
+		it("InputOtp renders root, slot, field and separator markers", async () => {
+			const screen = await render(
+				<InputOtp maxLength={4}>
+					<InputOtpSlot index={0} />
+					<InputOtpSeparator />
+					<InputOtpSlot index={1} />
+					<InputOtpSlot index={2} />
+					<InputOtpSlot index={3} />
+				</InputOtp>,
+			);
+			expect(screen.getByTestId("k-input-otp")).toBeTruthy();
+			expect(screen.getAllByTestId("k-input-otp-slot")).toHaveLength(4);
+			expect(screen.getByTestId("k-input-otp-separator")).toBeTruthy();
+			expect(screen.getByTestId("k-input-otp-field")).toBeTruthy();
+		});
+
+		it("PasswordStrengthIndicator renders root and segment markers", async () => {
+			const screen = await render(
+				<PasswordStrengthIndicator password="Aaaaaaaaaaaa1!" />,
+			);
+			expect(screen.getByTestId("k-password-strength-indicator")).toBeTruthy();
+			expect(screen.getAllByTestId("k-password-strength-segment")).toHaveLength(
+				4,
+			);
+		});
+
+		it("Steps renders root, row, indicator and line markers", async () => {
+			const screen = await render(
+				<Steps items={[{ title: "one" }, { title: "two" }]} value={1} />,
+			);
+			expect(screen.getByTestId("k-steps")).toBeTruthy();
+			expect(screen.getAllByTestId("k-step")).toHaveLength(2);
+			expect(screen.getByTestId("k-step-indicator-1")).toBeTruthy();
+			expect(screen.getAllByTestId("k-step-line")).toHaveLength(1);
 		});
 	});
 

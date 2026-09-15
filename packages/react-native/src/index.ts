@@ -86,6 +86,16 @@ export type {
 	IndicatorProps,
 } from "./components/indicator";
 export { Indicator } from "./components/indicator";
+export type {
+	InputOtpProps,
+	InputOtpSeparatorProps,
+	InputOtpSlotProps,
+} from "./components/input-otp";
+export {
+	InputOtp,
+	InputOtpSeparator,
+	InputOtpSlot,
+} from "./components/input-otp";
 export type { LabelProps } from "./components/label";
 export { Label } from "./components/label";
 export type {
@@ -120,6 +130,11 @@ export type {
 	PaginationSize,
 } from "./components/pagination";
 export { Pagination } from "./components/pagination";
+export type { PasswordStrengthIndicatorProps } from "./components/password-strength-indicator";
+export {
+	calculatePasswordStrength,
+	PasswordStrengthIndicator,
+} from "./components/password-strength-indicator";
 export type {
 	ProgressColor,
 	ProgressProps,
@@ -169,6 +184,12 @@ export type {
 	SpinnerVariant,
 } from "./components/spinner";
 export { Spinner } from "./components/spinner";
+export type {
+	StepItem,
+	StepsOrientation,
+	StepsProps,
+} from "./components/steps";
+export { Steps } from "./components/steps";
 export type { SwitchProps } from "./components/switch";
 export { Switch } from "./components/switch";
 export type { TabsItem, TabsProps } from "./components/tabs";

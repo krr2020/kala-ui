@@ -21,9 +21,11 @@ import { ErrorFallback } from "../error-boundary";
 import { Field } from "../field";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
+import { InputOtp, InputOtpSlot } from "../input-otp";
 import { List, ListItem } from "../list";
 import { LoadingOverlay } from "../loading-overlay";
 import { Pagination } from "../pagination";
+import { PasswordStrengthIndicator } from "../password-strength-indicator";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Rating } from "../rating";
@@ -34,6 +36,7 @@ import { Separator } from "../separator";
 import { Sheet } from "../sheet";
 import { Slider } from "../slider";
 import { Spinner } from "../spinner";
+import { Steps } from "../steps";
 import { Switch } from "../switch";
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
@@ -842,6 +845,61 @@ describe("a11y contract", () => {
 			expect(screen.getByTestId("k-field-error").props.accessibilityRole).toBe(
 				"alert",
 			);
+		});
+	});
+
+	describe("InputOtp", () => {
+		it("entry field carries a stable label and disabled state", async () => {
+			const screen = await render(
+				<InputOtp maxLength={3}>
+					<InputOtpSlot index={0} />
+					<InputOtpSlot index={1} />
+					<InputOtpSlot index={2} />
+				</InputOtp>,
+			);
+			const field = screen.getByTestId("k-input-otp-field");
+			expect(field.props.accessibilityLabel).toBe("One-time code");
+
+			await screen.rerender(
+				<InputOtp maxLength={3} disabled>
+					<InputOtpSlot index={0} />
+					<InputOtpSlot index={1} />
+					<InputOtpSlot index={2} />
+				</InputOtp>,
+			);
+			expect(
+				screen.getByTestId("k-input-otp-field").props.accessibilityState
+					?.disabled,
+			).toBe(true);
+		});
+	});
+
+	describe("PasswordStrengthIndicator", () => {
+		it("announces the strength tier with meter semantics", async () => {
+			const screen = await render(
+				<PasswordStrengthIndicator password="Aaaaaaaaaaaa1!" />,
+			);
+			const root = screen.getByTestId("k-password-strength-indicator");
+			expect(root.props.accessibilityLabel).toContain("Strong");
+			expect(root.props.accessibilityValue).toEqual({ min: 0, max: 4, now: 4 });
+		});
+	});
+
+	describe("Steps", () => {
+		it("each step announces its position and state", async () => {
+			const screen = await render(
+				<Steps
+					items={[{ title: "Account" }, { title: "Profile" }]}
+					value={2}
+					onStepChange={() => undefined}
+				/>,
+			);
+			expect(
+				screen.getByLabelText("Step 1 of 2: Account (completed)"),
+			).toBeTruthy();
+			expect(
+				screen.getByLabelText("Step 2 of 2: Profile (current step)"),
+			).toBeTruthy();
 		});
 	});
 });

@@ -4,7 +4,11 @@ import {
 	Button,
 	ErrorBoundary,
 	Field,
+	InputOtp,
+	InputOtpSeparator,
+	InputOtpSlot,
 	LoadingOverlay,
+	PasswordStrengthIndicator,
 	Select,
 	Textarea,
 	Toast,
@@ -23,6 +27,7 @@ export function FeedbackDemo() {
 	const [fruit, setFruit] = useState<string | undefined>(undefined);
 	const [loading, setLoading] = useState(false);
 	const [crashKey, setCrashKey] = useState(0);
+	const [code, setCode] = useState("");
 	return (
 		<>
 			<Alert color="success" dismissable onDismiss={() => setToastOpen(true)}>
@@ -80,6 +85,21 @@ export function FeedbackDemo() {
 				<LoadingOverlay visible={loading}>
 					<Text onPress={() => setLoading(false)}>cancel</Text>
 				</LoadingOverlay>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-input-otp">
+				<InputOtp maxLength={6} value={code} onChange={setCode}>
+					<InputOtpSlot index={0} />
+					<InputOtpSlot index={1} />
+					<InputOtpSlot index={2} />
+					<InputOtpSeparator />
+					<InputOtpSlot index={3} />
+					<InputOtpSlot index={4} />
+					<InputOtpSlot index={5} />
+				</InputOtp>
+				<PasswordStrengthIndicator password={code} />
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-password-strength">
+				<PasswordStrengthIndicator password="Aaaaaaaaaaaa1!" />
 			</View>
 			<View style={demoStyles.componentRow} testID="k-demo-error-boundary">
 				<ErrorBoundary resetKeys={[crashKey]}>

@@ -21,6 +21,7 @@ import {
 	Separator,
 	Skeleton,
 	Spinner,
+	Steps,
 	Switch,
 	TextInput,
 } from "@kala-ui/react-native";
@@ -193,6 +194,17 @@ export function BasicsDemo() {
 						{ value: 30, color: "success" },
 						{ value: 20, color: "warning" },
 					]}
+				/>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-steps">
+				<Steps
+					items={[
+						{ title: "account", description: "email + password" },
+						{ title: "profile", description: "name + avatar" },
+						{ title: "confirm" },
+					]}
+					defaultValue={2}
+					onStepChange={() => undefined}
 				/>
 			</View>
 		</>

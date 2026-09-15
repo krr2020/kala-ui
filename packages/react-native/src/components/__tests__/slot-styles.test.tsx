@@ -25,10 +25,12 @@ import { Field } from "../field";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
 import { Indicator } from "../indicator";
+import { InputOtp, InputOtpSlot } from "../input-otp";
 import { Label } from "../label";
 import { List } from "../list";
 import { LoadingOverlay } from "../loading-overlay";
 import { Pagination } from "../pagination";
+import { PasswordStrengthIndicator } from "../password-strength-indicator";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Rating } from "../rating";
@@ -41,6 +43,7 @@ import { Skeleton } from "../skeleton";
 import { Slider } from "../slider";
 import { applySlot } from "../slot-styles";
 import { Spinner } from "../spinner";
+import { Steps } from "../steps";
 import { Switch } from "../switch";
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
@@ -250,6 +253,18 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			render: () => render(<Indicator styles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
+			name: "InputOtp",
+			marker: "k-input-otp",
+			render: () =>
+				render(
+					<InputOtp maxLength={3} styles={{ root: { borderWidth: 7 } }}>
+						<InputOtpSlot index={0} />
+						<InputOtpSlot index={1} />
+						<InputOtpSlot index={2} />
+					</InputOtp>,
+				),
+		},
+		{
 			name: "Label",
 			marker: "k-label",
 			textRoot: true,
@@ -269,6 +284,17 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			marker: "k-pagination",
 			render: () =>
 				render(<Pagination total={3} styles={{ root: { borderWidth: 7 } }} />),
+		},
+		{
+			name: "PasswordStrengthIndicator",
+			marker: "k-password-strength-indicator",
+			render: () =>
+				render(
+					<PasswordStrengthIndicator
+						password="secret1!"
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
+				),
 		},
 		{
 			name: "Progress",
@@ -367,6 +393,18 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			render: () => render(<Spinner styles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
+			name: "Steps",
+			marker: "k-steps",
+			render: () =>
+				render(
+					<Steps
+						items={[{ title: "a" }, { title: "b" }]}
+						value={1}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
+				),
+		},
+		{
 			name: "Switch",
 			marker: "k-switch",
 			render: () =>
@@ -459,8 +497,8 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		});
 	}
 
-	it("the sweep covers all 36 components", () => {
-		expect(fixtures.length).toBe(42);
+	it("the sweep covers all 45 components", () => {
+		expect(fixtures.length).toBe(45);
 	});
 });
 

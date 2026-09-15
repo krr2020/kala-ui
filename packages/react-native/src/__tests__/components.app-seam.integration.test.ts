@@ -151,10 +151,11 @@ describe("component app seam", () => {
 			demoHooks += (readFileSync(file, "utf8").match(/useState[(<]/g) ?? [])
 				.length;
 		}
-		// 21 interactive demos: sheet/dialog/confirm/faq/advanced +
+		// 22 interactive demos: sheet/dialog/confirm/faq/advanced +
 		// toast/banner + agree/sync/plan + range/tab/rating/page/volume +
-		// bold/align/formats + select + loading toggle + crash toggle.
-		expect(demoHooks).toBe(21);
+		// bold/align/formats + select + loading toggle + crash toggle +
+		// otp code entry.
+		expect(demoHooks).toBe(22);
 	});
 
 	it("render-surface census matches the pinned marker/label inventory", () => {
@@ -198,6 +199,9 @@ describe("component app seam", () => {
 					'testID="k-demo-ring-progress"': 1,
 					'testID="k-demo-loading-overlay"': 1,
 					'testID="k-demo-error-boundary"': 1,
+					'testID="k-demo-input-otp"': 1,
+					'testID="k-demo-password-strength"': 1,
+					'testID="k-demo-steps"': 1,
 					'testID="k-demo-select"': 1,
 					'testID="k-demo-segmented"': 1,
 					'testID="k-demo-skeletons"': 1,
