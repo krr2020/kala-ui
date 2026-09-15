@@ -23,6 +23,7 @@ import { Heading } from "../heading";
 import { Icon } from "../icon";
 import { Indicator } from "../indicator";
 import { Label } from "../label";
+import { List } from "../list";
 import { Pagination } from "../pagination";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
@@ -378,6 +379,11 @@ describe("root slot sweep — every component accepts styles.root", () => {
 					<ToggleGroup type="single" styles={{ root: { borderWidth: 7 } }} />,
 				),
 		},
+		{
+			name: "List",
+			marker: "k-list",
+			render: () => render(<List styles={{ root: { borderWidth: 7 } }} />),
+		},
 	];
 
 	for (const fixture of fixtures) {
@@ -393,8 +399,8 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		});
 	}
 
-	it("the sweep covers all 35 components", () => {
-		expect(fixtures.length).toBe(35);
+	it("the sweep covers all 36 components", () => {
+		expect(fixtures.length).toBe(36);
 	});
 });
 

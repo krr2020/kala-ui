@@ -8,6 +8,12 @@ import {
 	Icon,
 	Text as KText,
 	Label,
+	List,
+	ListItem,
+	ListItemAvatar,
+	ListItemBadge,
+	ListItemContent,
+	ListItemTitle,
 	Progress,
 	RadioGroup,
 	Separator,
@@ -49,6 +55,21 @@ export function BasicsDemo() {
 					<Icon key={size} icon={Sun} size={size} />
 				))}
 			</View>
+			<List testID="k-demo-list">
+				<ListItem>
+					<ListItemAvatar name="Ada Lovelace" size="sm" />
+					<ListItemContent>
+						<ListItemTitle>Ada Lovelace</ListItemTitle>
+					</ListItemContent>
+					<ListItemBadge color="success">active</ListItemBadge>
+				</ListItem>
+				<ListItem>
+					<ListItemAvatar name="Alan Turing" size="sm" />
+					<ListItemContent>
+						<ListItemTitle>Alan Turing</ListItemTitle>
+					</ListItemContent>
+				</ListItem>
+			</List>
 			<View style={demoStyles.componentRow} testID="k-demo-text">
 				<Heading size="h3">typography</Heading>
 				{(["xs", "sm", "md", "lg"] as const).map((size) => (

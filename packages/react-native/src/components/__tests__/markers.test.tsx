@@ -23,6 +23,17 @@ import { Heading } from "../heading";
 import { Icon } from "../icon";
 import { Indicator } from "../indicator";
 import { Label } from "../label";
+import {
+	List,
+	ListItem,
+	ListItemAction,
+	ListItemAvatar,
+	ListItemBadge,
+	ListItemContent,
+	ListItemIcon,
+	ListItemText,
+	ListItemTitle,
+} from "../list";
 import { Pagination } from "../pagination";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
@@ -2164,6 +2175,50 @@ describe("component markers", () => {
 			);
 			expect(loading.getByTestId("k-textarea")).toBeTruthy();
 			expect(loading.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
+		});
+	});
+
+	describe("wave 13: List", () => {
+		it("renders container, divider and sub-component markers", async () => {
+			const screen = await render(
+				<List>
+					<ListItem interactive onPress={() => undefined}>
+						<ListItemAvatar name="Ada Lovelace" />
+						<ListItemContent>
+							<ListItemTitle>orders</ListItemTitle>
+							<ListItemText lines={1}>queued for pickup</ListItemText>
+						</ListItemContent>
+						<ListItemAction>
+							<ListItemBadge color="success">3</ListItemBadge>
+						</ListItemAction>
+					</ListItem>
+					<ListItem>
+						<ListItemIcon size="sm">i</ListItemIcon>
+						<ListItemContent>
+							<ListItemTitle>returns</ListItemTitle>
+						</ListItemContent>
+					</ListItem>
+				</List>,
+			);
+			expect(screen.getByTestId("k-list")).toBeTruthy();
+			expect(screen.getAllByTestId("k-list-item").length).toBe(2);
+			expect(screen.getByTestId("k-list-divider")).toBeTruthy();
+			expect(screen.getByTestId("k-list-item-avatar")).toBeTruthy();
+			expect(screen.getAllByTestId("k-list-item-content").length).toBe(2);
+			expect(screen.getAllByTestId("k-list-item-title").length).toBe(2);
+			expect(screen.getByTestId("k-list-item-text")).toBeTruthy();
+			expect(screen.getByTestId("k-list-item-action")).toBeTruthy();
+			expect(screen.getByTestId("k-list-item-badge")).toBeTruthy();
+			expect(screen.getByTestId("k-list-item-icon")).toBeTruthy();
+		});
+
+		it("isLoading keeps k-list and drops rows", async () => {
+			const screen = await render(
+					<List isLoading skeletonConfig={{ itemCount: 2 }} />,
+			);
+			expect(screen.getByTestId("k-list")).toBeTruthy();
+			expect(screen.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
+			expect(screen.queryByTestId("k-list-item")).toBeNull();
 		});
 	});
 

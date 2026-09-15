@@ -18,6 +18,7 @@ import { Dialog } from "../dialog";
 import { EmptyState } from "../empty-state";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
+import { List, ListItem } from "../list";
 import { Pagination } from "../pagination";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
@@ -688,6 +689,40 @@ describe("a11y contract", () => {
 			expect(
 				screen.getByRole("button", { name: "Close banner" }),
 			).toBeTruthy();
+		});
+	});
+
+	describe("List", () => {
+		it("interactive rows announce button role; disabled announces state", async () => {
+			const screen = await render(
+				<ListItem interactive onPress={() => undefined}>
+					row
+				</ListItem>,
+			);
+			expect(
+				screen.getByRole("button", { name: "row" }),
+			).toBeTruthy();
+
+			const off = await render(
+				<ListItem interactive disabled onPress={() => undefined}>
+					row
+				</ListItem>,
+			);
+			expect(
+				off.getByTestId("k-list-item").props.accessibilityState?.disabled,
+			).toBe(true);
+		});
+
+		it("href rows announce link role and the container is a list", async () => {
+			const screen = await render(
+				<List>
+					<ListItem href="https://example.com">docs</ListItem>
+				</List>,
+			);
+			expect(
+				screen.getByTestId("k-list").props.accessibilityRole,
+			).toBe("list");
+			expect(screen.getByRole("link", { name: "docs" })).toBeTruthy();
 		});
 	});
 
