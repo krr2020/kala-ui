@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -8,12 +8,28 @@ import { describe, expect, it } from "vitest";
  * real export of the package entry. Static parse on purpose — importing
  * the entry pulls react-native, which vitest cannot execute; the export
  * LIST is the contract (same technique as the pin in tokens-parity).
+ *
+ * The sweep covers every .tsx under apps/native-playground/src (not just
+ * App.tsx) because demos live in per-section modules; the seam must hold
+ * no matter which file grows next.
  */
-const APP_PATH = resolve(
-	__dirname,
-	"../../../../apps/native-playground/src/App.tsx",
-);
+const SRC_DIR = resolve(__dirname, "../../../../apps/native-playground/src");
+const APP_PATH = resolve(SRC_DIR, "App.tsx");
 const ENTRY_PATH = resolve(__dirname, "../index.ts");
+const MAX_FILE_LINES = 500;
+
+function srcTsxFiles(dir: string): string[] {
+	const files: string[] = [];
+	for (const entry of readdirSync(dir)) {
+		const full = resolve(dir, entry);
+		if (statSync(full).isDirectory()) {
+			files.push(...srcTsxFiles(full));
+		} else if (entry.endsWith(".tsx")) {
+			files.push(full);
+		}
+	}
+	return files;
+}
 
 function exportNames(entry: string): Set<string> {
 	expect(entry).not.toMatch(/export\s+\*/);
@@ -34,35 +50,58 @@ function exportNames(entry: string): Set<string> {
 	return names;
 }
 
-describe("component app seam", () => {
-	function appImports(app: string): Set<string> {
-		const imports = new Set<string>();
-		for (const m of app.matchAll(
-			/import\s+\{([^}]*)\}\s*from\s*"@kala-ui\/react-native"/g,
-		)) {
-			for (const part of m[1].split(",")) {
-				const name = part
-					.trim()
-					.replace(/^type /, "")
-					.split(" as ")[0];
-				if (name) imports.add(name);
-			}
+function appImports(app: string): Set<string> {
+	const imports = new Set<string>();
+	for (const m of app.matchAll(
+		/import\s+\{([^}]*)\}\s*from\s*"@kala-ui\/react-native"/g,
+	)) {
+		for (const part of m[1].split(",")) {
+			const name = part
+				.trim()
+				.replace(/^type /, "")
+				.split(" as ")[0];
+			if (name) imports.add(name);
 		}
-		return imports;
+	}
+	return imports;
+}
+
+/**
+ * Render-surface census: every testID / accessibilityLabel literal in
+ * the playground tree. Pinned exactly (counts included) so a dropped or
+ * duplicated demo row, button, or control fails the seam — E2E (the
+ * k-* marker contract) and screen-reader labels cannot silently drift
+ * during refactors of the demo modules.
+ */
+function markerCensus(sources: string[]): Map<string, number> {
+	const census = new Map<string, number>();
+	for (const source of sources) {
+		for (const m of source.matchAll(
+			/(?:testID|accessibilityLabel)=(?:"[^"]*"|\{`[^`]*`\})/g,
+		)) {
+			const key = m[0];
+			census.set(key, (census.get(key) ?? 0) + 1);
+		}
+	}
+	return census;
+}
+
+describe("component app seam", () => {
+	const files = srcTsxFiles(SRC_DIR);
+	const sources = files.map((f) => readFileSync(f, "utf8"));
+	const unionImports = new Set<string>();
+	for (const source of sources) {
+		for (const name of appImports(source)) unionImports.add(name);
 	}
 
 	it("every component the playground imports is exported by the entry", () => {
-		const app = readFileSync(APP_PATH, "utf8");
-		const imports = appImports(app);
-		expect(imports.size).toBeGreaterThan(0);
+		expect(unionImports.size).toBeGreaterThan(0);
 		const exported = exportNames(readFileSync(ENTRY_PATH, "utf8"));
-		const missing = [...imports].filter((name) => !exported.has(name));
+		const missing = [...unionImports].filter((name) => !exported.has(name));
 		expect(missing).toEqual([]);
 	});
 
 	it("recent wave components are playground-visible and entry-exported", () => {
-		const app = readFileSync(APP_PATH, "utf8");
-		const imports = appImports(app);
 		const exported = exportNames(readFileSync(ENTRY_PATH, "utf8"));
 		for (const name of [
 			"Accordion",
@@ -82,8 +121,82 @@ describe("component app seam", () => {
 			"ToggleGroup",
 			"Indicator",
 		]) {
-			expect(imports.has(name), `App.tsx imports ${name}`).toBe(true);
+			expect(unionImports.has(name), `playground imports ${name}`).toBe(true);
 			expect(exported.has(name), `entry exports ${name}`).toBe(true);
 		}
+	});
+
+	it("every playground source file stays under the line limit", () => {
+		expect(files.length).toBeGreaterThan(0);
+		for (const file of files) {
+			const lines = readFileSync(file, "utf8").split("\n").length;
+			expect(lines, `${file} is ${lines} lines`).toBeLessThan(MAX_FILE_LINES);
+		}
+	});
+
+	it("demo state lives in the demo modules, none in App.tsx", () => {
+		const appSource = readFileSync(APP_PATH, "utf8");
+		expect(appSource.match(/useState[(<]/g) ?? []).toHaveLength(0);
+		let demoHooks = 0;
+		for (const file of files) {
+			if (file === APP_PATH) continue;
+			demoHooks += (readFileSync(file, "utf8").match(/useState[(<]/g) ?? [])
+				.length;
+		}
+		// 18 interactive demos: sheet/dialog/confirm/faq/advanced +
+		// toast/banner + agree/sync/plan + range/tab/rating/page/volume +
+		// bold/align/formats.
+		expect(demoHooks).toBe(18);
+	});
+
+	it("render-surface census matches the pinned marker/label inventory", () => {
+		expect(markerCensus(sources)).toEqual(
+			new Map(
+				Object.entries({
+					'accessibilityLabel="agree to terms"': 1,
+					'accessibilityLabel="auto sync"': 1,
+					'accessibilityLabel="bold"': 1,
+					'accessibilityLabel="email field"': 1,
+					'accessibilityLabel="error field"': 1,
+					'accessibilityLabel="open confirm dialog"': 1,
+					'accessibilityLabel="open demo dialog"': 1,
+					'accessibilityLabel="open demo sheet"': 1,
+					'accessibilityLabel="plan"': 1,
+					'accessibilityLabel="range"': 1,
+					'accessibilityLabel="show toast"': 1,
+					'accessibilityLabel="sun"': 1,
+					'accessibilityLabel="volume"': 1,
+					"accessibilityLabel={`activate ${name} theme`}": 1,
+					'testID="k-demo-accordion"': 1,
+					'testID="k-demo-avatars"': 1,
+					'testID="k-demo-badges"': 1,
+					'testID="k-demo-banner"': 1,
+					'testID="k-demo-buttons"': 1,
+					'testID="k-demo-card"': 1,
+					'testID="k-demo-collapsible"': 1,
+					'testID="k-demo-controls"': 1,
+					'testID="k-demo-dialog"': 1,
+					'testID="k-demo-icons"': 1,
+					'testID="k-demo-indicator"': 1,
+					'testID="k-demo-input"': 1,
+					'testID="k-demo-labels"': 1,
+					'testID="k-demo-pagination"': 1,
+					'testID="k-demo-progress"': 1,
+					'testID="k-demo-radios"': 1,
+					'testID="k-demo-rating"': 1,
+					'testID="k-demo-segmented"': 1,
+					'testID="k-demo-skeletons"': 1,
+					'testID="k-demo-slider"': 1,
+					'testID="k-demo-spinners"': 1,
+					'testID="k-demo-tabs"': 1,
+					'testID="k-demo-tags"': 1,
+					'testID="k-demo-text"': 1,
+					'testID="k-demo-textarea"': 1,
+					'testID="k-demo-toggles"': 1,
+					"testID={`k-swatch-${token}`}": 1,
+					"testID={`k-theme-${name}`}": 1,
+				}),
+			),
+		);
 	});
 });
