@@ -19,6 +19,7 @@ import { Button } from "../button";
 import { Card } from "../card";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
+import { Combobox } from "../combobox";
 import { ContextMenu } from "../context-menu";
 import { Dialog } from "../dialog";
 import { DropdownMenu } from "../dropdown-menu";
@@ -32,6 +33,7 @@ import { InputOtp, InputOtpSlot } from "../input-otp";
 import { Label } from "../label";
 import { List } from "../list";
 import { LoadingOverlay } from "../loading-overlay";
+import { MultiSelect } from "../multi-select";
 import { Pagination } from "../pagination";
 import { PasswordStrengthIndicator } from "../password-strength-indicator";
 import { Progress } from "../progress";
@@ -203,6 +205,17 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				),
 		},
 		{
+			name: "Combobox",
+			marker: "k-combobox",
+			render: () =>
+				render(
+					<Combobox
+						options={[{ value: "a", label: "A" }]}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
+				),
+		},
+		{
 			name: "Collapsible",
 			marker: "k-collapsible",
 			render: () =>
@@ -320,6 +333,17 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			render: () =>
 				render(
 					<LoadingOverlay visible styles={{ root: { borderWidth: 7 } }} />,
+				),
+		},
+		{
+			name: "MultiSelect",
+			marker: "k-multi-select",
+			render: () =>
+				render(
+					<MultiSelect
+						options={[{ value: "a", label: "A" }]}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
 				),
 		},
 		{
@@ -574,8 +598,8 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		});
 	}
 
-	it("the sweep covers all 52 components", () => {
-		expect(fixtures.length).toBe(52);
+	it("the sweep covers all 54 components", () => {
+		expect(fixtures.length).toBe(54);
 	});
 });
 

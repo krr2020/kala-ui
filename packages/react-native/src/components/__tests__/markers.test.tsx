@@ -19,6 +19,7 @@ import { BUTTON_SPRING, Button } from "../button";
 import { Card } from "../card";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
+import { Combobox } from "../combobox";
 import { ContextMenu } from "../context-menu";
 import { Dialog } from "../dialog";
 import { DropdownMenu } from "../dropdown-menu";
@@ -42,6 +43,7 @@ import {
 	ListItemTitle,
 } from "../list";
 import { LoadingOverlay } from "../loading-overlay";
+import { MultiSelect } from "../multi-select";
 import { Pagination } from "../pagination";
 import { PasswordStrengthIndicator } from "../password-strength-indicator";
 import { Progress } from "../progress";
@@ -2507,6 +2509,45 @@ describe("component markers", () => {
 			);
 			expect(loading.getByTestId("k-table-skeleton")).toBeTruthy();
 			expect(loading.queryByTestId("k-table")).toBeNull();
+		});
+	});
+
+	describe("MultiSelect, Combobox", () => {
+		it("MultiSelect exposes trigger, chips and sheet row markers", async () => {
+			const screen = await render(
+				<MultiSelect
+					options={[
+						{ value: "a", label: "Alpha" },
+						{ value: "b", label: "Beta" },
+					]}
+					defaultValue={["a"]}
+				/>,
+			);
+			expect(screen.getByTestId("k-multi-select")).toBeTruthy();
+			expect(screen.getAllByTestId("k-multi-select-chip")).toHaveLength(1);
+			expect(screen.getByTestId("k-multi-select-chip-remove")).toBeTruthy();
+			await fireEvent.press(screen.getByTestId("k-multi-select"));
+			expect(screen.getByTestId("k-multi-select-content")).toBeTruthy();
+			expect(screen.getByTestId("k-multi-select-search")).toBeTruthy();
+			expect(screen.getByTestId("k-multi-select-select-all")).toBeTruthy();
+			expect(screen.getByTestId("k-multi-select-clear-all")).toBeTruthy();
+			expect(screen.getAllByTestId(/k-multi-select-option-\d/)).toHaveLength(2);
+		});
+
+		it("Combobox exposes trigger, search and option markers", async () => {
+			const screen = await render(
+				<Combobox
+					options={[
+						{ value: "a", label: "Alpha" },
+						{ value: "b", label: "Beta" },
+					]}
+				/>,
+			);
+			expect(screen.getByTestId("k-combobox")).toBeTruthy();
+			await fireEvent.press(screen.getByTestId("k-combobox"));
+			expect(screen.getByTestId("k-combobox-content")).toBeTruthy();
+			expect(screen.getByTestId("k-combobox-search")).toBeTruthy();
+			expect(screen.getAllByTestId(/k-combobox-option-\d/)).toHaveLength(2);
 		});
 	});
 

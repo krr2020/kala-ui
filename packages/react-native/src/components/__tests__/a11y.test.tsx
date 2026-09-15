@@ -16,6 +16,7 @@ import { Breadcrumbs } from "../breadcrumbs";
 import { Button } from "../button";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
+import { Combobox } from "../combobox";
 import { ContextMenu } from "../context-menu";
 import { Dialog } from "../dialog";
 import { DropdownMenu } from "../dropdown-menu";
@@ -27,6 +28,7 @@ import { Icon } from "../icon";
 import { InputOtp, InputOtpSlot } from "../input-otp";
 import { List, ListItem } from "../list";
 import { LoadingOverlay } from "../loading-overlay";
+import { MultiSelect } from "../multi-select";
 import { Pagination } from "../pagination";
 import { PasswordStrengthIndicator } from "../password-strength-indicator";
 import { Progress } from "../progress";
@@ -1050,6 +1052,51 @@ describe("a11y contract", () => {
 			const header = screen.getByTestId("k-table-header");
 			expect(header.props.accessibilityLabel).toContain("Name");
 			expect(header.props.accessibilityLabel).toContain("Role");
+		});
+	});
+
+	describe("MultiSelect, Combobox", () => {
+		it("multi-select trigger announces selection and expanded state", async () => {
+			const screen = await render(
+				<MultiSelect
+					options={[
+						{ value: "a", label: "Alpha" },
+						{ value: "b", label: "Beta" },
+					]}
+					defaultValue={["a"]}
+				/>,
+			);
+			const trigger = screen.getByTestId("k-multi-select");
+			expect(trigger.props.accessibilityRole).toBe("button");
+			expect(trigger.props.accessibilityLabel).toContain("Alpha");
+			expect(trigger.props.accessibilityState?.expanded).toBe(false);
+			await fireEvent.press(trigger);
+			expect(
+				screen.getByTestId("k-multi-select").props.accessibilityState?.expanded,
+			).toBe(true);
+			const row = screen.getByTestId("k-multi-select-option-0");
+			expect(row.props.accessibilityState?.checked).toBe(true);
+		});
+
+		it("combobox trigger announces its label and expanded state", async () => {
+			const screen = await render(
+				<Combobox
+					options={[
+						{ value: "a", label: "Alpha" },
+						{ value: "b", label: "Beta" },
+					]}
+					accessibilityLabel="pick a greek letter"
+				/>,
+			);
+			const trigger = screen.getByTestId("k-combobox");
+			expect(trigger.props.accessibilityRole).toBe("button");
+			expect(trigger.props.accessibilityLabel).toBe("pick a greek letter");
+			await fireEvent.press(trigger);
+			expect(
+				screen.getByTestId("k-combobox").props.accessibilityState?.expanded,
+			).toBe(true);
+			const row = screen.getByTestId("k-combobox-option-1");
+			expect(row.props.accessibilityState?.selected).toBe(false);
 		});
 	});
 });

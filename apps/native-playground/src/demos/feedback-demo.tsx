@@ -2,12 +2,14 @@ import {
 	Alert,
 	Banner,
 	Button,
+	Combobox,
 	ErrorBoundary,
 	Field,
 	InputOtp,
 	InputOtpSeparator,
 	InputOtpSlot,
 	LoadingOverlay,
+	MultiSelect,
 	PasswordStrengthIndicator,
 	Select,
 	TagInput,
@@ -30,6 +32,8 @@ export function FeedbackDemo() {
 	const [crashKey, setCrashKey] = useState(0);
 	const [code, setCode] = useState("");
 	const [recipients, setRecipients] = useState<string[]>(["ada"]);
+	const [toppings, setToppings] = useState<string[]>(["sprinkles"]);
+	const [city, setCity] = useState<string | undefined>(undefined);
 	return (
 		<>
 			<Alert color="success" dismissable onDismiss={() => setToastOpen(true)}>
@@ -108,6 +112,31 @@ export function FeedbackDemo() {
 					value={recipients}
 					onValueChange={setRecipients}
 					placeholder="add recipients"
+				/>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-multi-select">
+				<MultiSelect
+					options={[
+						{ value: "sprinkles", label: "Sprinkles" },
+						{ value: "fudge", label: "Fudge", group: "Sauces" },
+						{ value: "caramel", label: "Caramel", group: "Sauces" },
+					]}
+					grouped
+					value={toppings}
+					onValueChange={setToppings}
+					placeholder="pick toppings"
+				/>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-combobox">
+				<Combobox
+					options={[
+						{ value: "lisbon", label: "Lisbon" },
+						{ value: "tokyo", label: "Tokyo" },
+						{ value: "perth", label: "Perth" },
+					]}
+					value={city}
+					onValueChange={setCity}
+					placeholder="pick a city"
 				/>
 			</View>
 			<View style={demoStyles.componentRow} testID="k-demo-error-boundary">

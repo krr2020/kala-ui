@@ -62,6 +62,8 @@ export type {
 	CollapsibleTriggerProps,
 } from "./components/collapsible";
 export { Collapsible } from "./components/collapsible";
+export type { ComboboxOption, ComboboxProps } from "./components/combobox";
+export { Combobox, ComboboxSkeleton } from "./components/combobox";
 export type { ContextMenuProps } from "./components/context-menu";
 export { ContextMenu } from "./components/context-menu";
 export type { DialogProps } from "./components/dialog";
@@ -144,6 +146,11 @@ export {
 } from "./components/list";
 export type { LoadingOverlayProps } from "./components/loading-overlay";
 export { LoadingOverlay } from "./components/loading-overlay";
+export type {
+	MultiSelectOption,
+	MultiSelectProps,
+} from "./components/multi-select";
+export { MultiSelect, MultiSelectSkeleton } from "./components/multi-select";
 export type {
 	PaginationProps,
 	PaginationSize,

@@ -128,6 +128,8 @@ describe("component app seam", () => {
 			"Breadcrumbs",
 			"TagInput",
 			"Table",
+			"MultiSelect",
+			"Combobox",
 			"Indicator",
 			"Field",
 			"Select",
@@ -162,8 +164,8 @@ describe("component app seam", () => {
 		// toast/banner + agree/sync/plan + range/tab/rating/page/volume +
 		// bold/align/formats + select + loading toggle + crash toggle +
 		// otp code entry + menu auto-sync/last-action + toolbar align +
-		// tag recipients.
-		expect(demoHooks).toBe(26);
+		// tag recipients + toppings + city.
+		expect(demoHooks).toBe(28);
 	});
 
 	it("render-surface census matches the pinned marker/label inventory", () => {
@@ -218,6 +220,8 @@ describe("component app seam", () => {
 					'testID="k-demo-breadcrumbs"': 1,
 					'testID="k-demo-table"': 1,
 					'testID="k-demo-tag-input"': 1,
+					'testID="k-demo-multi-select"': 1,
+					'testID="k-demo-combobox"': 1,
 					'testID="k-demo-segmented"': 1,
 					'testID="k-demo-skeletons"': 1,
 					'testID="k-demo-slider"': 1,
