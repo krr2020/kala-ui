@@ -5,9 +5,9 @@
  * lock that poisons later renders in the same jest file.
  */
 import { act, render } from "@testing-library/react-native";
-import { Dialog } from "../dialog";
 import { AlertDialog } from "../alert-dialog";
 import { Button } from "../button";
+import { Dialog } from "../dialog";
 
 const incl = { includeHiddenElements: true } as const;
 
@@ -148,52 +148,52 @@ describe("dialog gesture + keyboard hardening", () => {
 		expect(alertCard.props.onResponderGrant).toBeUndefined();
 		expect(alertCard.props.onResponderRelease).toBeUndefined();
 
-			// opt-in dismissable AlertDialog wires the full protocol AND the
-			// drag behavior end to end, symmetric with Dialog
-			const a2 = await render(
-				<AlertDialog open onOpenChange={() => undefined} dismissable>
-					<AlertDialog.Body>body</AlertDialog.Body>
-				</AlertDialog>,
-			);
-			const alertCard2 = a2.getByTestId("k-alert-dialog", incl);
-			expect(alertCard2.props.onStartShouldSetResponder()).toBe(true);
-			expect(typeof alertCard2.props.onResponderRelease).toBe("function");
+		// opt-in dismissable AlertDialog wires the full protocol AND the
+		// drag behavior end to end, symmetric with Dialog
+		const a2 = await render(
+			<AlertDialog open onOpenChange={() => undefined} dismissable>
+				<AlertDialog.Body>body</AlertDialog.Body>
+			</AlertDialog>,
+		);
+		const alertCard2 = a2.getByTestId("k-alert-dialog", incl);
+		expect(alertCard2.props.onStartShouldSetResponder()).toBe(true);
+		expect(typeof alertCard2.props.onResponderRelease).toBe("function");
 
-			const dragged = jest.fn();
-			const a3 = await render(
-				<AlertDialog open onOpenChange={dragged} dismissable>
-					<AlertDialog.Body>body</AlertDialog.Body>
-				</AlertDialog>,
-			);
-			const alertCard3 = a3.getByTestId("k-alert-dialog", incl);
-			await grant(alertCard3);
-			await move(alertCard3, 200);
-			expect(Number(flatStyle(alertCard3).opacity)).toBeLessThanOrEqual(0.7);
-			await release(alertCard3, 200);
-			expect(dragged).toHaveBeenCalledWith(false);
-		});
+		const dragged = jest.fn();
+		const a3 = await render(
+			<AlertDialog open onOpenChange={dragged} dismissable>
+				<AlertDialog.Body>body</AlertDialog.Body>
+			</AlertDialog>,
+		);
+		const alertCard3 = a3.getByTestId("k-alert-dialog", incl);
+		await grant(alertCard3);
+		await move(alertCard3, 200);
+		expect(Number(flatStyle(alertCard3).opacity)).toBeLessThanOrEqual(0.7);
+		await release(alertCard3, 200);
+		expect(dragged).toHaveBeenCalledWith(false);
+	});
 
-		it("touches starting on the ScrollView body stay with the body", async () => {
-			const onOpenChange = jest.fn();
-			const screen = await render(
-				<Dialog open onOpenChange={onOpenChange}>
-					<Dialog.Body>body</Dialog.Body>
-				</Dialog>,
-			);
-			// RN's ScrollView installs its own responder system (scroll drag takes
-			// the gesture); the card's drag handlers must not be reachable from a
-			// body touch — verified by driving the CARD handlers directly and
-			// confirming the body node exposes none of the drag protocol
-			const body = screen.getByTestId("k-dialog-body", incl);
-			expect(body.props.onResponderGrant).toBeUndefined();
-			expect(body.props.onResponderRelease).toBeUndefined();
-			// and the card protocol still behaves when driven: release below
-			// threshold from a body-context touch never closes
-			const card = screen.getByTestId("k-dialog", incl);
-			await grant(card);
-			await release(card, 40);
-			expect(onOpenChange).not.toHaveBeenCalled();
-		});
+	it("touches starting on the ScrollView body stay with the body", async () => {
+		const onOpenChange = jest.fn();
+		const screen = await render(
+			<Dialog open onOpenChange={onOpenChange}>
+				<Dialog.Body>body</Dialog.Body>
+			</Dialog>,
+		);
+		// RN's ScrollView installs its own responder system (scroll drag takes
+		// the gesture); the card's drag handlers must not be reachable from a
+		// body touch — verified by driving the CARD handlers directly and
+		// confirming the body node exposes none of the drag protocol
+		const body = screen.getByTestId("k-dialog-body", incl);
+		expect(body.props.onResponderGrant).toBeUndefined();
+		expect(body.props.onResponderRelease).toBeUndefined();
+		// and the card protocol still behaves when driven: release below
+		// threshold from a body-context touch never closes
+		const card = screen.getByTestId("k-dialog", incl);
+		await grant(card);
+		await release(card, 40);
+		expect(onOpenChange).not.toHaveBeenCalled();
+	});
 
 	it("mid-gesture callback swap: release calls the LATEST onOpenChange", async () => {
 		const stale = jest.fn();
@@ -253,7 +253,10 @@ describe("dialog gesture + keyboard hardening", () => {
 				<AlertDialog.Body>body</AlertDialog.Body>
 			</AlertDialog>,
 		);
-		const alertKav = alertScreen.getByTestId("k-alert-dialog-keyboard-view", incl);
+		const alertKav = alertScreen.getByTestId(
+			"k-alert-dialog-keyboard-view",
+			incl,
+		);
 		const alertKavStyle = flatStyle(alertKav);
 		expect(Object.hasOwn(alertKavStyle, "paddingBottom")).toBe(true);
 		expect(Number(alertKavStyle.paddingBottom)).toBe(0);

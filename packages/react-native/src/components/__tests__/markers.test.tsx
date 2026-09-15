@@ -14,6 +14,7 @@ import { Avatar, STATUS_ONLINE_HUE } from "../avatar";
 import { AvatarGroup } from "../avatar-group";
 import { Badge } from "../badge";
 import { Banner } from "../banner";
+import { Breadcrumbs, BreadcrumbsSkeleton } from "../breadcrumbs";
 import { BUTTON_SPRING, Button } from "../button";
 import { Card } from "../card";
 import { Checkbox } from "../checkbox";
@@ -56,11 +57,14 @@ import { Slider } from "../slider";
 import { Spinner } from "../spinner";
 import { Steps } from "../steps";
 import { Switch } from "../switch";
+import { Table } from "../table";
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
+import { TagInput } from "../tag-input";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Textarea } from "../textarea";
+import { Timeline } from "../timeline";
 import { Toast } from "../toast";
 import { Toggle } from "../toggle";
 import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
@@ -2437,6 +2441,72 @@ describe("component markers", () => {
 			expect(screen.getByTestId("k-toolbar-link")).toBeTruthy();
 			expect(screen.getByTestId("k-toolbar-toggle-group")).toBeTruthy();
 			expect(screen.getByTestId("k-toolbar-toggle-item")).toBeTruthy();
+		});
+	});
+
+	describe("Timeline, Breadcrumbs, TagInput, Table", () => {
+		it("Timeline exposes item, dot and line markers", async () => {
+			const screen = await render(
+				<Timeline
+					items={[{ title: "one", status: "success" }, { title: "two" }]}
+				/>,
+			);
+			expect(screen.getByTestId("k-timeline")).toBeTruthy();
+			expect(screen.getAllByTestId("k-timeline-item")).toHaveLength(2);
+			expect(screen.getAllByTestId("k-timeline-dot")).toHaveLength(2);
+			expect(screen.getAllByTestId("k-timeline-line")).toHaveLength(1);
+		});
+
+		it("Breadcrumbs and its skeleton expose crumb markers", async () => {
+			const screen = await render(
+				<Breadcrumbs items={[{ label: "home" }, { label: "here" }]} />,
+			);
+			expect(screen.getByTestId("k-breadcrumbs")).toBeTruthy();
+			expect(screen.getAllByTestId("k-breadcrumbs-item")).toHaveLength(2);
+			expect(screen.getAllByTestId("k-breadcrumbs-separator")).toHaveLength(1);
+
+			const skeleton = await render(<BreadcrumbsSkeleton depth={3} />);
+			expect(skeleton.getByTestId("k-breadcrumbs-skeleton")).toBeTruthy();
+			expect(
+				skeleton.getAllByTestId("k-breadcrumbs-skeleton-crumb"),
+			).toHaveLength(3);
+		});
+
+		it("TagInput exposes chip, field and clear markers", async () => {
+			const screen = await render(<TagInput defaultValue={["a"]} />);
+			expect(screen.getByTestId("k-tag-input")).toBeTruthy();
+			expect(screen.getAllByTestId("k-tag")).toHaveLength(1);
+			expect(screen.getByTestId("k-tag-input-field")).toBeTruthy();
+			expect(screen.getByTestId("k-tag-input-clear")).toBeTruthy();
+			expect(screen.getByTestId("k-tag-remove")).toBeTruthy();
+		});
+
+		it("Table exposes header, head, row, cell and skeleton markers", async () => {
+			const screen = await render(
+				<Table
+					columns={[
+						{ key: "a", header: "A" },
+						{ key: "b", header: "B" },
+					]}
+					rows={[{ a: "1", b: "2" }]}
+				/>,
+			);
+			expect(screen.getByTestId("k-table")).toBeTruthy();
+			expect(screen.getByTestId("k-table-header")).toBeTruthy();
+			expect(screen.getAllByTestId("k-table-head")).toHaveLength(2);
+			expect(screen.getAllByTestId("k-table-row")).toHaveLength(1);
+			expect(screen.getAllByTestId("k-table-cell")).toHaveLength(2);
+
+			const loading = await render(
+				<Table
+					columns={[{ key: "a", header: "A" }]}
+					rows={[]}
+					isLoading
+					skeletonConfig={{ rows: 2, columns: 1 }}
+				/>,
+			);
+			expect(loading.getByTestId("k-table-skeleton")).toBeTruthy();
+			expect(loading.queryByTestId("k-table")).toBeNull();
 		});
 	});
 

@@ -14,6 +14,7 @@ import { Avatar } from "../avatar";
 import { AvatarGroup } from "../avatar-group";
 import { Badge } from "../badge";
 import { Banner } from "../banner";
+import { Breadcrumbs } from "../breadcrumbs";
 import { Button } from "../button";
 import { Card } from "../card";
 import { Checkbox } from "../checkbox";
@@ -47,11 +48,14 @@ import { applySlot } from "../slot-styles";
 import { Spinner } from "../spinner";
 import { Steps } from "../steps";
 import { Switch } from "../switch";
+import { Table } from "../table";
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
+import { TagInput } from "../tag-input";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Textarea } from "../textarea";
+import { Timeline } from "../timeline";
 import { Toast } from "../toast";
 import { Toggle } from "../toggle";
 import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
@@ -163,6 +167,17 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			name: "Badge",
 			marker: "k-badge",
 			render: () => render(<Badge styles={{ root: { borderWidth: 7 } }} />),
+		},
+		{
+			name: "Breadcrumbs",
+			marker: "k-breadcrumbs",
+			render: () =>
+				render(
+					<Breadcrumbs
+						items={[{ label: "a" }, { label: "b" }]}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
+				),
 		},
 		{
 			name: "Button",
@@ -455,6 +470,18 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				),
 		},
 		{
+			name: "Table",
+			marker: "k-table",
+			render: () =>
+				render(
+					<Table
+						columns={[{ key: "a", header: "A" }]}
+						rows={[{ a: "1" }]}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
+				),
+		},
+		{
 			name: "Tag",
 			marker: "k-tag",
 			render: () => render(<Tag styles={{ root: { borderWidth: 7 } }}>t</Tag>),
@@ -476,6 +503,17 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			render: () => render(<Textarea styles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
+			name: "Timeline",
+			marker: "k-timeline",
+			render: () =>
+				render(
+					<Timeline
+						items={[{ title: "one" }, { title: "two" }]}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
+				),
+		},
+		{
 			name: "Toast",
 			marker: "k-toast",
 			render: () =>
@@ -486,6 +524,11 @@ describe("root slot sweep — every component accepts styles.root", () => {
 						styles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
+		},
+		{
+			name: "TagInput",
+			marker: "k-tag-input",
+			render: () => render(<TagInput styles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Toggle",
@@ -531,8 +574,8 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		});
 	}
 
-	it("the sweep covers all 48 components", () => {
-		expect(fixtures.length).toBe(48);
+	it("the sweep covers all 52 components", () => {
+		expect(fixtures.length).toBe(52);
 	});
 });
 

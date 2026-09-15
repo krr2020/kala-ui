@@ -2,6 +2,7 @@ import {
 	Avatar,
 	AvatarGroup,
 	Badge,
+	Breadcrumbs,
 	Button,
 	Card,
 	Checkbox,
@@ -23,7 +24,9 @@ import {
 	Spinner,
 	Steps,
 	Switch,
+	Table,
 	TextInput,
+	Timeline,
 	Toolbar,
 	ToolbarButton,
 	ToolbarSeparator,
@@ -211,6 +214,44 @@ export function BasicsDemo() {
 					]}
 					defaultValue={2}
 					onStepChange={() => undefined}
+				/>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-timeline">
+				<Timeline
+					items={[
+						{
+							title: "order placed",
+							description: "cart locked",
+							timestamp: "09:00",
+						},
+						{ title: "shipped", timestamp: "12:30", status: "success" },
+						{
+							title: "delivered",
+							description: "signed at the door",
+							status: "warning",
+						},
+					]}
+				/>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-breadcrumbs">
+				<Breadcrumbs
+					items={[
+						{ label: "home", onPress: () => undefined },
+						{ label: "orders", onPress: () => undefined },
+						{ label: "INV-42" },
+					]}
+				/>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-table">
+				<Table
+					columns={[
+						{ key: "name", header: "Name" },
+						{ key: "role", header: "Role" },
+					]}
+					rows={[
+						{ name: "Ada Lovelace", role: "engineer" },
+						{ name: "Grace Hopper", role: "admiral" },
+					]}
 				/>
 			</View>
 			<View style={demoStyles.componentRow} testID="k-demo-toolbar">

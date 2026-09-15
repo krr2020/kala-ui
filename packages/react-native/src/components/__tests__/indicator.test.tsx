@@ -73,14 +73,18 @@ describe("Indicator", () => {
 			"bottom-center",
 			"bottom-right",
 		] as const;
-		const screen = await render(<Indicator position="top-left">
+		const screen = await render(
+			<Indicator position="top-left">
 				<RNText>t</RNText>
-			</Indicator>);
+			</Indicator>,
+		);
 		const seen = new Set<string>();
 		for (const position of positions) {
-			await screen.rerender(<Indicator position={position}>
-				<RNText>t</RNText>
-			</Indicator>);
+			await screen.rerender(
+				<Indicator position={position}>
+					<RNText>t</RNText>
+				</Indicator>,
+			);
 			const signature = positionSignature(screen);
 			expect(seen.has(signature)).toBe(false);
 			seen.add(signature);
@@ -142,8 +146,8 @@ describe("Indicator", () => {
 		for (const arm of arms) {
 			await screen.rerender(
 				<Indicator color={arm} label="9">
-				<RNText>t</RNText>
-			</Indicator>,
+					<RNText>t</RNText>
+				</Indicator>,
 			);
 			const s = flatStyle(dot(screen));
 			expect(s.backgroundColor).toBe(themes.light[arm]);
@@ -155,9 +159,11 @@ describe("Indicator", () => {
 
 	it("withBorder adds a 2px ring in the surface color; default has none", async () => {
 		const { themes } = require("../../themes");
-		const screen = await render(<Indicator size={10}>
+		const screen = await render(
+			<Indicator size={10}>
 				<RNText>t</RNText>
-			</Indicator>);
+			</Indicator>,
+		);
 		const plain = flatStyle(dot(screen));
 		expect(Number(plain.borderWidth)).toBe(0);
 
@@ -186,9 +192,11 @@ describe("Indicator", () => {
 		expect(s.width).toBeUndefined();
 		expect(Number(s.borderRadius)).toBe(5);
 
-		await screen.rerender(<Indicator size={10}>
+		await screen.rerender(
+			<Indicator size={10}>
 				<RNText>t</RNText>
-			</Indicator>);
+			</Indicator>,
+		);
 		const bare = flatStyle(dot(screen));
 		expect(Number(bare.width)).toBe(10);
 		expect(bare.fontSize).toBeUndefined();
@@ -212,8 +220,8 @@ describe("Indicator", () => {
 		try {
 			const screen = await render(
 				<Indicator processing size={10}>
-				<RNText>t</RNText>
-			</Indicator>,
+					<RNText>t</RNText>
+				</Indicator>,
 			);
 			expect(stops.length).toBe(1);
 			act(() => {
@@ -231,9 +239,11 @@ describe("Indicator", () => {
 		const loop = jest.fn(origLoop);
 		AnimatedRN.loop = loop as typeof AnimatedRN.loop;
 		try {
-			await render(<Indicator size={10}>
-				<RNText>t</RNText>
-			</Indicator>);
+			await render(
+				<Indicator size={10}>
+					<RNText>t</RNText>
+				</Indicator>,
+			);
 			expect(loop).not.toHaveBeenCalled();
 		} finally {
 			AnimatedRN.loop = origLoop;

@@ -12,6 +12,7 @@ import { AlertDialog } from "../alert-dialog";
 import { Avatar } from "../avatar";
 import { AvatarGroup } from "../avatar-group";
 import { Banner } from "../banner";
+import { Breadcrumbs } from "../breadcrumbs";
 import { Button } from "../button";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
@@ -40,11 +41,14 @@ import { Slider } from "../slider";
 import { Spinner } from "../spinner";
 import { Steps } from "../steps";
 import { Switch } from "../switch";
+import { Table } from "../table";
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
+import { TagInput } from "../tag-input";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Textarea } from "../textarea";
+import { Timeline } from "../timeline";
 import { Toast } from "../toast";
 import {
 	Toolbar,
@@ -988,6 +992,64 @@ describe("a11y contract", () => {
 			expect(screen.getByLabelText("bold")).toBeTruthy();
 			expect(screen.getByLabelText("docs")).toBeTruthy();
 			expect(screen.getByLabelText("align left")).toBeTruthy();
+		});
+	});
+
+	describe("Timeline, Breadcrumbs, TagInput, Table", () => {
+		it("Timeline items announce title, timestamp and description", async () => {
+			const screen = await render(
+				<Timeline
+					items={[
+						{
+							title: "Shipped",
+							description: "in transit",
+							timestamp: "12:30",
+						},
+					]}
+				/>,
+			);
+			const item = screen.getByTestId("k-timeline-item");
+			expect(item.props.accessibilityLabel).toContain("Shipped");
+			expect(item.props.accessibilityLabel).toContain("12:30");
+			expect(item.props.accessibilityLabel).toContain("in transit");
+		});
+
+		it("Breadcrumbs announces the current page on the last crumb", async () => {
+			const screen = await render(
+				<Breadcrumbs
+					items={[
+						{ label: "home", onPress: () => undefined },
+						{ label: "orders" },
+					]}
+				/>,
+			);
+			expect(screen.getByLabelText("orders (current page)")).toBeTruthy();
+			expect(screen.getByText("home")).toBeTruthy();
+		});
+
+		it("TagInput labels the entry field and remove buttons", async () => {
+			const screen = await render(
+				<TagInput defaultValue={["alpha"]} placeholder="add recipients" />,
+			);
+			expect(
+				screen.getByTestId("k-tag-input-field").props.accessibilityLabel,
+			).toBe("add recipients");
+			expect(screen.getByLabelText("Remove alpha")).toBeTruthy();
+		});
+
+		it("Table header announces its columns", async () => {
+			const screen = await render(
+				<Table
+					columns={[
+						{ key: "name", header: "Name" },
+						{ key: "role", header: "Role" },
+					]}
+					rows={[{ name: "Ada", role: "engineer" }]}
+				/>,
+			);
+			const header = screen.getByTestId("k-table-header");
+			expect(header.props.accessibilityLabel).toContain("Name");
+			expect(header.props.accessibilityLabel).toContain("Role");
 		});
 	});
 });

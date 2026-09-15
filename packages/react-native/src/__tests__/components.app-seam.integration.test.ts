@@ -124,6 +124,10 @@ describe("component app seam", () => {
 			"DropdownMenu",
 			"ContextMenu",
 			"Toolbar",
+			"Timeline",
+			"Breadcrumbs",
+			"TagInput",
+			"Table",
 			"Indicator",
 			"Field",
 			"Select",
@@ -157,8 +161,9 @@ describe("component app seam", () => {
 		// 25 interactive demos: sheet/dialog/confirm/faq/advanced +
 		// toast/banner + agree/sync/plan + range/tab/rating/page/volume +
 		// bold/align/formats + select + loading toggle + crash toggle +
-		// otp code entry + menu auto-sync/last-action + toolbar align.
-		expect(demoHooks).toBe(25);
+		// otp code entry + menu auto-sync/last-action + toolbar align +
+		// tag recipients.
+		expect(demoHooks).toBe(26);
 	});
 
 	it("render-surface census matches the pinned marker/label inventory", () => {
@@ -209,6 +214,10 @@ describe("component app seam", () => {
 					'testID="k-demo-dropdown-menu"': 1,
 					'testID="k-demo-context-menu"': 1,
 					'testID="k-demo-toolbar"': 1,
+					'testID="k-demo-timeline"': 1,
+					'testID="k-demo-breadcrumbs"': 1,
+					'testID="k-demo-table"': 1,
+					'testID="k-demo-tag-input"': 1,
 					'testID="k-demo-segmented"': 1,
 					'testID="k-demo-skeletons"': 1,
 					'testID="k-demo-slider"': 1,

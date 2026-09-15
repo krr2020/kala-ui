@@ -43,6 +43,13 @@ export type {
 	BannerSkeletonConfig,
 } from "./components/banner";
 export { Banner } from "./components/banner";
+export type {
+	BreadcrumbItem,
+	BreadcrumbsProps,
+	BreadcrumbsSkeletonConfig,
+	BreadcrumbsSkeletonProps,
+} from "./components/breadcrumbs";
+export { Breadcrumbs, BreadcrumbsSkeleton } from "./components/breadcrumbs";
 export type { ButtonProps } from "./components/button";
 export { Button } from "./components/button";
 export type { CardProps } from "./components/card";
@@ -204,15 +211,19 @@ export type {
 export { Steps } from "./components/steps";
 export type { SwitchProps } from "./components/switch";
 export { Switch } from "./components/switch";
+export type {
+	TableColumn,
+	TableProps,
+	TableRow,
+	TableSkeletonConfig,
+} from "./components/table";
+export { Table, TableSkeleton } from "./components/table";
 export type { TabsItem, TabsProps } from "./components/tabs";
 export { Tabs } from "./components/tabs";
-export type {
-	TagColor,
-	TagProps,
-	TagSize,
-	TagVariant,
-} from "./components/tag";
+export type { TagColor, TagProps, TagSize, TagVariant } from "./components/tag";
 export { Tag } from "./components/tag";
+export type { TagInputProps } from "./components/tag-input";
+export { TagInput } from "./components/tag-input";
 export type {
 	TextAlign,
 	TextColor,
@@ -225,6 +236,12 @@ export type { TextInputProps } from "./components/text-input";
 export { TextInput } from "./components/text-input";
 export type { TextareaProps } from "./components/textarea";
 export { Textarea } from "./components/textarea";
+export type {
+	TimelineItemData,
+	TimelineProps,
+	TimelineStatus,
+} from "./components/timeline";
+export { Timeline } from "./components/timeline";
 export type {
 	ToastDescriptionProps,
 	ToastPosition,

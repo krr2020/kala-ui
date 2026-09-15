@@ -10,6 +10,7 @@ import {
 	LoadingOverlay,
 	PasswordStrengthIndicator,
 	Select,
+	TagInput,
 	Textarea,
 	Toast,
 } from "@kala-ui/react-native";
@@ -28,6 +29,7 @@ export function FeedbackDemo() {
 	const [loading, setLoading] = useState(false);
 	const [crashKey, setCrashKey] = useState(0);
 	const [code, setCode] = useState("");
+	const [recipients, setRecipients] = useState<string[]>(["ada"]);
 	return (
 		<>
 			<Alert color="success" dismissable onDismiss={() => setToastOpen(true)}>
@@ -100,6 +102,13 @@ export function FeedbackDemo() {
 			</View>
 			<View style={demoStyles.componentRow} testID="k-demo-password-strength">
 				<PasswordStrengthIndicator password="Aaaaaaaaaaaa1!" />
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-tag-input">
+				<TagInput
+					value={recipients}
+					onValueChange={setRecipients}
+					placeholder="add recipients"
+				/>
 			</View>
 			<View style={demoStyles.componentRow} testID="k-demo-error-boundary">
 				<ErrorBoundary resetKeys={[crashKey]}>

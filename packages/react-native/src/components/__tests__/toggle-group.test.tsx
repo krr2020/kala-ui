@@ -145,9 +145,7 @@ describe("ToggleGroup", () => {
 				</ToggleGroupItem>
 			</ToggleGroup>,
 		);
-		const heights = items(screen).map((item) =>
-			Number(flatStyle(item).height),
-		);
+		const heights = items(screen).map((item) => Number(flatStyle(item).height));
 		expect(heights[0]).toBe(44);
 		expect(heights[1]).toBe(36);
 	});
@@ -165,9 +163,7 @@ describe("ToggleGroup", () => {
 		await fireEvent.press(items(screen)[0]);
 		expect(onValueChange).not.toHaveBeenCalled();
 		expect(Number(flatStyle(items(screen)[0]).opacity)).toBeLessThan(1);
-		expect(
-			items(screen)[0].props.accessibilityState.disabled,
-		).toBe(true);
+		expect(items(screen)[0].props.accessibilityState.disabled).toBe(true);
 
 		await screen.rerender(
 			<ToggleGroup type="single" disabled onValueChange={onValueChange}>
@@ -203,10 +199,7 @@ describe("ToggleGroup", () => {
 				const n = node as { type?: string; children?: unknown };
 				if (n.type === "Text") {
 					found.push(
-						...((Array.isArray(n.children)
-							? n.children
-							: [n.children]
-						).filter(
+						...((Array.isArray(n.children) ? n.children : [n.children]).filter(
 							(child: unknown) => typeof child === "string",
 						) as string[]),
 					);
