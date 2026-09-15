@@ -8,6 +8,7 @@ import type { ReactElement } from "react";
 import { Inbox } from "lucide-react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import { Icon } from "../icon";
 import { Skeleton } from "../skeleton";
 import { tokens } from "../../tokens";
@@ -25,6 +26,7 @@ export function EmptyState({
 	isLoading = false,
 	children,
 	accessibilityLabel,
+	styles,
 	testID = "k-empty-state",
 }: EmptyStateProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -59,44 +61,50 @@ export function EmptyState({
 			accessible={true}
 			accessibilityRole="summary"
 			accessibilityLabel={accessibilityLabel ?? title}
-			style={surface}
+			style={applySlot(surface, styles?.root)}
 		>
 			<View
 				testID="k-empty-state-icon"
 				accessibilityElementsHidden={true}
-				style={{
+				style={applySlot({
 					width: 80,
 					height: 80,
 					borderRadius: 999,
 					backgroundColor: theme.muted,
 					alignItems: "center",
 					justifyContent: "center",
-				}}
+				}, styles?.icon)}
 			>
 				<Icon icon={IconComponent} size="xl" color={theme.mutedForeground} />
 			</View>
 			<RNText
 				testID="k-empty-state-title"
-				style={{
-					marginTop: 16,
-					fontSize: 18,
-					fontWeight: "600",
-					color: theme.foreground,
-					textAlign: "center",
-				}}
+				style={applySlot(
+					{
+						marginTop: 16,
+						fontSize: 18,
+						fontWeight: "600",
+						color: theme.foreground,
+						textAlign: "center",
+					},
+					styles?.title,
+				)}
 			>
 				{title}
 			</RNText>
 			{description !== undefined && (
 				<RNText
 					testID="k-empty-state-description"
-					style={{
-						marginTop: 8,
-						marginBottom: 16,
-						fontSize: 14,
-						color: theme.mutedForeground,
-						textAlign: "center",
-					}}
+					style={applySlot(
+						{
+							marginTop: 8,
+							marginBottom: 16,
+							fontSize: 14,
+							color: theme.mutedForeground,
+							textAlign: "center",
+						},
+						styles?.description,
+					)}
 				>
 					{description}
 				</RNText>
@@ -107,14 +115,14 @@ export function EmptyState({
 					accessibilityRole="button"
 					accessibilityLabel={action.label}
 					onPress={action.onPress}
-					style={{
+					style={applySlot({
 						minHeight: 44,
 						paddingHorizontal: 16,
 						borderRadius: tokens.radius.control,
 						backgroundColor: theme.primary,
 						alignItems: "center",
 						justifyContent: "center",
-					}}
+					}, styles?.action)}
 				>
 					<RNText
 						style={{ color: theme.primaryForeground, fontSize: 14, fontWeight: "600" }}

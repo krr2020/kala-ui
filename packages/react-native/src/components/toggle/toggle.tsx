@@ -10,6 +10,7 @@ import { Pressable, Text as RNText, View } from "react-native";
 import type { ViewStyle } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
+import { applySlot } from "../slot-styles";
 import type { ToggleProps, ToggleSize, ToggleVariant } from "./toggle.types";
 
 export const TOGGLE_HEIGHT: Record<ToggleSize, number> = {
@@ -96,6 +97,7 @@ export function Toggle({
 	disabled = false,
 	accessibilityLabel,
 	style,
+	styles,
 	testID = "k-toggle",
 }: ToggleProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -122,7 +124,7 @@ export function Toggle({
 				disabled: disabled || undefined,
 			}}
 			disabled={disabled}
-			style={[look.style, style]}
+			style={applySlot(applySlot(look.style, style), styles?.root)}
 		>
 			<ToggleContent fg={look.fg} size={size}>
 				{children}

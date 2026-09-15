@@ -9,6 +9,7 @@ import type { ReactElement } from "react";
 import type { TextStyle } from "react-native";
 import { Text as RNText } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type { TextAlign, TextProps, TextSize, TextWeight } from "./text.types";
 
 const FONT_SIZE: Record<TextSize, number> = {
@@ -59,6 +60,7 @@ export function Text({
 	color = "foreground",
 	truncate = false,
 	style,
+	styles,
 	testID = "k-text",
 }: TextProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -78,7 +80,7 @@ export function Text({
 					textAlign: ALIGN[align],
 					color: String(resolved),
 				},
-				style,
+				applySlot(applySlot({}, style), styles?.root),
 			]}
 		>
 			{children}

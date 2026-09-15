@@ -23,5 +23,10 @@ export interface ProgressProps {
 	showValue?: boolean;
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
+	/** Slot overrides: root wins over the library surface and `style`. */
+	styles?: {
+		root?: StyleProp<ViewStyle>;
+		indicator?: StyleProp<ViewStyle>;
+	};
 	testID?: string;
 }

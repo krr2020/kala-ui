@@ -13,6 +13,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useUnistyles } from "react-native-unistyles";
 import { motion, tokens } from "../../tokens";
+import { applySlot } from "../slot-styles";
 import type {
 	ButtonColor,
 	ButtonProps,
@@ -137,6 +138,8 @@ export function Button({
 	disabled = false,
 	onPress,
 	accessibilityLabel,
+	style,
+	styles,
 	testID = "k-button-root",
 }: ButtonProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -173,7 +176,10 @@ export function Button({
 			}}
 			style={[
 				pressStyle,
-				baseStyle(size, fullWidth, rounded, look, effectiveDisabled),
+				applySlot(
+					applySlot(baseStyle(size, fullWidth, rounded, look, effectiveDisabled), style),
+					styles?.root,
+				),
 			]}
 		>
 			{isLoading ? (

@@ -9,11 +9,13 @@ import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
+import { applySlot } from "../slot-styles";
 import type { CardProps } from "./card.types";
 
 export function Card({
 	children,
 	style,
+	styles,
 	testID = "k-card",
 }: CardProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -29,7 +31,7 @@ export function Card({
 					padding: tokens.space.cardPad,
 					gap: 8,
 				},
-				style,
+				applySlot(applySlot({}, style), styles?.root),
 			]}
 		>
 			{typeof children === "string" || typeof children === "number" ? (

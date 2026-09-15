@@ -8,6 +8,7 @@
 import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type { BadgeColor, BadgeProps, BadgeShape, BadgeVariant } from "./badge.types";
 
 interface KalaThemeShape {
@@ -60,6 +61,7 @@ export function Badge({
 	color = "primary",
 	shape = "rounded",
 	style,
+	styles,
 	testID = "k-badge",
 }: BadgeProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -79,7 +81,7 @@ export function Badge({
 					backgroundColor: bg,
 					borderColor: border,
 				},
-				style,
+				applySlot(applySlot({}, style), styles?.root),
 			]}
 		>
 			{typeof children === "string" || typeof children === "number" ? (

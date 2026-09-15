@@ -8,6 +8,7 @@ import { useState } from "react";
 import type { ReactElement } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type {
 	SegmentedControlData,
 	SegmentedControlItem,
@@ -54,6 +55,7 @@ export function SegmentedControl({
 	size = "sm",
 	radius = "sm",
 	accessibilityLabel,
+	styles,
 	testID = "k-segmented",
 }: SegmentedControlProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -78,14 +80,17 @@ export function SegmentedControl({
 			accessibilityRole="radiogroup"
 			accessibilityLabel={accessibilityLabel}
 			accessibilityState={disabled ? { disabled: true } : undefined}
-			style={{
-				flexDirection: "row",
-				alignSelf: fullWidth ? "stretch" : "flex-start",
-				backgroundColor: theme.muted,
-				padding: 4,
-				borderRadius: RADIUS[radius],
-				opacity: disabled ? 0.6 : 1,
-			}}
+			style={applySlot(
+				{
+					flexDirection: "row",
+					alignSelf: fullWidth ? "stretch" : "flex-start",
+					backgroundColor: theme.muted,
+					padding: 4,
+					borderRadius: RADIUS[radius],
+					opacity: disabled ? 0.6 : 1,
+				},
+				styles?.root,
+			)}
 		>
 			{items.map((item) => {
 				const isActive = item.value === active;
@@ -99,29 +104,35 @@ export function SegmentedControl({
 						accessibilityState={{ checked: isActive, disabled: itemDisabled }}
 						disabled={itemDisabled}
 						onPress={() => select(item.value)}
-						style={{
-							minHeight: 44,
-							height,
-							minWidth: 70,
-							flex: fullWidth ? 1 : undefined,
-							alignItems: "center",
-							justifyContent: "center",
-							paddingHorizontal: 12,
-							borderRadius: RADIUS[radius],
-						}}
+						style={applySlot(
+							{
+								minHeight: 44,
+								height,
+								minWidth: 70,
+								flex: fullWidth ? 1 : undefined,
+								alignItems: "center",
+								justifyContent: "center",
+								paddingHorizontal: 12,
+								borderRadius: RADIUS[radius],
+							},
+							styles?.segment,
+						)}
 					>
 						{isActive && (
 							<View
 								testID="k-segment-indicator"
-								style={{
-									position: "absolute",
-									top: 0,
-									bottom: 0,
-									left: 0,
-									right: 0,
-									backgroundColor: theme.background,
-									borderRadius: RADIUS[radius],
-								}}
+								style={applySlot(
+									{
+										position: "absolute",
+										top: 0,
+										bottom: 0,
+										left: 0,
+										right: 0,
+										backgroundColor: theme.background,
+										borderRadius: RADIUS[radius],
+									},
+									styles?.indicator,
+								)}
 							/>
 						)}
 						<RNText

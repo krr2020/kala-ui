@@ -34,5 +34,9 @@ export interface TextProps {
 	/** single-line clamp with trailing ellipsis */
 	truncate?: boolean;
 	style?: StyleProp<TextStyle>;
+	/** Slot overrides: root wins over the library surface and `style`. */
+	styles?: {
+		root?: StyleProp<TextStyle>;
+	};
 	testID?: string;
 }

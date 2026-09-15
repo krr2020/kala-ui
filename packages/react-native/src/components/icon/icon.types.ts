@@ -1,3 +1,4 @@
+import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import type { LucideIcon } from "lucide-react-native";
 import type { KalaTheme } from "../../types";
 
@@ -11,5 +12,9 @@ export interface IconProps {
 	color?: keyof KalaTheme | (string & {});
 	/** when set, the icon joins the accessibility tree as an image */
 	label?: string;
+	/** Slot overrides: root wins over the library surface and `style`. */
+	styles?: {
+		root?: StyleProp<ViewStyle>;
+	};
 	testID?: string;
 }

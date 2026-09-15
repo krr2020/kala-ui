@@ -8,6 +8,7 @@
 import type { ReactElement } from "react";
 import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type { IconProps } from "./icon.types";
 
 const SIZE_PX = {
@@ -23,6 +24,7 @@ export function Icon({
 	size = "md",
 	color = "foreground",
 	label,
+	styles,
 	testID = "k-icon",
 }: IconProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -37,6 +39,7 @@ export function Icon({
 			accessibilityRole={label ? "image" : undefined}
 			accessibilityLabel={label}
 			accessibilityElementsHidden={label ? undefined : true}
+			style={applySlot({}, styles?.root)}
 		>
 			<Component size={SIZE_PX[size]} color={String(resolved)} />
 		</View>

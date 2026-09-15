@@ -745,9 +745,63 @@ describe("precedence and back-compat", () => {
 				<RadioGroup.Item value="a" label="a" />
 			</RadioGroup>,
 		);
-		expect(Number(flatStyle(rg.getByTestId("k-radio-group")).opacity)).toBe(
-			0.9,
+		expect(
+			Number(flatStyle(rg.getByTestId("k-radio-group")).opacity),
+		).toBe(0.9);
+	});
+
+	it("toggle ladder: look → style → styles.root", async () => {
+		const tg = await render(
+			<Toggle style={{ opacity: 0.2 }} styles={{ root: { opacity: 0.9 } }}>
+				t
+			</Toggle>,
 		);
+		expect(Number(flatStyle(tg.getByTestId("k-toggle")).opacity)).toBe(0.9);
+	});
+
+	it("toggle-group item ladder: look → style → group itemStyles → styles.root", async () => {
+		// (a) item styles.root beats the item's legacy style
+		const a = await render(
+			<ToggleGroup type="single">
+				<ToggleGroupItem
+					value="a"
+					style={{ opacity: 0.2 }}
+					styles={{ root: { opacity: 0.9 } }}
+				>
+					a
+				</ToggleGroupItem>
+			</ToggleGroup>,
+		);
+		expect(
+				Number(flatStyle(a.getByTestId("k-toggle-group-item")).opacity),
+		).toBe(0.9);
+
+		// (b) group itemStyles beats the item's legacy style (no styles.root)
+		const b = await render(
+			<ToggleGroup type="single" styles={{ item: { opacity: 0.7 } }}>
+				<ToggleGroupItem value="a" style={{ opacity: 0.2 }}>
+					a
+				</ToggleGroupItem>
+			</ToggleGroup>,
+		);
+		expect(
+				Number(flatStyle(b.getByTestId("k-toggle-group-item")).opacity),
+		).toBe(0.7);
+
+		// (c) item styles.root beats group itemStyles
+		const c = await render(
+			<ToggleGroup type="single" styles={{ item: { opacity: 0.7 } }}>
+				<ToggleGroupItem
+					value="a"
+					styles={{ root: { opacity: 0.9 } }}
+				>
+					a
+				</ToggleGroupItem>
+			</ToggleGroup>,
+		);
+		expect(
+				Number(flatStyle(c.getByTestId("k-toggle-group-item")).opacity),
+		).toBe(0.9);
 	});
 
 	it("legacy style prop alone still applies (button, sheet, toggle)", async () => {

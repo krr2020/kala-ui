@@ -6,8 +6,10 @@
  */
 import { createContext, useContext, useState } from "react";
 import type { ReactElement, ReactNode } from "react";
+import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import { TOGGLE_FONT, toggleSurface } from "../toggle/toggle";
 import type { ToggleSize, ToggleVariant } from "../toggle/toggle.types";
 import type {
@@ -22,6 +24,7 @@ interface GroupState {
 	disabled: boolean;
 	size?: ToggleSize;
 	variant?: ToggleVariant;
+	itemStyles?: StyleProp<ViewStyle>;
 	toggle: (value: string) => void;
 }
 
@@ -40,6 +43,7 @@ export function ToggleGroup({
 	variant,
 	disabled = false,
 	accessibilityLabel,
+	styles,
 	testID = "k-toggle-group",
 }: ToggleGroupProps): ReactElement {
 	// controlled lock: a provided value prop always wins over internal state
@@ -64,19 +68,22 @@ export function ToggleGroup({
 
 	return (
 		<ToggleGroupContext.Provider
-			value={{ type, values, disabled, size, variant, toggle }}
+			value={{ type, values, disabled, size, variant, itemStyles: styles?.item, toggle }}
 		>
 			<View
 				testID={testID}
 				accessibilityRole="toolbar"
 				accessibilityLabel={accessibilityLabel}
 				accessibilityState={disabled ? { disabled: true } : undefined}
-				style={{
-					flexDirection: "row",
-					flexWrap: "wrap",
-					alignItems: "center",
-					gap: 4,
-				}}
+				style={applySlot(
+					{
+						flexDirection: "row",
+						flexWrap: "wrap",
+						alignItems: "center",
+						gap: 4,
+					},
+					styles?.root,
+				)}
 			>
 				{children}
 			</View>
@@ -114,6 +121,7 @@ export function ToggleGroupItem({
 	disabled,
 	accessibilityLabel,
 	style,
+	styles,
 	testID = "k-toggle-group-item",
 }: ToggleGroupItemProps): ReactElement {
 	const group = useContext(ToggleGroupContext);
@@ -142,7 +150,10 @@ export function ToggleGroupItem({
 				disabled: itemDisabled || undefined,
 			}}
 			disabled={itemDisabled}
-			style={[look.style, style]}
+			style={applySlot(
+				applySlot(applySlot(look.style, style), group?.itemStyles),
+				styles?.root,
+			)}
 		>
 			<ItemContent fg={look.fg} size={effSize}>
 				{children}

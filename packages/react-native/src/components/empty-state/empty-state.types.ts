@@ -1,3 +1,4 @@
+import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import type { LucideIcon } from "lucide-react-native";
 import type { ReactNode } from "react";
 
@@ -21,5 +22,13 @@ export interface EmptyStateProps {
 	isLoading?: boolean;
 	children?: ReactNode;
 	accessibilityLabel?: string;
+	/** Slot overrides: root wins over the library surface and `style`. */
+	styles?: {
+		root?: StyleProp<ViewStyle>;
+		icon?: StyleProp<ViewStyle>;
+		title?: StyleProp<TextStyle>;
+		description?: StyleProp<TextStyle>;
+		action?: StyleProp<ViewStyle>;
+	};
 	testID?: string;
 }

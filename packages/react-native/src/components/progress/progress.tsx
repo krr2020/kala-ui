@@ -8,6 +8,7 @@
 import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type { ProgressProps, ProgressSize } from "./progress.types";
 
 const HEIGHT: Record<ProgressSize, number> = { sm: 4, md: 10, lg: 16 };
@@ -22,6 +23,7 @@ export function Progress({
 	showValue = false,
 	accessibilityLabel,
 	style,
+	styles,
 	testID = "k-progress",
 }: ProgressProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -49,19 +51,22 @@ export function Progress({
 					overflow: "hidden",
 					flexDirection: "row",
 				},
-				style,
+				applySlot(applySlot([], style), styles?.root),
 			]}
 		>
 			<View
-				testID="k-progress-indicator"
-				style={{
-					width: `${pct}%`,
-					height: "100%",
-					backgroundColor: themeMap[color],
-					alignItems: "center",
-					justifyContent: "center",
-				}}
-			>
+					testID="k-progress-indicator"
+					style={[
+						{
+							width: `${pct}%`,
+							height: "100%",
+							backgroundColor: themeMap[color],
+							alignItems: "center",
+							justifyContent: "center",
+						},
+						styles?.indicator,
+					]}
+				>
 				{inner !== null && size !== "sm" ? (
 					<RNText
 						style={{

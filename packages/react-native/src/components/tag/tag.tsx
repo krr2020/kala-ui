@@ -11,6 +11,7 @@ import { X } from "lucide-react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Icon } from "../icon";
+import { applySlot } from "../slot-styles";
 import type { TagColor, TagProps, TagSize, TagVariant } from "./tag.types";
 
 interface KalaThemeShape {
@@ -54,6 +55,7 @@ export function Tag({
 	onRemove,
 	icon,
 	children,
+	styles,
 	testID = "k-tag",
 }: TagProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -62,18 +64,21 @@ export function Tag({
 	return (
 		<View
 			testID={testID}
-			style={{
-				flexDirection: "row",
-				alignItems: "center",
-				alignSelf: "flex-start",
-				gap: 4,
-				paddingHorizontal: PAD_H[size],
-				paddingVertical: PAD_V[size],
-				borderRadius: 999,
-				backgroundColor: bg,
-				borderWidth: variant === "outline" ? 1 : 0,
-				borderColor: border,
-			}}
+			style={applySlot(
+				{
+					flexDirection: "row",
+					alignItems: "center",
+					alignSelf: "flex-start",
+					gap: 4,
+					paddingHorizontal: PAD_H[size],
+					paddingVertical: PAD_V[size],
+					borderRadius: 999,
+					backgroundColor: bg,
+					borderWidth: variant === "outline" ? 1 : 0,
+					borderColor: border,
+				},
+				styles?.root,
+			)}
 		>
 			{icon}
 			{children !== undefined && children !== null && (
@@ -87,14 +92,17 @@ export function Tag({
 					accessibilityRole="button"
 					accessibilityLabel="Remove"
 					onPress={onRemove}
-					style={{
-						minWidth: 44,
-						minHeight: 44,
-						marginHorizontal: -12,
-						marginVertical: -14,
-						alignItems: "center",
-						justifyContent: "center",
-					}}
+					style={applySlot(
+						{
+							minWidth: 44,
+							minHeight: 44,
+							marginHorizontal: -12,
+							marginVertical: -14,
+							alignItems: "center",
+							justifyContent: "center",
+						},
+						styles?.remove,
+					)}
 				>
 					<Icon icon={X} size="xs" color={fg} />
 				</Pressable>

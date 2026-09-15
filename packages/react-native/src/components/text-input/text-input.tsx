@@ -8,12 +8,14 @@ import type { ReactElement } from "react";
 import { TextInput as RNTextInput } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
+import { applySlot } from "../slot-styles";
 import type { TextInputProps } from "./text-input.types";
 
 export function TextInput({
 	hasError = false,
 	disabled = false,
 	style,
+	styles,
 	testID = "k-text-input",
 	...rest
 }: TextInputProps): ReactElement {
@@ -36,7 +38,7 @@ export function TextInput({
 					borderColor: hasError ? theme.destructive : theme.border,
 					opacity: disabled ? 0.5 : 1,
 				},
-				style,
+				applySlot(applySlot({}, style), styles?.root),
 			]}
 			{...rest}
 		/>

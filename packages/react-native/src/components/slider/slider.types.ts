@@ -25,5 +25,12 @@ export interface SliderProps {
 	/** Accessible label carried by each adjustable thumb */
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
+	/** Slot overrides: root wins over the library surface and `style`. */
+	styles?: {
+		root?: StyleProp<ViewStyle>;
+		track?: StyleProp<ViewStyle>;
+		range?: StyleProp<ViewStyle>;
+		thumb?: StyleProp<ViewStyle>;
+	};
 	testID?: string;
 }

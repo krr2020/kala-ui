@@ -6,12 +6,14 @@
 import type { ReactElement } from "react";
 import { Text as RNText } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type { LabelProps } from "./label.types";
 
 export function Label({
 	children,
 	required = false,
 	style,
+	styles,
 	testID = "k-label",
 }: LabelProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -24,7 +26,7 @@ export function Label({
 					fontWeight: "500",
 					color: theme.foreground,
 				},
-				style,
+				applySlot(applySlot({}, style), styles?.root),
 			]}
 		>
 			{children}

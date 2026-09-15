@@ -8,6 +8,7 @@ import type { ReactElement } from "react";
 import type { TextStyle } from "react-native";
 import { Text as RNText } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type {
 	HeadingAlign,
 	HeadingProps,
@@ -43,6 +44,7 @@ export function Heading({
 	weight = "default",
 	align = "left",
 	style,
+	styles,
 	testID = "k-heading",
 }: HeadingProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -59,7 +61,7 @@ export function Heading({
 					// tracking-tight, in dp
 					letterSpacing: -0.5,
 				},
-				style,
+				applySlot(applySlot({}, style), styles?.root),
 			]}
 		>
 			{children}

@@ -8,6 +8,7 @@ import { useEffect, useRef } from "react";
 import type { ReactElement } from "react";
 import { Animated, Easing } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type { SkeletonProps, SkeletonVariant } from "./skeleton.types";
 
 const RADIUS: Record<SkeletonVariant, number> = { rect: 8, circle: 999 };
@@ -16,6 +17,7 @@ export function Skeleton({
 	variant = "rect",
 	animated = true,
 	style,
+	styles,
 	testID = "k-skeleton",
 }: SkeletonProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -55,7 +57,7 @@ export function Skeleton({
 					borderRadius: RADIUS[variant],
 					opacity: animated ? pulse : 1,
 				},
-				style,
+				applySlot(applySlot({}, style), styles?.root),
 			]}
 		/>
 	);

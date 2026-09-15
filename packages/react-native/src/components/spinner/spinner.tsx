@@ -10,6 +10,7 @@ import type { ReactElement } from "react";
 import { Loader } from "lucide-react-native";
 import { Animated, Easing } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type { SpinnerProps, SpinnerSize } from "./spinner.types";
 
 const SIZE: Record<SpinnerSize, number> = { sm: 16, md: 24, lg: 32, xl: 48 };
@@ -20,6 +21,7 @@ export function Spinner({
 	label = "Loading...",
 	accessibilityLabel,
 	style,
+	styles,
 	testID = "k-spinner",
 }: SpinnerProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -63,7 +65,7 @@ export function Spinner({
 					justifyContent: "center",
 					opacity: variant === "ghost" ? 0.6 : 1,
 				},
-				style,
+				applySlot(applySlot({}, style), styles?.root),
 			]}
 		>
 			<Animated.View style={{ transform: [{ rotate }] }}>

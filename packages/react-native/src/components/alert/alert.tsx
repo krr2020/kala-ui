@@ -16,6 +16,7 @@ import {
 } from "lucide-react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type {
 	AlertColor,
 	AlertDescriptionProps,
@@ -82,6 +83,7 @@ export function Alert({
 	onDismiss,
 	accessibilityLabel,
 	style,
+	styles,
 	testID = "k-alert",
 }: AlertProps): ReactElement | null {
 	const { theme } = useUnistyles();
@@ -119,7 +121,7 @@ export function Alert({
 					borderColor: border,
 					borderWidth: variant === "outline" ? 1 : 0,
 				},
-				style,
+				applySlot(applySlot({}, style), styles?.root),
 			]}
 		>
 			{showIcon ? <Icon size={18} color={fg} /> : null}
@@ -142,7 +144,7 @@ export function Alert({
 						setHidden(true);
 						onDismiss?.();
 					}}
-					style={{ padding: 2, opacity: 0.8 }}
+					style={applySlot({ padding: 2, opacity: 0.8 }, styles?.dismiss)}
 				>
 					<X size={16} color={fg} />
 				</Pressable>
@@ -154,6 +156,7 @@ export function Alert({
 function AlertTitle({
 	children,
 	style,
+	styles,
 	testID = "k-alert-title",
 }: AlertTitleProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -161,7 +164,7 @@ function AlertTitle({
 	return (
 		<RNText
 			testID={testID}
-			style={[{ color: fg, fontSize: 15, fontWeight: "600" }, style]}
+			style={applySlot([{ color: fg, fontSize: 15, fontWeight: "600" }, style], styles?.root)}
 		>
 			{children}
 		</RNText>
@@ -171,6 +174,7 @@ function AlertTitle({
 function AlertDescription({
 	children,
 	style,
+	styles,
 	testID = "k-alert-description",
 }: AlertDescriptionProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -178,7 +182,7 @@ function AlertDescription({
 	return (
 		<RNText
 			testID={testID}
-			style={[{ color: fg, fontSize: 14, fontWeight: "400" }, style]}
+			style={applySlot([{ color: fg, fontSize: 14, fontWeight: "400" }, style], styles?.root)}
 		>
 			{children}
 		</RNText>
