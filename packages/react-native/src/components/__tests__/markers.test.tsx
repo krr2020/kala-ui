@@ -8,7 +8,7 @@ import { fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
 import { motion } from "../../tokens";
 import { Alert } from "../alert";
-import { Avatar } from "../avatar";
+import { Avatar, STATUS_ONLINE_HUE } from "../avatar";
 import { Badge } from "../badge";
 import { BUTTON_SPRING, Button } from "../button";
 import { Checkbox } from "../checkbox";
@@ -22,6 +22,10 @@ import { RadioGroup } from "../radio-group";
 import { Separator } from "../separator";
 import { Sheet } from "../sheet";
 import { Skeleton } from "../skeleton";
+import { EmptyState } from "../empty-state";
+import { SegmentedControl } from "../segmented-control";
+import { Tag } from "../tag";
+import { Tabs } from "../tabs";
 import { Spinner } from "../spinner";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
@@ -554,6 +558,13 @@ describe("component markers", () => {
 			);
 		});
 
+		it("online dot uses the fixed transcribed hue (dark themes define no success)", async () => {
+			const screen = await render(<Avatar name="A" status="online" />);
+			const dot = flatStyle(screen.getByTestId("k-avatar-status"));
+			expect(String(dot.backgroundColor)).toBe(STATUS_ONLINE_HUE);
+			expect(String(dot.borderColor).startsWith("#")).toBe(true);
+		});
+
 		it("Avatar without source renders uppercase initials on a themed bg", async () => {
 			const screen = await render(<Avatar name="ada lovelace" />);
 			expect(screen.getByText("AL")).toBeTruthy();
@@ -718,8 +729,265 @@ describe("component markers", () => {
 		});
 	});
 
-	// wave 5 sits before wave 4 in file order on purpose: wave 4's spinner
-	// test manually unmounts, which poisons TLB's registry for later renders.
+	// waves 5 and 6 sit before wave 4 in file order on purpose: wave 4's
+	// spinner test manually unmounts, which poisons TLB's registry for later
+	// renders in the same file.
+	describe("wave 6: Tabs, SegmentedControl, EmptyState, Tag", () => {
+		const TAB_ITEMS = [
+			{ value: "one", label: "One" },
+			{ value: "two", label: "Two" },
+		];
+
+		it("Tabs/SegmentedControl/EmptyState/Tag render their k-* markers", async () => {
+			const screen = await render(
+				<>
+					<Tabs defaultValue="one" items={TAB_ITEMS}>
+						one body
+					</Tabs>
+					<SegmentedControl data={["day", "week"]} />
+					<EmptyState title="No projects yet" />
+					<Tag>beta</Tag>
+				</>,
+			);
+			expect(screen.getByTestId("k-tabs")).toBeTruthy();
+			expect(screen.getByTestId("k-tab-list")).toBeTruthy();
+			expect(screen.getAllByTestId("k-tab").length).toBe(2);
+			expect(screen.getByTestId("k-tab-content-one")).toBeTruthy();
+			expect(screen.getByTestId("k-segmented")).toBeTruthy();
+			expect(screen.getAllByTestId("k-segment").length).toBe(2);
+			expect(screen.getByTestId("k-empty-state")).toBeTruthy();
+			expect(screen.getByTestId("k-tag")).toBeTruthy();
+		});
+
+		it("Tabs: press fires onValueChange; the content slot follows the active value", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Tabs defaultValue="one" onValueChange={onValueChange} items={TAB_ITEMS}>
+					one body
+				</Tabs>,
+			);
+			const [one, two] = screen.getAllByTestId("k-tab");
+			expect(one.props.accessibilityState?.selected).toBe(true);
+			expect(two.props.accessibilityState?.selected).toBe(false);
+			await fireEvent.press(two);
+			expect(onValueChange).toHaveBeenLastCalledWith("two");
+			// content pairing: switching the active tab swaps the paired panel
+			expect(screen.queryByTestId("k-tab-content-one")).toBeNull();
+			expect(screen.getByTestId("k-tab-content-two")).toBeTruthy();
+
+			await screen.rerender(
+				<Tabs value="two" onValueChange={onValueChange} items={TAB_ITEMS}>
+					two body
+				</Tabs>,
+			);
+			expect(screen.queryByTestId("k-tab-content-one")).toBeNull();
+			expect(screen.getByTestId("k-tab-content-two")).toBeTruthy();
+			expect(screen.getByText("two body")).toBeTruthy();
+			const tabs = screen.getAllByTestId("k-tab");
+			expect(tabs[0].props.accessibilityState?.selected).toBe(false);
+			expect(tabs[1].props.accessibilityState?.selected).toBe(true);
+			// the selected trigger resolves a themed surface, the idle one none
+			expect(flatStyle(tabs[1]).backgroundColor).toBeDefined();
+		});
+
+		it("Tabs controlled lock: value beats defaultValue and presses never override it", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Tabs
+					value="one"
+					defaultValue="two"
+					onValueChange={onValueChange}
+					items={TAB_ITEMS}
+				>
+					one body
+				</Tabs>,
+			);
+			expect(screen.getByTestId("k-tab-content-one")).toBeTruthy();
+			await fireEvent.press(screen.getAllByTestId("k-tab")[1]);
+			expect(onValueChange).toHaveBeenLastCalledWith("two");
+			// controlled: the visible selection stays on the value prop
+			expect(screen.getByTestId("k-tab-content-one")).toBeTruthy();
+		});
+
+		it("Tabs disabled trigger: press is a no-op and announces disabled", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Tabs
+					value="one"
+					onValueChange={onValueChange}
+					items={[...TAB_ITEMS, { value: "x", label: "Off", disabled: true }]}
+				>
+					one body
+				</Tabs>,
+			);
+			const off = screen.getByRole("tab", { name: "Off" });
+			await fireEvent.press(off);
+			expect(onValueChange).not.toHaveBeenCalled();
+			expect(off.props.accessibilityState?.disabled).toBe(true);
+		});
+
+		it("SegmentedControl: exclusive selection, press fires, 44dp floor", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<SegmentedControl
+					data={["day", "week"]}
+					defaultValue="day"
+					onValueChange={onValueChange}
+				/>,
+			);
+			let segs = screen.getAllByTestId("k-segment");
+			expect(segs[0].props.accessibilityState?.checked).toBe(true);
+			expect(Number(flatStyle(segs[0]).minHeight)).toBeGreaterThanOrEqual(44);
+			expect(
+				screen.getAllByTestId("k-segment-indicator", inclHidden).length,
+			).toBe(1);
+			await fireEvent.press(segs[1]);
+			expect(onValueChange).toHaveBeenLastCalledWith("week");
+
+			await screen.rerender(
+				<SegmentedControl
+					data={["day", "week"]}
+					value="week"
+					onValueChange={onValueChange}
+				/>,
+			);
+			segs = screen.getAllByTestId("k-segment");
+			expect(segs[0].props.accessibilityState?.checked).toBe(false);
+			expect(segs[1].props.accessibilityState?.checked).toBe(true);
+			expect(
+				screen.getAllByTestId("k-segment-indicator", inclHidden).length,
+			).toBe(1);
+		});
+
+		it("SegmentedControl controlled lock; disabled segments block selection", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<SegmentedControl
+					data={["a", "b"]}
+					value="a"
+					defaultValue="b"
+					onValueChange={onValueChange}
+				/>,
+			);
+			expect(
+				screen.getAllByTestId("k-segment")[0].props.accessibilityState
+					?.checked,
+			).toBe(true);
+			await fireEvent.press(screen.getAllByTestId("k-segment")[1]);
+			expect(onValueChange).toHaveBeenLastCalledWith("b");
+			expect(
+				screen.getAllByTestId("k-segment")[0].props.accessibilityState
+					?.checked,
+			).toBe(true);
+
+			await screen.rerender(
+				<SegmentedControl
+					data={[
+						{ value: "a", label: "a" },
+						{ value: "b", label: "b", disabled: true },
+					]}
+					value="a"
+					onValueChange={onValueChange}
+				/>,
+			);
+			const disabled = screen.getByRole("radio", { name: "b" });
+			await fireEvent.press(disabled);
+			expect(onValueChange).not.toHaveBeenCalledTimes(2);
+			expect(disabled.props.accessibilityState?.disabled).toBe(true);
+		});
+
+		it("EmptyState renders icon/title/description/action; isLoading swaps to skeleton", async () => {
+			const onPress = jest.fn();
+			const screen = await render(
+				<EmptyState
+					title="No projects"
+					description="Create your first one"
+					action={{ label: "New project", onPress }}
+				/>,
+			);
+			expect(screen.getByTestId("k-empty-state-icon", inclHidden)).toBeTruthy();
+			expect(screen.getByText("No projects")).toBeTruthy();
+			expect(screen.getByText("Create your first one")).toBeTruthy();
+			await fireEvent.press(screen.getByTestId("k-empty-state-action"));
+			expect(onPress).toHaveBeenCalledTimes(1);
+
+			await screen.rerender(<EmptyState title="No projects" isLoading />);
+			expect(screen.queryByText("No projects")).toBeNull();
+			expect(screen.getAllByTestId("k-skeleton", inclHidden).length).toBeGreaterThan(0);
+		});
+
+		it("EmptyState size arms produce distinct heights; destructive tint differs", async () => {
+			const seen = new Set<number>();
+			const screen = await render(<EmptyState title="t" size="sm" />);
+			for (const size of ["sm", "md", "lg"] as const) {
+				await screen.rerender(<EmptyState title="t" size={size} />);
+				seen.add(
+					Number(flatStyle(screen.getByTestId("k-empty-state")).minHeight),
+				);
+			}
+			expect(seen.size).toBe(3);
+
+			await screen.rerender(<EmptyState title="t" />);
+			const def = flatStyle(screen.getByTestId("k-empty-state"));
+			await screen.rerender(<EmptyState title="t" color="destructive" />);
+			const dest = flatStyle(screen.getByTestId("k-empty-state"));
+			expect(dest.borderColor).not.toBe(def.borderColor);
+			expect(String(dest.backgroundColor).startsWith("#")).toBe(true);
+		});
+
+		it("every Tag variant×color arm produces a distinct style triple", async () => {
+			const variants = ["solid", "outline", "subtle"] as const;
+			const colors = [
+				"primary",
+				"secondary",
+				"destructive",
+				"success",
+				"warning",
+				"info",
+				"muted",
+			] as const;
+			const seen = new Map<string, string>();
+			const screen = await render(
+				<Tag variant="solid" color="primary">x</Tag>,
+			);
+			for (const variant of variants) {
+				for (const color of colors) {
+					await screen.rerender(
+						<Tag variant={variant} color={color}>x</Tag>,
+					);
+					const tag = screen.getByTestId("k-tag");
+					const s = flatStyle(tag);
+					const child = tag.children[0] as { props: { style?: unknown } };
+					const fg = require("react-native").StyleSheet.flatten(
+						child.props.style,
+					) as Record<string, unknown>;
+					const sig = JSON.stringify([
+						s.backgroundColor,
+						fg.color,
+						s.borderColor,
+					]);
+					expect(seen.has(sig)).toBe(false);
+					seen.set(sig, `${variant}/${color}`);
+					expect(s.backgroundColor).toBeDefined();
+				}
+			}
+			expect(seen.size).toBe(variants.length * colors.length);
+		});
+
+		it("Tag remove affordance keeps the 44dp floor and fires once", async () => {
+			const onRemove = jest.fn();
+			const screen = await render(<Tag onRemove={onRemove}>beta</Tag>);
+			const rm = screen.getByTestId("k-tag-remove");
+			expect(Number(flatStyle(rm).minHeight)).toBeGreaterThanOrEqual(44);
+			expect(Number(flatStyle(rm).minWidth)).toBeGreaterThanOrEqual(44);
+			await fireEvent.press(rm);
+			expect(onRemove).toHaveBeenCalledTimes(1);
+
+			await screen.rerender(<Tag>beta</Tag>);
+			expect(screen.queryByTestId("k-tag-remove")).toBeNull();
+		});
+	});
+
 	describe("wave 5: Skeleton, RadioGroup, Alert, Toast", () => {
 		const findSvgProp = (tree: unknown, key: string): unknown[] => {
 			const found: unknown[] = [];

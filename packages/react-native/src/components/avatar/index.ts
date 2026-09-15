@@ -4,4 +4,4 @@ export type {
 	AvatarSize,
 	AvatarStatus,
 } from "./avatar.types";
-export { Avatar } from "./avatar";
+export { Avatar, STATUS_ONLINE_HUE } from "./avatar";

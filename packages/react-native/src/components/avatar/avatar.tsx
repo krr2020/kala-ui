@@ -2,8 +2,9 @@
  * Avatar: single-component collapse of the web Root/Image/Fallback trio —
  * Radix's load-state machine becomes: render the image when a source is
  * given and has not errored, else fallback initials on a themed bg.
- * Status hues have no globals.css token; online→success, offline→
- * mutedForeground (documented mapping, not silent drift).
+ * Status hues have no globals.css token (the dark blocks define no
+ * success/warning at all), so online uses the STATUS_ONLINE_HUE constant
+ * below and offline falls back to mutedForeground.
  */
 import { useState } from "react";
 import type { ReactElement } from "react";
@@ -25,6 +26,13 @@ const RADIUS: Record<AvatarShape, number> = {
 	rounded: 8,
 	square: 0,
 };
+
+/**
+ * Online status hue, transcribed from the light theme's --success. The dark
+ * theme blocks in globals.css define no success/warning tokens, so a live
+ * theme.success lookup would be undefined there — the value is pinned here.
+ */
+export const STATUS_ONLINE_HUE = "#21c45d";
 
 function initials(name?: string): string {
 	const words = (name ?? "").trim().split(/\s+/).filter(Boolean);
@@ -114,7 +122,7 @@ export function Avatar({
 						height: DOT[size],
 						borderRadius: 999,
 						backgroundColor:
-							status === "online" ? theme.success : theme.mutedForeground,
+							status === "online" ? STATUS_ONLINE_HUE : theme.mutedForeground,
 						borderWidth: 2,
 						borderColor: theme.background,
 					}}

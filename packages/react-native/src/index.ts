@@ -24,8 +24,16 @@ export type { ButtonProps } from "./components/button";
 export { Button } from "./components/button";
 export type { CardProps } from "./components/card";
 export { Card } from "./components/card";
-export type { CheckboxProps } from "./components/checkbox";
+export type {
+	CheckboxProps,
+} from "./components/checkbox";
 export { Checkbox } from "./components/checkbox";
+export type {
+	EmptyStateAction,
+	EmptyStateIcon,
+	EmptyStateProps,
+} from "./components/empty-state";
+export { EmptyState } from "./components/empty-state";
 export type {
 	HeadingAlign,
 	HeadingProps,
@@ -49,6 +57,14 @@ export type {
 } from "./components/radio-group";
 export { RadioGroup } from "./components/radio-group";
 export type {
+	SegmentedControlData,
+	SegmentedControlItem,
+	SegmentedControlProps,
+	SegmentedControlRadius,
+	SegmentedControlSize,
+} from "./components/segmented-control";
+export { SegmentedControl } from "./components/segmented-control";
+export type {
 	SeparatorOrientation,
 	SeparatorProps,
 } from "./components/separator";
@@ -68,6 +84,15 @@ export type {
 export { Spinner } from "./components/spinner";
 export type { SwitchProps } from "./components/switch";
 export { Switch } from "./components/switch";
+export type { TabsItem, TabsProps } from "./components/tabs";
+export { Tabs } from "./components/tabs";
+export type {
+	TagColor,
+	TagProps,
+	TagSize,
+	TagVariant,
+} from "./components/tag";
+export { Tag } from "./components/tag";
 export type {
 	TextAlign,
 	TextColor,

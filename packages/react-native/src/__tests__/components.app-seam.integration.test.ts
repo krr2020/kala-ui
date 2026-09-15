@@ -35,8 +35,7 @@ function exportNames(entry: string): Set<string> {
 }
 
 describe("component app seam", () => {
-	it("every component the playground imports is exported by the entry", () => {
-		const app = readFileSync(APP_PATH, "utf8");
+	function appImports(app: string): Set<string> {
 		const imports = new Set<string>();
 		for (const m of app.matchAll(
 			/import\s+\{([^}]*)\}\s*from\s*"@kala-ui\/react-native"/g,
@@ -49,9 +48,25 @@ describe("component app seam", () => {
 				if (name) imports.add(name);
 			}
 		}
+		return imports;
+	}
+
+	it("every component the playground imports is exported by the entry", () => {
+		const app = readFileSync(APP_PATH, "utf8");
+		const imports = appImports(app);
 		expect(imports.size).toBeGreaterThan(0);
 		const exported = exportNames(readFileSync(ENTRY_PATH, "utf8"));
 		const missing = [...imports].filter((name) => !exported.has(name));
 		expect(missing).toEqual([]);
+	});
+
+	it("wave-6 components are playground-visible and entry-exported", () => {
+		const app = readFileSync(APP_PATH, "utf8");
+		const imports = appImports(app);
+		const exported = exportNames(readFileSync(ENTRY_PATH, "utf8"));
+		for (const name of ["Tabs", "SegmentedControl", "EmptyState", "Tag"]) {
+			expect(imports.has(name), `App.tsx imports ${name}`).toBe(true);
+			expect(exported.has(name), `entry exports ${name}`).toBe(true);
+		}
 	});
 });

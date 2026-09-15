@@ -14,16 +14,20 @@ import {
 	Button,
 	Card,
 	Checkbox,
+	EmptyState,
 	Heading,
 	Icon,
 	Label,
 	Progress,
 	RadioGroup,
+	SegmentedControl,
 	Separator,
 	Sheet,
 	Skeleton,
 	Spinner,
 	Switch,
+	Tabs,
+	Tag,
 	Text as KText,
 	TextInput,
 	Toast,
@@ -130,6 +134,8 @@ export default function App() {
 	const [sync, setSync] = useState(true);
 	const [plan, setPlan] = useState("pro");
 	const [toastOpen, setToastOpen] = useState(false);
+	const [range, setRange] = useState("week");
+	const [tab, setTab] = useState("one");
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
@@ -326,6 +332,42 @@ export default function App() {
 					<Toast.Title>saved</Toast.Title>
 					<Toast.Description>changes are live</Toast.Description>
 				</Toast>
+				<View testID="k-demo-tabs">
+					<Tabs
+						items={[
+							{ value: "one", label: "One" },
+							{ value: "two", label: "Two" },
+						]}
+						value={tab}
+						onValueChange={setTab}
+					>
+						<KText size="sm">
+							{tab === "one" ? "first tab panel" : "second tab panel"}
+						</KText>
+					</Tabs>
+				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-segmented">
+					<SegmentedControl
+						data={["day", "week", "month"]}
+						value={range}
+						onValueChange={setRange}
+						accessibilityLabel="range"
+					/>
+				</View>
+				<EmptyState
+					title="No projects yet"
+					description="Create your first project to get started."
+					action={{ label: "New project", onPress: () => undefined }}
+				/>
+				<View style={stylesheet.componentRow} testID="k-demo-tags">
+					<Tag>beta</Tag>
+					<Tag variant="solid" color="primary">
+						v2.0
+					</Tag>
+					<Tag variant="outline" color="success" onRemove={() => undefined}>
+						clearance
+					</Tag>
+				</View>
 				<Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}>
 					<Sheet.Body>
 						<Text style={stylesheet.current}>

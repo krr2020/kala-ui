@@ -16,6 +16,10 @@ import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Separator } from "../separator";
 import { Sheet } from "../sheet";
+import { EmptyState } from "../empty-state";
+import { SegmentedControl } from "../segmented-control";
+import { Tag } from "../tag";
+import { Tabs } from "../tabs";
 import { Spinner } from "../spinner";
 import { Switch } from "../switch";
 import { Text } from "../text";
@@ -327,6 +331,124 @@ describe("a11y contract", () => {
 				</Toast>,
 			);
 			expect(screen.getByRole("alert")).toBeTruthy();
+		});
+	});
+
+	describe("Tabs", () => {
+		it("exposes a tablist with tab triggers and selected state", async () => {
+			const screen = await render(
+				<Tabs
+					value="one"
+					items={[
+						{ value: "one", label: "One" },
+						{ value: "two", label: "Two" },
+					]}
+				>
+					one body
+				</Tabs>,
+			);
+			expect(screen.getByRole("tablist")).toBeTruthy();
+			expect(
+				screen.getByRole("tab", { name: "One" }).props.accessibilityState
+					?.selected,
+			).toBe(true);
+			expect(
+				screen.getByRole("tab", { name: "Two" }).props.accessibilityState
+					?.selected,
+			).toBe(false);
+		});
+
+		it("announces disabled tabs and blocks selection", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Tabs
+					value="one"
+					onValueChange={onValueChange}
+					items={[
+						{ value: "one", label: "One" },
+						{ value: "two", label: "Two", disabled: true },
+					]}
+				>
+					one body
+				</Tabs>,
+			);
+			await fireEvent.press(screen.getByRole("tab", { name: "Two" }));
+			expect(onValueChange).not.toHaveBeenCalled();
+			expect(
+				screen.getByRole("tab", { name: "Two" }).props.accessibilityState
+					?.disabled,
+			).toBe(true);
+		});
+	});
+
+	describe("SegmentedControl", () => {
+		it("exposes a radiogroup with radio segments and checked state", async () => {
+			const screen = await render(
+				<SegmentedControl
+					data={["day", "week"]}
+					value="week"
+					accessibilityLabel="range"
+				/>,
+			);
+			expect(
+				screen.getByRole("radiogroup", { name: "range" }),
+			).toBeTruthy();
+			expect(
+				screen.getByRole("radio", { name: "day" }).props.accessibilityState
+					?.checked,
+			).toBe(false);
+			expect(
+				screen.getByRole("radio", { name: "week" }).props.accessibilityState
+					?.checked,
+			).toBe(true);
+		});
+
+		it("announces disabled segments and blocks selection", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<SegmentedControl
+					data={[
+						{ value: "a", label: "a" },
+						{ value: "b", label: "b", disabled: true },
+					]}
+					value="a"
+					onValueChange={onValueChange}
+				/>,
+			);
+			await fireEvent.press(screen.getByRole("radio", { name: "b" }));
+			expect(onValueChange).not.toHaveBeenCalled();
+			expect(
+				screen.getByRole("radio", { name: "b" }).props.accessibilityState
+					?.disabled,
+			).toBe(true);
+		});
+	});
+
+	describe("EmptyState", () => {
+		it("announces the title and exposes the action as a button", async () => {
+			const onPress = jest.fn();
+			const screen = await render(
+				<EmptyState
+					title="No projects yet"
+					description="Create your first project"
+					action={{ label: "New project", onPress }}
+				/>,
+			);
+			expect(
+				screen.getByTestId("k-empty-state").props.accessibilityLabel,
+			).toBe("No projects yet");
+			expect(
+				screen.getByRole("button", { name: "New project" }),
+			).toBeTruthy();
+		});
+	});
+
+	describe("Tag", () => {
+		it("exposes the remove affordance as a labelled button", async () => {
+			const onRemove = jest.fn();
+			const screen = await render(<Tag onRemove={onRemove}>beta</Tag>);
+			await fireEvent.press(screen.getByRole("button", { name: "Remove" }));
+			expect(onRemove).toHaveBeenCalledTimes(1);
 		});
 	});
 });
