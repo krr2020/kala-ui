@@ -2,13 +2,18 @@ import {
 	Accordion,
 	AlertDialog,
 	Button,
+	Calendar,
 	Collapsible,
 	ContextMenu,
+	DatePicker,
+	DateRangePicker,
 	Dialog,
 	DropdownMenu,
 	Icon,
 	Text as KText,
 	Sheet,
+	TimePicker,
+	type TimeValue,
 } from "@kala-ui/react-native";
 import { Check } from "lucide-react-native";
 import { useState } from "react";
@@ -23,6 +28,13 @@ export function OverlaysDemo() {
 	const [showAdvanced, setShowAdvanced] = useState(false);
 	const [autoSync, setAutoSync] = useState(true);
 	const [lastAction, setLastAction] = useState("none");
+	const [stayDate, setStayDate] = useState<Date | undefined>(
+		new Date(2026, 1, 10),
+	);
+	const [remindAt, setRemindAt] = useState<TimeValue>({
+		hours: 9,
+		minutes: 30,
+	});
 	return (
 		<>
 			<View testID="k-demo-accordion">
@@ -172,6 +184,24 @@ export function OverlaysDemo() {
 					</AlertDialog.Action>
 				</AlertDialog.Footer>
 			</AlertDialog>
+			<View style={demoStyles.componentRow} testID="k-demo-calendar">
+				<Calendar />
+				<DateRangePicker placeholder="pick a range" />
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-date-picker">
+				<DatePicker
+					value={stayDate}
+					onValueChange={setStayDate}
+					placeholder="pick a stay date"
+				/>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-time-picker">
+				<TimePicker
+					value={remindAt}
+					onValueChange={setRemindAt}
+					hourCycle={12}
+				/>
+			</View>
 		</>
 	);
 }

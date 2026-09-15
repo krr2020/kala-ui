@@ -14,10 +14,12 @@ import { AvatarGroup } from "../avatar-group";
 import { Banner } from "../banner";
 import { Breadcrumbs } from "../breadcrumbs";
 import { Button } from "../button";
+import { Calendar } from "../calendar";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Combobox } from "../combobox";
 import { ContextMenu } from "../context-menu";
+import { DatePicker } from "../date-picker";
 import { Dialog } from "../dialog";
 import { DropdownMenu } from "../dropdown-menu";
 import { EmptyState } from "../empty-state";
@@ -50,6 +52,7 @@ import { TagInput } from "../tag-input";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Textarea } from "../textarea";
+import { TimePicker } from "../time-picker";
 import { Timeline } from "../timeline";
 import { Toast } from "../toast";
 import {
@@ -1097,6 +1100,50 @@ describe("a11y contract", () => {
 			).toBe(true);
 			const row = screen.getByTestId("k-combobox-option-1");
 			expect(row.props.accessibilityState?.selected).toBe(false);
+		});
+	});
+
+	describe("date and time family", () => {
+		it("calendar day rows announce disabled and selected state", async () => {
+			const screen = await render(
+				<Calendar
+					month={new Date(2026, 1, 1)}
+					defaultValue={new Date(2026, 1, 10)}
+					disabledDates={(d: Date) => d.getDate() > 20}
+				/>,
+			);
+			const selected = screen.getByTestId("k-calendar-day-2026-02-10");
+			expect(selected.props.accessibilityRole).toBe("button");
+			expect(selected.props.accessibilityState?.selected).toBe(true);
+			expect(
+				screen.getByTestId("k-calendar-day-2026-02-25").props.accessibilityState
+					?.disabled,
+			).toBe(true);
+		});
+
+		it("date picker trigger announces placeholder, value and expanded state", async () => {
+			const screen = await render(<DatePicker placeholder="pick a date" />);
+			const trigger = screen.getByTestId("k-date-picker");
+			expect(trigger.props.accessibilityRole).toBe("button");
+			expect(trigger.props.accessibilityLabel).toBe("pick a date");
+			await fireEvent.press(trigger);
+			expect(
+				screen.getByTestId("k-date-picker").props.accessibilityState?.expanded,
+			).toBe(true);
+		});
+
+		it("time picker wheel items announce selected state and period toggle", async () => {
+			const screen = await render(
+				<TimePicker hourCycle={12} value={{ hours: 13, minutes: 45 }} />,
+			);
+			expect(
+				screen.getByTestId("k-time-picker-hour-item-1").props.accessibilityState
+					?.selected,
+			).toBe(true);
+			expect(
+				screen.getByTestId("k-time-picker-am-pm-option-pm").props
+					.accessibilityState?.selected,
+			).toBe(true);
 		});
 	});
 });

@@ -16,11 +16,13 @@ import { Badge } from "../badge";
 import { Banner } from "../banner";
 import { Breadcrumbs, BreadcrumbsSkeleton } from "../breadcrumbs";
 import { BUTTON_SPRING, Button } from "../button";
+import { Calendar } from "../calendar";
 import { Card } from "../card";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Combobox } from "../combobox";
 import { ContextMenu } from "../context-menu";
+import { DatePicker, DateRangePicker } from "../date-picker";
 import { Dialog } from "../dialog";
 import { DropdownMenu } from "../dropdown-menu";
 import { EmptyState } from "../empty-state";
@@ -66,6 +68,7 @@ import { TagInput } from "../tag-input";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Textarea } from "../textarea";
+import { TimePicker } from "../time-picker";
 import { Timeline } from "../timeline";
 import { Toast } from "../toast";
 import { Toggle } from "../toggle";
@@ -175,6 +178,46 @@ describe("component markers", () => {
 
 	it("package description no longer claims components arrive later", () => {
 		expect(pkg.description).not.toMatch(/later releases/);
+	});
+
+	it("Calendar renders k-calendar with month grid and nav markers", async () => {
+		const screen = await render(<Calendar month={new Date(2026, 1, 1)} />);
+		expect(screen.getByTestId("k-calendar")).toBeTruthy();
+		expect(screen.getByTestId("k-calendar-month-label")).toBeTruthy();
+		expect(screen.getByTestId("k-calendar-prev")).toBeTruthy();
+		expect(screen.getByTestId("k-calendar-next")).toBeTruthy();
+		expect(screen.getAllByTestId(/^k-calendar-day-/).length).toBe(42);
+	});
+
+	it("DatePicker renders k-date-picker and closes its sheet on commit", async () => {
+		const onValueChange = jest.fn();
+		const screen = await render(
+			<DatePicker
+				month={new Date(2026, 1, 1)}
+				onValueChange={onValueChange}
+			/>,
+		);
+		expect(screen.getByTestId("k-date-picker")).toBeTruthy();
+		await fireEvent.press(screen.getByTestId("k-date-picker"));
+		await fireEvent.press(screen.getByTestId("k-calendar-day-2026-02-11"));
+		expect(onValueChange).toHaveBeenCalledTimes(1);
+		expect(screen.queryByTestId("k-sheet-overlay")).toBeNull();
+	});
+
+	it("DateRangePicker renders its marker and completes a range", async () => {
+		const screen = await render(
+			<DateRangePicker month={new Date(2026, 1, 1)} />,
+		);
+		expect(
+			screen.getByTestId("k-date-picker-date-range-picker"),
+		).toBeTruthy();
+	});
+
+	it("TimePicker renders k-time-picker with hour and minute wheels", async () => {
+		const screen = await render(<TimePicker />);
+		expect(screen.getByTestId("k-time-picker")).toBeTruthy();
+		expect(screen.getByTestId("k-time-picker-hour")).toBeTruthy();
+		expect(screen.getByTestId("k-time-picker-minute")).toBeTruthy();
 	});
 
 	describe("behavior contract", () => {

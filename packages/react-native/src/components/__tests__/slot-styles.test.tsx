@@ -16,11 +16,13 @@ import { Badge } from "../badge";
 import { Banner } from "../banner";
 import { Breadcrumbs } from "../breadcrumbs";
 import { Button } from "../button";
+import { Calendar } from "../calendar";
 import { Card } from "../card";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Combobox } from "../combobox";
 import { ContextMenu } from "../context-menu";
+import { DatePicker, DateRangePicker } from "../date-picker";
 import { Dialog } from "../dialog";
 import { DropdownMenu } from "../dropdown-menu";
 import { EmptyState } from "../empty-state";
@@ -57,6 +59,7 @@ import { TagInput } from "../tag-input";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Textarea } from "../textarea";
+import { TimePicker } from "../time-picker";
 import { Timeline } from "../timeline";
 import { Toast } from "../toast";
 import { Toggle } from "../toggle";
@@ -194,6 +197,12 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(<Card styles={{ root: { borderWidth: 7 } }}>card</Card>),
 		},
 		{
+			name: "Calendar",
+			marker: "k-calendar",
+			render: () =>
+				render(<Calendar styles={{ root: { borderWidth: 7 } }} />),
+		},
+		{
 			name: "Checkbox",
 			marker: "k-checkbox",
 			render: () =>
@@ -237,6 +246,18 @@ describe("root slot sweep — every component accepts styles.root", () => {
 						<Text>x</Text>
 					</ContextMenu>,
 				),
+		},
+		{
+			name: "DatePicker",
+			marker: "k-date-picker",
+			render: () =>
+				render(<DatePicker styles={{ root: { borderWidth: 7 } }} />),
+		},
+		{
+			name: "DateRangePicker",
+			marker: "k-date-picker-date-range-picker",
+			render: () =>
+				render(<DateRangePicker styles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Dialog",
@@ -527,6 +548,12 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			render: () => render(<Textarea styles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
+			name: "TimePicker",
+			marker: "k-time-picker",
+			render: () =>
+				render(<TimePicker styles={{ root: { borderWidth: 7 } }} />),
+		},
+		{
 			name: "Timeline",
 			marker: "k-timeline",
 			render: () =>
@@ -598,8 +625,8 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		});
 	}
 
-	it("the sweep covers all 54 components", () => {
-		expect(fixtures.length).toBe(54);
+	it("the sweep covers all 58 components", () => {
+		expect(fixtures.length).toBe(58);
 	});
 });
 

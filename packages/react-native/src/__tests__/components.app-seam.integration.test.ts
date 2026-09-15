@@ -130,6 +130,10 @@ describe("component app seam", () => {
 			"Table",
 			"MultiSelect",
 			"Combobox",
+			"Calendar",
+			"DatePicker",
+			"DateRangePicker",
+			"TimePicker",
 			"Indicator",
 			"Field",
 			"Select",
@@ -164,8 +168,8 @@ describe("component app seam", () => {
 		// toast/banner + agree/sync/plan + range/tab/rating/page/volume +
 		// bold/align/formats + select + loading toggle + crash toggle +
 		// otp code entry + menu auto-sync/last-action + toolbar align +
-		// tag recipients + toppings + city.
-		expect(demoHooks).toBe(28);
+		// tag recipients + toppings + city + stay date + reminder time.
+		expect(demoHooks).toBe(30);
 	});
 
 	it("render-surface census matches the pinned marker/label inventory", () => {
@@ -222,6 +226,9 @@ describe("component app seam", () => {
 					'testID="k-demo-tag-input"': 1,
 					'testID="k-demo-multi-select"': 1,
 					'testID="k-demo-combobox"': 1,
+				'testID="k-demo-calendar"': 1,
+				'testID="k-demo-date-picker"': 1,
+				'testID="k-demo-time-picker"': 1,
 					'testID="k-demo-segmented"': 1,
 					'testID="k-demo-skeletons"': 1,
 					'testID="k-demo-slider"': 1,
