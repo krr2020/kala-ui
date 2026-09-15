@@ -103,6 +103,7 @@ export function AlertDialog({
 				}}
 			/>
 			<KeyboardAvoidingView
+				testID="k-alert-dialog-keyboard-view"
 				behavior={Platform.OS === "ios" ? "padding" : undefined}
 				keyboardVerticalOffset={0}
 				pointerEvents="box-none"

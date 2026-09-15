@@ -1,8 +1,8 @@
 /**
- * Wave 9 mobile hardening: raw-responder drag-to-dismiss, keyboard
- * avoidance, and scrollable dialog bodies. Handlers are driven through
+ * Dialog/AlertDialog touch contracts: raw-responder drag-to-dismiss,
+ * keyboard avoidance, and scrollable bodies. Handlers are driven through
  * props inside act() — fireEvent's responder polyfill leaves a grant
- * lock that poisons later renders in the same jest file (wave-8 lesson).
+ * lock that poisons later renders in the same jest file.
  */
 import { act, render } from "@testing-library/react-native";
 import { Dialog } from "../dialog";
@@ -18,16 +18,19 @@ const flatStyle = (node: {
 
 type Card = ReturnType<Awaited<ReturnType<typeof render>>["getByTestId"]>;
 
+// absolute pageY coordinates — the handlers compute dy from the grant origin
 const grant = async (card: Card) => {
 	await act(async () => {
-		(card.props.onResponderGrant as (e: unknown) => void)?.({ nativeEvent: {} });
+		(card.props.onResponderGrant as (e: unknown) => void)?.({
+			nativeEvent: { pageY: 100 },
+		});
 	});
 };
 
 const move = async (card: Card, dy: number) => {
 	await act(async () => {
 		(card.props.onResponderMove as (e: unknown) => void)?.({
-			nativeEvent: { pageY: dy },
+			nativeEvent: { pageY: 100 + dy },
 		});
 	});
 };
@@ -35,7 +38,7 @@ const move = async (card: Card, dy: number) => {
 const release = async (card: Card, dy: number) => {
 	await act(async () => {
 		(card.props.onResponderRelease as (e: unknown) => void)?.({
-			nativeEvent: { pageY: dy },
+			nativeEvent: { pageY: 100 + dy },
 		});
 	});
 };
@@ -145,16 +148,52 @@ describe("dialog gesture + keyboard hardening", () => {
 		expect(alertCard.props.onResponderGrant).toBeUndefined();
 		expect(alertCard.props.onResponderRelease).toBeUndefined();
 
-		// opt-in dismissable AlertDialog wires the full protocol
-		const a2 = await render(
-			<AlertDialog open onOpenChange={() => undefined} dismissable>
-				<AlertDialog.Body>body</AlertDialog.Body>
-			</AlertDialog>,
-		);
-		const alertCard2 = a2.getByTestId("k-alert-dialog", incl);
-		expect(alertCard2.props.onStartShouldSetResponder()).toBe(true);
-		expect(typeof alertCard2.props.onResponderRelease).toBe("function");
-	});
+			// opt-in dismissable AlertDialog wires the full protocol AND the
+			// drag behavior end to end, symmetric with Dialog
+			const a2 = await render(
+				<AlertDialog open onOpenChange={() => undefined} dismissable>
+					<AlertDialog.Body>body</AlertDialog.Body>
+				</AlertDialog>,
+			);
+			const alertCard2 = a2.getByTestId("k-alert-dialog", incl);
+			expect(alertCard2.props.onStartShouldSetResponder()).toBe(true);
+			expect(typeof alertCard2.props.onResponderRelease).toBe("function");
+
+			const dragged = jest.fn();
+			const a3 = await render(
+				<AlertDialog open onOpenChange={dragged} dismissable>
+					<AlertDialog.Body>body</AlertDialog.Body>
+				</AlertDialog>,
+			);
+			const alertCard3 = a3.getByTestId("k-alert-dialog", incl);
+			await grant(alertCard3);
+			await move(alertCard3, 200);
+			expect(Number(flatStyle(alertCard3).opacity)).toBeLessThanOrEqual(0.7);
+			await release(alertCard3, 200);
+			expect(dragged).toHaveBeenCalledWith(false);
+		});
+
+		it("touches starting on the ScrollView body stay with the body", async () => {
+			const onOpenChange = jest.fn();
+			const screen = await render(
+				<Dialog open onOpenChange={onOpenChange}>
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+			);
+			// RN's ScrollView installs its own responder system (scroll drag takes
+			// the gesture); the card's drag handlers must not be reachable from a
+			// body touch — verified by driving the CARD handlers directly and
+			// confirming the body node exposes none of the drag protocol
+			const body = screen.getByTestId("k-dialog-body", incl);
+			expect(body.props.onResponderGrant).toBeUndefined();
+			expect(body.props.onResponderRelease).toBeUndefined();
+			// and the card protocol still behaves when driven: release below
+			// threshold from a body-context touch never closes
+			const card = screen.getByTestId("k-dialog", incl);
+			await grant(card);
+			await release(card, 40);
+			expect(onOpenChange).not.toHaveBeenCalled();
+		});
 
 	it("mid-gesture callback swap: release calls the LATEST onOpenChange", async () => {
 		const stale = jest.fn();
@@ -201,17 +240,23 @@ describe("dialog gesture + keyboard hardening", () => {
 				<Dialog.Body>body</Dialog.Body>
 			</Dialog>,
 		);
-		const tree = JSON.stringify(screen.toJSON());
-		expect(tree).toContain("KeyboardAvoidingView");
+		const kav = screen.getByTestId("k-dialog-keyboard-view", incl);
+		// KAV consumes behavior/keyboardVerticalOffset; its visible effect is
+		// the injected padding frame (paddingBottom present, 0 while the
+		// keyboard is closed on the ios default platform)
+		const kavStyle = flatStyle(kav);
+		expect(Object.hasOwn(kavStyle, "paddingBottom")).toBe(true);
+		expect(Number(kavStyle.paddingBottom)).toBe(0);
 
 		const alertScreen = await render(
 			<AlertDialog open onOpenChange={() => undefined}>
 				<AlertDialog.Body>body</AlertDialog.Body>
 			</AlertDialog>,
 		);
-		expect(JSON.stringify(alertScreen.toJSON())).toContain(
-			"KeyboardAvoidingView",
-		);
+		const alertKav = alertScreen.getByTestId("k-alert-dialog-keyboard-view", incl);
+		const alertKavStyle = flatStyle(alertKav);
+		expect(Object.hasOwn(alertKavStyle, "paddingBottom")).toBe(true);
+		expect(Number(alertKavStyle.paddingBottom)).toBe(0);
 	});
 
 	it("footer buttons keep their own press; card responder stays background", async () => {
@@ -225,11 +270,12 @@ describe("dialog gesture + keyboard hardening", () => {
 			</Dialog>,
 		);
 		const btn = screen.getByTestId("k-button-root", incl);
-		expect(typeof btn.props.onPress).toBe("function");
+		// Pressable consumes onPress; the wired handler survives as onClick
+		expect(typeof btn.props.onClick).toBe("function");
 		// child handles its own touch — driving the child never reaches the
 		// card's responder release path
 		await act(async () => {
-			btn.props.onClick?.({ nativeEvent: {} });
+			(btn.props.onClick as (e: unknown) => void)?.({ nativeEvent: {} });
 		});
 		expect(onPress).toHaveBeenCalled();
 		expect(onOpenChange).not.toHaveBeenCalled();

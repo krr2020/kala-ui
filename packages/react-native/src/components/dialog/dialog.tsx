@@ -116,6 +116,7 @@ export function Dialog({
 			{/* box-none: the wrapper only positions the card; taps outside it
 			    fall through to the overlay Pressable beneath */}
 			<KeyboardAvoidingView
+				testID="k-dialog-keyboard-view"
 				behavior={Platform.OS === "ios" ? "padding" : undefined}
 				keyboardVerticalOffset={0}
 				pointerEvents="box-none"
