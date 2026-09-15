@@ -8,33 +8,36 @@ import { act, fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
 import { motion } from "../../tokens";
 import { Alert } from "../alert";
+import { AlertDialog } from "../alert-dialog";
 import { Avatar, STATUS_ONLINE_HUE } from "../avatar";
 import { Badge } from "../badge";
 import { BUTTON_SPRING, Button } from "../button";
-import { Checkbox } from "../checkbox";
-import { Switch } from "../switch";
 import { Card } from "../card";
+import { Checkbox } from "../checkbox";
+import { Dialog } from "../dialog";
+import { EmptyState } from "../empty-state";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
+import { Indicator } from "../indicator";
 import { Label } from "../label";
+import { Pagination } from "../pagination";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
+import { Rating } from "../rating";
+import { SegmentedControl } from "../segmented-control";
 import { Separator } from "../separator";
 import { Sheet } from "../sheet";
 import { Skeleton } from "../skeleton";
-import { EmptyState } from "../empty-state";
-import { SegmentedControl } from "../segmented-control";
-import { Pagination } from "../pagination";
-import { Rating } from "../rating";
 import { Slider } from "../slider";
-import { Tag } from "../tag";
-import { Tabs } from "../tabs";
 import { Spinner } from "../spinner";
+import { Switch } from "../switch";
+import { Tabs } from "../tabs";
+import { Tag } from "../tag";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Toast } from "../toast";
-import { Dialog } from "../dialog";
-import { AlertDialog } from "../alert-dialog";
+import { Toggle } from "../toggle";
+import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
 
 const pkg = require("../../../package.json");
 
@@ -1704,9 +1707,9 @@ describe("component markers", () => {
 				node: JsonNode | string,
 			): { props: Record<string, unknown> } | null => {
 				if (typeof node === "string") return null;
-					if (node.props && typeof node.props.onRequestClose === "function") {
-						return node as { props: Record<string, unknown> };
-					}
+				if (node.props && typeof node.props.onRequestClose === "function") {
+					return node as { props: Record<string, unknown> };
+				}
 				for (const child of node.children ?? []) {
 					const found = walk(child);
 					if (found) return found;
@@ -1920,6 +1923,164 @@ describe("component markers", () => {
 				screen.getByTestId("k-alert-dialog-cancel", inclHidden),
 			);
 			expect(cancelStyle.borderWidth).toBe(1);
+		});
+	});
+
+	describe("Toggle, ToggleGroup, Indicator markers", () => {
+		it("Toggle/ToggleGroup/ToggleGroupItem/Indicator render k-* markers", async () => {
+			const screen = await render(
+				<>
+					<Toggle accessibilityLabel="bold">B</Toggle>
+					<ToggleGroup type="single">
+						<ToggleGroupItem value="left">Left</ToggleGroupItem>
+					</ToggleGroup>
+					<Indicator>
+						<Text>bell</Text>
+					</Indicator>
+				</>,
+			);
+			expect(screen.getByTestId("k-toggle")).toBeTruthy();
+			expect(screen.getByTestId("k-toggle-group")).toBeTruthy();
+			expect(screen.getByTestId("k-toggle-group-item")).toBeTruthy();
+			expect(screen.getByTestId("k-indicator")).toBeTruthy();
+			expect(screen.getByTestId("k-indicator-dot", inclHidden)).toBeTruthy();
+		});
+
+		it("k-toggle never collides with the group markers", async () => {
+			const screen = await render(
+				<>
+					<Toggle accessibilityLabel="bold">B</Toggle>
+					<ToggleGroup type="single">
+						<ToggleGroupItem value="left">Left</ToggleGroupItem>
+					</ToggleGroup>
+				</>,
+			);
+			// exact-match testIDs: the bare toggle query returns only the Toggle
+			expect(screen.getAllByTestId("k-toggle").length).toBe(1);
+			expect(screen.getAllByTestId("k-toggle-group").length).toBe(1);
+			expect(screen.getAllByTestId("k-toggle-group-item").length).toBe(1);
+		});
+
+		it("Toggle announces checked state from pressed/defaultPressed", async () => {
+			const off = await render(<Toggle accessibilityLabel="bold">B</Toggle>);
+			expect(off.getByTestId("k-toggle").props.accessibilityRole).toBe(
+				"button",
+			);
+			expect(off.getByTestId("k-toggle").props.accessibilityState.checked).toBe(
+				false,
+			);
+			// defaultPressed seeds the uncontrolled state on a fresh mount
+			const on = await render(
+				<Toggle defaultPressed accessibilityLabel="bold">
+					B
+				</Toggle>,
+			);
+			expect(on.getByTestId("k-toggle").props.accessibilityState.checked).toBe(
+				true,
+			);
+		});
+
+		it("Toggle size ladder maps 36/40/44 over a 44dp floor", async () => {
+			const screen = await render(
+				<Toggle size="sm" accessibilityLabel="bold">
+					B
+				</Toggle>,
+			);
+			const heights: number[] = [];
+			for (const size of ["sm", "md", "lg"] as const) {
+				await screen.rerender(
+					<Toggle size={size} accessibilityLabel="bold">
+						B
+					</Toggle>,
+				);
+				const s = flatStyle(screen.getByTestId("k-toggle"));
+				heights.push(Number(s.height));
+				expect(Number(s.minHeight)).toBe(44);
+				expect(Number(s.minWidth)).toBe(44);
+			}
+			expect(heights).toEqual([36, 40, 44]);
+		});
+
+		it("Toggle outline adds a themed border the default lacks", async () => {
+			const screen = await render(<Toggle accessibilityLabel="bold">B</Toggle>);
+			expect(
+				Number(flatStyle(screen.getByTestId("k-toggle")).borderWidth),
+			).toBe(0);
+			await screen.rerender(
+				<Toggle variant="outline" accessibilityLabel="bold">
+					B
+				</Toggle>,
+			);
+			const s = flatStyle(screen.getByTestId("k-toggle"));
+			expect(Number(s.borderWidth)).toBe(1);
+			expect(String(s.borderColor).startsWith("#")).toBe(true);
+		});
+
+		it("Toggle uncontrolled press cycles onPressedChange true then false", async () => {
+			const onPressedChange = jest.fn();
+			const screen = await render(
+				<Toggle onPressedChange={onPressedChange} accessibilityLabel="bold">
+					B
+				</Toggle>,
+			);
+			await fireEvent.press(screen.getByTestId("k-toggle"));
+			expect(onPressedChange).toHaveBeenNthCalledWith(1, true);
+			expect(
+				screen.getByTestId("k-toggle").props.accessibilityState.checked,
+			).toBe(true);
+			await fireEvent.press(screen.getByTestId("k-toggle"));
+			expect(onPressedChange).toHaveBeenNthCalledWith(2, false);
+			expect(
+				screen.getByTestId("k-toggle").props.accessibilityState.checked,
+			).toBe(false);
+		});
+
+		it("Toggle controlled pressed locks state until the parent updates", async () => {
+			const onPressedChange = jest.fn();
+			const screen = await render(
+				<Toggle
+					pressed={false}
+					onPressedChange={onPressedChange}
+					accessibilityLabel="bold"
+				>
+					B
+				</Toggle>,
+			);
+			await fireEvent.press(screen.getByTestId("k-toggle"));
+			expect(onPressedChange).toHaveBeenCalledWith(true);
+			expect(
+				screen.getByTestId("k-toggle").props.accessibilityState.checked,
+			).toBe(false);
+			await screen.rerender(
+				<Toggle
+					pressed
+					onPressedChange={onPressedChange}
+					accessibilityLabel="bold"
+				>
+					B
+				</Toggle>,
+			);
+			expect(
+				screen.getByTestId("k-toggle").props.accessibilityState.checked,
+			).toBe(true);
+		});
+
+		it("disabled Toggle dims to half opacity and never fires", async () => {
+			const onPressedChange = jest.fn();
+			const screen = await render(
+				<Toggle
+					disabled
+					onPressedChange={onPressedChange}
+					accessibilityLabel="bold"
+				>
+					B
+				</Toggle>,
+			);
+			const toggle = screen.getByTestId("k-toggle");
+			expect(Number(flatStyle(toggle).opacity)).toBe(0.5);
+			expect(toggle.props.accessibilityState.disabled).toBe(true);
+			await fireEvent.press(toggle);
+			expect(onPressedChange).not.toHaveBeenCalled();
 		});
 	});
 

@@ -41,6 +41,12 @@ export { EmptyState } from "./components/empty-state";
 export type { DialogProps } from "./components/dialog";
 export { Dialog } from "./components/dialog";
 export type {
+	IndicatorColor,
+	IndicatorPosition,
+	IndicatorProps,
+} from "./components/indicator";
+export { Indicator } from "./components/indicator";
+export type {
 	HeadingAlign,
 	HeadingProps,
 	HeadingSize,
@@ -118,6 +124,18 @@ export type {
 export { Text } from "./components/text";
 export type { TextInputProps } from "./components/text-input";
 export { TextInput } from "./components/text-input";
+export type {
+	ToggleGroupItemProps,
+	ToggleGroupProps,
+	ToggleGroupType,
+} from "./components/toggle-group";
+export { ToggleGroup, ToggleGroupItem } from "./components/toggle-group";
+export type {
+	ToggleProps,
+	ToggleSize,
+	ToggleVariant,
+} from "./components/toggle";
+export { Toggle } from "./components/toggle";
 export type {
 	ToastDescriptionProps,
 	ToastPosition,

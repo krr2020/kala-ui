@@ -36,6 +36,10 @@ import {
 	Slider,
 	Dialog,
 	AlertDialog,
+	Toggle,
+	ToggleGroup,
+	ToggleGroupItem,
+	Indicator,
 } from "@kala-ui/react-native";
 import { themeNames } from "@kala-ui/react-native/themes";
 
@@ -146,6 +150,9 @@ export default function App() {
 	const [volume, setVolume] = useState(70);
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [confirmOpen, setConfirmOpen] = useState(false);
+	const [bold, setBold] = useState(false);
+	const [align, setAlign] = useState("");
+	const [formats, setFormats] = useState<string[]>(["italic"]);
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
@@ -396,6 +403,44 @@ export default function App() {
 						accessibilityLabel="volume"
 					/>
 					<KText size="sm">volume {volume}</KText>
+				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-toggles">
+					<Toggle
+						pressed={bold}
+						onPressedChange={setBold}
+						accessibilityLabel="bold"
+					>
+						<KText size="sm">B</KText>
+					</Toggle>
+					<ToggleGroup
+						type="single"
+						value={align}
+						onValueChange={(v) => setAlign(String(v))}
+						variant="outline"
+					>
+						<ToggleGroupItem value="left">Left</ToggleGroupItem>
+						<ToggleGroupItem value="center">Center</ToggleGroupItem>
+						<ToggleGroupItem value="right">Right</ToggleGroupItem>
+					</ToggleGroup>
+					<ToggleGroup
+						type="multiple"
+						value={formats}
+						onValueChange={(v) => setFormats(v as string[])}
+					>
+						<ToggleGroupItem value="bold">bold</ToggleGroupItem>
+						<ToggleGroupItem value="italic">italic</ToggleGroupItem>
+					</ToggleGroup>
+				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-indicator">
+					<Indicator size={12} label="3">
+						<Icon icon={Sun} size="md" />
+					</Indicator>
+					<Indicator color="success">
+						<KText size="sm">online</KText>
+					</Indicator>
+					<Indicator color="destructive" processing size={12}>
+						<KText size="sm">live</KText>
+					</Indicator>
 				</View>
 				<View style={stylesheet.componentRow} testID="k-demo-dialog">
 					<Button
