@@ -14,7 +14,7 @@ import { Avatar, STATUS_ONLINE_HUE } from "../avatar";
 import { AvatarGroup } from "../avatar-group";
 import { Badge } from "../badge";
 import { Banner } from "../banner";
-import { Breadcrumbs, BreadcrumbsSkeleton } from "../breadcrumbs";
+
 import { BUTTON_SPRING, Button } from "../button";
 import { Calendar } from "../calendar";
 import { Card } from "../card";
@@ -47,7 +47,8 @@ import {
 } from "../list";
 import { LoadingOverlay } from "../loading-overlay";
 import { MultiSelect } from "../multi-select";
-import { Pagination } from "../pagination";
+
+import { NumberInput } from "../number-input";
 import { PasswordStrengthIndicator } from "../password-strength-indicator";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
@@ -62,7 +63,7 @@ import { Slider } from "../slider";
 import { Spinner } from "../spinner";
 import { Steps } from "../steps";
 import { Switch } from "../switch";
-import { Table } from "../table";
+
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
 import { TagInput } from "../tag-input";
@@ -74,14 +75,7 @@ import { Timeline } from "../timeline";
 import { Toast } from "../toast";
 import { Toggle } from "../toggle";
 import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
-import {
-	Toolbar,
-	ToolbarButton,
-	ToolbarLink,
-	ToolbarSeparator,
-	ToolbarToggleGroup,
-	ToolbarToggleItem,
-} from "../toolbar";
+
 
 const pkg = require("../../../package.json");
 
@@ -221,6 +215,16 @@ describe("component markers", () => {
 			<CopyButton value="demo" writeClipboard={async () => undefined} />,
 		);
 		expect(screen.getByTestId("k-copy-button")).toBeTruthy();
+	});
+
+	it("NumberInput exposes root, input and stepper markers", async () => {
+		const screen = await render(
+			<NumberInput defaultValue={5} min={0} max={10} />,
+		);
+		expect(screen.getByTestId("k-number-input")).toBeTruthy();
+		expect(screen.getByTestId("k-number-input-input")).toBeTruthy();
+		expect(screen.getByTestId("k-number-input-increment")).toBeTruthy();
+		expect(screen.getByTestId("k-number-input-decrement")).toBeTruthy();
 	});
 
 	describe("behavior contract", () => {
@@ -1439,7 +1443,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("wave 7: Rating, Pagination", () => {
+	describe("wave 7: Rating", () => {
 		const findSvgProp = (tree: unknown, key: string): unknown[] => {
 			const found: unknown[] = [];
 			const walk = (node: unknown) => {
@@ -1505,74 +1509,6 @@ describe("component markers", () => {
 			// missing press location falls back to the whole star
 			await fireEvent(stars[2], "press");
 			expect(onValueChange).toHaveBeenLastCalledWith(3);
-		});
-
-		it("Pagination renders numbered pages with distinct ellipsis markers", async () => {
-			const screen = await render(
-				<Pagination total={20} page={10} onPageChange={() => undefined} />,
-			);
-			expect(
-				screen
-					.getAllByTestId("k-pagination-page")
-					.map((n) => n.props.accessibilityLabel),
-			).toEqual(["1", "9", "10", "11", "20"]);
-			expect(
-				screen.getAllByTestId("k-pagination-ellipsis", inclHidden),
-			).toHaveLength(2);
-			await screen.rerender(<Pagination total={5} page={1} />);
-			expect(
-				screen
-					.getAllByTestId("k-pagination-page")
-					.map((n) => n.props.accessibilityLabel),
-			).toEqual(["1", "2", "3", "4", "5"]);
-			expect(
-				screen.queryByTestId("k-pagination-ellipsis", inclHidden),
-			).toBeNull();
-		});
-
-		it("Pagination total=0 renders no pages; total=1 exactly one", async () => {
-			const screen = await render(<Pagination total={0} />);
-			expect(screen.queryByTestId("k-pagination-page")).toBeNull();
-			await screen.rerender(<Pagination total={1} />);
-			expect(screen.getAllByTestId("k-pagination-page")).toHaveLength(1);
-		});
-
-		it("out-of-range page clamps into range", async () => {
-			const screen = await render(<Pagination total={5} page={99} />);
-			const selected = screen
-				.getAllByTestId("k-pagination-page")
-				.find((n) => n.props.accessibilityState?.selected);
-			expect(selected?.props.accessibilityLabel).toBe("5");
-		});
-
-		it("next/previous navigate and never leave the bounds", async () => {
-			const onPageChange = jest.fn();
-			const screen = await render(
-				<Pagination total={3} defaultPage={2} onPageChange={onPageChange} />,
-			);
-			await fireEvent.press(screen.getByTestId("k-pagination-next"));
-			expect(onPageChange).toHaveBeenLastCalledWith(3);
-			// the next control disabled at the last page blocks further presses
-			expect(
-				screen.getByTestId("k-pagination-next").props.accessibilityState
-					?.disabled,
-			).toBe(true);
-			await fireEvent.press(screen.getByTestId("k-pagination-next"));
-			expect(onPageChange).toHaveBeenCalledTimes(1);
-			await fireEvent.press(screen.getByTestId("k-pagination-previous"));
-			expect(onPageChange).toHaveBeenLastCalledWith(2);
-		});
-
-		it("pressing the current page does not fire onPageChange", async () => {
-			const onPageChange = jest.fn();
-			const screen = await render(
-				<Pagination total={5} page={3} onPageChange={onPageChange} />,
-			);
-			const current = screen
-				.getAllByTestId("k-pagination-page")
-				.find((n) => n.props.accessibilityState?.selected);
-			await fireEvent.press(current as NonNullable<typeof current>);
-			expect(onPageChange).not.toHaveBeenCalled();
 		});
 	});
 
@@ -2425,7 +2361,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("DropdownMenu, ContextMenu, Toolbar", () => {
+	describe("DropdownMenu, ContextMenu", () => {
 		it("DropdownMenu exposes trigger and sheet row markers", async () => {
 			const screen = await render(
 				<DropdownMenu
@@ -2471,28 +2407,9 @@ describe("component markers", () => {
 			expect(screen.getByTestId("k-context-menu-content")).toBeTruthy();
 			expect(screen.getByTestId("k-context-menu-item")).toBeTruthy();
 		});
-
-		it("Toolbar exposes row and child markers", async () => {
-			const screen = await render(
-				<Toolbar>
-					<ToolbarButton onPress={() => undefined}>bold</ToolbarButton>
-					<ToolbarSeparator />
-					<ToolbarLink onPress={() => undefined}>docs</ToolbarLink>
-					<ToolbarToggleGroup type="single">
-						<ToolbarToggleItem value="left">left</ToolbarToggleItem>
-					</ToolbarToggleGroup>
-				</Toolbar>,
-			);
-			expect(screen.getByTestId("k-toolbar")).toBeTruthy();
-			expect(screen.getByTestId("k-toolbar-button")).toBeTruthy();
-			expect(screen.getByTestId("k-toolbar-separator")).toBeTruthy();
-			expect(screen.getByTestId("k-toolbar-link")).toBeTruthy();
-			expect(screen.getByTestId("k-toolbar-toggle-group")).toBeTruthy();
-			expect(screen.getByTestId("k-toolbar-toggle-item")).toBeTruthy();
-		});
 	});
 
-	describe("Timeline, Breadcrumbs, TagInput, Table", () => {
+	describe("Timeline, TagInput", () => {
 		it("Timeline exposes item, dot and line markers", async () => {
 			const screen = await render(
 				<Timeline
@@ -2505,21 +2422,6 @@ describe("component markers", () => {
 			expect(screen.getAllByTestId("k-timeline-line")).toHaveLength(1);
 		});
 
-		it("Breadcrumbs and its skeleton expose crumb markers", async () => {
-			const screen = await render(
-				<Breadcrumbs items={[{ label: "home" }, { label: "here" }]} />,
-			);
-			expect(screen.getByTestId("k-breadcrumbs")).toBeTruthy();
-			expect(screen.getAllByTestId("k-breadcrumbs-item")).toHaveLength(2);
-			expect(screen.getAllByTestId("k-breadcrumbs-separator")).toHaveLength(1);
-
-			const skeleton = await render(<BreadcrumbsSkeleton depth={3} />);
-			expect(skeleton.getByTestId("k-breadcrumbs-skeleton")).toBeTruthy();
-			expect(
-				skeleton.getAllByTestId("k-breadcrumbs-skeleton-crumb"),
-			).toHaveLength(3);
-		});
-
 		it("TagInput exposes chip, field and clear markers", async () => {
 			const screen = await render(<TagInput defaultValue={["a"]} />);
 			expect(screen.getByTestId("k-tag-input")).toBeTruthy();
@@ -2527,34 +2429,6 @@ describe("component markers", () => {
 			expect(screen.getByTestId("k-tag-input-field")).toBeTruthy();
 			expect(screen.getByTestId("k-tag-input-clear")).toBeTruthy();
 			expect(screen.getByTestId("k-tag-remove")).toBeTruthy();
-		});
-
-		it("Table exposes header, head, row, cell and skeleton markers", async () => {
-			const screen = await render(
-				<Table
-					columns={[
-						{ key: "a", header: "A" },
-						{ key: "b", header: "B" },
-					]}
-					rows={[{ a: "1", b: "2" }]}
-				/>,
-			);
-			expect(screen.getByTestId("k-table")).toBeTruthy();
-			expect(screen.getByTestId("k-table-header")).toBeTruthy();
-			expect(screen.getAllByTestId("k-table-head")).toHaveLength(2);
-			expect(screen.getAllByTestId("k-table-row")).toHaveLength(1);
-			expect(screen.getAllByTestId("k-table-cell")).toHaveLength(2);
-
-			const loading = await render(
-				<Table
-					columns={[{ key: "a", header: "A" }]}
-					rows={[]}
-					isLoading
-					skeletonConfig={{ rows: 2, columns: 1 }}
-				/>,
-			);
-			expect(loading.getByTestId("k-table-skeleton")).toBeTruthy();
-			expect(loading.queryByTestId("k-table")).toBeNull();
 		});
 	});
 

@@ -2,7 +2,6 @@ import {
 	Avatar,
 	AvatarGroup,
 	Badge,
-	Breadcrumbs,
 	Button,
 	Card,
 	Checkbox,
@@ -24,14 +23,8 @@ import {
 	Spinner,
 	Steps,
 	Switch,
-	Table,
 	TextInput,
 	Timeline,
-	Toolbar,
-	ToolbarButton,
-	ToolbarSeparator,
-	ToolbarToggleGroup,
-	ToolbarToggleItem,
 } from "@kala-ui/react-native";
 import { Sun } from "lucide-react-native";
 import { useState } from "react";
@@ -232,50 +225,6 @@ export function BasicsDemo() {
 						},
 					]}
 				/>
-			</View>
-			<View style={demoStyles.componentRow} testID="k-demo-breadcrumbs">
-				<Breadcrumbs
-					items={[
-						{ label: "home", onPress: () => undefined },
-						{ label: "orders", onPress: () => undefined },
-						{ label: "INV-42" },
-					]}
-				/>
-			</View>
-			<View style={demoStyles.componentRow} testID="k-demo-table">
-				<Table
-					columns={[
-						{ key: "name", header: "Name" },
-						{ key: "role", header: "Role" },
-					]}
-					rows={[
-						{ name: "Ada Lovelace", role: "engineer" },
-						{ name: "Grace Hopper", role: "admiral" },
-					]}
-				/>
-			</View>
-			<View style={demoStyles.componentRow} testID="k-demo-toolbar">
-				<Toolbar>
-					<ToolbarButton size="sm" variant="ghost">
-						bold
-					</ToolbarButton>
-					<ToolbarButton size="sm" variant="ghost">
-						italic
-					</ToolbarButton>
-					<ToolbarSeparator />
-					<ToolbarToggleGroup
-						type="single"
-						value={align}
-						onValueChange={(next) => setAlign(String(next))}
-					>
-						<ToolbarToggleItem value="left" size="sm">
-							left
-						</ToolbarToggleItem>
-						<ToolbarToggleItem value="center" size="sm">
-							center
-						</ToolbarToggleItem>
-					</ToolbarToggleGroup>
-				</Toolbar>
 			</View>
 		</>
 	);

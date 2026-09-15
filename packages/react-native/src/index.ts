@@ -43,13 +43,6 @@ export type {
 	BannerSkeletonConfig,
 } from "./components/banner";
 export { Banner } from "./components/banner";
-export type {
-	BreadcrumbItem,
-	BreadcrumbsProps,
-	BreadcrumbsSkeletonConfig,
-	BreadcrumbsSkeletonProps,
-} from "./components/breadcrumbs";
-export { Breadcrumbs, BreadcrumbsSkeleton } from "./components/breadcrumbs";
 export type { ButtonProps } from "./components/button";
 export { Button } from "./components/button";
 export type {
@@ -174,11 +167,8 @@ export type {
 	MultiSelectProps,
 } from "./components/multi-select";
 export { MultiSelect, MultiSelectSkeleton } from "./components/multi-select";
-export type {
-	PaginationProps,
-	PaginationSize,
-} from "./components/pagination";
-export { Pagination } from "./components/pagination";
+export type { NumberInputProps } from "./components/number-input";
+export { NumberInput } from "./components/number-input";
 export type { PasswordStrengthIndicatorProps } from "./components/password-strength-indicator";
 export {
 	calculatePasswordStrength,
@@ -241,13 +231,6 @@ export type {
 export { Steps } from "./components/steps";
 export type { SwitchProps } from "./components/switch";
 export { Switch } from "./components/switch";
-export type {
-	TableColumn,
-	TableProps,
-	TableRow,
-	TableSkeletonConfig,
-} from "./components/table";
-export { Table, TableSkeleton } from "./components/table";
 export type { TabsItem, TabsProps } from "./components/tabs";
 export { Tabs } from "./components/tabs";
 export type { TagColor, TagProps, TagSize, TagVariant } from "./components/tag";
@@ -293,22 +276,6 @@ export type {
 	ToggleGroupType,
 } from "./components/toggle-group";
 export { ToggleGroup, ToggleGroupItem } from "./components/toggle-group";
-export type {
-	ToolbarButtonProps,
-	ToolbarLinkProps,
-	ToolbarProps,
-	ToolbarSeparatorProps,
-	ToolbarToggleGroupProps,
-	ToolbarToggleItemProps,
-} from "./components/toolbar";
-export {
-	Toolbar,
-	ToolbarButton,
-	ToolbarLink,
-	ToolbarSeparator,
-	ToolbarToggleGroup,
-	ToolbarToggleItem,
-} from "./components/toolbar";
 export { themeNames, themes } from "./themes";
 export { motion, tokens } from "./tokens";
 export type { KalaTheme, ThemeName } from "./types";

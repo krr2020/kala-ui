@@ -3,7 +3,6 @@ import {
 	Icon,
 	Indicator,
 	Text as KText,
-	Pagination,
 	Rating,
 	SegmentedControl,
 	Slider,
@@ -22,7 +21,6 @@ export function NavigationDemo() {
 	const [range, setRange] = useState("week");
 	const [tab, setTab] = useState("one");
 	const [rating, setRating] = useState(3);
-	const [pageNumber, setPageNumber] = useState(2);
 	const [volume, setVolume] = useState(70);
 	const [bold, setBold] = useState(false);
 	const [align, setAlign] = useState("");
@@ -68,9 +66,6 @@ export function NavigationDemo() {
 			<View style={demoStyles.componentRow} testID="k-demo-rating">
 				<Rating value={rating} onValueChange={setRating} />
 				<Rating value={3.5} allowHalf readOnly />
-			</View>
-			<View style={demoStyles.componentRow} testID="k-demo-pagination">
-				<Pagination total={9} page={pageNumber} onPageChange={setPageNumber} />
 			</View>
 			<View testID="k-demo-slider">
 				<Slider

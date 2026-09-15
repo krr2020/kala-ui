@@ -12,7 +12,6 @@ import { AlertDialog } from "../alert-dialog";
 import { Avatar } from "../avatar";
 import { AvatarGroup } from "../avatar-group";
 import { Banner } from "../banner";
-import { Breadcrumbs } from "../breadcrumbs";
 import { Button } from "../button";
 import { Calendar } from "../calendar";
 import { Checkbox } from "../checkbox";
@@ -32,7 +31,7 @@ import { InputOtp, InputOtpSlot } from "../input-otp";
 import { List, ListItem } from "../list";
 import { LoadingOverlay } from "../loading-overlay";
 import { MultiSelect } from "../multi-select";
-import { Pagination } from "../pagination";
+import { NumberInput } from "../number-input";
 import { PasswordStrengthIndicator } from "../password-strength-indicator";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
@@ -46,7 +45,6 @@ import { Slider } from "../slider";
 import { Spinner } from "../spinner";
 import { Steps } from "../steps";
 import { Switch } from "../switch";
-import { Table } from "../table";
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
 import { TagInput } from "../tag-input";
@@ -56,13 +54,6 @@ import { Textarea } from "../textarea";
 import { TimePicker } from "../time-picker";
 import { Timeline } from "../timeline";
 import { Toast } from "../toast";
-import {
-	Toolbar,
-	ToolbarButton,
-	ToolbarLink,
-	ToolbarToggleGroup,
-	ToolbarToggleItem,
-} from "../toolbar";
 
 // TLB v14 queries are a11y-aware: deliberately-hidden elements (Icon without
 // a label) and siblings of an accessibilityViewIsModal container (the Sheet
@@ -237,6 +228,27 @@ describe("a11y contract", () => {
 			const input = screen.getByTestId("k-text-input");
 			expect(input.props.accessibilityState?.disabled).toBe(true);
 			expect(input.props.editable).toBe(false);
+		});
+	});
+
+	describe("NumberInput", () => {
+		it("labels the steppers and passes the field label through", async () => {
+			const screen = await render(
+				<NumberInput value={1} accessibilityLabel="quantity" />,
+			);
+			expect(screen.getByRole("button", { name: "Increase" })).toBeTruthy();
+			expect(screen.getByRole("button", { name: "Decrease" })).toBeTruthy();
+			expect(
+				screen.getByTestId("k-number-input-input").props.accessibilityLabel,
+			).toBe("quantity");
+		});
+
+		it("disabled steppers announce disabled", async () => {
+			const screen = await render(<NumberInput value={1} disabled />);
+			expect(
+				screen.getByRole("button", { name: "Increase" }).props
+					.accessibilityState?.disabled,
+			).toBe(true);
 		});
 	});
 
@@ -512,40 +524,6 @@ describe("a11y contract", () => {
 			expect(star.props.accessibilityState?.disabled).toBe(true);
 			await fireEvent.press(star);
 			expect(onValueChange).not.toHaveBeenCalled();
-		});
-	});
-
-	describe("Pagination", () => {
-		it("labels the navigation and announces the current page", async () => {
-			const screen = await render(<Pagination total={5} page={2} />);
-			const root = screen.getByTestId("k-pagination");
-			expect(root.props.accessibilityLabel).toBe("Pagination");
-			const current = screen
-				.getAllByTestId("k-pagination-page")
-				.find((n) => n.props.accessibilityState?.selected);
-			expect(current?.props.accessibilityLabel).toBe("2");
-		});
-
-		it("ellipsis is hidden from accessibility", async () => {
-			const screen = await render(<Pagination total={20} page={10} />);
-			for (const ell of screen.getAllByTestId(
-				"k-pagination-ellipsis",
-				inclHidden,
-			)) {
-				expect(ell.props.accessibilityElementsHidden).toBe(true);
-			}
-		});
-
-		it("prev/next announce labels and disable at bounds", async () => {
-			const screen = await render(<Pagination total={3} page={1} />);
-			expect(
-				screen.getByRole("button", { name: "Go to previous page" }).props
-					.accessibilityState?.disabled,
-			).toBe(true);
-			expect(
-				screen.getByRole("button", { name: "Go to next page" }).props
-					.accessibilityState?.disabled,
-			).toBe(false);
 		});
 	});
 
@@ -922,7 +900,7 @@ describe("a11y contract", () => {
 		});
 	});
 
-	describe("DropdownMenu, ContextMenu, Toolbar", () => {
+	describe("DropdownMenu, ContextMenu", () => {
 		it("menu triggers announce role, label and expanded state", async () => {
 			const screen = await render(
 				<DropdownMenu
@@ -978,27 +956,6 @@ describe("a11y contract", () => {
 			expect(screen.getByLabelText("Copy")).toBeTruthy();
 		});
 
-		it("Toolbar announces toolbar role and child labels", async () => {
-			const screen = await render(
-				<Toolbar accessibilityLabel="format">
-					<ToolbarButton accessibilityLabel="bold">B</ToolbarButton>
-					<ToolbarLink accessibilityLabel="docs" onPress={() => undefined}>
-						docs
-					</ToolbarLink>
-					<ToolbarToggleGroup type="single" accessibilityLabel="align">
-						<ToolbarToggleItem value="left" accessibilityLabel="align left">
-							left
-						</ToolbarToggleItem>
-					</ToolbarToggleGroup>
-				</Toolbar>,
-			);
-			const bar = screen.getByTestId("k-toolbar");
-			expect(bar.props.accessibilityRole).toBe("toolbar");
-			expect(bar.props.accessibilityLabel).toBe("format");
-			expect(screen.getByLabelText("bold")).toBeTruthy();
-			expect(screen.getByLabelText("docs")).toBeTruthy();
-			expect(screen.getByLabelText("align left")).toBeTruthy();
-		});
 	});
 
 	describe("CopyButton", () => {
@@ -1021,7 +978,7 @@ describe("a11y contract", () => {
 		});
 	});
 
-	describe("Timeline, Breadcrumbs, TagInput, Table", () => {
+	describe("Timeline, TagInput", () => {
 		it("Timeline items announce title, timestamp and description", async () => {
 			const screen = await render(
 				<Timeline
@@ -1040,19 +997,6 @@ describe("a11y contract", () => {
 			expect(item.props.accessibilityLabel).toContain("in transit");
 		});
 
-		it("Breadcrumbs announces the current page on the last crumb", async () => {
-			const screen = await render(
-				<Breadcrumbs
-					items={[
-						{ label: "home", onPress: () => undefined },
-						{ label: "orders" },
-					]}
-				/>,
-			);
-			expect(screen.getByLabelText("orders (current page)")).toBeTruthy();
-			expect(screen.getByText("home")).toBeTruthy();
-		});
-
 		it("TagInput labels the entry field and remove buttons", async () => {
 			const screen = await render(
 				<TagInput defaultValue={["alpha"]} placeholder="add recipients" />,
@@ -1063,20 +1007,6 @@ describe("a11y contract", () => {
 			expect(screen.getByLabelText("Remove alpha")).toBeTruthy();
 		});
 
-		it("Table header announces its columns", async () => {
-			const screen = await render(
-				<Table
-					columns={[
-						{ key: "name", header: "Name" },
-						{ key: "role", header: "Role" },
-					]}
-					rows={[{ name: "Ada", role: "engineer" }]}
-				/>,
-			);
-			const header = screen.getByTestId("k-table-header");
-			expect(header.props.accessibilityLabel).toContain("Name");
-			expect(header.props.accessibilityLabel).toContain("Role");
-		});
 	});
 
 	describe("MultiSelect, Combobox", () => {

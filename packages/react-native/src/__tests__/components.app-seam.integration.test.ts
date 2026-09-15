@@ -115,7 +115,6 @@ describe("component app seam", () => {
 			"EmptyState",
 			"Tag",
 			"Rating",
-			"Pagination",
 			"Slider",
 			"Dialog",
 			"AlertDialog",
@@ -123,14 +122,12 @@ describe("component app seam", () => {
 			"ToggleGroup",
 			"DropdownMenu",
 			"ContextMenu",
-			"Toolbar",
 			"Timeline",
-			"Breadcrumbs",
 			"TagInput",
-			"Table",
 			"MultiSelect",
 			"Combobox",
 			"CopyButton",
+			"NumberInput",
 			"Calendar",
 			"DatePicker",
 			"DateRangePicker",
@@ -165,13 +162,13 @@ describe("component app seam", () => {
 			demoHooks += (readFileSync(file, "utf8").match(/useState[(<]/g) ?? [])
 				.length;
 		}
-		// 25 interactive demos: sheet/dialog/confirm/faq/advanced +
-		// toast/banner + agree/sync/plan + range/tab/rating/page/volume +
+		// interactive demos: sheet/dialog/confirm/faq/advanced +
+		// toast/banner + agree/sync/plan + range/tab/rating/volume +
 		// bold/align/formats + select + loading toggle + crash toggle +
-		// otp code entry + menu auto-sync/last-action + toolbar align +
+		// otp code entry + menu auto-sync/last-action + number-input +
 		// tag recipients + toppings + city + stay date + reminder time +
 		// app chrome tab.
-		expect(demoHooks).toBe(31);
+		expect(demoHooks).toBe(30);
 	});
 
 	it("render-surface census matches the pinned marker/label inventory", () => {
@@ -187,6 +184,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="open demo dialog"': 1,
 					'accessibilityLabel="open demo sheet"': 1,
 					'accessibilityLabel="plan"': 1,
+					'accessibilityLabel="quantity"': 1,
 					'accessibilityLabel="range"': 1,
 					'accessibilityLabel="show toast"': 1,
 					'accessibilityLabel="sun"': 1,
@@ -208,7 +206,7 @@ describe("component app seam", () => {
 					'testID="k-demo-indicator"': 1,
 					'testID="k-demo-input"': 1,
 					'testID="k-demo-labels"': 1,
-					'testID="k-demo-pagination"': 1,
+					'testID="k-demo-number-input"': 1,
 					'testID="k-demo-progress"': 1,
 					'testID="k-demo-radios"': 1,
 					'testID="k-demo-rating"': 1,
@@ -222,10 +220,7 @@ describe("component app seam", () => {
 					'testID="k-demo-select"': 1,
 					'testID="k-demo-dropdown-menu"': 1,
 					'testID="k-demo-context-menu"': 1,
-					'testID="k-demo-toolbar"': 1,
 					'testID="k-demo-timeline"': 1,
-					'testID="k-demo-breadcrumbs"': 1,
-					'testID="k-demo-table"': 1,
 					'testID="k-demo-tag-input"': 1,
 					'testID="k-demo-multi-select"': 1,
 					'testID="k-demo-combobox"': 1,

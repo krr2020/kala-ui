@@ -261,7 +261,28 @@ Remaining web components, triaged by mobile value:
 | 18 | Timeline, TagInput, Table, Breadcrumbs | data display |
 | 19 | DatePicker, Calendar, TimePicker, MultiSelect, Combobox | large; consider community libs |
 
-Deliberately **not ported**:
+### Mobile-scope re-scope (post-wave audit)
+
+An audit against the mobile-value triage above surfaced components that
+shipped by web-parity momentum and have since been **removed**:
+
+- `Breadcrumbs` — desktop hierarchy idiom; native apps navigate via
+  back-stack/drawer, not trail-of-links.
+- `Pagination` — numbered page-range UI is a web data-grid idiom;
+  mobile convention is infinite scroll / pull-to-refresh.
+- `Toolbar` — desktop action bar; the overflow role already belongs to
+  `DropdownMenu` (ActionSheet pattern) on touch.
+- `Table` — duplicated the `DataTable` composite; one table story now
+  lives in `@kala-ui/react-native-app` (pressable rows).
+
+Wave 14's form gap is closed with `NumberInput` (steppers, min/max/step
+clamping on stepper + commit, null on empty). Web's `InputGroup` is
+**not** ported as a separate component: `TextInput` already ships
+`leftSection`/`rightSection` (the `k-text-input-group` wrapper), which
+is the native InputGroup; adding another adornment component would fork
+the API.
+
+Deliberately **not ported** (consolidated ledger):
 
 - Layout primitives (`Box`, `Stack`, `Group`, `Center`, `Flex`, `Grid`,
   `Container`) — RN's first-class flexbox style props make them pure
@@ -269,10 +290,15 @@ Deliberately **not ported**:
 - Web-modality-only surfaces (`HoverCard`, `Command`, `Kbd`, `Menubar`,
   `NavigationMenu`, `TreeView`, `Resizable`, `ScrollArea`,
   `SkipToContent`, `ColorInput`, `Overlay`, `ThemeProvider`, `Code`,
-  `Burger`) — hover/keyboard/resize concepts with no native equivalent,
-  or covered by RN primitives / Unistyles theming.
+  `Burger`, `Tooltip`, `Popover`, `Drawer`, `FileUpload`) —
+  hover/keyboard/resize concepts with no native equivalent (long-press
+  menus and bottom `Sheet` cover the touch idioms), or covered by RN
+  primitives / Unistyles theming.
 - Covered under other names: `input` → `TextInput`, `collapse` →
-  `Collapsible`, `paper` → `Card`.
+  `Collapsible`, `paper` → `Card`, `input-group` → `TextInput`
+  sections, `number-input` → `NumberInput`.
+- Removed after review as out of mobile scope: `Breadcrumbs`,
+  `Pagination`, `Toolbar`, `Table` (see re-scope above).
 
 Step 5 started — Wave A1 app chrome in `@kala-ui/react-native-app`:
 `AppShell`, `Header`/`HeaderSkeleton`, `TabBar`/`TabBarSkeleton`

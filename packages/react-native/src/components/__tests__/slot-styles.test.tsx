@@ -14,7 +14,6 @@ import { Avatar } from "../avatar";
 import { AvatarGroup } from "../avatar-group";
 import { Badge } from "../badge";
 import { Banner } from "../banner";
-import { Breadcrumbs } from "../breadcrumbs";
 import { Button } from "../button";
 import { Calendar } from "../calendar";
 import { Card } from "../card";
@@ -37,7 +36,7 @@ import { Label } from "../label";
 import { List } from "../list";
 import { LoadingOverlay } from "../loading-overlay";
 import { MultiSelect } from "../multi-select";
-import { Pagination } from "../pagination";
+import { NumberInput } from "../number-input";
 import { PasswordStrengthIndicator } from "../password-strength-indicator";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
@@ -53,7 +52,6 @@ import { applySlot } from "../slot-styles";
 import { Spinner } from "../spinner";
 import { Steps } from "../steps";
 import { Switch } from "../switch";
-import { Table } from "../table";
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
 import { TagInput } from "../tag-input";
@@ -65,7 +63,6 @@ import { Timeline } from "../timeline";
 import { Toast } from "../toast";
 import { Toggle } from "../toggle";
 import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
-import { Toolbar } from "../toolbar";
 
 const incl = { includeHiddenElements: true } as const;
 
@@ -173,17 +170,6 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			name: "Badge",
 			marker: "k-badge",
 			render: () => render(<Badge styles={{ root: { borderWidth: 7 } }} />),
-		},
-		{
-			name: "Breadcrumbs",
-			marker: "k-breadcrumbs",
-			render: () =>
-				render(
-					<Breadcrumbs
-						items={[{ label: "a" }, { label: "b" }]}
-						styles={{ root: { borderWidth: 7 } }}
-					/>,
-				),
 		},
 		{
 			name: "Button",
@@ -380,10 +366,15 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				),
 		},
 		{
-			name: "Pagination",
-			marker: "k-pagination",
+			name: "NumberInput",
+			marker: "k-number-input",
 			render: () =>
-				render(<Pagination total={3} styles={{ root: { borderWidth: 7 } }} />),
+				render(
+					<NumberInput
+						defaultValue={1}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
+				),
 		},
 		{
 			name: "PasswordStrengthIndicator",
@@ -527,18 +518,6 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				),
 		},
 		{
-			name: "Table",
-			marker: "k-table",
-			render: () =>
-				render(
-					<Table
-						columns={[{ key: "a", header: "A" }]}
-						rows={[{ a: "1" }]}
-						styles={{ root: { borderWidth: 7 } }}
-					/>,
-				),
-		},
-		{
 			name: "Tag",
 			marker: "k-tag",
 			render: () => render(<Tag styles={{ root: { borderWidth: 7 } }}>t</Tag>),
@@ -612,12 +591,6 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				),
 		},
 		{
-			name: "Toolbar",
-			marker: "k-toolbar",
-			render: () =>
-				render(<Toolbar styles={{ root: { borderWidth: 7 } }}>{null}</Toolbar>),
-		},
-		{
 			name: "List",
 			marker: "k-list",
 			render: () => render(<List styles={{ root: { borderWidth: 7 } }} />),
@@ -637,8 +610,8 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		});
 	}
 
-	it("the sweep covers all 59 components", () => {
-		expect(fixtures.length).toBe(59);
+	it("the sweep covers all 56 components", () => {
+		expect(fixtures.length).toBe(56);
 	});
 });
 
@@ -778,44 +751,6 @@ describe("multi-part slots", () => {
 		expect(
 			Number(
 				flatStyle(screen.getByTestId("k-segment-indicator", incl)).borderWidth,
-			),
-		).toBe(5);
-	});
-
-	it("pagination page/previous/next/ellipsis carry distinct overrides", async () => {
-		const screen = await render(
-			<Pagination
-				total={9}
-				siblings={1}
-				boundaries={1}
-				styles={{
-					page: { borderWidth: 2 },
-					previous: { borderWidth: 3 },
-					next: { borderWidth: 4 },
-					ellipsis: { borderWidth: 5 },
-				}}
-			/>,
-		);
-		const pages = screen.getAllByTestId("k-pagination-page", incl);
-		expect(pages.length).toBeGreaterThan(1);
-		for (const node of pages) {
-			expect(Number(flatStyle(node).borderWidth)).toBe(2);
-		}
-		expect(
-			Number(
-				flatStyle(screen.getByTestId("k-pagination-previous", incl))
-					.borderWidth,
-			),
-		).toBe(3);
-		expect(
-			Number(
-				flatStyle(screen.getByTestId("k-pagination-next", incl)).borderWidth,
-			),
-		).toBe(4);
-		expect(
-			Number(
-				flatStyle(screen.getByTestId("k-pagination-ellipsis", incl))
-					.borderWidth,
 			),
 		).toBe(5);
 	});
@@ -1010,16 +945,7 @@ describe("precedence and back-compat", () => {
 		expect(Number(flatStyle(sl.getByTestId("k-slider")).opacity)).toBe(0.9);
 	});
 
-	it("styles.root beats the legacy style prop on pagination, rating, radio-group", async () => {
-		const pg = await render(
-			<Pagination
-				total={9}
-				style={{ opacity: 0.2 }}
-				styles={{ root: { opacity: 0.9 } }}
-			/>,
-		);
-		expect(Number(flatStyle(pg.getByTestId("k-pagination")).opacity)).toBe(0.9);
-
+	it("styles.root beats the legacy style prop on rating, radio-group", async () => {
 		const rt = await render(
 			<Rating
 				value={3}

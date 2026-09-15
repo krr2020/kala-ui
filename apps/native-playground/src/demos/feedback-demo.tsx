@@ -11,6 +11,7 @@ import {
 	InputOtpSlot,
 	LoadingOverlay,
 	MultiSelect,
+	NumberInput,
 	PasswordStrengthIndicator,
 	Select,
 	TagInput,
@@ -92,6 +93,14 @@ export function FeedbackDemo() {
 				<LoadingOverlay visible={loading}>
 					<Text onPress={() => setLoading(false)}>cancel</Text>
 				</LoadingOverlay>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-number-input">
+				<NumberInput
+					defaultValue={1}
+					min={0}
+					max={10}
+					accessibilityLabel="quantity"
+				/>
 			</View>
 			<View style={demoStyles.componentRow} testID="k-demo-input-otp">
 				<InputOtp maxLength={6} value={code} onChange={setCode}>
