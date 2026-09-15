@@ -282,6 +282,15 @@ composites with no mobile analog (Sidebar, DnD, CSS-grid shell regions)
 stay web-only. Next up: rollout step 4 (pilot in one app) and Wave A2
 (charts on the existing react-native-svg peer, data-table, metric-card).
 
+Wave A2 shipped in `@kala-ui/react-native-app`: `BarChart`,
+`DonutChart`, `Sparkline`, `ChartSkeleton`, read-only `DataTable` +
+`DataTableSkeleton`, and `MetricCard`/`MetricCardSkeleton`. Charts are
+hand-rolled SVG on the existing `react-native-svg` peer (geometry in
+`src/lib/chart-geometry.ts`) — ApexCharts stays web-only, and the
+mobile table is a pressable list (sorting/filters/pagination stay web),
+both deliberate divergences from the web composites. Next: rollout
+step 4 (pilot in one app).
+
 ## Open questions
 
 - New-architecture-only (RN 0.76+), or do any target apps still run

@@ -33,6 +33,7 @@ export function TabBarSkeleton({
 			]}
 		>
 			{Array.from({ length: 3 }, (_, i) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: fixed-length placeholder rows, never reordered
 				<View key={`tab-${i}`} style={{ alignItems: "center", gap: 4 }}>
 					<Skeleton style={{ height: 22, width: 22, borderRadius: 999 }} />
 					<Skeleton style={{ height: 10, width: 48 }} />

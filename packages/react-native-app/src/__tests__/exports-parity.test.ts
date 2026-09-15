@@ -30,16 +30,35 @@ function exportNames(): Set<string> {
 }
 
 describe("entry exports pin", () => {
-	it("exports exactly the Wave-A1 app-chrome surface", () => {
+	it("exports exactly the Wave-A1 + A2 surface", () => {
 		expect(exportNames()).toEqual(
 			new Set([
 				"AppShell",
 				"AppShellProps",
+				"BarChart",
+				"BarChartDatum",
+				"BarChartProps",
+				"ChartSkeleton",
+				"ChartSkeletonProps",
+				"DataTable",
+				"DataTableColumn",
+				"DataTableProps",
+				"DataTableSkeleton",
+				"DataTableSkeletonProps",
+				"DonutChart",
+				"DonutChartDatum",
+				"DonutChartProps",
 				"Header",
 				"HeaderAction",
 				"HeaderProps",
 				"HeaderSkeleton",
 				"HeaderSkeletonProps",
+				"MetricCard",
+				"MetricCardProps",
+				"MetricCardSkeleton",
+				"MetricCardSkeletonProps",
+				"Sparkline",
+				"SparklineProps",
 				"TabBar",
 				"TabBarItemData",
 				"TabBarProps",

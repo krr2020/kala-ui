@@ -2,8 +2,11 @@ import { render } from "@testing-library/react-native";
 import { Home, Search, User } from "lucide-react-native";
 import { Text } from "react-native";
 import { AppShell } from "../app-shell";
+import { BarChart, ChartSkeleton, DonutChart, Sparkline } from "../charts";
+import { DataTable, DataTableSkeleton } from "../data-table";
 import { Header } from "../header";
 import { HeaderSkeleton } from "../header/header-skeleton";
+import { MetricCard, MetricCardSkeleton } from "../metric-card";
 import { TabBar } from "../tab-bar";
 import { TabBarSkeleton } from "../tab-bar/tab-bar-skeleton";
 
@@ -70,11 +73,81 @@ const fixtures = [
 		render: () =>
 			render(<TabBarSkeleton styles={{ root: { borderWidth: 7 } }} />),
 	},
+	{
+		name: "BarChart",
+		marker: "k-bar-chart",
+		render: () =>
+			render(
+				<BarChart
+					data={[{ label: "a", value: 1 }]}
+					styles={{ root: { borderWidth: 7 } }}
+				/>,
+			),
+	},
+	{
+		name: "ChartSkeleton",
+		marker: "k-chart-skeleton",
+		render: () =>
+			render(<ChartSkeleton styles={{ root: { borderWidth: 7 } }} />),
+	},
+	{
+		name: "DonutChart",
+		marker: "k-donut-chart",
+		render: () =>
+			render(
+				<DonutChart
+					data={[{ label: "a", value: 1 }]}
+					styles={{ root: { borderWidth: 7 } }}
+				/>,
+			),
+	},
+	{
+		name: "Sparkline",
+		marker: "k-sparkline",
+		render: () =>
+			render(<Sparkline data={[1, 2]} styles={{ root: { borderWidth: 7 } }} />),
+	},
+	{
+		name: "DataTable",
+		marker: "k-data-table",
+		render: () =>
+			render(
+				<DataTable
+					columns={[{ key: "name" as const, header: "Name" }]}
+					rows={[{ name: "a" }]}
+					styles={{ root: { borderWidth: 7 } }}
+				/>,
+			),
+	},
+	{
+		name: "DataTableSkeleton",
+		marker: "k-data-table",
+		render: () =>
+			render(<DataTableSkeleton styles={{ root: { borderWidth: 7 } }} />),
+	},
+	{
+		name: "MetricCard",
+		marker: "k-metric-card",
+		render: () =>
+			render(
+				<MetricCard
+					title="t"
+					value={1}
+					styles={{ root: { borderWidth: 7 } }}
+				/>,
+			),
+	},
+	{
+		name: "MetricCardSkeleton",
+		marker: "k-metric-card",
+		render: () =>
+			render(<MetricCardSkeleton styles={{ root: { borderWidth: 7 } }} />),
+	},
 ] as const;
 
 describe("slot-styles contract", () => {
 	it("the sweep covers all shipped app composites", () => {
-		expect(fixtures.length).toBe(5);
+		expect(fixtures.length).toBe(13);
 	});
 
 	it.each(fixtures)("$name: styles.root reaches $marker", async (fixture) => {
