@@ -1,5 +1,5 @@
-import type { StyleProp, TextProps, ViewStyle } from "react-native";
 import type { ReactNode } from "react";
+import type { StyleProp, TextProps, ViewStyle } from "react-native";
 import type { BadgeColor } from "../badge/badge.types";
 
 export type ListItemIconSize = "sm" | "md" | "lg";

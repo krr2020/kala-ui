@@ -113,7 +113,9 @@ describe("ListItem interaction arms", () => {
 	it("href: link role that opens the url", async () => {
 		const openURL = jest.fn();
 		jest.spyOn(Linking, "openURL").mockImplementation(openURL);
-		const screen = await render(<ListItem href="https://example.com">row</ListItem>);
+		const screen = await render(
+			<ListItem href="https://example.com">row</ListItem>,
+		);
 		const el = node(screen, "k-list-item");
 		expect(tree(el).accessibilityRole).toBe("link");
 		await fireEvent.press(el);
@@ -179,7 +181,10 @@ describe("List sub-components", () => {
 
 	it("ListItemAvatar falls back to initials when the image errors", async () => {
 		const screen = await render(
-			<ListItemAvatar source={{ uri: "https://x/y.png" }} name="Ada Lovelace" />,
+			<ListItemAvatar
+				source={{ uri: "https://x/y.png" }}
+				name="Ada Lovelace"
+			/>,
 		);
 		expect(screen.getByTestId("k-list-item-avatar")).toBeTruthy();
 		await fireEvent(node(screen, "k-list-item-avatar-image"), "error");
@@ -217,7 +222,9 @@ describe("List sub-components", () => {
 		);
 		expect(action.getByTestId("k-list-item-action")).toBeTruthy();
 
-		const badge = await render(<ListItemBadge color="success">3</ListItemBadge>);
+		const badge = await render(
+			<ListItemBadge color="success">3</ListItemBadge>,
+		);
 		expect(badge.getByTestId("k-list-item-badge")).toBeTruthy();
 		expect(badge.getByText("3")).toBeTruthy();
 	});

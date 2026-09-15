@@ -1,3 +1,14 @@
+export {
+	List,
+	ListItem,
+	ListItemAction,
+	ListItemAvatar,
+	ListItemBadge,
+	ListItemContent,
+	ListItemIcon,
+	ListItemText,
+	ListItemTitle,
+} from "./list";
 export type {
 	ListItemActionProps,
 	ListItemAvatarProps,
@@ -12,14 +23,3 @@ export type {
 	ListSkeletonConfig,
 	ListSkeletonVariant,
 } from "./list.types";
-export {
-	List,
-	ListItem,
-	ListItemAction,
-	ListItemAvatar,
-	ListItemBadge,
-	ListItemContent,
-	ListItemIcon,
-	ListItemText,
-	ListItemTitle,
-} from "./list";

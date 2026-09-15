@@ -5,15 +5,9 @@
  * CSS — full-bleed 1px regardless of dense padding.
  */
 
-import { useState } from "react";
 import type { ReactElement, ReactNode } from "react";
-import {
-	Image,
-	Linking,
-	Pressable,
-	Text as RNText,
-	View,
-} from "react-native";
+import { useState } from "react";
+import { Image, Linking, Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Badge } from "../badge";
 import { Skeleton } from "../skeleton";
@@ -73,9 +67,7 @@ function SkeletonRow({
 		/>
 	);
 	return (
-		<View
-			style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
-		>
+		<View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
 			{variant === "withAvatar" ? avatar : null}
 			{variant === "withIcon" ? icon : null}
 			{variant === "multiLine"
@@ -87,8 +79,8 @@ function SkeletonRow({
 					)
 				: null}
 			{variant === "simple" ||
-				variant === "withAvatar" ||
-				variant === "withIcon"
+			variant === "withAvatar" ||
+			variant === "withIcon"
 				? body(line("60%" as const))
 				: null}
 			{variant === "withBadge" ? body(line("65%" as const)) : null}
@@ -124,8 +116,12 @@ export function List({
 	];
 
 	if (isLoading) {
-		const { variant = "simple", itemCount = 3, dense: skDense = false, showDividers = true } =
-			skeletonConfig ?? {};
+		const {
+			variant = "simple",
+			itemCount = 3,
+			dense: skDense = false,
+			showDividers = true,
+		} = skeletonConfig ?? {};
 		return (
 			<View
 				testID={testID}
@@ -149,7 +145,14 @@ export function List({
 								/>
 							</View>
 							{showDividers && index < itemCount - 1 ? (
-								<View testID="k-list-divider" style={{ height: 1, alignSelf: "stretch", backgroundColor: String(theme.separator) }} />
+								<View
+									testID="k-list-divider"
+									style={{
+										height: 1,
+										alignSelf: "stretch",
+										backgroundColor: String(theme.separator),
+									}}
+								/>
 							) : null}
 						</View>
 					))}
@@ -207,9 +210,7 @@ export function ListItem({
 		width: "100%" as const,
 		paddingHorizontal: dense ? 12 : 16,
 		paddingVertical: dense ? 8 : 12,
-		backgroundColor: active
-			? `${String(theme.primary)}1A`
-			: undefined,
+		backgroundColor: active ? `${String(theme.primary)}1A` : undefined,
 	};
 	const slot = applySlot(applySlot({}, style), styles?.root);
 	// raw strings cannot render inside a View — wrap them like Badge does
@@ -371,7 +372,10 @@ export function ListItemTitle({
 	return (
 		<RNText
 			testID={testID}
-			style={[{ fontSize: 14, fontWeight: "500", color: String(theme.foreground) }, style]}
+			style={[
+				{ fontSize: 14, fontWeight: "500", color: String(theme.foreground) },
+				style,
+			]}
 			{...rest}
 		>
 			{children}
