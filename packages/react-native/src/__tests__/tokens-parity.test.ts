@@ -361,6 +361,8 @@ describe("layout restructure pins", () => {
 				"Skeleton",
 				"SkeletonProps",
 				"SkeletonVariant",
+				"Slider",
+				"SliderProps",
 				"Spinner",
 				"SpinnerProps",
 				"SpinnerSize",

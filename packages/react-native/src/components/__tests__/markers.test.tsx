@@ -4,7 +4,7 @@
  * When adding a component, add its marker here — a missing marker is a
  * contract break, not a style issue.
  */
-import { fireEvent, render } from "@testing-library/react-native";
+import { act, fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
 import { motion } from "../../tokens";
 import { Alert } from "../alert";
@@ -26,6 +26,7 @@ import { EmptyState } from "../empty-state";
 import { SegmentedControl } from "../segmented-control";
 import { Pagination } from "../pagination";
 import { Rating } from "../rating";
+import { Slider } from "../slider";
 import { Tag } from "../tag";
 import { Tabs } from "../tabs";
 import { Spinner } from "../spinner";
@@ -1467,6 +1468,196 @@ describe("component markers", () => {
 				.find((n) => n.props.accessibilityState?.selected);
 			await fireEvent.press(current as NonNullable<typeof current>);
 			expect(onPageChange).not.toHaveBeenCalled();
+		});
+	});
+
+	describe("wave 8: Slider", () => {
+		// the responder polyfill under TLB leaves a grant lock that poisons
+		// every later render in this file, so tests drive the handlers via
+		// props directly (wiring is asserted once below)
+		type Screen = Awaited<ReturnType<typeof render>>;
+		type Track = ReturnType<Screen["getAllByTestId"]>[number];
+
+		const layout = async (track: Track, width: number) => {
+			await act(async () => {
+				track.props.onLayout({ nativeEvent: { layout: { width } } });
+			});
+		};
+
+		const grant = async (track: Track, locationX: number) => {
+			await act(async () => {
+				track.props.onResponderGrant({
+					nativeEvent: { locationX },
+				});
+			});
+		};
+
+		it("wires the responder handlers on the track", async () => {
+			const screen = await render(
+				<Slider value={[50]} accessibilityLabel="vol" />,
+			);
+			const track = screen.getByTestId("k-slider-track", inclHidden);
+			expect(track.props.onStartShouldSetResponder()).toBe(true);
+			expect(typeof track.props.onResponderGrant).toBe("function");
+			expect(typeof track.props.onResponderMove).toBe("function");
+		});
+
+		it("Slider renders k-slider, track, range and thumb markers", async () => {
+			const screen = await render(<Slider value={[50]} accessibilityLabel="vol" />);
+			expect(screen.getByTestId("k-slider", inclHidden)).toBeTruthy();
+			expect(screen.getByTestId("k-slider-track", inclHidden)).toBeTruthy();
+			expect(screen.getByTestId("k-slider-range", inclHidden)).toBeTruthy();
+			expect(screen.getByTestId("k-slider-thumb", inclHidden)).toBeTruthy();
+		});
+
+		it("positions range and thumb by percent of the value span", async () => {
+			const screen = await render(<Slider value={[50]} accessibilityLabel="vol" />);
+			const s = flatStyle(screen.getByTestId("k-slider-range", inclHidden));
+			expect(String(s.width)).toBe("50%");
+			const thumbS = flatStyle(screen.getByTestId("k-slider-thumb", inclHidden));
+			expect(thumbS.left).toBe("50%");
+			expect(thumbS.marginLeft).toBe(-10);
+		});
+
+		it("tap on the track resolves a stepped value and fires onValueChange", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Slider
+					defaultValue={[25]}
+					accessibilityLabel="vol"
+					onValueChange={onValueChange}
+				/>,
+			);
+			const track = screen.getByTestId("k-slider-track", inclHidden);
+			await layout(track, 200);
+			await grant(track, 100);
+			expect(onValueChange).toHaveBeenCalledWith([50]);
+			// uncontrolled: internal state repositions the markers, not just the callback
+			const s = flatStyle(screen.getByTestId("k-slider-range", inclHidden));
+			expect(String(s.width)).toBe("50%");
+		});
+
+		it("controlled value prop wins over a tap", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Slider
+					value={[25]}
+					accessibilityLabel="vol"
+					onValueChange={onValueChange}
+				/>,
+			);
+			const track = screen.getByTestId("k-slider-track", inclHidden);
+			await layout(track, 200);
+			await grant(track, 100);
+			expect(onValueChange).toHaveBeenCalledWith([50]);
+			// callback fired, but the controlled prop still owns the fill
+			const s = flatStyle(screen.getByTestId("k-slider-range", inclHidden));
+			expect(String(s.width)).toBe("25%");
+		});
+
+		it("rounds to step and never emits float drift", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Slider
+					defaultValue={[0]}
+					min={0}
+					max={10}
+					step={5}
+					accessibilityLabel="vol"
+					onValueChange={onValueChange}
+				/>,
+			);
+			const track = screen.getByTestId("k-slider-track", inclHidden);
+			await layout(track, 200);
+			await grant(track, 80);
+			expect(onValueChange).toHaveBeenLastCalledWith([5]);
+			await grant(track, 160);
+			expect(onValueChange).toHaveBeenLastCalledWith([10]);
+		});
+
+		it("maps a non-zero min into both value and percent space", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Slider
+					defaultValue={[10]}
+					min={10}
+					max={110}
+					accessibilityLabel="vol"
+					onValueChange={onValueChange}
+				/>,
+			);
+			const track = screen.getByTestId("k-slider-track", inclHidden);
+			await layout(track, 200);
+			await grant(track, 60);
+			expect(onValueChange).toHaveBeenCalledWith([40]);
+		});
+
+		it("clamps taps beyond the track edges to min/max", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Slider
+					defaultValue={[50]}
+					accessibilityLabel="vol"
+					onValueChange={onValueChange}
+				/>,
+			);
+			const track = screen.getByTestId("k-slider-track", inclHidden);
+			await layout(track, 200);
+			await grant(track, -20);
+			expect(onValueChange).toHaveBeenLastCalledWith([0]);
+			await grant(track, 400);
+			expect(onValueChange).toHaveBeenLastCalledWith([100]);
+		});
+
+		it("multi-thumb: nearest thumb moves and the range fill spans start→first only", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Slider
+					defaultValue={[25, 75]}
+					accessibilityLabel="range"
+					onValueChange={onValueChange}
+				/>,
+			);
+			expect(screen.getAllByTestId("k-slider-thumb", inclHidden)).toHaveLength(2);
+			const track = screen.getByTestId("k-slider-track", inclHidden);
+			await layout(track, 200);
+			// 140px of 200 → 70; nearest thumb is the second (75)
+			await grant(track, 140);
+			expect(onValueChange).toHaveBeenLastCalledWith([25, 70]);
+			// fill stays start→first thumb (25%), never spans to the second
+			const s = flatStyle(screen.getByTestId("k-slider-range", inclHidden));
+			expect(String(s.width)).toBe("25%");
+		});
+
+		it("empty values renders the track with no thumbs and no crash", async () => {
+			const screen = await render(<Slider value={[]} accessibilityLabel="empty" />);
+			expect(screen.getByTestId("k-slider-track", inclHidden)).toBeTruthy();
+			expect(screen.queryByTestId("k-slider-thumb")).toBeNull();
+		});
+
+		it("disabled blocks gestures and dims", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Slider
+					defaultValue={[50]}
+					disabled
+					accessibilityLabel="vol"
+					onValueChange={onValueChange}
+				/>,
+			);
+			const track = screen.getByTestId("k-slider-track", inclHidden);
+			await layout(track, 200);
+			expect(track.props.onStartShouldSetResponder()).toBe(false);
+			await grant(track, 100);
+			expect(onValueChange).not.toHaveBeenCalled();
+			const root = flatStyle(screen.getByTestId("k-slider", inclHidden));
+			expect(Number(root.opacity)).toBe(0.5);
+		});
+
+		it("isLoading renders the skeleton arm instead of the interactive track", async () => {
+			const screen = await render(<Slider isLoading accessibilityLabel="vol" />);
+			expect(screen.queryByTestId("k-slider-track")).toBeNull();
+			expect(screen.getByTestId("k-slider", inclHidden)).toBeTruthy();
 		});
 	});
 

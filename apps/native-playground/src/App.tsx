@@ -33,6 +33,7 @@ import {
 	Text as KText,
 	TextInput,
 	Toast,
+	Slider,
 } from "@kala-ui/react-native";
 import { themeNames } from "@kala-ui/react-native/themes";
 
@@ -140,6 +141,7 @@ export default function App() {
 	const [tab, setTab] = useState("one");
 	const [rating, setRating] = useState(3);
 	const [pageNumber, setPageNumber] = useState(2);
+	const [volume, setVolume] = useState(70);
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
@@ -382,6 +384,14 @@ export default function App() {
 						page={pageNumber}
 						onPageChange={setPageNumber}
 					/>
+				</View>
+				<View testID="k-demo-slider">
+					<Slider
+						value={[volume]}
+						onValueChange={(v) => setVolume(v[0])}
+						accessibilityLabel="volume"
+					/>
+					<KText size="sm">volume {volume}</KText>
 				</View>
 				<Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}>
 					<Sheet.Body>

@@ -20,6 +20,7 @@ import { EmptyState } from "../empty-state";
 import { SegmentedControl } from "../segmented-control";
 import { Pagination } from "../pagination";
 import { Rating } from "../rating";
+import { Slider } from "../slider";
 import { Tag } from "../tag";
 import { Tabs } from "../tabs";
 import { Spinner } from "../spinner";
@@ -520,6 +521,68 @@ describe("a11y contract", () => {
 				screen.getByRole("button", { name: "Go to next page" }).props
 					.accessibilityState?.disabled,
 			).toBe(false);
+		});
+	});
+
+	describe("Slider", () => {
+		it("exposes adjustable thumbs with value announcements", async () => {
+			const screen = await render(
+				<Slider value={[40]} min={0} max={100} accessibilityLabel="volume" />,
+			);
+			const thumb = screen.getAllByTestId("k-slider-thumb", inclHidden)[0];
+			expect(thumb.props.accessibilityRole).toBe("adjustable");
+			expect(thumb.props.accessibilityLabel).toBe("volume");
+			expect(thumb.props.accessibilityValue).toEqual({
+				min: 0,
+				max: 100,
+				now: 40,
+			});
+		});
+
+		it("increment/decrement actions adjust by step and clamp at bounds", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Slider
+					defaultValue={[95]}
+					min={0}
+					max={100}
+					step={10}
+					accessibilityLabel="volume"
+					onValueChange={onValueChange}
+				/>,
+			);
+			const thumb = screen.getAllByTestId("k-slider-thumb", inclHidden)[0];
+			await fireEvent(thumb, "accessibilityAction", {
+				nativeEvent: { actionName: "increment" },
+			});
+			expect(onValueChange).toHaveBeenLastCalledWith([100]);
+			await fireEvent(thumb, "accessibilityAction", {
+				nativeEvent: { actionName: "increment" },
+			});
+			// at max: clamped, no further movement
+			expect(onValueChange).toHaveBeenLastCalledWith([100]);
+			await fireEvent(thumb, "accessibilityAction", {
+				nativeEvent: { actionName: "decrement" },
+			});
+			expect(onValueChange).toHaveBeenLastCalledWith([90]);
+		});
+
+		it("disabled thumbs announce disabled and ignore a11y actions", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Slider
+					value={[50]}
+					disabled
+					accessibilityLabel="volume"
+					onValueChange={onValueChange}
+				/>,
+			);
+			const thumb = screen.getAllByTestId("k-slider-thumb", inclHidden)[0];
+			expect(thumb.props.accessibilityState?.disabled).toBe(true);
+			await fireEvent(thumb, "accessibilityAction", {
+				nativeEvent: { actionName: "increment" },
+			});
+			expect(onValueChange).not.toHaveBeenCalled();
 		});
 	});
 

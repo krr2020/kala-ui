@@ -78,6 +78,8 @@ export type {
 export { Separator } from "./components/separator";
 export type { SheetBodyProps, SheetProps } from "./components/sheet";
 export { Sheet } from "./components/sheet";
+export type { SliderProps } from "./components/slider";
+export { Slider } from "./components/slider";
 export type {
 	SkeletonProps,
 	SkeletonVariant,

@@ -60,7 +60,7 @@ describe("component app seam", () => {
 		expect(missing).toEqual([]);
 	});
 
-	it("wave-6/7 components are playground-visible and entry-exported", () => {
+	it("recent wave components are playground-visible and entry-exported", () => {
 		const app = readFileSync(APP_PATH, "utf8");
 		const imports = appImports(app);
 		const exported = exportNames(readFileSync(ENTRY_PATH, "utf8"));
@@ -71,6 +71,7 @@ describe("component app seam", () => {
 			"Tag",
 			"Rating",
 			"Pagination",
+			"Slider",
 		]) {
 			expect(imports.has(name), `App.tsx imports ${name}`).toBe(true);
 			expect(exported.has(name), `entry exports ${name}`).toBe(true);
