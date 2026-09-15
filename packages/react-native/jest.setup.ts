@@ -65,7 +65,14 @@ jest.mock('react-native-gesture-handler', () => {
 	};
 });
 
-import { StyleSheet } from 'react-native-unistyles';
+// The virtual unistyles mock is registered by this side-effect import
+// (keyed by the unresolved specifier); resolve StyleSheet through the
+// explicit mock registry — the real CJS barrel needs NitroModules and has
+// no configure. A same-specifier STATIC import would hoist before the
+// registration above and bypass the mock.
+import 'react-native-unistyles/mocks';
+
+const { StyleSheet } = require('react-native-unistyles');
 
 StyleSheet.configure({
 	themes,

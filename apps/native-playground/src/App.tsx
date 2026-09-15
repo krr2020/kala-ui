@@ -8,6 +8,7 @@ import {
 	useUnistyles,
 } from "react-native-unistyles";
 import {
+	Alert,
 	Avatar,
 	Badge,
 	Button,
@@ -17,12 +18,15 @@ import {
 	Icon,
 	Label,
 	Progress,
+	RadioGroup,
 	Separator,
 	Sheet,
+	Skeleton,
 	Spinner,
 	Switch,
 	Text as KText,
 	TextInput,
+	Toast,
 } from "@kala-ui/react-native";
 import { themeNames } from "@kala-ui/react-native/themes";
 
@@ -124,6 +128,8 @@ export default function App() {
 	const [sheetOpen, setSheetOpen] = useState(false);
 	const [agree, setAgree] = useState(false);
 	const [sync, setSync] = useState(true);
+	const [plan, setPlan] = useState("pro");
+	const [toastOpen, setToastOpen] = useState(false);
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
@@ -278,6 +284,48 @@ export default function App() {
 					<Progress value={70} color="success" showValue />
 					<Progress value={50} color="info" label="uploading" />
 				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-skeletons">
+					<Skeleton style={{ width: 96, height: 12 }} />
+					<Skeleton variant="circle" style={{ width: 32, height: 32 }} />
+					<Skeleton style={{ width: 64, height: 12 }} variant="rect" />
+				</View>
+				<View testID="k-demo-radios">
+					<RadioGroup
+						value={plan}
+						onValueChange={setPlan}
+						accessibilityLabel="plan"
+					>
+						<RadioGroup.Item
+							value="basic"
+							label="Basic"
+							description="one project"
+						/>
+						<RadioGroup.Item
+							value="pro"
+							label="Pro"
+							description="unlimited projects"
+						/>
+					</RadioGroup>
+				</View>
+				<Alert color="success" dismissable onDismiss={() => setToastOpen(true)}>
+					<Alert.Title>deployed</Alert.Title>
+					<Alert.Description>all checks passed</Alert.Description>
+				</Alert>
+				<Alert variant="outline" color="warning">
+					storage almost full
+				</Alert>
+				<Button
+					variant="subtle"
+					size="sm"
+					onPress={() => setToastOpen(true)}
+					accessibilityLabel="show toast"
+				>
+					show toast
+				</Button>
+				<Toast open={toastOpen} onOpenChange={setToastOpen} duration={2500}>
+					<Toast.Title>saved</Toast.Title>
+					<Toast.Description>changes are live</Toast.Description>
+				</Toast>
 				<Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}>
 					<Sheet.Body>
 						<Text style={stylesheet.current}>

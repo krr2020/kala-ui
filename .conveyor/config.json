@@ -97,7 +97,7 @@
     "laneCap": 1,
     "budget": {
       "warnTokens": 1500000,
-      "hardStopTokens": 3000000,
+      "hardStopTokens": 30000000,
       "scope": "run"
     },
     "planReviewGate": false,

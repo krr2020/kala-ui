@@ -34,6 +34,8 @@ export function Progress({
 	return (
 		<View
 			testID={testID}
+			// one a11y element so role=progressbar + value are announced
+			accessible={true}
 			accessibilityRole="progressbar"
 			accessibilityLabel={accessibilityLabel}
 			accessibilityValue={{ min, max, now: clamped }}

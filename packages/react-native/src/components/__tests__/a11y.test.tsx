@@ -6,18 +6,21 @@
  */
 import { fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
+import { Alert } from "../alert";
 import { Avatar } from "../avatar";
 import { Button } from "../button";
 import { Checkbox } from "../checkbox";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
 import { Progress } from "../progress";
+import { RadioGroup } from "../radio-group";
 import { Separator } from "../separator";
 import { Sheet } from "../sheet";
 import { Spinner } from "../spinner";
 import { Switch } from "../switch";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
+import { Toast } from "../toast";
 
 // TLB v14 queries are a11y-aware: deliberately-hidden elements (Icon without
 // a label) and siblings of an accessibilityViewIsModal container (the Sheet
@@ -136,7 +139,9 @@ describe("a11y contract", () => {
 		it("decorative default is hidden from the a11y tree", async () => {
 			const screen = await render(<Separator />);
 			expect(
-				screen.getByTestId("k-separator").props.accessibilityElementsHidden,
+				// hidden by design — opt into the raw tree to assert the prop
+				screen.getByTestId("k-separator", inclHidden).props
+					.accessibilityElementsHidden,
 			).toBe(true);
 		});
 
@@ -266,6 +271,62 @@ describe("a11y contract", () => {
 			expect(
 				screen.getByRole("switch").props.accessibilityState?.disabled,
 			).toBe(true);
+		});
+	});
+
+	describe("RadioGroup", () => {
+		it("exposes a radiogroup container with radio items and checked state", async () => {
+			const screen = await render(
+				<RadioGroup value="b" accessibilityLabel="plan">
+					<RadioGroup.Item value="a" label="Basic" />
+					<RadioGroup.Item value="b" label="Pro" />
+				</RadioGroup>,
+			);
+			expect(
+				screen.getByRole("radiogroup", { name: "plan" }),
+			).toBeTruthy();
+			const items = screen.getAllByRole("radio");
+			expect(items).toHaveLength(2);
+			expect(items[0].props.accessibilityState?.checked).toBe(false);
+			expect(items[1].props.accessibilityState?.checked).toBe(true);
+			expect(screen.getByRole("radio", { name: "Pro" })).toBeTruthy();
+		});
+
+		it("announces disabled items and blocks selection", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<RadioGroup value="a" onValueChange={onValueChange}>
+					<RadioGroup.Item value="a" label="Basic" disabled />
+				</RadioGroup>,
+			);
+			await fireEvent.press(screen.getByRole("radio"));
+			expect(onValueChange).not.toHaveBeenCalled();
+			expect(
+				screen.getByRole("radio").props.accessibilityState?.disabled,
+			).toBe(true);
+		});
+	});
+
+	describe("Alert", () => {
+		it("exposes role=alert with a labelled dismiss control", async () => {
+			const screen = await render(
+				<Alert dismissable>something happened</Alert>,
+			);
+			expect(screen.getByRole("alert")).toBeTruthy();
+			expect(
+				screen.getByRole("button", { name: "Dismiss alert" }),
+			).toBeTruthy();
+		});
+	});
+
+	describe("Toast", () => {
+		it("exposes role=alert when open", async () => {
+			const screen = await render(
+				<Toast open onOpenChange={() => undefined}>
+					<Toast.Title>saved</Toast.Title>
+				</Toast>,
+			);
+			expect(screen.getByRole("alert")).toBeTruthy();
 		});
 	});
 });

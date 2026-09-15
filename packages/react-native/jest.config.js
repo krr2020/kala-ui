@@ -4,6 +4,7 @@
  * see vitest.config.ts, which matches only *.test.ts data files.
  */
 module.exports = {
+  transform: { '^.+\\.[jt]sx?$': './jest.transform-dump.js' },
   preset: 'jest-expo',
   rootDir: '.',
   setupFiles: ['./jest.setup.ts'],

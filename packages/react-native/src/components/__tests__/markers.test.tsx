@@ -7,6 +7,7 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
 import { motion } from "../../tokens";
+import { Alert } from "../alert";
 import { Avatar } from "../avatar";
 import { Badge } from "../badge";
 import { BUTTON_SPRING, Button } from "../button";
@@ -17,11 +18,14 @@ import { Heading } from "../heading";
 import { Icon } from "../icon";
 import { Label } from "../label";
 import { Progress } from "../progress";
+import { RadioGroup } from "../radio-group";
 import { Separator } from "../separator";
 import { Sheet } from "../sheet";
+import { Skeleton } from "../skeleton";
 import { Spinner } from "../spinner";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
+import { Toast } from "../toast";
 
 const pkg = require("../../../package.json");
 
@@ -36,6 +40,19 @@ const flatStyle = (node: {
 	props: { style?: unknown };
 }): Record<string, number | string> =>
 	require("react-native").StyleSheet.flatten(node.props.style) ?? {};
+
+describe("unistyles harness contract", () => {
+	// Guards the jest.config moduleNameMapper: if resolution of the mock
+	// breaks again, this fails (or the suite fails to load) before any
+	// component contract produces a confusing 'Cannot find module'.
+	it("mock provides the API surface components import", () => {
+		const unistyles = require("react-native-unistyles");
+		expect(typeof unistyles.useUnistyles).toBe("function");
+		expect(typeof unistyles.StyleSheet.configure).toBe("function");
+		const { themes } = require("../../themes");
+		expect(unistyles.useUnistyles().theme).toEqual(themes.light);
+	});
+});
 
 describe("component barrels", () => {
 	// Barrels re-export both the component and its named prop types; the
@@ -679,6 +696,325 @@ describe("component markers", () => {
 			expect(
 				screen.getByTestId("k-switch").props.accessibilityState?.disabled,
 			).toBe(true);
+		});
+	});
+
+	// wave 5 sits before wave 4 in file order on purpose: wave 4's spinner
+	// test manually unmounts, which poisons TLB's registry for later renders.
+	describe("wave 5: Skeleton, RadioGroup, Alert, Toast", () => {
+		const findSvgProp = (tree: unknown, key: string): unknown[] => {
+			const found: unknown[] = [];
+			const walk = (node: unknown) => {
+				if (Array.isArray(node)) {
+					node.forEach(walk);
+					return;
+				}
+				if (node && typeof node === "object") {
+					const props = (node as { props?: Record<string, unknown> }).props;
+					if (props && key in props) found.push(props[key]);
+					walk((node as { children?: unknown }).children);
+				}
+			};
+			walk(tree);
+			return found;
+		};
+
+		it("Skeleton/RadioGroup/Alert/Toast render their k-* markers", async () => {
+			const screen = await render(
+				<>
+					<Skeleton style={{ width: 120, height: 16 }} />
+					<RadioGroup value="a" onValueChange={() => undefined}>
+						<RadioGroup.Item value="a" label="Alpha" />
+					</RadioGroup>
+					<Alert>heads up</Alert>
+					<Toast open onOpenChange={() => undefined}>
+						<Toast.Title>saved</Toast.Title>
+					</Toast>
+				</>,
+			);
+			expect(screen.getByTestId("k-skeleton")).toBeTruthy();
+			expect(screen.getByTestId("k-radio-group")).toBeTruthy();
+			expect(screen.getByTestId("k-radio-item")).toBeTruthy();
+			expect(screen.getByTestId("k-alert")).toBeTruthy();
+			expect(screen.getByTestId("k-toast")).toBeTruthy();
+		});
+
+		it("Skeleton variants map to distinct radii on a themed surface", async () => {
+			const screen = await render(
+				<Skeleton animated={false} variant="rect" style={{ width: 100, height: 12 }} />,
+			);
+			const rect = flatStyle(screen.getByTestId("k-skeleton"));
+			await screen.rerender(
+				<Skeleton
+					animated={false}
+					variant="circle"
+					style={{ width: 40, height: 40 }}
+				/>,
+			);
+			const circle = flatStyle(screen.getByTestId("k-skeleton"));
+			expect(Number(rect.borderRadius)).toBeGreaterThan(0);
+			expect(Number(circle.borderRadius)).toBeGreaterThan(
+				Number(rect.borderRadius),
+			);
+			expect(String(rect.backgroundColor).startsWith("#")).toBe(true);
+			// animation off still renders the block, just without the loop
+			expect(flatStyle(screen.getByTestId("k-skeleton")).opacity).toBe(1);
+		});
+
+		it("Skeleton pulse loop starts once per mount and stops when disabled", async () => {
+			const AnimatedRN = require("react-native").Animated;
+			const origLoop = AnimatedRN.loop;
+			const loops: Array<{ stop: ReturnType<typeof jest.fn> }> = [];
+			AnimatedRN.loop = ((...args: unknown[]) => {
+				const loop = origLoop(...(args as []));
+				const origStop = loop.stop.bind(loop);
+				(loop as { stop: unknown }).stop = jest.fn(origStop);
+				loops.push(loop as never);
+				return loop;
+			}) as typeof AnimatedRN.loop;
+			try {
+				const screen = await render(
+					<Skeleton style={{ width: 80, height: 12 }} />,
+				);
+				await screen.rerender(
+						<Skeleton style={{ width: 120, height: 12 }} />,
+				);
+				expect(loops.length).toBe(1);
+				await screen.rerender(
+						<Skeleton animated={false} style={{ width: 80, height: 12 }} />,
+				);
+				expect(loops.length).toBe(1);
+				expect(loops[0].stop).toHaveBeenCalled();
+			} finally {
+				AnimatedRN.loop = origLoop;
+			}
+		});
+
+		it("RadioGroup selection styles differ and press selects", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<RadioGroup value="a" onValueChange={onValueChange}>
+					<RadioGroup.Item value="a" label="Alpha" testID="k-radio-item-a" />
+					<RadioGroup.Item value="b" label="Beta" testID="k-radio-item-b" />
+				</RadioGroup>,
+			);
+			const sel = flatStyle(screen.getByTestId("k-radio-item-a-circle"));
+			const un = flatStyle(screen.getByTestId("k-radio-item-b-circle"));
+			expect(sel.borderColor).not.toBe(un.borderColor);
+			expect(
+				screen.getByTestId("k-radio-item-a-circle").children?.length ?? 0,
+			).toBeGreaterThan(0);
+			expect(
+				screen.getByTestId("k-radio-item-b-circle").children?.length ?? 0,
+			).toBe(0);
+
+			await fireEvent.press(screen.getByTestId("k-radio-item-b"));
+			expect(onValueChange).toHaveBeenCalledTimes(1);
+			expect(onValueChange).toHaveBeenLastCalledWith("b");
+			// labels render as themed text
+			expect(screen.getByText("Beta")).toBeTruthy();
+		});
+
+		it("RadioGroup items keep the 44dp floor; disabled no-ops and announces", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<RadioGroup value="a" onValueChange={onValueChange}>
+					<RadioGroup.Item value="a" label="Alpha" />
+				</RadioGroup>,
+			);
+			const item = flatStyle(screen.getByTestId("k-radio-item"));
+			expect(Number(item.minHeight)).toBeGreaterThanOrEqual(44);
+			expect(Number(item.minWidth)).toBeGreaterThanOrEqual(44);
+
+			await screen.rerender(
+				<RadioGroup value="a" onValueChange={onValueChange}>
+					<RadioGroup.Item value="a" label="Alpha" disabled />
+				</RadioGroup>,
+			);
+			await fireEvent.press(screen.getByTestId("k-radio-item"));
+			expect(onValueChange).not.toHaveBeenCalled();
+			expect(
+				screen.getByTestId("k-radio-item").props.accessibilityState?.disabled,
+			).toBe(true);
+		});
+
+		it("every Alert variant×color arm produces a distinct style triple", async () => {
+			const variants = ["solid", "outline", "subtle"] as const;
+			const colors = [
+				"primary",
+				"secondary",
+				"destructive",
+				"success",
+				"warning",
+				"info",
+				"muted",
+			] as const;
+			const seen = new Map<string, string>();
+			const screen = await render(
+				<Alert variant="solid" color="primary">
+					x
+				</Alert>,
+			);
+			for (const variant of variants) {
+				for (const color of colors) {
+					await screen.rerender(
+						<Alert variant={variant} color={color}>
+							x
+						</Alert>,
+					);
+					const s = flatStyle(screen.getByTestId("k-alert"));
+					const fg = flatStyle(screen.getByText("x")).color;
+					const sig = JSON.stringify([s.backgroundColor, fg, s.borderColor]);
+					expect(seen.has(sig)).toBe(false);
+					seen.set(sig, `${variant}/${color}`);
+					expect(s.backgroundColor).toBeDefined();
+					expect(s.borderColor).toBeDefined();
+					expect(String(fg).startsWith("#")).toBe(true);
+				}
+			}
+			expect(seen.size).toBe(variants.length * colors.length);
+		});
+
+		it("Alert shows a per-color icon unless showIcon is false", async () => {
+			const screen = await render(<Alert>msg</Alert>);
+			expect(findSvgProp(screen.toJSON(), "stroke").length).toBeGreaterThan(0);
+			await screen.rerender(<Alert showIcon={false}>msg</Alert>);
+			expect(findSvgProp(screen.toJSON(), "stroke").length).toBe(0);
+			// the icon carries the color tint: success vs destructive differ
+			await screen.rerender(<Alert color="success">msg</Alert>);
+			const success = String(findSvgProp(screen.toJSON(), "stroke")[0]);
+			await screen.rerender(<Alert color="destructive">msg</Alert>);
+			const destructive = String(findSvgProp(screen.toJSON(), "stroke")[0]);
+			expect(success).not.toBe(destructive);
+		});
+
+		it("Alert dismiss hides + fires onDismiss; new content re-shows", async () => {
+			const onDismiss = jest.fn();
+			const screen = await render(
+				<Alert dismissable onDismiss={onDismiss}>
+					first message
+				</Alert>,
+			);
+			await fireEvent.press(screen.getByTestId("k-alert-dismiss"));
+			expect(onDismiss).toHaveBeenCalledTimes(1);
+			expect(screen.queryByTestId("k-alert")).toBeNull();
+
+			// same-content rerender stays hidden; new content re-shows
+			await screen.rerender(
+				<Alert dismissable onDismiss={onDismiss}>
+					first message
+				</Alert>,
+			);
+			expect(screen.queryByTestId("k-alert")).toBeNull();
+			await screen.rerender(
+				<Alert dismissable onDismiss={onDismiss}>
+					second message
+				</Alert>,
+			);
+			expect(screen.getByTestId("k-alert")).toBeTruthy();
+			expect(screen.getByText("second message")).toBeTruthy();
+		});
+
+		it("non-dismissable Alert renders no dismiss marker", async () => {
+			const screen = await render(<Alert>plain</Alert>);
+			expect(screen.queryByTestId("k-alert-dismiss")).toBeNull();
+		});
+
+		it("Alert Title/Description render themed compound parts", async () => {
+			const screen = await render(
+				<Alert color="success" variant="solid">
+					<Alert.Title>deployment ok</Alert.Title>
+					<Alert.Description>all checks passed</Alert.Description>
+				</Alert>,
+			);
+			expect(screen.getByTestId("k-alert-title")).toBeTruthy();
+			expect(screen.getByTestId("k-alert-description")).toBeTruthy();
+			const title = flatStyle(screen.getByTestId("k-alert-title"));
+			const desc = flatStyle(screen.getByTestId("k-alert-description"));
+			expect(String(title.color).startsWith("#")).toBe(true);
+			expect(String(desc.color).startsWith("#")).toBe(true);
+			expect(Number(title.fontWeight)).toBeGreaterThan(Number(desc.fontWeight));
+		});
+
+		it("Toast renders when open and nothing when closed", async () => {
+			const screen = await render(
+				<Toast open onOpenChange={() => undefined}>
+					<Toast.Title>saved</Toast.Title>
+					<Toast.Description>just now</Toast.Description>
+				</Toast>,
+			);
+			expect(screen.getByTestId("k-toast")).toBeTruthy();
+			expect(screen.getByText("saved")).toBeTruthy();
+			expect(screen.getByText("just now")).toBeTruthy();
+			await screen.rerender(
+				<Toast open={false} onOpenChange={() => undefined}>
+					<Toast.Title>saved</Toast.Title>
+				</Toast>,
+			);
+			expect(screen.queryByTestId("k-toast")).toBeNull();
+		});
+
+		it("Toast auto-dismiss timing fires once, resets, and never stales", async () => {
+			jest.useFakeTimers();
+			const onOpenChange = jest.fn();
+			const tree = (open: boolean, duration: number) => (
+				<Toast open={open} duration={duration} onOpenChange={onOpenChange}>
+					<Toast.Title>saved</Toast.Title>
+				</Toast>
+			);
+			try {
+				const screen = await render(tree(true, 1000));
+				jest.advanceTimersByTime(999);
+				expect(onOpenChange).not.toHaveBeenCalled();
+				jest.advanceTimersByTime(1);
+				expect(onOpenChange).toHaveBeenCalledTimes(1);
+				expect(onOpenChange).toHaveBeenLastCalledWith(false);
+
+					// reopen restarts the window; close clears any pending timer
+				await screen.rerender(tree(false, 1000));
+				jest.advanceTimersByTime(5000);
+				expect(onOpenChange).toHaveBeenCalledTimes(1);
+				await screen.rerender(tree(true, 1000));
+				jest.advanceTimersByTime(999);
+				expect(onOpenChange).toHaveBeenCalledTimes(1);
+				jest.advanceTimersByTime(1);
+				expect(onOpenChange).toHaveBeenCalledTimes(2);
+
+					// manual close before the window: no stale fire afterwards
+				await screen.rerender(tree(true, 1000));
+				jest.advanceTimersByTime(500);
+				await screen.rerender(tree(false, 1000));
+				jest.advanceTimersByTime(5000);
+				expect(onOpenChange).toHaveBeenCalledTimes(2);
+
+					// duration change mid-open reschedules to the new window
+				await screen.rerender(tree(true, 500));
+				jest.advanceTimersByTime(499);
+				expect(onOpenChange).toHaveBeenCalledTimes(2);
+				jest.advanceTimersByTime(1);
+				expect(onOpenChange).toHaveBeenCalledTimes(3);
+			} finally {
+				jest.useRealTimers();
+			}
+		});
+
+		it("Toast top/bottom positions produce distinct viewport placement", async () => {
+			const screen = await render(
+				<Toast open position="top" onOpenChange={() => undefined}>
+					<Toast.Title>saved</Toast.Title>
+				</Toast>,
+			);
+			const top = flatStyle(screen.getByTestId("k-toast-viewport"));
+			await screen.rerender(
+				<Toast open position="bottom" onOpenChange={() => undefined}>
+					<Toast.Title>saved</Toast.Title>
+				</Toast>,
+			);
+			const bottom = flatStyle(screen.getByTestId("k-toast-viewport"));
+			expect(top.justifyContent).not.toBe(bottom.justifyContent);
+			const card = flatStyle(screen.getByTestId("k-toast"));
+			expect(String(card.backgroundColor).startsWith("#")).toBe(true);
+			expect(Number(card.borderRadius)).toBeGreaterThan(0);
 		});
 	});
 

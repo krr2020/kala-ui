@@ -8,7 +8,7 @@
 import { useState } from "react";
 import type { ReactElement } from "react";
 import { Image, Text as RNText, View } from "react-native";
-import { useUnistyles } from "react-native-unistiles";
+import { useUnistyles } from "react-native-unistyles";
 import type { AvatarProps, AvatarShape, AvatarSize, AvatarStatus } from "./avatar.types";
 
 const BOX: Record<AvatarSize, number> = { xs: 24, sm: 32, md: 40, lg: 48, xl: 64 };
@@ -53,6 +53,8 @@ export function Avatar({
 	return (
 		<View
 			testID={testID}
+			// one a11y element so role=image + name surface to screen readers
+			accessible={true}
 			accessibilityRole="image"
 			accessibilityLabel={name}
 			style={[
