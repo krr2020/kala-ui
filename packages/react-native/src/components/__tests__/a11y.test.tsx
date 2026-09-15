@@ -18,6 +18,8 @@ import { Separator } from "../separator";
 import { Sheet } from "../sheet";
 import { EmptyState } from "../empty-state";
 import { SegmentedControl } from "../segmented-control";
+import { Pagination } from "../pagination";
+import { Rating } from "../rating";
 import { Tag } from "../tag";
 import { Tabs } from "../tabs";
 import { Spinner } from "../spinner";
@@ -440,6 +442,84 @@ describe("a11y contract", () => {
 			expect(
 				screen.getByRole("button", { name: "New project" }),
 			).toBeTruthy();
+		});
+	});
+
+	describe("Rating", () => {
+		it("exposes pressable stars with per-star labels and selected state", async () => {
+			const screen = await render(<Rating value={3} />);
+			expect(
+				screen.getByRole("button", { name: "3 stars" }).props
+					.accessibilityState?.selected,
+			).toBe(true);
+			expect(
+				screen.getByRole("button", { name: "4 stars" }).props
+					.accessibilityState?.selected,
+			).toBe(false);
+		});
+
+		it("readOnly announces the value summary with decorative stars", async () => {
+			const screen = await render(<Rating value={4} readOnly />);
+			expect(
+				screen.getByRole("image", { name: "Rating: 4 out of 5 stars" }),
+			).toBeTruthy();
+			for (const star of screen.getAllByTestId("k-rating-star", inclHidden)) {
+				expect(star.props.accessibilityElementsHidden).toBe(true);
+			}
+		});
+
+		it("allowHalf readOnly formats the fraction in the summary", async () => {
+			const screen = await render(
+				<Rating value={2.5} allowHalf readOnly />,
+			);
+			expect(
+				screen.getByRole("image", { name: "Rating: 2.5 out of 5 stars" }),
+			).toBeTruthy();
+		});
+
+		it("disabled stars announce disabled and block presses", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Rating disabled onValueChange={onValueChange} />,
+			);
+			const star = screen.getByRole("button", { name: "2 stars" });
+			expect(star.props.accessibilityState?.disabled).toBe(true);
+			await fireEvent.press(star);
+			expect(onValueChange).not.toHaveBeenCalled();
+		});
+	});
+
+	describe("Pagination", () => {
+		it("labels the navigation and announces the current page", async () => {
+			const screen = await render(<Pagination total={5} page={2} />);
+			const root = screen.getByTestId("k-pagination");
+			expect(root.props.accessibilityLabel).toBe("Pagination");
+			const current = screen
+				.getAllByTestId("k-pagination-page")
+				.find((n) => n.props.accessibilityState?.selected);
+			expect(current?.props.accessibilityLabel).toBe("2");
+		});
+
+		it("ellipsis is hidden from accessibility", async () => {
+			const screen = await render(<Pagination total={20} page={10} />);
+			for (const ell of screen.getAllByTestId(
+				"k-pagination-ellipsis",
+				inclHidden,
+			)) {
+				expect(ell.props.accessibilityElementsHidden).toBe(true);
+			}
+		});
+
+		it("prev/next announce labels and disable at bounds", async () => {
+			const screen = await render(<Pagination total={3} page={1} />);
+			expect(
+				screen.getByRole("button", { name: "Go to previous page" }).props
+					.accessibilityState?.disabled,
+			).toBe(true);
+			expect(
+				screen.getByRole("button", { name: "Go to next page" }).props
+					.accessibilityState?.disabled,
+			).toBe(false);
 		});
 	});
 

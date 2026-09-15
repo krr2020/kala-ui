@@ -18,8 +18,10 @@ import {
 	Heading,
 	Icon,
 	Label,
+	Pagination,
 	Progress,
 	RadioGroup,
+	Rating,
 	SegmentedControl,
 	Separator,
 	Sheet,
@@ -136,6 +138,8 @@ export default function App() {
 	const [toastOpen, setToastOpen] = useState(false);
 	const [range, setRange] = useState("week");
 	const [tab, setTab] = useState("one");
+	const [rating, setRating] = useState(3);
+	const [pageNumber, setPageNumber] = useState(2);
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
@@ -367,6 +371,17 @@ export default function App() {
 					<Tag variant="outline" color="success" onRemove={() => undefined}>
 						clearance
 					</Tag>
+				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-rating">
+					<Rating value={rating} onValueChange={setRating} />
+					<Rating value={3.5} allowHalf readOnly />
+				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-pagination">
+					<Pagination
+						total={9}
+						page={pageNumber}
+						onPageChange={setPageNumber}
+					/>
 				</View>
 				<Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}>
 					<Sheet.Body>

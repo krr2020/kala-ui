@@ -46,6 +46,11 @@ export { Icon } from "./components/icon";
 export type { LabelProps } from "./components/label";
 export { Label } from "./components/label";
 export type {
+	PaginationProps,
+	PaginationSize,
+} from "./components/pagination";
+export { Pagination } from "./components/pagination";
+export type {
 	ProgressColor,
 	ProgressProps,
 	ProgressSize,
@@ -56,6 +61,8 @@ export type {
 	RadioGroupProps,
 } from "./components/radio-group";
 export { RadioGroup } from "./components/radio-group";
+export type { RatingProps, RatingSize } from "./components/rating";
+export { Rating } from "./components/rating";
 export type {
 	SegmentedControlData,
 	SegmentedControlItem,

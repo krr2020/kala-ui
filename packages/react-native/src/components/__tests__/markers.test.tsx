@@ -24,6 +24,8 @@ import { Sheet } from "../sheet";
 import { Skeleton } from "../skeleton";
 import { EmptyState } from "../empty-state";
 import { SegmentedControl } from "../segmented-control";
+import { Pagination } from "../pagination";
+import { Rating } from "../rating";
 import { Tag } from "../tag";
 import { Tabs } from "../tabs";
 import { Spinner } from "../spinner";
@@ -729,7 +731,7 @@ describe("component markers", () => {
 		});
 	});
 
-	// waves 5 and 6 sit before wave 4 in file order on purpose: wave 4's
+	// waves 5, 6 and 7 sit before wave 4 in file order on purpose: wave 4's
 	// spinner test manually unmounts, which poisons TLB's registry for later
 	// renders in the same file.
 	describe("wave 6: Tabs, SegmentedControl, EmptyState, Tag", () => {
@@ -1327,6 +1329,144 @@ describe("component markers", () => {
 			const card = flatStyle(screen.getByTestId("k-toast"));
 			expect(String(card.backgroundColor).startsWith("#")).toBe(true);
 			expect(Number(card.borderRadius)).toBeGreaterThan(0);
+		});
+	});
+
+	describe("wave 7: Rating, Pagination", () => {
+		const findSvgProp = (tree: unknown, key: string): unknown[] => {
+			const found: unknown[] = [];
+			const walk = (node: unknown) => {
+				if (Array.isArray(node)) {
+					node.forEach(walk);
+					return;
+				}
+				if (node && typeof node === "object") {
+					const props = (node as { props?: Record<string, unknown> }).props;
+					if (props && key in props) found.push(props[key]);
+					walk((node as { children?: unknown }).children);
+				}
+			};
+			walk(tree);
+			return found;
+		};
+
+		it("Rating renders k-rating with one star marker per count", async () => {
+			const screen = await render(<Rating value={3} />);
+			expect(screen.getByTestId("k-rating", inclHidden)).toBeTruthy();
+			expect(screen.getAllByTestId("k-rating-star")).toHaveLength(5);
+			await screen.rerender(<Rating value={3} count={8} />);
+			expect(screen.getAllByTestId("k-rating-star")).toHaveLength(8);
+		});
+
+		it("press sets the value; pressing the same star resets to 0", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(<Rating onValueChange={onValueChange} />);
+			await fireEvent.press(screen.getAllByTestId("k-rating-star")[3]);
+			expect(onValueChange).toHaveBeenLastCalledWith(4);
+			await fireEvent.press(screen.getAllByTestId("k-rating-star")[3]);
+			expect(onValueChange).toHaveBeenLastCalledWith(0);
+		});
+
+		it("size arms map to distinct star icon sizes", async () => {
+			const sizes = ["sm", "md", "lg"] as const;
+			const seen = new Set<number>();
+			const screen = await render(<Rating value={2} size="sm" />);
+			for (const size of sizes) {
+				await screen.rerender(<Rating value={2} size={size} />);
+				const widths = findSvgProp(screen.toJSON(), "width").map(Number);
+				expect(Math.max(...widths)).toBeGreaterThan(0);
+				seen.add(Math.max(...widths));
+			}
+			expect(seen.size).toBe(sizes.length);
+		});
+
+		it("allowHalf renders a 50% overlay and half presses resolve .5", async () => {
+			const onValueChange = jest.fn();
+			const screen = await render(
+				<Rating value={2.5} allowHalf onValueChange={onValueChange} />,
+			);
+			// RN has no clip-path: the half fill is a 50%-width overflow window
+			const half = screen.getAllByTestId("k-rating-star-half", inclHidden)[0];
+			expect(
+				(require("react-native").StyleSheet.flatten(half.props.style) ?? {})
+					.width,
+			).toBe("50%");
+			const stars = screen.getAllByTestId("k-rating-star");
+			await fireEvent(stars[1], "press", { locationX: 2 });
+			expect(onValueChange).toHaveBeenLastCalledWith(1.5);
+			await fireEvent(stars[1], "press", { locationX: 999 });
+			expect(onValueChange).toHaveBeenLastCalledWith(2);
+			// missing press location falls back to the whole star
+			await fireEvent(stars[2], "press");
+			expect(onValueChange).toHaveBeenLastCalledWith(3);
+		});
+
+		it("Pagination renders numbered pages with distinct ellipsis markers", async () => {
+			const screen = await render(
+				<Pagination total={20} page={10} onPageChange={() => undefined} />,
+			);
+			expect(
+				screen
+					.getAllByTestId("k-pagination-page")
+					.map((n) => n.props.accessibilityLabel),
+			).toEqual(["1", "9", "10", "11", "20"]);
+			expect(
+				screen.getAllByTestId("k-pagination-ellipsis", inclHidden),
+			).toHaveLength(2);
+			await screen.rerender(<Pagination total={5} page={1} />);
+			expect(
+				screen
+					.getAllByTestId("k-pagination-page")
+					.map((n) => n.props.accessibilityLabel),
+			).toEqual(["1", "2", "3", "4", "5"]);
+			expect(
+				screen.queryByTestId("k-pagination-ellipsis", inclHidden),
+			).toBeNull();
+		});
+
+		it("Pagination total=0 renders no pages; total=1 exactly one", async () => {
+			const screen = await render(<Pagination total={0} />);
+			expect(screen.queryByTestId("k-pagination-page")).toBeNull();
+			await screen.rerender(<Pagination total={1} />);
+			expect(screen.getAllByTestId("k-pagination-page")).toHaveLength(1);
+		});
+
+		it("out-of-range page clamps into range", async () => {
+			const screen = await render(<Pagination total={5} page={99} />);
+			const selected = screen
+				.getAllByTestId("k-pagination-page")
+				.find((n) => n.props.accessibilityState?.selected);
+			expect(selected?.props.accessibilityLabel).toBe("5");
+		});
+
+		it("next/previous navigate and never leave the bounds", async () => {
+			const onPageChange = jest.fn();
+			const screen = await render(
+				<Pagination total={3} defaultPage={2} onPageChange={onPageChange} />,
+			);
+			await fireEvent.press(screen.getByTestId("k-pagination-next"));
+			expect(onPageChange).toHaveBeenLastCalledWith(3);
+			// the next control disabled at the last page blocks further presses
+			expect(
+				screen.getByTestId("k-pagination-next").props.accessibilityState
+					?.disabled,
+			).toBe(true);
+			await fireEvent.press(screen.getByTestId("k-pagination-next"));
+			expect(onPageChange).toHaveBeenCalledTimes(1);
+			await fireEvent.press(screen.getByTestId("k-pagination-previous"));
+			expect(onPageChange).toHaveBeenLastCalledWith(2);
+		});
+
+		it("pressing the current page does not fire onPageChange", async () => {
+			const onPageChange = jest.fn();
+			const screen = await render(
+				<Pagination total={5} page={3} onPageChange={onPageChange} />,
+			);
+			const current = screen
+				.getAllByTestId("k-pagination-page")
+				.find((n) => n.props.accessibilityState?.selected);
+			await fireEvent.press(current as NonNullable<typeof current>);
+			expect(onPageChange).not.toHaveBeenCalled();
 		});
 	});
 
