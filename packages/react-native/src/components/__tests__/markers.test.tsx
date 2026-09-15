@@ -495,16 +495,19 @@ describe("component markers", () => {
 		});
 
 		it("Badge shape pill vs rounded gives distinct radii; text child is themed", async () => {
-			const screen = await render(
-				<Badge shape="rounded">new</Badge>,
+			const screen = await render(<Badge shape="rounded">new</Badge>);
+			const rounded = Number(
+				flatStyle(screen.getByTestId("k-badge")).borderRadius,
 			);
-			const rounded = Number(flatStyle(screen.getByTestId("k-badge")).borderRadius);
 			await screen.rerender(<Badge shape="pill">new</Badge>);
-			const pill = Number(flatStyle(screen.getByTestId("k-badge")).borderRadius);
+			const pill = Number(
+				flatStyle(screen.getByTestId("k-badge")).borderRadius,
+			);
 			expect(rounded).toBeGreaterThan(0);
 			expect(pill).not.toBe(rounded);
-			const child = screen.getByTestId("k-badge")
-				.children[0] as { props: { style?: unknown } };
+			const child = screen.getByTestId("k-badge").children[0] as {
+				props: { style?: unknown };
+			};
 			const childStyle = require("react-native").StyleSheet.flatten(
 				child.props.style,
 			) as Record<string, unknown>;
@@ -533,12 +536,12 @@ describe("component markers", () => {
 		it("each Avatar shape maps to a distinct borderRadius", async () => {
 			const shapes = ["circle", "rounded", "square"] as const;
 			const seen = new Set<number>();
-			const screen = await render(
-				<Avatar name="A" shape="circle" />,
-			);
+			const screen = await render(<Avatar name="A" shape="circle" />);
 			for (const shape of shapes) {
 				await screen.rerender(<Avatar name="A" shape={shape} />);
-				seen.add(Number(flatStyle(screen.getByTestId("k-avatar")).borderRadius));
+				seen.add(
+					Number(flatStyle(screen.getByTestId("k-avatar")).borderRadius),
+				);
 			}
 			expect(seen.size).toBe(shapes.length);
 		});
@@ -602,9 +605,9 @@ describe("component markers", () => {
 				flatStyle(screen.getByTestId("k-checkbox-box")).backgroundColor,
 			);
 			// unchecked: no indicator child at all
-			expect(
-				screen.getByTestId("k-checkbox-box").children?.length ?? 0,
-			).toBe(0);
+			expect(screen.getByTestId("k-checkbox-box").children?.length ?? 0).toBe(
+				0,
+			);
 
 			await screen.rerender(<Checkbox accessibilityLabel="c" value />);
 			const checked = String(
@@ -683,13 +686,15 @@ describe("component markers", () => {
 			const offTrack = String(
 				flatStyle(screen.getByTestId("k-switch-track")).backgroundColor,
 			);
-			const offThumb = flatStyle(screen.getByTestId("k-switch-thumb")).transform as unknown as Array<Record<string, number>>;
+			const offThumb = flatStyle(screen.getByTestId("k-switch-thumb"))
+				.transform as unknown as Array<Record<string, number>>;
 
 			await screen.rerender(<Switch accessibilityLabel="s" value />);
 			const onTrack = String(
 				flatStyle(screen.getByTestId("k-switch-track")).backgroundColor,
 			);
-			const onThumb = flatStyle(screen.getByTestId("k-switch-thumb")).transform as unknown as Array<Record<string, number>>;
+			const onThumb = flatStyle(screen.getByTestId("k-switch-thumb"))
+				.transform as unknown as Array<Record<string, number>>;
 
 			expect(onTrack).not.toBe(offTrack);
 			expect(onTrack.startsWith("#")).toBe(true);
@@ -765,7 +770,11 @@ describe("component markers", () => {
 		it("Tabs: press fires onValueChange; the content slot follows the active value", async () => {
 			const onValueChange = jest.fn();
 			const screen = await render(
-				<Tabs defaultValue="one" onValueChange={onValueChange} items={TAB_ITEMS}>
+				<Tabs
+					defaultValue="one"
+					onValueChange={onValueChange}
+					items={TAB_ITEMS}
+				>
 					one body
 				</Tabs>,
 			);
@@ -873,14 +882,12 @@ describe("component markers", () => {
 				/>,
 			);
 			expect(
-				screen.getAllByTestId("k-segment")[0].props.accessibilityState
-					?.checked,
+				screen.getAllByTestId("k-segment")[0].props.accessibilityState?.checked,
 			).toBe(true);
 			await fireEvent.press(screen.getAllByTestId("k-segment")[1]);
 			expect(onValueChange).toHaveBeenLastCalledWith("b");
 			expect(
-				screen.getAllByTestId("k-segment")[0].props.accessibilityState
-					?.checked,
+				screen.getAllByTestId("k-segment")[0].props.accessibilityState?.checked,
 			).toBe(true);
 
 			await screen.rerender(
@@ -916,7 +923,9 @@ describe("component markers", () => {
 
 			await screen.rerender(<EmptyState title="No projects" isLoading />);
 			expect(screen.queryByText("No projects")).toBeNull();
-			expect(screen.getAllByTestId("k-skeleton", inclHidden).length).toBeGreaterThan(0);
+			expect(
+				screen.getAllByTestId("k-skeleton", inclHidden).length,
+			).toBeGreaterThan(0);
 		});
 
 		it("EmptyState size arms produce distinct heights; destructive tint differs", async () => {
@@ -951,12 +960,16 @@ describe("component markers", () => {
 			] as const;
 			const seen = new Map<string, string>();
 			const screen = await render(
-				<Tag variant="solid" color="primary">x</Tag>,
+				<Tag variant="solid" color="primary">
+					x
+				</Tag>,
 			);
 			for (const variant of variants) {
 				for (const color of colors) {
 					await screen.rerender(
-						<Tag variant={variant} color={color}>x</Tag>,
+						<Tag variant={variant} color={color}>
+							x
+						</Tag>,
 					);
 					const tag = screen.getByTestId("k-tag");
 					const s = flatStyle(tag);
@@ -1031,7 +1044,11 @@ describe("component markers", () => {
 
 		it("Skeleton variants map to distinct radii on a themed surface", async () => {
 			const screen = await render(
-				<Skeleton animated={false} variant="rect" style={{ width: 100, height: 12 }} />,
+				<Skeleton
+					animated={false}
+					variant="rect"
+					style={{ width: 100, height: 12 }}
+				/>,
 			);
 			const rect = flatStyle(screen.getByTestId("k-skeleton"));
 			await screen.rerender(
@@ -1066,9 +1083,7 @@ describe("component markers", () => {
 				const screen = await render(
 					<Skeleton style={{ width: 80, height: 12 }} />,
 				);
-				await screen.rerender(
-					<Skeleton style={{ width: 120, height: 12 }} />,
-				);
+				await screen.rerender(<Skeleton style={{ width: 120, height: 12 }} />);
 				expect(loops.length).toBe(1);
 				await screen.rerender(
 					<Skeleton animated={false} style={{ width: 80, height: 12 }} />,
@@ -1389,8 +1404,7 @@ describe("component markers", () => {
 			// RN has no clip-path: the half fill is a 50%-width overflow window
 			const half = screen.getAllByTestId("k-rating-star-half", inclHidden)[0];
 			expect(
-				(require("react-native").StyleSheet.flatten(half.props.style) ?? {})
-					.width,
+				require("react-native").StyleSheet.flatten(half.props.style)?.width,
 			).toBe("50%");
 			const stars = screen.getAllByTestId("k-rating-star");
 			await fireEvent(stars[1], "press", { locationX: 2 });
@@ -1503,7 +1517,9 @@ describe("component markers", () => {
 		});
 
 		it("Slider renders k-slider, track, range and thumb markers", async () => {
-			const screen = await render(<Slider value={[50]} accessibilityLabel="vol" />);
+			const screen = await render(
+				<Slider value={[50]} accessibilityLabel="vol" />,
+			);
 			expect(screen.getByTestId("k-slider", inclHidden)).toBeTruthy();
 			expect(screen.getByTestId("k-slider-track", inclHidden)).toBeTruthy();
 			expect(screen.getByTestId("k-slider-range", inclHidden)).toBeTruthy();
@@ -1511,10 +1527,14 @@ describe("component markers", () => {
 		});
 
 		it("positions range and thumb by percent of the value span", async () => {
-			const screen = await render(<Slider value={[50]} accessibilityLabel="vol" />);
+			const screen = await render(
+				<Slider value={[50]} accessibilityLabel="vol" />,
+			);
 			const s = flatStyle(screen.getByTestId("k-slider-range", inclHidden));
 			expect(String(s.width)).toBe("50%");
-			const thumbS = flatStyle(screen.getByTestId("k-slider-thumb", inclHidden));
+			const thumbS = flatStyle(
+				screen.getByTestId("k-slider-thumb", inclHidden),
+			);
 			expect(thumbS.left).toBe("50%");
 			expect(thumbS.marginLeft).toBe(-10);
 		});
@@ -1618,7 +1638,9 @@ describe("component markers", () => {
 					onValueChange={onValueChange}
 				/>,
 			);
-			expect(screen.getAllByTestId("k-slider-thumb", inclHidden)).toHaveLength(2);
+			expect(screen.getAllByTestId("k-slider-thumb", inclHidden)).toHaveLength(
+				2,
+			);
 			const track = screen.getByTestId("k-slider-track", inclHidden);
 			await layout(track, 200);
 			// 140px of 200 → 70; nearest thumb is the second (75)
@@ -1630,7 +1652,9 @@ describe("component markers", () => {
 		});
 
 		it("empty values renders the track with no thumbs and no crash", async () => {
-			const screen = await render(<Slider value={[]} accessibilityLabel="empty" />);
+			const screen = await render(
+				<Slider value={[]} accessibilityLabel="empty" />,
+			);
 			expect(screen.getByTestId("k-slider-track", inclHidden)).toBeTruthy();
 			expect(screen.queryByTestId("k-slider-thumb")).toBeNull();
 		});
@@ -1655,14 +1679,15 @@ describe("component markers", () => {
 		});
 
 		it("isLoading renders the skeleton arm instead of the interactive track", async () => {
-			const screen = await render(<Slider isLoading accessibilityLabel="vol" />);
+			const screen = await render(
+				<Slider isLoading accessibilityLabel="vol" />,
+			);
 			expect(screen.queryByTestId("k-slider-track")).toBeNull();
 			expect(screen.getByTestId("k-slider", inclHidden)).toBeTruthy();
 		});
 	});
 
 	describe("wave 4: Label, Separator, Spinner, Progress", () => {
-		const flatten = require("react-native").StyleSheet.flatten;
 		const findSvgProp = (tree: unknown, key: string): unknown[] => {
 			const found: unknown[] = [];
 			const walk = (node: unknown) => {
@@ -1798,13 +1823,11 @@ describe("component markers", () => {
 
 		it("Progress indicator width follows the value", async () => {
 			const screen = await render(<Progress value={0} />);
-			const widths: string[] = []
+			const widths: string[] = [];
 			for (const value of [0, 50, 100]) {
 				await screen.rerender(<Progress value={value} />);
 				widths.push(
-					String(
-						flatStyle(screen.getByTestId("k-progress-indicator")).width,
-					),
+					String(flatStyle(screen.getByTestId("k-progress-indicator")).width),
 				);
 			}
 			expect(widths).toEqual(["0%", "50%", "100%"]);
@@ -1812,25 +1835,25 @@ describe("component markers", () => {
 
 		it("Progress clamps out-of-range values and honors custom min/max", async () => {
 			const screen = await render(<Progress value={-20} />);
-			expect(
-				flatStyle(screen.getByTestId("k-progress-indicator")).width,
-			).toBe("0%");
+			expect(flatStyle(screen.getByTestId("k-progress-indicator")).width).toBe(
+				"0%",
+			);
 			await screen.rerender(<Progress value={120} />);
-			expect(
-				flatStyle(screen.getByTestId("k-progress-indicator")).width,
-			).toBe("100%");
+			expect(flatStyle(screen.getByTestId("k-progress-indicator")).width).toBe(
+				"100%",
+			);
 			// (50-10)/(90-10) = 50% against non-default bounds
 			await screen.rerender(<Progress value={50} min={10} max={90} />);
-			expect(
-				flatStyle(screen.getByTestId("k-progress-indicator")).width,
-			).toBe("50%");
+			expect(flatStyle(screen.getByTestId("k-progress-indicator")).width).toBe(
+				"50%",
+			);
 		});
 
 		it("Progress defaults to 0 with no value", async () => {
 			const screen = await render(<Progress />);
-			expect(
-				flatStyle(screen.getByTestId("k-progress-indicator")).width,
-			).toBe("0%");
+			expect(flatStyle(screen.getByTestId("k-progress-indicator")).width).toBe(
+				"0%",
+			);
 		});
 
 		it("Progress color arms produce distinct indicator fills", async () => {

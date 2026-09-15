@@ -10,10 +10,22 @@ import { useState } from "react";
 import type { ReactElement } from "react";
 import { Image, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import type { AvatarProps, AvatarShape, AvatarSize, AvatarStatus } from "./avatar.types";
+import type { AvatarProps, AvatarShape, AvatarSize } from "./avatar.types";
 
-const BOX: Record<AvatarSize, number> = { xs: 24, sm: 32, md: 40, lg: 48, xl: 64 };
-const DOT: Record<AvatarSize, number> = { xs: 6, sm: 8, md: 10, lg: 12, xl: 16 };
+const BOX: Record<AvatarSize, number> = {
+	xs: 24,
+	sm: 32,
+	md: 40,
+	lg: 48,
+	xl: 64,
+};
+const DOT: Record<AvatarSize, number> = {
+	xs: 6,
+	sm: 8,
+	md: 10,
+	lg: 12,
+	xl: 16,
+};
 const FALLBACK_FONT: Record<AvatarSize, number> = {
 	xs: 12,
 	sm: 14,

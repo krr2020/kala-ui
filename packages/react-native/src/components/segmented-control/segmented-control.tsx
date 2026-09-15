@@ -8,7 +8,6 @@ import { useState } from "react";
 import type { ReactElement } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { tokens } from "../../tokens";
 import type {
 	SegmentedControlData,
 	SegmentedControlItem,
@@ -127,9 +126,7 @@ export function SegmentedControl({
 						)}
 						<RNText
 							style={{
-								color: isActive
-									? theme.foreground
-									: theme.mutedForeground,
+								color: isActive ? theme.foreground : theme.mutedForeground,
 								fontSize: FONT[size],
 								fontWeight: "500",
 							}}

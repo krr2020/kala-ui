@@ -55,8 +55,7 @@ export function Rating({
 		let next = star;
 		if (allowHalf) {
 			const x = source?.locationX ?? source?.nativeEvent?.locationX;
-			next =
-				typeof x === "number" && x < px / 2 ? star - 0.5 : star;
+			next = typeof x === "number" && x < px / 2 ? star - 0.5 : star;
 		}
 		// toggle off when the same value is pressed again
 		commit(next === active ? 0 : next);
@@ -111,19 +110,16 @@ export function Rating({
 				accessible={true}
 				accessibilityRole="image"
 				accessibilityLabel={`${accessibilityLabel}: ${active} out of ${count} stars`}
-				style={[
-					{ flexDirection: "row", alignItems: "center" },
-					style,
-				]}
+				style={[{ flexDirection: "row", alignItems: "center" }, style]}
 			>
-				{Array.from({ length: count }, (_, i) => (
+				{Array.from({ length: count }, (_, i) => i + 1).map((star) => (
 					<View
-						key={i + 1}
+						key={star}
 						testID="k-rating-star"
 						accessibilityElementsHidden={true}
 						style={{ justifyContent: "center" }}
 					>
-						{starVisual(i + 1)}
+						{starVisual(star)}
 					</View>
 				))}
 			</View>

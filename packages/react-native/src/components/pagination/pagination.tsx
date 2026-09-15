@@ -9,11 +9,7 @@
  */
 import { useState } from "react";
 import type { ReactElement } from "react";
-import {
-	ChevronLeft,
-	ChevronRight,
-	MoreHorizontal,
-} from "lucide-react-native";
+import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
@@ -108,6 +104,21 @@ export function Pagination({
 		borderRadius: tokens.radius.control,
 	};
 
+	// dots key off the page before the gap; prevPage=0 marks a leading dot
+	// (computeRange never emits one today) and stays unique since pages
+	// start at 1
+	let prevPage = 0;
+	const keyedEntries = computeRange(
+		totalPages,
+		active,
+		siblings,
+		boundaries,
+	).map((entry: PageEntry) => {
+		const key = entry === DOT ? `dots-${prevPage}` : `page-${entry}`;
+		if (entry !== DOT) prevPage = entry;
+		return { entry, key };
+	});
+
 	return (
 		<View
 			testID={testID}
@@ -135,48 +146,47 @@ export function Pagination({
 			>
 				<ChevronLeft size={16} color={themeMap.foreground} />
 			</Pressable>
-			{computeRange(totalPages, active, siblings, boundaries).map(
-				(entry: PageEntry, index: number) =>
-					entry === DOT ? (
-						<View
-							key={`dot-${index}`}
-							testID="k-pagination-ellipsis"
-							accessible={false}
-							accessibilityElementsHidden={true}
-							style={controlStyle}
+			{keyedEntries.map(({ entry, key }) =>
+				entry === DOT ? (
+					<View
+						key={key}
+						testID="k-pagination-ellipsis"
+						accessible={false}
+						accessibilityElementsHidden={true}
+						style={controlStyle}
+					>
+						<MoreHorizontal size={16} color={themeMap.mutedForeground} />
+					</View>
+				) : (
+					<Pressable
+						key={key}
+						testID="k-pagination-page"
+						accessibilityRole="button"
+						accessibilityLabel={String(entry)}
+						accessibilityState={{ selected: entry === active }}
+						onPress={() => goTo(entry)}
+						style={[
+							controlStyle,
+							{
+								backgroundColor:
+									entry === active ? themeMap.primary : "transparent",
+							},
+						]}
+					>
+						<RNText
+							style={{
+								color:
+									entry === active
+										? themeMap.primaryForeground
+										: themeMap.foreground,
+								fontSize: FONT[size],
+								fontWeight: entry === active ? "600" : "500",
+							}}
 						>
-							<MoreHorizontal size={16} color={themeMap.mutedForeground} />
-						</View>
-					) : (
-						<Pressable
-							key={entry}
-							testID="k-pagination-page"
-							accessibilityRole="button"
-							accessibilityLabel={String(entry)}
-							accessibilityState={{ selected: entry === active }}
-							onPress={() => goTo(entry)}
-							style={[
-								controlStyle,
-								{
-									backgroundColor:
-										entry === active ? themeMap.primary : "transparent",
-								},
-							]}
-						>
-							<RNText
-								style={{
-									color:
-										entry === active
-											? themeMap.primaryForeground
-											: themeMap.foreground,
-									fontSize: FONT[size],
-									fontWeight: entry === active ? "600" : "500",
-								}}
-							>
-								{String(entry)}
-							</RNText>
-						</Pressable>
-					),
+							{String(entry)}
+						</RNText>
+					</Pressable>
+				),
 			)}
 			<Pressable
 				testID="k-pagination-next"

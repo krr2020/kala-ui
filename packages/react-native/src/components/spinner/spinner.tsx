@@ -10,7 +10,7 @@ import type { ReactElement } from "react";
 import { Loader } from "lucide-react-native";
 import { Animated, Easing } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import type { SpinnerProps, SpinnerSize, SpinnerVariant } from "./spinner.types";
+import type { SpinnerProps, SpinnerSize } from "./spinner.types";
 
 const SIZE: Record<SpinnerSize, number> = { sm: 16, md: 24, lg: 32, xl: 48 };
 

@@ -8,7 +8,7 @@
 import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import type { ProgressColor, ProgressProps, ProgressSize } from "./progress.types";
+import type { ProgressProps, ProgressSize } from "./progress.types";
 
 const HEIGHT: Record<ProgressSize, number> = { sm: 4, md: 10, lg: 16 };
 

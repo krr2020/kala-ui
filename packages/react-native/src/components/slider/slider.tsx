@@ -89,8 +89,7 @@ export function Slider({
 	};
 
 	const grant = (evt: ResponderEvent) => {
-		if (disabled || trackWidthRef.current <= 0 || values.length === 0)
-			return;
+		if (disabled || trackWidthRef.current <= 0 || values.length === 0) return;
 		const x = resolveX(evt);
 		if (x === undefined) return;
 		const v = xToValue(x);
@@ -106,8 +105,7 @@ export function Slider({
 	};
 
 	const move = (evt: ResponderEvent) => {
-		if (disabled || trackWidthRef.current <= 0 || values.length === 0)
-			return;
+		if (disabled || trackWidthRef.current <= 0 || values.length === 0) return;
 		const x = resolveX(evt);
 		if (x === undefined) return;
 		const next = [...values];
@@ -139,10 +137,7 @@ export function Slider({
 						left: "50%",
 						width: THUMB_PX,
 						height: THUMB_PX,
-						transform: [
-							{ translateX: -THUMB_R },
-							{ translateY: -THUMB_R },
-						],
+						transform: [{ translateX: -THUMB_R }, { translateY: -THUMB_R }],
 					}}
 				/>
 			</View>
@@ -185,37 +180,40 @@ export function Slider({
 						width: `${first === undefined ? 0 : pct(first)}%`,
 					}}
 				/>
-				{values.map((v, i) => (
-					<View
-						key={i}
-						testID="k-slider-thumb"
-						accessibilityRole="adjustable"
-						accessibilityLabel={accessibilityLabel}
-						accessibilityValue={{ min, max, now: v }}
-						accessibilityState={{ disabled: disabled || undefined }}
-						accessibilityActions={[
-							{ name: "increment" },
-							{ name: "decrement" },
-						]}
-						onAccessibilityAction={(e) => {
-							const action = e.nativeEvent.actionName;
-							if (action === "increment") adjust(i, 1);
-							else if (action === "decrement") adjust(i, -1);
-						}}
-						style={{
-							position: "absolute",
-							left: `${pct(v)}%`,
-							// center the thumb on its value point
-							marginLeft: -THUMB_R,
-							width: THUMB_PX,
-							height: THUMB_PX,
-							borderRadius: THUMB_R,
-							backgroundColor: themeMap.background,
-							borderWidth: 2,
-							borderColor: themeMap.primary,
-						}}
-					/>
-				))}
+				{values.map((v, i) => {
+					return (
+						<View
+							// biome-ignore lint/suspicious/noArrayIndexKey: thumb identity is its slot — values change every drag frame, so value keys would remount thumbs mid-gesture
+							key={i}
+							testID="k-slider-thumb"
+							accessibilityRole="adjustable"
+							accessibilityLabel={accessibilityLabel}
+							accessibilityValue={{ min, max, now: v }}
+							accessibilityState={{ disabled: disabled || undefined }}
+							accessibilityActions={[
+								{ name: "increment" },
+								{ name: "decrement" },
+							]}
+							onAccessibilityAction={(e) => {
+								const action = e.nativeEvent.actionName;
+								if (action === "increment") adjust(i, 1);
+								else if (action === "decrement") adjust(i, -1);
+							}}
+							style={{
+								position: "absolute",
+								left: `${pct(v)}%`,
+								// center the thumb on its value point
+								marginLeft: -THUMB_R,
+								width: THUMB_PX,
+								height: THUMB_PX,
+								borderRadius: THUMB_R,
+								backgroundColor: themeMap.background,
+								borderWidth: 2,
+								borderColor: themeMap.primary,
+							}}
+						/>
+					);
+				})}
 			</View>
 		</View>
 	);
