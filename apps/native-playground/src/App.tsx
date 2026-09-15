@@ -12,6 +12,7 @@ import {
 	Alert,
 	Avatar,
 	Badge,
+	Banner,
 	Button,
 	Card,
 	Checkbox,
@@ -34,6 +35,7 @@ import {
 	Tag,
 	Text as KText,
 	TextInput,
+	Textarea,
 	Toast,
 	Slider,
 	Dialog,
@@ -157,6 +159,7 @@ export default function App() {
 	const [formats, setFormats] = useState<string[]>(["italic"]);
 	const [faqOpen, setFaqOpen] = useState<string[]>(["shipping"]);
 	const [showAdvanced, setShowAdvanced] = useState(false);
+	const [bannerOn, setBannerOn] = useState(true);
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
@@ -480,6 +483,20 @@ export default function App() {
 							</KText>
 						</Collapsible.Content>
 					</Collapsible>
+				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-banner">
+					{bannerOn ? (
+						<Banner position="static" onClose={() => setBannerOn(false)}>
+							sync pauses at midnight
+						</Banner>
+					) : (
+						<Button size="sm" onPress={() => setBannerOn(true)}>
+							show banner
+						</Button>
+					)}
+				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-textarea">
+					<Textarea placeholder="order notes" rows={3} />
 				</View>
 				<View style={stylesheet.componentRow} testID="k-demo-dialog">
 					<Button

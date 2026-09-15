@@ -11,6 +11,7 @@ import { Accordion } from "../accordion";
 import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
 import { Avatar, STATUS_ONLINE_HUE } from "../avatar";
+import { Banner } from "../banner";
 import { Badge } from "../badge";
 import { BUTTON_SPRING, Button } from "../button";
 import { Card } from "../card";
@@ -37,6 +38,7 @@ import { Tabs } from "../tabs";
 import { Tag } from "../tag";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
+import { Textarea } from "../textarea";
 import { Toast } from "../toast";
 import { Toggle } from "../toggle";
 import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
@@ -2133,6 +2135,35 @@ describe("component markers", () => {
 			);
 			expect(screen.queryByTestId("k-collapsible-content")).toBeNull();
 			expect(screen.getByTestId("k-collapsible-trigger")).toBeTruthy();
+		});
+	});
+
+	describe("wave 12: Banner, Textarea", () => {
+		it("Banner renders root, content and close markers; no onClose drops close", async () => {
+			const screen = await render(
+				<Banner position="static" onClose={() => undefined}>
+					scheduled maintenance
+				</Banner>,
+			);
+			expect(screen.getByTestId("k-banner")).toBeTruthy();
+			expect(screen.getByTestId("k-banner-content")).toBeTruthy();
+			expect(screen.getByTestId("k-banner-close")).toBeTruthy();
+
+			const bare = await render(
+				<Banner position="static">plain</Banner>,
+			);
+			expect(bare.queryByTestId("k-banner-close")).toBeNull();
+		});
+
+		it("Textarea renders k-textarea; isLoading keeps the marker on the skeleton", async () => {
+			const screen = await render(<Textarea accessibilityLabel="notes" />);
+			expect(screen.getByTestId("k-textarea")).toBeTruthy();
+
+			const loading = await render(
+				<Textarea isLoading accessibilityLabel="notes" />,
+			);
+			expect(loading.getByTestId("k-textarea")).toBeTruthy();
+			expect(loading.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
 		});
 	});
 

@@ -12,6 +12,7 @@ import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
 import { Avatar } from "../avatar";
 import { Badge } from "../badge";
+import { Banner } from "../banner";
 import { Button } from "../button";
 import { Card } from "../card";
 import { Checkbox } from "../checkbox";
@@ -38,6 +39,7 @@ import { Tabs } from "../tabs";
 import { Tag } from "../tag";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
+import { Textarea } from "../textarea";
 import { Toast } from "../toast";
 import { Toggle } from "../toggle";
 import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
@@ -122,6 +124,16 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			marker: "k-avatar",
 			render: () =>
 				render(<Avatar name="Ada" styles={{ root: { borderWidth: 7 } }} />),
+		},
+		{
+			name: "Banner",
+			marker: "k-banner",
+			render: () =>
+				render(
+					<Banner position="static" styles={{ root: { borderWidth: 7 } }}>
+						m
+					</Banner>,
+				),
 		},
 		{
 			name: "Badge",
@@ -332,6 +344,11 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			render: () => render(<TextInput styles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
+			name: "Textarea",
+			marker: "k-textarea",
+			render: () => render(<Textarea styles={{ root: { borderWidth: 7 } }} />),
+		},
+		{
 			name: "Toast",
 			marker: "k-toast",
 			render: () =>
@@ -376,8 +393,8 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		});
 	}
 
-	it("the sweep covers all 33 components", () => {
-		expect(fixtures.length).toBe(33);
+	it("the sweep covers all 35 components", () => {
+		expect(fixtures.length).toBe(35);
 	});
 });
 

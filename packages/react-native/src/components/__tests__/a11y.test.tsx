@@ -10,6 +10,7 @@ import { Accordion } from "../accordion";
 import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
 import { Avatar } from "../avatar";
+import { Banner } from "../banner";
 import { Button } from "../button";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
@@ -31,6 +32,7 @@ import { Tabs } from "../tabs";
 import { Tag } from "../tag";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
+import { Textarea } from "../textarea";
 import { Toast } from "../toast";
 
 // TLB v14 queries are a11y-aware: deliberately-hidden elements (Icon without
@@ -663,6 +665,40 @@ describe("a11y contract", () => {
 			expect(trigger.props.accessibilityState?.disabled).toBe(true);
 			await fireEvent.press(trigger);
 			expect(onOpenChange).not.toHaveBeenCalled();
+		});
+	});
+
+	describe("Banner", () => {
+		it("announces politely by default and assertively with role=alert", async () => {
+			const polite = await render(<Banner>sync queued</Banner>);
+			expect(polite.getByTestId("k-banner").props.accessibilityLiveRegion).toBe(
+				"polite",
+			);
+
+			const urgent = await render(<Banner role="alert">outage</Banner>);
+			const node = urgent.getByTestId("k-banner");
+			expect(node.props.accessibilityRole).toBe("alert");
+			expect(node.props.accessibilityLiveRegion).toBe("assertive");
+		});
+
+		it("exposes the close control as a labelled button", async () => {
+			const screen = await render(
+				<Banner onClose={() => undefined}>m</Banner>,
+			);
+			expect(
+				screen.getByRole("button", { name: "Close banner" }),
+			).toBeTruthy();
+		});
+	});
+
+	describe("Textarea", () => {
+		it("announces disabled state and blocks editing", async () => {
+			const screen = await render(
+				<Textarea accessibilityLabel="notes" disabled />,
+			);
+			const input = screen.getByTestId("k-textarea");
+			expect(input.props.accessibilityState?.disabled).toBe(true);
+			expect(input.props.editable).toBe(false);
 		});
 	});
 });

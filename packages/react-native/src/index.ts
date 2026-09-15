@@ -31,6 +31,13 @@ export type {
 	BadgeVariant,
 } from "./components/badge";
 export { Badge } from "./components/badge";
+export type {
+	BannerColor,
+	BannerPosition,
+	BannerProps,
+	BannerSkeletonConfig,
+} from "./components/banner";
+export { Banner } from "./components/banner";
 export type { ButtonProps } from "./components/button";
 export { Button } from "./components/button";
 export type { CardProps } from "./components/card";
@@ -135,6 +142,8 @@ export type {
 export { Text } from "./components/text";
 export type { TextInputProps } from "./components/text-input";
 export { TextInput } from "./components/text-input";
+export type { TextareaProps } from "./components/textarea";
+export { Textarea } from "./components/textarea";
 export type {
 	ToastDescriptionProps,
 	ToastPosition,

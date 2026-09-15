@@ -67,6 +67,8 @@ describe("component app seam", () => {
 		for (const name of [
 			"Accordion",
 			"Collapsible",
+			"Banner",
+			"Textarea",
 			"Tabs",
 			"SegmentedControl",
 			"EmptyState",
