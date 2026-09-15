@@ -1,4 +1,4 @@
-import type { StyleProp, TextStyle, ViewStyle } from "react-native";
+import type { StyleProp, ViewStyle } from "react-native";
 import type { LucideIcon } from "lucide-react-native";
 import type { KalaTheme } from "../../types";
 

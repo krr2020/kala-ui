@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { StyleProp, TextStyle, ViewStyle } from "react-native";
+import type { StyleProp, ViewStyle } from "react-native";
 
 /** Fill style — `color` stays the semantic hue across variants. */
 export type BadgeVariant = "solid" | "outline" | "subtle";

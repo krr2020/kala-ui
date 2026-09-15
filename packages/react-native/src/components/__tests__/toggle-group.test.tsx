@@ -194,7 +194,9 @@ describe("ToggleGroup", () => {
 		);
 		const walk = (node: unknown, found: string[]): string[] => {
 			if (Array.isArray(node)) {
-				node.forEach((child) => walk(child, found));
+				node.forEach((child) => {
+					walk(child, found);
+				});
 				return found;
 			}
 			if (node && typeof node === "object") {
