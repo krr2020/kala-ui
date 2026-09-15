@@ -7,6 +7,7 @@
  */
 import { fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
+import { Accordion } from "../accordion";
 import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
 import { Avatar } from "../avatar";
@@ -14,6 +15,7 @@ import { Badge } from "../badge";
 import { Button } from "../button";
 import { Card } from "../card";
 import { Checkbox } from "../checkbox";
+import { Collapsible } from "../collapsible";
 import { Dialog } from "../dialog";
 import { EmptyState } from "../empty-state";
 import { Heading } from "../heading";
@@ -100,6 +102,22 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				),
 		},
 		{
+			name: "Accordion",
+			marker: "k-accordion",
+			render: () =>
+				render(
+					<Accordion
+						type="single"
+						defaultValue="a"
+						styles={{ root: { borderWidth: 7 } }}
+					>
+						<Accordion.Item value="a">
+							<Accordion.Trigger>t</Accordion.Trigger>
+						</Accordion.Item>
+					</Accordion>,
+				),
+		},
+		{
 			name: "Avatar",
 			marker: "k-avatar",
 			render: () =>
@@ -131,6 +149,16 @@ describe("root slot sweep — every component accepts styles.root", () => {
 						accessibilityLabel="c"
 						styles={{ root: { borderWidth: 7 } }}
 					/>,
+				),
+		},
+		{
+			name: "Collapsible",
+			marker: "k-collapsible",
+			render: () =>
+				render(
+					<Collapsible defaultOpen styles={{ root: { borderWidth: 7 } }}>
+						<Collapsible.Trigger>t</Collapsible.Trigger>
+					</Collapsible>,
 				),
 		},
 		{
@@ -348,8 +376,8 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		});
 	}
 
-	it("the sweep covers all 31 components", () => {
-		expect(fixtures.length).toBe(31);
+	it("the sweep covers all 33 components", () => {
+		expect(fixtures.length).toBe(33);
 	});
 });
 
@@ -745,9 +773,9 @@ describe("precedence and back-compat", () => {
 				<RadioGroup.Item value="a" label="a" />
 			</RadioGroup>,
 		);
-		expect(
-			Number(flatStyle(rg.getByTestId("k-radio-group")).opacity),
-		).toBe(0.9);
+		expect(Number(flatStyle(rg.getByTestId("k-radio-group")).opacity)).toBe(
+			0.9,
+		);
 	});
 
 	it("toggle ladder: look → style → styles.root", async () => {
@@ -773,7 +801,7 @@ describe("precedence and back-compat", () => {
 			</ToggleGroup>,
 		);
 		expect(
-				Number(flatStyle(a.getByTestId("k-toggle-group-item")).opacity),
+			Number(flatStyle(a.getByTestId("k-toggle-group-item")).opacity),
 		).toBe(0.9);
 
 		// (b) group itemStyles beats the item's legacy style (no styles.root)
@@ -785,22 +813,19 @@ describe("precedence and back-compat", () => {
 			</ToggleGroup>,
 		);
 		expect(
-				Number(flatStyle(b.getByTestId("k-toggle-group-item")).opacity),
+			Number(flatStyle(b.getByTestId("k-toggle-group-item")).opacity),
 		).toBe(0.7);
 
 		// (c) item styles.root beats group itemStyles
 		const c = await render(
 			<ToggleGroup type="single" styles={{ item: { opacity: 0.7 } }}>
-				<ToggleGroupItem
-					value="a"
-					styles={{ root: { opacity: 0.9 } }}
-				>
+				<ToggleGroupItem value="a" styles={{ root: { opacity: 0.9 } }}>
 					a
 				</ToggleGroupItem>
 			</ToggleGroup>,
 		);
 		expect(
-				Number(flatStyle(c.getByTestId("k-toggle-group-item")).opacity),
+			Number(flatStyle(c.getByTestId("k-toggle-group-item")).opacity),
 		).toBe(0.9);
 	});
 
@@ -882,3 +907,80 @@ describe("text parts and untouched defaults", () => {
 function inclHiddenForModal() {
 	return incl;
 }
+
+describe("accordion and collapsible slots", () => {
+	it("accordion.item / trigger / content carry distinct overrides", async () => {
+		const screen = await render(
+			<Accordion
+				type="single"
+				defaultValue="a"
+				styles={{
+					item: { borderWidth: 3 },
+					trigger: { borderWidth: 4 },
+					content: { borderWidth: 5 },
+				}}
+			>
+				<Accordion.Item value="a">
+					<Accordion.Trigger>t</Accordion.Trigger>
+					<Accordion.Content>c</Accordion.Content>
+				</Accordion.Item>
+			</Accordion>,
+		);
+		expect(
+			Number(flatStyle(screen.getByTestId("k-accordion-item")).borderWidth),
+		).toBe(3);
+		expect(
+			Number(
+				flatStyle(screen.getByTestId("k-accordion-trigger", incl)).borderWidth,
+			),
+		).toBe(4);
+		expect(
+			Number(flatStyle(screen.getByTestId("k-accordion-content")).borderWidth),
+		).toBe(5);
+	});
+
+	it("per-part slots win over the group-flowed slot", async () => {
+		const screen = await render(
+			<Accordion
+				type="single"
+				defaultValue="a"
+				styles={{ trigger: { borderWidth: 4 } }}
+			>
+				<Accordion.Item value="a">
+					<Accordion.Trigger styles={{ root: { borderWidth: 6 } }}>
+						t
+					</Accordion.Trigger>
+					<Accordion.Content>c</Accordion.Content>
+				</Accordion.Item>
+			</Accordion>,
+		);
+		expect(
+			Number(
+				flatStyle(screen.getByTestId("k-accordion-trigger", incl)).borderWidth,
+			),
+		).toBe(6);
+	});
+
+	it("collapsible.trigger / content carry distinct overrides", async () => {
+		const screen = await render(
+			<Collapsible
+				defaultOpen
+				styles={{ trigger: { borderWidth: 4 }, content: { borderWidth: 5 } }}
+			>
+				<Collapsible.Trigger>t</Collapsible.Trigger>
+				<Collapsible.Content>c</Collapsible.Content>
+			</Collapsible>,
+		);
+		expect(
+			Number(
+				flatStyle(screen.getByTestId("k-collapsible-trigger", incl))
+					.borderWidth,
+			),
+		).toBe(4);
+		expect(
+			Number(
+				flatStyle(screen.getByTestId("k-collapsible-content")).borderWidth,
+			),
+		).toBe(5);
+	});
+});

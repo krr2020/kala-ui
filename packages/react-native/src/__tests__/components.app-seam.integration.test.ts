@@ -65,6 +65,8 @@ describe("component app seam", () => {
 		const imports = appImports(app);
 		const exported = exportNames(readFileSync(ENTRY_PATH, "utf8"));
 		for (const name of [
+			"Accordion",
+			"Collapsible",
 			"Tabs",
 			"SegmentedControl",
 			"EmptyState",

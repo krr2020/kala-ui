@@ -1,4 +1,13 @@
 export type {
+	AccordionContentProps,
+	AccordionItemProps,
+	AccordionProps,
+	AccordionTriggerProps,
+	AccordionType,
+	AccordionVariant,
+} from "./components/accordion";
+export { Accordion } from "./components/accordion";
+export type {
 	AlertColor,
 	AlertDescriptionProps,
 	AlertProps,
@@ -6,9 +15,7 @@ export type {
 	AlertVariant,
 } from "./components/alert";
 export { Alert } from "./components/alert";
-export type {
-	AlertDialogProps,
-} from "./components/alert-dialog";
+export type { AlertDialogProps } from "./components/alert-dialog";
 export { AlertDialog } from "./components/alert-dialog";
 export type {
 	AvatarProps,
@@ -28,24 +35,22 @@ export type { ButtonProps } from "./components/button";
 export { Button } from "./components/button";
 export type { CardProps } from "./components/card";
 export { Card } from "./components/card";
-export type {
-	CheckboxProps,
-} from "./components/checkbox";
+export type { CheckboxProps } from "./components/checkbox";
 export { Checkbox } from "./components/checkbox";
+export type {
+	CollapsibleContentProps,
+	CollapsibleProps,
+	CollapsibleTriggerProps,
+} from "./components/collapsible";
+export { Collapsible } from "./components/collapsible";
+export type { DialogProps } from "./components/dialog";
+export { Dialog } from "./components/dialog";
 export type {
 	EmptyStateAction,
 	EmptyStateIcon,
 	EmptyStateProps,
 } from "./components/empty-state";
 export { EmptyState } from "./components/empty-state";
-export type { DialogProps } from "./components/dialog";
-export { Dialog } from "./components/dialog";
-export type {
-	IndicatorColor,
-	IndicatorPosition,
-	IndicatorProps,
-} from "./components/indicator";
-export { Indicator } from "./components/indicator";
 export type {
 	HeadingAlign,
 	HeadingProps,
@@ -55,6 +60,12 @@ export type {
 export { Heading } from "./components/heading";
 export type { IconProps } from "./components/icon";
 export { Icon } from "./components/icon";
+export type {
+	IndicatorColor,
+	IndicatorPosition,
+	IndicatorProps,
+} from "./components/indicator";
+export { Indicator } from "./components/indicator";
 export type { LabelProps } from "./components/label";
 export { Label } from "./components/label";
 export type {
@@ -90,13 +101,13 @@ export type {
 export { Separator } from "./components/separator";
 export type { SheetBodyProps, SheetProps } from "./components/sheet";
 export { Sheet } from "./components/sheet";
-export type { SliderProps } from "./components/slider";
-export { Slider } from "./components/slider";
 export type {
 	SkeletonProps,
 	SkeletonVariant,
 } from "./components/skeleton";
 export { Skeleton } from "./components/skeleton";
+export type { SliderProps } from "./components/slider";
+export { Slider } from "./components/slider";
 export type {
 	SpinnerProps,
 	SpinnerSize,
@@ -125,11 +136,12 @@ export { Text } from "./components/text";
 export type { TextInputProps } from "./components/text-input";
 export { TextInput } from "./components/text-input";
 export type {
-	ToggleGroupItemProps,
-	ToggleGroupProps,
-	ToggleGroupType,
-} from "./components/toggle-group";
-export { ToggleGroup, ToggleGroupItem } from "./components/toggle-group";
+	ToastDescriptionProps,
+	ToastPosition,
+	ToastProps,
+	ToastTitleProps,
+} from "./components/toast";
+export { Toast } from "./components/toast";
 export type {
 	ToggleProps,
 	ToggleSize,
@@ -137,12 +149,11 @@ export type {
 } from "./components/toggle";
 export { Toggle } from "./components/toggle";
 export type {
-	ToastDescriptionProps,
-	ToastPosition,
-	ToastProps,
-	ToastTitleProps,
-} from "./components/toast";
-export { Toast } from "./components/toast";
+	ToggleGroupItemProps,
+	ToggleGroupProps,
+	ToggleGroupType,
+} from "./components/toggle-group";
+export { ToggleGroup, ToggleGroupItem } from "./components/toggle-group";
 export { themeNames, themes } from "./themes";
 export { motion, tokens } from "./tokens";
 export type { KalaTheme, ThemeName } from "./types";

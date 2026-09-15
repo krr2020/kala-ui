@@ -7,6 +7,7 @@
 import { act, fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
 import { motion } from "../../tokens";
+import { Accordion } from "../accordion";
 import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
 import { Avatar, STATUS_ONLINE_HUE } from "../avatar";
@@ -14,6 +15,7 @@ import { Badge } from "../badge";
 import { BUTTON_SPRING, Button } from "../button";
 import { Card } from "../card";
 import { Checkbox } from "../checkbox";
+import { Collapsible } from "../collapsible";
 import { Dialog } from "../dialog";
 import { EmptyState } from "../empty-state";
 import { Heading } from "../heading";
@@ -1866,7 +1868,9 @@ describe("component markers", () => {
 						<AlertDialog.Cancel onPress={() => undefined}>
 							cancel
 						</AlertDialog.Cancel>
-						<AlertDialog.Action onPress={() => undefined}>delete</AlertDialog.Action>
+						<AlertDialog.Action onPress={() => undefined}>
+							delete
+						</AlertDialog.Action>
 					</AlertDialog.Footer>
 				</AlertDialog>,
 			);
@@ -2081,6 +2085,54 @@ describe("component markers", () => {
 			expect(toggle.props.accessibilityState.disabled).toBe(true);
 			await fireEvent.press(toggle);
 			expect(onPressedChange).not.toHaveBeenCalled();
+		});
+	});
+
+	describe("wave 11: Accordion, Collapsible", () => {
+		it("Accordion renders root, item, trigger and content markers; closed unmounts content", async () => {
+			const screen = await render(
+				<Accordion type="single" defaultValue="a">
+					<Accordion.Item value="a">
+						<Accordion.Trigger>Section</Accordion.Trigger>
+						<Accordion.Content>body</Accordion.Content>
+					</Accordion.Item>
+				</Accordion>,
+			);
+			expect(screen.getByTestId("k-accordion")).toBeTruthy();
+			expect(screen.getByTestId("k-accordion-item")).toBeTruthy();
+			expect(screen.getByTestId("k-accordion-trigger")).toBeTruthy();
+			expect(screen.getByTestId("k-accordion-content")).toBeTruthy();
+
+			await screen.rerender(
+				<Accordion type="single" value="">
+					<Accordion.Item value="a">
+						<Accordion.Trigger>Section</Accordion.Trigger>
+						<Accordion.Content>body</Accordion.Content>
+					</Accordion.Item>
+				</Accordion>,
+			);
+			expect(screen.queryByTestId("k-accordion-content")).toBeNull();
+		});
+
+		it("Collapsible renders root, trigger and content markers; closed unmounts content", async () => {
+			const screen = await render(
+				<Collapsible defaultOpen>
+					<Collapsible.Trigger>more</Collapsible.Trigger>
+					<Collapsible.Content>detail</Collapsible.Content>
+				</Collapsible>,
+			);
+			expect(screen.getByTestId("k-collapsible")).toBeTruthy();
+			expect(screen.getByTestId("k-collapsible-trigger")).toBeTruthy();
+			expect(screen.getByTestId("k-collapsible-content")).toBeTruthy();
+
+			await screen.rerender(
+				<Collapsible open={false}>
+					<Collapsible.Trigger>more</Collapsible.Trigger>
+					<Collapsible.Content>detail</Collapsible.Content>
+				</Collapsible>,
+			);
+			expect(screen.queryByTestId("k-collapsible-content")).toBeNull();
+			expect(screen.getByTestId("k-collapsible-trigger")).toBeTruthy();
 		});
 	});
 

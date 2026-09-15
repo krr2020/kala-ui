@@ -6,27 +6,29 @@
  */
 import { fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
+import { Accordion } from "../accordion";
 import { Alert } from "../alert";
+import { AlertDialog } from "../alert-dialog";
 import { Avatar } from "../avatar";
 import { Button } from "../button";
 import { Checkbox } from "../checkbox";
+import { Collapsible } from "../collapsible";
+import { Dialog } from "../dialog";
+import { EmptyState } from "../empty-state";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
+import { Pagination } from "../pagination";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
+import { Rating } from "../rating";
+import { SegmentedControl } from "../segmented-control";
 import { Separator } from "../separator";
 import { Sheet } from "../sheet";
-import { Dialog } from "../dialog";
-import { AlertDialog } from "../alert-dialog";
-import { EmptyState } from "../empty-state";
-import { SegmentedControl } from "../segmented-control";
-import { Pagination } from "../pagination";
-import { Rating } from "../rating";
 import { Slider } from "../slider";
-import { Tag } from "../tag";
-import { Tabs } from "../tabs";
 import { Spinner } from "../spinner";
 import { Switch } from "../switch";
+import { Tabs } from "../tabs";
+import { Tag } from "../tag";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Toast } from "../toast";
@@ -167,9 +169,7 @@ describe("a11y contract", () => {
 	describe("Spinner", () => {
 		it("announces its loading label", async () => {
 			const screen = await render(<Spinner size="sm" label="Syncing" />);
-			expect(
-				screen.getByLabelText("Syncing", inclHidden),
-			).toBeTruthy();
+			expect(screen.getByLabelText("Syncing", inclHidden)).toBeTruthy();
 		});
 	});
 
@@ -179,7 +179,11 @@ describe("a11y contract", () => {
 				<Progress value={30} accessibilityLabel="upload" />,
 			);
 			const bar = screen.getByRole("progressbar", { name: "upload" });
-			expect(bar.props.accessibilityValue).toEqual({ min: 0, max: 100, now: 30 });
+			expect(bar.props.accessibilityValue).toEqual({
+				min: 0,
+				max: 100,
+				now: 30,
+			});
 		});
 	});
 
@@ -208,9 +212,7 @@ describe("a11y contract", () => {
 	describe("Avatar", () => {
 		it("announces as an image named after the person", async () => {
 			const screen = await render(<Avatar name="Ada Lovelace" />);
-			expect(
-				screen.getByRole("image", { name: "Ada Lovelace" }),
-			).toBeTruthy();
+			expect(screen.getByRole("image", { name: "Ada Lovelace" })).toBeTruthy();
 		});
 	});
 
@@ -257,12 +259,10 @@ describe("a11y contract", () => {
 			const screen = await render(
 				<Switch accessibilityLabel="Auto sync" value />,
 			);
-			expect(
-				screen.getByRole("switch", { name: "Auto sync" }),
-			).toBeTruthy();
-			expect(
-				screen.getByRole("switch").props.accessibilityState?.checked,
-			).toBe(true);
+			expect(screen.getByRole("switch", { name: "Auto sync" })).toBeTruthy();
+			expect(screen.getByRole("switch").props.accessibilityState?.checked).toBe(
+				true,
+			);
 		});
 
 		it("announces disabled state and blocks toggling", async () => {
@@ -273,7 +273,7 @@ describe("a11y contract", () => {
 					disabled
 					value={false}
 					onValueChange={onValueChange}
-			/>,
+				/>,
 			);
 			await fireEvent.press(screen.getByRole("switch"));
 			expect(onValueChange).not.toHaveBeenCalled();
@@ -291,9 +291,7 @@ describe("a11y contract", () => {
 					<RadioGroup.Item value="b" label="Pro" />
 				</RadioGroup>,
 			);
-			expect(
-				screen.getByRole("radiogroup", { name: "plan" }),
-			).toBeTruthy();
+			expect(screen.getByRole("radiogroup", { name: "plan" })).toBeTruthy();
 			const items = screen.getAllByRole("radio");
 			expect(items).toHaveLength(2);
 			expect(items[0].props.accessibilityState?.checked).toBe(false);
@@ -310,9 +308,9 @@ describe("a11y contract", () => {
 			);
 			await fireEvent.press(screen.getByRole("radio"));
 			expect(onValueChange).not.toHaveBeenCalled();
-			expect(
-				screen.getByRole("radio").props.accessibilityState?.disabled,
-			).toBe(true);
+			expect(screen.getByRole("radio").props.accessibilityState?.disabled).toBe(
+				true,
+			);
 		});
 	});
 
@@ -395,9 +393,7 @@ describe("a11y contract", () => {
 					accessibilityLabel="range"
 				/>,
 			);
-			expect(
-				screen.getByRole("radiogroup", { name: "range" }),
-			).toBeTruthy();
+			expect(screen.getByRole("radiogroup", { name: "range" })).toBeTruthy();
 			expect(
 				screen.getByRole("radio", { name: "day" }).props.accessibilityState
 					?.checked,
@@ -439,12 +435,10 @@ describe("a11y contract", () => {
 					action={{ label: "New project", onPress }}
 				/>,
 			);
-			expect(
-				screen.getByTestId("k-empty-state").props.accessibilityLabel,
-			).toBe("No projects yet");
-			expect(
-				screen.getByRole("button", { name: "New project" }),
-			).toBeTruthy();
+			expect(screen.getByTestId("k-empty-state").props.accessibilityLabel).toBe(
+				"No projects yet",
+			);
+			expect(screen.getByRole("button", { name: "New project" })).toBeTruthy();
 		});
 	});
 
@@ -452,12 +446,12 @@ describe("a11y contract", () => {
 		it("exposes pressable stars with per-star labels and selected state", async () => {
 			const screen = await render(<Rating value={3} />);
 			expect(
-				screen.getByRole("button", { name: "3 stars" }).props
-					.accessibilityState?.selected,
+				screen.getByRole("button", { name: "3 stars" }).props.accessibilityState
+					?.selected,
 			).toBe(true);
 			expect(
-				screen.getByRole("button", { name: "4 stars" }).props
-					.accessibilityState?.selected,
+				screen.getByRole("button", { name: "4 stars" }).props.accessibilityState
+					?.selected,
 			).toBe(false);
 		});
 
@@ -472,9 +466,7 @@ describe("a11y contract", () => {
 		});
 
 		it("allowHalf readOnly formats the fraction in the summary", async () => {
-			const screen = await render(
-				<Rating value={2.5} allowHalf readOnly />,
-			);
+			const screen = await render(<Rating value={2.5} allowHalf readOnly />);
 			expect(
 				screen.getByRole("image", { name: "Rating: 2.5 out of 5 stars" }),
 			).toBeTruthy();
@@ -637,6 +629,40 @@ describe("a11y contract", () => {
 			const screen = await render(<Tag onRemove={onRemove}>beta</Tag>);
 			await fireEvent.press(screen.getByRole("button", { name: "Remove" }));
 			expect(onRemove).toHaveBeenCalledTimes(1);
+		});
+	});
+
+	describe("Accordion", () => {
+		it("trigger announces expanded state as a button", async () => {
+			const screen = await render(
+				<Accordion type="single" defaultValue="a">
+					<Accordion.Item value="a">
+						<Accordion.Trigger>section</Accordion.Trigger>
+						<Accordion.Content>body</Accordion.Content>
+					</Accordion.Item>
+				</Accordion>,
+			);
+			const trigger = screen.getByTestId("k-accordion-trigger", inclHidden);
+			expect(trigger.props.accessibilityRole).toBe("button");
+			expect(trigger.props.accessibilityState?.expanded).toBe(true);
+		});
+	});
+
+	describe("Collapsible", () => {
+		it("trigger announces expanded, disabled state and stays closed on press", async () => {
+			const onOpenChange = jest.fn();
+			const screen = await render(
+				<Collapsible defaultOpen disabled onOpenChange={onOpenChange}>
+					<Collapsible.Trigger>more</Collapsible.Trigger>
+					<Collapsible.Content>detail</Collapsible.Content>
+				</Collapsible>,
+			);
+			const trigger = screen.getByTestId("k-collapsible-trigger", inclHidden);
+			expect(trigger.props.accessibilityRole).toBe("button");
+			expect(trigger.props.accessibilityState?.expanded).toBe(true);
+			expect(trigger.props.accessibilityState?.disabled).toBe(true);
+			await fireEvent.press(trigger);
+			expect(onOpenChange).not.toHaveBeenCalled();
 		});
 	});
 });

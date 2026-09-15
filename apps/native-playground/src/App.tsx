@@ -8,12 +8,14 @@ import {
 	useUnistyles,
 } from "react-native-unistyles";
 import {
+	Accordion,
 	Alert,
 	Avatar,
 	Badge,
 	Button,
 	Card,
 	Checkbox,
+	Collapsible,
 	EmptyState,
 	Heading,
 	Icon,
@@ -153,6 +155,8 @@ export default function App() {
 	const [bold, setBold] = useState(false);
 	const [align, setAlign] = useState("");
 	const [formats, setFormats] = useState<string[]>(["italic"]);
+	const [faqOpen, setFaqOpen] = useState<string[]>(["shipping"]);
+	const [showAdvanced, setShowAdvanced] = useState(false);
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
@@ -441,6 +445,41 @@ export default function App() {
 					<Indicator color="destructive" processing size={12}>
 						<KText size="sm">live</KText>
 					</Indicator>
+				</View>
+				<View testID="k-demo-accordion">
+					<Accordion
+						type="multiple"
+						value={faqOpen}
+						onValueChange={setFaqOpen}
+						variant="bordered"
+					>
+						<Accordion.Item value="shipping">
+							<Accordion.Trigger>shipping</Accordion.Trigger>
+							<Accordion.Content>
+								<KText size="sm" color="muted">
+									free over $50, arrives in 3-5 days
+								</KText>
+							</Accordion.Content>
+						</Accordion.Item>
+						<Accordion.Item value="returns">
+							<Accordion.Trigger>returns</Accordion.Trigger>
+							<Accordion.Content>
+								<KText size="sm" color="muted">
+									30-day window, no questions asked
+								</KText>
+							</Accordion.Content>
+						</Accordion.Item>
+					</Accordion>
+				</View>
+				<View style={stylesheet.componentRow} testID="k-demo-collapsible">
+					<Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
+						<Collapsible.Trigger>advanced filters</Collapsible.Trigger>
+						<Collapsible.Content>
+							<KText size="sm" color="muted">
+								only show verified sellers
+							</KText>
+						</Collapsible.Content>
+					</Collapsible>
 				</View>
 				<View style={stylesheet.componentRow} testID="k-demo-dialog">
 					<Button

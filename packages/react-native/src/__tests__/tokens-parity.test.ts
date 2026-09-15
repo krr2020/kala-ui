@@ -297,6 +297,13 @@ describe("layout restructure pins", () => {
 		expect(names.size).toBeGreaterThan(0);
 		expect([...names].sort()).toEqual(
 			[
+				"Accordion",
+				"AccordionContentProps",
+				"AccordionItemProps",
+				"AccordionProps",
+				"AccordionTriggerProps",
+				"AccordionType",
+				"AccordionVariant",
 				"Alert",
 				"AlertColor",
 				"AlertDescriptionProps",
@@ -321,6 +328,10 @@ describe("layout restructure pins", () => {
 				"CardProps",
 				"Checkbox",
 				"CheckboxProps",
+				"Collapsible",
+				"CollapsibleContentProps",
+				"CollapsibleProps",
+				"CollapsibleTriggerProps",
 				"Dialog",
 				"DialogProps",
 				"EmptyState",
