@@ -11,14 +11,15 @@ import { Accordion } from "../accordion";
 import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
 import { Avatar, STATUS_ONLINE_HUE } from "../avatar";
-import { Banner } from "../banner";
 import { Badge } from "../badge";
+import { Banner } from "../banner";
 import { BUTTON_SPRING, Button } from "../button";
 import { Card } from "../card";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Dialog } from "../dialog";
 import { EmptyState } from "../empty-state";
+import { Field } from "../field";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
 import { Indicator } from "../indicator";
@@ -39,6 +40,7 @@ import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Rating } from "../rating";
 import { SegmentedControl } from "../segmented-control";
+import { Select } from "../select";
 import { Separator } from "../separator";
 import { Sheet } from "../sheet";
 import { Skeleton } from "../skeleton";
@@ -2160,9 +2162,7 @@ describe("component markers", () => {
 			expect(screen.getByTestId("k-banner-content")).toBeTruthy();
 			expect(screen.getByTestId("k-banner-close")).toBeTruthy();
 
-			const bare = await render(
-				<Banner position="static">plain</Banner>,
-			);
+			const bare = await render(<Banner position="static">plain</Banner>);
 			expect(bare.queryByTestId("k-banner-close")).toBeNull();
 		});
 
@@ -2214,11 +2214,61 @@ describe("component markers", () => {
 
 		it("isLoading keeps k-list and drops rows", async () => {
 			const screen = await render(
-					<List isLoading skeletonConfig={{ itemCount: 2 }} />,
+				<List isLoading skeletonConfig={{ itemCount: 2 }} />,
 			);
 			expect(screen.getByTestId("k-list")).toBeTruthy();
 			expect(screen.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
 			expect(screen.queryByTestId("k-list-item")).toBeNull();
+		});
+	});
+
+	describe("wave 14: Field, Select, TextInput sections", () => {
+		it("Field renders label/control/description/error markers", async () => {
+			const screen = await render(
+				<Field label="Email" description="helper" error="broken">
+					<TextInput />
+				</Field>,
+			);
+			expect(screen.getByTestId("k-field")).toBeTruthy();
+			expect(screen.getByTestId("k-field-label")).toBeTruthy();
+			expect(screen.getByTestId("k-field-control")).toBeTruthy();
+			expect(screen.getByTestId("k-field-description")).toBeTruthy();
+			expect(screen.getByTestId("k-field-error")).toBeTruthy();
+		});
+
+		it("Select renders trigger markers; open exposes option markers", async () => {
+			const screen = await render(
+				<Select
+					options={[
+						{ value: "a", label: "Alpha" },
+						{ value: "b", label: "Beta" },
+					]}
+				/>,
+			);
+			expect(screen.getByTestId("k-select")).toBeTruthy();
+			expect(screen.getByTestId("k-select-value")).toBeTruthy();
+			expect(screen.getByTestId("k-select-chevron")).toBeTruthy();
+			await fireEvent.press(screen.getByTestId("k-select"));
+			expect(screen.getAllByTestId("k-select-option").length).toBe(2);
+			expect(screen.getByTestId("k-select-sheet")).toBeTruthy();
+		});
+
+		it("Select isLoading keeps the k-select marker on the skeleton", async () => {
+			const screen = await render(<Select options={[]} isLoading />);
+			expect(screen.getByTestId("k-select")).toBeTruthy();
+			expect(screen.queryByTestId("k-select-value")).toBeNull();
+		});
+
+		it("TextInput sections add the group wrapper; bare input has none", async () => {
+			const bare = await render(<TextInput />);
+			expect(bare.queryByTestId("k-text-input-group")).toBeNull();
+			const grouped = await render(
+				<TextInput leftSection={"₹"} rightSection={"kg"} />,
+			);
+			expect(grouped.getByTestId("k-text-input-group")).toBeTruthy();
+			expect(grouped.getByTestId("k-text-input-section-left")).toBeTruthy();
+			expect(grouped.getByTestId("k-text-input-section-right")).toBeTruthy();
+			expect(grouped.getByTestId("k-text-input")).toBeTruthy();
 		});
 	});
 

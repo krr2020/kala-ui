@@ -19,6 +19,7 @@ import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Dialog } from "../dialog";
 import { EmptyState } from "../empty-state";
+import { Field } from "../field";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
 import { Indicator } from "../indicator";
@@ -29,6 +30,7 @@ import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Rating } from "../rating";
 import { SegmentedControl } from "../segmented-control";
+import { Select } from "../select";
 import { Separator } from "../separator";
 import { Sheet } from "../sheet";
 import { Skeleton } from "../skeleton";
@@ -199,6 +201,16 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				),
 		},
 		{
+			name: "Field",
+			marker: "k-field",
+			render: () =>
+				render(
+					<Field label="x" styles={{ root: { borderWidth: 7 } }}>
+						<TextInput />
+					</Field>,
+				),
+		},
+		{
 			name: "Heading",
 			marker: "k-heading",
 			textRoot: true,
@@ -258,6 +270,17 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<SegmentedControl
 						data={["a", "b"]}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
+				),
+		},
+		{
+			name: "Select",
+			marker: "k-select",
+			render: () =>
+				render(
+					<Select
+						options={[{ value: "a", label: "A" }]}
 						styles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
@@ -400,7 +423,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 	}
 
 	it("the sweep covers all 36 components", () => {
-		expect(fixtures.length).toBe(36);
+		expect(fixtures.length).toBe(38);
 	});
 });
 

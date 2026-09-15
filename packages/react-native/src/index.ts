@@ -58,6 +58,8 @@ export type {
 	EmptyStateProps,
 } from "./components/empty-state";
 export { EmptyState } from "./components/empty-state";
+export type { FieldProps } from "./components/field";
+export { Field } from "./components/field";
 export type {
 	HeadingAlign,
 	HeadingProps,
@@ -126,6 +128,8 @@ export type {
 	SegmentedControlSize,
 } from "./components/segmented-control";
 export { SegmentedControl } from "./components/segmented-control";
+export type { SelectOption, SelectProps } from "./components/select";
+export { Select } from "./components/select";
 export type {
 	SeparatorOrientation,
 	SeparatorProps,

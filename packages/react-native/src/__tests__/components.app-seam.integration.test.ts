@@ -122,6 +122,8 @@ describe("component app seam", () => {
 			"Toggle",
 			"ToggleGroup",
 			"Indicator",
+			"Field",
+			"Select",
 		]) {
 			expect(unionImports.has(name), `playground imports ${name}`).toBe(true);
 			expect(exported.has(name), `entry exports ${name}`).toBe(true);
@@ -147,8 +149,8 @@ describe("component app seam", () => {
 		}
 		// 18 interactive demos: sheet/dialog/confirm/faq/advanced +
 		// toast/banner + agree/sync/plan + range/tab/rating/page/volume +
-		// bold/align/formats.
-		expect(demoHooks).toBe(18);
+		// bold/align/formats + select.
+		expect(demoHooks).toBe(19);
 	});
 
 	it("render-surface census matches the pinned marker/label inventory", () => {
@@ -179,7 +181,7 @@ describe("component app seam", () => {
 					'testID="k-demo-controls"': 1,
 					'testID="k-demo-dialog"': 1,
 					'testID="k-demo-icons"': 1,
-				'testID="k-demo-list"': 1,
+					'testID="k-demo-list"': 1,
 					'testID="k-demo-indicator"': 1,
 					'testID="k-demo-input"': 1,
 					'testID="k-demo-labels"': 1,
@@ -187,6 +189,7 @@ describe("component app seam", () => {
 					'testID="k-demo-progress"': 1,
 					'testID="k-demo-radios"': 1,
 					'testID="k-demo-rating"': 1,
+					'testID="k-demo-select"': 1,
 					'testID="k-demo-segmented"': 1,
 					'testID="k-demo-skeletons"': 1,
 					'testID="k-demo-slider"': 1,

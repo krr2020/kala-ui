@@ -18,12 +18,14 @@ import { Dialog } from "../dialog";
 import { EmptyState } from "../empty-state";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
+import { Field } from "../field";
 import { List, ListItem } from "../list";
 import { Pagination } from "../pagination";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Rating } from "../rating";
 import { SegmentedControl } from "../segmented-control";
+import { Select } from "../select";
 import { Separator } from "../separator";
 import { Sheet } from "../sheet";
 import { Slider } from "../slider";
@@ -734,6 +736,65 @@ describe("a11y contract", () => {
 			const input = screen.getByTestId("k-textarea");
 			expect(input.props.accessibilityState?.disabled).toBe(true);
 			expect(input.props.editable).toBe(false);
+		});
+	});
+
+	describe("Select", () => {
+		it("announces role, label and expanded state on the trigger", async () => {
+			const screen = await render(
+				<Select options={[{ value: "a", label: "Alpha" }]} placeholder="pick" />,
+			);
+			const trigger = screen.getByTestId("k-select");
+			expect(trigger.props.accessibilityRole).toBe("button");
+			expect(trigger.props.accessibilityLabel).toBe("pick");
+			expect(trigger.props.accessibilityState?.expanded).toBe(false);
+			await fireEvent.press(trigger);
+			expect(
+				screen.getByTestId("k-select").props.accessibilityState?.expanded,
+			).toBe(true);
+		});
+
+		it("disabled trigger announces and blocks opening", async () => {
+			const screen = await render(
+				<Select options={[{ value: "a", label: "Alpha" }]} disabled />,
+			);
+			const trigger = screen.getByTestId("k-select");
+			expect(trigger.props.accessibilityState?.disabled).toBe(true);
+			await fireEvent.press(trigger);
+			expect(screen.queryByTestId("k-select-option")).toBeNull();
+		});
+
+		it("option rows announce selected/disabled state", async () => {
+			const screen = await render(
+				<Select
+					options={[
+						{ value: "a", label: "Alpha" },
+						{ value: "z", label: "Zed", disabled: true },
+					]}
+						defaultValue="a"
+					/>,
+			);
+			await fireEvent.press(screen.getByTestId("k-select"));
+			const rows = screen.getAllByTestId("k-select-option");
+			expect(rows[0].props.accessibilityState?.selected).toBe(true);
+			expect(rows[0].props.accessibilityLabel).toBe("Alpha");
+			expect(rows[1].props.accessibilityState?.disabled).toBe(true);
+			});
+	});
+
+	describe("Field", () => {
+		it("merges label + error into the control's accessibilityLabel", async () => {
+			const screen = await render(
+				<Field label="Email" error="invalid">
+					<TextInput />
+				</Field>,
+			);
+			expect(screen.getByTestId("k-text-input").props.accessibilityLabel).toBe(
+				"Email, invalid",
+			);
+			expect(screen.getByTestId("k-field-error").props.accessibilityRole).toBe(
+				"alert",
+			);
 		});
 	});
 });
