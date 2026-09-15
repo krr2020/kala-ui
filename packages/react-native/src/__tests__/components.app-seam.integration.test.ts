@@ -124,6 +124,10 @@ describe("component app seam", () => {
 			"Indicator",
 			"Field",
 			"Select",
+			"AvatarGroup",
+			"RingProgress",
+			"LoadingOverlay",
+			"ErrorBoundary",
 		]) {
 			expect(unionImports.has(name), `playground imports ${name}`).toBe(true);
 			expect(exported.has(name), `entry exports ${name}`).toBe(true);
@@ -147,10 +151,10 @@ describe("component app seam", () => {
 			demoHooks += (readFileSync(file, "utf8").match(/useState[(<]/g) ?? [])
 				.length;
 		}
-		// 18 interactive demos: sheet/dialog/confirm/faq/advanced +
+		// 21 interactive demos: sheet/dialog/confirm/faq/advanced +
 		// toast/banner + agree/sync/plan + range/tab/rating/page/volume +
-		// bold/align/formats + select.
-		expect(demoHooks).toBe(19);
+		// bold/align/formats + select + loading toggle + crash toggle.
+		expect(demoHooks).toBe(21);
 	});
 
 	it("render-surface census matches the pinned marker/label inventory", () => {
@@ -169,6 +173,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="range"': 1,
 					'accessibilityLabel="show toast"': 1,
 					'accessibilityLabel="sun"': 1,
+					'accessibilityLabel="sync"': 1,
 					'accessibilityLabel="volume"': 1,
 					"accessibilityLabel={`activate ${name} theme`}": 1,
 					'testID="k-demo-accordion"': 1,
@@ -189,6 +194,10 @@ describe("component app seam", () => {
 					'testID="k-demo-progress"': 1,
 					'testID="k-demo-radios"': 1,
 					'testID="k-demo-rating"': 1,
+					'testID="k-demo-avatar-group"': 1,
+					'testID="k-demo-ring-progress"': 1,
+					'testID="k-demo-loading-overlay"': 1,
+					'testID="k-demo-error-boundary"': 1,
 					'testID="k-demo-select"': 1,
 					'testID="k-demo-segmented"': 1,
 					'testID="k-demo-skeletons"': 1,

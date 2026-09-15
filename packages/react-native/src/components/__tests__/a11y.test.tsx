@@ -10,20 +10,24 @@ import { Accordion } from "../accordion";
 import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
 import { Avatar } from "../avatar";
+import { AvatarGroup } from "../avatar-group";
 import { Banner } from "../banner";
 import { Button } from "../button";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Dialog } from "../dialog";
 import { EmptyState } from "../empty-state";
+import { ErrorFallback } from "../error-boundary";
+import { Field } from "../field";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
-import { Field } from "../field";
 import { List, ListItem } from "../list";
+import { LoadingOverlay } from "../loading-overlay";
 import { Pagination } from "../pagination";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Rating } from "../rating";
+import { RingProgress } from "../ring-progress";
 import { SegmentedControl } from "../segmented-control";
 import { Select } from "../select";
 import { Separator } from "../separator";
@@ -685,12 +689,8 @@ describe("a11y contract", () => {
 		});
 
 		it("exposes the close control as a labelled button", async () => {
-			const screen = await render(
-				<Banner onClose={() => undefined}>m</Banner>,
-			);
-			expect(
-				screen.getByRole("button", { name: "Close banner" }),
-			).toBeTruthy();
+			const screen = await render(<Banner onClose={() => undefined}>m</Banner>);
+			expect(screen.getByRole("button", { name: "Close banner" })).toBeTruthy();
 		});
 	});
 
@@ -701,9 +701,7 @@ describe("a11y contract", () => {
 					row
 				</ListItem>,
 			);
-			expect(
-				screen.getByRole("button", { name: "row" }),
-			).toBeTruthy();
+			expect(screen.getByRole("button", { name: "row" })).toBeTruthy();
 
 			const off = await render(
 				<ListItem interactive disabled onPress={() => undefined}>
@@ -721,9 +719,7 @@ describe("a11y contract", () => {
 					<ListItem href="https://example.com">docs</ListItem>
 				</List>,
 			);
-			expect(
-				screen.getByTestId("k-list").props.accessibilityRole,
-			).toBe("list");
+			expect(screen.getByTestId("k-list").props.accessibilityRole).toBe("list");
 			expect(screen.getByRole("link", { name: "docs" })).toBeTruthy();
 		});
 	});
@@ -742,7 +738,10 @@ describe("a11y contract", () => {
 	describe("Select", () => {
 		it("announces role, label and expanded state on the trigger", async () => {
 			const screen = await render(
-				<Select options={[{ value: "a", label: "Alpha" }]} placeholder="pick" />,
+				<Select
+					options={[{ value: "a", label: "Alpha" }]}
+					placeholder="pick"
+				/>,
 			);
 			const trigger = screen.getByTestId("k-select");
 			expect(trigger.props.accessibilityRole).toBe("button");
@@ -771,15 +770,63 @@ describe("a11y contract", () => {
 						{ value: "a", label: "Alpha" },
 						{ value: "z", label: "Zed", disabled: true },
 					]}
-						defaultValue="a"
-					/>,
+					defaultValue="a"
+				/>,
 			);
 			await fireEvent.press(screen.getByTestId("k-select"));
 			const rows = screen.getAllByTestId("k-select-option");
 			expect(rows[0].props.accessibilityState?.selected).toBe(true);
 			expect(rows[0].props.accessibilityLabel).toBe("Alpha");
 			expect(rows[1].props.accessibilityState?.disabled).toBe(true);
+		});
+	});
+
+	describe("AvatarGroup", () => {
+		it("container label summarizes the member names", async () => {
+			const screen = await render(
+				<AvatarGroup
+					avatars={[{ name: "Ada Lovelace" }, { name: "Grace Hopper" }]}
+				/>,
+			);
+			expect(
+				screen.getByTestId("k-avatar-group").props.accessibilityLabel,
+			).toBe("Ada Lovelace, Grace Hopper");
+		});
+	});
+
+	describe("RingProgress", () => {
+		it("announces progressbar role with min/max/now", async () => {
+			const screen = await render(
+				<RingProgress value={30} accessibilityLabel="upload" />,
+			);
+			const ring = screen.getByTestId("k-ring-progress");
+			expect(ring.props.accessibilityRole).toBe("progressbar");
+			expect(ring.props.accessibilityValue).toEqual({
+				min: 0,
+				max: 100,
+				now: 30,
 			});
+		});
+	});
+
+	describe("LoadingOverlay", () => {
+		it("announces itself while visible and stays absent when hidden", async () => {
+			const shown = await render(<LoadingOverlay visible />);
+			expect(
+				shown.getByTestId("k-loading-overlay").props.accessibilityLabel,
+			).toBe("Loading");
+			const hidden = await render(<LoadingOverlay visible={false} />);
+			expect(hidden.queryByTestId("k-loading-overlay")).toBeNull();
+		});
+	});
+
+	describe("ErrorFallback", () => {
+		it("announces as an alert", async () => {
+			const screen = await render(<ErrorFallback />);
+			expect(
+				screen.getByTestId("k-error-fallback").props.accessibilityRole,
+			).toBe("alert");
+		});
 	});
 
 	describe("Field", () => {

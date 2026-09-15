@@ -11,6 +11,7 @@ import { Accordion } from "../accordion";
 import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
 import { Avatar } from "../avatar";
+import { AvatarGroup } from "../avatar-group";
 import { Badge } from "../badge";
 import { Banner } from "../banner";
 import { Button } from "../button";
@@ -19,16 +20,19 @@ import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Dialog } from "../dialog";
 import { EmptyState } from "../empty-state";
+import { ErrorFallback } from "../error-boundary";
 import { Field } from "../field";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
 import { Indicator } from "../indicator";
 import { Label } from "../label";
 import { List } from "../list";
+import { LoadingOverlay } from "../loading-overlay";
 import { Pagination } from "../pagination";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Rating } from "../rating";
+import { RingProgress } from "../ring-progress";
 import { SegmentedControl } from "../segmented-control";
 import { Select } from "../select";
 import { Separator } from "../separator";
@@ -123,6 +127,17 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				),
 		},
 		{
+			name: "AvatarGroup",
+			marker: "k-avatar-group",
+			render: () =>
+				render(
+					<AvatarGroup
+						avatars={[{ name: "Ada" }]}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
+				),
+		},
+		{
 			name: "Avatar",
 			marker: "k-avatar",
 			render: () =>
@@ -201,6 +216,12 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				),
 		},
 		{
+			name: "ErrorFallback",
+			marker: "k-error-fallback",
+			render: () =>
+				render(<ErrorFallback styles={{ root: { borderWidth: 7 } }} />),
+		},
+		{
 			name: "Field",
 			marker: "k-field",
 			render: () =>
@@ -236,6 +257,14 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(<Label styles={{ root: { fontSize: 33 } }}>l</Label>),
 		},
 		{
+			name: "LoadingOverlay",
+			marker: "k-loading-overlay",
+			render: () =>
+				render(
+					<LoadingOverlay visible styles={{ root: { borderWidth: 7 } }} />,
+				),
+		},
+		{
 			name: "Pagination",
 			marker: "k-pagination",
 			render: () =>
@@ -262,6 +291,14 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			name: "Rating",
 			marker: "k-rating",
 			render: () => render(<Rating styles={{ root: { borderWidth: 7 } }} />),
+		},
+		{
+			name: "RingProgress",
+			marker: "k-ring-progress",
+			render: () =>
+				render(
+					<RingProgress value={10} styles={{ root: { borderWidth: 7 } }} />,
+				),
 		},
 		{
 			name: "SegmentedControl",
@@ -423,7 +460,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 	}
 
 	it("the sweep covers all 36 components", () => {
-		expect(fixtures.length).toBe(38);
+		expect(fixtures.length).toBe(42);
 	});
 });
 

@@ -2,7 +2,9 @@ import {
 	Alert,
 	Banner,
 	Button,
+	ErrorBoundary,
 	Field,
+	LoadingOverlay,
 	Select,
 	Textarea,
 	Toast,
@@ -11,10 +13,16 @@ import { useState } from "react";
 import { Text, View } from "react-native";
 import { demoStyles } from "./stylesheet";
 
+function ThrowOnce(): never {
+	throw new Error("demo crash");
+}
+
 export function FeedbackDemo() {
 	const [toastOpen, setToastOpen] = useState(false);
 	const [bannerOn, setBannerOn] = useState(true);
 	const [fruit, setFruit] = useState<string | undefined>(undefined);
+	const [loading, setLoading] = useState(false);
+	const [crashKey, setCrashKey] = useState(0);
 	return (
 		<>
 			<Alert color="success" dismissable onDismiss={() => setToastOpen(true)}>
@@ -64,6 +72,22 @@ export function FeedbackDemo() {
 					/>
 				</Field>
 				<Text>chosen: {fruit ?? "none"}</Text>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-loading-overlay">
+				<Button size="sm" onPress={() => setLoading(true)}>
+					simulate fetch
+				</Button>
+				<LoadingOverlay visible={loading}>
+					<Text onPress={() => setLoading(false)}>cancel</Text>
+				</LoadingOverlay>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-error-boundary">
+				<ErrorBoundary resetKeys={[crashKey]}>
+					{crashKey % 2 === 1 ? <ThrowOnce /> : <Text>boundary healthy</Text>}
+				</ErrorBoundary>
+				<Button size="sm" onPress={() => setCrashKey((k) => k + 1)}>
+					toggle crash
+				</Button>
 			</View>
 		</>
 	);

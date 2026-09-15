@@ -1,5 +1,6 @@
 import {
 	Avatar,
+	AvatarGroup,
 	Badge,
 	Button,
 	Card,
@@ -16,6 +17,7 @@ import {
 	ListItemTitle,
 	Progress,
 	RadioGroup,
+	RingProgress,
 	Separator,
 	Skeleton,
 	Spinner,
@@ -147,7 +149,7 @@ export function BasicsDemo() {
 				<Skeleton variant="circle" style={{ width: 32, height: 32 }} />
 				<Skeleton style={{ width: 64, height: 12 }} variant="rect" />
 			</View>
-			<View testID="k-demo-radios">
+			<View style={demoStyles.componentRow} testID="k-demo-radios">
 				<RadioGroup
 					value={plan}
 					onValueChange={setPlan}
@@ -164,6 +166,34 @@ export function BasicsDemo() {
 						description="unlimited projects"
 					/>
 				</RadioGroup>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-avatar-group">
+				<AvatarGroup
+					avatars={[
+						{ name: "Ada Lovelace" },
+						{ name: "Grace Hopper" },
+						{ name: "Alan Turing" },
+						{ name: "Katherine Johnson" },
+						{ name: "Margaret Hamilton" },
+					]}
+					max={3}
+				/>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-ring-progress">
+				<RingProgress
+					value={72}
+					size={64}
+					thickness={8}
+					accessibilityLabel="sync"
+				/>
+				<RingProgress
+					size={64}
+					thickness={8}
+					sections={[
+						{ value: 30, color: "success" },
+						{ value: 20, color: "warning" },
+					]}
+				/>
 			</View>
 		</>
 	);

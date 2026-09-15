@@ -25,6 +25,11 @@ export type {
 } from "./components/avatar";
 export { Avatar } from "./components/avatar";
 export type {
+	AvatarGroupProps,
+	AvatarItem,
+} from "./components/avatar-group";
+export { AvatarGroup } from "./components/avatar-group";
+export type {
 	BadgeColor,
 	BadgeProps,
 	BadgeShape,
@@ -58,6 +63,12 @@ export type {
 	EmptyStateProps,
 } from "./components/empty-state";
 export { EmptyState } from "./components/empty-state";
+export type {
+	ErrorBoundaryProps,
+	ErrorFallbackProps,
+	ErrorFallbackVariant,
+} from "./components/error-boundary";
+export { ErrorBoundary, ErrorFallback } from "./components/error-boundary";
 export type { FieldProps } from "./components/field";
 export { Field } from "./components/field";
 export type {
@@ -102,6 +113,8 @@ export {
 	ListItemText,
 	ListItemTitle,
 } from "./components/list";
+export type { LoadingOverlayProps } from "./components/loading-overlay";
+export { LoadingOverlay } from "./components/loading-overlay";
 export type {
 	PaginationProps,
 	PaginationSize,
@@ -120,6 +133,12 @@ export type {
 export { RadioGroup } from "./components/radio-group";
 export type { RatingProps, RatingSize } from "./components/rating";
 export { Rating } from "./components/rating";
+export type {
+	RingProgressProps,
+	RingProgressSection,
+	RingTone,
+} from "./components/ring-progress";
+export { RingProgress } from "./components/ring-progress";
 export type {
 	SegmentedControlData,
 	SegmentedControlItem,

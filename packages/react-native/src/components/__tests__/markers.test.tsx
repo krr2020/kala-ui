@@ -11,6 +11,7 @@ import { Accordion } from "../accordion";
 import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
 import { Avatar, STATUS_ONLINE_HUE } from "../avatar";
+import { AvatarGroup } from "../avatar-group";
 import { Badge } from "../badge";
 import { Banner } from "../banner";
 import { BUTTON_SPRING, Button } from "../button";
@@ -19,6 +20,7 @@ import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Dialog } from "../dialog";
 import { EmptyState } from "../empty-state";
+import { ErrorBoundary } from "../error-boundary";
 import { Field } from "../field";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
@@ -35,10 +37,12 @@ import {
 	ListItemText,
 	ListItemTitle,
 } from "../list";
+import { LoadingOverlay } from "../loading-overlay";
 import { Pagination } from "../pagination";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Rating } from "../rating";
+import { RingProgress } from "../ring-progress";
 import { SegmentedControl } from "../segmented-control";
 import { Select } from "../select";
 import { Separator } from "../separator";
@@ -2269,6 +2273,52 @@ describe("component markers", () => {
 			expect(grouped.getByTestId("k-text-input-section-left")).toBeTruthy();
 			expect(grouped.getByTestId("k-text-input-section-right")).toBeTruthy();
 			expect(grouped.getByTestId("k-text-input")).toBeTruthy();
+		});
+	});
+
+	describe("AvatarGroup, RingProgress, LoadingOverlay, ErrorBoundary", () => {
+		it("AvatarGroup renders container, member and overflow markers", async () => {
+			const screen = await render(
+				<AvatarGroup
+					avatars={[
+						{ name: "Ada Lovelace" },
+						{ name: "Grace Hopper" },
+						{ name: "Alan Turing" },
+					]}
+					max={2}
+				/>,
+			);
+			expect(screen.getByTestId("k-avatar-group")).toBeTruthy();
+			expect(screen.getAllByTestId("k-avatar")).toHaveLength(2);
+			expect(screen.getByTestId("k-avatar-group-overflow")).toBeTruthy();
+		});
+
+		it("RingProgress renders root and label markers", async () => {
+			const screen = await render(<RingProgress value={40} label="40%" />);
+			expect(screen.getByTestId("k-ring-progress")).toBeTruthy();
+			expect(screen.getByTestId("k-ring-progress-label")).toBeTruthy();
+		});
+
+		it("LoadingOverlay renders only while visible", async () => {
+			const hidden = await render(<LoadingOverlay visible={false} />);
+			expect(hidden.queryByTestId("k-loading-overlay")).toBeNull();
+			const shown = await render(<LoadingOverlay visible />);
+			expect(shown.getByTestId("k-loading-overlay")).toBeTruthy();
+		});
+
+		it("ErrorBoundary renders the fallback markers on crash", async () => {
+			const Boom = (): never => {
+				throw new Error("markers");
+			};
+			const screen = await render(
+				<ErrorBoundary>
+					<Boom />
+				</ErrorBoundary>,
+			);
+			expect(screen.getByTestId("k-error-fallback")).toBeTruthy();
+			expect(screen.getByTestId("k-error-fallback-title")).toBeTruthy();
+			expect(screen.getByTestId("k-error-fallback-description")).toBeTruthy();
+			expect(screen.getByTestId("k-error-fallback-reset")).toBeTruthy();
 		});
 	});
 
