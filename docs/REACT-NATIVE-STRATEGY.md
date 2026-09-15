@@ -204,6 +204,8 @@ One-time per app:
 
 ## Rollout
 
+Original plan:
+
 1. Scaffold `packages/react-native` with the token port (incl. motion
    tokens) and Unistyles wiring; no components yet.
 2. Seed `Icon`, `Button`, `Sheet` + the Jest/markers test harness.
@@ -212,6 +214,68 @@ One-time per app:
    rest; harvest the pilot's slot-style usage as new variants.
 5. Introduce `@kala-ui/react-native-app` composites once primitives
    stabilize across at least two apps.
+
+### Progress
+
+Steps 1–3 are complete. 36 components are live in
+`packages/react-native/src/components/`, each with the folder convention
+(`{name}.tsx` + `{name}.types.ts` + `index.ts`), `k-*` testID markers,
+a11y assertions, slot-styles coverage, and a playground demo:
+
+| Wave | Components | Commit |
+|------|------------|--------|
+| Scaffold | token port, Unistyles themes, Jest/markers harness | `42c61ba` |
+| 1 | Icon, Button, Sheet | `2423069` |
+| 2 | Text, Heading, TextInput, Card | `dba25eb` |
+| 3 | Badge, Avatar, Checkbox, Switch | `30d84e7` |
+| 4 | Label, Separator, Spinner, Progress | `c11a367` |
+| 5 | Skeleton, RadioGroup, Alert, Toast | `c6108ed` |
+| 6 | EmptyState, Tabs, Tag, SegmentedControl | `6ec37e1` |
+| 7 | Rating, Pagination | `e422add` |
+| 8 | Slider | `808550e` |
+| 9 | Dialog, AlertDialog | `e1766b5` |
+| 10 | Toggle, ToggleGroup, Indicator | `7273ae1` |
+| 11 | Accordion, Collapsible | `b86f103` |
+| 12 | Textarea, Banner | `a6a55e5` |
+| 13 | List family (List, ListItem + Icon/Avatar/Content/Title/Text/Action/Badge slots, 5 skeleton variants) | `7d7c036` |
+
+Also landed: the tier-3 slot-styles customization contract
+(`15e9ffb`..`bf901ce`), mobile-hardened Dialog/AlertDialog (`0bfc7b0`),
+and the playground App split into `demos/{tokens,basics,feedback,
+navigation,overlays}-demo.tsx` modules (`284d867`, `caf9a0c`) with an
+app-seam integration test pinning the render surface.
+
+Validation state at Wave 13: 270 scoped Jest tests green, both Vitest
+suites green, `tsc --noEmit` clean, Biome clean.
+
+### Pending
+
+Remaining web components, triaged by mobile value:
+
+| Wave | Components | Rationale |
+|------|------------|-----------|
+| 14 | Select, Field, NumberInput, InputGroup | forms completion; Select maps to a bottom-sheet picker, Field is the composable row primitive every later form control needs |
+| 15 | AvatarGroup, RingProgress, CopyButton, LoadingOverlay, ErrorBoundary | small (≤102 lines each), high-frequency |
+| 16 | InputOtp, PasswordStrengthIndicator, Steps | SMS-code auth + onboarding |
+| 17 | DropdownMenu (ActionSheet pattern), ContextMenu, Toolbar | overflow/long-press actions |
+| 18 | Timeline, TagInput, Table, Breadcrumbs | data display |
+| 19 | DatePicker, Calendar, TimePicker, MultiSelect, Combobox | large; consider community libs |
+
+Deliberately **not ported**:
+
+- Layout primitives (`Box`, `Stack`, `Group`, `Center`, `Flex`, `Grid`,
+  `Container`) — RN's first-class flexbox style props make them pure
+  indirection.
+- Web-modality-only surfaces (`HoverCard`, `Command`, `Kbd`, `Menubar`,
+  `NavigationMenu`, `TreeView`, `Resizable`, `ScrollArea`,
+  `SkipToContent`, `ColorInput`, `Overlay`, `ThemeProvider`, `Code`,
+  `Burger`) — hover/keyboard/resize concepts with no native equivalent,
+  or covered by RN primitives / Unistyles theming.
+- Covered under other names: `input` → `TextInput`, `collapse` →
+  `Collapsible`, `paper` → `Card`.
+
+Next up after the component waves: rollout step 4 (pilot in one app)
+and step 5 (`@kala-ui/react-native-app` composites).
 
 ## Open questions
 
