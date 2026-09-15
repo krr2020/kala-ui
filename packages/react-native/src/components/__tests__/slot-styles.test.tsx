@@ -18,7 +18,9 @@ import { Button } from "../button";
 import { Card } from "../card";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
+import { ContextMenu } from "../context-menu";
 import { Dialog } from "../dialog";
+import { DropdownMenu } from "../dropdown-menu";
 import { EmptyState } from "../empty-state";
 import { ErrorFallback } from "../error-boundary";
 import { Field } from "../field";
@@ -53,6 +55,7 @@ import { Textarea } from "../textarea";
 import { Toast } from "../toast";
 import { Toggle } from "../toggle";
 import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
+import { Toolbar } from "../toolbar";
 
 const incl = { includeHiddenElements: true } as const;
 
@@ -195,6 +198,19 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				),
 		},
 		{
+			name: "ContextMenu",
+			marker: "k-context-menu",
+			render: () =>
+				render(
+					<ContextMenu
+						items={[{ key: "copy", label: "Copy" }]}
+						styles={{ root: { borderWidth: 7 } }}
+					>
+						<Text>x</Text>
+					</ContextMenu>,
+				),
+		},
+		{
 			name: "Dialog",
 			marker: "k-dialog",
 			render: () =>
@@ -202,6 +218,18 @@ describe("root slot sweep — every component accepts styles.root", () => {
 					<Dialog
 						open
 						onOpenChange={() => undefined}
+						styles={{ root: { borderWidth: 7 } }}
+					/>,
+				),
+		},
+		{
+			name: "DropdownMenu",
+			marker: "k-dropdown-menu",
+			render: () =>
+				render(
+					<DropdownMenu
+						items={[{ key: "edit", label: "Edit" }]}
+						triggerLabel="a"
 						styles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
@@ -478,6 +506,12 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				),
 		},
 		{
+			name: "Toolbar",
+			marker: "k-toolbar",
+			render: () =>
+				render(<Toolbar styles={{ root: { borderWidth: 7 } }}>{null}</Toolbar>),
+		},
+		{
 			name: "List",
 			marker: "k-list",
 			render: () => render(<List styles={{ root: { borderWidth: 7 } }} />),
@@ -497,8 +531,8 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		});
 	}
 
-	it("the sweep covers all 45 components", () => {
-		expect(fixtures.length).toBe(45);
+	it("the sweep covers all 48 components", () => {
+		expect(fixtures.length).toBe(48);
 	});
 });
 

@@ -55,8 +55,20 @@ export type {
 	CollapsibleTriggerProps,
 } from "./components/collapsible";
 export { Collapsible } from "./components/collapsible";
+export type { ContextMenuProps } from "./components/context-menu";
+export { ContextMenu } from "./components/context-menu";
 export type { DialogProps } from "./components/dialog";
 export { Dialog } from "./components/dialog";
+export type {
+	DropdownMenuActionItem,
+	DropdownMenuCheckboxItem,
+	DropdownMenuItem,
+	DropdownMenuLabelItem,
+	DropdownMenuProps,
+	DropdownMenuRadioItem,
+	DropdownMenuSeparatorItem,
+} from "./components/dropdown-menu";
+export { DropdownMenu } from "./components/dropdown-menu";
 export type {
 	EmptyStateAction,
 	EmptyStateIcon,
@@ -232,6 +244,22 @@ export type {
 	ToggleGroupType,
 } from "./components/toggle-group";
 export { ToggleGroup, ToggleGroupItem } from "./components/toggle-group";
+export type {
+	ToolbarButtonProps,
+	ToolbarLinkProps,
+	ToolbarProps,
+	ToolbarSeparatorProps,
+	ToolbarToggleGroupProps,
+	ToolbarToggleItemProps,
+} from "./components/toolbar";
+export {
+	Toolbar,
+	ToolbarButton,
+	ToolbarLink,
+	ToolbarSeparator,
+	ToolbarToggleGroup,
+	ToolbarToggleItem,
+} from "./components/toolbar";
 export { themeNames, themes } from "./themes";
 export { motion, tokens } from "./tokens";
 export type { KalaTheme, ThemeName } from "./types";

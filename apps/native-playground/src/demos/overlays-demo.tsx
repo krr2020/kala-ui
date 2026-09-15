@@ -3,7 +3,9 @@ import {
 	AlertDialog,
 	Button,
 	Collapsible,
+	ContextMenu,
 	Dialog,
+	DropdownMenu,
 	Icon,
 	Text as KText,
 	Sheet,
@@ -19,6 +21,8 @@ export function OverlaysDemo() {
 	const [confirmOpen, setConfirmOpen] = useState(false);
 	const [faqOpen, setFaqOpen] = useState<string[]>(["shipping"]);
 	const [showAdvanced, setShowAdvanced] = useState(false);
+	const [autoSync, setAutoSync] = useState(true);
+	const [lastAction, setLastAction] = useState("none");
 	return (
 		<>
 			<View testID="k-demo-accordion">
@@ -78,6 +82,44 @@ export function OverlaysDemo() {
 					<Icon icon={Check} size="xs" color="primaryForeground" />
 					open sheet
 				</Button>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-dropdown-menu">
+				<DropdownMenu
+					triggerLabel="actions"
+					items={[
+						{ type: "label", key: "l", label: "Row actions" },
+						{
+							type: "checkbox",
+							key: "sync",
+							label: "Auto-sync",
+							checked: autoSync,
+							onCheckedChange: setAutoSync,
+						},
+						{ key: "archive", label: "Archive" },
+						{ key: "delete", label: "Delete", destructive: true },
+					]}
+				/>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-context-menu">
+				<ContextMenu
+					items={[
+						{
+							key: "copy",
+							label: "Copy",
+							onSelect: () => setLastAction("copy"),
+						},
+						{
+							key: "remove",
+							label: "Remove",
+							destructive: true,
+							onSelect: () => setLastAction("remove"),
+						},
+					]}
+				>
+					<KText size="sm" color="muted">
+						long-press me — last action: {lastAction}
+					</KText>
+				</ContextMenu>
 			</View>
 			<Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}>
 				<Sheet.Body>

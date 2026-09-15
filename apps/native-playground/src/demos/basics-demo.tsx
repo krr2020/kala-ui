@@ -24,6 +24,11 @@ import {
 	Steps,
 	Switch,
 	TextInput,
+	Toolbar,
+	ToolbarButton,
+	ToolbarSeparator,
+	ToolbarToggleGroup,
+	ToolbarToggleItem,
 } from "@kala-ui/react-native";
 import { Sun } from "lucide-react-native";
 import { useState } from "react";
@@ -34,6 +39,7 @@ export function BasicsDemo() {
 	const [agree, setAgree] = useState(false);
 	const [sync, setSync] = useState(true);
 	const [plan, setPlan] = useState("pro");
+	const [align, setAlign] = useState("left");
 	return (
 		<>
 			<View style={demoStyles.componentRow} testID="k-demo-buttons">
@@ -206,6 +212,29 @@ export function BasicsDemo() {
 					defaultValue={2}
 					onStepChange={() => undefined}
 				/>
+			</View>
+			<View style={demoStyles.componentRow} testID="k-demo-toolbar">
+				<Toolbar>
+					<ToolbarButton size="sm" variant="ghost">
+						bold
+					</ToolbarButton>
+					<ToolbarButton size="sm" variant="ghost">
+						italic
+					</ToolbarButton>
+					<ToolbarSeparator />
+					<ToolbarToggleGroup
+						type="single"
+						value={align}
+						onValueChange={(next) => setAlign(String(next))}
+					>
+						<ToolbarToggleItem value="left" size="sm">
+							left
+						</ToolbarToggleItem>
+						<ToolbarToggleItem value="center" size="sm">
+							center
+						</ToolbarToggleItem>
+					</ToolbarToggleGroup>
+				</Toolbar>
 			</View>
 		</>
 	);

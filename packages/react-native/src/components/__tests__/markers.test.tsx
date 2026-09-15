@@ -18,7 +18,9 @@ import { BUTTON_SPRING, Button } from "../button";
 import { Card } from "../card";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
+import { ContextMenu } from "../context-menu";
 import { Dialog } from "../dialog";
+import { DropdownMenu } from "../dropdown-menu";
 import { EmptyState } from "../empty-state";
 import { ErrorBoundary } from "../error-boundary";
 import { Field } from "../field";
@@ -62,6 +64,14 @@ import { Textarea } from "../textarea";
 import { Toast } from "../toast";
 import { Toggle } from "../toggle";
 import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
+import {
+	Toolbar,
+	ToolbarButton,
+	ToolbarLink,
+	ToolbarSeparator,
+	ToolbarToggleGroup,
+	ToolbarToggleItem,
+} from "../toolbar";
 
 const pkg = require("../../../package.json");
 
@@ -2360,6 +2370,73 @@ describe("component markers", () => {
 			expect(screen.getAllByTestId("k-step")).toHaveLength(2);
 			expect(screen.getByTestId("k-step-indicator-1")).toBeTruthy();
 			expect(screen.getAllByTestId("k-step-line")).toHaveLength(1);
+		});
+	});
+
+	describe("DropdownMenu, ContextMenu, Toolbar", () => {
+		it("DropdownMenu exposes trigger and sheet row markers", async () => {
+			const screen = await render(
+				<DropdownMenu
+					items={[
+						{ type: "label", key: "l", label: "Actions" },
+						{ key: "edit", label: "Edit" },
+						{
+							type: "checkbox",
+							key: "sync",
+							label: "Sync",
+							checked: true,
+							onCheckedChange: () => undefined,
+						},
+						{
+							type: "radio",
+							key: "light",
+							label: "Light",
+							checked: false,
+							onCheckedChange: () => undefined,
+						},
+						{ type: "separator", key: "s" },
+					]}
+					triggerLabel="actions"
+				/>,
+			);
+			await fireEvent.press(screen.getByTestId("k-dropdown-menu"));
+			expect(screen.getByTestId("k-dropdown-menu-content")).toBeTruthy();
+			expect(screen.getByTestId("k-dropdown-menu-label")).toBeTruthy();
+			expect(screen.getByTestId("k-dropdown-menu-item")).toBeTruthy();
+			expect(screen.getByTestId("k-dropdown-menu-checkbox-item")).toBeTruthy();
+			expect(screen.getByTestId("k-dropdown-menu-radio-item")).toBeTruthy();
+			expect(screen.getByTestId("k-dropdown-menu-separator")).toBeTruthy();
+		});
+
+		it("ContextMenu exposes wrapper and long-press row markers", async () => {
+			const screen = await render(
+				<ContextMenu items={[{ key: "copy", label: "Copy" }]}>
+					<Text>invoice.pdf</Text>
+				</ContextMenu>,
+			);
+			expect(screen.getByTestId("k-context-menu")).toBeTruthy();
+			await fireEvent(screen.getByTestId("k-context-menu"), "longPress");
+			expect(screen.getByTestId("k-context-menu-content")).toBeTruthy();
+			expect(screen.getByTestId("k-context-menu-item")).toBeTruthy();
+		});
+
+		it("Toolbar exposes row and child markers", async () => {
+			const screen = await render(
+				<Toolbar>
+					<ToolbarButton onPress={() => undefined}>bold</ToolbarButton>
+					<ToolbarSeparator />
+					<ToolbarLink onPress={() => undefined}>docs</ToolbarLink>
+					<ToolbarToggleGroup type="single">
+						<ToolbarToggleItem value="left">left</ToolbarToggleItem>
+					</ToolbarToggleGroup>
+				</Toolbar>,
+			);
+			expect(screen.getByTestId("k-toolbar")).toBeTruthy();
+			expect(screen.getByTestId("k-toolbar-button")).toBeTruthy();
+			expect(screen.getByTestId("k-toolbar-separator")).toBeTruthy();
+			expect(screen.getByTestId("k-toolbar-link")).toBeTruthy();
+			expect(screen.getByTestId("k-toolbar-toggle-group")).toBeTruthy();
+			expect(screen.getByTestId("k-toolbar-toggle-item")).toBeTruthy();
 		});
 	});
 

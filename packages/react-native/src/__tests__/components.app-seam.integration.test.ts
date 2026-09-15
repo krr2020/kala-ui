@@ -121,6 +121,9 @@ describe("component app seam", () => {
 			"AlertDialog",
 			"Toggle",
 			"ToggleGroup",
+			"DropdownMenu",
+			"ContextMenu",
+			"Toolbar",
 			"Indicator",
 			"Field",
 			"Select",
@@ -151,11 +154,11 @@ describe("component app seam", () => {
 			demoHooks += (readFileSync(file, "utf8").match(/useState[(<]/g) ?? [])
 				.length;
 		}
-		// 22 interactive demos: sheet/dialog/confirm/faq/advanced +
+		// 25 interactive demos: sheet/dialog/confirm/faq/advanced +
 		// toast/banner + agree/sync/plan + range/tab/rating/page/volume +
 		// bold/align/formats + select + loading toggle + crash toggle +
-		// otp code entry.
-		expect(demoHooks).toBe(22);
+		// otp code entry + menu auto-sync/last-action + toolbar align.
+		expect(demoHooks).toBe(25);
 	});
 
 	it("render-surface census matches the pinned marker/label inventory", () => {
@@ -203,6 +206,9 @@ describe("component app seam", () => {
 					'testID="k-demo-password-strength"': 1,
 					'testID="k-demo-steps"': 1,
 					'testID="k-demo-select"': 1,
+					'testID="k-demo-dropdown-menu"': 1,
+					'testID="k-demo-context-menu"': 1,
+					'testID="k-demo-toolbar"': 1,
 					'testID="k-demo-segmented"': 1,
 					'testID="k-demo-skeletons"': 1,
 					'testID="k-demo-slider"': 1,

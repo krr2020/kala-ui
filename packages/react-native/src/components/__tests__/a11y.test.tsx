@@ -15,7 +15,9 @@ import { Banner } from "../banner";
 import { Button } from "../button";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
+import { ContextMenu } from "../context-menu";
 import { Dialog } from "../dialog";
+import { DropdownMenu } from "../dropdown-menu";
 import { EmptyState } from "../empty-state";
 import { ErrorFallback } from "../error-boundary";
 import { Field } from "../field";
@@ -44,6 +46,13 @@ import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Textarea } from "../textarea";
 import { Toast } from "../toast";
+import {
+	Toolbar,
+	ToolbarButton,
+	ToolbarLink,
+	ToolbarToggleGroup,
+	ToolbarToggleItem,
+} from "../toolbar";
 
 // TLB v14 queries are a11y-aware: deliberately-hidden elements (Icon without
 // a label) and siblings of an accessibilityViewIsModal container (the Sheet
@@ -900,6 +909,85 @@ describe("a11y contract", () => {
 			expect(
 				screen.getByLabelText("Step 2 of 2: Profile (current step)"),
 			).toBeTruthy();
+		});
+	});
+
+	describe("DropdownMenu, ContextMenu, Toolbar", () => {
+		it("menu triggers announce role, label and expanded state", async () => {
+			const screen = await render(
+				<DropdownMenu
+					items={[{ key: "edit", label: "Edit" }]}
+					triggerLabel="actions"
+				/>,
+			);
+			const trigger = screen.getByTestId("k-dropdown-menu");
+			expect(trigger.props.accessibilityRole).toBe("button");
+			expect(trigger.props.accessibilityLabel).toBe("actions");
+			expect(trigger.props.accessibilityState?.expanded).toBe(false);
+			await fireEvent.press(trigger);
+			expect(
+				screen.getByTestId("k-dropdown-menu").props.accessibilityState
+					?.expanded,
+			).toBe(true);
+		});
+
+		it("menu rows announce labels and disabled/checked state", async () => {
+			const screen = await render(
+				<DropdownMenu
+					items={[
+						{ key: "edit", label: "Edit" },
+						{ key: "lock", label: "Lock", disabled: true },
+						{
+							type: "checkbox",
+							key: "sync",
+							label: "Sync",
+							checked: true,
+							onCheckedChange: () => undefined,
+						},
+					]}
+					triggerLabel="actions"
+				/>,
+			);
+			await fireEvent.press(screen.getByTestId("k-dropdown-menu"));
+			expect(screen.getByLabelText("Edit")).toBeTruthy();
+			expect(
+				screen.getByLabelText("Lock").props.accessibilityState?.disabled,
+			).toBe(true);
+			expect(
+				screen.getByLabelText("Sync").props.accessibilityState?.checked,
+			).toBe(true);
+		});
+
+		it("ContextMenu long-press surfaces announce labels", async () => {
+			const screen = await render(
+				<ContextMenu items={[{ key: "copy", label: "Copy" }]}>
+					<Text>invoice.pdf</Text>
+				</ContextMenu>,
+			);
+			await fireEvent(screen.getByTestId("k-context-menu"), "longPress");
+			expect(screen.getByLabelText("Copy")).toBeTruthy();
+		});
+
+		it("Toolbar announces toolbar role and child labels", async () => {
+			const screen = await render(
+				<Toolbar accessibilityLabel="format">
+					<ToolbarButton accessibilityLabel="bold">B</ToolbarButton>
+					<ToolbarLink accessibilityLabel="docs" onPress={() => undefined}>
+						docs
+					</ToolbarLink>
+					<ToolbarToggleGroup type="single" accessibilityLabel="align">
+						<ToolbarToggleItem value="left" accessibilityLabel="align left">
+							left
+						</ToolbarToggleItem>
+					</ToolbarToggleGroup>
+				</Toolbar>,
+			);
+			const bar = screen.getByTestId("k-toolbar");
+			expect(bar.props.accessibilityRole).toBe("toolbar");
+			expect(bar.props.accessibilityLabel).toBe("format");
+			expect(screen.getByLabelText("bold")).toBeTruthy();
+			expect(screen.getByLabelText("docs")).toBeTruthy();
+			expect(screen.getByLabelText("align left")).toBeTruthy();
 		});
 	});
 });
