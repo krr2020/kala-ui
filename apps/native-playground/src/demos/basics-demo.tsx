@@ -35,7 +35,6 @@ export function BasicsDemo() {
 	const [agree, setAgree] = useState(false);
 	const [sync, setSync] = useState(true);
 	const [plan, setPlan] = useState("pro");
-	const [align, setAlign] = useState("left");
 	return (
 		<>
 			<View style={demoStyles.componentRow} testID="k-demo-buttons">
