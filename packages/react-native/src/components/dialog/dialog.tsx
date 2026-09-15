@@ -20,6 +20,7 @@ import {
 } from "react-native";
 import { X } from "lucide-react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import { tokens } from "../../tokens";
 import type {
 	DialogPartProps,
@@ -44,6 +45,7 @@ export function Dialog({
 	showCloseButton = true,
 	size = "md",
 	accessibilityLabel,
+	styles,
 	testID = "k-dialog",
 	children,
 }: DialogProps): ReactElement | null {
@@ -104,14 +106,17 @@ export function Dialog({
 				accessibilityRole="button"
 				accessibilityLabel="Close dialog"
 				onPress={dismissable ? close : undefined}
-				style={{
-					position: "absolute",
-					top: 0,
-					right: 0,
-					bottom: 0,
-					left: 0,
-					backgroundColor: "rgba(0,0,0,0.5)",
-				}}
+				style={applySlot(
+					{
+						position: "absolute",
+						top: 0,
+						right: 0,
+						bottom: 0,
+						left: 0,
+						backgroundColor: "rgba(0,0,0,0.5)",
+					},
+					styles?.overlay,
+				)}
 			/>
 			{/* box-none: the wrapper only positions the card; taps outside it
 			    fall through to the overlay Pressable beneath */}
@@ -136,18 +141,21 @@ export function Dialog({
 					accessibilityViewIsModal
 					accessibilityLabel={accessibilityLabel}
 					{...responders}
-					style={{
-						width: isFull ? "100%" : "90%",
-						height: isFull ? "100%" : undefined,
-						maxWidth: isFull ? undefined : MAX_WIDTH[size],
-						maxHeight: isFull ? undefined : "90%",
-						borderRadius: isFull ? 0 : tokens.radius.card,
-						backgroundColor: theme.card,
-						borderWidth: 1,
-						borderColor: theme.border,
-						overflow: "hidden",
-						opacity: dragOpacity,
-					}}
+						style={applySlot(
+							{
+								width: isFull ? "100%" : "90%",
+								height: isFull ? "100%" : undefined,
+								maxWidth: isFull ? undefined : MAX_WIDTH[size],
+								maxHeight: isFull ? undefined : "90%",
+								borderRadius: isFull ? 0 : tokens.radius.card,
+								backgroundColor: theme.card,
+								borderWidth: 1,
+								borderColor: theme.border,
+								overflow: "hidden",
+								opacity: dragOpacity,
+							},
+							styles?.root,
+						)}
 				>
 					{children}
 					{showCloseButton ? (
@@ -157,13 +165,16 @@ export function Dialog({
 							accessibilityLabel="Close dialog"
 							hitSlop={8}
 							onPress={close}
-							style={{
-								position: "absolute",
-								top: 10,
-								right: 10,
-								padding: 6,
-								borderRadius: tokens.radius.control,
-							}}
+							style={applySlot(
+								{
+									position: "absolute",
+									top: 10,
+									right: 10,
+									padding: 6,
+									borderRadius: tokens.radius.control,
+								},
+								styles?.close,
+							)}
 						>
 							<X size={20} color={theme.foreground} />
 						</Pressable>
@@ -228,13 +239,21 @@ function DialogFooter({ children, style, testID = "k-dialog-footer" }: DialogPar
 	);
 }
 
-function DialogTitle({ children, style, testID = "k-dialog-title" }: DialogTextProps) {
+function DialogTitle({
+	children,
+	style,
+	styles,
+	testID = "k-dialog-title",
+}: DialogTextProps) {
 	const { theme } = useUnistyles();
 	return (
 		<RNText
 			testID={testID}
 			accessibilityRole="header"
-			style={[{ color: theme.foreground, fontSize: 18, fontWeight: "600" }, style]}
+			style={applySlot(
+				[{ color: theme.foreground, fontSize: 18, fontWeight: "600" }, style],
+				styles?.root,
+			)}
 		>
 			{children}
 		</RNText>
@@ -244,13 +263,17 @@ function DialogTitle({ children, style, testID = "k-dialog-title" }: DialogTextP
 function DialogDescription({
 	children,
 	style,
+	styles,
 	testID = "k-dialog-description",
 }: DialogTextProps) {
 	const { theme } = useUnistyles();
 	return (
 		<RNText
 			testID={testID}
-			style={[{ color: theme.mutedForeground, fontSize: 14 }, style]}
+			style={applySlot(
+				[{ color: theme.mutedForeground, fontSize: 14 }, style],
+				styles?.root,
+			)}
 		>
 			{children}
 		</RNText>

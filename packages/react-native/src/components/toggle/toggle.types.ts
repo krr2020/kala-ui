@@ -16,5 +16,7 @@ export interface ToggleProps {
 	disabled?: boolean;
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
+	/** Slot overrides: root wins over the library surface and `style`. */
+	styles?: { root?: StyleProp<ViewStyle> };
 	testID?: string;
 }

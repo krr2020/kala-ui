@@ -7,6 +7,7 @@
 import type { ReactElement } from "react";
 import { Pressable, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type { SwitchProps } from "./switch.types";
 
 const TRACK_W = 40;
@@ -21,6 +22,7 @@ export function Switch({
 	disabled = false,
 	accessibilityLabel,
 	style,
+	styles,
 	testID = "k-switch",
 }: SwitchProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -45,32 +47,38 @@ export function Switch({
 					justifyContent: "center",
 					opacity: disabled ? 0.5 : 1,
 				},
-				style,
+				applySlot(applySlot([], style), styles?.root),
 			]}
 		>
 			<View
-				testID="k-switch-track"
-				style={{
-					width: TRACK_W,
-					height: TRACK_H,
-					borderRadius: TRACK_H / 2,
-					backgroundColor: value ? theme.primary : theme.input,
-					padding: INSET,
-					alignItems: "flex-start",
-					justifyContent: "center",
-				}}
-			>
-				<View
-					testID="k-switch-thumb"
-					style={{
-						width: THUMB,
-						height: THUMB,
-						borderRadius: THUMB / 2,
-						backgroundColor: theme.card,
-						transform: [{ translateX: value ? THUMB_TRAVEL : 0 }],
-					}}
-				/>
-			</View>
-		</Pressable>
+					testID="k-switch-track"
+					style={[
+						{
+							width: TRACK_W,
+							height: TRACK_H,
+							borderRadius: TRACK_H / 2,
+							backgroundColor: value ? theme.primary : theme.input,
+							padding: INSET,
+							alignItems: "flex-start",
+							justifyContent: "center",
+						},
+						styles?.track,
+					]}
+				>
+					<View
+						testID="k-switch-thumb"
+						style={[
+							{
+								width: THUMB,
+								height: THUMB,
+								borderRadius: THUMB / 2,
+								backgroundColor: theme.card,
+								transform: [{ translateX: value ? THUMB_TRAVEL : 0 }],
+							},
+							styles?.thumb,
+						]}
+					/>
+				</View>
+			</Pressable>
 	);
 }

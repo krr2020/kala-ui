@@ -10,6 +10,8 @@ export type SegmentedControlData = string | SegmentedControlItem;
 export type SegmentedControlSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type SegmentedControlRadius = "xs" | "sm" | "md" | "lg" | "xl" | "full";
 
+import type { StyleProp, ViewStyle } from "react-native";
+
 export interface SegmentedControlProps {
 	data: SegmentedControlData[];
 	/** Controlled active value — when set, presses report but never override. */
@@ -21,5 +23,11 @@ export interface SegmentedControlProps {
 	size?: SegmentedControlSize;
 	radius?: SegmentedControlRadius;
 	accessibilityLabel?: string;
+	/** Slot overrides: root wins over the library surface. */
+	styles?: {
+		root?: StyleProp<ViewStyle>;
+		segment?: StyleProp<ViewStyle>;
+		indicator?: StyleProp<ViewStyle>;
+	};
 	testID?: string;
 }

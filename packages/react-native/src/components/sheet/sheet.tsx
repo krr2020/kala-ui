@@ -14,6 +14,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useUnistyles } from "react-native-unistyles";
 import { motion, tokens } from "../../tokens";
+import { applySlot } from "../slot-styles";
 import type { SheetBodyProps, SheetProps, SheetSnap } from "./sheet.types";
 
 const SNAP_HEIGHT: Record<SheetSnap, number | `${number}%`> = {
@@ -29,6 +30,8 @@ export function Sheet({
 	onClose,
 	snap = "peek",
 	dismissable = true,
+	style,
+	styles,
 	children,
 }: SheetProps): ReactElement | null {
 	const { theme } = useUnistyles();
@@ -55,24 +58,33 @@ export function Sheet({
 	return (
 		<View
 			testID="k-sheet-root"
-			style={{
-				...({ position: "absolute", inset: 0 } as const),
-				zIndex: 100,
-			}}
+			style={applySlot(
+				applySlot(
+					{
+						...({ position: "absolute", inset: 0 } as const),
+						zIndex: 100,
+					},
+					styles?.root,
+				),
+				style,
+			)}
 		>
 			<Pressable
 				testID="k-sheet-overlay"
 				accessibilityRole="button"
 				accessibilityLabel="Close sheet"
-				onPress={dismissable ? onClose : undefined}
-				style={{
-					position: "absolute",
-					top: 0,
-					right: 0,
-					bottom: 0,
-					left: 0,
-					backgroundColor: "rgba(0,0,0,0.5)",
-				}}
+					onPress={dismissable ? onClose : undefined}
+					style={applySlot(
+						{
+							position: "absolute",
+							top: 0,
+							right: 0,
+							bottom: 0,
+							left: 0,
+							backgroundColor: "rgba(0,0,0,0.5)",
+						},
+						styles?.overlay,
+					)}
 			/>
 			<GestureDetector gesture={pan}>
 				<Animated.View
@@ -80,34 +92,40 @@ export function Sheet({
 					accessibilityViewIsModal
 					style={[
 						sheetStyle,
-						{
-							position: "absolute",
-							left: 0,
-							right: 0,
-							bottom: 0,
-							height: SNAP_HEIGHT[snap],
-							backgroundColor: theme.card,
-							borderTopLeftRadius: tokens.radius.card,
-							borderTopRightRadius: tokens.radius.card,
-							borderTopWidth: 1,
-							borderColor: theme.border,
-							paddingTop: 8,
-							paddingBottom: tokens.space.cardPad,
-							paddingHorizontal: tokens.space.gutter,
-							gap: 12,
-						},
+						applySlot(
+							{
+								position: "absolute",
+								left: 0,
+								right: 0,
+								bottom: 0,
+								height: SNAP_HEIGHT[snap],
+								backgroundColor: theme.card,
+								borderTopLeftRadius: tokens.radius.card,
+								borderTopRightRadius: tokens.radius.card,
+								borderTopWidth: 1,
+								borderColor: theme.border,
+								paddingTop: 8,
+								paddingBottom: tokens.space.cardPad,
+								paddingHorizontal: tokens.space.gutter,
+								gap: 12,
+							},
+							styles?.content,
+						),
 					]}
 				>
 					<View
 						testID="k-sheet-grabber"
 						accessibilityLabel="Drag to dismiss"
-						style={{
-							alignSelf: "center",
-							width: 36,
-							height: 4,
-							borderRadius: 2,
-							backgroundColor: theme.muted,
-						}}
+						style={applySlot(
+							{
+								alignSelf: "center",
+								width: 36,
+								height: 4,
+								borderRadius: 2,
+								backgroundColor: theme.muted,
+							},
+							styles?.grabber,
+						)}
 					/>
 					{children}
 				</Animated.View>
@@ -116,10 +134,13 @@ export function Sheet({
 	);
 }
 
-export function SheetBody({ children }: SheetBodyProps): ReactElement {
+export function SheetBody({
+	children,
+	styles,
+}: SheetBodyProps): ReactElement {
 	const { theme } = useUnistyles();
 	return (
-		<View testID="k-sheet-body" style={{ gap: 8 }}>
+		<View testID="k-sheet-body" style={applySlot({ gap: 8 }, styles?.root)}>
 			{typeof children === "string" || typeof children === "number" ? (
 				<Text style={{ color: theme.foreground, fontSize: 14 }}>
 					{children}

@@ -15,6 +15,7 @@ import type { ReactElement } from "react";
 import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Skeleton } from "../skeleton";
+import { applySlot } from "../slot-styles";
 import type { SliderProps } from "./slider.types";
 
 const THUMB_PX = 20;
@@ -39,6 +40,7 @@ export function Slider({
 	isLoading = false,
 	accessibilityLabel = "Slider",
 	style,
+	styles,
 	testID = "k-slider",
 }: SliderProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -150,7 +152,7 @@ export function Slider({
 		<View
 			testID={testID}
 			accessibilityLabel={accessibilityLabel}
-			style={[{ opacity: disabled ? 0.5 : 1 }, style]}
+			style={applySlot(applySlot({ opacity: disabled ? 0.5 : 1 }, style), styles?.root)}
 		>
 			<View
 				testID="k-slider-track"
@@ -161,24 +163,30 @@ export function Slider({
 				onStartShouldSetResponder={() => !disabled}
 				onResponderGrant={grant}
 				onResponderMove={move}
-				style={{
-					height: TRACK_H,
-					borderRadius: TRACK_H / 2,
-					backgroundColor: themeMap.muted,
-					justifyContent: "center",
-				}}
+				style={applySlot(
+					{
+						height: TRACK_H,
+						borderRadius: TRACK_H / 2,
+						backgroundColor: themeMap.muted,
+						justifyContent: "center",
+					},
+					styles?.track,
+				)}
 			>
 				<View
 					testID="k-slider-range"
 					accessibilityElementsHidden={true}
-					style={{
-						position: "absolute",
-						left: 0,
-						height: TRACK_H,
-						borderRadius: TRACK_H / 2,
-						backgroundColor: themeMap.primary,
-						width: `${first === undefined ? 0 : pct(first)}%`,
-					}}
+					style={applySlot(
+						{
+							position: "absolute",
+							left: 0,
+							height: TRACK_H,
+							borderRadius: TRACK_H / 2,
+							backgroundColor: themeMap.primary,
+							width: `${first === undefined ? 0 : pct(first)}%`,
+						},
+						styles?.range,
+					)}
 				/>
 				{values.map((v, i) => {
 					return (
@@ -199,18 +207,21 @@ export function Slider({
 								if (action === "increment") adjust(i, 1);
 								else if (action === "decrement") adjust(i, -1);
 							}}
-							style={{
-								position: "absolute",
-								left: `${pct(v)}%`,
-								// center the thumb on its value point
-								marginLeft: -THUMB_R,
-								width: THUMB_PX,
-								height: THUMB_PX,
-								borderRadius: THUMB_R,
-								backgroundColor: themeMap.background,
-								borderWidth: 2,
-								borderColor: themeMap.primary,
-							}}
+							style={applySlot(
+								{
+									position: "absolute",
+									left: `${pct(v)}%`,
+									// center the thumb on its value point
+									marginLeft: -THUMB_R,
+									width: THUMB_PX,
+									height: THUMB_PX,
+									borderRadius: THUMB_R,
+									backgroundColor: themeMap.background,
+									borderWidth: 2,
+									borderColor: themeMap.primary,
+								},
+								styles?.thumb,
+							)}
 						/>
 					);
 				})}

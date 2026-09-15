@@ -18,6 +18,7 @@ import {
 	View,
 } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import { tokens } from "../../tokens";
 import { Button } from "../button";
 import type { ButtonProps } from "../button";
@@ -41,6 +42,7 @@ export function AlertDialog({
 	onOpenChange,
 	dismissable = false,
 	accessibilityLabel,
+	styles,
 	testID = "k-alert-dialog",
 	children,
 }: AlertDialogProps): ReactElement | null {
@@ -93,14 +95,17 @@ export function AlertDialog({
 			}}
 		>
 			<View
-				style={{
-					position: "absolute",
-					top: 0,
-					right: 0,
-					bottom: 0,
-					left: 0,
-					backgroundColor: "rgba(0,0,0,0.5)",
-				}}
+				style={applySlot(
+					{
+						position: "absolute",
+						top: 0,
+						right: 0,
+						bottom: 0,
+						left: 0,
+						backgroundColor: "rgba(0,0,0,0.5)",
+					},
+					styles?.overlay,
+				)}
 			/>
 			<KeyboardAvoidingView
 				testID="k-alert-dialog-keyboard-view"
@@ -125,16 +130,19 @@ export function AlertDialog({
 					accessibilityRole="alert"
 					accessibilityLabel={accessibilityLabel}
 					{...responders}
-					style={{
-						width: "90%",
-						maxWidth: 512,
-						borderRadius: tokens.radius.card,
-						backgroundColor: theme.card,
-						borderWidth: 1,
-						borderColor: theme.border,
-						overflow: "hidden",
-						opacity: dragOpacity,
-					}}
+					style={applySlot(
+						{
+							width: "90%",
+							maxWidth: 512,
+							borderRadius: tokens.radius.card,
+							backgroundColor: theme.card,
+							borderWidth: 1,
+							borderColor: theme.border,
+							overflow: "hidden",
+							opacity: dragOpacity,
+						},
+						styles?.root,
+					)}
 				>
 					<AlertDialogContext.Provider value={{ close: () => onOpenChangeRef.current(false) }}>
 						{children}

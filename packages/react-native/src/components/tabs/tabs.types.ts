@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { StyleProp, ViewStyle } from "react-native";
 
 /**
  * Native Tabs collapses the web compound parts (Tabs.List / Tabs.Trigger /
@@ -24,5 +25,11 @@ export interface TabsProps {
 	orientation?: "horizontal" | "vertical";
 	children?: ReactNode;
 	accessibilityLabel?: string;
+	/** Slot overrides: root wins over the library surface. */
+	styles?: {
+		root?: StyleProp<ViewStyle>;
+		list?: StyleProp<ViewStyle>;
+		tab?: StyleProp<ViewStyle>;
+	};
 	testID?: string;
 }

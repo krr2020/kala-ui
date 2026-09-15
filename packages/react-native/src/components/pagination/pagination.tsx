@@ -13,6 +13,7 @@ import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
+import { applySlot } from "../slot-styles";
 import type { PaginationProps, PaginationSize } from "./pagination.types";
 
 const DOT = "dots" as const;
@@ -75,6 +76,7 @@ export function Pagination({
 	size = "md",
 	accessibilityLabel = "Pagination",
 	style,
+	styles,
 	testID = "k-pagination",
 }: PaginationProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -132,7 +134,7 @@ export function Pagination({
 					gap: 4,
 					alignSelf: "flex-start",
 				},
-				style,
+				applySlot(applySlot([], styles?.root), style),
 			]}
 		>
 			<Pressable
@@ -142,7 +144,7 @@ export function Pagination({
 				accessibilityState={{ disabled: active <= 1 }}
 				disabled={active <= 1}
 				onPress={() => goTo(active - 1)}
-				style={controlStyle}
+				style={applySlot(controlStyle, styles?.previous)}
 			>
 				<ChevronLeft size={16} color={themeMap.foreground} />
 			</Pressable>
@@ -153,7 +155,7 @@ export function Pagination({
 						testID="k-pagination-ellipsis"
 						accessible={false}
 						accessibilityElementsHidden={true}
-						style={controlStyle}
+						style={applySlot(controlStyle, styles?.ellipsis)}
 					>
 						<MoreHorizontal size={16} color={themeMap.mutedForeground} />
 					</View>
@@ -165,13 +167,16 @@ export function Pagination({
 						accessibilityLabel={String(entry)}
 						accessibilityState={{ selected: entry === active }}
 						onPress={() => goTo(entry)}
-						style={[
-							controlStyle,
-							{
-								backgroundColor:
-									entry === active ? themeMap.primary : "transparent",
-							},
-						]}
+						style={applySlot(
+							[
+								controlStyle,
+								{
+									backgroundColor:
+										entry === active ? themeMap.primary : "transparent",
+									},
+							],
+								styles?.page,
+						)}
 					>
 						<RNText
 							style={{
@@ -195,7 +200,7 @@ export function Pagination({
 				accessibilityState={{ disabled: active >= totalPages }}
 				disabled={active >= totalPages}
 				onPress={() => goTo(active + 1)}
-				style={controlStyle}
+				style={applySlot(controlStyle, styles?.next)}
 			>
 				<ChevronRight size={16} color={themeMap.foreground} />
 			</Pressable>

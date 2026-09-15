@@ -10,6 +10,7 @@ import { useEffect, useRef } from "react";
 import type { ReactElement } from "react";
 import { Animated, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type { IndicatorProps, IndicatorPosition } from "./indicator.types";
 
 type Axis = "start" | "center" | "end";
@@ -56,6 +57,7 @@ export function Indicator({
 	label,
 	inline = false,
 	style,
+	styles,
 	testID = "k-indicator",
 }: IndicatorProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -90,42 +92,50 @@ export function Indicator({
 	return (
 		<View
 			testID={testID}
-			style={[
-				{
-					position: "relative",
-					alignSelf: inline ? "flex-start" : undefined,
-				},
+			style={applySlot(
+				applySlot(
+					[
+						{
+							position: "relative",
+							alignSelf: inline ? "flex-start" : undefined,
+						},
+					],
+					styles?.root,
+				),
 				style,
-			]}
+			)}
 		>
 			{!disabled && (
 				<Animated.View
 					testID="k-indicator-dot"
-					style={[
-						{
-							position: "absolute",
-							height: size,
-							minWidth: size,
-							borderRadius: size / 2,
-							backgroundColor: ramp[color],
-							alignItems: "center",
-							justifyContent: "center",
-							zIndex: 50,
-							overflow: "hidden",
-						},
-						hasLabel
-							? {
-									paddingHorizontal: size / 3,
-									fontSize: size * 0.7,
-									color: ramp[`${color}Foreground`],
-								}
-							: { width: size },
-						withBorder
-							? { borderWidth: 2, borderColor: ramp.background }
-							: { borderWidth: 0 },
-						anchorStyle(position, offset, size / 2),
-						processing ? { opacity: pulse } : null,
-					]}
+					style={applySlot(
+						[
+							{
+								position: "absolute",
+								height: size,
+								minWidth: size,
+								borderRadius: size / 2,
+								backgroundColor: ramp[color],
+								alignItems: "center",
+								justifyContent: "center",
+								zIndex: 50,
+								overflow: "hidden",
+							},
+							hasLabel
+								? {
+										paddingHorizontal: size / 3,
+										fontSize: size * 0.7,
+										color: ramp[`${color}Foreground`],
+									}
+								: { width: size },
+							withBorder
+								? { borderWidth: 2, borderColor: ramp.background }
+								: { borderWidth: 0 },
+							anchorStyle(position, offset, size / 2),
+							processing ? { opacity: pulse } : null,
+						],
+						styles?.dot,
+					)}
 				>
 					{hasLabel ? (
 						<RNText

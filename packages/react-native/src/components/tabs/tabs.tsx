@@ -3,6 +3,7 @@ import type { ReactElement } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
+import { applySlot } from "../slot-styles";
 import type { TabsItem, TabsProps } from "./tabs.types";
 
 export function Tabs({
@@ -13,6 +14,7 @@ export function Tabs({
 	orientation = "horizontal",
 	children,
 	accessibilityLabel,
+	styles,
 	testID = "k-tabs",
 }: TabsProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -33,19 +35,25 @@ export function Tabs({
 		<View
 			testID={testID}
 			accessibilityLabel={accessibilityLabel}
-			style={{
-				flexDirection: vertical ? "row" : "column",
-				gap: 16,
-			}}
+			style={applySlot(
+				{
+					flexDirection: vertical ? "row" : "column",
+					gap: 16,
+				},
+				styles?.root,
+			)}
 		>
 			<View
 				testID="k-tab-list"
 				accessible={true}
 				accessibilityRole="tablist"
-				style={{
-					flexDirection: vertical ? "column" : "row",
-					gap: 4,
-				}}
+				style={applySlot(
+					{
+						flexDirection: vertical ? "column" : "row",
+						gap: 4,
+					},
+					styles?.list,
+				)}
 			>
 				{items.map((item: TabsItem) => {
 					const selected = item.value === active;
@@ -59,13 +67,16 @@ export function Tabs({
 							accessibilityState={{ selected, disabled }}
 							disabled={disabled}
 							onPress={() => select(item.value)}
-							style={{
-								minHeight: 44,
-								paddingHorizontal: 14,
-								justifyContent: "center",
-								borderRadius: tokens.radius.control,
-								backgroundColor: selected ? theme.accent : "transparent",
-							}}
+							style={applySlot(
+								{
+									minHeight: 44,
+									paddingHorizontal: 14,
+									justifyContent: "center",
+									borderRadius: tokens.radius.control,
+									backgroundColor: selected ? theme.accent : "transparent",
+								},
+								styles?.tab,
+							)}
 						>
 							<RNText
 								style={{

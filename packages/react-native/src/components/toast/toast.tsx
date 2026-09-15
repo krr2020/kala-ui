@@ -12,6 +12,7 @@ import { useEffect, useRef } from "react";
 import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type {
 	ToastDescriptionProps,
 	ToastProps,
@@ -26,6 +27,7 @@ export function Toast({
 	children,
 	accessibilityLabel,
 	style,
+	styles,
 	testID = "k-toast",
 }: ToastProps): ReactElement | null {
 	const { theme } = useUnistyles();
@@ -46,12 +48,15 @@ export function Toast({
 		<View
 			testID="k-toast-viewport"
 			pointerEvents="box-none"
-			style={{
-				...({ position: "absolute", inset: 0 } as const),
-				zIndex: 200,
-				justifyContent: position === "top" ? "flex-start" : "flex-end",
-				padding: 16,
-			}}
+			style={[
+				{
+					...({ position: "absolute", inset: 0 } as const),
+					zIndex: 200,
+					justifyContent: position === "top" ? "flex-start" : "flex-end",
+					padding: 16,
+				},
+				styles?.viewport,
+			]}
 		>
 			<View
 				testID={testID}
@@ -69,7 +74,7 @@ export function Toast({
 						padding: 14,
 						gap: 2,
 					},
-					style,
+					applySlot(applySlot({}, style), styles?.root),
 				]}
 			>
 				{children}
@@ -81,16 +86,20 @@ export function Toast({
 function ToastTitle({
 	children,
 	style,
+	styles,
 	testID = "k-toast-title",
 }: ToastTitleProps): ReactElement {
 	const { theme } = useUnistyles();
 	return (
 		<RNText
 			testID={testID}
-			style={[
-				{ color: theme.foreground, fontSize: 15, fontWeight: "600" },
-				style,
-			]}
+			style={applySlot(
+				[
+					{ color: theme.foreground, fontSize: 15, fontWeight: "600" },
+					style,
+				],
+				styles?.root,
+			)}
 		>
 			{children}
 		</RNText>
@@ -100,13 +109,17 @@ function ToastTitle({
 function ToastDescription({
 	children,
 	style,
+	styles,
 	testID = "k-toast-description",
 }: ToastDescriptionProps): ReactElement {
 	const { theme } = useUnistyles();
 	return (
 		<RNText
 			testID={testID}
-			style={[{ color: theme.mutedForeground, fontSize: 14 }, style]}
+			style={applySlot(
+				[{ color: theme.mutedForeground, fontSize: 14 }, style],
+				styles?.root,
+			)}
 		>
 			{children}
 		</RNText>

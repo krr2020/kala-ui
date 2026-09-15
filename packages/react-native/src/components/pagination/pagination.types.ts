@@ -20,5 +20,13 @@ export interface PaginationProps {
 	/** ARIA label for the navigation */
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
+	/** Slot overrides: root wins over the library surface and `style`. */
+	styles?: {
+		root?: StyleProp<ViewStyle>;
+		page?: StyleProp<ViewStyle>;
+		previous?: StyleProp<ViewStyle>;
+		next?: StyleProp<ViewStyle>;
+		ellipsis?: StyleProp<ViewStyle>;
+	};
 	testID?: string;
 }

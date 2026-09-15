@@ -16,6 +16,11 @@ export interface ToggleGroupProps {
 	variant?: ToggleVariant;
 	disabled?: boolean;
 	accessibilityLabel?: string;
+	/** Slot overrides: root wins over the library surface; item flows to items. */
+	styles?: {
+		root?: StyleProp<ViewStyle>;
+		item?: StyleProp<ViewStyle>;
+	};
 	testID?: string;
 }
 
@@ -27,5 +32,7 @@ export interface ToggleGroupItemProps {
 	disabled?: boolean;
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
+	/** Slot overrides: root wins over the library surface and `style`. */
+	styles?: { root?: StyleProp<ViewStyle> };
 	testID?: string;
 }

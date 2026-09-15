@@ -8,6 +8,7 @@ import type { ReactElement } from "react";
 import { Check, Minus } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { applySlot } from "../slot-styles";
 import type { CheckboxProps } from "./checkbox.types";
 
 const BOX = 22;
@@ -18,6 +19,7 @@ export function Checkbox({
 	disabled = false,
 	accessibilityLabel,
 	style,
+	styles,
 	testID = "k-checkbox",
 }: CheckboxProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -44,12 +46,12 @@ export function Checkbox({
 					justifyContent: "center",
 					opacity: disabled ? 0.5 : 1,
 				},
-				style,
+				applySlot(applySlot([], style), styles?.root),
 			]}
 		>
 			<View
 				testID="k-checkbox-box"
-				style={{
+				style={[{
 					width: BOX,
 					height: BOX,
 					borderRadius: 6,
@@ -57,8 +59,10 @@ export function Checkbox({
 					justifyContent: "center",
 					backgroundColor: active ? theme.primary : theme.card,
 					borderWidth: 1,
-					borderColor: active ? theme.primary : theme.border,
-				}}
+				borderColor: active ? theme.primary : theme.border,
+				},
+				styles?.box,
+			]}
 			>
 				{value === true && (
 					<Check size={14} color={theme.primaryForeground} />

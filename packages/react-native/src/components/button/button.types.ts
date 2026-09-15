@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { StyleProp, ViewStyle } from "react-native";
 
 export type ButtonVariant = "solid" | "outline" | "ghost" | "subtle" | "link";
 export type ButtonColor = "primary" | "secondary" | "destructive" | "muted";
@@ -15,5 +16,10 @@ export interface ButtonProps {
 	disabled?: boolean;
 	onPress?: () => void;
 	accessibilityLabel?: string;
+	style?: StyleProp<ViewStyle>;
+	/** Slot overrides: root wins over the library surface and `style`. */
+	styles?: {
+		root?: StyleProp<ViewStyle>;
+	};
 	testID?: string;
 }

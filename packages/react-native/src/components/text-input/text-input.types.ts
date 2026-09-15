@@ -11,5 +11,9 @@ export interface TextInputProps
 	/** parity with Button's disabled: flips editable + a11y state */
 	disabled?: boolean;
 	style?: StyleProp<TextStyle>;
+	/** Slot overrides: root wins over the library surface and `style`. */
+	styles?: {
+		root?: StyleProp<TextStyle>;
+	};
 	testID?: string;
 }
