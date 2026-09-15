@@ -1,13 +1,22 @@
 /**
  * AlertDialog: destructive-confirmation modal sharing Dialog's layout
- * vocabulary. Defaults to NOT dismissable (no overlay press, no hardware
- * back) — dismissal only happens through the explicit Action/Cancel
- * affordances, mirroring web radix alert semantics. The container
- * surfaces as a single accessibility alert element.
+ * vocabulary and mobile hardening (drag-to-dismiss gated by
+ * `dismissable`, keyboard avoidance, scrollable body). Defaults to NOT
+ * dismissable — no overlay press, no hardware back, no drag — dismissal
+ * only happens through the explicit Action/Cancel affordances, mirroring
+ * web radix alert semantics. The container surfaces as a single
+ * accessibility alert element.
  */
-import { createContext, useContext } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 import type { ReactElement } from "react";
-import { Modal, Text as RNText, View } from "react-native";
+import {
+	KeyboardAvoidingView,
+	Modal,
+	Platform,
+	ScrollView,
+	Text as RNText,
+	View,
+} from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
 import { Button } from "../button";
@@ -24,6 +33,9 @@ interface AlertDialogContextValue {
 
 const AlertDialogContext = createContext<AlertDialogContextValue | null>(null);
 
+const DRAG_DISMISS_THRESHOLD = 96;
+const MIN_DRAG_OPACITY = 0.5;
+
 export function AlertDialog({
 	open,
 	onOpenChange,
@@ -33,6 +45,42 @@ export function AlertDialog({
 	children,
 }: AlertDialogProps): ReactElement | null {
 	const { theme } = useUnistyles();
+	const [dragDy, setDragDy] = useState(0);
+	// start Y of the active drag; null = no gesture in flight
+	const dragStart = useRef<number | null>(null);
+	const onOpenChangeRef = useRef(onOpenChange);
+	onOpenChangeRef.current = onOpenChange;
+
+	const dragOpacity =
+		1 -
+		(Math.min(dragDy, DRAG_DISMISS_THRESHOLD) * (1 - MIN_DRAG_OPACITY)) /
+			DRAG_DISMISS_THRESHOLD;
+
+	const responders = dismissable
+		? {
+				onStartShouldSetResponder: () => true,
+				onResponderGrant: (e: { nativeEvent: { pageY: number } }) => {
+					dragStart.current = e.nativeEvent.pageY;
+					setDragDy(0);
+				},
+				onResponderMove: (e: { nativeEvent: { pageY: number } }) => {
+					if (dragStart.current === null) return;
+					setDragDy(Math.max(0, e.nativeEvent.pageY - dragStart.current));
+				},
+				onResponderRelease: (e: { nativeEvent: { pageY: number } }) => {
+					if (dragStart.current !== null) {
+						const dy = Math.max(0, e.nativeEvent.pageY - dragStart.current);
+						dragStart.current = null;
+						setDragDy(0);
+						if (dy >= DRAG_DISMISS_THRESHOLD) onOpenChangeRef.current(false);
+					}
+				},
+				onResponderTerminate: () => {
+					dragStart.current = null;
+					setDragDy(0);
+				},
+			}
+		: {};
 
 	return (
 		<Modal
@@ -41,7 +89,7 @@ export function AlertDialog({
 			statusBarTranslucent
 			animationType="fade"
 			onRequestClose={() => {
-				if (dismissable) onOpenChange(false);
+				if (dismissable) onOpenChangeRef.current(false);
 			}}
 		>
 			<View
@@ -54,7 +102,10 @@ export function AlertDialog({
 					backgroundColor: "rgba(0,0,0,0.5)",
 				}}
 			/>
-			<View
+			<KeyboardAvoidingView
+				behavior={Platform.OS === "ios" ? "padding" : undefined}
+				keyboardVerticalOffset={0}
+				pointerEvents="box-none"
 				style={{
 					position: "absolute",
 					top: 0,
@@ -72,6 +123,7 @@ export function AlertDialog({
 					accessible
 					accessibilityRole="alert"
 					accessibilityLabel={accessibilityLabel}
+					{...responders}
 					style={{
 						width: "90%",
 						maxWidth: 512,
@@ -80,13 +132,14 @@ export function AlertDialog({
 						borderWidth: 1,
 						borderColor: theme.border,
 						overflow: "hidden",
+						opacity: dragOpacity,
 					}}
 				>
-					<AlertDialogContext.Provider value={{ close: () => onOpenChange(false) }}>
+					<AlertDialogContext.Provider value={{ close: () => onOpenChangeRef.current(false) }}>
 						{children}
 					</AlertDialogContext.Provider>
 				</View>
-			</View>
+			</KeyboardAvoidingView>
 		</Modal>
 	);
 }
@@ -193,16 +246,18 @@ function AlertDialogBody({
 }: AlertDialogPartProps) {
 	const { theme } = useUnistyles();
 	return (
-		<View
+		<ScrollView
 			testID={testID}
-			style={[{ paddingHorizontal: 24, paddingVertical: 16 }, style]}
+			keyboardShouldPersistTaps="handled"
+			contentContainerStyle={{ paddingHorizontal: 24, paddingVertical: 16 }}
+			style={style}
 		>
 			{typeof children === "string" || typeof children === "number" ? (
 				<RNText style={{ color: theme.foreground, fontSize: 14 }}>{children}</RNText>
 			) : (
 				children
 			)}
-		</View>
+		</ScrollView>
 	);
 }
 
