@@ -6,8 +6,8 @@ import {
 	Share,
 	Sun,
 } from "lucide-react-native";
-import { useState } from "react";
 import type { ReactElement } from "react";
+import { useState } from "react";
 import { Text, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { DemoBlock } from "../demo-block";
@@ -71,6 +71,10 @@ export function ButtonDemo() {
 							{humanizeLabel(size)}
 						</Button>
 					))}
+				</View>
+			</DemoBlock>
+			<DemoBlock label="Icon Only">
+				<View style={demoStyles.componentRow}>
 					<Button size="icon" accessibilityLabel="sun button">
 						<Sun size={18} color={theme.primaryForeground} />
 					</Button>
