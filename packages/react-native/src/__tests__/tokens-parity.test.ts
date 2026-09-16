@@ -433,6 +433,7 @@ describe("layout restructure pins", () => {
 				"HeadingSize",
 				"HeadingWeight",
 				"Icon",
+				"IconComponent",
 				"IconProps",
 				"Indicator",
 				"IndicatorColor",

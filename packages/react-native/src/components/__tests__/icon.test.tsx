@@ -4,7 +4,9 @@
  * depends on (collapsable={false} keeps the testID node alive).
  */
 import { readFileSync } from "node:fs";
+import type { ReactElement } from "react";
 import { Sun } from "lucide-react-native";
+import { Text as RNText } from "react-native";
 import { render } from "@testing-library/react-native";
 import { themes } from "../../themes";
 import { Icon } from "../icon";
@@ -12,6 +14,18 @@ import { ICON_SIZE_PX } from "../icon/icon.styles";
 import type { IconSize } from "../icon";
 
 const inclHidden = { includeHiddenElements: true };
+
+// a non-lucide icon-library component — the prop contract is just
+// {size, color}; lucide is the demos' choice, not a consumer constraint
+const CustomIcon = ({
+	size,
+	color,
+}: {
+	size?: number;
+	color?: string;
+}): ReactElement => (
+	<RNText testID="k-custom-icon">{`${size ?? "?"}|${color ?? "?"}`}</RNText>
+);
 
 // toJSON is the stable surface for lucide props: `size` lands on the
 // rendered svg as numeric width, `color` as fill
@@ -91,6 +105,15 @@ describe("Icon", () => {
 		);
 		const style = screen.getByTestId("k-icon", inclHidden).props.style;
 		expect(JSON.stringify(style)).toContain("5");
+	});
+
+	it("any {size,color} icon component renders — lucide not required", async () => {
+		const screen = await render(
+			<Icon icon={CustomIcon} size="lg" color="primary" />,
+		);
+		expect(
+			screen.getByText(`24|${String(themes.light.primary)}`, inclHidden),
+		).toBeTruthy();
 	});
 
 	it("icon.tsx stays render-only — no casts, no String(), no px literals", () => {

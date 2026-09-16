@@ -4,14 +4,31 @@
  * ramp drifting out of tokens or the color helper diverging from theme
  * values in any registered theme.
  */
+import type { ReactElement } from "react";
 import { Sun } from "lucide-react-native";
+import { Text as RNText } from "react-native";
 import { render } from "@testing-library/react-native";
 import { themes } from "../../themes";
 import { tokens } from "../../tokens";
 import { Icon } from "../icon";
 import { ICON_SIZE_PX, iconColor } from "../icon/icon.styles";
-import type { IconSize } from "../icon";
+import type { IconComponent, IconSize } from "../icon";
 import * as entry from "../..";
+
+// structural: lucide satisfies the generic {size,color} contract without
+// a cast — ComponentType contravariance accepts the richer LucideProps
+const lucideAsGeneric: IconComponent = Sun;
+
+// a non-lucide icon-library component — the contract is just {size,color}
+const CustomIcon = ({
+	size,
+	color,
+}: {
+	size?: number;
+	color?: string;
+}): ReactElement => (
+	<RNText testID="k-custom-icon">{`${size ?? "?"}|${color ?? "?"}`}</RNText>
+);
 
 const inclHidden = { includeHiddenElements: true };
 
@@ -47,5 +64,21 @@ describe("icon integration", () => {
 		) as { props?: { width?: number } } | undefined;
 		expect(node).toBeTruthy();
 		expect(svg?.props?.width).toBe(tokens.size.icon.lg);
+	});
+
+	it("lucide components satisfy IconComponent without a cast", async () => {
+		const screen = await render(<Icon icon={lucideAsGeneric} size="md" />);
+		expect(screen.getByTestId("k-icon", inclHidden)).toBeTruthy();
+	});
+
+	it("non-lucide icon libraries render through the entry barrel", async () => {
+		const screen = await render(
+			<entry.Icon icon={CustomIcon} size="sm" color="primary" />,
+		);
+		expect(
+			screen.getByText(`16|${String(themes.light.primary)}`, {
+				includeHiddenElements: true,
+			}),
+		).toBeTruthy();
 	});
 });

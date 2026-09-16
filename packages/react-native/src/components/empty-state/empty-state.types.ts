@@ -1,9 +1,9 @@
-import type { LucideIcon } from "lucide-react-native";
 import type { ReactNode } from "react";
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
+import type { IconComponent } from "../icon";
 
-/** Lucide icon component (the surface Icon's `icon` prop takes). */
-export type EmptyStateIcon = LucideIcon;
+/** Any icon-library component taking {size, color} — see Icon. */
+export type EmptyStateIcon = IconComponent;
 
 export interface EmptyStateAction {
 	label: string;

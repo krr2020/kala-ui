@@ -119,7 +119,7 @@ export type {
 	HeadingWeight,
 } from "./components/heading";
 export { Heading } from "./components/heading";
-export type { IconProps } from "./components/icon";
+export type { IconComponent, IconProps } from "./components/icon";
 export { Icon } from "./components/icon";
 export type {
 	IndicatorColor,
