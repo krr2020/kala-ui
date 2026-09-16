@@ -5,6 +5,8 @@
  * accent, outline/subtle use mutedForeground — and subtle tints via
  * #RRGGBBAA hex alpha (10% ≈ "1A"). The remove affordance is a full 44dp
  * pressable pulled in with negative margins so the chip stays compact.
+ * Icons are icon-library components, themed to the tag's own foreground
+ * (iconColor hard-overrides) so a bare icon is visible in every variant.
  */
 
 import { X } from "lucide-react-native";
@@ -13,7 +15,7 @@ import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Icon } from "../icon";
 import { applySlot } from "../slot-styles";
-import { FONT, look, PAD_H, PAD_V } from "./tag.styles";
+import { FONT, ICON_FOR_SIZE, look, PAD_H, PAD_V } from "./tag.styles";
 import type { TagProps } from "./tag.types";
 
 export function Tag({
@@ -22,6 +24,7 @@ export function Tag({
 	size = "md",
 	onRemove,
 	icon,
+	iconColor,
 	children,
 	style,
 	slotStyles,
@@ -52,7 +55,9 @@ export function Tag({
 				slotStyles?.root,
 			)}
 		>
-			{icon}
+			{icon && (
+				<Icon icon={icon} size={ICON_FOR_SIZE[size]} color={iconColor ?? fg} />
+			)}
 			{children !== undefined && children !== null && (
 				<RNText
 					style={{

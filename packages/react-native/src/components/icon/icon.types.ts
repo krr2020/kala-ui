@@ -4,6 +4,9 @@ import type { KalaTheme } from "../../types";
 
 export type IconSize = "xs" | "sm" | "md" | "lg" | "xl";
 
+/** Theme token key (`'primary'`) or any raw color string. */
+export type IconColor = keyof KalaTheme | (string & {});
+
 /**
  * Any icon-library component taking `size` (px) and `color` — lucide
  * (the demos' choice) satisfies this structurally, as do expo/vector-icons,

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
+import type { IconColor, IconComponent } from "../icon";
 
 export type TagColor =
 	| "primary"
@@ -19,8 +20,10 @@ export interface TagProps {
 	size?: TagSize;
 	/** Show the remove affordance; each press calls this exactly once. */
 	onRemove?: () => void;
-	/** Icon rendered before the label. */
-	icon?: ReactNode;
+	/** Icon-library component rendered before the label; themed to the tag's fg. */
+	icon?: IconComponent;
+	/** Hard override for the icon color: token key or raw color string. */
+	iconColor?: IconColor;
 	children?: ReactNode;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;

@@ -1,4 +1,4 @@
-import { Icon, Tag } from "@kala-ui/react-native";
+import { Tag } from "@kala-ui/react-native";
 import { Sun } from "lucide-react-native";
 import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
@@ -50,12 +50,11 @@ export function TagDemo() {
 			<DemoBlock label="removable & icon">
 				<View style={demoStyles.componentRow}>
 					<Tag onRemove={() => undefined}>removable</Tag>
-					<Tag
-						variant="outline"
-						icon={<Icon icon={Sun} size="xs" color={theme.foreground} />}
-						onRemove={() => undefined}
-					>
+					<Tag variant="outline" icon={Sun} onRemove={() => undefined}>
 						icon + remove
+					</Tag>
+					<Tag icon={Sun} iconColor="destructive">
+						tinted icon
 					</Tag>
 				</View>
 			</DemoBlock>

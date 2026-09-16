@@ -3,8 +3,10 @@
  * affordance, children arms, and the style/slotStyles precedence chain.
  */
 import { fireEvent, render } from "@testing-library/react-native";
+import { Sun } from "lucide-react-native";
 import { Text as RNText } from "react-native";
 import { light } from "../../themes/definitions";
+import { ICON_SIZE_PX } from "../icon/icon.styles";
 import { Tag } from "../tag";
 import { FONT, PAD_H, PAD_V } from "../tag/tag.styles";
 
@@ -159,6 +161,128 @@ describe("children arms", () => {
 			</Tag>,
 		);
 		expect(screen.getByTestId("k-inner", incl)).toBeTruthy();
+	});
+});
+
+describe("icon theming", () => {
+	it("renders the icon through the themed Icon at the tag's fg by default", async () => {
+		const screen = await render(<Tag icon={Sun}>Beta</Tag>);
+		const glyph = screen.getByTestId("k-icon", incl).props.children as {
+			props: { color?: string; size?: number };
+		};
+		expect(glyph.props.color).toBe(light.mutedForeground);
+	});
+
+	it("icon color follows the variant tint: subtle primary uses primary", async () => {
+		const screen = await render(
+			<Tag icon={Sun} variant="subtle" color="primary">
+				Beta
+			</Tag>,
+		);
+		const glyph = screen.getByTestId("k-icon", incl).props.children as {
+			props: { color?: string };
+		};
+		expect(glyph.props.color).toBe(light.primary);
+	});
+
+	it("icon color on outline primary uses the tint", async () => {
+		const screen = await render(
+			<Tag icon={Sun} variant="outline" color="primary">
+				Beta
+			</Tag>,
+		);
+		const glyph = screen.getByTestId("k-icon", incl).props.children as {
+			props: { color?: string };
+		};
+		expect(glyph.props.color).toBe(light.primary);
+	});
+
+	it("icon color on solid muted borrows accentForeground", async () => {
+		const screen = await render(
+			<Tag icon={Sun} variant="solid" color="muted">
+				Beta
+			</Tag>,
+		);
+		const glyph = screen.getByTestId("k-icon", incl).props.children as {
+			props: { color?: string };
+		};
+		expect(glyph.props.color).toBe(light.accentForeground);
+	});
+
+	it("icon color on solid primary uses primaryForeground", async () => {
+		const screen = await render(
+			<Tag icon={Sun} variant="solid" color="primary">
+				Beta
+			</Tag>,
+		);
+		const glyph = screen.getByTestId("k-icon", incl).props.children as {
+			props: { color?: string };
+		};
+		expect(glyph.props.color).toBe(light.primaryForeground);
+	});
+
+	it("iconColor raw string passes through unresolved and beats the variant tint", async () => {
+		const screen = await render(
+			<Tag icon={Sun} variant="subtle" color="primary" iconColor="#ff00ff">
+				Beta
+			</Tag>,
+		);
+		const glyph = screen.getByTestId("k-icon", incl).props.children as {
+			props: { color?: string };
+		};
+		expect(glyph.props.color).toBe("#ff00ff");
+	});
+
+	it("iconColor token key resolves through the theme and beats the variant default", async () => {
+		const screen = await render(
+			<Tag icon={Sun} iconColor="destructive">
+				Beta
+			</Tag>,
+		);
+		const glyph = screen.getByTestId("k-icon", incl).props.children as {
+			props: { color?: string };
+		};
+		expect(glyph.props.color).toBe(light.destructive);
+		expect(glyph.props.color).not.toBe(light.mutedForeground);
+	});
+
+	it("icon px tracks the tag size: sm/md 14, lg 16", async () => {
+		for (const size of ["sm", "md", "lg"] as const) {
+			const screen = await render(
+				<Tag icon={Sun} size={size}>
+					Beta
+				</Tag>,
+			);
+			const glyph = screen.getByTestId("k-icon", incl).props.children as {
+				props: { size?: number };
+			};
+			expect(glyph.props.size).toBe(
+				size === "lg" ? ICON_SIZE_PX.sm : ICON_SIZE_PX.xs,
+			);
+		}
+	});
+
+	it("icon-only pill: no text host, remove affordance still renders", async () => {
+		const onRemove = jest.fn();
+		const screen = await render(
+			<Tag icon={Sun} onRemove={onRemove}>
+				{null}
+			</Tag>,
+		);
+		expect(screen.getAllByTestId("k-icon", incl).length).toBe(2); // Sun + remove ✕
+		expect(screen.getByTestId("k-tag-remove", incl)).toBeTruthy();
+		expect(countTextHosts(screen.toJSON())).toBe(0);
+	});
+
+	it("renders the icon in every variant without crashing", async () => {
+		for (const variant of ["solid", "outline", "subtle"] as const) {
+			const screen = await render(
+				<Tag icon={Sun} variant={variant}>
+					{null}
+				</Tag>,
+			);
+			expect(screen.getByTestId("k-icon", incl)).toBeTruthy();
+		}
 	});
 });
 

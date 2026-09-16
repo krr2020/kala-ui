@@ -9,6 +9,13 @@ export const FONT: Record<TagSize, number> = { sm: 12, md: 14, lg: 16 };
 export const PAD_H: Record<TagSize, number> = { sm: 8, md: 10, lg: 12 };
 export const PAD_V: Record<TagSize, number> = { sm: 2, md: 4, lg: 6 };
 
+/** Icon px riding alongside the label font: matches at md, steps up at lg. */
+export const ICON_FOR_SIZE: Record<TagSize, "xs" | "sm"> = {
+	sm: "xs",
+	md: "xs",
+	lg: "sm",
+};
+
 /** 'muted' has no ramp of its own — same borrow the web config makes. */
 export function look(
 	variant: TagVariant,

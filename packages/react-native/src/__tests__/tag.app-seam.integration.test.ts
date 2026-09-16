@@ -5,9 +5,9 @@ import { describe, expect, it } from "vitest";
 /**
  * Tag ↔ playground demo seam. The reported bug: the demo rendered a raw
  * lucide icon with no color, so lucide's default #242424 stroke was
- * invisible on the dark page background. Icons in the demo must go
- * through the themed Icon wrapper (token-sourced color), which is what
- * this seam pins.
+ * invisible on the dark page background. Tag now owns icon theming
+ * (icon is an icon-library component rendered at the tag's fg), so the
+ * demo must pass the bare component with no hand-threaded colors.
  */
 import { dark, light } from "../themes/definitions";
 
@@ -32,10 +32,16 @@ function contrast(a: string, b: string): number {
 }
 
 describe("tag demo seam (icon visibility)", () => {
-	it("renders icons through the themed Icon wrapper, not raw lucide", () => {
+	it("delegates icon theming to Tag: bare icon component, no demo-side color threading", () => {
 		const demo = readFileSync(PLAYGROUND_TAG_DEMO, "utf8");
-		expect(demo).toMatch(/<Icon\s+icon=/);
-		expect(demo).not.toMatch(/<Sun\s+size=\{?\d+\}?\s*\/>/);
+		expect(demo).toMatch(/icon=\{Sun\}/);
+		// the anti-pattern this seam pins: the demo hand-threading theme colors
+		// through icons is exactly how the invisible-dark-icon bug happened
+		expect(demo).not.toMatch(/<Icon\s/);
+		expect(demo).not.toMatch(/color=\{theme\./);
+		// iconColor is the only sanctioned override channel, and the demo
+		// exercises it with a token key — never a raw cross-theme value
+		expect(demo).toMatch(/iconColor="destructive"/);
 	});
 
 	it("every dark-themed foreground clears 3:1 against the dark page background", () => {
