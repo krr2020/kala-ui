@@ -83,6 +83,12 @@ export const demoStyles = StyleSheet.create((theme) => ({
 	routeBar: {
 		flexGrow: 0,
 	},
+	// edge gutter for the horizontal chip rows — first/last chips keep
+	// the same 16px inset as the content while scrolling
+	chipRowContent: {
+		paddingLeft: 16,
+		paddingRight: 16,
+	},
 	chipRows: {
 		gap: 6,
 		paddingBottom: 12,

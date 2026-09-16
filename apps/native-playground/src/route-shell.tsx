@@ -51,7 +51,7 @@ export function RouteShell() {
 				<ScrollView
 					horizontal
 					style={demoStyles.routeBar}
-					contentContainerStyle={demoStyles.picker}
+					contentContainerStyle={[demoStyles.picker, demoStyles.chipRowContent]}
 					showsHorizontalScrollIndicator={false}
 				>
 					{componentGroups.map(({ name }, index) => {
@@ -85,7 +85,7 @@ export function RouteShell() {
 					ref={componentRow}
 					horizontal
 					style={demoStyles.routeBar}
-					contentContainerStyle={demoStyles.picker}
+					contentContainerStyle={[demoStyles.picker, demoStyles.chipRowContent]}
 					showsHorizontalScrollIndicator={false}
 				>
 					{group.components.map(({ name }, index) => {
