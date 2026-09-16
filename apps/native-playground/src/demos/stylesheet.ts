@@ -98,6 +98,21 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		// fill the raw Android window background shows through
 		backgroundColor: theme.background,
 	},
+	// persistent theme switcher strip under the chip rows — theme-axis
+	// padding mirrors the content inset while staying out of the scroll
+	themeRow: {
+		flexDirection: "row",
+		alignItems: "center",
+		flexWrap: "wrap",
+		gap: 8,
+		paddingHorizontal: 16,
+		paddingVertical: 8,
+		backgroundColor: theme.background,
+		// same themed hairline tier as the chip rows — separates the
+		// switcher strip from the scrolling preview content
+		borderBottomWidth: 1,
+		borderBottomColor: theme.border,
+	},
 	// divider between the group and component rows — explicit themed
 	// hairline so the row tiers read as distinct levels
 	rowDivider: {

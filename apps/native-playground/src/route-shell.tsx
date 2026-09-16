@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { themeNames } from "@kala-ui/react-native/themes";
 import { UnistylesRuntime, useUnistyles } from "react-native-unistyles";
 import { componentGroups } from "./demos/components/registry";
 import type { ComponentGroup } from "./demos/components/registry";
@@ -157,15 +158,45 @@ export function RouteShell() {
 					})}
 				</ScrollView>
 			</View>
+			{/* persistent theme switcher — every preview can restyle without
+			traveling back to the tokens route; stateless via the unistyles
+			runtime, App.tsx's subscription re-renders the whole tree */}
+			<View style={demoStyles.themeRow}>
+				<Text style={[demoStyles.sectionHeader, demoStyles.sectionHeaderText]}>
+					Theme
+				</Text>
+				<View style={demoStyles.picker}>
+					{themeNames.map((name) => {
+						const active = name === UnistylesRuntime.themeName;
+						return (
+							<Pressable
+								key={name}
+								testID={`k-theme-${name}`}
+								accessibilityRole="button"
+								accessibilityLabel={`activate ${name} theme`}
+								onPress={() => UnistylesRuntime.setTheme(name)}
+								style={[demoStyles.chip, active && demoStyles.chipActive]}
+							>
+								<Text
+									style={[
+										demoStyles.chipText,
+										active && demoStyles.chipTextActive,
+									]}
+								>
+									{name}
+								</Text>
+							</Pressable>
+						);
+					})}
+				</View>
+			</View>
 			<ScrollView
 				style={demoStyles.screen}
 				contentContainerStyle={demoStyles.routeContent}
 			>
-				<Text style={demoStyles.current}>
-					kala-ui · native — theme: {UnistylesRuntime.themeName}
-				</Text>
+				<Text style={demoStyles.current}>Kala UI · Native</Text>
 				<Text style={demoStyles.sectionTitle}>
-					{group.title} · {component.name}
+					{group.title} · {component.label}
 				</Text>
 				{preview()}
 			</ScrollView>

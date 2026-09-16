@@ -240,6 +240,33 @@ describe("component app seam", () => {
 		expect(shell).toMatch(/\.length > 0/);
 	});
 
+	it("theme switcher is hoisted into the shell header for every preview", () => {
+		const shell = readFileSync(
+			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
+			"utf8",
+		);
+		const tokens = readFileSync(
+			`${APP_PATH.replace("App.tsx", "demos/tokens-demo.tsx")}`,
+			"utf8",
+		);
+		const stylesheet = readFileSync(
+			`${APP_PATH.replace("App.tsx", "demos/stylesheet.ts")}`,
+			"utf8",
+		);
+		// the shell owns the theme chips; the tokens demo no longer duplicates them.
+		expect(shell).toMatch(/themeNames/);
+		expect(shell).toMatch(/k-theme-/);
+		expect(shell).toMatch(/UnistylesRuntime\.setTheme/);
+		expect(tokens).not.toMatch(/k-theme-/);
+		// compact themeRow style is defined and applied in the shell.
+		expect(stylesheet).toMatch(/themeRow:/);
+		expect(shell).toMatch(/demoStyles\.themeRow/);
+		// header text formatting: humanized component label + re-cased line.
+		expect(shell).toMatch(/\{group\.title\} · \{component\.label\}/);
+		expect(shell).toMatch(/Kala UI · Native/);
+		expect(shell).not.toMatch(/kala-ui · native/);
+	});
+
 	it("humanizeLabel formats chip display text from raw names", async () => {
 		const { humanizeLabel } = (await import(
 			`${APP_PATH.replace("App.tsx", "demos/components/label.ts")}`
