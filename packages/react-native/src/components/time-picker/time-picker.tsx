@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { useState } from "react";
 import { Pressable, Text as RNText, ScrollView, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { clampTimePart, pad2 } from "../../lib/date-utils";
+import { clampTimePart, pad2 } from "../../lib/date.utils";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
 import type { TimePickerProps, TimeValue } from "./time-picker.types";

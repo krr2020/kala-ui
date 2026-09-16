@@ -6,17 +6,9 @@ import type { ReactElement } from "react";
 import { useState } from "react";
 import { Image, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { initialsFor } from "../../lib/text.utils";
 import { AVATAR_SIZES } from "./list.styles";
 import type { ListItemAvatarProps } from "./list.types";
-
-function initials(name: string): string {
-	return name
-		.split(/\s+/)
-		.filter(Boolean)
-		.map((part) => part[0]?.toUpperCase() ?? "")
-		.slice(0, 2)
-		.join("");
-}
 
 export function ListItemAvatar({
 	source,
@@ -53,7 +45,7 @@ export function ListItemAvatar({
 				/>
 			) : (
 				<RNText style={{ color: String(theme.mutedForeground) }}>
-					{initials(name ?? "")}
+					{initialsFor(name)}
 				</RNText>
 			)}
 		</View>

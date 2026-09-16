@@ -9,7 +9,7 @@ import {
 	monthIsAfter,
 	monthIsBefore,
 	startOfMonth,
-} from "../../lib/date-utils";
+} from "../../lib/date.utils";
 import { Calendar, CalendarSkeleton } from "../calendar";
 
 const inclHidden = { includeHiddenElements: true } as const;
@@ -38,7 +38,7 @@ const iso = (d: Date): string =>
 		d.getDate(),
 	).padStart(2, "0")}`;
 
-describe("date-utils", () => {
+describe("date.utils", () => {
 	it("daysInMonth handles 31/30/29/28 boundaries", () => {
 		expect(daysInMonth(2026, 0)).toBe(31); // Jan
 		expect(daysInMonth(2026, 3)).toBe(30); // Apr

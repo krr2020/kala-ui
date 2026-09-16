@@ -1,6 +1,6 @@
 /**
- * Non-component wiring for Avatar: size-to-geometry tables, shape radii,
- * status-dot ring weights, and the initials fallback helper.
+ * Non-component wiring for Avatar: size-to-geometry tables and
+ * shape radii.
  */
 import type { AvatarShape, AvatarSize } from "./avatar.types";
 
@@ -42,14 +42,3 @@ export const RADIUS: Record<AvatarShape, number> = {
 	rounded: 8,
 	square: 0,
 };
-
-/** First letters of the first two words, uppercase; en-dash when unnamed. */
-export function initialsFor(name?: string): string {
-	const words = (name ?? "").trim().split(/\s+/).filter(Boolean);
-	if (words.length === 0) return "–";
-	return words
-		.slice(0, 2)
-		.map((word) => word[0])
-		.join("")
-		.toUpperCase();
-}

@@ -7,15 +7,9 @@ import type { ReactElement } from "react";
 import { useState } from "react";
 import { Image, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { initialsFor } from "../../lib/text.utils";
 import { applySlot } from "../slot-styles";
-import {
-	BOX,
-	DOT,
-	FALLBACK_FONT,
-	RADIUS,
-	RING,
-	initialsFor,
-} from "./avatar.styles";
+import { BOX, DOT, FALLBACK_FONT, RADIUS, RING } from "./avatar.styles";
 import type { AvatarProps } from "./avatar.types";
 
 export function Avatar({

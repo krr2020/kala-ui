@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, Text as RNText } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { formatDay } from "../../lib/date-utils";
+import { formatDay } from "../../lib/date.utils";
 import type { DateRangeValue } from "../calendar";
 import { Calendar } from "../calendar";
 import { Sheet } from "../sheet";

@@ -6,13 +6,12 @@ import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import {
 	addMonths,
-	daysInMonth,
-	firstWeekdayOffset,
 	formatMonthYear,
 	isSameDay,
 	monthIsAfter,
 	monthIsBefore,
-} from "../../lib/date-utils";
+} from "../../lib/date.utils";
+import { buildMonth, iso } from "../../lib/calendar.utils";
 import { applySlot } from "../slot-styles";
 import type {
 	CalendarProps,
@@ -32,46 +31,6 @@ const WEEKDAYS = [
 	"Saturday",
 ] as const;
 const CELL_SIZE = 36;
-
-const iso = (d: Date): string =>
-	`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
-		d.getDate(),
-	).padStart(2, "0")}`;
-
-/** 42 cells: leading days of the previous month, this month, trailing next. */
-function buildMonth(view: Date): { date: Date; inMonth: boolean }[] {
-	const year = view.getFullYear();
-	const month = view.getMonth();
-	const dim = daysInMonth(year, month);
-	const offset = firstWeekdayOffset(new Date(year, month, 1));
-	const prev = addMonths(view, -1);
-	const prevDim = daysInMonth(prev.getFullYear(), prev.getMonth());
-	const cells: { date: Date; inMonth: boolean }[] = [];
-	for (let i = offset; i > 0; i--) {
-		cells.push({
-			date: new Date(prev.getFullYear(), prev.getMonth(), prevDim - i + 1),
-			inMonth: false,
-		});
-	}
-	for (let day = 1; day <= dim; day++) {
-		cells.push({ date: new Date(year, month, day), inMonth: true });
-	}
-	const next = addMonths(view, 1);
-	let trail = 1;
-	while (cells.length < 42) {
-		cells.push({
-			date: new Date(next.getFullYear(), next.getMonth(), trail++),
-			inMonth: false,
-		});
-	}
-	return cells;
-}
-
-function rangePhase(
-	selection: DateRangeValue | undefined,
-): DateRangeValue | undefined {
-	return selection;
-}
 
 /**
  * Calendar: inline month grid. Modes mirror the web component — single
@@ -133,11 +92,10 @@ export function Calendar({
 			commit(next);
 			return;
 		}
-		const current = rangePhase(
+		const current =
 			!Array.isArray(selection) && selection && !(selection instanceof Date)
 				? selection
-				: undefined,
-		);
+				: undefined;
 		if (!current || current.to) {
 			commit({ from: d });
 		} else if (d < current.from) {

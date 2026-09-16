@@ -1,35 +1,14 @@
 import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import {
+	PASSWORD_MAX_STRENGTH,
+	PASSWORD_MIN_LENGTH,
+	STRENGTH_LABELS,
+	calculatePasswordStrength,
+} from "../../lib/password-strength.utils";
 import { applySlot } from "../slot-styles";
 import type { PasswordStrengthIndicatorProps } from "./password-strength-indicator.types";
-
-const PASSWORD_MIN_LENGTH = 8;
-const PASSWORD_STRONG_LENGTH = 12;
-const PASSWORD_MAX_STRENGTH = 4;
-
-const STRENGTH_LABELS = [
-	"Very Weak",
-	"Weak",
-	"Fair",
-	"Good",
-	"Strong",
-] as const;
-
-export function calculatePasswordStrength(pwd: string): number {
-	if (!pwd) {
-		return 0;
-	}
-
-	let strength = 0;
-	if (pwd.length >= PASSWORD_MIN_LENGTH) strength++;
-	if (pwd.length >= PASSWORD_STRONG_LENGTH) strength++;
-	if (/[a-z]/.test(pwd) && /[A-Z]/.test(pwd)) strength++;
-	if (/\d/.test(pwd)) strength++;
-	if (/[@$!%*?&]/.test(pwd)) strength++;
-
-	return Math.min(strength, PASSWORD_MAX_STRENGTH);
-}
 
 /**
  * PasswordStrengthIndicator: segmented strength meter. Bars carry the
