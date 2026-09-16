@@ -521,8 +521,6 @@ describe("layout restructure pins", () => {
 				"TabsProps",
 				"Tag",
 				"TagColor",
-				"TagInput",
-				"TagInputProps",
 				"TagProps",
 				"TagSize",
 				"TagVariant",

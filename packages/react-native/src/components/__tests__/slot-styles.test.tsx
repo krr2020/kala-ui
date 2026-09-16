@@ -54,7 +54,6 @@ import { Steps } from "../steps";
 import { Switch } from "../switch";
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
-import { TagInput } from "../tag-input";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Textarea } from "../textarea";
@@ -568,11 +567,6 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				),
 		},
 		{
-			name: "TagInput",
-			marker: "k-tag-input",
-			render: () => render(<TagInput styles={{ root: { borderWidth: 7 } }} />),
-		},
-		{
 			name: "Toggle",
 			marker: "k-toggle",
 			render: () =>
@@ -610,8 +604,8 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		});
 	}
 
-	it("the sweep covers all 56 components", () => {
-		expect(fixtures.length).toBe(56);
+	it("the sweep covers all 55 components", () => {
+		expect(fixtures.length).toBe(55);
 	});
 });
 

@@ -97,7 +97,6 @@ export const componentGroups: ComponentGroup[] = [
 				render: () => <BadgeDemo />,
 			},
 			{ label: humanizeLabel("tag"), name: "tag", render: () => <TagDemo /> },
-			{ label: humanizeLabel("tag-input"), name: "tag-input" },
 			{
 				label: humanizeLabel("card"),
 				name: "card",

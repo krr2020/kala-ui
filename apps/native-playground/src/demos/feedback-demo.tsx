@@ -14,7 +14,6 @@ import {
 	NumberInput,
 	PasswordStrengthIndicator,
 	Select,
-	TagInput,
 	Textarea,
 	Toast,
 } from "@kala-ui/react-native";
@@ -34,7 +33,6 @@ export function FeedbackDemo() {
 	const [loading, setLoading] = useState(false);
 	const [crashKey, setCrashKey] = useState(0);
 	const [code, setCode] = useState("");
-	const [recipients, setRecipients] = useState<string[]>(["ada"]);
 	const [toppings, setToppings] = useState<string[]>(["sprinkles"]);
 	const [city, setCity] = useState<string | undefined>(undefined);
 	return (
@@ -133,15 +131,6 @@ export function FeedbackDemo() {
 			<DemoBlock label="password strength">
 				<View style={demoStyles.componentRow} testID="k-demo-password-strength">
 					<PasswordStrengthIndicator password="Aaaaaaaaaaaa1!" />
-				</View>
-			</DemoBlock>
-			<DemoBlock label="tag input">
-				<View style={demoStyles.componentRow} testID="k-demo-tag-input">
-					<TagInput
-						value={recipients}
-						onValueChange={setRecipients}
-						placeholder="add recipients"
-					/>
 				</View>
 			</DemoBlock>
 			<DemoBlock label="multi select">

@@ -123,7 +123,6 @@ describe("component app seam", () => {
 			"DropdownMenu",
 			"ContextMenu",
 			"Timeline",
-			"TagInput",
 			"MultiSelect",
 			"Combobox",
 			"CopyButton",
@@ -166,10 +165,10 @@ describe("component app seam", () => {
 		// toast/banner + agree/sync/plan + range/tab/rating/volume +
 		// bold/align/formats + select + loading toggle + crash toggle +
 		// otp code entry + menu auto-sync/last-action + number-input +
-		// tag recipients + toppings + city + stay date + reminder time +
+		// toppings + city + stay date + reminder time +
 		// app chrome tab + route selection (group + component) +
 		// button press counter.
-		expect(demoHooks).toBe(32);
+		expect(demoHooks).toBe(31);
 	});
 
 	it("registry maps groups to components with dedicated demos and fallbacks", () => {
@@ -201,7 +200,6 @@ describe("component app seam", () => {
 		}
 		expect(registry).toMatch(/name: "list"\s*\},?/);
 		expect(registry).toMatch(/name: "avatar-group"\s*\},?/);
-		expect(registry).toMatch(/name: "tag-input"\s*\},?/);
 	});
 
 	it("registry declares a package source on every group — app groups segregated", () => {
@@ -427,7 +425,6 @@ describe("component app seam", () => {
 					'testID="k-demo-dropdown-menu"': 1,
 					'testID="k-demo-context-menu"': 1,
 					'testID="k-demo-timeline"': 1,
-					'testID="k-demo-tag-input"': 1,
 					'testID="k-demo-multi-select"': 1,
 					'testID="k-demo-combobox"': 1,
 					'testID="k-demo-copy-button"': 1,

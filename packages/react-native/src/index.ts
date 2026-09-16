@@ -235,8 +235,6 @@ export type { TabsItem, TabsProps } from "./components/tabs";
 export { Tabs } from "./components/tabs";
 export type { TagColor, TagProps, TagSize, TagVariant } from "./components/tag";
 export { Tag } from "./components/tag";
-export type { TagInputProps } from "./components/tag-input";
-export { TagInput } from "./components/tag-input";
 export type {
 	TextAlign,
 	TextColor,

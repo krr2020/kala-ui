@@ -47,7 +47,6 @@ import { Steps } from "../steps";
 import { Switch } from "../switch";
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
-import { TagInput } from "../tag-input";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Textarea } from "../textarea";
@@ -978,7 +977,7 @@ describe("a11y contract", () => {
 		});
 	});
 
-	describe("Timeline, TagInput", () => {
+	describe("Timeline", () => {
 		it("Timeline items announce title, timestamp and description", async () => {
 			const screen = await render(
 				<Timeline
@@ -996,17 +995,6 @@ describe("a11y contract", () => {
 			expect(item.props.accessibilityLabel).toContain("12:30");
 			expect(item.props.accessibilityLabel).toContain("in transit");
 		});
-
-		it("TagInput labels the entry field and remove buttons", async () => {
-			const screen = await render(
-				<TagInput defaultValue={["alpha"]} placeholder="add recipients" />,
-			);
-			expect(
-				screen.getByTestId("k-tag-input-field").props.accessibilityLabel,
-			).toBe("add recipients");
-			expect(screen.getByLabelText("Remove alpha")).toBeTruthy();
-		});
-
 	});
 
 	describe("MultiSelect, Combobox", () => {

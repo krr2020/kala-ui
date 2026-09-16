@@ -66,7 +66,6 @@ import { Switch } from "../switch";
 
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
-import { TagInput } from "../tag-input";
 import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Textarea } from "../textarea";
@@ -2426,7 +2425,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("Timeline, TagInput", () => {
+	describe("Timeline", () => {
 		it("Timeline exposes item, dot and line markers", async () => {
 			const screen = await render(
 				<Timeline
@@ -2437,15 +2436,6 @@ describe("component markers", () => {
 			expect(screen.getAllByTestId("k-timeline-item")).toHaveLength(2);
 			expect(screen.getAllByTestId("k-timeline-dot")).toHaveLength(2);
 			expect(screen.getAllByTestId("k-timeline-line")).toHaveLength(1);
-		});
-
-		it("TagInput exposes chip, field and clear markers", async () => {
-			const screen = await render(<TagInput defaultValue={["a"]} />);
-			expect(screen.getByTestId("k-tag-input")).toBeTruthy();
-			expect(screen.getAllByTestId("k-tag")).toHaveLength(1);
-			expect(screen.getByTestId("k-tag-input-field")).toBeTruthy();
-			expect(screen.getByTestId("k-tag-input-clear")).toBeTruthy();
-			expect(screen.getByTestId("k-tag-remove")).toBeTruthy();
 		});
 	});
 
