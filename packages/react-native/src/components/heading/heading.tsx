@@ -5,38 +5,16 @@
  * bold default weight and tight tracking.
  */
 import type { ReactElement } from "react";
-import type { TextStyle } from "react-native";
 import { Text as RNText } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
-import type {
-	HeadingAlign,
-	HeadingProps,
-	HeadingSize,
-	HeadingWeight,
-} from "./heading.types";
-
-const FONT_SIZE: Record<HeadingSize, number> = {
-	h1: 36,
-	h2: 30,
-	h3: 24,
-	h4: 20,
-	h5: 18,
-	h6: 16,
-};
-
-const FONT_WEIGHT: Record<HeadingWeight, TextStyle["fontWeight"]> = {
-	default: 700,
-	medium: 500,
-	semibold: 600,
-	extrabold: 800,
-};
-
-const ALIGN: Record<HeadingAlign, "left" | "center" | "right"> = {
-	left: "left",
-	center: "center",
-	right: "right",
-};
+import {
+	ALIGN,
+	FONT_SIZE,
+	FONT_WEIGHT,
+	TRACKING_TIGHT,
+} from "./heading.styles";
+import type { HeadingProps } from "./heading.types";
 
 export function Heading({
 	children,
@@ -58,8 +36,7 @@ export function Heading({
 					fontWeight: FONT_WEIGHT[weight],
 					textAlign: ALIGN[align],
 					color: theme.foreground,
-					// tracking-tight, in dp
-					letterSpacing: -0.5,
+					letterSpacing: TRACKING_TIGHT,
 				},
 				applySlot(applySlot({}, style), styles?.root),
 			]}
