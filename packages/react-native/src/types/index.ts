@@ -1,10 +1,11 @@
-/** The seven theme names, mirroring the CSS theme classes in globals.css. */
+/**
+ * The theme names shipped on mobile: light/dark as the standard pair plus
+ * the high-contrast pair as an explicit a11y opt-in. The web-only brand
+ * variants (neutral/accent/dark-accent) stay in globals.css, not here.
+ */
 export type ThemeName =
 	| "light"
-	| "neutral"
-	| "accent"
 	| "dark"
-	| "dark-accent"
 	| "high-contrast-light"
 	| "high-contrast-dark";
 

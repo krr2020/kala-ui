@@ -2,9 +2,10 @@ import type { KalaTheme, ThemeName } from "../types";
 
 // Transcribed from packages/react/src/styles/globals.css — regenerate with
 // `node scripts/generate-themes.mjs`; parity with the CSS is enforced by
-// src/__tests__/tokens-parity.test.ts. The `accent` theme is :root merged
-// with the .accent overrides; `dark-accent` is .dark merged with .dark.accent
-// (CSS cascade semantics). Colors are hex; alphas/spreads are numbers.
+// src/__tests__/tokens-parity.test.ts. Mobile ships light/dark plus the
+// high-contrast a11y pair; web-only brand variants (neutral/accent/
+// dark-accent) are deliberately not transcribed. Colors are hex;
+// alphas/spreads are numbers.
 export const light = {
 	background: "#ffffff",
 	foreground: "#001338",
@@ -34,84 +35,6 @@ export const light = {
 	shadowColor: "#000000",
 	shadowAlpha: 0,
 	shadowSpread: 0,
-	separator: "#c1cedc",
-	success: "#16a249",
-	successForeground: "#fff1f2",
-	warning: "#f59f0a",
-	warningForeground: "#fff1f2",
-	error: "#dc2828",
-	errorForeground: "#fff1f2",
-	info: "#0bb8da",
-	infoForeground: "#fff1f2",
-} as const satisfies KalaTheme;
-
-export const neutral = {
-	background: "#ffffff",
-	foreground: "#001338",
-	card: "#ffffff",
-	cardForeground: "#171717",
-	popover: "#ffffff",
-	popoverForeground: "#171717",
-	primary: "#171717",
-	primaryForeground: "#fafafa",
-	secondary: "#94a3b8",
-	secondaryForeground: "#fafafa",
-	muted: "#e2e7ee",
-	mutedForeground: "#737373",
-	accent: "#f5f5f5",
-	accentForeground: "#171717",
-	destructive: "#ef4444",
-	destructiveForeground: "#f8fafc",
-	border: "#4b6191",
-	borderStrong: "#8a93a8",
-	borderAlpha: 0.16,
-	cardBorderAlpha: 0.16,
-	input: "#e5e5e5",
-	ring: "#171717",
-	ringOffsetColor: "#ffffff",
-	shadowColor: "#182135",
-	shadowAlpha: 0.05,
-	shadowSpread: 10,
-	separator: "#4b6191",
-	success: "#21c45d",
-	successForeground: "#fafafa",
-	warning: "#facc14",
-	warningForeground: "#fafafa",
-	error: "#ef4444",
-	errorForeground: "#fafafa",
-	info: "#0bdada",
-	infoForeground: "#fafafa",
-} as const satisfies KalaTheme;
-
-export const accent = {
-	background: "#ffffff",
-	foreground: "#001338",
-	card: "#ffffff",
-	cardForeground: "#020817",
-	popover: "#ffffff",
-	popoverForeground: "#020817",
-	primary: "#2563eb",
-	primaryForeground: "#f8fafc",
-	secondary: "#7886a1",
-	secondaryForeground: "#ffffff",
-	muted: "#e2e7ee",
-	mutedForeground: "#6b7280",
-	accent: "#f3f4f6",
-	accentForeground: "#030711",
-	destructive: "#ef4444",
-	destructiveForeground: "#f8fafc",
-	border: "#c1cedc",
-	borderStrong: "#7d98b5",
-	borderAlpha: 1,
-	cardBorderAlpha: 0,
-	input: "#e2e8f0",
-	ring: "#2563eb",
-	ringOffsetColor: "#ffffff",
-	overlay: "#000000",
-	overlayAlpha: 0.5,
-	shadowColor: "#185fe2",
-	shadowAlpha: 0.1,
-	shadowSpread: 25,
 	separator: "#c1cedc",
 	success: "#16a249",
 	successForeground: "#fff1f2",
@@ -155,41 +78,6 @@ export const dark = {
 	errorForeground: "#2c0707",
 	info: "#47cfeb",
 	infoForeground: "#04122f",
-} as const satisfies KalaTheme;
-
-export const darkAccent = {
-	background: "#1d4fd7",
-	foreground: "#99a6b8",
-	card: "#1e2739",
-	cardForeground: "#f8fafc",
-	popover: "#1e2739",
-	popoverForeground: "#f8fafc",
-	primary: "#3b82f6",
-	primaryForeground: "#0f172a",
-	secondary: "#1e293b",
-	secondaryForeground: "#f8fafc",
-	muted: "#1e293b",
-	mutedForeground: "#94a3b8",
-	accent: "#1e293b",
-	accentForeground: "#f8fafc",
-	destructive: "#7f1d1d",
-	destructiveForeground: "#f8fafc",
-	border: "#4b6191",
-	borderStrong: "#8a93a8",
-	borderAlpha: 0.16,
-	cardBorderAlpha: 0,
-	input: "#1e293b",
-	ring: "#1d4ed8",
-	ringOffsetColor: "#151c29",
-	shadowColor: "#1d4fd7",
-	shadowAlpha: 0.2,
-	shadowSpread: 25,
-	separator: "#4b6191",
-	error: "#f87272",
-	errorForeground: "#2c0707",
-	info: "#47cfeb",
-	infoForeground: "#04122f",
-	backgroundAlpha: 0.05,
 } as const satisfies KalaTheme;
 
 export const highContrastLight = {
@@ -266,10 +154,7 @@ export const highContrastDark = {
 
 export const themes = {
 	light,
-	neutral,
-	accent,
 	dark,
-	"dark-accent": darkAccent,
 	"high-contrast-light": highContrastLight,
 	"high-contrast-dark": highContrastDark,
 } as const satisfies Record<ThemeName, KalaTheme>;
