@@ -9,10 +9,10 @@ import type { ReactElement, ReactNode } from "react";
 import { useState } from "react";
 import { Image, Linking, Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import type { KalaTheme } from "../../types";
 import { Badge } from "../badge";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
+import { dividerStyle, surfaceStyle } from "./list.styles";
 import type {
 	ListItemActionProps,
 	ListItemAvatarProps,
@@ -41,11 +41,9 @@ function initials(name: string): string {
 function SkeletonRow({
 	variant,
 	dense,
-	theme,
 }: {
 	variant: ListSkeletonConfig["variant"];
 	dense: boolean;
-	theme: KalaTheme;
 }) {
 	const lineH = dense ? 12 : 16;
 	const avatar = (
@@ -82,7 +80,6 @@ function SkeletonRow({
 				: null}
 			{variant === "withBadge" ? body(line("65%" as const)) : null}
 			{variant === "withBadge" ? line(48) : null}
-			<View style={{ backgroundColor: String(theme.separator) }} />
 		</View>
 	);
 }
@@ -102,13 +99,7 @@ export function List({
 	const { theme } = useUnistyles();
 
 	const surface = [
-		{
-			backgroundColor: String(theme.card),
-			borderRadius: 8,
-			borderWidth: 1,
-			borderColor: String(theme.border),
-			overflow: "hidden" as const,
-		},
+		surfaceStyle(theme),
 		applySlot(applySlot({}, style), styles?.root),
 	];
 
@@ -137,21 +128,10 @@ export function List({
 										paddingVertical: dense || skDense ? 8 : 12,
 									}}
 								>
-									<SkeletonRow
-										variant={variant}
-										dense={dense || skDense}
-										theme={theme}
-									/>
+									<SkeletonRow variant={variant} dense={dense || skDense} />
 								</View>
 								{showDividers && index < itemCount - 1 ? (
-									<View
-										testID="k-list-divider"
-										style={{
-											height: 1,
-											alignSelf: "stretch",
-											backgroundColor: String(theme.separator),
-										}}
-									/>
+									<View testID="k-list-divider" style={dividerStyle(theme)} />
 								) : null}
 							</View>
 						);
@@ -182,14 +162,7 @@ export function List({
 					<View key={rowKey}>
 						{item}
 						{divided && index < last ? (
-							<View
-								testID="k-list-divider"
-								style={{
-									height: 1,
-									alignSelf: "stretch",
-									backgroundColor: String(theme.separator),
-								}}
-							/>
+							<View testID="k-list-divider" style={dividerStyle(theme)} />
 						) : null}
 					</View>
 				);

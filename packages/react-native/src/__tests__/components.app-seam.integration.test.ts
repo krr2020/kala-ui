@@ -168,7 +168,7 @@ describe("component app seam", () => {
 		// toppings + city + stay date + reminder time +
 		// app chrome tab + route selection (group + component) +
 		// button press counter.
-		expect(demoHooks).toBe(31);
+		expect(demoHooks).toBe(32);
 	});
 
 	it("registry maps groups to components with dedicated demos and fallbacks", () => {
@@ -193,12 +193,12 @@ describe("component app seam", () => {
 			["separator", "SeparatorDemo"],
 			["card", "CardDemo"],
 			["avatar", "AvatarDemo"],
+			["list", "ListDemo"],
 		] as const) {
 			expect(registry).toMatch(
 				new RegExp(`name: "${name}",[\\s\\S]*?render: \\(\\) => <${demo}`),
 			);
 		}
-		expect(registry).toMatch(/name: "list"\s*\},?/);
 		expect(registry).toMatch(/name: "avatar-group"\s*\},?/);
 	});
 
@@ -435,6 +435,8 @@ describe("component app seam", () => {
 					'accessibilityLabel="volume"': 1,
 					'accessibilityLabel="app components section"': 1,
 					'accessibilityLabel="library components section"': 1,
+					'accessibilityLabel="loading list"': 1,
+					'accessibilityLabel="tap me row"': 1,
 					"accessibilityLabel={`activate ${name} theme`}": 1,
 					"accessibilityLabel={`select ${name} group`}": 1,
 					"accessibilityLabel={`show ${name} preview`}": 1,
@@ -508,9 +510,7 @@ describe("component app seam", () => {
 		const colors = [...colorsBlock.matchAll(/"([a-z]+)"/g)].map((m) => m[1]);
 		// every exported theme object gets its own `export const <name> = {`
 		// block — enumerate from source so a new theme cannot skip the guard
-		const themeNames = [
-			...themesFile.matchAll(/export const (\w+) = \{/g),
-		]
+		const themeNames = [...themesFile.matchAll(/export const (\w+) = \{/g)]
 			.map((m) => m[1])
 			.filter((name) => name !== "themes");
 		for (const themeName of themeNames) {

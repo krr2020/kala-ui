@@ -3,12 +3,6 @@ import {
 	Checkbox,
 	Text as KText,
 	Label,
-	List,
-	ListItem,
-	ListItemAvatar,
-	ListItemBadge,
-	ListItemContent,
-	ListItemTitle,
 	Progress,
 	RadioGroup,
 	RingProgress,
@@ -30,23 +24,6 @@ export function BasicsDemo() {
 	const [plan, setPlan] = useState("pro");
 	return (
 		<>
-			<DemoBlock label="list">
-				<List testID="k-demo-list">
-					<ListItem>
-						<ListItemAvatar name="Ada Lovelace" size="sm" />
-						<ListItemContent>
-							<ListItemTitle>Ada Lovelace</ListItemTitle>
-						</ListItemContent>
-						<ListItemBadge color="success">active</ListItemBadge>
-					</ListItem>
-					<ListItem>
-						<ListItemAvatar name="Alan Turing" size="sm" />
-						<ListItemContent>
-							<ListItemTitle>Alan Turing</ListItemTitle>
-						</ListItemContent>
-					</ListItem>
-				</List>
-			</DemoBlock>
 			<DemoBlock label="text input">
 				<View style={demoStyles.componentRow} testID="k-demo-input">
 					<TextInput placeholder="email" accessibilityLabel="email field" />

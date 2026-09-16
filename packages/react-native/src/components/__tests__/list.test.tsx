@@ -1,5 +1,6 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { Linking, Text } from "react-native";
+import { tokens } from "../../tokens";
 import { Badge } from "../badge";
 import {
 	List,
@@ -12,6 +13,7 @@ import {
 	ListItemText,
 	ListItemTitle,
 } from "../list";
+import { AVATAR_SIZES, ICON_SIZES } from "../list/list.styles";
 
 type Screen = Awaited<ReturnType<typeof render>>;
 
@@ -44,9 +46,18 @@ describe("List container", () => {
 		const el = node(screen, "k-list");
 		const s = flatStyle(el);
 		expect(s.backgroundColor).toBeTruthy();
-		expect(s.borderRadius).toBeGreaterThan(0);
+		expect(s.borderRadius).toBe(tokens.radius.card);
 		expect(s.borderWidth).toBe(1);
 		expect(tree(el).accessibilityRole).toBe("list");
+	});
+
+	it("size tables resolve to tokens: icon tiers match tokens.size.icon", () => {
+		expect(ICON_SIZES).toEqual({
+			sm: tokens.size.icon.sm,
+			md: tokens.size.icon.md,
+			lg: tokens.size.icon.lg,
+		});
+		expect(AVATAR_SIZES).toEqual({ sm: 32, md: 40, lg: 48 });
 	});
 
 	it("divided (default) draws N-1 separators; divided=false and single child draw none", async () => {
@@ -245,6 +256,20 @@ describe("List loading arm", () => {
 			);
 			expect(screen.getByTestId("k-list")).toBeTruthy();
 			expect(screen.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
+			// skeleton rows must stay chrome-free: the list surface is the
+			// only backgroundColor-bearing node in the loading arm
+			const countBg = (json: unknown): number => {
+				if (Array.isArray(json))
+					return json.reduce<number>((sum, n) => sum + countBg(n), 0);
+				if (!json || typeof json !== "object") return 0;
+				const props = (json as { props?: { style?: unknown } }).props;
+				const self =
+					props && flatStyle({ props }).backgroundColor !== undefined ? 1 : 0;
+				const children = (props as { children?: unknown } | undefined)
+					?.children;
+				return self + countBg(children);
+			};
+			expect(countBg(screen.toJSON())).toBe(1); // the list surface only
 		}
 	});
 

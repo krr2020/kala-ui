@@ -14,6 +14,7 @@ import { CardDemo } from "./card-demo";
 import { HeadingDemo } from "./heading-demo";
 import { IconDemo } from "./icon-demo";
 import { humanizeLabel } from "./label";
+import { ListDemo } from "./list-demo";
 import { SeparatorDemo } from "./separator-demo";
 import { TagDemo } from "./tag-demo";
 import { TextDemo } from "./text-demo";
@@ -84,7 +85,11 @@ export const componentGroups: ComponentGroup[] = [
 				name: "heading",
 				render: () => <HeadingDemo />,
 			},
-			{ label: humanizeLabel("list"), name: "list" },
+			{
+				label: humanizeLabel("list"),
+				name: "list",
+				render: () => <ListDemo />,
+			},
 			{
 				label: humanizeLabel("avatar"),
 				name: "avatar",
