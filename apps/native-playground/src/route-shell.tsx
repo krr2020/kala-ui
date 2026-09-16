@@ -1,84 +1,90 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { UnistylesRuntime, useUnistyles } from "react-native-unistyles";
-import { AppChromeDemo } from "./demos/app-chrome-demo";
-import { BasicsDemo } from "./demos/basics-demo";
-import { ChartsDemo } from "./demos/charts-demo";
-import { DataTableDemo } from "./demos/data-table-demo";
-import { componentDemos } from "./demos/components/registry";
-import { FeedbackDemo } from "./demos/feedback-demo";
-import { NavigationDemo } from "./demos/navigation-demo";
-import { OverlaysDemo } from "./demos/overlays-demo";
+import { componentGroups } from "./demos/components/registry";
 import { demoStyles } from "./demos/stylesheet";
-import { TokensDemo } from "./demos/tokens-demo";
 
-const GROUP_ROUTES = [
-	{ name: "tokens", title: "Tokens & Theming", render: () => <TokensDemo /> },
-	{
-		name: "app chrome",
-		title: "App Chrome",
-		render: () => <AppChromeDemo />,
-	},
-	{ name: "charts", title: "Charts & Metrics", render: () => <ChartsDemo /> },
-	{
-		name: "data table",
-		title: "Data Table",
-		render: () => <DataTableDemo />,
-	},
-	{ name: "basics", title: "Basics", render: () => <BasicsDemo /> },
-	{
-		name: "feedback",
-		title: "Forms & Feedback",
-		render: () => <FeedbackDemo />,
-	},
-	{
-		name: "navigation",
-		title: "Navigation & Controls",
-		render: () => <NavigationDemo />,
-	},
-	{
-		name: "overlays",
-		title: "Overlays & Menus",
-		render: () => <OverlaysDemo />,
-	},
-] as const;
-
-const ROUTES = [
-	...GROUP_ROUTES,
-	...componentDemos.map(({ name, title, render }) => ({
-		name,
-		title,
-		render,
-	})),
-] as const;
-
-// Route state lives here (not App.tsx) so the app shell stays stateless
-// while each demo screen renders in isolation — one concern per screen.
+// Two-row filter navigation: row 1 picks a group, row 2 picks a
+// component inside it. Selecting a group auto-selects its first
+// component and rewinds the component row so the active chip is
+// visible. App.tsx stays stateless per the seam contract.
 export function RouteShell() {
 	useUnistyles();
-	const [route, setRoute] = useState<(typeof ROUTES)[number]["name"]>(
-		ROUTES[0].name,
-	);
-	const active = ROUTES.find((r) => r.name === route) ?? ROUTES[0];
+	const [groupIndex, setGroupIndex] = useState(0);
+	const [componentIndex, setComponentIndex] = useState(0);
+	const componentRow = useRef<ScrollView>(null);
+
+	const group = componentGroups[groupIndex] ?? componentGroups[0];
+	const component = group.components[componentIndex] ?? group.components[0];
+	const preview = component.render ?? group.overview;
+
+	const selectGroup = (index: number): void => {
+		setGroupIndex(index);
+		setComponentIndex(0);
+		componentRow.current?.scrollTo({ x: 0, animated: false });
+	};
+
+	const selectComponent = (index: number): void => {
+		setComponentIndex(index);
+	};
+
 	return (
 		<SafeAreaView style={{ flex: 1 }} edges={["top"]}>
-			<View style={{ flex: 1 }}>
+			<View style={demoStyles.chipRows}>
 				<ScrollView
 					horizontal
 					style={demoStyles.routeBar}
 					contentContainerStyle={demoStyles.picker}
 					showsHorizontalScrollIndicator={false}
 				>
-					{ROUTES.map(({ name }) => {
-						const on = name === route;
+					{componentGroups.map(({ name }, index) => {
+						const on = index === groupIndex;
 						return (
 							<Pressable
 								key={name}
 								accessibilityRole="button"
-								accessibilityLabel={`open ${name} demo`}
-								onPress={() => setRoute(name)}
-								style={[demoStyles.chip, on && demoStyles.chipActive]}
+								accessibilityLabel={`select ${name} group`}
+								onPress={() => selectGroup(index)}
+								style={[
+									demoStyles.chip,
+									demoStyles.groupChip,
+									on && demoStyles.chipActive,
+								]}
+							>
+								<Text
+									style={[
+										demoStyles.chipText,
+										demoStyles.groupChipText,
+										on && demoStyles.chipTextActive,
+									]}
+								>
+									{name}
+								</Text>
+							</Pressable>
+						);
+					})}
+				</ScrollView>
+				<ScrollView
+					ref={componentRow}
+					horizontal
+					style={demoStyles.routeBar}
+					contentContainerStyle={demoStyles.picker}
+					showsHorizontalScrollIndicator={false}
+				>
+					{group.components.map(({ name }, index) => {
+						const on = index === componentIndex;
+						return (
+							<Pressable
+								key={`${group.name}-${name}`}
+								accessibilityRole="button"
+								accessibilityLabel={`show ${name} preview`}
+								onPress={() => selectComponent(index)}
+								style={[
+									demoStyles.chip,
+									demoStyles.filterChip,
+									on && demoStyles.chipActive,
+								]}
 							>
 								<Text
 									style={[demoStyles.chipText, on && demoStyles.chipTextActive]}
@@ -89,17 +95,19 @@ export function RouteShell() {
 						);
 					})}
 				</ScrollView>
-				<ScrollView
-					style={demoStyles.screen}
-					contentContainerStyle={demoStyles.routeContent}
-				>
-					<Text style={demoStyles.current}>
-						kala-ui · native — theme: {UnistylesRuntime.themeName}
-					</Text>
-					<Text style={demoStyles.sectionTitle}>{active.title}</Text>
-					{active.render()}
-				</ScrollView>
 			</View>
+			<ScrollView
+				style={demoStyles.screen}
+				contentContainerStyle={demoStyles.routeContent}
+			>
+				<Text style={demoStyles.current}>
+					kala-ui · native — theme: {UnistylesRuntime.themeName}
+				</Text>
+				<Text style={demoStyles.sectionTitle}>
+					{group.title} · {component.name}
+				</Text>
+				{preview()}
+			</ScrollView>
 		</SafeAreaView>
 	);
 }

@@ -83,6 +83,24 @@ export const demoStyles = StyleSheet.create((theme) => ({
 	routeBar: {
 		flexGrow: 0,
 	},
+	chipRows: {
+		gap: 6,
+		borderBottomWidth: 1,
+		borderBottomColor: theme.border,
+	},
+	groupChip: {
+		borderRadius: 999,
+		borderColor: theme.foreground,
+	},
+	groupChipText: {
+		fontWeight: "700",
+		textTransform: "uppercase",
+		fontSize: 12,
+		letterSpacing: 0.3,
+	},
+	filterChip: {
+		borderRadius: 999,
+	},
 	routeContent: {
 		gap: 24,
 	},

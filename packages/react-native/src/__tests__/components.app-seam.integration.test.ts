@@ -167,19 +167,24 @@ describe("component app seam", () => {
 		// bold/align/formats + select + loading toggle + crash toggle +
 		// otp code entry + menu auto-sync/last-action + number-input +
 		// tag recipients + toppings + city + stay date + reminder time +
-		// app chrome tab + route selection + button press counter.
-		expect(demoHooks).toBe(31);
+		// app chrome tab + route selection (group + component) +
+		// button press counter.
+		expect(demoHooks).toBe(32);
 	});
 
-	it("component demo registry routes append after the group routes", () => {
+	it("registry maps groups to components with dedicated demos and fallbacks", () => {
+		const registry = readFileSync(
+			`${APP_PATH.replace("App.tsx", "demos/components/registry.tsx")}`,
+			"utf8",
+		);
 		const shell = readFileSync(
 			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
 			"utf8",
 		);
-		expect(shell).toMatch(/\.\.\.componentDemos/);
-		expect(shell.indexOf("overlays")).toBeLessThan(
-			shell.indexOf("...componentDemos"),
-		);
+		expect(shell).toMatch(/componentGroups/);
+		// dedicated demo wired (button) and fallback entries exist (no render)
+		expect(registry).toMatch(/name: "button", render: \(\) => <ButtonDemo/);
+		expect(registry).toMatch(/name: "card"\s*\}/);
 	});
 
 	it("render-surface census matches the pinned marker/label inventory", () => {
@@ -204,7 +209,8 @@ describe("component app seam", () => {
 					'accessibilityLabel="sync"': 1,
 					'accessibilityLabel="volume"': 1,
 					"accessibilityLabel={`activate ${name} theme`}": 1,
-						"accessibilityLabel={`open ${name} demo`}": 1,
+						"accessibilityLabel={`select ${name} group`}": 1,
+						"accessibilityLabel={`show ${name} preview`}": 1,
 					'testID="k-demo-accordion"': 1,
 					'testID="k-demo-avatars"': 1,
 					'testID="k-demo-badges"': 1,
