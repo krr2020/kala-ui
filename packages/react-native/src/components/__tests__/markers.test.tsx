@@ -400,7 +400,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("wave 2: Text, Heading, TextInput, Card", () => {
+	describe("Text, Heading, TextInput, Card", () => {
 		it("Text/Heading/TextInput/Card render their k-* markers", async () => {
 			const screen = await render(
 				<>
@@ -590,7 +590,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("wave 3: Badge, Avatar, Checkbox, Switch", () => {
+	describe("Badge, Avatar, Checkbox, Switch", () => {
 		// (bg, wrapped-text fg, border) — the fg lives on the child text, so
 		// read it there or every solid/subtle arm collapses to a 2-tuple and
 		// same-bg arms (muted solid borrows accent = muted bg) collide
@@ -971,10 +971,10 @@ describe("component markers", () => {
 		});
 	});
 
-	// waves 5, 6 and 7 sit before wave 4 in file order on purpose: wave 4's
-	// spinner test manually unmounts, which poisons TLB's registry for later
-	// renders in the same file.
-	describe("wave 6: Tabs, SegmentedControl, EmptyState, Tag", () => {
+	// Label/Separator/Spinner/Progress sits LAST in file order on purpose:
+	// its spinner test manually unmounts, which poisons TLB's registry for
+	// later renders in the same file.
+	describe("Tabs, SegmentedControl, EmptyState, Tag", () => {
 		const TAB_ITEMS = [
 			{ value: "one", label: "One" },
 			{ value: "two", label: "Two" },
@@ -1238,7 +1238,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("wave 5: Skeleton, RadioGroup, Alert, Toast", () => {
+	describe("Skeleton, RadioGroup, Alert, Toast", () => {
 		const findSvgProp = (tree: unknown, key: string): unknown[] => {
 			const found: unknown[] = [];
 			const walk = (node: unknown) => {
@@ -1582,7 +1582,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("wave 7: Rating", () => {
+	describe("Rating", () => {
 		const findSvgProp = (tree: unknown, key: string): unknown[] => {
 			const found: unknown[] = [];
 			const walk = (node: unknown) => {
@@ -1651,7 +1651,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("wave 8: Slider", () => {
+	describe("Slider", () => {
 		// the responder polyfill under TLB leaves a grant lock that poisons
 		// every later render in this file, so tests drive the handlers via
 		// props directly (wiring is asserted once below)
@@ -1853,7 +1853,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("wave 9: Dialog, AlertDialog", () => {
+	describe("Dialog, AlertDialog", () => {
 		type Screen = Awaited<ReturnType<typeof render>>;
 
 		// hardware back: RN Modal forwards onRequestClose onto its host view,
@@ -1927,7 +1927,7 @@ describe("component markers", () => {
 		});
 
 		// fireEvent's responder polyfill leaves the same grant lock the
-		// wave-8 slider hit — press through the host's onClick instead
+		// Slider block hit — press through the host's onClick instead
 		// (Pressable consumes onPress; the wired click survives on the host)
 		const tap = async (el: { props: { onClick?: (e: unknown) => void } }) => {
 			await act(async () => {
@@ -2247,7 +2247,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("wave 11: Accordion, Collapsible", () => {
+	describe("Accordion, Collapsible", () => {
 		it("Accordion renders root, item, trigger and content markers; closed unmounts content", async () => {
 			const screen = await render(
 				<Accordion type="single" defaultValue="a">
@@ -2295,7 +2295,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("wave 12: Banner, Textarea", () => {
+	describe("Banner, Textarea", () => {
 		it("Banner renders root, content and close markers; no onClose drops close", async () => {
 			const screen = await render(
 				<Banner position="static" onClose={() => undefined}>
@@ -2322,7 +2322,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("wave 13: List", () => {
+	describe("List", () => {
 		it("renders container, divider and sub-component markers", async () => {
 			const screen = await render(
 				<List>
@@ -2366,7 +2366,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("wave 14: Field, Select, TextInput sections", () => {
+	describe("Field, Select, TextInput sections", () => {
 		it("Field renders label/control/description/error markers", async () => {
 			const screen = await render(
 				<Field label="Email" description="helper" error="broken">
@@ -2601,7 +2601,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("wave 4: Label, Separator, Spinner, Progress", () => {
+	describe("Label, Separator, Spinner, Progress", () => {
 		const findSvgProp = (tree: unknown, key: string): unknown[] => {
 			const found: unknown[] = [];
 			const walk = (node: unknown) => {

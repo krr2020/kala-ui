@@ -6,42 +6,12 @@
 
 import { X } from "lucide-react-native";
 import type { ReactElement } from "react";
-import type { ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import type { KalaTheme, RampBase } from "../../types";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
-import type {
-	BannerColor,
-	BannerPosition,
-	BannerProps,
-	BannerSkeletonConfig,
-} from "./banner.types";
-
-const DEFAULT_SKELETON: Required<BannerSkeletonConfig> = {
-	showIcon: true,
-	showCloseButton: true,
-};
-
-function tone(
-	color: BannerColor,
-	theme: KalaTheme,
-): {
-	bg: string;
-	fg: string;
-} {
-	return {
-		bg: theme[color as RampBase],
-		fg: theme[`${color as RampBase}Foreground`],
-	};
-}
-
-function positionStyle(position: BannerPosition): ViewStyle {
-	return position === "fixed"
-		? { position: "absolute", top: 0, left: 0, right: 0, elevation: 4 }
-		: { position: "relative" };
-}
+import { DEFAULT_SKELETON, positionStyle, tone } from "./banner.styles";
+import type { BannerProps, BannerSkeletonConfig } from "./banner.types";
 
 function SkeletonRow({
 	config,

@@ -2,8 +2,8 @@
  * Dialog: controlled native modal (RN Modal + transparent backdrop — no
  * portal library needed). Dismissal is gated by `dismissable` for the
  * overlay press, hardware back (Modal's onRequestClose), AND the
- * drag-to-dismiss gesture (raw responder protocol, wave-8 Slider style —
- * no gesture library). Content avoids the on-screen keyboard so inputs
+ * drag-to-dismiss gesture (raw responder protocol — no gesture
+ * library). Content avoids the on-screen keyboard so inputs
  * in the dialog stay visible. Sizes map the web vocabulary: sm/md/lg
  * clamp to a centered panel, `full` opts out of the clamp.
  */

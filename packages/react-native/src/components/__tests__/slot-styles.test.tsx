@@ -1,8 +1,7 @@
 /**
- * Tier-3 slot-styles contract (REACT-NATIVE-STRATEGY.md customization
- * ladder): every component takes styles={{ root, ...parts }} and each
- * entry merges AFTER that part's library defaults. Render-only on
- * purpose — no fireEvent.press, which leaves responder grant locks in
+ * Slot-styles contract: every component takes styles={{ root, ...parts }}
+ * and each entry merges AFTER that part's library defaults. Render-only
+ * on purpose — no fireEvent.press, which leaves responder grant locks in
  * this jest environment.
  */
 import { fireEvent, render } from "@testing-library/react-native";

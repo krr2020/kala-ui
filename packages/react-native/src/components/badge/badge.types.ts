@@ -13,7 +13,7 @@ export type BadgeColor =
 	| "muted";
 export type BadgeShape = "rounded" | "pill";
 
-/** Tier-3 slot styles — surgical per-part overrides (strategy ladder). */
+/** Slot-style overrides — surgical per-part customization. */
 export interface BadgeProps {
 	children?: ReactNode;
 	variant?: BadgeVariant;

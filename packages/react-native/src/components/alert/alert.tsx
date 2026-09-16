@@ -6,67 +6,18 @@
  * compare children identity and reopen).
  */
 
-import {
-	AlertCircle,
-	AlertTriangle,
-	CheckCircle2,
-	Info,
-	X,
-} from "lucide-react-native";
+import { X } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import type { KalaTheme, ThemeToken } from "../../types";
 import { applySlot } from "../slot-styles";
+import { ICONS, look } from "./alert.styles";
 import type {
-	AlertColor,
 	AlertDescriptionProps,
 	AlertProps,
 	AlertTitleProps,
-	AlertVariant,
 } from "./alert.types";
-
-const ICONS: Record<AlertColor, typeof Info> = {
-	primary: Info,
-	secondary: Info,
-	destructive: AlertCircle,
-	success: CheckCircle2,
-	warning: AlertTriangle,
-	info: Info,
-	muted: Info,
-};
-
-/** Same mapping the web config uses — 'muted' borrows accent/mutedForeground. */
-function look(
-	variant: AlertVariant,
-	color: AlertColor,
-	theme: KalaTheme,
-): { bg: string; fg: string; border: string } {
-	const hex = (key: ThemeToken) => String(theme[key]);
-	if (variant === "outline") {
-		const tint = color === "muted" ? hex("mutedForeground") : hex(color);
-		return { bg: "transparent", fg: tint, border: tint };
-	}
-	if (variant === "subtle") {
-		if (color === "muted") {
-			return {
-				bg: hex("muted"),
-				fg: hex("mutedForeground"),
-				border: "transparent",
-			};
-		}
-		const tint = hex(color);
-		return { bg: `${tint}1A`, fg: tint, border: "transparent" };
-	}
-	// solid
-	const base = color === "muted" ? "accent" : color;
-	return {
-		bg: hex(base),
-		fg: hex(`${base}Foreground`),
-		border: "transparent",
-	};
-}
 
 /** Title/Description inherit the resolved foreground of their Alert. */
 const AlertColorContext = createContext<string | null>(null);
