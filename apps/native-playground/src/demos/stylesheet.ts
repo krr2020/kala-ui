@@ -8,7 +8,9 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		flex: 1,
 		backgroundColor: theme.background,
 		paddingTop: 8,
-		paddingBottom: 32,
+		// generous end-of-scroll breathing room so the last block of every
+		// preview fully clears the gesture nav bar
+		paddingBottom: 72,
 		paddingHorizontal: 16,
 		gap: 16,
 	},

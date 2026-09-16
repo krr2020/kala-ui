@@ -16,7 +16,7 @@ export function ButtonDemo() {
 	const [count, setCount] = useState(0);
 	return (
 		<View testID="k-demo-button" style={demoStyles.routeContent}>
-			<DemoBlock label="variants">
+			<DemoBlock label="Variants">
 				<View style={demoStyles.componentRow}>
 					{VARIANTS.map((variant) => (
 						<Button key={variant} variant={variant}>
@@ -25,7 +25,7 @@ export function ButtonDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="colors (solid)">
+			<DemoBlock label="Colors (Solid)">
 				<View style={demoStyles.componentRow}>
 					{COLORS.map((color) => (
 						<Button key={color} color={color}>
@@ -34,7 +34,7 @@ export function ButtonDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="sizes">
+			<DemoBlock label="Sizes">
 				<View style={demoStyles.componentRow}>
 					{SIZES.map((size) => (
 						<Button key={size} size={size}>
@@ -46,29 +46,29 @@ export function ButtonDemo() {
 					</Button>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="width & shape">
-				<Button fullWidth>full width</Button>
-				<Button rounded>rounded</Button>
+			<DemoBlock label="Width & Shape">
+				<Button fullWidth>Full Width</Button>
+				<Button rounded>Rounded</Button>
 			</DemoBlock>
-			<DemoBlock label="states">
+			<DemoBlock label="States">
 				<View style={demoStyles.componentRow}>
-					<Button isLoading>loading</Button>
-					<Button disabled>disabled</Button>
+					<Button isLoading>Loading</Button>
+					<Button disabled>Disabled</Button>
 					<Button variant="outline" disabled>
-						disabled outline
+						Disabled Outline
 					</Button>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="press feedback">
+			<DemoBlock label="Press Feedback">
 				<Button
 					accessibilityLabel="press me"
 					onPress={() => setCount((n) => n + 1)}
 				>
-					press me
+					Press Me
 				</Button>
-				<Text style={demoStyles.current}>pressed {count} times</Text>
+				<Text style={demoStyles.current}>Pressed {count} Times</Text>
 				<Button disabled onPress={() => setCount((n) => n + 1)}>
-					disabled — no count
+					Disabled — No Count
 				</Button>
 			</DemoBlock>
 		</View>

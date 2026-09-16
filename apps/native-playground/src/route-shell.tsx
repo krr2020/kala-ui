@@ -84,7 +84,7 @@ export function RouteShell() {
 	return (
 		<SafeAreaView
 			style={{ flex: 1, backgroundColor: theme.background }}
-			edges={["top"]}
+			edges={["top", "bottom"]}
 		>
 			<StatusBar
 				translucent

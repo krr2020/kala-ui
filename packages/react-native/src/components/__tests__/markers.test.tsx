@@ -303,6 +303,38 @@ describe("component markers", () => {
 			expect(demo).not.toMatch(/"link"/);
 		});
 
+		it("demo copy is humanized and content clears the gesture bar", () => {
+			const demo = readFileSync(
+				resolve(
+					__dirname,
+					"../../../../../apps/native-playground/src/demos/components/button-demo.tsx",
+				),
+				"utf8",
+			);
+			// block labels + button copy read as title case, not kebab/lowercase
+			expect(demo).not.toMatch(/label="[a-z]/);
+			expect(demo).not.toMatch(/>[a-z][a-z ]+<\//);
+			expect(demo).toMatch(/Pressed \{count\} Times/);
+			// bottom inset: themed background under the nav bar + breathing
+			// room above it when scrolled to the end
+			const shell = readFileSync(
+				resolve(
+					__dirname,
+					"../../../../../apps/native-playground/src/route-shell.tsx",
+				),
+				"utf8",
+			);
+			expect(shell).toMatch(/edges=\{\["top", "bottom"\]\}/);
+			const stylesheet = readFileSync(
+				resolve(
+					__dirname,
+					"../../../../../apps/native-playground/src/demos/stylesheet.ts",
+				),
+				"utf8",
+			);
+			expect(stylesheet).toMatch(/paddingBottom: 7[0-9]/);
+		});
+
 		it("size=icon is square", async () => {
 			const screen = await render(
 				<Button size="icon" accessibilityLabel="add">

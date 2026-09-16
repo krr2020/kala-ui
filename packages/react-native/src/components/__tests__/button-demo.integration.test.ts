@@ -42,4 +42,26 @@ describe("button demo ↔ library seam", () => {
 		expect(demo).toMatch(/color=\{theme\.primaryForeground\}/);
 		expect(demo).not.toMatch(/color=\{theme\.foreground\}/);
 	});
+
+	it("demo copy is humanized and the shell insets content off the gesture bar", () => {
+		expect(demo).not.toMatch(/label="[a-z]/);
+		expect(demo).toMatch(/Pressed \{count\} Times/);
+		expect(demo).toMatch(/>Full Width</);
+		const shell = readFileSync(
+			resolve(
+				__dirname,
+				"../../../../../apps/native-playground/src/route-shell.tsx",
+			),
+			"utf8",
+		);
+		expect(shell).toMatch(/edges=\{\["top", "bottom"\]\}/);
+		const stylesheet = readFileSync(
+			resolve(
+				__dirname,
+				"../../../../../apps/native-playground/src/demos/stylesheet.ts",
+			),
+			"utf8",
+		);
+		expect(stylesheet).toMatch(/paddingBottom: 7[0-9]/);
+	});
 });
