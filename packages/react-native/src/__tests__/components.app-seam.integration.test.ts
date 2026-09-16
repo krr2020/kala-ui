@@ -270,6 +270,15 @@ describe("component app seam", () => {
 		expect(shell.indexOf("demoStyles.themeRow")).toBeLessThan(
 			shell.indexOf("demoStyles.chipRows"),
 		);
+		// the strip is one non-wrapping scroll row (horizontal ScrollView)
+		// and its chips carry humanized title-case labels like the other rows.
+		const themeRowStart = shell.indexOf("demoStyles.themeRow");
+		const themeRowEnd = shell.indexOf("demoStyles.chipRows");
+		const themeRowBlock = shell.slice(themeRowStart, themeRowEnd);
+		expect(themeRowStart).toBeGreaterThan(-1);
+		expect(themeRowBlock).toMatch(/horizontal/);
+		expect(themeRowBlock).not.toMatch(/flexWrap/);
+		expect(themeRowBlock).toMatch(/\{humanizeLabel\(name\)\}/);
 	});
 
 	it("humanizeLabel formats chip display text from raw names", async () => {

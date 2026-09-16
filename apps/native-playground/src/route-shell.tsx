@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { themeNames } from "@kala-ui/react-native/themes";
 import { UnistylesRuntime, useUnistyles } from "react-native-unistyles";
 import { componentGroups } from "./demos/components/registry";
+import { humanizeLabel } from "./demos/components/registry";
 import type { ComponentGroup } from "./demos/components/registry";
 import { demoStyles } from "./demos/stylesheet";
 
@@ -102,7 +103,12 @@ export function RouteShell() {
 				<Text style={[demoStyles.sectionHeader, demoStyles.sectionHeaderText]}>
 					Theme
 				</Text>
-				<View style={demoStyles.picker}>
+				<ScrollView
+					horizontal
+					style={demoStyles.routeBar}
+					contentContainerStyle={[demoStyles.picker, demoStyles.chipRowContent]}
+					showsHorizontalScrollIndicator={false}
+				>
 					{themeNames.map((name) => {
 						const active = name === UnistylesRuntime.themeName;
 						return (
@@ -120,12 +126,12 @@ export function RouteShell() {
 										active && demoStyles.chipTextActive,
 									]}
 								>
-									{name}
+									{humanizeLabel(name)}
 								</Text>
 							</Pressable>
 						);
 					})}
-				</View>
+				</ScrollView>
 			</View>
 			<View style={demoStyles.chipRows}>
 				<ScrollView
