@@ -168,6 +168,12 @@
     --shadow-alpha: 0;
     --shadow-spread: 0px;
     --separator: hsl(221 32% 43%);
+    --overlay: hsl(0 0% 0%);
+    --overlay-alpha: 0.6;
+    --success: hsl(142 71% 45%);
+    --success-foreground: hsl(144 80% 8%);
+    --warning: hsl(48 96% 53%);
+    --warning-foreground: hsl(30 85% 10%);
     --error: hsl(0 91% 71%);
     --error-foreground: hsl(0 72% 10%);
     --info: hsl(190 80% 60%);
@@ -214,6 +220,8 @@
     --shadow-alpha: 0;
     --shadow-spread: 0px;
     --separator: hsl(0 0% 0%);
+    --overlay: hsl(0 0% 0%);
+    --overlay-alpha: 0.6;
     --success: hsl(142 76% 36%);
     --success-foreground: hsl(355.7 100% 97.3%);
     --warning: hsl(38 92% 50%);
@@ -252,6 +260,12 @@
     --shadow-alpha: 0;
     --shadow-spread: 0px;
     --separator: hsl(0 0% 100%);
+    --overlay: hsl(0 0% 0%);
+    --overlay-alpha: 0.7;
+    --success: hsl(142 71% 45%);
+    --success-foreground: hsl(144 80% 8%);
+    --warning: hsl(48 96% 53%);
+    --warning-foreground: hsl(30 85% 10%);
     --error: hsl(0 91% 71%);
     --error-foreground: hsl(0 72% 10%);
     --info: hsl(190 80% 60%);

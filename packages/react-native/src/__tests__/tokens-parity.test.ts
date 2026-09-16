@@ -236,6 +236,61 @@ describe("theme parity with globals.css", () => {
 	});
 });
 
+describe("cross-theme uniformity (crash regression guards)", () => {
+	const PLAYGROUND_STYLESHEET = resolve(
+		__dirname,
+		"../../../../apps/native-playground/src/demos/stylesheet.ts",
+	);
+
+	/** Extract the SWATCH_TOKENS literal from the playground stylesheet. */
+	function playgroundSwatchTokens(): string[] {
+		const source = readFileSync(PLAYGROUND_STYLESHEET, "utf8");
+		const match = source.match(
+			/export const SWATCH_TOKENS = \[([^\]]*)\] as const;/,
+		);
+		if (!match) throw new Error("SWATCH_TOKENS literal not found");
+		return [...match[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+	}
+
+	it("every theme exposes the exact same key set as light", () => {
+		const lightKeys = Object.keys(themes.light).sort();
+		for (const name of Object.keys(themes) as ThemeName[]) {
+			expect(Object.keys(themes[name]).sort(), name).toEqual(lightKeys);
+		}
+	});
+
+	it("every themed :root token is declared in every theme block", () => {
+		const rootTokens = new Set(
+			[...resolveVars(blocks.get(":root") ?? new Map()).keys()].filter(
+				(token) => !NON_THEMED.test(token),
+			),
+		);
+		for (const selector of EXPECTED_SELECTORS.slice(1)) {
+			const blockTokens = new Set(blocks.get(selector)?.keys() ?? []);
+			for (const token of rootTokens) {
+				expect(
+					blockTokens.has(token),
+					`${selector} is missing ${token}`,
+				).toBe(true);
+			}
+		}
+	});
+
+	it("every playground swatch token resolves to a hex color in all themes", () => {
+		for (const token of playgroundSwatchTokens()) {
+			for (const name of Object.keys(themes) as ThemeName[]) {
+				const value = (themes[name] as Record<string, string | number>)[
+					token
+				];
+				expect(
+						typeof value === "string" && /^#[0-9a-f]{6}$/.test(value),
+					`${name}.${token} = ${String(value)}`,
+				).toBe(true);
+			}
+		}
+	});
+});
+
 describe("layout restructure pins", () => {
 	it("tokens object keeps the pre-restructure public shape", () => {
 		expect(tokens).toEqual({
