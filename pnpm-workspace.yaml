@@ -12,17 +12,17 @@ peerDependencyRules:
     # silences the same stale-peer warning for the resolved jest 30.
     jest-watch-typeahead:
       jest: '30'
-    # Expo SDK 57 matrix ships worklets 0.12 alongside reanimated 4.5.1 /
-    # expo-modules-core 57, but their published peer ranges stop at 0.10.x —
-    # registry metadata lag, not a real matrix conflict.
+    # Expo SDK 57's bundledNativeModules pins worklets 0.10.1 with
+    # reanimated 4.5.1; expo-modules-core 57's published peer range asks
+    # for 0.12.x — registry metadata lag, not a real matrix conflict.
     expo-modules-core:
-      react-native-worklets: '>=0.7.4'
+      react-native-worklets: '0'
     react-native-reanimated:
-      react-native-worklets: '>=0.10.0'
+      react-native-worklets: '0'
     # The library pins react 19.2.3 (Expo SDK 57's tested pair); react-dom's
     # metadata asks ^19.3.0 — same lag class as the catalog's web react pin.
     react-dom:
-      react: '>=19'
+      react: '19'
 
 # Single source of truth for dependency versions shared across workspace
 # packages — reference as "catalog:" from any package.json. Every entry is an

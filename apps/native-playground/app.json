@@ -1,16 +1,26 @@
 {
-	"expo": {
-		"name": "kala native playground",
-		"slug": "kala-native-playground",
-		"version": "0.1.0",
-		"orientation": "portrait",
-		"sdkVersion": "57.0.0",
-		"newArchEnabled": true,
-		"userInterfaceStyle": "automatic",
-		"platforms": ["ios", "android", "web"],
-		"web": {
-			"bundler": "metro",
-			"output": "single"
-		}
-	}
+  "expo": {
+    "name": "kala native playground",
+    "slug": "kala-native-playground",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "sdkVersion": "57.0.0",
+    "newArchEnabled": true,
+    "userInterfaceStyle": "automatic",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "ios": {
+      "bundleIdentifier": "com.anonymous.kala-native-playground"
+    },
+    "android": {
+      "package": "com.anonymous.kalanativeplayground"
+    }
+  }
 }
