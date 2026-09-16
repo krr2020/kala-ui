@@ -81,6 +81,7 @@ export function RouteShell() {
 						);
 					})}
 				</ScrollView>
+				<View style={demoStyles.rowDivider} />
 				<ScrollView
 					ref={componentRow}
 					horizontal

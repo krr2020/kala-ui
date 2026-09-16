@@ -98,6 +98,12 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		// fill the raw Android window background shows through
 		backgroundColor: theme.background,
 	},
+	// divider between the group and component rows — explicit themed
+	// hairline so the row tiers read as distinct levels
+	rowDivider: {
+		height: 1,
+		backgroundColor: theme.border,
+	},
 	groupChip: {
 		borderRadius: 999,
 		borderColor: theme.foreground,
