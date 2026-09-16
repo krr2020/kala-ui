@@ -275,9 +275,10 @@ describe("component app seam", () => {
 		expect(shell.indexOf("demoStyles.chipRows")).toBeGreaterThan(
 			contentScrollAt,
 		);
-		expect(shell.indexOf("{preview()}"), "preview renders after chipRows").toBeGreaterThan(
-			shell.indexOf("demoStyles.chipRows"),
-		);
+		expect(
+			shell.indexOf("{preview()}"),
+			"preview renders after chipRows",
+		).toBeGreaterThan(shell.indexOf("demoStyles.chipRows"));
 		// chipRows is the first scrolling child — no stray chipRows View
 		// remains between the fixed divider and the content ScrollView.
 		expect(shell.slice(0, contentScrollAt)).not.toMatch(/demoStyles\.chipRows/);
@@ -349,7 +350,8 @@ describe("component app seam", () => {
 			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
 			"utf8",
 		);
-		const themeChipStart = shell.indexOf("k-theme-${name}");
+		// biome-ignore lint/suspicious/noTemplateCurlyInString: searching the shell source for this literal template text
+		const themeChipStart = shell.indexOf("k-theme-" + "${name}");
 		expect(themeChipStart, "theme chip marker exists").toBeGreaterThan(-1);
 		const themeChipEnd = shell.indexOf("</Pressable>", themeChipStart);
 		expect(themeChipEnd, "theme chip Pressable closes").toBeGreaterThan(
@@ -491,5 +493,43 @@ describe("component app seam", () => {
 				}),
 			),
 		);
+	});
+
+	it("text demo color pills have a filled ramp + foreground arm in every theme", () => {
+		const themesFile = readFileSync(
+			resolve(__dirname, "../themes/definitions.ts"),
+			"utf8",
+		);
+		const demo = readFileSync(
+			`${APP_PATH.replace("App.tsx", "demos/components/text-demo.tsx")}`,
+			"utf8",
+		);
+		const colorsBlock = demo.split("const COLORS = [")[1]?.split("]")[0] ?? "";
+		const colors = [...colorsBlock.matchAll(/"([a-z]+)"/g)].map((m) => m[1]);
+		// every exported theme object gets its own `export const <name> = {`
+		// block — enumerate from source so a new theme cannot skip the guard
+		const themeNames = [
+			...themesFile.matchAll(/export const (\w+) = \{/g),
+		]
+			.map((m) => m[1])
+			.filter((name) => name !== "themes");
+		for (const themeName of themeNames) {
+			const block = themesFile
+				.split(`export const ${themeName} = {`)[1]
+				?.split("\n};")[0];
+			expect(block, `${themeName} block exists`).toBeTruthy();
+			for (const color of colors) {
+				const value = (key: string) =>
+					block
+						?.split("\n")
+						.find((l) => l.trimStart().startsWith(`${key}: "`))
+						?.match(/"([^"]+)"/)?.[1];
+				expect(value(color), `${themeName}.${color}`).toBeTruthy();
+				expect(
+					value(`${color}Foreground`),
+					`${themeName}.${color}Foreground`,
+				).toBeTruthy();
+			}
+		}
 	});
 });

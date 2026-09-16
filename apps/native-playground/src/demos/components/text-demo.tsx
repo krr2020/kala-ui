@@ -1,5 +1,6 @@
 import { Text as KText } from "@kala-ui/react-native";
 import { View } from "react-native";
+import { useUnistyles } from "react-native-unistyles";
 import { DemoBlock } from "../demo-block";
 import { demoStyles } from "../stylesheet";
 
@@ -24,6 +25,7 @@ const COLORS = [
 ] as const;
 
 export function TextDemo() {
+	const { theme } = useUnistyles();
 	return (
 		<View testID="k-demo-text" style={demoStyles.routeContent}>
 			<DemoBlock label="sizes">
@@ -47,9 +49,20 @@ export function TextDemo() {
 			<DemoBlock label="colors">
 				<View style={demoStyles.componentRow}>
 					{COLORS.map((color) => (
-						<KText key={color} color={color} size="sm">
-							{color}
-						</KText>
+						<View
+							key={color}
+							style={[
+								demoStyles.chip,
+								{
+									backgroundColor: theme[color],
+									borderColor: theme[color],
+								},
+							]}
+						>
+							<KText size="sm" color={theme[`${color}Foreground`]}>
+								{color}
+							</KText>
+						</View>
 					))}
 				</View>
 			</DemoBlock>
@@ -65,7 +78,8 @@ export function TextDemo() {
 						align right
 					</KText>
 					<KText truncate>
-						truncated line that clamps with a tail ellipsis
+						truncated line that clamps with a tail ellipsis after crossing the
+						content width and keeps going past the edge
 					</KText>
 				</View>
 			</DemoBlock>
