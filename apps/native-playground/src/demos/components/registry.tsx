@@ -8,6 +8,7 @@ import { NavigationDemo } from "../navigation-demo";
 import { OverlaysDemo } from "../overlays-demo";
 import { TokensDemo } from "../tokens-demo";
 import { AvatarDemo } from "./avatar-demo";
+import { AvatarGroupDemo } from "./avatar-group-demo";
 import { BadgeDemo } from "./badge-demo";
 import { ButtonDemo } from "./button-demo";
 import { CardDemo } from "./card-demo";
@@ -95,7 +96,11 @@ export const componentGroups: ComponentGroup[] = [
 				name: "avatar",
 				render: () => <AvatarDemo />,
 			},
-			{ label: humanizeLabel("avatar-group"), name: "avatar-group" },
+			{
+				label: humanizeLabel("avatar-group"),
+				name: "avatar-group",
+				render: () => <AvatarGroupDemo />,
+			},
 			{
 				label: humanizeLabel("badge"),
 				name: "badge",

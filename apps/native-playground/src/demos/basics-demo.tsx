@@ -99,7 +99,10 @@ export function BasicsDemo() {
 				</View>
 			</DemoBlock>
 			<DemoBlock label="avatar group">
-				<View style={demoStyles.componentRow} testID="k-demo-avatar-group">
+				<View
+					style={demoStyles.componentRow}
+					testID="k-demo-avatar-group-inline"
+				>
 					<AvatarGroup
 						avatars={[
 							{ name: "Ada Lovelace" },

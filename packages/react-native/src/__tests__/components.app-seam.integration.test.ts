@@ -193,13 +193,13 @@ describe("component app seam", () => {
 			["separator", "SeparatorDemo"],
 			["card", "CardDemo"],
 			["avatar", "AvatarDemo"],
+			["avatar-group", "AvatarGroupDemo"],
 			["list", "ListDemo"],
 		] as const) {
 			expect(registry).toMatch(
 				new RegExp(`name: "${name}",[\\s\\S]*?render: \\(\\) => <${demo}`),
 			);
 		}
-		expect(registry).toMatch(/name: "avatar-group"\s*\},?/);
 	});
 
 	it("registry declares a package source on every group — app groups segregated", () => {
@@ -461,6 +461,7 @@ describe("component app seam", () => {
 					'testID="k-demo-radios"': 1,
 					'testID="k-demo-rating"': 1,
 					'testID="k-demo-avatar-group"': 1,
+					'testID="k-demo-avatar-group-inline"': 1,
 					'testID="k-demo-ring-progress"': 1,
 					'testID="k-demo-loading-overlay"': 1,
 					'testID="k-demo-error-boundary"': 1,

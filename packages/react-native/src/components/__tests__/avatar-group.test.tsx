@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react-native";
+import { BOX as AVATAR_BOX } from "../avatar/avatar.styles";
 import type { AvatarItem } from "../avatar-group";
 import { AvatarGroup } from "../avatar-group";
 
@@ -134,5 +135,60 @@ describe("AvatarGroup", () => {
 			<AvatarGroup avatars={[{ name: "A" }]} styles={{ root: { gap: 9 } }} />,
 		);
 		expect(flatStyle(screen.getByTestId("k-avatar-group")).gap).toBe(9);
+	});
+
+	it("duplicate names render one k-avatar each without key collisions", async () => {
+		const screen: Screen = await render(
+			<AvatarGroup
+				avatars={[
+					{ name: "Ada Lovelace" },
+					{ name: "Ada Lovelace" },
+					{ name: "Grace Hopper" },
+				]}
+			/>,
+		);
+		expect(screen.getAllByTestId("k-avatar")).toHaveLength(3);
+		expect(screen.getAllByText("AL")).toHaveLength(2);
+	});
+
+	it("fractional max below length floors to a whole count and integer chip", async () => {
+		const screen: Screen = await render(
+			<AvatarGroup avatars={AVATARS} max={2.5} />,
+		);
+		expect(screen.getAllByTestId("k-avatar")).toHaveLength(2);
+		expect(screen.getByText("+4")).toBeTruthy();
+	});
+
+	it("fractional max above length renders all with no chip", async () => {
+		const screen: Screen = await render(
+			<AvatarGroup avatars={AVATARS} max={7.5} />,
+		);
+		expect(screen.getAllByTestId("k-avatar")).toHaveLength(AVATARS.length);
+		expect(screen.queryByTestId("k-avatar-group-overflow")).toBeNull();
+	});
+
+	it("max equal to length renders all with no '+0' chip", async () => {
+		const screen: Screen = await render(
+			<AvatarGroup avatars={AVATARS} max={AVATARS.length} />,
+		);
+		expect(screen.getAllByTestId("k-avatar")).toHaveLength(AVATARS.length);
+		expect(screen.queryByText("+0")).toBeNull();
+		expect(screen.queryByTestId("k-avatar-group-overflow")).toBeNull();
+	});
+
+	it("member ring outer size tracks the Avatar BOX scale", async () => {
+		const screen: Screen = await render(
+			<AvatarGroup avatars={[{ name: "A" }, { name: "B" }]} size="lg" />,
+		);
+		const group = screen.getByTestId("k-avatar-group");
+		const raw = group.props.children;
+		const kids = (Array.isArray(raw) ? raw.flat(Infinity) : [raw]).filter(
+			Boolean,
+		) as Array<{ props: { children?: unknown; style?: unknown } }>;
+		const ring = kids[0].props.children as { props: { style?: unknown } };
+		expect(flatStyle(ring).width).toBe(AVATAR_BOX.lg + 4);
+		expect(flatStyle(screen.getAllByTestId("k-avatar")[0]).width).toBe(
+			AVATAR_BOX.lg,
+		);
 	});
 });
