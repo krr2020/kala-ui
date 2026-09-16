@@ -1,5 +1,5 @@
 /**
- * Slot-styles contract: every component takes styles={{ root, ...parts }}
+ * Slot-styles contract: every component takes slotStyles={{ root, ...parts }}
  * and each entry merges AFTER that part's library defaults. Render-only
  * on purpose — no fireEvent.press, which leaves responder grant locks in
  * this jest environment.
@@ -94,7 +94,7 @@ describe("applySlot helper", () => {
 	});
 });
 
-describe("root slot sweep — every component accepts styles.root", () => {
+describe("root slot sweep — every component accepts slotStyles.root", () => {
 	interface Fixture {
 		name: string;
 		render: () => Promise<Screen>;
@@ -107,7 +107,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		{
 			name: "Alert",
 			marker: "k-alert",
-			render: () => render(<Alert styles={{ root: { borderWidth: 7 } }} />),
+			render: () => render(<Alert slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "AlertDialog",
@@ -117,7 +117,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 					<AlertDialog
 						open
 						onOpenChange={() => undefined}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -129,7 +129,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 					<Accordion
 						type="single"
 						defaultValue="a"
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					>
 						<Accordion.Item value="a">
 							<Accordion.Trigger>t</Accordion.Trigger>
@@ -144,7 +144,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<AvatarGroup
 						avatars={[{ name: "Ada" }]}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -152,14 +152,14 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			name: "Avatar",
 			marker: "k-avatar",
 			render: () =>
-				render(<Avatar name="Ada" styles={{ root: { borderWidth: 7 } }} />),
+				render(<Avatar name="Ada" slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Banner",
 			marker: "k-banner",
 			render: () =>
 				render(
-					<Banner position="static" styles={{ root: { borderWidth: 7 } }}>
+					<Banner position="static" slotStyles={{ root: { borderWidth: 7 } }}>
 						m
 					</Banner>,
 				),
@@ -167,24 +167,25 @@ describe("root slot sweep — every component accepts styles.root", () => {
 		{
 			name: "Badge",
 			marker: "k-badge",
-			render: () => render(<Badge styles={{ root: { borderWidth: 7 } }} />),
+			render: () => render(<Badge slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Button",
 			marker: "k-button-root",
 			render: () =>
-				render(<Button styles={{ root: { borderWidth: 7 } }}>go</Button>),
+				render(<Button slotStyles={{ root: { borderWidth: 7 } }}>go</Button>),
 		},
 		{
 			name: "Card",
 			marker: "k-card",
 			render: () =>
-				render(<Card styles={{ root: { borderWidth: 7 } }}>card</Card>),
+				render(<Card slotStyles={{ root: { borderWidth: 7 } }}>card</Card>),
 		},
 		{
 			name: "Calendar",
 			marker: "k-calendar",
-			render: () => render(<Calendar styles={{ root: { borderWidth: 7 } }} />),
+			render: () =>
+				render(<Calendar slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Checkbox",
@@ -193,7 +194,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<Checkbox
 						accessibilityLabel="c"
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -204,7 +205,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<Combobox
 						options={[{ value: "a", label: "A" }]}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -216,7 +217,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 					<CopyButton
 						value="demo"
 						writeClipboard={async () => undefined}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -225,7 +226,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			marker: "k-collapsible",
 			render: () =>
 				render(
-					<Collapsible defaultOpen styles={{ root: { borderWidth: 7 } }}>
+					<Collapsible defaultOpen slotStyles={{ root: { borderWidth: 7 } }}>
 						<Collapsible.Trigger>t</Collapsible.Trigger>
 					</Collapsible>,
 				),
@@ -237,7 +238,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<ContextMenu
 						items={[{ key: "copy", label: "Copy" }]}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					>
 						<Text>x</Text>
 					</ContextMenu>,
@@ -247,13 +248,13 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			name: "DatePicker",
 			marker: "k-date-picker",
 			render: () =>
-				render(<DatePicker styles={{ root: { borderWidth: 7 } }} />),
+				render(<DatePicker slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "DateRangePicker",
 			marker: "k-date-picker-date-range-picker",
 			render: () =>
-				render(<DateRangePicker styles={{ root: { borderWidth: 7 } }} />),
+				render(<DateRangePicker slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Dialog",
@@ -263,7 +264,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 					<Dialog
 						open
 						onOpenChange={() => undefined}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -275,7 +276,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 					<DropdownMenu
 						items={[{ key: "edit", label: "Edit" }]}
 						triggerLabel="a"
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -287,7 +288,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 					<EmptyState
 						title="empty"
 						description="nothing"
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -295,14 +296,14 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			name: "ErrorFallback",
 			marker: "k-error-fallback",
 			render: () =>
-				render(<ErrorFallback styles={{ root: { borderWidth: 7 } }} />),
+				render(<ErrorFallback slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Field",
 			marker: "k-field",
 			render: () =>
 				render(
-					<Field label="x" styles={{ root: { borderWidth: 7 } }}>
+					<Field label="x" slotStyles={{ root: { borderWidth: 7 } }}>
 						<TextInput />
 					</Field>,
 				),
@@ -312,25 +313,26 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			marker: "k-heading",
 			textRoot: true,
 			render: () =>
-				render(<Heading styles={{ root: { fontSize: 33 } }}>h</Heading>),
+				render(<Heading slotStyles={{ root: { fontSize: 33 } }}>h</Heading>),
 		},
 		{
 			name: "Icon",
 			marker: "k-icon",
 			render: () =>
-				render(<Icon icon={Sun} styles={{ root: { borderWidth: 7 } }} />),
+				render(<Icon icon={Sun} slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Indicator",
 			marker: "k-indicator",
-			render: () => render(<Indicator styles={{ root: { borderWidth: 7 } }} />),
+			render: () =>
+				render(<Indicator slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "InputOtp",
 			marker: "k-input-otp",
 			render: () =>
 				render(
-					<InputOtp maxLength={3} styles={{ root: { borderWidth: 7 } }}>
+					<InputOtp maxLength={3} slotStyles={{ root: { borderWidth: 7 } }}>
 						<InputOtpSlot index={0} />
 						<InputOtpSlot index={1} />
 						<InputOtpSlot index={2} />
@@ -342,14 +344,14 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			marker: "k-label",
 			textRoot: true,
 			render: () =>
-				render(<Label styles={{ root: { fontSize: 33 } }}>l</Label>),
+				render(<Label slotStyles={{ root: { fontSize: 33 } }}>l</Label>),
 		},
 		{
 			name: "LoadingOverlay",
 			marker: "k-loading-overlay",
 			render: () =>
 				render(
-					<LoadingOverlay visible styles={{ root: { borderWidth: 7 } }} />,
+					<LoadingOverlay visible slotStyles={{ root: { borderWidth: 7 } }} />,
 				),
 		},
 		{
@@ -359,7 +361,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<MultiSelect
 						options={[{ value: "a", label: "A" }]}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -370,7 +372,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<NumberInput
 						defaultValue={1}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -381,7 +383,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<PasswordStrengthIndicator
 						password="secret1!"
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -389,7 +391,9 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			name: "Progress",
 			marker: "k-progress",
 			render: () =>
-				render(<Progress value={50} styles={{ root: { borderWidth: 7 } }} />),
+				render(
+					<Progress value={50} slotStyles={{ root: { borderWidth: 7 } }} />,
+				),
 		},
 		{
 			name: "RadioGroup",
@@ -398,21 +402,22 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<RadioGroup
 						accessibilityLabel="r"
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
 		{
 			name: "Rating",
 			marker: "k-rating",
-			render: () => render(<Rating styles={{ root: { borderWidth: 7 } }} />),
+			render: () =>
+				render(<Rating slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "RingProgress",
 			marker: "k-ring-progress",
 			render: () =>
 				render(
-					<RingProgress value={10} styles={{ root: { borderWidth: 7 } }} />,
+					<RingProgress value={10} slotStyles={{ root: { borderWidth: 7 } }} />,
 				),
 		},
 		{
@@ -422,7 +427,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<SegmentedControl
 						data={["a", "b"]}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -433,14 +438,15 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<Select
 						options={[{ value: "a", label: "A" }]}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
 		{
 			name: "Separator",
 			marker: "k-separator",
-			render: () => render(<Separator styles={{ root: { borderWidth: 7 } }} />),
+			render: () =>
+				render(<Separator slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Sheet",
@@ -450,7 +456,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 					<Sheet
 						open
 						onClose={() => undefined}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					>
 						<Sheet.Body>x</Sheet.Body>
 					</Sheet>,
@@ -464,7 +470,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 					<Skeleton
 						animated={false}
 						style={{ width: 40, height: 8 }}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -473,13 +479,17 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			marker: "k-slider",
 			render: () =>
 				render(
-					<Slider defaultValue={[40]} styles={{ root: { borderWidth: 7 } }} />,
+					<Slider
+						defaultValue={[40]}
+						slotStyles={{ root: { borderWidth: 7 } }}
+					/>,
 				),
 		},
 		{
 			name: "Spinner",
 			marker: "k-spinner",
-			render: () => render(<Spinner styles={{ root: { borderWidth: 7 } }} />),
+			render: () =>
+				render(<Spinner slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Steps",
@@ -489,7 +499,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 					<Steps
 						items={[{ title: "a" }, { title: "b" }]}
 						value={1}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -500,7 +510,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<Switch
 						accessibilityLabel="s"
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -511,36 +521,40 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<Tabs
 						items={[{ value: "a", label: "A" }]}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
 		{
 			name: "Tag",
 			marker: "k-tag",
-			render: () => render(<Tag styles={{ root: { borderWidth: 7 } }}>t</Tag>),
+			render: () =>
+				render(<Tag slotStyles={{ root: { borderWidth: 7 } }}>t</Tag>),
 		},
 		{
 			name: "Text",
 			marker: "k-text",
 			textRoot: true,
-			render: () => render(<Text styles={{ root: { fontSize: 33 } }}>x</Text>),
+			render: () =>
+				render(<Text slotStyles={{ root: { fontSize: 33 } }}>x</Text>),
 		},
 		{
 			name: "TextInput",
 			marker: "k-text-input",
-			render: () => render(<TextInput styles={{ root: { borderWidth: 7 } }} />),
+			render: () =>
+				render(<TextInput slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Textarea",
 			marker: "k-textarea",
-			render: () => render(<Textarea styles={{ root: { borderWidth: 7 } }} />),
+			render: () =>
+				render(<Textarea slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "TimePicker",
 			marker: "k-time-picker",
 			render: () =>
-				render(<TimePicker styles={{ root: { borderWidth: 7 } }} />),
+				render(<TimePicker slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Timeline",
@@ -549,7 +563,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 				render(
 					<Timeline
 						items={[{ title: "one" }, { title: "two" }]}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -561,7 +575,7 @@ describe("root slot sweep — every component accepts styles.root", () => {
 					<Toast
 						open
 						onOpenChange={() => undefined}
-						styles={{ root: { borderWidth: 7 } }}
+						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
 		},
@@ -570,7 +584,10 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			marker: "k-toggle",
 			render: () =>
 				render(
-					<Toggle accessibilityLabel="b" styles={{ root: { borderWidth: 7 } }}>
+					<Toggle
+						accessibilityLabel="b"
+						slotStyles={{ root: { borderWidth: 7 } }}
+					>
 						b
 					</Toggle>,
 				),
@@ -580,18 +597,21 @@ describe("root slot sweep — every component accepts styles.root", () => {
 			marker: "k-toggle-group",
 			render: () =>
 				render(
-					<ToggleGroup type="single" styles={{ root: { borderWidth: 7 } }} />,
+					<ToggleGroup
+						type="single"
+						slotStyles={{ root: { borderWidth: 7 } }}
+					/>,
 				),
 		},
 		{
 			name: "List",
 			marker: "k-list",
-			render: () => render(<List styles={{ root: { borderWidth: 7 } }} />),
+			render: () => render(<List slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 	];
 
 	for (const fixture of fixtures) {
-		it(`${fixture.name}: styles.root reaches ${fixture.marker}`, async () => {
+		it(`${fixture.name}: slotStyles.root reaches ${fixture.marker}`, async () => {
 			const screen = await fixture.render();
 			const root = screen.getByTestId(fixture.marker, incl);
 			const s = flatStyle(root);
@@ -611,7 +631,10 @@ describe("root slot sweep — every component accepts styles.root", () => {
 describe("multi-part slots", () => {
 	it("checkbox.box overrides the box surface", async () => {
 		const screen = await render(
-			<Checkbox accessibilityLabel="c" styles={{ box: { borderWidth: 3 } }} />,
+			<Checkbox
+				accessibilityLabel="c"
+				slotStyles={{ box: { borderWidth: 3 } }}
+			/>,
 		);
 		expect(
 			Number(flatStyle(screen.getByTestId("k-checkbox-box", incl)).borderWidth),
@@ -622,7 +645,7 @@ describe("multi-part slots", () => {
 		const screen = await render(
 			<Switch
 				accessibilityLabel="s"
-				styles={{ track: { borderWidth: 3 }, thumb: { borderWidth: 5 } }}
+				slotStyles={{ track: { borderWidth: 3 }, thumb: { borderWidth: 5 } }}
 			/>,
 		);
 		expect(
@@ -637,7 +660,7 @@ describe("multi-part slots", () => {
 		const screen = await render(
 			<Slider
 				defaultValue={[40]}
-				styles={{
+				slotStyles={{
 					track: { borderWidth: 2 },
 					range: { borderWidth: 3 },
 					thumb: { borderWidth: 4 },
@@ -658,7 +681,7 @@ describe("multi-part slots", () => {
 
 	it("progress.indicator overrides the fill", async () => {
 		const screen = await render(
-			<Progress value={50} styles={{ indicator: { borderWidth: 3 } }} />,
+			<Progress value={50} slotStyles={{ indicator: { borderWidth: 3 } }} />,
 		);
 		expect(
 			Number(flatStyle(screen.getByTestId("k-progress-indicator")).borderWidth),
@@ -667,7 +690,7 @@ describe("multi-part slots", () => {
 
 	it("indicator.dot overrides the dot", async () => {
 		const screen = await render(
-			<Indicator size={10} styles={{ dot: { borderWidth: 3 } }} />,
+			<Indicator size={10} slotStyles={{ dot: { borderWidth: 3 } }} />,
 		);
 		expect(
 			Number(
@@ -681,14 +704,14 @@ describe("multi-part slots", () => {
 			<Sheet
 				open
 				onClose={() => undefined}
-				styles={{
+				slotStyles={{
 					root: { borderWidth: 1 },
 					overlay: { borderWidth: 2 },
 					content: { borderWidth: 3 },
 					grabber: { borderWidth: 4 },
 				}}
 			>
-				<Sheet.Body styles={{ root: { borderWidth: 5 } }}>x</Sheet.Body>
+				<Sheet.Body slotStyles={{ root: { borderWidth: 5 } }}>x</Sheet.Body>
 			</Sheet>,
 		);
 		expect(
@@ -716,7 +739,7 @@ describe("multi-part slots", () => {
 			<Dialog
 				open
 				onOpenChange={() => undefined}
-				styles={{ overlay: { borderWidth: 2 }, close: { borderWidth: 3 } }}
+				slotStyles={{ overlay: { borderWidth: 2 }, close: { borderWidth: 3 } }}
 			/>,
 		);
 		expect(
@@ -733,7 +756,10 @@ describe("multi-part slots", () => {
 		const screen = await render(
 			<SegmentedControl
 				data={["a", "b"]}
-				styles={{ segment: { borderWidth: 3 }, indicator: { borderWidth: 5 } }}
+				slotStyles={{
+					segment: { borderWidth: 3 },
+					indicator: { borderWidth: 5 },
+				}}
 			/>,
 		);
 		const segments = screen.getAllByTestId("k-segment", incl);
@@ -750,7 +776,7 @@ describe("multi-part slots", () => {
 
 	it("rating.star overrides each star pressable", async () => {
 		const screen = await render(
-			<Rating value={3} styles={{ star: { borderWidth: 3 } }} />,
+			<Rating value={3} slotStyles={{ star: { borderWidth: 3 } }} />,
 		);
 		const stars = screen.getAllByTestId("k-rating-star", incl);
 		expect(stars.length).toBeGreaterThan(1);
@@ -763,7 +789,7 @@ describe("multi-part slots", () => {
 		const screen = await render(
 			<Tabs
 				items={[{ value: "a", label: "A" }]}
-				styles={{ tab: { borderWidth: 3 }, list: { borderWidth: 5 } }}
+				slotStyles={{ tab: { borderWidth: 3 }, list: { borderWidth: 5 } }}
 			/>,
 		);
 		expect(
@@ -776,7 +802,10 @@ describe("multi-part slots", () => {
 
 	it("tag.remove overrides the remove pressable", async () => {
 		const screen = await render(
-			<Tag onRemove={() => undefined} styles={{ remove: { borderWidth: 3 } }}>
+			<Tag
+				onRemove={() => undefined}
+				slotStyles={{ remove: { borderWidth: 3 } }}
+			>
 				t
 			</Tag>,
 		);
@@ -791,7 +820,7 @@ describe("multi-part slots", () => {
 				name="Ada"
 				source={{ uri: "x" }}
 				status="online"
-				styles={{
+				slotStyles={{
 					image: { borderWidth: 2 },
 					status: { borderWidth: 4 },
 				}}
@@ -805,7 +834,7 @@ describe("multi-part slots", () => {
 		).toBe(4);
 
 		const fallback = await render(
-			<Avatar name="Ada" styles={{ fallback: { borderWidth: 3 } }} />,
+			<Avatar name="Ada" slotStyles={{ fallback: { borderWidth: 3 } }} />,
 		);
 		expect(
 			Number(flatStyle(fallback.getByTestId("k-avatar-fallback")).borderWidth),
@@ -817,7 +846,7 @@ describe("multi-part slots", () => {
 			<Avatar
 				name="Ada"
 				source={{ uri: "x" }}
-				styles={{ fallback: { borderWidth: 6 } }}
+				slotStyles={{ fallback: { borderWidth: 6 } }}
 			/>,
 		);
 		await fireEvent(screen.getByTestId("k-avatar-image"), "error");
@@ -832,7 +861,7 @@ describe("multi-part slots", () => {
 				title="t"
 				description="d"
 				action={{ label: "go", onPress: () => undefined }}
-				styles={{
+				slotStyles={{
 					icon: { borderWidth: 2 },
 					title: { fontSize: 40 },
 					description: { fontSize: 41 },
@@ -860,7 +889,7 @@ describe("multi-part slots", () => {
 
 	it("alert.dismiss overrides the dismiss pressable", async () => {
 		const screen = await render(
-			<Alert dismissable styles={{ dismiss: { borderWidth: 3 } }} />,
+			<Alert dismissable slotStyles={{ dismiss: { borderWidth: 3 } }} />,
 		);
 		expect(
 			Number(
@@ -874,7 +903,7 @@ describe("multi-part slots", () => {
 			<Toast
 				open
 				onOpenChange={() => undefined}
-				styles={{ viewport: { borderWidth: 3 } }}
+				slotStyles={{ viewport: { borderWidth: 3 } }}
 			/>,
 		);
 		expect(
@@ -886,7 +915,7 @@ describe("multi-part slots", () => {
 
 	it("toggle-group.item overrides every item", async () => {
 		const screen = await render(
-			<ToggleGroup type="single" styles={{ item: { borderWidth: 3 } }}>
+			<ToggleGroup type="single" slotStyles={{ item: { borderWidth: 3 } }}>
 				<ToggleGroupItem value="a">a</ToggleGroupItem>
 				<ToggleGroupItem value="b">b</ToggleGroupItem>
 			</ToggleGroup>,
@@ -898,7 +927,7 @@ describe("multi-part slots", () => {
 
 	it("text-input root slot reaches the TextInput host", async () => {
 		const screen = await render(
-			<TextInput styles={{ root: { borderWidth: 7 } }} />,
+			<TextInput slotStyles={{ root: { borderWidth: 7 } }} />,
 		);
 		expect(
 			Number(flatStyle(screen.getByTestId("k-text-input")).borderWidth),
@@ -907,9 +936,9 @@ describe("multi-part slots", () => {
 });
 
 describe("precedence and back-compat", () => {
-	it("styles.root beats the legacy style prop on button", async () => {
+	it("slotStyles.root beats the legacy style prop on button", async () => {
 		const screen = await render(
-			<Button style={{ height: 99 }} styles={{ root: { height: 120 } }}>
+			<Button style={{ height: 99 }} slotStyles={{ root: { height: 120 } }}>
 				go
 			</Button>,
 		);
@@ -918,12 +947,12 @@ describe("precedence and back-compat", () => {
 		);
 	});
 
-	it("styles.root beats the legacy style prop on checkbox and slider", async () => {
+	it("slotStyles.root beats the legacy style prop on checkbox and slider", async () => {
 		const cb = await render(
 			<Checkbox
 				accessibilityLabel="c"
 				style={{ minHeight: 99 }}
-				styles={{ root: { minHeight: 120 } }}
+				slotStyles={{ root: { minHeight: 120 } }}
 			/>,
 		);
 		expect(Number(flatStyle(cb.getByTestId("k-checkbox")).minHeight)).toBe(120);
@@ -932,24 +961,27 @@ describe("precedence and back-compat", () => {
 			<Slider
 				defaultValue={[10]}
 				style={{ opacity: 0.2 }}
-				styles={{ root: { opacity: 0.9 } }}
+				slotStyles={{ root: { opacity: 0.9 } }}
 			/>,
 		);
 		expect(Number(flatStyle(sl.getByTestId("k-slider")).opacity)).toBe(0.9);
 	});
 
-	it("styles.root beats the legacy style prop on rating, radio-group", async () => {
+	it("slotStyles.root beats the legacy style prop on rating, radio-group", async () => {
 		const rt = await render(
 			<Rating
 				value={3}
 				style={{ opacity: 0.2 }}
-				styles={{ root: { opacity: 0.9 } }}
+				slotStyles={{ root: { opacity: 0.9 } }}
 			/>,
 		);
 		expect(Number(flatStyle(rt.getByTestId("k-rating")).opacity)).toBe(0.9);
 
 		const rg = await render(
-			<RadioGroup style={{ opacity: 0.2 }} styles={{ root: { opacity: 0.9 } }}>
+			<RadioGroup
+				style={{ opacity: 0.2 }}
+				slotStyles={{ root: { opacity: 0.9 } }}
+			>
 				<RadioGroup.Item value="a" label="a" />
 			</RadioGroup>,
 		);
@@ -958,23 +990,23 @@ describe("precedence and back-compat", () => {
 		);
 	});
 
-	it("toggle ladder: look → style → styles.root", async () => {
+	it("toggle ladder: look → style → slotStyles.root", async () => {
 		const tg = await render(
-			<Toggle style={{ opacity: 0.2 }} styles={{ root: { opacity: 0.9 } }}>
+			<Toggle style={{ opacity: 0.2 }} slotStyles={{ root: { opacity: 0.9 } }}>
 				t
 			</Toggle>,
 		);
 		expect(Number(flatStyle(tg.getByTestId("k-toggle")).opacity)).toBe(0.9);
 	});
 
-	it("toggle-group item ladder: look → style → group itemStyles → styles.root", async () => {
-		// (a) item styles.root beats the item's legacy style
+	it("toggle-group item ladder: look → style → group itemStyles → slotStyles.root", async () => {
+		// (a) item slotStyles.root beats the item's legacy style
 		const a = await render(
 			<ToggleGroup type="single">
 				<ToggleGroupItem
 					value="a"
 					style={{ opacity: 0.2 }}
-					styles={{ root: { opacity: 0.9 } }}
+					slotStyles={{ root: { opacity: 0.9 } }}
 				>
 					a
 				</ToggleGroupItem>
@@ -984,9 +1016,9 @@ describe("precedence and back-compat", () => {
 			Number(flatStyle(a.getByTestId("k-toggle-group-item")).opacity),
 		).toBe(0.9);
 
-		// (b) group itemStyles beats the item's legacy style (no styles.root)
+		// (b) group itemStyles beats the item's legacy style (no slotStyles.root)
 		const b = await render(
-			<ToggleGroup type="single" styles={{ item: { opacity: 0.7 } }}>
+			<ToggleGroup type="single" slotStyles={{ item: { opacity: 0.7 } }}>
 				<ToggleGroupItem value="a" style={{ opacity: 0.2 }}>
 					a
 				</ToggleGroupItem>
@@ -996,10 +1028,10 @@ describe("precedence and back-compat", () => {
 			Number(flatStyle(b.getByTestId("k-toggle-group-item")).opacity),
 		).toBe(0.7);
 
-		// (c) item styles.root beats group itemStyles
+		// (c) item slotStyles.root beats group itemStyles
 		const c = await render(
-			<ToggleGroup type="single" styles={{ item: { opacity: 0.7 } }}>
-				<ToggleGroupItem value="a" styles={{ root: { opacity: 0.9 } }}>
+			<ToggleGroup type="single" slotStyles={{ item: { opacity: 0.7 } }}>
+				<ToggleGroupItem value="a" slotStyles={{ root: { opacity: 0.9 } }}>
 					a
 				</ToggleGroupItem>
 			</ToggleGroup>,
@@ -1018,7 +1050,7 @@ describe("precedence and back-compat", () => {
 				open
 				onClose={() => undefined}
 				style={{ borderWidth: 2 }}
-				styles={{ root: { borderWidth: 2 } }}
+				slotStyles={{ root: { borderWidth: 2 } }}
 			>
 				<Sheet.Body>x</Sheet.Body>
 			</Sheet>,
@@ -1040,7 +1072,7 @@ describe("text parts and untouched defaults", () => {
 	it("alert.title, toast.title TextStyle slots reach their Text nodes", async () => {
 		const alert = await render(
 			<Alert>
-				<Alert.Title styles={{ root: { fontSize: 44 } }}>t</Alert.Title>
+				<Alert.Title slotStyles={{ root: { fontSize: 44 } }}>t</Alert.Title>
 			</Alert>,
 		);
 		expect(Number(flatStyle(alert.getByTestId("k-alert-title")).fontSize)).toBe(
@@ -1049,7 +1081,7 @@ describe("text parts and untouched defaults", () => {
 
 		const toast = await render(
 			<Toast open onOpenChange={() => undefined}>
-				<Toast.Title styles={{ root: { fontSize: 45 } }}>t</Toast.Title>
+				<Toast.Title slotStyles={{ root: { fontSize: 45 } }}>t</Toast.Title>
 			</Toast>,
 		);
 		expect(
@@ -1060,7 +1092,7 @@ describe("text parts and untouched defaults", () => {
 	it("dialog.title TextStyle slot reaches the title node", async () => {
 		const screen = await render(
 			<Dialog open onOpenChange={() => undefined}>
-				<Dialog.Title styles={{ root: { fontSize: 46 } }}>t</Dialog.Title>
+				<Dialog.Title slotStyles={{ root: { fontSize: 46 } }}>t</Dialog.Title>
 			</Dialog>,
 		);
 		expect(
@@ -1094,7 +1126,7 @@ describe("accordion and collapsible slots", () => {
 			<Accordion
 				type="single"
 				defaultValue="a"
-				styles={{
+				slotStyles={{
 					item: { borderWidth: 3 },
 					trigger: { borderWidth: 4 },
 					content: { borderWidth: 5 },
@@ -1124,10 +1156,10 @@ describe("accordion and collapsible slots", () => {
 			<Accordion
 				type="single"
 				defaultValue="a"
-				styles={{ trigger: { borderWidth: 4 } }}
+				slotStyles={{ trigger: { borderWidth: 4 } }}
 			>
 				<Accordion.Item value="a">
-					<Accordion.Trigger styles={{ root: { borderWidth: 6 } }}>
+					<Accordion.Trigger slotStyles={{ root: { borderWidth: 6 } }}>
 						t
 					</Accordion.Trigger>
 					<Accordion.Content>c</Accordion.Content>
@@ -1145,7 +1177,10 @@ describe("accordion and collapsible slots", () => {
 		const screen = await render(
 			<Collapsible
 				defaultOpen
-				styles={{ trigger: { borderWidth: 4 }, content: { borderWidth: 5 } }}
+				slotStyles={{
+					trigger: { borderWidth: 4 },
+					content: { borderWidth: 5 },
+				}}
 			>
 				<Collapsible.Trigger>t</Collapsible.Trigger>
 				<Collapsible.Content>c</Collapsible.Content>

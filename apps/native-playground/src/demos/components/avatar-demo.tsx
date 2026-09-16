@@ -49,14 +49,14 @@ export function AvatarDemo() {
 					/>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="slot overrides (styles)">
+			<DemoBlock label="slotStyles">
 				<View style={demoStyles.componentRow}>
 					<Avatar name="Ada Lovelace" size="lg" status="online" />
 					<Avatar
 						name="Ada Lovelace"
 						size="lg"
 						status="online"
-						styles={{
+						slotStyles={{
 							fallback: { backgroundColor: theme.secondary },
 							status: { width: 16, height: 16 },
 						}}
@@ -64,7 +64,7 @@ export function AvatarDemo() {
 					<Avatar
 						name="Ada Lovelace"
 						size="lg"
-						styles={{
+						slotStyles={{
 							root: { borderWidth: 2, borderColor: theme.primary },
 						}}
 					/>

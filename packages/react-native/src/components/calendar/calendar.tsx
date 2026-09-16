@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { buildMonth, iso } from "../../lib/calendar.utils";
 import {
 	addMonths,
 	formatMonthYear,
@@ -11,7 +12,6 @@ import {
 	monthIsAfter,
 	monthIsBefore,
 } from "../../lib/date.utils";
-import { buildMonth, iso } from "../../lib/calendar.utils";
 import { applySlot } from "../slot-styles";
 import type {
 	CalendarProps,
@@ -51,7 +51,7 @@ export function Calendar({
 	skeletonConfig,
 	accessibilityLabel = "Calendar",
 	style,
-	styles,
+	slotStyles,
 	testID = "k-calendar",
 }: CalendarProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -113,7 +113,7 @@ export function Calendar({
 				{...skeletonConfig}
 				testID={testID}
 				style={style}
-				styles={styles ? { root: styles.root } : undefined}
+				slotStyles={slotStyles ? { root: slotStyles.root } : undefined}
 			/>
 		);
 	}
@@ -187,7 +187,7 @@ export function Calendar({
 		<View
 			testID={testID}
 			accessibilityLabel={accessibilityLabel}
-			style={[{ gap: 8 }, applySlot(applySlot({}, style), styles?.root)]}
+			style={[{ gap: 8 }, applySlot(applySlot({}, style), slotStyles?.root)]}
 		>
 			<View
 				style={{

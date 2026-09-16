@@ -7,7 +7,6 @@ import type { ReactElement } from "react";
 import type { ImageSourcePropType } from "react-native";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import type { AvatarSize } from "../avatar";
 import { Avatar } from "../avatar";
 import {
 	container,
@@ -24,7 +23,7 @@ export function AvatarGroup({
 	max = 4,
 	size = "md",
 	style,
-	styles,
+	slotStyles,
 	testID = "k-avatar-group",
 }: AvatarGroupProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -60,7 +59,7 @@ export function AvatarGroup({
 			]
 				.filter(Boolean)
 				.join(", ")}
-			style={container(style, styles?.root)}
+			style={container(style, slotStyles?.root)}
 		>
 			{visible.map((avatar, index) =>
 				member(avatar.name, avatar.source, index),

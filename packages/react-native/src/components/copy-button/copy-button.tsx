@@ -23,7 +23,7 @@ export function CopyButton({
 	variant = "ghost",
 	color = "primary",
 	style,
-	styles,
+	slotStyles,
 }: CopyButtonProps) {
 	const [copied, setCopied] = useState(false);
 	const { theme } = useUnistyles();
@@ -86,7 +86,7 @@ export function CopyButton({
 			size="icon"
 			onPress={handlePress}
 			style={style}
-			styles={styles}
+			slotStyles={slotStyles}
 		>
 			{copied
 				? (checkIcon ?? (

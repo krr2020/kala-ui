@@ -31,7 +31,7 @@ export function Sheet({
 	snap = "peek",
 	dismissable = true,
 	style,
-	styles,
+	slotStyles,
 	children,
 }: SheetProps): ReactElement | null {
 	const { theme } = useUnistyles();
@@ -64,7 +64,7 @@ export function Sheet({
 						...({ position: "absolute", inset: 0 } as const),
 						zIndex: 100,
 					},
-					styles?.root,
+					slotStyles?.root,
 				),
 				style,
 			)}
@@ -83,7 +83,7 @@ export function Sheet({
 						left: 0,
 						backgroundColor: "rgba(0,0,0,0.5)",
 					},
-					styles?.overlay,
+					slotStyles?.overlay,
 				)}
 			/>
 			<GestureDetector gesture={pan}>
@@ -109,7 +109,7 @@ export function Sheet({
 								paddingHorizontal: tokens.space.gutter,
 								gap: 12,
 							},
-							styles?.content,
+							slotStyles?.content,
 						),
 					]}
 				>
@@ -124,7 +124,7 @@ export function Sheet({
 								borderRadius: 2,
 								backgroundColor: theme.muted,
 							},
-							styles?.grabber,
+							slotStyles?.grabber,
 						)}
 					/>
 					{children}
@@ -134,10 +134,13 @@ export function Sheet({
 	);
 }
 
-export function SheetBody({ children, styles }: SheetBodyProps): ReactElement {
+export function SheetBody({
+	children,
+	slotStyles,
+}: SheetBodyProps): ReactElement {
 	const { theme } = useUnistyles();
 	return (
-		<View testID="k-sheet-body" style={applySlot({ gap: 8 }, styles?.root)}>
+		<View testID="k-sheet-body" style={applySlot({ gap: 8 }, slotStyles?.root)}>
 			{typeof children === "string" || typeof children === "number" ? (
 				<Text style={{ color: theme.foreground, fontSize: 14 }}>
 					{children}

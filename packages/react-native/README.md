@@ -55,16 +55,16 @@ Every component takes two styling props with different jobs:
 - **`style`** — the classic React Native prop. It styles the component's
   outer container and is meant for layout in the parent (margins,
   positioning). It cannot reach inner parts.
-- **`styles`** — a slot-override object with one key per internal part.
-  Each slot merges on top of the library defaults for that part; nothing
-  is replaced wholesale.
+- **`slotStyles`** — a slot-override object with one key per internal
+  part. Each slot merges on top of the library defaults for that part;
+  nothing is replaced wholesale.
 
 ```tsx
 <Avatar
 	name="Ada Lovelace"
 	status="online"
 	style={{ marginRight: 8 }}
-	styles={{
+	slotStyles={{
 		root: { borderWidth: 1 },              // outer container
 		image: { borderRadius: 12 },           // the photo
 		fallback: { backgroundColor: "gold" }, // initials tile
@@ -73,9 +73,9 @@ Every component takes two styling props with different jobs:
 />
 ```
 
-Precedence on the root is `library defaults → style → styles.root` — the
-slot entry always wins. Inner parts follow
-`library defaults → styles.<slot>`.
+Precedence on the root is `library defaults → style → slotStyles.root` —
+the slot entry always wins. Inner parts follow
+`library defaults → slotStyles.<slot>`.
 
 Slot keys mirror the component's stable `k-*` testIDs (`k-avatar`,
 `k-avatar-fallback`, …), so anything you can style you can also target in

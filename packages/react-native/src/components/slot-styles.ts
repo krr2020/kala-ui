@@ -1,9 +1,9 @@
 /**
- * Slot-style overrides: every component accepts `styles={{ root: {...},
- * <part>: {...} }}` keyed by its marker parts. Precedence is uniform:
- * library defaults → slot entry (slots win); on the root the legacy
- * `style` prop still works but sits BELOW styles.root, so the per-part
- * hatch stays the finest grain.
+ * Slot-style overrides: every component accepts `slotStyles={{ root:
+ * {...}, <part>: {...} }}` keyed by its marker parts. Precedence is
+ * uniform: library defaults → slot entry (slots win); on the root the
+ * legacy `style` prop still works but sits BELOW slotStyles.root, so the
+ * per-part hatch stays the finest grain.
  */
 import type { ImageStyle, StyleProp, TextStyle, ViewStyle } from "react-native";
 
