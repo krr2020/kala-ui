@@ -42,7 +42,7 @@ export function ButtonDemo() {
 						</Button>
 					))}
 					<Button size="icon" accessibilityLabel="sun button">
-						<Sun size={18} color={theme.foreground} />
+						<Sun size={18} color={theme.primaryForeground} />
 					</Button>
 				</View>
 			</DemoBlock>

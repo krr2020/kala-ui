@@ -35,4 +35,11 @@ describe("button demo ↔ library seam", () => {
 		);
 		expect(demo).not.toMatch(/"link"/);
 	});
+
+	it("icon-button glyph uses a contrast token against the solid fill", () => {
+		// foreground on a primary fill is invisible in dark themes; the
+		// demo must pass the ramp's paired foreground token.
+		expect(demo).toMatch(/color=\{theme\.primaryForeground\}/);
+		expect(demo).not.toMatch(/color=\{theme\.foreground\}/);
+	});
 });

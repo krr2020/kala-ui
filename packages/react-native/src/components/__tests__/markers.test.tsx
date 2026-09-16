@@ -6,7 +6,7 @@
  */
 import { act, fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
-import { motion } from "../../tokens";
+import { motion, tokens } from "../../tokens";
 import { Accordion } from "../accordion";
 import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
@@ -233,12 +233,35 @@ describe("component markers", () => {
 			expect(BUTTON_SPRING).toEqual(motion.spring.snappy);
 		});
 
-		it("enforces the 44dp touch floor on every size", async () => {
-			const screen = await render(<Button size="xs">Go</Button>);
-			for (const size of ["xs", "sm", "md", "lg", "icon"] as const) {
-				await screen.rerender(<Button size={size}>Go</Button>);
-				const s = flatStyle(screen.getByTestId("k-button-root"));
-				expect(Number(s.minHeight)).toBeGreaterThanOrEqual(44);
+		it("sizes are visually distinct and every size keeps the 44dp touch floor", async () => {
+			const expectedHeight: Record<string, number> = {
+				xs: 28,
+				sm: 36,
+				md: tokens.size.controlH,
+				lg: 44,
+				icon: 44,
+			};
+				const screen = await render(<Button size="xs">Go</Button>);
+				let prev = 0;
+				for (const size of ["xs", "sm", "md", "lg", "icon"] as const) {
+					await screen.rerender(
+						<Button size={size} accessibilityLabel={size === "icon" ? "go" : undefined}>
+							Go
+						</Button>,
+					);
+					const s = flatStyle(screen.getByTestId("k-button-root"));
+					const h = Number(s.minHeight);
+					// font-scale safe: minHeight grows with a11y font scales, a fixed
+					// height would clip — assert only minHeight is set for text sizes
+					if (size !== "icon") {
+						expect(s.height).toBeUndefined();
+						expect(h).toBe(expectedHeight[size]);
+						expect(h).toBeGreaterThan(prev);
+						prev = h;
+					}
+				// touch floor via hitSlop, not visual size
+				const hit = s.hitSlop as { top?: number } | undefined;
+				expect(h + 2 * Number(hit?.top ?? 0)).toBeGreaterThanOrEqual(44);
 				expect(Number(s.minWidth)).toBeGreaterThanOrEqual(44);
 			}
 		});

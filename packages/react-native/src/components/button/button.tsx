@@ -98,16 +98,17 @@ function baseStyle(
 ): Record<string, unknown> {
 	const isIcon = size === "icon";
 	const height = isIcon ? ICON_BOX : (HEIGHT[size] ?? ICON_BOX);
+	// visual height follows the size tier (minHeight, not height, so
+	// accessibility font scales can still grow the button); hitSlop
+	// restores the 44dp touch floor around the compact tiers.
+	const hitSlop = Math.max(0, (44 - height) / 2);
 	return {
-		// 44dp touch floor: minHeight/minWidth beat the smaller visual
-		// heights, so xs/sm keep their compact look without shrinking
-		// the tappable area.
-		minHeight: 44,
+		minHeight: height,
 		minWidth: 44,
 		height: isIcon ? ICON_BOX : undefined,
 		width: isIcon ? ICON_BOX : undefined,
 		paddingHorizontal: isIcon ? 0 : PAD_X[size],
-		paddingVertical: isIcon ? 0 : Math.max(0, (44 - height) / 2),
+		paddingVertical: 0,
 		alignItems: "center",
 		justifyContent: "center",
 		flexDirection: "row",
@@ -119,6 +120,7 @@ function baseStyle(
 		borderColor: look.border,
 		opacity: dimmed ? 0.5 : 1,
 		overflow: "hidden",
+		hitSlop: hitSlop > 0 ? { top: hitSlop, bottom: hitSlop, left: 0, right: 0 } : undefined,
 	};
 }
 
