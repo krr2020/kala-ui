@@ -4,7 +4,9 @@
  */
 import { render } from "@testing-library/react-native";
 import { Text, View } from "react-native";
-import { Button } from "../button";
+import { motion } from "../../tokens";
+import { BUTTON_SPRING as BARREL_SPRING, Button } from "../button";
+import { BUTTON_SPRING } from "../button/button.styles";
 
 function Glyph() {
 	return <View testID="glyph" />;
@@ -43,6 +45,13 @@ function rowWrapperOf(json: JSONRoot) {
 	});
 	return rows[0];
 }
+
+describe("Button module split", () => {
+	it("re-exports BUTTON_SPRING from the barrel and button.styles keeps the spring", () => {
+		expect(BARREL_SPRING).toEqual(motion.spring.snappy);
+		expect(BUTTON_SPRING).toEqual(motion.spring.snappy);
+	});
+});
 
 describe("Button composed children layout", () => {
 	it("renders leading-icon composition in a row container with center alignment", async () => {

@@ -1,4 +1,5 @@
-export { BUTTON_SPRING, Button } from "./button";
+export { Button } from "./button";
+export { BUTTON_SPRING } from "./button.styles";
 export type {
 	ButtonColor,
 	ButtonProps,
