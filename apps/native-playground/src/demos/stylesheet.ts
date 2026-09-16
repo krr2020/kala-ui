@@ -85,12 +85,14 @@ export const demoStyles = StyleSheet.create((theme) => ({
 	},
 	chipRows: {
 		gap: 6,
+		paddingBottom: 12,
 		borderBottomWidth: 1,
 		borderBottomColor: theme.border,
 	},
 	groupChip: {
 		borderRadius: 999,
 		borderColor: theme.foreground,
+		backgroundColor: "transparent",
 	},
 	groupChipText: {
 		fontWeight: "700",
@@ -100,6 +102,7 @@ export const demoStyles = StyleSheet.create((theme) => ({
 	},
 	filterChip: {
 		borderRadius: 999,
+		backgroundColor: "transparent",
 	},
 	routeContent: {
 		gap: 24,

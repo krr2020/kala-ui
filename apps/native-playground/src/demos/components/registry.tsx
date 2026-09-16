@@ -7,7 +7,15 @@ import { FeedbackDemo } from "../feedback-demo";
 import { NavigationDemo } from "../navigation-demo";
 import { OverlaysDemo } from "../overlays-demo";
 import { TokensDemo } from "../tokens-demo";
+import { AvatarDemo } from "./avatar-demo";
+import { BadgeDemo } from "./badge-demo";
 import { ButtonDemo } from "./button-demo";
+import { CardDemo } from "./card-demo";
+import { HeadingDemo } from "./heading-demo";
+import { IconDemo } from "./icon-demo";
+import { SeparatorDemo } from "./separator-demo";
+import { TagDemo } from "./tag-demo";
+import { TextDemo } from "./text-demo";
 
 // Two-row filter navigation: row 1 selects a group, row 2 selects a
 // component inside it. Components without a dedicated screen fall back
@@ -38,17 +46,17 @@ export const componentGroups: ComponentGroup[] = [
 		overview: () => <BasicsDemo />,
 		components: [
 			{ name: "button", render: () => <ButtonDemo /> },
-			{ name: "icon" },
-			{ name: "text" },
-			{ name: "heading" },
+			{ name: "icon", render: () => <IconDemo /> },
+			{ name: "text", render: () => <TextDemo /> },
+			{ name: "heading", render: () => <HeadingDemo /> },
 			{ name: "list" },
-			{ name: "avatar" },
+			{ name: "avatar", render: () => <AvatarDemo /> },
 			{ name: "avatar-group" },
-			{ name: "badge" },
-			{ name: "tag" },
+			{ name: "badge", render: () => <BadgeDemo /> },
+			{ name: "tag", render: () => <TagDemo /> },
 			{ name: "tag-input" },
-			{ name: "card" },
-			{ name: "separator" },
+			{ name: "card", render: () => <CardDemo /> },
+			{ name: "separator", render: () => <SeparatorDemo /> },
 		],
 	},
 	{

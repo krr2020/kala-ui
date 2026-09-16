@@ -182,9 +182,26 @@ describe("component app seam", () => {
 			"utf8",
 		);
 		expect(shell).toMatch(/componentGroups/);
-		// dedicated demo wired (button) and fallback entries exist (no render)
-		expect(registry).toMatch(/name: "button", render: \(\) => <ButtonDemo/);
-		expect(registry).toMatch(/name: "card"\s*\}/);
+		// dedicated demos wired; undedicated components fall back to the
+		// group overview (entry without render) until their demo lands.
+		for (const [name, demo] of [
+			["button", "ButtonDemo"],
+			["text", "TextDemo"],
+			["heading", "HeadingDemo"],
+			["icon", "IconDemo"],
+			["badge", "BadgeDemo"],
+			["tag", "TagDemo"],
+			["separator", "SeparatorDemo"],
+			["card", "CardDemo"],
+			["avatar", "AvatarDemo"],
+		] as const) {
+			expect(registry).toMatch(
+				new RegExp(`name: "${name}", render: \\(\\) => <${demo}`),
+			);
+		}
+		expect(registry).toMatch(/name: "list"\s*\}/);
+		expect(registry).toMatch(/name: "avatar-group"\s*\}/);
+		expect(registry).toMatch(/name: "tag-input"\s*\}/);
 	});
 
 	it("render-surface census matches the pinned marker/label inventory", () => {
@@ -204,8 +221,8 @@ describe("component app seam", () => {
 					'accessibilityLabel="plan"': 1,
 					'accessibilityLabel="quantity"': 1,
 					'accessibilityLabel="range"': 1,
+					'accessibilityLabel="section break"': 1,
 					'accessibilityLabel="show toast"': 1,
-					'accessibilityLabel="sun"': 1,
 					'accessibilityLabel="sync"': 1,
 					'accessibilityLabel="volume"': 1,
 					"accessibilityLabel={`activate ${name} theme`}": 1,
@@ -215,13 +232,13 @@ describe("component app seam", () => {
 					'testID="k-demo-avatars"': 1,
 					'testID="k-demo-badges"': 1,
 					'testID="k-demo-banner"': 1,
-					'testID="k-demo-buttons"': 1,
 					'testID="k-demo-button"': 1,
 					'testID="k-demo-card"': 1,
 					'testID="k-demo-charts"': 1,
 					'testID="k-demo-collapsible"': 1,
 					'testID="k-demo-controls"': 1,
 					'testID="k-demo-dialog"': 1,
+					'testID="k-demo-heading"': 1,
 					'testID="k-demo-icons"': 1,
 					'testID="k-demo-list"': 1,
 					'testID="k-demo-indicator"': 1,
@@ -239,6 +256,7 @@ describe("component app seam", () => {
 					'testID="k-demo-password-strength"': 1,
 					'testID="k-demo-steps"': 1,
 					'testID="k-demo-select"': 1,
+					'testID="k-demo-separator"': 1,
 					'testID="k-demo-dropdown-menu"': 1,
 					'testID="k-demo-context-menu"': 1,
 					'testID="k-demo-timeline"': 1,
@@ -256,6 +274,7 @@ describe("component app seam", () => {
 					'testID="k-demo-slider"': 1,
 					'testID="k-demo-spinners"': 1,
 					'testID="k-demo-tabs"': 1,
+					'testID="k-demo-tag"': 1,
 					'testID="k-demo-tags"': 1,
 					'testID="k-demo-text"': 1,
 					'testID="k-demo-textarea"': 1,
