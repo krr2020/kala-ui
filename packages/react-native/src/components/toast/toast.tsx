@@ -28,7 +28,7 @@ export function Toast({
 	children,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-toast",
 }: ToastProps): ReactElement | null {
 	const { theme } = useUnistyles();
@@ -56,7 +56,7 @@ export function Toast({
 					justifyContent: position === "top" ? "flex-start" : "flex-end",
 					padding: 16,
 				},
-				styles?.viewport,
+				slotStyles?.viewport,
 			]}
 		>
 			<View
@@ -75,7 +75,7 @@ export function Toast({
 						padding: 14,
 						gap: 2,
 					},
-					applySlot(applySlot({}, style), styles?.root),
+					applySlot(applySlot({}, style), slotStyles?.root),
 				]}
 			>
 				{children}
@@ -87,7 +87,7 @@ export function Toast({
 function ToastTitle({
 	children,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-toast-title",
 }: ToastTitleProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -96,7 +96,7 @@ function ToastTitle({
 			testID={testID}
 			style={applySlot(
 				[{ color: theme.foreground, fontSize: 15, fontWeight: "600" }, style],
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			{children}
@@ -107,7 +107,7 @@ function ToastTitle({
 function ToastDescription({
 	children,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-toast-description",
 }: ToastDescriptionProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -116,7 +116,7 @@ function ToastDescription({
 			testID={testID}
 			style={applySlot(
 				[{ color: theme.mutedForeground, fontSize: 14 }, style],
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			{children}

@@ -42,7 +42,7 @@ export function Banner({
 	skeleton,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-banner",
 }: BannerProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -67,14 +67,14 @@ export function Banner({
 					backgroundColor: bg,
 				},
 				positionStyle(position),
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			<View
 				testID="k-banner-content"
 				style={[
 					{ flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
-					applySlot({}, styles?.content),
+					applySlot({}, slotStyles?.content),
 				]}
 			>
 				{isLoading ? (
@@ -98,7 +98,10 @@ export function Banner({
 					accessibilityLabel="Close banner"
 					hitSlop={8}
 					onPress={onClose}
-					style={[{ padding: 4 }, applySlot({ opacity: 0.9 }, styles?.close)]}
+					style={[
+						{ padding: 4 },
+						applySlot({ opacity: 0.9 }, slotStyles?.close),
+					]}
 				>
 					<X size={16} color={fg} />
 				</Pressable>

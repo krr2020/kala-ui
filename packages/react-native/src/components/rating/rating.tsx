@@ -35,7 +35,7 @@ export function Rating({
 	size = "md",
 	accessibilityLabel = "Rating",
 	style,
-	styles,
+	slotStyles,
 	testID = "k-rating",
 }: RatingProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -114,7 +114,7 @@ export function Rating({
 				accessibilityLabel={`${accessibilityLabel}: ${active} out of ${count} stars`}
 				style={applySlot(
 					applySlot([{ flexDirection: "row", alignItems: "center" }], style),
-					styles?.root,
+					slotStyles?.root,
 				)}
 			>
 				{Array.from({ length: count }, (_, i) => i + 1).map((star) => (
@@ -146,7 +146,7 @@ export function Rating({
 					],
 					style,
 				),
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			{Array.from({ length: count }, (_, i) => {
@@ -169,7 +169,7 @@ export function Rating({
 								justifyContent: "center",
 								paddingHorizontal: 2,
 							},
-							styles?.star,
+							slotStyles?.star,
 						)}
 					>
 						{starVisual(star)}

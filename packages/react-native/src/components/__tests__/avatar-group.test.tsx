@@ -130,9 +130,12 @@ describe("AvatarGroup", () => {
 		expect(group.props.accessibilityLabel).toContain("Grace Hopper");
 	});
 
-	it("styles.root slot wins over the library surface", async () => {
+	it("slotStyles.root slot wins over the library surface", async () => {
 		const screen: Screen = await render(
-			<AvatarGroup avatars={[{ name: "A" }]} styles={{ root: { gap: 9 } }} />,
+			<AvatarGroup
+				avatars={[{ name: "A" }]}
+				slotStyles={{ root: { gap: 9 } }}
+			/>,
 		);
 		expect(flatStyle(screen.getByTestId("k-avatar-group")).gap).toBe(9);
 	});

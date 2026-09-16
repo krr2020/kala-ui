@@ -11,8 +11,8 @@ export interface LoadingOverlayProps {
 	/** replaces the default Spinner as the loader node */
 	children?: ReactNode;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 	};
 	testID?: string;

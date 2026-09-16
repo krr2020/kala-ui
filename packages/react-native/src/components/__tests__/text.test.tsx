@@ -6,9 +6,9 @@
 import { readFileSync } from "node:fs";
 import { render } from "@testing-library/react-native";
 import { themes } from "../../themes";
+import type { TextSize } from "../text";
 import { Text } from "../text";
 import { FONT_SIZE } from "../text/text.styles";
-import type { TextSize } from "../text";
 
 const flatStyle = (node: {
 	props: { style?: unknown };

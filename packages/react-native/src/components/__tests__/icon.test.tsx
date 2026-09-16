@@ -4,14 +4,14 @@
  * depends on (collapsable={false} keeps the testID node alive).
  */
 import { readFileSync } from "node:fs";
-import type { ReactElement } from "react";
-import { Sun } from "lucide-react-native";
-import { Text as RNText } from "react-native";
 import { render } from "@testing-library/react-native";
+import { Sun } from "lucide-react-native";
+import type { ReactElement } from "react";
+import { Text as RNText } from "react-native";
 import { themes } from "../../themes";
+import type { IconSize } from "../icon";
 import { Icon } from "../icon";
 import { ICON_SIZE_PX } from "../icon/icon.styles";
-import type { IconSize } from "../icon";
 
 const inclHidden = { includeHiddenElements: true };
 
@@ -35,9 +35,9 @@ type JsonNode = {
 };
 const svgProps = (tree: unknown): Record<string, unknown> => {
 	const node = tree as JsonNode | null;
-	const svg = (
-		Array.isArray(node?.children) ? node.children[0] : undefined
-	) as JsonNode | undefined;
+	const svg = (Array.isArray(node?.children) ? node.children[0] : undefined) as
+		| JsonNode
+		| undefined;
 	return svg?.props ?? {};
 };
 
@@ -51,9 +51,7 @@ describe("Icon", () => {
 		const screen = await render(<Icon icon={Sun} size="xs" />);
 		for (const size of ["xs", "sm", "md", "lg", "xl"] as IconSize[]) {
 			await screen.rerender(<Icon icon={Sun} size={size} />);
-			expect(Number(svgProps(screen.toJSON()).width)).toBe(
-				ICON_SIZE_PX[size],
-			);
+			expect(Number(svgProps(screen.toJSON()).width)).toBe(ICON_SIZE_PX[size]);
 		}
 		expect(ICON_SIZE_PX).toEqual({
 			xs: 14,
@@ -99,9 +97,9 @@ describe("Icon", () => {
 		);
 	});
 
-	it("styles.root slot overrides the empty base", async () => {
+	it("slotStyles.root slot overrides the empty base", async () => {
 		const screen = await render(
-			<Icon icon={Sun} styles={{ root: { margin: 5 } }} />,
+			<Icon icon={Sun} slotStyles={{ root: { margin: 5 } }} />,
 		);
 		const style = screen.getByTestId("k-icon", inclHidden).props.style;
 		expect(JSON.stringify(style)).toContain("5");

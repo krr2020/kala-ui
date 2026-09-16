@@ -18,7 +18,7 @@ export function Skeleton({
 	variant = "rect",
 	animated = true,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-skeleton",
 }: SkeletonProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -58,7 +58,7 @@ export function Skeleton({
 					borderRadius: RADIUS[variant],
 					opacity: animated ? pulse : 1,
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		/>
 	);

@@ -147,9 +147,9 @@ describe("RingProgress", () => {
 		expect(screen.getByTestId("k-ring-progress")).toBeTruthy();
 	});
 
-	it("styles.root slot wins over the library surface", async () => {
+	it("slotStyles.root slot wins over the library surface", async () => {
 		const screen: Screen = await render(
-			<RingProgress value={10} styles={{ root: { borderWidth: 7 } }} />,
+			<RingProgress value={10} slotStyles={{ root: { borderWidth: 7 } }} />,
 		);
 		expect(flatStyle(screen.getByTestId("k-ring-progress")).borderWidth).toBe(
 			7,

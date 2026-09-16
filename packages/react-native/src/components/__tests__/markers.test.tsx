@@ -334,7 +334,9 @@ describe("component markers", () => {
 				),
 				"utf8",
 			);
-			expect(stylesheet).toMatch(/routeContent: \{[\s\S]*?paddingBottom: 7[0-9]/);
+			expect(stylesheet).toMatch(
+				/routeContent: \{[\s\S]*?paddingBottom: 7[0-9]/,
+			);
 		});
 
 		it("size=icon is square", async () => {
@@ -789,13 +791,9 @@ describe("component markers", () => {
 				<Avatar name="A" size="xs" status="online" />,
 			);
 			for (const size of Object.keys(ring) as Array<keyof typeof ring>) {
-				await screen.rerender(
-					<Avatar name="A" size={size} status="online" />,
-				);
+				await screen.rerender(<Avatar name="A" size={size} status="online" />);
 				expect(
-					Number(
-						flatStyle(screen.getByTestId("k-avatar-status")).borderWidth,
-					),
+					Number(flatStyle(screen.getByTestId("k-avatar-status")).borderWidth),
 				).toBe(ring[size]);
 			}
 		});

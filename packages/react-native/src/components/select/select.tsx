@@ -27,7 +27,7 @@ export function Select({
 	isLoading = false,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-select",
 }: SelectProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -51,7 +51,11 @@ export function Select({
 		return (
 			<Skeleton
 				testID={testID}
-				style={[{ width: "100%", height: HEIGHTS[size] }, style, styles?.root]}
+				style={[
+					{ width: "100%", height: HEIGHTS[size] },
+					style,
+					slotStyles?.root,
+				]}
 			/>
 		);
 	}
@@ -79,7 +83,7 @@ export function Select({
 						backgroundColor: theme.input,
 						opacity: disabled ? 0.5 : 1,
 					},
-					applySlot(applySlot({}, style), styles?.root),
+					applySlot(applySlot({}, style), slotStyles?.root),
 				]}
 			>
 				<RNText
@@ -91,7 +95,7 @@ export function Select({
 							fontSize: 14,
 							color: selected ? theme.foreground : theme.mutedForeground,
 						},
-						applySlot({}, styles?.value),
+						applySlot({}, slotStyles?.value),
 					]}
 				>
 					{selected ? selected.label : placeholder}
@@ -101,7 +105,7 @@ export function Select({
 					accessibilityElementsHidden={false}
 					style={applySlot(
 						{ fontSize: 14, color: theme.mutedForeground },
-						styles?.chevron,
+						slotStyles?.chevron,
 					)}
 				>
 					▾
@@ -141,7 +145,7 @@ export function Select({
 												? theme.primary
 												: "transparent",
 										},
-										applySlot({}, styles?.option),
+										applySlot({}, slotStyles?.option),
 									]}
 								>
 									<RNText

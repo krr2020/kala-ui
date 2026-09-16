@@ -17,7 +17,7 @@ export function Text({
 	color = "foreground",
 	truncate = false,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-text",
 }: TextProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -34,7 +34,7 @@ export function Text({
 					textAlign: ALIGN[align],
 					color: textColor(theme, color),
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			{children}

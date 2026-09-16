@@ -31,8 +31,8 @@ export interface DatePickerProps extends PickerCalendarProps {
 	isLoading?: boolean;
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: { root?: StyleProp<ViewStyle> };
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: { root?: StyleProp<ViewStyle> };
 	testID?: string;
 }
 
@@ -54,7 +54,7 @@ export interface DateRangePickerProps extends PickerCalendarProps {
 	isLoading?: boolean;
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: { root?: StyleProp<ViewStyle> };
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: { root?: StyleProp<ViewStyle> };
 	testID?: string;
 }

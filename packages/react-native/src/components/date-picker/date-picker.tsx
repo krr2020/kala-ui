@@ -99,7 +99,7 @@ export function DatePicker({
 	isLoading = false,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-date-picker",
 }: DatePickerProps): ReactElement {
 	const [internal, setInternal] = useState<Date | undefined>(defaultValue);
@@ -136,7 +136,7 @@ export function DatePicker({
 				expanded={open}
 				testID={testID}
 				onPress={() => setOpen(true)}
-				style={applySlot(applySlot({}, style), styles?.root)}
+				style={applySlot(applySlot({}, style), slotStyles?.root)}
 				accessibilityLabel={
 					accessibilityLabel ?? (date ? formatDay(date) : placeholder)
 				}
@@ -179,7 +179,7 @@ export function DateRangePicker({
 	isLoading = false,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-date-picker-date-range-picker",
 }: DateRangePickerProps): ReactElement {
 	const [internal, setInternal] = useState<DateRangeValue | undefined>(
@@ -224,7 +224,7 @@ export function DateRangePicker({
 				expanded={open}
 				testID={testID}
 				onPress={() => setOpen(true)}
-				style={applySlot(applySlot({}, style), styles?.root)}
+				style={applySlot(applySlot({}, style), slotStyles?.root)}
 				accessibilityLabel={accessibilityLabel ?? label}
 			/>
 			<Sheet open={open} onClose={() => setOpen(false)} snap="half">

@@ -23,8 +23,8 @@ export interface SegmentedControlProps {
 	size?: SegmentedControlSize;
 	radius?: SegmentedControlRadius;
 	accessibilityLabel?: string;
-	/** Slot overrides: root wins over the library surface. */
-	styles?: {
+	/** slotStyles: root wins over the library surface. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		segment?: StyleProp<ViewStyle>;
 		indicator?: StyleProp<ViewStyle>;

@@ -57,8 +57,8 @@ export interface DropdownMenuProps {
 	/** false blocks overlay-press dismissal */
 	dismissable?: boolean;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		trigger?: StyleProp<ViewStyle>;
 		content?: StyleProp<ViewStyle>;

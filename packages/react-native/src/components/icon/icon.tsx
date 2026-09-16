@@ -15,7 +15,7 @@ export function Icon({
 	size = "md",
 	color = "foreground",
 	label,
-	styles,
+	slotStyles,
 	testID = "k-icon",
 }: IconProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -28,7 +28,7 @@ export function Icon({
 			accessibilityRole={label ? "image" : undefined}
 			accessibilityLabel={label}
 			accessibilityElementsHidden={label ? undefined : true}
-			style={applySlot({}, styles?.root)}
+			style={applySlot({}, slotStyles?.root)}
 		>
 			<Component size={ICON_SIZE_PX[size]} color={iconColor(theme, color)} />
 		</View>

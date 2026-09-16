@@ -17,15 +17,9 @@ describe("avatar demo ↔ library seam", () => {
 	const demo = readFileSync(DEMO_PATH, "utf8");
 
 	it("sweeps every size, shape, and status arm with raw API values", () => {
-		expect(demo).toMatch(
-			/SIZES = \["xs", "sm", "md", "lg", "xl"\] as const/,
-		);
-		expect(demo).toMatch(
-			/SHAPES = \["circle", "rounded", "square"\] as const/,
-		);
-		expect(demo).toMatch(
-			/STATUSES = \["none", "online", "offline"\] as const/,
-		);
+		expect(demo).toMatch(/SIZES = \["xs", "sm", "md", "lg", "xl"\] as const/);
+		expect(demo).toMatch(/SHAPES = \["circle", "rounded", "square"\] as const/);
+		expect(demo).toMatch(/STATUSES = \["none", "online", "offline"\] as const/);
 		expect(demo).toMatch(/size=\{size\}/);
 		expect(demo).toMatch(/shape=\{shape\}/);
 		expect(demo).toMatch(/status=\{status\}/);

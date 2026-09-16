@@ -28,7 +28,7 @@ export function TimePicker({
 	isLoading = false,
 	accessibilityLabel = "Time picker",
 	style,
-	styles,
+	slotStyles,
 	testID = "k-time-picker",
 }: TimePickerProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -138,7 +138,7 @@ export function TimePicker({
 					paddingHorizontal: 8,
 					overflow: "hidden",
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			{renderWheel(

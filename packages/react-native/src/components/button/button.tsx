@@ -36,7 +36,7 @@ export function Button({
 	accessibilityLabel,
 	accessibilityLiveRegion,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-button-root",
 }: ButtonProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -78,7 +78,7 @@ export function Button({
 						baseStyle(size, fullWidth, rounded, look, effectiveDisabled),
 						style,
 					),
-					styles?.root,
+					slotStyles?.root,
 				),
 			]}
 		>

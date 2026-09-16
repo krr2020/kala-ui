@@ -129,9 +129,9 @@ describe("Field", () => {
 		expect(screen.getByTestId("k-field-error").props.children).toBe("b, a");
 	});
 
-	it("styles.root slot overrides the surface", async () => {
+	it("slotStyles.root slot overrides the surface", async () => {
 		const screen: Screen = await render(
-			<Field label="Email" styles={{ root: { gap: 20 } }}>
+			<Field label="Email" slotStyles={{ root: { gap: 20 } }}>
 				<TextInput />
 			</Field>,
 		);

@@ -23,7 +23,7 @@ export function Tag({
 	onRemove,
 	icon,
 	children,
-	styles,
+	slotStyles,
 	testID = "k-tag",
 }: TagProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -45,7 +45,7 @@ export function Tag({
 					borderWidth: variant === "outline" ? 1 : 0,
 					borderColor: border,
 				},
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			{icon}
@@ -69,7 +69,7 @@ export function Tag({
 							alignItems: "center",
 							justifyContent: "center",
 						},
-						styles?.remove,
+						slotStyles?.remove,
 					)}
 				>
 					<Icon icon={X} size="xs" color={fg} />

@@ -30,7 +30,7 @@ export function NumberInput({
 	incrementLabel = "Increase",
 	decrementLabel = "Decrease",
 	style,
-	styles,
+	slotStyles,
 	testID = "k-number-input",
 }: NumberInputProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -81,7 +81,7 @@ export function NumberInput({
 			justifyContent: "center" as const,
 			opacity: disabled ? 0.5 : pressed ? 0.7 : 1,
 		},
-		applySlot({}, styles?.stepper),
+		applySlot({}, slotStyles?.stepper),
 	];
 
 	return (
@@ -97,7 +97,7 @@ export function NumberInput({
 					backgroundColor: theme.input,
 					overflow: "hidden",
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			<Pressable
@@ -137,7 +137,7 @@ export function NumberInput({
 						color: theme.foreground,
 						paddingHorizontal: tokens.space.controlPx,
 					},
-					applySlot({}, styles?.input),
+					applySlot({}, slotStyles?.input),
 				]}
 			/>
 			<Pressable

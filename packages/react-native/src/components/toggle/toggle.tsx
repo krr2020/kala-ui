@@ -100,7 +100,7 @@ export function Toggle({
 	disabled = false,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-toggle",
 }: ToggleProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -127,7 +127,7 @@ export function Toggle({
 				disabled: disabled || undefined,
 			}}
 			disabled={disabled}
-			style={applySlot(applySlot(look.style, style), styles?.root)}
+			style={applySlot(applySlot(look.style, style), slotStyles?.root)}
 		>
 			<ToggleContent fg={look.fg} size={size}>
 				{children}

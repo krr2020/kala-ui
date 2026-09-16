@@ -21,7 +21,7 @@ export function Steps({
 	orientation = "horizontal",
 	showLine = true,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-steps",
 }: StepsProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -44,7 +44,7 @@ export function Steps({
 					flexDirection: orientation === "vertical" ? "column" : "row",
 					alignItems: orientation === "vertical" ? "flex-start" : "flex-start",
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			{items.map((step, index) => {
@@ -68,7 +68,7 @@ export function Steps({
 									orientation === "vertical" ? "flex-start" : "center",
 								paddingBottom: orientation === "vertical" && !isLast ? 32 : 0,
 							},
-							applySlot({}, styles?.step),
+							applySlot({}, slotStyles?.step),
 						]}
 					>
 						{!isLast && showLine ? (
@@ -121,7 +121,7 @@ export function Steps({
 									backgroundColor:
 										isActive || isCompleted ? theme.primary : theme.background,
 								},
-								applySlot({}, styles?.indicator),
+								applySlot({}, slotStyles?.indicator),
 							]}
 						>
 							{isCompleted ? (

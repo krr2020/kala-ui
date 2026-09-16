@@ -33,8 +33,8 @@ export interface BannerProps {
 	skeleton?: ReactNode;
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: each part wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: each part wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		content?: StyleProp<ViewStyle>;
 		close?: StyleProp<ViewStyle>;

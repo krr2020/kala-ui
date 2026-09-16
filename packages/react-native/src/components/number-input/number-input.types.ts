@@ -24,8 +24,8 @@ export interface NumberInputProps {
 	incrementLabel?: string;
 	decrementLabel?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library row and `style`; input/stepper reach the field and the pressable steppers. */
-	styles?: {
+	/** slotStyles: root wins over the library row and `style`; input/stepper reach the field and the pressable steppers. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		input?: StyleProp<TextStyle>;
 		stepper?: StyleProp<ViewStyle>;

@@ -27,7 +27,7 @@ export function EmptyState({
 	isLoading = false,
 	children,
 	accessibilityLabel,
-	styles,
+	slotStyles,
 	testID = "k-empty-state",
 }: EmptyStateProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -74,7 +74,7 @@ export function EmptyState({
 			accessible={true}
 			accessibilityRole="summary"
 			accessibilityLabel={accessibilityLabel ?? title}
-			style={applySlot(surface, styles?.root)}
+			style={applySlot(surface, slotStyles?.root)}
 		>
 			<View
 				testID="k-empty-state-icon"
@@ -88,7 +88,7 @@ export function EmptyState({
 						alignItems: "center",
 						justifyContent: "center",
 					},
-					styles?.icon,
+					slotStyles?.icon,
 				)}
 			>
 				<Icon icon={IconComponent} size="xl" color={theme.mutedForeground} />
@@ -103,7 +103,7 @@ export function EmptyState({
 						color: theme.foreground,
 						textAlign: "center",
 					},
-					styles?.title,
+					slotStyles?.title,
 				)}
 			>
 				{title}
@@ -119,7 +119,7 @@ export function EmptyState({
 							color: theme.mutedForeground,
 							textAlign: "center",
 						},
-						styles?.description,
+						slotStyles?.description,
 					)}
 				>
 					{description}
@@ -140,7 +140,7 @@ export function EmptyState({
 							alignItems: "center",
 							justifyContent: "center",
 						},
-						styles?.action,
+						slotStyles?.action,
 					)}
 				>
 					<RNText

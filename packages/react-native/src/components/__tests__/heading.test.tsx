@@ -62,11 +62,11 @@ describe("Heading", () => {
 		expect(screen.getByTestId("k-demo-heading-item")).toBeTruthy();
 	});
 
-	it("slot styles.root wins over style", async () => {
+	it("slot slotStyles.root wins over style", async () => {
 		const screen = await render(
 			<Heading
 				style={{ fontSize: 12 }}
-				styles={{ root: { fontSize: 10 } }}
+				slotStyles={{ root: { fontSize: 10 } }}
 				testID="k-heading-slot"
 			>
 				slot

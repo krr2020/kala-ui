@@ -27,7 +27,7 @@ export function Indicator({
 	label,
 	inline = false,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-indicator",
 }: IndicatorProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -69,7 +69,7 @@ export function Indicator({
 							alignSelf: inline ? "flex-start" : undefined,
 						},
 					],
-					styles?.root,
+					slotStyles?.root,
 				),
 				style,
 			)}
@@ -103,7 +103,7 @@ export function Indicator({
 							anchorStyle(position, offset, size / 2),
 							processing ? { opacity: pulse } : null,
 						],
-						styles?.dot,
+						slotStyles?.dot,
 					)}
 				>
 					{hasLabel ? (

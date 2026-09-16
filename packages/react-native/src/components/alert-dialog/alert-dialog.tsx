@@ -43,7 +43,7 @@ export function AlertDialog({
 	onOpenChange,
 	dismissable = false,
 	accessibilityLabel,
-	styles,
+	slotStyles,
 	testID = "k-alert-dialog",
 	children,
 }: AlertDialogProps): ReactElement | null {
@@ -105,7 +105,7 @@ export function AlertDialog({
 						left: 0,
 						backgroundColor: "rgba(0,0,0,0.5)",
 					},
-					styles?.overlay,
+					slotStyles?.overlay,
 				)}
 			/>
 			<KeyboardAvoidingView
@@ -142,7 +142,7 @@ export function AlertDialog({
 							overflow: "hidden",
 							opacity: dragOpacity,
 						},
-						styles?.root,
+						slotStyles?.root,
 					)}
 				>
 					<AlertDialogContext.Provider

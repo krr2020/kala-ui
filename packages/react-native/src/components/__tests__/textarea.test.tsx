@@ -94,11 +94,11 @@ describe("Textarea", () => {
 		);
 	});
 
-	it("styles.root wins over both library defaults and the style prop", async () => {
+	it("slotStyles.root wins over both library defaults and the style prop", async () => {
 		const screen = await render(
 			<Textarea
 				style={{ minHeight: 120 }}
-				styles={{ root: { minHeight: 200, borderWidth: 7 } }}
+				slotStyles={{ root: { minHeight: 200, borderWidth: 7 } }}
 			/>,
 		);
 		const s = flatStyle(screen.getByTestId("k-textarea"));

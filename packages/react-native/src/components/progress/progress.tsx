@@ -23,7 +23,7 @@ export function Progress({
 	showValue = false,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-progress",
 }: ProgressProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -50,7 +50,7 @@ export function Progress({
 					overflow: "hidden",
 					flexDirection: "row",
 				},
-				applySlot(applySlot([], style), styles?.root),
+				applySlot(applySlot([], style), slotStyles?.root),
 			]}
 		>
 			<View
@@ -63,7 +63,7 @@ export function Progress({
 						alignItems: "center",
 						justifyContent: "center",
 					},
-					styles?.indicator,
+					slotStyles?.indicator,
 				]}
 			>
 				{inner !== null && size !== "sm" ? (

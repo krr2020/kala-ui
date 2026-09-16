@@ -6,8 +6,8 @@ export interface LabelProps {
 	/** Appends a destructive-colored * (web parity). */
 	required?: boolean;
 	style?: StyleProp<TextStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<TextStyle>;
 	};
 	testID?: string;

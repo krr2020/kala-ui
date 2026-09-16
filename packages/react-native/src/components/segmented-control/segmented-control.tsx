@@ -56,7 +56,7 @@ export function SegmentedControl({
 	size = "sm",
 	radius = "sm",
 	accessibilityLabel,
-	styles,
+	slotStyles,
 	testID = "k-segmented",
 }: SegmentedControlProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -90,7 +90,7 @@ export function SegmentedControl({
 					borderRadius: RADIUS[radius],
 					opacity: disabled ? 0.6 : 1,
 				},
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			{items.map((item) => {
@@ -116,7 +116,7 @@ export function SegmentedControl({
 								paddingHorizontal: 12,
 								borderRadius: RADIUS[radius],
 							},
-							styles?.segment,
+							slotStyles?.segment,
 						)}
 					>
 						{isActive && (
@@ -132,7 +132,7 @@ export function SegmentedControl({
 										backgroundColor: theme.background,
 										borderRadius: RADIUS[radius],
 									},
-									styles?.indicator,
+									slotStyles?.indicator,
 								)}
 							/>
 						)}

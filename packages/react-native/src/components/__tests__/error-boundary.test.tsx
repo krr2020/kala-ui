@@ -173,9 +173,9 @@ describe("ErrorFallback", () => {
 		expect(withReset.getByTestId("k-error-fallback-reset")).toBeTruthy();
 	});
 
-	it("styles.root slot wins over the library surface", async () => {
+	it("slotStyles.root slot wins over the library surface", async () => {
 		const screen: Screen = await render(
-			<ErrorFallback styles={{ root: { borderWidth: 7 } }} />,
+			<ErrorFallback slotStyles={{ root: { borderWidth: 7 } }} />,
 		);
 		expect(flatStyle(screen.getByTestId("k-error-fallback")).borderWidth).toBe(
 			7,

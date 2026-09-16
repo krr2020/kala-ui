@@ -14,7 +14,7 @@ export function Tabs({
 	orientation = "horizontal",
 	children,
 	accessibilityLabel,
-	styles,
+	slotStyles,
 	testID = "k-tabs",
 }: TabsProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -40,7 +40,7 @@ export function Tabs({
 					flexDirection: vertical ? "row" : "column",
 					gap: 16,
 				},
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			<View
@@ -52,7 +52,7 @@ export function Tabs({
 						flexDirection: vertical ? "column" : "row",
 						gap: 4,
 					},
-					styles?.list,
+					slotStyles?.list,
 				)}
 			>
 				{items.map((item: TabsItem) => {
@@ -75,7 +75,7 @@ export function Tabs({
 									borderRadius: tokens.radius.control,
 									backgroundColor: selected ? theme.accent : "transparent",
 								},
-								styles?.tab,
+								slotStyles?.tab,
 							)}
 						>
 							<RNText

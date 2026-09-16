@@ -9,8 +9,8 @@ interface AccordionShared {
 	variant?: AccordionVariant;
 	disabled?: boolean;
 	accessibilityLabel?: string;
-	/** Slot overrides flow group→part; per-part styles win over these. */
-	styles?: {
+	/** slotStyles flow group→part; per-part entries win over these. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		item?: StyleProp<ViewStyle>;
 		trigger?: StyleProp<ViewStyle>;
@@ -41,8 +41,8 @@ export interface AccordionItemProps {
 	children?: ReactNode;
 	value: string;
 	disabled?: boolean;
-	/** Slot overrides: root wins over the group-flowed item slot. */
-	styles?: { root?: StyleProp<ViewStyle> };
+	/** slotStyles: root wins over the group-flowed item slot. */
+	slotStyles?: { root?: StyleProp<ViewStyle> };
 	testID?: string;
 }
 
@@ -50,14 +50,14 @@ export interface AccordionTriggerProps {
 	children?: ReactNode;
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: { root?: StyleProp<ViewStyle> };
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: { root?: StyleProp<ViewStyle> };
 	testID?: string;
 }
 
 export interface AccordionContentProps {
 	children?: ReactNode;
-	/** Slot overrides: root wins over the group-flowed content slot. */
-	styles?: { root?: StyleProp<ViewStyle> };
+	/** slotStyles: root wins over the group-flowed content slot. */
+	slotStyles?: { root?: StyleProp<ViewStyle> };
 	testID?: string;
 }

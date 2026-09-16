@@ -22,8 +22,8 @@ export interface RatingProps {
 	/** Accessible label (prefixes the readOnly summary) */
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		star?: StyleProp<ViewStyle>;
 	};

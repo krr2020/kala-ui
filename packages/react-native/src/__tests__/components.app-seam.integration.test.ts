@@ -547,9 +547,11 @@ describe("component app seam", () => {
 	it("list demo renders glyphs through the library Icon + lucide, not raw characters", () => {
 		const demo = readFileSync(
 			`${APP_PATH.replace("App.tsx", "demos/components/list-demo.tsx")}`,
-				"utf8",
+			"utf8",
 		);
-		expect(demo).toMatch(/import \{ Flag, Inbox \} from "lucide-react-native";/);
+		expect(demo).toMatch(
+			/import \{ Flag, Inbox \} from "lucide-react-native";/,
+		);
 		expect(demo).toMatch(/<Icon icon=\{Inbox\}/);
 		expect(demo).toMatch(/<Icon icon=\{Flag\}/);
 		expect(demo).not.toMatch(/✉|⚑/);

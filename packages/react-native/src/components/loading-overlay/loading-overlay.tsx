@@ -17,7 +17,7 @@ export function LoadingOverlay({
 	accessibilityLabel = "Loading",
 	children,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-loading-overlay",
 }: LoadingOverlayProps): ReactElement | null {
 	useUnistyles();
@@ -39,7 +39,7 @@ export function LoadingOverlay({
 					alignItems: "center",
 					justifyContent: "center",
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			{children ?? <Spinner size="lg" />}

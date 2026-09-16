@@ -10,8 +10,8 @@ export interface SheetProps {
 	/** false blocks overlay-press dismissal (back/escape paths still fire) */
 	dismissable?: boolean;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		overlay?: StyleProp<ViewStyle>;
 		content?: StyleProp<ViewStyle>;
@@ -23,5 +23,5 @@ export interface SheetProps {
 export interface SheetBodyProps {
 	children: ReactNode;
 	/** Slot overrides for the body column. */
-	styles?: { root?: StyleProp<ViewStyle> };
+	slotStyles?: { root?: StyleProp<ViewStyle> };
 }

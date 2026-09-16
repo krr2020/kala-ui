@@ -34,7 +34,7 @@ function Root({
 	onOpenChange,
 	disabled = false,
 	accessibilityLabel,
-	styles,
+	slotStyles,
 	testID = "k-collapsible",
 }: CollapsibleProps): ReactElement {
 	// controlled lock: a provided open prop always wins over internal state
@@ -53,14 +53,14 @@ function Root({
 				open: isOpen,
 				disabled,
 				toggle,
-				triggerStyles: styles?.trigger,
-				contentStyles: styles?.content,
+				triggerStyles: slotStyles?.trigger,
+				contentStyles: slotStyles?.content,
 			}}
 		>
 			<View
 				testID={testID}
 				accessibilityLabel={accessibilityLabel}
-				style={applySlot({}, styles?.root)}
+				style={applySlot({}, slotStyles?.root)}
 			>
 				{children}
 			</View>
@@ -72,7 +72,7 @@ function Trigger({
 	children,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-collapsible-trigger",
 }: CollapsibleTriggerProps): ReactElement {
 	const group = useContext(CollapsibleContext);
@@ -104,7 +104,7 @@ function Trigger({
 					),
 					group?.triggerStyles,
 				),
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			{typeof children === "string" || typeof children === "number" ? (
@@ -122,7 +122,7 @@ function Trigger({
 
 function Content({
 	children,
-	styles,
+	slotStyles,
 	testID = "k-collapsible-content",
 }: CollapsibleContentProps): ReactElement | null {
 	const group = useContext(CollapsibleContext);
@@ -134,7 +134,7 @@ function Content({
 			testID={testID}
 			style={applySlot(
 				applySlot({ overflow: "hidden", paddingTop: 4 }, group.contentStyles),
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			{/* bare strings must land on a Text host on RN — same wrap as Card */}

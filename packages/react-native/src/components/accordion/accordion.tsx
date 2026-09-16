@@ -56,7 +56,7 @@ function Root(props: AccordionProps): ReactElement {
 		variant = "default",
 		disabled = false,
 		accessibilityLabel,
-		styles,
+		slotStyles,
 		testID = "k-accordion",
 	} = props;
 	// the public type discriminates the payload by `type`; internally one
@@ -91,16 +91,16 @@ function Root(props: AccordionProps): ReactElement {
 				values,
 				variant,
 				disabled,
-				itemStyles: styles?.item,
-				triggerStyles: styles?.trigger,
-				contentStyles: styles?.content,
+				itemStyles: slotStyles?.item,
+				triggerStyles: slotStyles?.trigger,
+				contentStyles: slotStyles?.content,
 				toggle,
 			}}
 		>
 			<View
 				testID={testID}
 				accessibilityLabel={accessibilityLabel}
-				style={applySlot({}, styles?.root)}
+				style={applySlot({}, slotStyles?.root)}
 			>
 				{children}
 			</View>
@@ -112,7 +112,7 @@ function Item({
 	children,
 	value,
 	disabled = false,
-	styles,
+	slotStyles,
 	testID = "k-accordion-item",
 }: AccordionItemProps): ReactElement {
 	const group = useContext(AccordionContext);
@@ -138,7 +138,7 @@ function Item({
 		<ItemContext.Provider value={{ value, disabled }}>
 			<View
 				testID={testID}
-				style={applySlot(applySlot(base, group?.itemStyles), styles?.root)}
+				style={applySlot(applySlot(base, group?.itemStyles), slotStyles?.root)}
 			>
 				{children}
 			</View>
@@ -168,7 +168,7 @@ function Trigger({
 	children,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-accordion-trigger",
 }: AccordionTriggerProps): ReactElement {
 	const group = useContext(AccordionContext);
@@ -223,7 +223,7 @@ function Trigger({
 					),
 					group?.triggerStyles,
 				),
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			<TriggerLabel fg={fg} size={variant === "default" ? 16 : 15}>
@@ -241,7 +241,7 @@ function Trigger({
 
 function Content({
 	children,
-	styles,
+	slotStyles,
 	testID = "k-accordion-content",
 }: AccordionContentProps): ReactElement | null {
 	const group = useContext(AccordionContext);
@@ -262,7 +262,7 @@ function Content({
 	return (
 		<View
 			testID={testID}
-			style={applySlot(applySlot(base, group.contentStyles), styles?.root)}
+			style={applySlot(applySlot(base, group.contentStyles), slotStyles?.root)}
 		>
 			{/* bare strings must land on a Text host on RN — same wrap as Card */}
 			{typeof children === "string" || typeof children === "number" ? (

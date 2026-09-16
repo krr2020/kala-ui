@@ -32,8 +32,8 @@ export interface ListProps {
 	skeleton?: ReactNode;
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 	};
 	testID?: string;
@@ -55,8 +55,8 @@ export interface ListItemProps {
 	children?: ReactNode;
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 	};
 	testID?: string;

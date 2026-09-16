@@ -35,8 +35,8 @@ export interface ErrorFallbackProps {
 	/** page (tall, standalone) vs section (compact, inline) */
 	variant?: ErrorFallbackVariant;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 	};
 	testID?: string;

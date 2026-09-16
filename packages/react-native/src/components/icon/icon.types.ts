@@ -22,8 +22,8 @@ export interface IconProps {
 	color?: keyof KalaTheme | (string & {});
 	/** when set, the icon joins the accessibility tree as an image */
 	label?: string;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 	};
 	testID?: string;

@@ -22,7 +22,7 @@ export function Heading({
 	weight = "default",
 	align = "left",
 	style,
-	styles,
+	slotStyles,
 	testID = "k-heading",
 }: HeadingProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -38,7 +38,7 @@ export function Heading({
 					color: theme.foreground,
 					letterSpacing: TRACKING_TIGHT,
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			{children}

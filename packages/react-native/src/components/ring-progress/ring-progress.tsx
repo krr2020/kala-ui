@@ -25,7 +25,7 @@ export function RingProgress({
 	sections,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-ring-progress",
 }: RingProgressProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -59,7 +59,7 @@ export function RingProgress({
 					alignItems: "center",
 					justifyContent: "center",
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			<Svg width={size} height={size}>
@@ -108,7 +108,7 @@ export function RingProgress({
 							alignItems: "center",
 							justifyContent: "center",
 						},
-						applySlot({}, styles?.label),
+						applySlot({}, slotStyles?.label),
 					]}
 				>
 					{typeof label === "string" || typeof label === "number" ? (

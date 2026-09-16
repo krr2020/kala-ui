@@ -18,7 +18,7 @@ export function Badge({
 	color = "primary",
 	shape = "rounded",
 	style,
-	styles,
+	slotStyles,
 	testID = "k-badge",
 }: BadgeProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -38,7 +38,7 @@ export function Badge({
 					backgroundColor: bg,
 					borderColor: border,
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			{typeof children === "string" || typeof children === "number" ? (

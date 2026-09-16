@@ -15,8 +15,8 @@ export interface CalendarSkeletonConfig {
 export interface CalendarSkeletonProps extends CalendarSkeletonConfig {
 	testID?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: { root?: StyleProp<ViewStyle> };
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: { root?: StyleProp<ViewStyle> };
 	children?: ReactNode;
 }
 
@@ -46,8 +46,8 @@ export interface CalendarProps {
 	skeletonConfig?: CalendarSkeletonConfig;
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		day?: StyleProp<ViewStyle>;
 	};

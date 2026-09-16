@@ -27,10 +27,7 @@ export function ringedFor(size: AvatarSize): number {
 	return BOX[size] + RING_WIDTH * 2;
 }
 
-export function memberRing(
-	ringed: number,
-	borderColor: string,
-): ViewStyle {
+export function memberRing(ringed: number, borderColor: string): ViewStyle {
 	return {
 		width: ringed,
 		height: ringed,
@@ -65,10 +62,7 @@ export function overflowChip(
 	};
 }
 
-export function overflowText(
-	size: AvatarSize,
-	color: string,
-): TextStyle {
+export function overflowText(size: AvatarSize, color: string): TextStyle {
 	return {
 		fontSize: OVERFLOW_FONT[size],
 		color,

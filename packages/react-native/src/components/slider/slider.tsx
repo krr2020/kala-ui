@@ -41,7 +41,7 @@ export function Slider({
 	isLoading = false,
 	accessibilityLabel = "Slider",
 	style,
-	styles,
+	slotStyles,
 	testID = "k-slider",
 }: SliderProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -154,7 +154,7 @@ export function Slider({
 			accessibilityLabel={accessibilityLabel}
 			style={applySlot(
 				applySlot({ opacity: disabled ? 0.5 : 1 }, style),
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			<View
@@ -173,7 +173,7 @@ export function Slider({
 						backgroundColor: theme.muted,
 						justifyContent: "center",
 					},
-					styles?.track,
+					slotStyles?.track,
 				)}
 			>
 				<View
@@ -188,7 +188,7 @@ export function Slider({
 							backgroundColor: theme.primary,
 							width: `${first === undefined ? 0 : pct(first)}%`,
 						},
-						styles?.range,
+						slotStyles?.range,
 					)}
 				/>
 				{values.map((v, i) => {
@@ -223,7 +223,7 @@ export function Slider({
 									borderWidth: 2,
 									borderColor: theme.primary,
 								},
-								styles?.thumb,
+								slotStyles?.thumb,
 							)}
 						/>
 					);

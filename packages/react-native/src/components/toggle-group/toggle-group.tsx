@@ -44,7 +44,7 @@ export function ToggleGroup({
 	variant,
 	disabled = false,
 	accessibilityLabel,
-	styles,
+	slotStyles,
 	testID = "k-toggle-group",
 }: ToggleGroupProps): ReactElement {
 	// controlled lock: a provided value prop always wins over internal state
@@ -75,7 +75,7 @@ export function ToggleGroup({
 				disabled,
 				size,
 				variant,
-				itemStyles: styles?.item,
+				itemStyles: slotStyles?.item,
 				toggle,
 			}}
 		>
@@ -91,7 +91,7 @@ export function ToggleGroup({
 						alignItems: "center",
 						gap: 4,
 					},
-					styles?.root,
+					slotStyles?.root,
 				)}
 			>
 				{children}
@@ -130,7 +130,7 @@ export function ToggleGroupItem({
 	disabled,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-toggle-group-item",
 }: ToggleGroupItemProps): ReactElement {
 	const group = useContext(ToggleGroupContext);
@@ -161,7 +161,7 @@ export function ToggleGroupItem({
 			disabled={itemDisabled}
 			style={applySlot(
 				applySlot(applySlot(look.style, style), group?.itemStyles),
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			<ItemContent fg={look.fg} size={effSize}>

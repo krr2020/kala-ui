@@ -37,7 +37,7 @@ export function InputOtp({
 	disabled = false,
 	children,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-input-otp",
 }: InputOtpProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -67,7 +67,7 @@ export function InputOtp({
 			style={[
 				otpStyles.row,
 				{ opacity: disabled ? 0.5 : 1 },
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			<OtpContext.Provider value={{ chars, activeIndex }}>
@@ -86,7 +86,7 @@ export function InputOtp({
 				style={[
 					otpStyles.field,
 					{ color: theme.foreground },
-					applySlot({}, styles?.field),
+					applySlot({}, slotStyles?.field),
 				]}
 			/>
 		</Pressable>
@@ -96,7 +96,7 @@ export function InputOtp({
 export function InputOtpSlot({
 	index,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-input-otp-slot",
 }: InputOtpSlotProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -113,7 +113,7 @@ export function InputOtpSlot({
 					borderColor: isActive ? theme.primary : theme.border,
 					backgroundColor: theme.input,
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			{char ? (

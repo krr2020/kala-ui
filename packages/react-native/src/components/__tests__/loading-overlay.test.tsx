@@ -54,9 +54,9 @@ describe("LoadingOverlay", () => {
 		expect(flatStyle(screen.getByTestId("k-loading-overlay")).zIndex).toBe(900);
 	});
 
-	it("styles.root slot wins over the library surface", async () => {
+	it("slotStyles.root slot wins over the library surface", async () => {
 		const screen: Screen = await render(
-			<LoadingOverlay visible styles={{ root: { zIndex: 55 } }} />,
+			<LoadingOverlay visible slotStyles={{ root: { zIndex: 55 } }} />,
 		);
 		expect(flatStyle(screen.getByTestId("k-loading-overlay")).zIndex).toBe(55);
 	});

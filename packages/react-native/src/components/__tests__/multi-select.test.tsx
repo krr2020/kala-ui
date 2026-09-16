@@ -180,7 +180,10 @@ describe("MultiSelect", () => {
 
 	it("slot style overrides reach the root", async () => {
 		const screen = await render(
-			<MultiSelect options={options} styles={{ root: { borderWidth: 7 } }} />,
+			<MultiSelect
+				options={options}
+				slotStyles={{ root: { borderWidth: 7 } }}
+			/>,
 		);
 		const flat = require("react-native").StyleSheet.flatten(
 			screen.getByTestId("k-multi-select").props.style,

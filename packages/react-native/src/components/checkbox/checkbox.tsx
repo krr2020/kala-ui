@@ -20,7 +20,7 @@ export function Checkbox({
 	disabled = false,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-checkbox",
 }: CheckboxProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -47,7 +47,7 @@ export function Checkbox({
 					justifyContent: "center",
 					opacity: disabled ? 0.5 : 1,
 				},
-				applySlot(applySlot([], style), styles?.root),
+				applySlot(applySlot([], style), slotStyles?.root),
 			]}
 		>
 			<View
@@ -63,7 +63,7 @@ export function Checkbox({
 						borderWidth: 1,
 						borderColor: active ? theme.primary : theme.border,
 					},
-					styles?.box,
+					slotStyles?.box,
 				]}
 			>
 				{value === true && <Check size={14} color={theme.primaryForeground} />}

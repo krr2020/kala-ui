@@ -15,7 +15,7 @@ import type { CardProps } from "./card.types";
 export function Card({
 	children,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-card",
 }: CardProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -31,7 +31,7 @@ export function Card({
 					padding: tokens.space.cardPad,
 					gap: 8,
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			{typeof children === "string" || typeof children === "number" ? (

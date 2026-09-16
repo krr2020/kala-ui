@@ -46,7 +46,7 @@ export function Dialog({
 	showCloseButton = true,
 	size = "md",
 	accessibilityLabel,
-	styles,
+	slotStyles,
 	testID = "k-dialog",
 	children,
 }: DialogProps): ReactElement | null {
@@ -118,7 +118,7 @@ export function Dialog({
 						left: 0,
 						backgroundColor: "rgba(0,0,0,0.5)",
 					},
-					styles?.overlay,
+					slotStyles?.overlay,
 				)}
 			/>
 			{/* box-none: the wrapper only positions the card; taps outside it
@@ -157,7 +157,7 @@ export function Dialog({
 							overflow: "hidden",
 							opacity: dragOpacity,
 						},
-						styles?.root,
+						slotStyles?.root,
 					)}
 				>
 					{children}
@@ -176,7 +176,7 @@ export function Dialog({
 									padding: 6,
 									borderRadius: tokens.radius.control,
 								},
-								styles?.close,
+								slotStyles?.close,
 							)}
 						>
 							<X size={20} color={theme.foreground} />
@@ -257,7 +257,7 @@ function DialogFooter({
 function DialogTitle({
 	children,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-dialog-title",
 }: DialogTextProps) {
 	const { theme } = useUnistyles();
@@ -267,7 +267,7 @@ function DialogTitle({
 			accessibilityRole="header"
 			style={applySlot(
 				[{ color: theme.foreground, fontSize: 18, fontWeight: "600" }, style],
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			{children}
@@ -278,7 +278,7 @@ function DialogTitle({
 function DialogDescription({
 	children,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-dialog-description",
 }: DialogTextProps) {
 	const { theme } = useUnistyles();
@@ -287,7 +287,7 @@ function DialogDescription({
 			testID={testID}
 			style={applySlot(
 				[{ color: theme.mutedForeground, fontSize: 14 }, style],
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			{children}

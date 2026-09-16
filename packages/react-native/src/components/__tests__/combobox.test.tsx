@@ -116,7 +116,7 @@ describe("Combobox", () => {
 
 	it("slot style overrides reach the root", async () => {
 		const screen = await render(
-			<Combobox options={options} styles={{ root: { borderWidth: 7 } }} />,
+			<Combobox options={options} slotStyles={{ root: { borderWidth: 7 } }} />,
 		);
 		const flat = require("react-native").StyleSheet.flatten(
 			screen.getByTestId("k-combobox").props.style,

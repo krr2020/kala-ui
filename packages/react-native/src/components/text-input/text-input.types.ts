@@ -17,8 +17,8 @@ export interface TextInputProps
 	/** optional node rendered after the input inside the section wrapper */
 	rightSection?: ReactNode;
 	style?: StyleProp<TextStyle>;
-	/** Slot overrides: root wins over the library surface and `style`; group/section apply to the section wrapper. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`; group/section apply to the section wrapper. */
+	slotStyles?: {
 		root?: StyleProp<TextStyle>;
 		group?: StyleProp<ViewStyle>;
 		section?: StyleProp<ViewStyle>;

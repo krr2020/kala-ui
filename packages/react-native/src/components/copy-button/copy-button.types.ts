@@ -23,8 +23,8 @@ export interface CopyButtonProps {
 	variant?: ButtonVariant;
 	color?: ButtonColor;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 	};
 }

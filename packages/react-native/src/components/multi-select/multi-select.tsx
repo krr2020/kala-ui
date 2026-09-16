@@ -33,7 +33,7 @@ export function MultiSelect({
 	isLoading = false,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-multi-select",
 }: MultiSelectProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -111,7 +111,7 @@ export function MultiSelect({
 						backgroundColor: isSelected ? theme.primary : "transparent",
 						opacity: isDisabled && !isSelected ? 0.5 : 1,
 					},
-					styles?.option,
+					slotStyles?.option,
 				)}
 			>
 				{isSelected ? (
@@ -210,7 +210,7 @@ export function MultiSelect({
 						backgroundColor: theme.input,
 						opacity: disabled ? 0.5 : 1,
 					},
-					applySlot(applySlot({}, style), styles?.root),
+					applySlot(applySlot({}, style), slotStyles?.root),
 				]}
 			>
 				<View
@@ -245,7 +245,7 @@ export function MultiSelect({
 											borderRadius: 12,
 											backgroundColor: theme.secondary,
 										},
-										styles?.chip,
+										slotStyles?.chip,
 									)}
 								>
 									<RNText style={{ fontSize: 12, color: theme.foreground }}>

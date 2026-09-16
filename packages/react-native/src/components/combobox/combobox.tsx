@@ -32,7 +32,7 @@ export function Combobox({
 	isLoading = false,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-combobox",
 }: ComboboxProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -96,7 +96,7 @@ export function Combobox({
 						backgroundColor: theme.input,
 						opacity: disabled ? 0.5 : 1,
 					},
-					applySlot(applySlot({}, style), styles?.root),
+					applySlot(applySlot({}, style), slotStyles?.root),
 				]}
 			>
 				<RNText
@@ -191,7 +191,7 @@ export function Combobox({
 											option.value === current ? theme.primary : "transparent",
 										opacity: option.disabled ? 0.5 : 1,
 									},
-									styles?.option,
+									slotStyles?.option,
 								)}
 							>
 								<RNText

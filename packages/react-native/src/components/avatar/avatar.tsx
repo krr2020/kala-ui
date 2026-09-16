@@ -19,7 +19,7 @@ export function Avatar({
 	shape = "circle",
 	status = "none",
 	style,
-	styles,
+	slotStyles,
 	testID = "k-avatar",
 }: AvatarProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -36,7 +36,7 @@ export function Avatar({
 			accessibilityLabel={name}
 			style={[
 				{ width: BOX[size], height: BOX[size] },
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			{showImage ? (
@@ -50,7 +50,7 @@ export function Avatar({
 							height: "100%",
 							borderRadius: radius,
 						},
-						styles?.image,
+						slotStyles?.image,
 					)}
 				/>
 			) : (
@@ -65,7 +65,7 @@ export function Avatar({
 							justifyContent: "center",
 							backgroundColor: theme.primary,
 						},
-						styles?.fallback,
+						slotStyles?.fallback,
 					)}
 				>
 					<RNText
@@ -95,7 +95,7 @@ export function Avatar({
 							borderWidth: RING[size],
 							borderColor: theme.background,
 						},
-						styles?.status,
+						slotStyles?.status,
 					)}
 				/>
 			)}

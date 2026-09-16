@@ -28,12 +28,12 @@ export function CalendarSkeleton({
 	cellCount = 42,
 	testID = "k-calendar-skeleton",
 	style,
-	styles,
+	slotStyles,
 }: CalendarSkeletonProps): ReactElement {
 	return (
 		<View
 			testID={testID}
-			style={[{ gap: 8 }, applySlot(applySlot({}, style), styles?.root)]}
+			style={[{ gap: 8 }, applySlot(applySlot({}, style), slotStyles?.root)]}
 		>
 			<Skeleton style={{ height: 20, width: 160, alignSelf: "center" }} />
 			<View style={{ flexDirection: "row", justifyContent: "space-between" }}>

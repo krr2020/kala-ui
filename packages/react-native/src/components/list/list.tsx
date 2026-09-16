@@ -20,7 +20,7 @@ export function List({
 	skeleton,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-list",
 	children,
 }: ListProps): ReactElement {
@@ -28,7 +28,7 @@ export function List({
 
 	const surface = [
 		surfaceStyle(theme),
-		applySlot(applySlot({}, style), styles?.root),
+		applySlot(applySlot({}, style), slotStyles?.root),
 	];
 
 	if (isLoading) {

@@ -20,7 +20,7 @@ export function ContextMenu({
 	dismissable,
 	onClose,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-context-menu",
 }: ContextMenuProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -37,7 +37,7 @@ export function ContextMenu({
 				onLongPress={() => setOpen(true)}
 				delayLongPress={300}
 				style={applySlot(
-					applySlot({ alignSelf: "stretch" }, styles?.root),
+					applySlot({ alignSelf: "stretch" }, slotStyles?.root),
 					style,
 				)}
 			>
@@ -48,7 +48,7 @@ export function ContextMenu({
 			<Sheet open={open} onClose={close} snap={snap} dismissable={dismissable}>
 				<View
 					testID="k-context-menu-content"
-					style={applySlot({ gap: 2 }, styles?.content)}
+					style={applySlot({ gap: 2 }, slotStyles?.content)}
 				>
 					{items.map((item) =>
 						renderMenuItem(
@@ -56,7 +56,7 @@ export function ContextMenu({
 							theme,
 							"k-context-menu",
 							close,
-							applySlot({}, styles?.item),
+							applySlot({}, slotStyles?.item),
 						),
 					)}
 				</View>

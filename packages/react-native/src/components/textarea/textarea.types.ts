@@ -15,8 +15,8 @@ export interface TextareaProps
 	/** show the loading skeleton surface, keeping the k-textarea marker */
 	isLoading?: boolean;
 	style?: StyleProp<TextStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<TextStyle>;
 	};
 	testID?: string;

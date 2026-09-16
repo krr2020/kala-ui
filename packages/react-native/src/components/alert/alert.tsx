@@ -31,7 +31,7 @@ export function Alert({
 	onDismiss,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-alert",
 }: AlertProps): ReactElement | null {
 	const { theme } = useUnistyles();
@@ -69,7 +69,7 @@ export function Alert({
 					borderColor: border,
 					borderWidth: variant === "outline" ? 1 : 0,
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			{showIcon ? <Icon size={18} color={fg} /> : null}
@@ -92,7 +92,7 @@ export function Alert({
 						setHidden(true);
 						onDismiss?.();
 					}}
-					style={applySlot({ padding: 2, opacity: 0.8 }, styles?.dismiss)}
+					style={applySlot({ padding: 2, opacity: 0.8 }, slotStyles?.dismiss)}
 				>
 					<X size={16} color={fg} />
 				</Pressable>
@@ -104,7 +104,7 @@ export function Alert({
 function AlertTitle({
 	children,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-alert-title",
 }: AlertTitleProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -114,7 +114,7 @@ function AlertTitle({
 			testID={testID}
 			style={applySlot(
 				[{ color: fg, fontSize: 15, fontWeight: "600" }, style],
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			{children}
@@ -125,7 +125,7 @@ function AlertTitle({
 function AlertDescription({
 	children,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-alert-description",
 }: AlertDescriptionProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -135,7 +135,7 @@ function AlertDescription({
 			testID={testID}
 			style={applySlot(
 				[{ color: fg, fontSize: 14, fontWeight: "400" }, style],
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			{children}

@@ -20,7 +20,7 @@ export function ErrorFallback({
 	description,
 	variant = "page",
 	style,
-	styles,
+	slotStyles,
 	testID = "k-error-fallback",
 }: ErrorFallbackProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -37,7 +37,7 @@ export function ErrorFallback({
 					padding: 32,
 					gap: 12,
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			<RNText

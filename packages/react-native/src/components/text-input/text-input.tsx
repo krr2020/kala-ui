@@ -17,7 +17,7 @@ export function TextInput({
 	leftSection,
 	rightSection,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-text-input",
 	...rest
 }: TextInputProps): ReactElement {
@@ -35,19 +35,19 @@ export function TextInput({
 			borderColor: hasError ? theme.destructive : theme.border,
 			opacity: disabled ? 0.5 : 1,
 		},
-		applySlot(applySlot({}, style), styles?.root),
+		applySlot(applySlot({}, style), slotStyles?.root),
 	];
 
 	// raw strings cannot render inside a View — wrap them like ListItem does
 	const sectionNode = (node: ReactNode, testID: string): ReactElement =>
 		typeof node === "string" || typeof node === "number" ? (
-			<View testID={testID} style={applySlot({}, styles?.section)}>
+			<View testID={testID} style={applySlot({}, slotStyles?.section)}>
 				<RNText style={{ fontSize: 14, color: theme.foreground }}>
 					{node}
 				</RNText>
 			</View>
 		) : (
-			<View testID={testID} style={applySlot({}, styles?.section)}>
+			<View testID={testID} style={applySlot({}, slotStyles?.section)}>
 				{node}
 			</View>
 		);
@@ -79,7 +79,7 @@ export function TextInput({
 					borderColor: hasError ? theme.destructive : theme.border,
 					opacity: disabled ? 0.5 : 1,
 				},
-				applySlot({}, styles?.group),
+				applySlot({}, slotStyles?.group),
 			]}
 		>
 			{leftSection

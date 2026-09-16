@@ -172,13 +172,13 @@ export function DropdownMenu({
 	snap,
 	dismissable,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-dropdown-menu",
 }: DropdownMenuProps): ReactElement {
 	const { theme } = useUnistyles();
 	const [open, setOpen] = useState(false);
 	const close = () => setOpen(false);
-	const itemStyles = applySlot({}, styles?.item);
+	const itemStyles = applySlot({}, slotStyles?.item);
 
 	return (
 		<Fragment>
@@ -201,8 +201,8 @@ export function DropdownMenu({
 						backgroundColor: theme.card,
 					},
 					applySlot(
-						applySlot(applySlot({}, style), styles?.root),
-						styles?.trigger,
+						applySlot(applySlot({}, style), slotStyles?.root),
+						slotStyles?.trigger,
 					),
 				]}
 			>
@@ -219,7 +219,7 @@ export function DropdownMenu({
 			<Sheet open={open} onClose={close} snap={snap} dismissable={dismissable}>
 				<View
 					testID="k-dropdown-menu-content"
-					style={applySlot({ gap: 2 }, styles?.content)}
+					style={applySlot({ gap: 2 }, slotStyles?.content)}
 				>
 					{items.length === 0 ? (
 						<RNText

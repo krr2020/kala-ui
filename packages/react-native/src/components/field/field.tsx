@@ -21,7 +21,7 @@ export function Field({
 	hasError = false,
 	children,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-field",
 }: FieldProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -49,14 +49,14 @@ export function Field({
 	return (
 		<View
 			testID={testID}
-			style={[{ gap: 8 }, applySlot(applySlot({}, style), styles?.root)]}
+			style={[{ gap: 8 }, applySlot(applySlot({}, style), slotStyles?.root)]}
 		>
 			{label ? (
 				<RNText
 					testID="k-field-label"
 					style={[
 						{ fontSize: 14, fontWeight: "500", color: theme.foreground },
-						applySlot({}, styles?.label),
+						applySlot({}, slotStyles?.label),
 					]}
 				>
 					{label}
@@ -65,7 +65,7 @@ export function Field({
 					) : null}
 				</RNText>
 			) : null}
-			<View testID="k-field-control" style={applySlot({}, styles?.control)}>
+			<View testID="k-field-control" style={applySlot({}, slotStyles?.control)}>
 				{control}
 			</View>
 			{description ? (
@@ -73,7 +73,7 @@ export function Field({
 					testID="k-field-description"
 					style={[
 						{ fontSize: 12, color: theme.mutedForeground },
-						applySlot({}, styles?.description),
+						applySlot({}, slotStyles?.description),
 					]}
 				>
 					{description}
@@ -85,7 +85,7 @@ export function Field({
 					accessibilityRole="alert"
 					style={[
 						{ fontSize: 12, color: theme.destructive },
-						applySlot({}, styles?.error),
+						applySlot({}, slotStyles?.error),
 					]}
 				>
 					{errorText}

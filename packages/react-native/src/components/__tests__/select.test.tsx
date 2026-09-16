@@ -202,7 +202,7 @@ describe("Select sheet", () => {
 		expect(value.props.children).toBe("Pick one");
 	});
 
-	it("styles.root slot wins over the library trigger surface", async () => {
+	it("slotStyles.root slot wins over the library trigger surface", async () => {
 		const screen: Screen = await render(
 			<Select options={OPTIONS} style={{ minHeight: 60 }} />,
 		);

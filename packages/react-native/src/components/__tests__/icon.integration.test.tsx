@@ -4,16 +4,17 @@
  * ramp drifting out of tokens or the color helper diverging from theme
  * values in any registered theme.
  */
-import type { ReactElement } from "react";
-import { Sun } from "lucide-react-native";
-import { Text as RNText } from "react-native";
+
 import { render } from "@testing-library/react-native";
+import { Sun } from "lucide-react-native";
+import type { ReactElement } from "react";
+import { Text as RNText } from "react-native";
+import * as entry from "../..";
 import { themes } from "../../themes";
 import { tokens } from "../../tokens";
+import type { IconComponent, IconSize } from "../icon";
 import { Icon } from "../icon";
 import { ICON_SIZE_PX, iconColor } from "../icon/icon.styles";
-import type { IconComponent, IconSize } from "../icon";
-import * as entry from "../..";
 
 // structural: lucide satisfies the generic {size,color} contract without
 // a cast — ComponentType contravariance accepts the richer LucideProps

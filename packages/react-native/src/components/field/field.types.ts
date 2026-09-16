@@ -15,8 +15,8 @@ export interface FieldProps {
 	/** exactly one control element; its accessibilityLabel is merged unless it provides its own */
 	children: ReactNode;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		label?: StyleProp<ViewStyle>;
 		control?: StyleProp<ViewStyle>;

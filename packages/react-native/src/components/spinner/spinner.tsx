@@ -22,7 +22,7 @@ export function Spinner({
 	label = "Loading...",
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-spinner",
 }: SpinnerProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -66,7 +66,7 @@ export function Spinner({
 					justifyContent: "center",
 					opacity: variant === "ghost" ? 0.6 : 1,
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			<Animated.View style={{ transform: [{ rotate }] }}>

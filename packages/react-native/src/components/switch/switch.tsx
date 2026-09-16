@@ -22,7 +22,7 @@ export function Switch({
 	disabled = false,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-switch",
 }: SwitchProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -47,7 +47,7 @@ export function Switch({
 					justifyContent: "center",
 					opacity: disabled ? 0.5 : 1,
 				},
-				applySlot(applySlot([], style), styles?.root),
+				applySlot(applySlot([], style), slotStyles?.root),
 			]}
 		>
 			<View
@@ -62,7 +62,7 @@ export function Switch({
 						alignItems: "flex-start",
 						justifyContent: "center",
 					},
-					styles?.track,
+					slotStyles?.track,
 				]}
 			>
 				<View
@@ -75,7 +75,7 @@ export function Switch({
 							backgroundColor: theme.card,
 							transform: [{ translateX: value ? THUMB_TRAVEL : 0 }],
 						},
-						styles?.thumb,
+						slotStyles?.thumb,
 					]}
 				/>
 			</View>

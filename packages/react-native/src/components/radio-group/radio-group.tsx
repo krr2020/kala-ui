@@ -30,7 +30,7 @@ export function RadioGroup({
 	accessibilityLabel,
 	children,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-radio-group",
 }: RadioGroupProps): ReactElement {
 	const state: RadioGroupState = {
@@ -51,7 +51,7 @@ export function RadioGroup({
 						[{ flexDirection: "column", gap: 4, alignSelf: "flex-start" }],
 						style,
 					),
-					styles?.root,
+					slotStyles?.root,
 				)}
 			>
 				{children}
@@ -67,7 +67,7 @@ function RadioGroupItem({
 	disabled = false,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-radio-item",
 }: RadioGroupItemProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -101,7 +101,7 @@ function RadioGroupItem({
 					],
 					style,
 				),
-				styles?.root,
+				slotStyles?.root,
 			)}
 		>
 			<View

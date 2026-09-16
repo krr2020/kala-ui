@@ -39,8 +39,8 @@ export interface IndicatorProps {
 	/** Shrink the wrapper to its content instead of stretching */
 	inline?: boolean;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		dot?: StyleProp<ViewStyle>;
 	};

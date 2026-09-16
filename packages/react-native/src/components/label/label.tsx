@@ -13,7 +13,7 @@ export function Label({
 	children,
 	required = false,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-label",
 }: LabelProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -26,7 +26,7 @@ export function Label({
 					fontWeight: "500",
 					color: theme.foreground,
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			{children}

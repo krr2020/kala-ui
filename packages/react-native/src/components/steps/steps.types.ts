@@ -22,8 +22,8 @@ export interface StepsProps {
 	/** show connecting lines between steps */
 	showLine?: boolean;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`; step/indicator apply per step. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`; step/indicator apply per step. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		step?: StyleProp<ViewStyle>;
 		indicator?: StyleProp<ViewStyle>;

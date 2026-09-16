@@ -8,8 +8,8 @@ export interface CollapsibleProps {
 	onOpenChange?: (open: boolean) => void;
 	disabled?: boolean;
 	accessibilityLabel?: string;
-	/** Slot overrides: trigger/content flow to their parts. */
-	styles?: {
+	/** slotStyles: trigger/content flow to their parts. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		trigger?: StyleProp<ViewStyle>;
 		content?: StyleProp<ViewStyle>;
@@ -21,14 +21,14 @@ export interface CollapsibleTriggerProps {
 	children?: ReactNode;
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: { root?: StyleProp<ViewStyle> };
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: { root?: StyleProp<ViewStyle> };
 	testID?: string;
 }
 
 export interface CollapsibleContentProps {
 	children?: ReactNode;
-	/** Slot overrides: root wins over the group-flowed content slot. */
-	styles?: { root?: StyleProp<ViewStyle> };
+	/** slotStyles: root wins over the group-flowed content slot. */
+	slotStyles?: { root?: StyleProp<ViewStyle> };
 	testID?: string;
 }

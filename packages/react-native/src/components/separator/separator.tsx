@@ -14,7 +14,7 @@ export function Separator({
 	decorative = true,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-separator",
 }: SeparatorProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -30,7 +30,7 @@ export function Separator({
 					width: vertical ? 1 : "100%",
 					height: vertical ? "100%" : 1,
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		/>
 	);

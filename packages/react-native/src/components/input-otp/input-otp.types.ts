@@ -14,8 +14,8 @@ export interface InputOtpProps {
 	disabled?: boolean;
 	children: ReactNode;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`; field applies to the off-screen input. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`; field applies to the off-screen input. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		field?: StyleProp<TextStyle>;
 	};
@@ -26,7 +26,7 @@ export interface InputOtpSlotProps {
 	/** 0-based slot position within the code */
 	index: number;
 	style?: StyleProp<ViewStyle>;
-	styles?: { root?: StyleProp<ViewStyle> };
+	slotStyles?: { root?: StyleProp<ViewStyle> };
 	testID?: string;
 }
 

@@ -10,8 +10,8 @@ export interface RadioGroupProps {
 	accessibilityLabel?: string;
 	children?: ReactNode;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		item?: StyleProp<ViewStyle>;
 	};
@@ -27,7 +27,7 @@ export interface RadioGroupItemProps {
 	disabled?: boolean;
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: { root?: StyleProp<ViewStyle> };
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: { root?: StyleProp<ViewStyle> };
 	testID?: string;
 }

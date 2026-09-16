@@ -11,8 +11,8 @@ export interface HeadingProps {
 	weight?: HeadingWeight;
 	align?: HeadingAlign;
 	style?: StyleProp<TextStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<TextStyle>;
 	};
 	testID?: string;

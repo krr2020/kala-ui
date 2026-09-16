@@ -171,7 +171,7 @@ describe("DropdownMenu", () => {
 			<DropdownMenu
 				items={actions}
 				triggerLabel="actions"
-				styles={{ content: { borderWidth: 3 } }}
+				slotStyles={{ content: { borderWidth: 3 } }}
 			/>,
 		);
 		await fireEvent.press(screen.getByTestId("k-dropdown-menu"));

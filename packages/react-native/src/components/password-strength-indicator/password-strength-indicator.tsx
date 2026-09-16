@@ -2,10 +2,10 @@ import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import {
+	calculatePasswordStrength,
 	PASSWORD_MAX_STRENGTH,
 	PASSWORD_MIN_LENGTH,
 	STRENGTH_LABELS,
-	calculatePasswordStrength,
 } from "../../lib/password-strength.utils";
 import { applySlot } from "../slot-styles";
 import type { PasswordStrengthIndicatorProps } from "./password-strength-indicator.types";
@@ -18,7 +18,7 @@ import type { PasswordStrengthIndicatorProps } from "./password-strength-indicat
 export function PasswordStrengthIndicator({
 	password,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-password-strength-indicator",
 }: PasswordStrengthIndicatorProps): ReactElement | null {
 	const { theme } = useUnistyles();
@@ -44,7 +44,10 @@ export function PasswordStrengthIndicator({
 			accessibilityRole="adjustable"
 			accessibilityLabel={`Password strength: ${STRENGTH_LABELS[strength]}`}
 			accessibilityValue={{ min: 0, max: PASSWORD_MAX_STRENGTH, now: strength }}
-			style={[{ marginTop: 12 }, applySlot(applySlot({}, style), styles?.root)]}
+			style={[
+				{ marginTop: 12 },
+				applySlot(applySlot({}, style), slotStyles?.root),
+			]}
 		>
 			<View style={{ flexDirection: "row", justifyContent: "space-between" }}>
 				<RNText
@@ -79,7 +82,7 @@ export function PasswordStrengthIndicator({
 								borderRadius: 999,
 								backgroundColor: level < strength ? barColor : theme.muted,
 							},
-							applySlot({}, styles?.segment),
+							applySlot({}, slotStyles?.segment),
 						]}
 					/>
 				))}

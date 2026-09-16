@@ -172,12 +172,12 @@ describe("Banner edges", () => {
 		expect(screen.getByText("plain message")).toBeTruthy();
 	});
 
-	it("styles.root/content/close all win over defaults", async () => {
+	it("slotStyles.root/content/close all win over defaults", async () => {
 		const screen = await render(
 			<Banner
 				onClose={() => undefined}
 				style={{ minHeight: 60 }}
-				styles={{
+				slotStyles={{
 					root: { minHeight: 90, borderWidth: 7 },
 					content: { borderWidth: 5 },
 					close: { borderWidth: 3 },

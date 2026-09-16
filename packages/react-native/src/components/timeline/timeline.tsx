@@ -19,7 +19,7 @@ const DOT = 32;
 export function Timeline({
 	items,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-timeline",
 }: TimelineProps): ReactElement {
 	const { theme } = useUnistyles();
@@ -44,7 +44,7 @@ export function Timeline({
 			testID={testID}
 			style={applySlot(
 				{ flexDirection: "column" },
-				applySlot(style, styles?.root),
+				applySlot(style, slotStyles?.root),
 			)}
 		>
 			{items.map((item, index) => {
@@ -62,7 +62,7 @@ export function Timeline({
 						accessibilityLabel={label}
 						style={[
 							{ flexDirection: "row", gap: 16 },
-							applySlot({}, styles?.item),
+							applySlot({}, slotStyles?.item),
 						]}
 					>
 						<View style={{ flexDirection: "column", alignItems: "center" }}>
@@ -79,7 +79,7 @@ export function Timeline({
 										borderColor: theme.mutedForeground,
 									},
 									dotSurface(status),
-									applySlot({}, styles?.dot),
+									applySlot({}, slotStyles?.dot),
 								]}
 							>
 								<View

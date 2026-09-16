@@ -49,10 +49,7 @@ const COLOR_KEY: Record<string, string> = {
 };
 
 /** Named color resolves to its token; raw strings pass through. */
-export function textColor(
-	theme: KalaTheme,
-	color: string,
-): string {
+export function textColor(theme: KalaTheme, color: string): string {
 	const key = COLOR_KEY[color] as keyof KalaTheme | undefined;
 	const resolved = (key ? theme[key] : undefined) ?? color;
 	return String(resolved);

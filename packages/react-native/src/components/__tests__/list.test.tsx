@@ -358,16 +358,19 @@ describe("List source pins", () => {
 });
 
 describe("List slot styles", () => {
-	it("styles.root wins over style on List and ListItem", async () => {
+	it("slotStyles.root wins over style on List and ListItem", async () => {
 		const list = await render(
-			<List style={{ borderWidth: 1 }} styles={{ root: { borderWidth: 7 } }} />,
+			<List
+				style={{ borderWidth: 1 }}
+				slotStyles={{ root: { borderWidth: 7 } }}
+			/>,
 		);
 		expect(flatStyle(node(list, "k-list")).borderWidth).toBe(7);
 
 		const item = await render(
 			<ListItem
 				style={{ borderWidth: 1 }}
-				styles={{ root: { borderWidth: 7 } }}
+				slotStyles={{ root: { borderWidth: 7 } }}
 			/>,
 		);
 		expect(flatStyle(node(item, "k-list-item")).borderWidth).toBe(7);

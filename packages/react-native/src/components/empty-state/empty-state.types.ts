@@ -22,8 +22,8 @@ export interface EmptyStateProps {
 	isLoading?: boolean;
 	children?: ReactNode;
 	accessibilityLabel?: string;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		icon?: StyleProp<ViewStyle>;
 		title?: StyleProp<TextStyle>;

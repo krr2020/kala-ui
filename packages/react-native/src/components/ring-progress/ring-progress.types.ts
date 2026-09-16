@@ -35,8 +35,8 @@ export interface RingProgressProps {
 	sections?: RingProgressSection[];
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		label?: StyleProp<ViewStyle>;
 	};

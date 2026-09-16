@@ -69,7 +69,7 @@ describe("Timeline", () => {
 
 	it("slot style overrides reach the root", async () => {
 		const screen = await render(
-			<Timeline items={items} styles={{ root: { borderWidth: 7 } }} />,
+			<Timeline items={items} slotStyles={{ root: { borderWidth: 7 } }} />,
 		);
 		expect(
 			StyleSheet.flatten(screen.getByTestId("k-timeline").props.style)

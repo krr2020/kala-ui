@@ -18,7 +18,7 @@ export function ListItem({
 	onPress,
 	accessibilityLabel,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-list-item",
 	children,
 }: ListItemProps): ReactElement {
@@ -33,7 +33,7 @@ export function ListItem({
 		paddingVertical: dense ? 8 : 12,
 		backgroundColor: active ? `${String(theme.primary)}1A` : undefined,
 	};
-	const slot = applySlot(applySlot({}, style), styles?.root);
+	const slot = applySlot(applySlot({}, style), slotStyles?.root);
 	// raw strings cannot render inside a View — wrap them like Badge does
 	const content =
 		typeof children === "string" || typeof children === "number" ? (

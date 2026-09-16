@@ -14,8 +14,8 @@ export interface ContextMenuProps {
 	/** fires whenever the menu closes (overlay, drag, or action commit) */
 	onClose?: () => void;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		content?: StyleProp<ViewStyle>;
 		item?: StyleProp<ViewStyle>;

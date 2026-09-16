@@ -32,8 +32,8 @@ export interface MultiSelectProps {
 	isLoading?: boolean;
 	accessibilityLabel?: string;
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		chip?: StyleProp<ViewStyle>;
 		option?: StyleProp<ViewStyle>;

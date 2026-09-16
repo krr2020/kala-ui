@@ -18,7 +18,7 @@ export function Textarea({
 	rows,
 	isLoading = false,
 	style,
-	styles,
+	slotStyles,
 	testID = "k-textarea",
 	...rest
 }: TextareaProps): ReactElement {
@@ -31,7 +31,10 @@ export function Textarea({
 				testID={testID}
 				style={[
 					{ minHeight, justifyContent: "center" },
-					applySlot(applySlot({}, style as StyleProp<TextStyle>), styles?.root),
+					applySlot(
+						applySlot({}, style as StyleProp<TextStyle>),
+						slotStyles?.root,
+					),
 				]}
 			>
 				<Skeleton animated style={{ height: minHeight - 16 }} />
@@ -60,7 +63,7 @@ export function Textarea({
 					borderColor: hasError ? theme.destructive : theme.border,
 					opacity: disabled ? 0.5 : 1,
 				},
-				applySlot(applySlot({}, style), styles?.root),
+				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 			{...rest}
 		/>

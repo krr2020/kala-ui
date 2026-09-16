@@ -17,8 +17,8 @@ export interface TimelineItemData {
 export interface TimelineProps {
 	items: TimelineItemData[];
 	style?: StyleProp<ViewStyle>;
-	/** Slot overrides: root wins over the library surface and `style`. */
-	styles?: {
+	/** slotStyles: root wins over the library surface and `style`. */
+	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		item?: StyleProp<ViewStyle>;
 		dot?: StyleProp<ViewStyle>;
