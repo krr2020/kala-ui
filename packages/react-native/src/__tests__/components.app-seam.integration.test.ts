@@ -167,8 +167,19 @@ describe("component app seam", () => {
 		// bold/align/formats + select + loading toggle + crash toggle +
 		// otp code entry + menu auto-sync/last-action + number-input +
 		// tag recipients + toppings + city + stay date + reminder time +
-		// app chrome tab.
-		expect(demoHooks).toBe(30);
+		// app chrome tab + route selection + button press counter.
+		expect(demoHooks).toBe(31);
+	});
+
+	it("component demo registry routes append after the group routes", () => {
+		const shell = readFileSync(
+			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
+			"utf8",
+		);
+		expect(shell).toMatch(/\.\.\.componentDemos/);
+		expect(shell.indexOf("overlays")).toBeLessThan(
+			shell.indexOf("...componentDemos"),
+		);
 	});
 
 	it("render-surface census matches the pinned marker/label inventory", () => {
@@ -180,6 +191,8 @@ describe("component app seam", () => {
 					'accessibilityLabel="bold"': 1,
 					'accessibilityLabel="email field"': 1,
 					'accessibilityLabel="error field"': 1,
+					'accessibilityLabel="press me"': 1,
+					'accessibilityLabel="sun button"': 1,
 					'accessibilityLabel="open confirm dialog"': 1,
 					'accessibilityLabel="open demo dialog"': 1,
 					'accessibilityLabel="open demo sheet"': 1,
@@ -197,6 +210,7 @@ describe("component app seam", () => {
 					'testID="k-demo-badges"': 1,
 					'testID="k-demo-banner"': 1,
 					'testID="k-demo-buttons"': 1,
+					'testID="k-demo-button"': 1,
 					'testID="k-demo-card"': 1,
 					'testID="k-demo-charts"': 1,
 					'testID="k-demo-collapsible"': 1,

@@ -6,13 +6,14 @@ import { AppChromeDemo } from "./demos/app-chrome-demo";
 import { BasicsDemo } from "./demos/basics-demo";
 import { ChartsDemo } from "./demos/charts-demo";
 import { DataTableDemo } from "./demos/data-table-demo";
+import { componentDemos } from "./demos/components/registry";
 import { FeedbackDemo } from "./demos/feedback-demo";
 import { NavigationDemo } from "./demos/navigation-demo";
 import { OverlaysDemo } from "./demos/overlays-demo";
 import { demoStyles } from "./demos/stylesheet";
 import { TokensDemo } from "./demos/tokens-demo";
 
-const ROUTES = [
+const GROUP_ROUTES = [
 	{ name: "tokens", title: "Tokens & Theming", render: () => <TokensDemo /> },
 	{
 		name: "app chrome",
@@ -41,6 +42,15 @@ const ROUTES = [
 		title: "Overlays & Menus",
 		render: () => <OverlaysDemo />,
 	},
+] as const;
+
+const ROUTES = [
+	...GROUP_ROUTES,
+	...componentDemos.map(({ name, title, render }) => ({
+		name,
+		title,
+		render,
+	})),
 ] as const;
 
 // Route state lives here (not App.tsx) so the app shell stays stateless
