@@ -94,7 +94,7 @@ export function TimePicker({
 					return (
 
 						<Pressable
-							key={`${prefix}-${i}`}
+							key={`${prefix}-${labelFor(i)}`}
 							testID={`k-time-picker-${prefix}-item-${i}`}
 							accessibilityRole="button"
 							accessibilityLabel={labelFor(i)}

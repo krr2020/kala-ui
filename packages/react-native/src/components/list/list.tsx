@@ -130,8 +130,10 @@ export function List({
 				style={surface}
 			>
 				{skeleton ??
-					Array.from({ length: itemCount }, (_, index) => (
-						<View key={index}>
+					Array.from({ length: itemCount }, (_, index) => {
+						const slot = `skeleton-row-${index + 1}`;
+						return (
+						<View key={slot}>
 							<View
 								style={{
 									paddingHorizontal: dense || skDense ? 12 : 16,
@@ -153,9 +155,10 @@ export function List({
 										backgroundColor: String(theme.separator),
 									}}
 								/>
-							) : null}
-						</View>
-					))}
+								) : null}
+							</View>
+							);
+						})}
 			</View>
 		);
 	}
@@ -169,8 +172,17 @@ export function List({
 			accessibilityLabel={accessibilityLabel}
 			style={surface}
 		>
-			{items.map((item, index) => (
-				<View key={index}>
+			{items.map((item, index) => {
+				const own =
+					typeof item === "object" && item !== null && "key" in item
+						? (item as { key?: unknown }).key
+						: null;
+				const rowKey =
+					(typeof own === "string" || typeof own === "number")
+						? own
+						: `row-${index}`;
+				return (
+					<View key={rowKey}>
 					{item}
 					{divided && index < last ? (
 						<View
@@ -183,7 +195,8 @@ export function List({
 						/>
 					) : null}
 				</View>
-			))}
+				);
+			})}
 		</View>
 	);
 }

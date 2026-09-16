@@ -21,7 +21,16 @@ import type {
 } from "./calendar.types";
 import { CalendarSkeleton } from "./calendar-skeleton";
 
-const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"] as const;
+// Full names give unique keys; the grid renders only the first letter.
+const WEEKDAYS = [
+	"Sunday",
+	"Monday",
+	"Tuesday",
+	"Wednesday",
+	"Thursday",
+	"Friday",
+	"Saturday",
+] as const;
 const CELL_SIZE = 36;
 
 const iso = (d: Date): string =>
@@ -272,9 +281,9 @@ export function Calendar({
 			</View>
 			<View style={{ flexDirection: "row", justifyContent: "space-around" }}>
 
-				{WEEKDAYS.map((label, i) => (
+				{WEEKDAYS.map((day) => (
 					<RNText
-						key={label}
+						key={day}
 						testID="k-calendar-weekday"
 						style={{
 							color: theme.mutedForeground,
@@ -284,7 +293,7 @@ export function Calendar({
 							textAlign: "center",
 						}}
 					>
-						{label}
+						{day[0]}
 					</RNText>
 				))}
 			</View>

@@ -98,14 +98,19 @@ describe("NumberInput", () => {
 					value={v}
 					min={0}
 					max={10}
-					onValueChange={setV}
+					onValueChange={(next) => {
+						onValueChange(next);
+						setV(next);
+					}}
 				/>
 			);
 		}
 		const screen = await render(<Parent />);
 		await fireEvent.press(increment(screen));
+		expect(onValueChange).toHaveBeenLastCalledWith(9);
 		expect(input(screen).props.value).toBe("9");
 		await fireEvent.press(increment(screen));
+		expect(onValueChange).toHaveBeenLastCalledWith(10);
 		expect(input(screen).props.value).toBe("10");
 	});
 
