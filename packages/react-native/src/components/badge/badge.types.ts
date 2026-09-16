@@ -19,6 +19,7 @@ export interface BadgeProps {
 	variant?: BadgeVariant;
 	color?: BadgeColor;
 	shape?: BadgeShape;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {

@@ -22,6 +22,7 @@ export interface TimePickerProps {
 	/** Swaps the wheels for a skeleton surface keeping the marker. */
 	isLoading?: boolean;
 	accessibilityLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: { root?: StyleProp<ViewStyle> };

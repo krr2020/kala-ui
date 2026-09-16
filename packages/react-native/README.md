@@ -77,6 +77,15 @@ Precedence on the root is `library defaults → style → slotStyles.root` —
 the slot entry always wins. Inner parts follow
 `library defaults → slotStyles.<slot>`.
 
+**When to use which.** Reach for `style` when the parent is speaking:
+margins, positioning, flex sizing in the screen's layout. Reach for
+`slotStyles` when you are re-skinning the library's own parts. Keeping
+the channels separate means a design-system wrapper's `slotStyles` and
+an app screen's `style` never fight over the same keys. Each slot entry
+is also typed to its host element — `Avatar`'s `image` slot takes
+`ImageStyle`, `Alert`'s `title` slot takes `TextStyle` — so tsc flags
+styling a part with keys its element cannot honor.
+
 Slot keys mirror the component's stable `k-*` testIDs (`k-avatar`,
 `k-avatar-fallback`, …), so anything you can style you can also target in
 tests and E2E flows.

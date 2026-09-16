@@ -14,6 +14,7 @@ export interface TextareaProps
 	rows?: number;
 	/** show the loading skeleton surface, keeping the k-textarea marker */
 	isLoading?: boolean;
+	/** Root typography; sits below `slotStyles.root`. */
 	style?: StyleProp<TextStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {

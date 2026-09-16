@@ -9,6 +9,7 @@ export interface SheetProps {
 	snap?: SheetSnap;
 	/** false blocks overlay-press dismissal (back/escape paths still fire) */
 	dismissable?: boolean;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {

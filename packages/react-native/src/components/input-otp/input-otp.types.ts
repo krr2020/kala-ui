@@ -13,6 +13,7 @@ export interface InputOtpProps {
 	/** blocks editing and dims the slots */
 	disabled?: boolean;
 	children: ReactNode;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`; field applies to the off-screen input. */
 	slotStyles?: {
@@ -25,6 +26,7 @@ export interface InputOtpProps {
 export interface InputOtpSlotProps {
 	/** 0-based slot position within the code */
 	index: number;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	slotStyles?: { root?: StyleProp<ViewStyle> };
 	testID?: string;

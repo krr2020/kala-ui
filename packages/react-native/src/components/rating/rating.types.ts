@@ -21,6 +21,7 @@ export interface RatingProps {
 	size?: RatingSize;
 	/** Accessible label (prefixes the readOnly summary) */
 	accessibilityLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {

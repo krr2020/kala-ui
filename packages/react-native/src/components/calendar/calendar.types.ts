@@ -14,6 +14,7 @@ export interface CalendarSkeletonConfig {
 
 export interface CalendarSkeletonProps extends CalendarSkeletonConfig {
 	testID?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: { root?: StyleProp<ViewStyle> };
@@ -45,6 +46,7 @@ export interface CalendarProps {
 	isLoading?: boolean;
 	skeletonConfig?: CalendarSkeletonConfig;
 	accessibilityLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {

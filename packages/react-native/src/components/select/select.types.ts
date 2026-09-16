@@ -27,6 +27,7 @@ export interface SelectProps {
 	/** swaps the trigger for a skeleton surface while keeping the k-select marker */
 	isLoading?: boolean;
 	accessibilityLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {

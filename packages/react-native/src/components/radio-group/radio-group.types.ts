@@ -9,6 +9,7 @@ export interface RadioGroupProps {
 	disabled?: boolean;
 	accessibilityLabel?: string;
 	children?: ReactNode;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {
@@ -26,6 +27,7 @@ export interface RadioGroupItemProps {
 	description?: string;
 	disabled?: boolean;
 	accessibilityLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: { root?: StyleProp<ViewStyle> };

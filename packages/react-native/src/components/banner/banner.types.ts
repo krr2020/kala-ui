@@ -32,6 +32,7 @@ export interface BannerProps {
 	/** custom loading node rendered inside the toned surface */
 	skeleton?: ReactNode;
 	accessibilityLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: each part wins over the library surface and `style`. */
 	slotStyles?: {

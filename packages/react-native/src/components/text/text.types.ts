@@ -33,6 +33,7 @@ export interface TextProps {
 	color?: TextColor | (string & {});
 	/** single-line clamp with trailing ellipsis */
 	truncate?: boolean;
+	/** Root typography; sits below `slotStyles.root`. */
 	style?: StyleProp<TextStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {

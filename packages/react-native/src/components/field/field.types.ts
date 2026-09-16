@@ -14,6 +14,7 @@ export interface FieldProps {
 	hasError?: boolean;
 	/** exactly one control element; its accessibilityLabel is merged unless it provides its own */
 	children: ReactNode;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {

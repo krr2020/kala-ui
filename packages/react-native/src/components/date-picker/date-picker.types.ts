@@ -30,6 +30,7 @@ export interface DatePickerProps extends PickerCalendarProps {
 	/** Swaps the trigger for a skeleton surface keeping the marker. */
 	isLoading?: boolean;
 	accessibilityLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: { root?: StyleProp<ViewStyle> };
@@ -53,6 +54,7 @@ export interface DateRangePickerProps extends PickerCalendarProps {
 	/** Swaps the trigger for a skeleton surface keeping the marker. */
 	isLoading?: boolean;
 	accessibilityLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: { root?: StyleProp<ViewStyle> };

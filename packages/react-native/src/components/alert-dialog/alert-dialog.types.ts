@@ -22,6 +22,7 @@ export interface AlertDialogProps {
 
 export interface AlertDialogPartProps {
 	children?: ReactNode;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles entry for this part. */
 	slotStyles?: { root?: StyleProp<ViewStyle> };
@@ -30,6 +31,7 @@ export interface AlertDialogPartProps {
 
 export interface AlertDialogTextProps {
 	children?: ReactNode;
+	/** Root typography; sits below `slotStyles.root`. */
 	style?: StyleProp<TextStyle>;
 	/** slotStyles entry for this part. */
 	slotStyles?: { root?: StyleProp<TextStyle> };

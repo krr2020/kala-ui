@@ -24,6 +24,7 @@ export interface DialogProps {
 
 export interface DialogPartProps {
 	children?: ReactNode;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles entry for this part. */
 	slotStyles?: { root?: StyleProp<ViewStyle> };
@@ -32,6 +33,7 @@ export interface DialogPartProps {
 
 export interface DialogTextProps {
 	children?: ReactNode;
+	/** Root typography; sits below `slotStyles.root`. */
 	style?: StyleProp<TextStyle>;
 	/** slotStyles entry for this part. */
 	slotStyles?: { root?: StyleProp<TextStyle> };

@@ -34,6 +34,7 @@ export interface RingProgressProps {
 	/** multiple segments; each value is 0-100 and rotations accumulate */
 	sections?: RingProgressSection[];
 	accessibilityLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {

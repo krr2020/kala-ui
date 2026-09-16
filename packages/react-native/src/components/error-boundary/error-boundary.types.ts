@@ -34,6 +34,7 @@ export interface ErrorFallbackProps {
 	description?: string;
 	/** page (tall, standalone) vs section (compact, inline) */
 	variant?: ErrorFallbackVariant;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {

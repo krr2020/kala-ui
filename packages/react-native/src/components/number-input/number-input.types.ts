@@ -23,6 +23,7 @@ export interface NumberInputProps {
 	/** stepper labels, default "Increase" / "Decrease" */
 	incrementLabel?: string;
 	decrementLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library row and `style`; input/stepper reach the field and the pressable steppers. */
 	slotStyles?: {

@@ -11,6 +11,7 @@ export interface ToastProps {
 	position?: ToastPosition;
 	children?: ReactNode;
 	accessibilityLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {
@@ -22,6 +23,7 @@ export interface ToastProps {
 
 export interface ToastTitleProps {
 	children?: ReactNode;
+	/** Root typography; sits below `slotStyles.root`. */
 	style?: StyleProp<TextStyle>;
 	/** slotStyles entry for the title text. */
 	slotStyles?: { root?: StyleProp<TextStyle> };
@@ -30,6 +32,7 @@ export interface ToastTitleProps {
 
 export interface ToastDescriptionProps {
 	children?: ReactNode;
+	/** Root typography; sits below `slotStyles.root`. */
 	style?: StyleProp<TextStyle>;
 	/** slotStyles entry for the description text. */
 	slotStyles?: { root?: StyleProp<TextStyle> };

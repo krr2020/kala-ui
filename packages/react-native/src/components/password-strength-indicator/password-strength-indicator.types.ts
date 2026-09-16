@@ -3,6 +3,7 @@ import type { StyleProp, ViewStyle } from "react-native";
 export interface PasswordStrengthIndicatorProps {
 	/** the password to score; empty string renders nothing */
 	password: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`; segment applies to each strength bar. */
 	slotStyles?: {

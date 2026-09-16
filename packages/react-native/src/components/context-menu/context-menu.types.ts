@@ -13,6 +13,7 @@ export interface ContextMenuProps {
 	dismissable?: boolean;
 	/** fires whenever the menu closes (overlay, drag, or action commit) */
 	onClose?: () => void;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {

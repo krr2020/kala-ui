@@ -31,6 +31,7 @@ export interface ListProps {
 	/** custom loading node rendered inside the list surface */
 	skeleton?: ReactNode;
 	accessibilityLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {
@@ -54,6 +55,7 @@ export interface ListItemProps {
 	onPress?: () => void;
 	children?: ReactNode;
 	accessibilityLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {
@@ -66,6 +68,7 @@ export interface ListItemIconProps {
 	size?: ListItemIconSize;
 	color?: string;
 	children?: ReactNode;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 }
@@ -75,17 +78,20 @@ export interface ListItemAvatarProps {
 	/** name drives the initials fallback when the image fails or is absent */
 	name?: string;
 	size?: ListItemIconSize;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 }
 
 export interface ListItemContentProps {
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 	children?: ReactNode;
 }
 
 export interface ListItemTitleProps extends TextProps {
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 	children?: ReactNode;
@@ -96,11 +102,13 @@ export interface ListItemTextProps extends TextProps {
 	lines?: number;
 	/** single-line ellipsis — numberOfLines 1 */
 	truncate?: boolean;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 }
 
 export interface ListItemActionProps {
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 	children?: ReactNode;

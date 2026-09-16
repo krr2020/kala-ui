@@ -10,6 +10,7 @@ export interface LoadingOverlayProps {
 	accessibilityLabel?: string;
 	/** replaces the default Spinner as the loader node */
 	children?: ReactNode;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {

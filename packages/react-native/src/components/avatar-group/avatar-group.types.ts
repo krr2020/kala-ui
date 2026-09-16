@@ -14,6 +14,7 @@ export interface AvatarGroupProps {
 	max?: number;
 	/** passes through to each Avatar */
 	size?: AvatarSize;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {

@@ -20,6 +20,7 @@ export interface AlertProps {
 	dismissable?: boolean;
 	onDismiss?: () => void;
 	accessibilityLabel?: string;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 	/** slotStyles: root wins over the library surface and `style`. */
@@ -33,6 +34,7 @@ export interface AlertTitleProps {
 	/** slotStyles entry for the title text. */
 	slotStyles?: { root?: StyleProp<TextStyle> };
 	children?: ReactNode;
+	/** Root typography; sits below `slotStyles.root`. */
 	style?: StyleProp<TextStyle>;
 	testID?: string;
 }
@@ -41,6 +43,7 @@ export interface AlertDescriptionProps {
 	/** slotStyles entry for the description text. */
 	slotStyles?: { root?: StyleProp<TextStyle> };
 	children?: ReactNode;
+	/** Root typography; sits below `slotStyles.root`. */
 	style?: StyleProp<TextStyle>;
 	testID?: string;
 }

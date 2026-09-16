@@ -38,6 +38,7 @@ export interface IndicatorProps {
 	label?: ReactNode;
 	/** Shrink the wrapper to its content instead of stretching */
 	inline?: boolean;
+	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {
