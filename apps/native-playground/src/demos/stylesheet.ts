@@ -88,6 +88,9 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		paddingBottom: 12,
 		borderBottomWidth: 1,
 		borderBottomColor: theme.border,
+		// sits above the themed content ScrollView — without an explicit
+		// fill the raw Android window background shows through
+		backgroundColor: theme.background,
 	},
 	groupChip: {
 		borderRadius: 999,
