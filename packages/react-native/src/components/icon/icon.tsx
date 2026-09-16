@@ -9,15 +9,8 @@ import type { ReactElement } from "react";
 import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
+import { ICON_SIZE_PX, iconColor } from "./icon.styles";
 import type { IconProps } from "./icon.types";
-
-const SIZE_PX = {
-	xs: 14,
-	sm: 16,
-	md: 20,
-	lg: 24,
-	xl: 32,
-} as const;
 
 export function Icon({
 	icon: Component,
@@ -28,7 +21,6 @@ export function Icon({
 	testID = "k-icon",
 }: IconProps): ReactElement {
 	const { theme } = useUnistyles();
-	const resolved = theme[color as keyof typeof theme] ?? color;
 
 	return (
 		<View
@@ -40,7 +32,7 @@ export function Icon({
 			accessibilityElementsHidden={label ? undefined : true}
 			style={applySlot({}, styles?.root)}
 		>
-			<Component size={SIZE_PX[size]} color={String(resolved)} />
+			<Component size={ICON_SIZE_PX[size]} color={iconColor(theme, color)} />
 		</View>
 	);
 }

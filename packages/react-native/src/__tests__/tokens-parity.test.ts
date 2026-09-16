@@ -300,7 +300,10 @@ describe("layout restructure pins", () => {
 		expect(tokens).toEqual({
 			radius: { control: 6, card: 8, input: 6 },
 			space: { controlPx: 16, cardPad: 24, gutter: 16 },
-			size: { controlH: 40 },
+			size: {
+				controlH: 40,
+				icon: { xs: 14, sm: 16, md: 20, lg: 24, xl: 32 },
+			},
 			motion: {
 				duration: { fast: 120, base: 150, slow: 200 },
 				ease: { standard: [0.4, 0, 0.2, 1] },
