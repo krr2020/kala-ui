@@ -196,12 +196,48 @@ describe("component app seam", () => {
 			["avatar", "AvatarDemo"],
 		] as const) {
 			expect(registry).toMatch(
-				new RegExp(`name: "${name}", render: \\(\\) => <${demo}`),
+				new RegExp(`name: "${name}",[\\s\\S]*?render: \\(\\) => <${demo}`),
 			);
 		}
-		expect(registry).toMatch(/name: "list"\s*\}/);
-		expect(registry).toMatch(/name: "avatar-group"\s*\}/);
-		expect(registry).toMatch(/name: "tag-input"\s*\}/);
+		expect(registry).toMatch(/name: "list"\s*\},?/);
+		expect(registry).toMatch(/name: "avatar-group"\s*\},?/);
+		expect(registry).toMatch(/name: "tag-input"\s*\},?/);
+	});
+
+	it("registry declares a package source on every group — app groups segregated", () => {
+		const registry = readFileSync(
+			`${APP_PATH.replace("App.tsx", "demos/components/registry.tsx")}`,
+			"utf8",
+		);
+		const stylesheet = readFileSync(
+			`${APP_PATH.replace("App.tsx", "demos/stylesheet.ts")}`,
+			"utf8",
+		);
+		const shell = readFileSync(
+			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
+			"utf8",
+		);
+		// source is required on every group: one declaration per title
+		// (trailing comma keeps the interface's union type out of the count).
+		expect(registry.match(/source: "(?:library|app)",/g) ?? []).toHaveLength(
+			(registry.match(/title: "/g) ?? []).length,
+		);
+		// exactly the react-native-app-backed groups are app-sourced.
+		for (const name of ["data", "charts", "app chrome"]) {
+			expect(registry).toMatch(
+				new RegExp(`name: "${name}",[\\s\\S]*?source: "app"`),
+			);
+		}
+		expect(registry.match(/source: "app"/g) ?? []).toHaveLength(3);
+		// distinct chip + header styles exist and the shell applies them.
+		expect(stylesheet).toMatch(/sectionHeader:/);
+		expect(stylesheet).toMatch(/appChip:/);
+		expect(stylesheet).toMatch(/appChipText:/);
+		expect(shell).toMatch(/source === "app"/);
+		expect(shell).toMatch(/demoStyles\.sectionHeader/);
+		expect(shell).toMatch(/demoStyles\.appChip/);
+		// a section header renders only when its segment is non-empty.
+		expect(shell).toMatch(/\.length > 0/);
 	});
 
 	it("humanizeLabel formats chip display text from raw names", async () => {
@@ -235,7 +271,9 @@ describe("component app seam", () => {
 					'accessibilityLabel="show toast"': 1,
 					'accessibilityLabel="sync"': 1,
 					'accessibilityLabel="volume"': 1,
-					"accessibilityLabel={`activate ${name} theme`}": 1,
+                        'accessibilityLabel="app components section"': 1,
+					'accessibilityLabel="library components section"': 1,
+                        "accessibilityLabel={`activate ${name} theme}`": 1,
 						"accessibilityLabel={`select ${name} group`}": 1,
 						"accessibilityLabel={`show ${name} preview`}": 1,
 					'testID="k-demo-accordion"': 1,

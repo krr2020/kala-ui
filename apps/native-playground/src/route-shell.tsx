@@ -3,6 +3,7 @@ import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { UnistylesRuntime, useUnistyles } from "react-native-unistyles";
 import { componentGroups } from "./demos/components/registry";
+import type { ComponentGroup } from "./demos/components/registry";
 import { demoStyles } from "./demos/stylesheet";
 
 // themes whose backgrounds are dark → light status-bar icons
@@ -22,6 +23,51 @@ export function RouteShell() {
 	const component = group.components[componentIndex] ?? group.components[0];
 	const preview = component.render ?? group.overview;
 	const { theme } = useUnistyles();
+
+	// group row is segregated by backing package — standard library
+	// components first, @kala-ui/react-native-app composites after a
+	// second header; indexes stay positional into componentGroups.
+	const groupEntries = (source: "library" | "app") =>
+		componentGroups
+			.map((entry, index) => ({ entry, index }))
+			.filter(({ entry }) => entry.source === source);
+
+	const renderGroupChip = ({
+		entry,
+		index,
+	}: {
+		entry: ComponentGroup;
+		index: number;
+	}): React.JSX.Element => {
+		const on = index === groupIndex;
+		const app = entry.source === "app";
+		const { name, label } = entry;
+		return (
+			<Pressable
+				key={name}
+				accessibilityRole="button"
+				accessibilityLabel={`select ${name} group`}
+				onPress={() => selectGroup(index)}
+				style={[
+					demoStyles.chip,
+					demoStyles.groupChip,
+					app && demoStyles.appChip,
+					on && demoStyles.chipActive,
+				]}
+			>
+				<Text
+					style={[
+						demoStyles.chipText,
+						demoStyles.groupChipText,
+						app && demoStyles.appChipText,
+						on && demoStyles.chipTextActive,
+					]}
+				>
+					{label}
+				</Text>
+			</Pressable>
+		);
+	};
 
 	const selectGroup = (index: number): void => {
 		setGroupIndex(index);
@@ -54,32 +100,30 @@ export function RouteShell() {
 					contentContainerStyle={[demoStyles.picker, demoStyles.chipRowContent]}
 					showsHorizontalScrollIndicator={false}
 				>
-					{componentGroups.map(({ name, label }, index) => {
-						const on = index === groupIndex;
-						return (
-							<Pressable
-								key={name}
-								accessibilityRole="button"
-								accessibilityLabel={`select ${name} group`}
-								onPress={() => selectGroup(index)}
-								style={[
-									demoStyles.chip,
-									demoStyles.groupChip,
-									on && demoStyles.chipActive,
-								]}
+					{groupEntries("library").length > 0 && (
+						<View style={demoStyles.segment}>
+							<Text
+								style={[demoStyles.sectionHeader, demoStyles.sectionHeaderText]}
+								accessibilityRole="header"
+								accessibilityLabel="library components section"
 							>
-								<Text
-									style={[
-										demoStyles.chipText,
-										demoStyles.groupChipText,
-										on && demoStyles.chipTextActive,
-									]}
-								>
-									{label}
-								</Text>
-							</Pressable>
-						);
-					})}
+								Components
+							</Text>
+							{groupEntries("library").map(renderGroupChip)}
+						</View>
+					)}
+					{groupEntries("app").length > 0 && (
+						<View style={demoStyles.segment}>
+							<Text
+								style={[demoStyles.sectionHeader, demoStyles.sectionHeaderText]}
+								accessibilityRole="header"
+								accessibilityLabel="app components section"
+							>
+								App Components
+							</Text>
+							{groupEntries("app").map(renderGroupChip)}
+						</View>
+					)}
 				</ScrollView>
 				<View style={demoStyles.rowDivider} />
 				<ScrollView

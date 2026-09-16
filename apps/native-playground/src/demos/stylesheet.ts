@@ -118,6 +118,33 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		borderRadius: 999,
 		backgroundColor: "transparent",
 	},
+	// group-row segregation by package: each segment gets a non-pressable
+	// uppercase header; app-package chips swap the transparent pill for a
+	// filled tint so the @kala-ui/react-native vs -app boundary reads at
+	// a glance
+	segment: {
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 8,
+	},
+	sectionHeader: {
+		paddingVertical: 8,
+		paddingHorizontal: 4,
+	},
+	sectionHeaderText: {
+		color: theme.mutedForeground,
+		fontSize: 11,
+		fontWeight: "700",
+		letterSpacing: 0.5,
+		textTransform: "uppercase",
+	},
+	appChip: {
+		backgroundColor: theme.accent,
+		borderColor: theme.secondary,
+	},
+	appChipText: {
+		fontStyle: "italic",
+	},
 	routeContent: {
 		gap: 24,
 	},

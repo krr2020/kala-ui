@@ -34,6 +34,10 @@ export interface ComponentGroup {
 	name: string;
 	label: string;
 	title: string;
+	// which package the group's demos are backed by — drives the landing
+	// page segregation between standard (@kala-ui/react-native) and app
+	// (@kala-ui/react-native-app) component segments.
+	source: "library" | "app";
 	overview: () => ReactElement;
 	components: ComponentEntry[];
 }
@@ -43,33 +47,74 @@ export const componentGroups: ComponentGroup[] = [
 		name: "tokens",
 		label: humanizeLabel("tokens"),
 		title: "Tokens & Theming",
+		source: "library",
 		overview: () => <TokensDemo />,
-		components: [{ label: humanizeLabel("theming"), name: "theming", render: () => <TokensDemo /> }],
+		components: [
+			{
+				label: humanizeLabel("theming"),
+				name: "theming",
+				render: () => <TokensDemo />,
+			},
+		],
 	},
 	{
 		name: "basics",
 		label: humanizeLabel("basics"),
 		title: "Basics",
+		source: "library",
 		overview: () => <BasicsDemo />,
 		components: [
-			{ label: humanizeLabel("button"), name: "button", render: () => <ButtonDemo /> },
-			{ label: humanizeLabel("icon"), name: "icon", render: () => <IconDemo /> },
-			{ label: humanizeLabel("text"), name: "text", render: () => <TextDemo /> },
-			{ label: humanizeLabel("heading"), name: "heading", render: () => <HeadingDemo /> },
+			{
+				label: humanizeLabel("button"),
+				name: "button",
+				render: () => <ButtonDemo />,
+			},
+			{
+				label: humanizeLabel("icon"),
+				name: "icon",
+				render: () => <IconDemo />,
+			},
+			{
+				label: humanizeLabel("text"),
+				name: "text",
+				render: () => <TextDemo />,
+			},
+			{
+				label: humanizeLabel("heading"),
+				name: "heading",
+				render: () => <HeadingDemo />,
+			},
 			{ label: humanizeLabel("list"), name: "list" },
-			{ label: humanizeLabel("avatar"), name: "avatar", render: () => <AvatarDemo /> },
+			{
+				label: humanizeLabel("avatar"),
+				name: "avatar",
+				render: () => <AvatarDemo />,
+			},
 			{ label: humanizeLabel("avatar-group"), name: "avatar-group" },
-			{ label: humanizeLabel("badge"), name: "badge", render: () => <BadgeDemo /> },
+			{
+				label: humanizeLabel("badge"),
+				name: "badge",
+				render: () => <BadgeDemo />,
+			},
 			{ label: humanizeLabel("tag"), name: "tag", render: () => <TagDemo /> },
 			{ label: humanizeLabel("tag-input"), name: "tag-input" },
-			{ label: humanizeLabel("card"), name: "card", render: () => <CardDemo /> },
-			{ label: humanizeLabel("separator"), name: "separator", render: () => <SeparatorDemo /> },
+			{
+				label: humanizeLabel("card"),
+				name: "card",
+				render: () => <CardDemo />,
+			},
+			{
+				label: humanizeLabel("separator"),
+				name: "separator",
+				render: () => <SeparatorDemo />,
+			},
 		],
 	},
 	{
 		name: "forms",
 		label: humanizeLabel("forms"),
 		title: "Forms & Inputs",
+		source: "library",
 		overview: () => <FeedbackDemo />,
 		components: [
 			{ label: humanizeLabel("text-input"), name: "text-input" },
@@ -96,6 +141,7 @@ export const componentGroups: ComponentGroup[] = [
 		name: "feedback",
 		label: humanizeLabel("feedback"),
 		title: "Feedback & Status",
+		source: "library",
 		overview: () => <FeedbackDemo />,
 		components: [
 			{ label: humanizeLabel("alert"), name: "alert" },
@@ -117,6 +163,7 @@ export const componentGroups: ComponentGroup[] = [
 		name: "navigation",
 		label: humanizeLabel("navigation"),
 		title: "Navigation & Controls",
+		source: "library",
 		overview: () => <NavigationDemo />,
 		components: [
 			{ label: humanizeLabel("tabs"), name: "tabs" },
@@ -134,6 +181,7 @@ export const componentGroups: ComponentGroup[] = [
 		name: "overlays",
 		label: humanizeLabel("overlays"),
 		title: "Overlays & Menus",
+		source: "library",
 		overview: () => <OverlaysDemo />,
 		components: [
 			{ label: humanizeLabel("dialog"), name: "dialog" },
@@ -145,6 +193,7 @@ export const componentGroups: ComponentGroup[] = [
 		name: "data",
 		label: humanizeLabel("data"),
 		title: "Data Display",
+		source: "app",
 		overview: () => <DataTableDemo />,
 		components: [{ label: humanizeLabel("data-table"), name: "data-table" }],
 	},
@@ -152,6 +201,7 @@ export const componentGroups: ComponentGroup[] = [
 		name: "charts",
 		label: humanizeLabel("charts"),
 		title: "Charts & Metrics",
+		source: "app",
 		overview: () => <ChartsDemo />,
 		components: [
 			{ label: humanizeLabel("metric-card"), name: "metric-card" },
@@ -164,6 +214,7 @@ export const componentGroups: ComponentGroup[] = [
 		name: "app chrome",
 		label: humanizeLabel("app chrome"),
 		title: "App Chrome",
+		source: "app",
 		overview: () => <AppChromeDemo />,
 		components: [{ label: humanizeLabel("app-shell"), name: "app-shell" }],
 	},
