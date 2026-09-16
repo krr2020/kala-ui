@@ -1,9 +1,12 @@
 import { useRef, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { UnistylesRuntime, useUnistyles } from "react-native-unistyles";
 import { componentGroups } from "./demos/components/registry";
 import { demoStyles } from "./demos/stylesheet";
+
+// themes whose backgrounds are dark → light status-bar icons
+const DARK_THEMES = new Set(["dark", "dark-accent", "high-contrast-dark"]);
 
 // Two-row filter navigation: row 1 picks a group, row 2 picks a
 // component inside it. Selecting a group auto-selects its first
@@ -18,6 +21,7 @@ export function RouteShell() {
 	const group = componentGroups[groupIndex] ?? componentGroups[0];
 	const component = group.components[componentIndex] ?? group.components[0];
 	const preview = component.render ?? group.overview;
+	const { theme } = useUnistyles();
 
 	const selectGroup = (index: number): void => {
 		setGroupIndex(index);
@@ -30,7 +34,19 @@ export function RouteShell() {
 	};
 
 	return (
-		<SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+		<SafeAreaView
+			style={{ flex: 1, backgroundColor: theme.background }}
+			edges={["top"]}
+		>
+			<StatusBar
+				translucent
+				backgroundColor="transparent"
+				barStyle={
+					DARK_THEMES.has(UnistylesRuntime.themeName ?? "")
+						? "light-content"
+						: "dark-content"
+				}
+			/>
 			<View style={demoStyles.chipRows}>
 				<ScrollView
 					horizontal
