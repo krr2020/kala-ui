@@ -78,6 +78,8 @@ import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
 
 
 const pkg = require("../../../package.json");
+const { readFileSync } = require("node:fs");
+const { resolve } = require("node:path");
 
 // TLB v14 queries are a11y-aware: deliberately-hidden elements (Icon without
 // a label) and siblings of an accessibilityViewIsModal container (the Sheet
@@ -256,6 +258,27 @@ describe("component markers", () => {
 				expect(seen.has(sig)).toBe(false);
 				seen.set(sig, variant);
 			}
+		});
+
+		it("demo preview keeps raw props with humanized labels and no web-parity variants", () => {
+			const demo = readFileSync(
+				resolve(
+					__dirname,
+					"../../../../../apps/native-playground/src/demos/components/button-demo.tsx",
+				),
+				"utf8",
+			);
+			// props stay the raw API values…
+			expect(demo).toMatch(/variant=\{variant\}/);
+			expect(demo).toMatch(/color=\{color\}/);
+			expect(demo).toMatch(/size=\{size\}/);
+			// …while the visible labels are humanized title case and the
+			// variant list carries only the mobile-first set (no 'link').
+			expect(demo).toMatch(/\{humanizeLabel\(variant\)\}/);
+			expect(demo).toMatch(/\{humanizeLabel\(color\)\}/);
+			expect(demo).toMatch(/\{humanizeLabel\(size\)\}/);
+			expect(demo).not.toMatch(/\{variant\}<\//);
+			expect(demo).not.toMatch(/"link"/);
 		});
 
 		it("size=icon is square", async () => {

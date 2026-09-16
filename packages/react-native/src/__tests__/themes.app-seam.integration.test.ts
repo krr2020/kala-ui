@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 // Package-name import (not a relative path) — exercises the library's
 // package.json exports map exactly the way the playground app consumes it.
@@ -85,26 +85,31 @@ describe("library → app registration seam", () => {
 	});
 
 	it("theme names match the names the app's theme picker renders", () => {
-		const appSource = readFileSync(
-			resolve(PLAYGROUND_DIR, "src/App.tsx"),
+		const shellSource = readFileSync(
+			resolve(PLAYGROUND_DIR, "src/route-shell.tsx"),
 			"utf-8",
 		);
-		expect(appSource).toContain("UnistylesRuntime.setTheme");
-		expect(appSource).toContain('from "@kala-ui/react-native/themes"');
+		expect(shellSource).toContain("UnistylesRuntime.setTheme");
+		expect(shellSource).toContain('from "@kala-ui/react-native/themes"');
 	});
 
 	it("app components section consumes the library's component exports", () => {
 		// The playground is the living-docs consumer: if it stops importing the
 		// components through the root entry, the exports map regressed.
-		const appSource = readFileSync(
-			resolve(PLAYGROUND_DIR, "src/App.tsx"),
-			"utf-8",
-		);
-		expect(appSource).toContain('from "@kala-ui/react-native"');
+		const demosDir = resolve(PLAYGROUND_DIR, "src/demos");
+		const demosSource = readdirSync(demosDir, { recursive: true })
+			.map(String)
+			.filter(
+				(file) =>
+					file.endsWith(".tsx") && !file.startsWith("components/registry"),
+			)
+			.map((file) => readFileSync(resolve(demosDir, file), "utf-8"))
+			.join("\n");
+		expect(demosSource).toContain('from "@kala-ui/react-native"');
 		for (const component of ["Button", "Icon", "Sheet"]) {
-			expect(appSource).toContain(`<${component}`);
+			expect(demosSource).toContain(`<${component}`);
 		}
-		expect(appSource).toContain("k-demo-buttons");
+		expect(demosSource).toContain("k-demo-button");
 	});
 
 	it("playground pins lucide-react-native via the catalog", () => {
