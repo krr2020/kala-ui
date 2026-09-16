@@ -1,5 +1,6 @@
 import { Avatar } from "@kala-ui/react-native";
 import { View } from "react-native";
+import { useUnistyles } from "react-native-unistyles";
 import { DemoBlock } from "../demo-block";
 import { demoStyles } from "../stylesheet";
 
@@ -8,6 +9,7 @@ const SHAPES = ["circle", "rounded", "square"] as const;
 const STATUSES = ["none", "online", "offline"] as const;
 
 export function AvatarDemo() {
+	const { theme } = useUnistyles();
 	return (
 		<View testID="k-demo-avatars" style={demoStyles.routeContent}>
 			<DemoBlock label="sizes (initials fallback)">
@@ -44,6 +46,27 @@ export function AvatarDemo() {
 						name="Katherine Johnson"
 						size="lg"
 						source={{ uri: "https://invalid.example/avatar.png" }}
+					/>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="slot overrides (styles)">
+				<View style={demoStyles.componentRow}>
+					<Avatar name="Ada Lovelace" size="lg" status="online" />
+					<Avatar
+						name="Ada Lovelace"
+						size="lg"
+						status="online"
+						styles={{
+							fallback: { backgroundColor: theme.secondary },
+							status: { width: 16, height: 16 },
+						}}
+					/>
+					<Avatar
+						name="Ada Lovelace"
+						size="lg"
+						styles={{
+							root: { borderWidth: 2, borderColor: theme.primary },
+						}}
 					/>
 				</View>
 			</DemoBlock>

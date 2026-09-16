@@ -12,7 +12,7 @@ import { Text, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { DemoBlock } from "../demo-block";
 import { demoStyles } from "../stylesheet";
-import { humanizeLabel } from "./registry";
+import { humanizeLabel } from "./label";
 
 const VARIANTS = ["solid", "outline", "ghost", "subtle"] as const;
 const COLORS = ["primary", "secondary", "destructive", "muted"] as const;

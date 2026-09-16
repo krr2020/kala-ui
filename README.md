@@ -10,14 +10,15 @@ React Server Components ready.
 
 ## Packages
 
-Three packages split along architectural lines — `react-app` → `react` →
-`react-hooks`, never the other way around:
+Web packages split along architectural lines — `react-app` → `react` →
+`react-hooks`, never the other way around; the native package stands apart:
 
 | Package | What's in it |
 | --- | --- |
 | **[@kala-ui/react](./packages/react)** | ~90 standard UI components: primitives, form controls, overlays and menus — buttons, dialogs, inputs, tables, calendars. The design-system vocabulary. |
 | **[@kala-ui/react-app](./packages/react-app)** | 15 app-level composites built on the core primitives: `AppShell`, `Header`, `Sidebar`, `DataTable`, ApexCharts `charts`, drag-and-drop, dashboard and auth widgets. |
 | **[@kala-ui/react-hooks](./packages/react-hooks)** | 37 utility hooks: state, debounce/timing, DOM observers, browser APIs, SSR helpers. |
+| **[@kala-ui/react-native](./packages/react-native)** | React Native + Expo arm: Unistyles themes transcribed from the web token source of truth, with the component vocabulary rebuilt natively. |
 
 ## Installation
 

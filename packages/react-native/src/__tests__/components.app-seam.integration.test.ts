@@ -202,6 +202,16 @@ describe("component app seam", () => {
 		}
 	});
 
+	it("demo modules never import from the registry (no require cycles)", () => {
+		for (const file of files) {
+			if (file.endsWith("registry.tsx")) continue;
+			expect(
+				readFileSync(file, "utf8"),
+				`${file} imports from ./registry`,
+			).not.toMatch(/from "\.\/registry"/);
+		}
+	});
+
 	it("registry declares a package source on every group — app groups segregated", () => {
 		const registry = readFileSync(
 			`${APP_PATH.replace("App.tsx", "demos/components/registry.tsx")}`,
