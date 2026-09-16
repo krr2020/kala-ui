@@ -10,7 +10,7 @@ import { motion, tokens } from "../../tokens";
 import { Accordion } from "../accordion";
 import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
-import { Avatar, STATUS_ONLINE_HUE } from "../avatar";
+import { Avatar } from "../avatar";
 import { AvatarGroup } from "../avatar-group";
 import { Badge } from "../badge";
 import { Banner } from "../banner";
@@ -707,8 +707,11 @@ describe("component markers", () => {
 			const screen = await render(<Avatar name="A" shape="circle" />);
 			for (const shape of shapes) {
 				await screen.rerender(<Avatar name="A" shape={shape} />);
+				// the rounded clip lives on the media layer, not the root
 				seen.add(
-					Number(flatStyle(screen.getByTestId("k-avatar")).borderRadius),
+					Number(
+						flatStyle(screen.getByTestId("k-avatar-fallback")).borderRadius,
+					),
 				);
 			}
 			expect(seen.size).toBe(shapes.length);
@@ -732,11 +735,74 @@ describe("component markers", () => {
 			);
 		});
 
-		it("online dot uses the fixed transcribed hue (dark themes define no success)", async () => {
+		it("online dot uses the active theme's success token", async () => {
+			const { themes } = require("../../themes");
 			const screen = await render(<Avatar name="A" status="online" />);
 			const dot = flatStyle(screen.getByTestId("k-avatar-status"));
-			expect(String(dot.backgroundColor)).toBe(STATUS_ONLINE_HUE);
-			expect(String(dot.borderColor).startsWith("#")).toBe(true);
+			expect(String(dot.backgroundColor)).toBe(themes.light.success);
+			expect(String(dot.borderColor)).toBe(themes.light.background);
+		});
+
+		it("online dot follows a theme switch to the dark success token", async () => {
+			const unistyles = require("react-native-unistyles");
+			const { themes } = require("../../themes");
+			const spy = jest
+				.spyOn(unistyles, "useUnistyles")
+				.mockReturnValue({ theme: themes.dark });
+			try {
+				// a silently-bound import would leave the light theme active and
+				// fail here — light.success != dark.success, so this arm can never
+				// pass against the wrong theme
+				expect(unistyles.useUnistyles().theme).toBe(themes.dark);
+				const screen = await render(<Avatar name="A" status="online" />);
+				const dot = flatStyle(screen.getByTestId("k-avatar-status"));
+				expect(String(dot.backgroundColor)).toBe(themes.dark.success);
+				expect(String(dot.backgroundColor)).not.toBe(themes.light.success);
+				expect(String(dot.borderColor)).toBe(themes.dark.background);
+			} finally {
+				spy.mockRestore();
+			}
+		});
+
+		it("status dot is not clipped by the avatar's rounded bounds", async () => {
+			const shapes = ["circle", "rounded", "square"] as const;
+			const screen = await render(
+				<Avatar name="A" shape="circle" status="online" />,
+			);
+			for (const shape of shapes) {
+				await screen.rerender(
+					<Avatar name="A" shape={shape} status="online" />,
+				);
+				// the rounded clip lives on the media layer, never the root —
+				// a root-level clip shears off the corner status dot
+				const root = flatStyle(screen.getByTestId("k-avatar"));
+				expect(root.overflow).not.toBe("hidden");
+				const dot = flatStyle(screen.getByTestId("k-avatar-status"));
+				expect(Number(dot.right)).toBe(0);
+				expect(Number(dot.bottom)).toBe(0);
+			}
+		});
+
+		it("status ring weight is 1 at xs/sm and 2 at md/lg/xl", async () => {
+			const ring = { xs: 1, sm: 1, md: 2, lg: 2, xl: 2 } as const;
+			const screen = await render(
+				<Avatar name="A" size="xs" status="online" />,
+			);
+			for (const size of Object.keys(ring) as Array<keyof typeof ring>) {
+				await screen.rerender(
+					<Avatar name="A" size={size} status="online" />,
+				);
+				expect(
+					Number(
+						flatStyle(screen.getByTestId("k-avatar-status")).borderWidth,
+					),
+				).toBe(ring[size]);
+			}
+		});
+
+		it("empty name falls back to an en-dash placeholder", async () => {
+			const screen = await render(<Avatar />);
+			expect(screen.getByText("–")).toBeTruthy();
 		});
 
 		it("Avatar without source renders uppercase initials on a themed bg", async () => {

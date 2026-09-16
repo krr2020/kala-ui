@@ -1,62 +1,22 @@
 /**
- * Avatar: single-component collapse of the web Root/Image/Fallback trio —
- * Radix's load-state machine becomes: render the image when a source is
- * given and has not errored, else fallback initials on a themed bg.
- * Status hues have no globals.css token (the dark blocks define no
- * success/warning at all), so online uses the STATUS_ONLINE_HUE constant
- * below and offline falls back to mutedForeground.
+ * Avatar: renders the image when a source is given and has not errored,
+ * else themed-initials fallback. The rounded clip lives on the media
+ * layer — a root-level clip would shear off the corner status dot.
  */
-
 import type { ReactElement } from "react";
 import { useState } from "react";
 import { Image, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
-import type { AvatarProps, AvatarShape, AvatarSize } from "./avatar.types";
-
-const BOX: Record<AvatarSize, number> = {
-	xs: 24,
-	sm: 32,
-	md: 40,
-	lg: 48,
-	xl: 64,
-};
-const DOT: Record<AvatarSize, number> = {
-	xs: 6,
-	sm: 8,
-	md: 10,
-	lg: 12,
-	xl: 16,
-};
-const FALLBACK_FONT: Record<AvatarSize, number> = {
-	xs: 12,
-	sm: 14,
-	md: 14,
-	lg: 16,
-	xl: 20,
-};
-const RADIUS: Record<AvatarShape, number> = {
-	circle: 999,
-	rounded: 8,
-	square: 0,
-};
-
-/**
- * Online status hue, transcribed from the light theme's --success. The dark
- * theme blocks in globals.css define no success/warning tokens, so a live
- * theme.success lookup would be undefined there — the value is pinned here.
- */
-export const STATUS_ONLINE_HUE = "#21c45d";
-
-function initials(name?: string): string {
-	const words = (name ?? "").trim().split(/\s+/).filter(Boolean);
-	if (words.length === 0) return "–";
-	return words
-		.slice(0, 2)
-		.map((word) => word[0])
-		.join("")
-		.toUpperCase();
-}
+import {
+	BOX,
+	DOT,
+	FALLBACK_FONT,
+	RADIUS,
+	RING,
+	initialsFor,
+} from "./avatar.styles";
+import type { AvatarProps } from "./avatar.types";
 
 export function Avatar({
 	name,
@@ -70,7 +30,7 @@ export function Avatar({
 }: AvatarProps): ReactElement {
 	const { theme } = useUnistyles();
 	const [failed, setFailed] = useState(false);
-	const box = BOX[size];
+	const radius = RADIUS[shape];
 	const showImage = source !== undefined && !failed;
 
 	return (
@@ -81,14 +41,7 @@ export function Avatar({
 			accessibilityRole="image"
 			accessibilityLabel={name}
 			style={[
-				{
-					width: box,
-					height: box,
-					borderRadius: RADIUS[shape],
-					alignItems: "center",
-					justifyContent: "center",
-					overflow: "hidden",
-				},
+				{ width: BOX[size], height: BOX[size] },
 				applySlot(applySlot({}, style), styles?.root),
 			]}
 		>
@@ -101,7 +54,7 @@ export function Avatar({
 						{
 							width: "100%",
 							height: "100%",
-							borderRadius: RADIUS[shape],
+							borderRadius: radius,
 						},
 						styles?.image,
 					)}
@@ -113,7 +66,7 @@ export function Avatar({
 						{
 							width: "100%",
 							height: "100%",
-							borderRadius: RADIUS[shape],
+							borderRadius: radius,
 							alignItems: "center",
 							justifyContent: "center",
 							backgroundColor: theme.primary,
@@ -128,7 +81,7 @@ export function Avatar({
 							fontWeight: "500",
 						}}
 					>
-						{initials(name)}
+						{initialsFor(name)}
 					</RNText>
 				</View>
 			)}
@@ -144,8 +97,8 @@ export function Avatar({
 							height: DOT[size],
 							borderRadius: 999,
 							backgroundColor:
-								status === "online" ? STATUS_ONLINE_HUE : theme.mutedForeground,
-							borderWidth: 2,
+								status === "online" ? theme.success : theme.mutedForeground,
+							borderWidth: RING[size],
 							borderColor: theme.background,
 						},
 						styles?.status,

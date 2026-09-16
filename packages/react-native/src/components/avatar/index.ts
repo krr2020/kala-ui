@@ -1,4 +1,4 @@
-export { Avatar, STATUS_ONLINE_HUE } from "./avatar";
+export { Avatar } from "./avatar";
 export type {
 	AvatarProps,
 	AvatarShape,

@@ -31,6 +31,13 @@ export function AvatarDemo() {
 					))}
 				</View>
 			</DemoBlock>
+			<DemoBlock label="status across sizes (online)">
+				<View style={demoStyles.componentRow}>
+					{SIZES.map((size) => (
+						<Avatar key={size} name="Alan Turing" size={size} status="online" />
+					))}
+				</View>
+			</DemoBlock>
 			<DemoBlock label="image with fallback">
 				<View style={demoStyles.componentRow}>
 					<Avatar

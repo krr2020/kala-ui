@@ -8,8 +8,8 @@ import type {
 export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type AvatarShape = "circle" | "rounded" | "square";
 /**
- * Web status hues have no themed token in globals.css; native maps
- * online→theme.success and offline→theme.mutedForeground.
+ * online renders a success-hued corner dot, offline a muted dot;
+ * none hides it entirely.
  */
 export type AvatarStatus = "none" | "online" | "offline";
 

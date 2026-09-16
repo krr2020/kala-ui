@@ -92,6 +92,12 @@ describe("AvatarGroup", () => {
 		const ringStyle = flatStyle(ring);
 		expect(Number(ringStyle.borderWidth)).toBeGreaterThan(0);
 		expect(ringStyle.borderColor).toBeTruthy();
+		// the overlap clip belongs to the group's ring wrapper, not to the
+		// Avatar root (Avatar's root must stay unclipped so its status dot
+		// renders in full)
+		expect(ringStyle.overflow).toBe("hidden");
+		const memberRoot = screen.getAllByTestId("k-avatar")[1];
+		expect(flatStyle(memberRoot).overflow).not.toBe("hidden");
 	});
 
 	it("sizes map through the Avatar scale with distinct dimensions", async () => {
