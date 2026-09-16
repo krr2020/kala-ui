@@ -298,6 +298,40 @@ describe("component app seam", () => {
 		).toHaveLength(1);
 	});
 
+	it("header rows share one chip design and a pinned vertical rhythm", () => {
+		const stylesheet = readFileSync(
+			`${APP_PATH.replace("App.tsx", "demos/stylesheet.ts")}`,
+			"utf8",
+		);
+		const block = (name: string): string => {
+			const start = stylesheet.indexOf(`\t${name}: {`);
+			expect(start, `${name} block exists`).toBeGreaterThan(-1);
+			const end = stylesheet.indexOf("\t},", start);
+			return stylesheet.slice(start, end);
+		};
+		const chipRows = block("chipRows");
+		expect(chipRows).toMatch(/paddingTop: (?:8|1[0-9]|2[0-9]|3[0-9])/);
+		// vertical rhythm: theme strip bottom pad + 1px divider + group-row
+		// top pad lands in a comfortable 16–40dp band.
+		const themeRow = block("themeRow");
+		const pad = (src: string, key: string): number =>
+			Number(src.match(new RegExp(`${key}: (\\d+)`))?.[1] ?? 0);
+		const gap =
+			pad(themeRow, "paddingBottom") + 1 + pad(chipRows, "paddingTop");
+		expect(gap).toBeGreaterThanOrEqual(16);
+		expect(gap).toBeLessThanOrEqual(40);
+		// group chips and filter chips are the same shape: identical style
+		// bodies modulo the key name; tier signal lives in text weight only.
+		const groupChip = block("groupChip");
+		const filterChip = block("filterChip");
+		expect(groupChip).not.toMatch(/borderColor: theme\.foreground/);
+		expect(
+			groupChip.replace("groupChip", ""),
+		).toBe(filterChip.replace("filterChip", ""));
+		expect(groupChip).not.toMatch(/padding/);
+		expect(filterChip).not.toMatch(/padding/);
+	});
+
 	it("humanizeLabel formats chip display text from raw names", async () => {
 		const { humanizeLabel } = (await import(
 			`${APP_PATH.replace("App.tsx", "demos/components/label.ts")}`
