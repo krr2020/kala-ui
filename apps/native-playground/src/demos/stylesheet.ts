@@ -7,7 +7,7 @@ export const demoStyles = StyleSheet.create((theme) => ({
 	screen: {
 		flex: 1,
 		backgroundColor: theme.background,
-		paddingTop: 64,
+		paddingTop: 8,
 		paddingBottom: 32,
 		paddingHorizontal: 16,
 		gap: 16,
@@ -69,6 +69,22 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		color: theme.foreground,
 		fontSize: 18,
 		fontWeight: "600",
+	},
+	block: {
+		gap: 8,
+	},
+	blockLabel: {
+		color: theme.mutedForeground,
+		fontSize: 12,
+		fontWeight: "600",
+		letterSpacing: 0.5,
+		textTransform: "uppercase",
+	},
+	routeBar: {
+		flexGrow: 0,
+	},
+	routeContent: {
+		gap: 24,
 	},
 	componentRow: {
 		flexDirection: "row",

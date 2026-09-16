@@ -4,7 +4,7 @@ import {
 	MetricCard,
 	Sparkline,
 } from "@kala-ui/react-native-app";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { demoStyles } from "./stylesheet";
 
 const SESSIONS = [

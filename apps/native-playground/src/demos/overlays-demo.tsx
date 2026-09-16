@@ -18,6 +18,7 @@ import {
 import { Check } from "lucide-react-native";
 import { useState } from "react";
 import { View } from "react-native";
+import { DemoBlock } from "./demo-block";
 import { demoStyles } from "./stylesheet";
 
 export function OverlaysDemo() {
@@ -37,102 +38,136 @@ export function OverlaysDemo() {
 	});
 	return (
 		<>
-			<View testID="k-demo-accordion">
-				<Accordion
-					type="multiple"
-					value={faqOpen}
-					onValueChange={setFaqOpen}
-					variant="bordered"
-				>
-					<Accordion.Item value="shipping">
-						<Accordion.Trigger>shipping</Accordion.Trigger>
-						<Accordion.Content>
+			<DemoBlock label="accordion">
+				<View testID="k-demo-accordion">
+					<Accordion
+						type="multiple"
+						value={faqOpen}
+						onValueChange={setFaqOpen}
+						variant="bordered"
+					>
+						<Accordion.Item value="shipping">
+							<Accordion.Trigger>shipping</Accordion.Trigger>
+							<Accordion.Content>
+								<KText size="sm" color="muted">
+									free over $50, arrives in 3-5 days
+								</KText>
+							</Accordion.Content>
+						</Accordion.Item>
+						<Accordion.Item value="returns">
+							<Accordion.Trigger>returns</Accordion.Trigger>
+							<Accordion.Content>
+								<KText size="sm" color="muted">
+									30-day window, no questions asked
+								</KText>
+							</Accordion.Content>
+						</Accordion.Item>
+					</Accordion>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="collapsible">
+				<View style={demoStyles.componentRow} testID="k-demo-collapsible">
+					<Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
+						<Collapsible.Trigger>advanced filters</Collapsible.Trigger>
+						<Collapsible.Content>
 							<KText size="sm" color="muted">
-								free over $50, arrives in 3-5 days
+								only show verified sellers
 							</KText>
-						</Accordion.Content>
-					</Accordion.Item>
-					<Accordion.Item value="returns">
-						<Accordion.Trigger>returns</Accordion.Trigger>
-						<Accordion.Content>
-							<KText size="sm" color="muted">
-								30-day window, no questions asked
-							</KText>
-						</Accordion.Content>
-					</Accordion.Item>
-				</Accordion>
-			</View>
-			<View style={demoStyles.componentRow} testID="k-demo-collapsible">
-				<Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
-					<Collapsible.Trigger>advanced filters</Collapsible.Trigger>
-					<Collapsible.Content>
+						</Collapsible.Content>
+					</Collapsible>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="dialogs">
+				<View style={demoStyles.componentRow} testID="k-demo-dialog">
+					<Button
+						onPress={() => setDialogOpen(true)}
+						accessibilityLabel="open demo dialog"
+					>
+						open dialog
+					</Button>
+					<Button
+						variant="outline"
+						color="destructive"
+						onPress={() => setConfirmOpen(true)}
+						accessibilityLabel="open confirm dialog"
+					>
+						delete account
+					</Button>
+					<Button
+						onPress={() => setSheetOpen(true)}
+						accessibilityLabel="open demo sheet"
+					>
+						<Icon icon={Check} size="xs" color="primaryForeground" />
+						open sheet
+					</Button>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="dropdown menu">
+				<View style={demoStyles.componentRow} testID="k-demo-dropdown-menu">
+					<DropdownMenu
+						triggerLabel="actions"
+						items={[
+							{ type: "label", key: "l", label: "Row actions" },
+							{
+								type: "checkbox",
+								key: "sync",
+								label: "Auto-sync",
+								checked: autoSync,
+								onCheckedChange: setAutoSync,
+							},
+							{ key: "archive", label: "Archive" },
+							{ key: "delete", label: "Delete", destructive: true },
+						]}
+					/>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="context menu">
+				<View style={demoStyles.componentRow} testID="k-demo-context-menu">
+					<ContextMenu
+						items={[
+							{
+								key: "copy",
+								label: "Copy",
+								onSelect: () => setLastAction("copy"),
+							},
+							{
+								key: "remove",
+								label: "Remove",
+								destructive: true,
+								onSelect: () => setLastAction("remove"),
+							},
+						]}
+					>
 						<KText size="sm" color="muted">
-							only show verified sellers
+							long-press me — last action: {lastAction}
 						</KText>
-					</Collapsible.Content>
-				</Collapsible>
-			</View>
-			<View style={demoStyles.componentRow} testID="k-demo-dialog">
-				<Button
-					onPress={() => setDialogOpen(true)}
-					accessibilityLabel="open demo dialog"
-				>
-					open dialog
-				</Button>
-				<Button
-					variant="outline"
-					color="destructive"
-					onPress={() => setConfirmOpen(true)}
-					accessibilityLabel="open confirm dialog"
-				>
-					delete account
-				</Button>
-				<Button
-					onPress={() => setSheetOpen(true)}
-					accessibilityLabel="open demo sheet"
-				>
-					<Icon icon={Check} size="xs" color="primaryForeground" />
-					open sheet
-				</Button>
-			</View>
-			<View style={demoStyles.componentRow} testID="k-demo-dropdown-menu">
-				<DropdownMenu
-					triggerLabel="actions"
-					items={[
-						{ type: "label", key: "l", label: "Row actions" },
-						{
-							type: "checkbox",
-							key: "sync",
-							label: "Auto-sync",
-							checked: autoSync,
-							onCheckedChange: setAutoSync,
-						},
-						{ key: "archive", label: "Archive" },
-						{ key: "delete", label: "Delete", destructive: true },
-					]}
-				/>
-			</View>
-			<View style={demoStyles.componentRow} testID="k-demo-context-menu">
-				<ContextMenu
-					items={[
-						{
-							key: "copy",
-							label: "Copy",
-							onSelect: () => setLastAction("copy"),
-						},
-						{
-							key: "remove",
-							label: "Remove",
-							destructive: true,
-							onSelect: () => setLastAction("remove"),
-						},
-					]}
-				>
-					<KText size="sm" color="muted">
-						long-press me — last action: {lastAction}
-					</KText>
-				</ContextMenu>
-			</View>
+					</ContextMenu>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="calendar">
+				<View style={demoStyles.componentRow} testID="k-demo-calendar">
+					<Calendar />
+					<DateRangePicker placeholder="pick a range" />
+				</View>
+			</DemoBlock>
+			<DemoBlock label="date picker">
+				<View style={demoStyles.componentRow} testID="k-demo-date-picker">
+					<DatePicker
+						value={stayDate}
+						onValueChange={setStayDate}
+						placeholder="pick a stay date"
+					/>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="time picker">
+				<View style={demoStyles.componentRow} testID="k-demo-time-picker">
+					<TimePicker
+						value={remindAt}
+						onValueChange={setRemindAt}
+						hourCycle={12}
+					/>
+				</View>
+			</DemoBlock>
 			<Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}>
 				<Sheet.Body>
 					<KText size="sm" color="muted">
@@ -184,24 +219,6 @@ export function OverlaysDemo() {
 					</AlertDialog.Action>
 				</AlertDialog.Footer>
 			</AlertDialog>
-			<View style={demoStyles.componentRow} testID="k-demo-calendar">
-				<Calendar />
-				<DateRangePicker placeholder="pick a range" />
-			</View>
-			<View style={demoStyles.componentRow} testID="k-demo-date-picker">
-				<DatePicker
-					value={stayDate}
-					onValueChange={setStayDate}
-					placeholder="pick a stay date"
-				/>
-			</View>
-			<View style={demoStyles.componentRow} testID="k-demo-time-picker">
-				<TimePicker
-					value={remindAt}
-					onValueChange={setRemindAt}
-					hourCycle={12}
-				/>
-			</View>
 		</>
 	);
 }

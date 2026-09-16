@@ -191,6 +191,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="sync"': 1,
 					'accessibilityLabel="volume"': 1,
 					"accessibilityLabel={`activate ${name} theme`}": 1,
+						"accessibilityLabel={`open ${name} demo`}": 1,
 					'testID="k-demo-accordion"': 1,
 					'testID="k-demo-avatars"': 1,
 					'testID="k-demo-badges"': 1,
