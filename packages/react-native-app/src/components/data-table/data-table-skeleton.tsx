@@ -9,17 +9,13 @@ import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import type { DataTableSkeletonProps } from "./data-table.types";
 
-interface ThemeShape {
-	border: string;
-}
-
 export function DataTableSkeleton({
 	rowCount = 4,
 	style,
 	styles,
 	testID = "k-data-table",
 }: DataTableSkeletonProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 	return (
 		<View
 			testID={testID}

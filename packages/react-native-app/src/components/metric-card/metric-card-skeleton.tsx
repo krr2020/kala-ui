@@ -9,18 +9,12 @@ import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import type { MetricCardSkeletonProps } from "./metric-card.types";
 
-interface ThemeShape {
-	border: string;
-	card: string;
-	muted: string;
-}
-
 export function MetricCardSkeleton({
 	style,
 	styles,
 	testID = "k-metric-card",
 }: MetricCardSkeletonProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 	return (
 		<View
 			testID={testID}

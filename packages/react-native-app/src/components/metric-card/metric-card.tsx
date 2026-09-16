@@ -4,21 +4,13 @@
  * text on-theme while staying readable over both themes. Numbers are
  * formatted en-US so the value reads the same on every device locale.
  */
+
+import type { ThemeToken } from "@kala-ui/react-native";
 import type { ReactElement } from "react";
 import { Text, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import type { MetricCardProps, MetricTone } from "./metric-card.types";
 import { MetricCardSkeleton } from "./metric-card-skeleton";
-
-interface ThemeShape {
-	[key: string]: string | number;
-	foreground: string;
-	mutedForeground: string;
-	success: string;
-	destructive: string;
-	border: string;
-	card: string;
-}
 
 const TONE_BG: Partial<Record<MetricTone, string>> = {
 	primary: "primary",
@@ -42,7 +34,7 @@ export function MetricCard({
 	styles,
 	testID = "k-metric-card",
 }: MetricCardProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 
 	if (isLoading) {
 		return <MetricCardSkeleton style={style} styles={styles} testID={testID} />;
@@ -80,7 +72,9 @@ export function MetricCard({
 				testID="k-metric-card-accent"
 				style={{
 					width: 4,
-					backgroundColor: String(theme[TONE_BG[tone] ?? "muted"]),
+					backgroundColor: String(
+						theme[(TONE_BG[tone] ?? "muted") as ThemeToken],
+					),
 				}}
 			/>
 			<View style={{ flex: 1, padding: 16, gap: 6 }}>

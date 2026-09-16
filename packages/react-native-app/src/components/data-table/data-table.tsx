@@ -9,13 +9,6 @@ import { useUnistyles } from "react-native-unistyles";
 import type { DataTableColumn, DataTableProps } from "./data-table.types";
 import { DataTableSkeleton } from "./data-table-skeleton";
 
-interface ThemeShape {
-	background: string;
-	foreground: string;
-	mutedForeground: string;
-	border: string;
-}
-
 export function DataTable<T>({
 	columns,
 	rows,
@@ -27,7 +20,7 @@ export function DataTable<T>({
 	styles,
 	testID = "k-data-table",
 }: DataTableProps<T>): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 
 	if (isLoading) {
 		return <DataTableSkeleton style={style} styles={styles} testID={testID} />;

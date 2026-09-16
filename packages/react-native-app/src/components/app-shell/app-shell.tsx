@@ -8,10 +8,6 @@ import { ScrollView, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import type { AppShellProps } from "./app-shell.types";
 
-interface KalaThemeShape {
-	background: string;
-}
-
 export function AppShell({
 	children,
 	header,
@@ -21,9 +17,7 @@ export function AppShell({
 	styles,
 	testID = "k-app-shell",
 }: AppShellProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as {
-		theme: KalaThemeShape;
-	};
+	const { theme } = useUnistyles();
 
 	const content = scrollable ? (
 		<ScrollView

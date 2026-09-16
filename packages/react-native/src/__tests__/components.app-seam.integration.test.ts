@@ -358,6 +358,24 @@ describe("component app seam", () => {
 		expect(filterChip).not.toMatch(/padding/);
 	});
 
+	it("end-of-scroll padding extends the scroll content, not the frame", () => {
+		const stylesheet = readFileSync(
+			`${APP_PATH.replace("App.tsx", "demos/stylesheet.ts")}`,
+			"utf8",
+		);
+		const block = (name: string): string => {
+			const start = stylesheet.indexOf(`\t${name}: {`);
+			expect(start, `${name} block exists`).toBeGreaterThan(-1);
+			const end = stylesheet.indexOf("\t},", start);
+			return stylesheet.slice(start, end);
+		};
+		// padding on the ScrollView frame clips the viewport without adding
+		// scrollable space — the breathing room must live in routeContent
+		// (applied as contentContainerStyle)
+		expect(block("routeContent")).toMatch(/paddingBottom: 72/);
+		expect(block("screen")).not.toMatch(/paddingBottom/);
+	});
+
 	it("humanizeLabel formats chip display text from raw names", async () => {
 		const { humanizeLabel } = (await import(
 			`${APP_PATH.replace("App.tsx", "demos/components/label.ts")}`

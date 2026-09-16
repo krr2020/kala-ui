@@ -9,14 +9,6 @@ import { Pressable, Text, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import type { TabBarItemData, TabBarProps } from "./tab-bar.types";
 
-interface KalaThemeShape {
-	background: string;
-	foreground: string;
-	mutedForeground: string;
-	border: string;
-	primary: string;
-}
-
 const HEIGHT = 56;
 const ICON = 22;
 
@@ -29,9 +21,7 @@ function TabBarItem({
 	selected: boolean;
 	onPress: () => void;
 }) {
-	const { theme } = useUnistyles() as unknown as {
-		theme: KalaThemeShape;
-	};
+	const { theme } = useUnistyles();
 	const Icon = item.icon;
 	const tint = selected ? theme.primary : theme.mutedForeground;
 	return (
@@ -70,9 +60,7 @@ export function TabBar({
 	styles,
 	testID = "k-tab-bar",
 }: TabBarProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as {
-		theme: KalaThemeShape;
-	};
+	const { theme } = useUnistyles();
 
 	return (
 		<View

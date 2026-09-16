@@ -8,11 +8,7 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		flex: 1,
 		backgroundColor: theme.background,
 		paddingTop: 8,
-		// generous end-of-scroll breathing room so the last block of every
-		// preview fully clears the gesture nav bar
-		paddingBottom: 72,
 		paddingHorizontal: 16,
-		gap: 16,
 	},
 	title: {
 		color: theme.foreground,
@@ -164,6 +160,11 @@ export const demoStyles = StyleSheet.create((theme) => ({
 	},
 	routeContent: {
 		gap: 24,
+		// end-of-scroll breathing room lives on the scroll CONTENT — the
+		// shell's SafeAreaView already consumes the gesture-bar inset, and
+		// padding on the ScrollView frame would clip the viewport without
+		// adding scrollable space
+		paddingBottom: 72,
 	},
 	componentRow: {
 		flexDirection: "row",

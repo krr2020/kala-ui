@@ -334,7 +334,7 @@ describe("component markers", () => {
 				),
 				"utf8",
 			);
-			expect(stylesheet).toMatch(/paddingBottom: 7[0-9]/);
+			expect(stylesheet).toMatch(/routeContent: \{[\s\S]*?paddingBottom: 7[0-9]/);
 		});
 
 		it("size=icon is square", async () => {

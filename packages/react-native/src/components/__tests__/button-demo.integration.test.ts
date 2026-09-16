@@ -73,6 +73,12 @@ describe("button demo ↔ library seam", () => {
 			),
 			"utf8",
 		);
-		expect(stylesheet).toMatch(/paddingBottom: 7[0-9]/);
+		// end-of-scroll padding must extend the scroll CONTENT, not clip
+		// the ScrollView frame — pin it inside routeContent and forbid it
+		// on the screen frame
+		expect(stylesheet).toMatch(/routeContent: \{[\s\S]*?paddingBottom: 7[0-9]/);
+		expect(stylesheet).not.toMatch(
+			/screen: \{[\s\S]*?\},[\s\S]*?paddingBottom: 7[0-9]/,
+		);
 	});
 });

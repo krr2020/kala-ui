@@ -10,13 +10,6 @@ import { useUnistyles } from "react-native-unistyles";
 import type { HeaderProps } from "./header.types";
 import { HeaderSkeleton } from "./header-skeleton";
 
-interface KalaThemeShape {
-	background: string;
-	foreground: string;
-	mutedForeground: string;
-	border: string;
-}
-
 const HEIGHT = 56;
 const ICON = 22;
 
@@ -30,9 +23,7 @@ export function Header({
 	styles,
 	testID = "k-header",
 }: HeaderProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as {
-		theme: KalaThemeShape;
-	};
+	const { theme } = useUnistyles();
 
 	if (isLoading) {
 		return <HeaderSkeleton style={style} styles={styles} testID={testID} />;
