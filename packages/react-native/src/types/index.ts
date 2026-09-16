@@ -12,6 +12,63 @@ export type ThemeName =
 /**
  * A Unistyles theme: flat token map in camelCase (`primaryForeground`),
  * colors as hex strings, alphas/spreads as numbers. Token parity with the
- * web `--token` names is enforced by the parity test.
+ * web `--token` names is enforced by the parity test. Every key is typed
+ * so `satisfies KalaTheme` in the theme definitions catches a missing,
+ * extra, or mis-typed token at compile time.
  */
-export type KalaTheme = Record<string, string | number>;
+export interface KalaTheme {
+	background: string;
+	foreground: string;
+	card: string;
+	cardForeground: string;
+	popover: string;
+	popoverForeground: string;
+	primary: string;
+	primaryForeground: string;
+	secondary: string;
+	secondaryForeground: string;
+	muted: string;
+	mutedForeground: string;
+	accent: string;
+	accentForeground: string;
+	destructive: string;
+	destructiveForeground: string;
+	border: string;
+	borderStrong: string;
+	borderAlpha: number;
+	cardBorderAlpha: number;
+	input: string;
+	ring: string;
+	ringOffsetColor: string;
+	overlay: string;
+	overlayAlpha: number;
+	shadowColor: string;
+	shadowAlpha: number;
+	shadowSpread: number;
+	separator: string;
+	success: string;
+	successForeground: string;
+	warning: string;
+	warningForeground: string;
+	error: string;
+	errorForeground: string;
+	info: string;
+	infoForeground: string;
+}
+
+/** Any theme token key. */
+export type ThemeToken = keyof KalaTheme;
+
+/**
+ * Ramp bases: colors that have a paired `*Foreground` token. Components
+ * that tint by a color prop index the theme with `` `${RampBase}Foreground` ``.
+ */
+export type RampBase =
+	| "primary"
+	| "secondary"
+	| "accent"
+	| "destructive"
+	| "success"
+	| "warning"
+	| "error"
+	| "info";

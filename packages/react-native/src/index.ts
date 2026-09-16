@@ -1,3 +1,7 @@
+// ambient: registers KalaTheme with react-native-unistyles for every
+// consumer of the package (side-effect type-only import)
+import "./types/unistyles";
+
 export type {
 	AccordionContentProps,
 	AccordionItemProps,
@@ -276,4 +280,4 @@ export type {
 export { ToggleGroup, ToggleGroupItem } from "./components/toggle-group";
 export { themeNames, themes } from "./themes";
 export { motion, tokens } from "./tokens";
-export type { KalaTheme, ThemeName } from "./types";
+export type { KalaTheme, RampBase, ThemeName, ThemeToken } from "./types";

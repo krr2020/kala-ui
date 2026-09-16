@@ -17,13 +17,10 @@ export function TokensDemo() {
 							testID={`k-swatch-${token}`}
 							style={[
 								demoStyles.swatch,
-								// dynamic token lookup needs a string-keyed view of the theme
-								// object — the parity tests pin that every swatch token
-								// resolves to a hex in all themes
+								// dynamic token lookup — the parity tests pin that every
+								// swatch token resolves to a hex in all themes
 								{
-									backgroundColor: String(
-										(theme as Record<string, string | number>)[token],
-									),
+									backgroundColor: String(theme[token]),
 								},
 							]}
 						>

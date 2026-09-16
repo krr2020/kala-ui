@@ -28,8 +28,7 @@ export function Icon({
 	testID = "k-icon",
 }: IconProps): ReactElement {
 	const { theme } = useUnistyles();
-	const themeMap = theme as unknown as Record<string, string | number>;
-	const resolved = themeMap[color as string] ?? color;
+	const resolved = theme[color as keyof typeof theme] ?? color;
 
 	return (
 		<View

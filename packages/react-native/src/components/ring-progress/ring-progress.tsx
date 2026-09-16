@@ -9,10 +9,6 @@ import type {
 	RingTone,
 } from "./ring-progress.types";
 
-interface ThemeShape {
-	[key: string]: string | number;
-}
-
 /**
  * RingProgress: SVG arc ring. Web passes tailwind color classes; here
  * color/emptyColor are tone names resolved through the unistyles theme,
@@ -32,7 +28,7 @@ export function RingProgress({
 	styles,
 	testID = "k-ring-progress",
 }: RingProgressProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 
 	const radius = Math.max(0, (size - thickness) / 2);
 	const circumference = radius * 2 * Math.PI;

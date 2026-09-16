@@ -35,9 +35,7 @@ export function Combobox({
 	styles,
 	testID = "k-combobox",
 }: ComboboxProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as {
-		theme: Record<string, string>;
-	};
+	const { theme } = useUnistyles();
 	const [internal, setInternal] = useState(defaultValue ?? "");
 	const [open, setOpen] = useState(false);
 	const [search, setSearch] = useState("");

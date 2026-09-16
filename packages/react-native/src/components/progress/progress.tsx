@@ -27,7 +27,6 @@ export function Progress({
 	testID = "k-progress",
 }: ProgressProps): ReactElement {
 	const { theme } = useUnistyles();
-	const themeMap = theme as unknown as Record<string, string>;
 	const clamped = Math.min(Math.max(value ?? 0, min), max);
 	const pct = max === min ? 0 : ((clamped - min) / (max - min)) * 100;
 	const inner =
@@ -60,7 +59,7 @@ export function Progress({
 					{
 						width: `${pct}%`,
 						height: "100%",
-						backgroundColor: themeMap[color],
+						backgroundColor: theme[color],
 						alignItems: "center",
 						justifyContent: "center",
 					},
@@ -70,7 +69,7 @@ export function Progress({
 				{inner !== null && size !== "sm" ? (
 					<RNText
 						style={{
-							color: themeMap[`${color}Foreground`],
+							color: theme[`${color}Foreground`],
 							fontSize: size === "lg" ? 12 : 10,
 							fontWeight: "500",
 						}}

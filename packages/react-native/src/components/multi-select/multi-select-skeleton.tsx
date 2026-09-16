@@ -15,9 +15,7 @@ export function MultiSelectSkeleton({
 	style?: import("react-native").StyleProp<import("react-native").ViewStyle>;
 	testID?: string;
 }): ReactElement {
-	const { theme } = useUnistyles() as unknown as {
-		theme: Record<string, string>;
-	};
+	const { theme } = useUnistyles();
 	return (
 		<View
 			testID={testID}

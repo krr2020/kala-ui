@@ -2,6 +2,7 @@
  * Sparkline: one-path trend line sized for embedding (metric rows,
  * table cells). NaN samples are dropped, not read as zero.
  */
+
 import type { ReactElement } from "react";
 import { Text, View } from "react-native";
 import Svg, { Polyline } from "react-native-svg";
@@ -9,13 +10,6 @@ import { useUnistyles } from "react-native-unistyles";
 import { sparklinePoints } from "../../lib/chart-geometry";
 import { ChartSkeleton } from "./chart-skeleton";
 import type { SparklineProps } from "./sparkline.types";
-
-interface ThemeShape {
-	[key: string]: string | number;
-	primary: string;
-	mutedForeground: string;
-	border: string;
-}
 
 export function Sparkline({
 	data,
@@ -28,7 +22,7 @@ export function Sparkline({
 	styles,
 	testID = "k-sparkline",
 }: SparklineProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 
 	if (isLoading) {
 		return (

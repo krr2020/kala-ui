@@ -175,9 +175,7 @@ export function DropdownMenu({
 	styles,
 	testID = "k-dropdown-menu",
 }: DropdownMenuProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as {
-		theme: MenuTheme & Record<string, string>;
-	};
+	const { theme } = useUnistyles();
 	const [open, setOpen] = useState(false);
 	const close = () => setOpen(false);
 	const itemStyles = applySlot({}, styles?.item);

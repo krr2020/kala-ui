@@ -39,14 +39,13 @@ export function Rating({
 	testID = "k-rating",
 }: RatingProps): ReactElement {
 	const { theme } = useUnistyles();
-	const themeMap = theme as unknown as Record<string, string>;
 	// controlled lock: a provided value prop always wins over internal state
 	const controlled = value !== undefined;
 	const [internal, setInternal] = useState(() => defaultValue);
 	const active = controlled ? (value as number) : internal;
 	const px = STAR_PX[size];
-	const emptyColor = `${themeMap.mutedForeground}4D`;
-	const fillColor = themeMap.warning;
+	const emptyColor = `${theme.mutedForeground}4D`;
+	const fillColor = theme.warning;
 
 	const commit = (next: number) => {
 		if (!controlled) setInternal(next);

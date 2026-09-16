@@ -9,6 +9,7 @@ import type { ReactElement } from "react";
 import type { ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import type { KalaTheme, RampBase } from "../../types";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
 import type {
@@ -25,12 +26,15 @@ const DEFAULT_SKELETON: Required<BannerSkeletonConfig> = {
 
 function tone(
 	color: BannerColor,
-	theme: Record<string, string>,
+	theme: KalaTheme,
 ): {
 	bg: string;
 	fg: string;
 } {
-	return { bg: theme[color], fg: theme[`${color}Foreground`] };
+	return {
+		bg: theme[color as RampBase],
+		fg: theme[`${color as RampBase}Foreground`],
+	};
 }
 
 function positionStyle(position: BannerPosition): ViewStyle {
@@ -71,9 +75,7 @@ export function Banner({
 	styles,
 	testID = "k-banner",
 }: BannerProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as {
-		theme: Record<string, string>;
-	};
+	const { theme } = useUnistyles();
 	const { bg, fg } = tone(color, theme);
 	const isAlert = role === "alert";
 

@@ -45,7 +45,6 @@ export function Slider({
 	testID = "k-slider",
 }: SliderProps): ReactElement {
 	const { theme } = useUnistyles();
-	const themeMap = theme as unknown as Record<string, string>;
 	// controlled lock: a provided value prop always wins over internal state
 	const controlled = value !== undefined;
 	const [internal, setInternal] = useState<number[]>(() => defaultValue);
@@ -171,7 +170,7 @@ export function Slider({
 					{
 						height: TRACK_H,
 						borderRadius: TRACK_H / 2,
-						backgroundColor: themeMap.muted,
+						backgroundColor: theme.muted,
 						justifyContent: "center",
 					},
 					styles?.track,
@@ -186,7 +185,7 @@ export function Slider({
 							left: 0,
 							height: TRACK_H,
 							borderRadius: TRACK_H / 2,
-							backgroundColor: themeMap.primary,
+							backgroundColor: theme.primary,
 							width: `${first === undefined ? 0 : pct(first)}%`,
 						},
 						styles?.range,
@@ -220,9 +219,9 @@ export function Slider({
 									width: THUMB_PX,
 									height: THUMB_PX,
 									borderRadius: THUMB_R,
-									backgroundColor: themeMap.background,
+									backgroundColor: theme.background,
 									borderWidth: 2,
-									borderColor: themeMap.primary,
+									borderColor: theme.primary,
 								},
 								styles?.thumb,
 							)}

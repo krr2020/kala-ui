@@ -8,7 +8,6 @@ import type { ReactElement } from "react";
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import type { MenuTheme } from "../dropdown-menu/dropdown-menu";
 import { renderMenuItem } from "../dropdown-menu/dropdown-menu";
 import { Sheet } from "../sheet";
 import { applySlot } from "../slot-styles";
@@ -24,9 +23,7 @@ export function ContextMenu({
 	styles,
 	testID = "k-context-menu",
 }: ContextMenuProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as {
-		theme: MenuTheme & Record<string, string>;
-	};
+	const { theme } = useUnistyles();
 	const [open, setOpen] = useState(false);
 	const close = () => {
 		setOpen(false);

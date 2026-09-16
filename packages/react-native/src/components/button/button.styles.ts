@@ -5,6 +5,7 @@
 import { Pressable } from "react-native";
 import Animated from "react-native-reanimated";
 import { motion, tokens } from "../../tokens";
+import type { KalaTheme, RampBase } from "../../types";
 import type { ButtonColor, ButtonSize, ButtonVariant } from "./button.types";
 
 export const BUTTON_SPRING = motion.spring.snappy;
@@ -35,12 +36,6 @@ interface VariantLook {
 	border?: string;
 }
 
-export interface KalaThemeShape {
-	card: string;
-	muted: string;
-	[key: string]: string | number;
-}
-
 const ICON_BOX = 44;
 
 /** 'muted' has no ramp of its own — it borrows accent and mutes the fg. */
@@ -49,10 +44,16 @@ const baseColor = (
 ): "primary" | "secondary" | "destructive" | "accent" =>
 	color === "muted" ? "accent" : color;
 
+/** Token keys foregroundKey can resolve to — all string-valued. */
+export type ForegroundKey =
+	| "mutedForeground"
+	| RampBase
+	| `${RampBase}Foreground`;
+
 export function foregroundKey(
 	variant: ButtonVariant,
 	color: ButtonColor,
-): string {
+): ForegroundKey {
 	const base = baseColor(color);
 	if (variant === "solid") return `${base}Foreground`;
 	if (variant === "subtle" || color === "muted") return "mutedForeground";
@@ -62,10 +63,10 @@ export function foregroundKey(
 export function variantLook(
 	variant: ButtonVariant,
 	color: ButtonColor,
-	theme: KalaThemeShape,
+	theme: KalaTheme,
 ): VariantLook {
 	const base = baseColor(color);
-	const tint = String(theme[base]);
+	const tint = theme[base];
 	switch (variant) {
 		case "outline":
 			return { bg: theme.card, border: tint };

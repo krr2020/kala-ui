@@ -11,13 +11,10 @@ import { X } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import type { KalaTheme, ThemeToken } from "../../types";
 import { Icon } from "../icon";
 import { applySlot } from "../slot-styles";
 import type { TagColor, TagProps, TagSize, TagVariant } from "./tag.types";
-
-interface KalaThemeShape {
-	[key: string]: string | number;
-}
 
 const FONT: Record<TagSize, number> = { sm: 12, md: 14, lg: 16 };
 const PAD_H: Record<TagSize, number> = { sm: 8, md: 10, lg: 12 };
@@ -27,9 +24,9 @@ const PAD_V: Record<TagSize, number> = { sm: 2, md: 4, lg: 6 };
 function look(
 	variant: TagVariant,
 	color: TagColor,
-	theme: KalaThemeShape,
+	theme: KalaTheme,
 ): { bg: string; fg: string; border: string } {
-	const hex = (key: string) => String(theme[key]);
+	const hex = (key: ThemeToken) => String(theme[key]);
 	const tint = color === "muted" ? hex("mutedForeground") : hex(color);
 	if (variant === "outline") {
 		return { bg: "transparent", fg: tint, border: tint };
@@ -60,7 +57,7 @@ export function Tag({
 	testID = "k-tag",
 }: TagProps): ReactElement {
 	const { theme } = useUnistyles();
-	const { bg, fg, border } = look(variant, color, theme as KalaThemeShape);
+	const { bg, fg, border } = look(variant, color, theme);
 
 	return (
 		<View

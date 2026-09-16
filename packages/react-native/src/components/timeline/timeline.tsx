@@ -22,9 +22,7 @@ export function Timeline({
 	styles,
 	testID = "k-timeline",
 }: TimelineProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as {
-		theme: Record<string, string>;
-	};
+	const { theme } = useUnistyles();
 
 	const dotSurface = (status: TimelineStatus) => {
 		switch (status) {

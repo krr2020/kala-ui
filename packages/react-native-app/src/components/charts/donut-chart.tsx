@@ -3,27 +3,22 @@
  * (same technique as RingProgress). The center reads the en-US
  * formatted total so the number is deterministic across locales.
  */
+
 import type { ReactElement } from "react";
 import { Text, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { useUnistyles } from "react-native-unistyles";
 import { donutArcs } from "../../lib/chart-geometry";
 import { ChartSkeleton } from "./chart-skeleton";
-import type { DonutChartProps } from "./donut-chart.types";
+import type { ChartTone, DonutChartProps } from "./donut-chart.types";
 
-interface ThemeShape {
-	[key: string]: string | number;
-	primary: string;
-	success: string;
-	warning: string;
-	destructive: string;
-	info: string;
-	muted: string;
-	mutedForeground: string;
-	border: string;
-}
-
-const PALETTE = ["primary", "success", "warning", "destructive", "info"];
+const PALETTE: ChartTone[] = [
+	"primary",
+	"success",
+	"warning",
+	"destructive",
+	"info",
+];
 
 function slug(label: string): string {
 	return label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -39,7 +34,7 @@ export function DonutChart({
 	styles,
 	testID = "k-donut-chart",
 }: DonutChartProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 
 	if (isLoading) {
 		return (

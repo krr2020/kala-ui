@@ -3,7 +3,17 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { themes } from "../themes";
 import { motion, tokens } from "../tokens";
-import type { ThemeName } from "../types";
+import type { KalaTheme, ThemeName } from "../types";
+
+// compile-time pin: every shipped theme satisfies the fully-keyed KalaTheme
+// interface — a missing/extra/mis-typed token anywhere is a tsc error
+const _themeSatisfies: Record<ThemeName, KalaTheme> = {
+	light: themes.light,
+	dark: themes.dark,
+	"high-contrast-light": themes["high-contrast-light"],
+	"high-contrast-dark": themes["high-contrast-dark"],
+};
+void _themeSatisfies;
 
 /**
  * Token parity contract: packages/react-native themes must match the web
@@ -471,6 +481,7 @@ describe("layout restructure pins", () => {
 				"ProgressProps",
 				"ProgressSize",
 				"RadioGroup",
+				"RampBase",
 				"RadioGroupItemProps",
 				"RadioGroupProps",
 				"Rating",
@@ -529,6 +540,7 @@ describe("layout restructure pins", () => {
 				"Textarea",
 				"TextareaProps",
 				"ThemeName",
+				"ThemeToken",
 				"TimePicker",
 				"TimePickerProps",
 				"TimeValue",

@@ -3,6 +3,7 @@
  * web dependency is canvas- and window-bound). Values normalize against
  * the tallest bar; degenerate input collapses to stubs or the empty arm.
  */
+
 import type { ReactElement } from "react";
 import { Text, View } from "react-native";
 import Svg, { Rect } from "react-native-svg";
@@ -10,12 +11,6 @@ import { useUnistyles } from "react-native-unistyles";
 import { barHeights } from "../../lib/chart-geometry";
 import type { BarChartProps } from "./bar-chart.types";
 import { ChartSkeleton } from "./chart-skeleton";
-
-interface ThemeShape {
-	[key: string]: string | number;
-	mutedForeground: string;
-	border: string;
-}
 
 function slug(label: string): string {
 	return label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -32,7 +27,7 @@ export function BarChart({
 	styles,
 	testID = "k-bar-chart",
 }: BarChartProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 
 	if (isLoading) {
 		return (

@@ -64,9 +64,8 @@ export function Text({
 	testID = "k-text",
 }: TextProps): ReactElement {
 	const { theme } = useUnistyles();
-	const themeMap = theme as unknown as Record<string, string | number>;
-	const key = COLOR_KEY[color as string];
-	const resolved = (key ? themeMap[key] : undefined) ?? color;
+	const key = COLOR_KEY[color as string] as keyof typeof theme | undefined;
+	const resolved = (key ? theme[key] : undefined) ?? color;
 
 	return (
 		<RNText

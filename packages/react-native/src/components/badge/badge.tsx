@@ -8,6 +8,7 @@
 import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import type { KalaTheme, ThemeToken } from "../../types";
 import { applySlot } from "../slot-styles";
 import type {
 	BadgeColor,
@@ -15,10 +16,6 @@ import type {
 	BadgeShape,
 	BadgeVariant,
 } from "./badge.types";
-
-interface KalaThemeShape {
-	[key: string]: string | number;
-}
 
 const RADIUS: Record<BadgeShape, number> = {
 	rounded: 4,
@@ -40,9 +37,9 @@ const baseColor = (
 function look(
 	variant: BadgeVariant,
 	color: BadgeColor,
-	theme: KalaThemeShape,
+	theme: KalaTheme,
 ): { bg: string; fg: string; border: string } {
-	const hex = (key: string) => String(theme[key]);
+	const hex = (key: ThemeToken) => String(theme[key]);
 	if (variant === "outline") {
 		const tint =
 			color === "muted" ? hex("mutedForeground") : hex(baseColor(color));
@@ -78,7 +75,7 @@ export function Badge({
 	testID = "k-badge",
 }: BadgeProps): ReactElement {
 	const { theme } = useUnistyles();
-	const { bg, fg, border } = look(variant, color, theme as KalaThemeShape);
+	const { bg, fg, border } = look(variant, color, theme);
 
 	return (
 		<View

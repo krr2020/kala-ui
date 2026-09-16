@@ -17,6 +17,7 @@ import type { ReactElement } from "react";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import type { KalaTheme, ThemeToken } from "../../types";
 import { applySlot } from "../slot-styles";
 import type {
 	AlertColor,
@@ -25,10 +26,6 @@ import type {
 	AlertTitleProps,
 	AlertVariant,
 } from "./alert.types";
-
-interface KalaThemeShape {
-	[key: string]: string | number;
-}
 
 const ICONS: Record<AlertColor, typeof Info> = {
 	primary: Info,
@@ -44,9 +41,9 @@ const ICONS: Record<AlertColor, typeof Info> = {
 function look(
 	variant: AlertVariant,
 	color: AlertColor,
-	theme: KalaThemeShape,
+	theme: KalaTheme,
 ): { bg: string; fg: string; border: string } {
-	const hex = (key: string) => String(theme[key]);
+	const hex = (key: ThemeToken) => String(theme[key]);
 	if (variant === "outline") {
 		const tint = color === "muted" ? hex("mutedForeground") : hex(color);
 		return { bg: "transparent", fg: tint, border: tint };
@@ -87,7 +84,7 @@ export function Alert({
 	testID = "k-alert",
 }: AlertProps): ReactElement | null {
 	const { theme } = useUnistyles();
-	const { bg, fg, border } = look(variant, color, theme as KalaThemeShape);
+	const { bg, fg, border } = look(variant, color, theme);
 	const [hidden, setHidden] = useState(false);
 	const prevChildren = useRef(children);
 

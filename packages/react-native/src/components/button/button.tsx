@@ -13,16 +13,15 @@ import {
 } from "react-native-reanimated";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
-import type { ButtonProps } from "./button.types";
 import {
 	AnimatedPressable,
 	BUTTON_SPRING,
 	baseStyle,
-	foregroundKey,
 	FONT,
+	foregroundKey,
 	variantLook,
 } from "./button.styles";
-import type { KalaThemeShape } from "./button.styles";
+import type { ButtonProps } from "./button.types";
 
 export function Button({
 	children,
@@ -47,9 +46,8 @@ export function Button({
 		transform: [{ scale: press.value }],
 	}));
 
-	const themeShape = theme as unknown as KalaThemeShape;
-	const fg = String(themeShape[foregroundKey(variant, color)]);
-	const look = variantLook(variant, color, themeShape);
+	const fg: string = theme[foregroundKey(variant, color)];
+	const look = variantLook(variant, color, theme);
 	const effectiveDisabled = disabled || isLoading;
 
 	return (

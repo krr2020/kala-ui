@@ -1,10 +1,21 @@
+import type { KalaTheme } from "@kala-ui/react-native";
+
+/** Color token names a chart tone accepts (color keys of KalaTheme only). */
+export type ChartTone = {
+	[K in keyof KalaTheme]: K extends `${string}Foreground` | `${string}Alpha`
+		? never
+		: KalaTheme[K] extends string
+			? K
+			: never;
+}[keyof KalaTheme];
+
 import type { StyleProp, ViewStyle } from "react-native";
 
 export interface DonutChartDatum {
 	label: string;
 	value: number;
 	/** Theme tone name for this segment; defaults cycle the palette. */
-	tone?: string;
+	tone?: ChartTone;
 }
 
 export interface DonutChartProps {

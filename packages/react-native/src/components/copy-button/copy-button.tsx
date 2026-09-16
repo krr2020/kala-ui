@@ -26,9 +26,7 @@ export function CopyButton({
 	styles,
 }: CopyButtonProps) {
 	const [copied, setCopied] = useState(false);
-	const { theme } = useUnistyles() as unknown as {
-		theme: { foreground: string };
-	};
+	const { theme } = useUnistyles();
 
 	// Last-write-wins: a slow earlier write resolving after a newer press
 	// must not resurrect the copied state.

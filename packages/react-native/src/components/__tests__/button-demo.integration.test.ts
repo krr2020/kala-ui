@@ -41,12 +41,17 @@ describe("button demo ↔ library seam", () => {
 		// buttons must pass the ramp's paired foreground token. Transparent
 		// variants (subtle/ghost) may use theme.foreground — their fill is not
 		// the primary tint, so the contrast pairing rule does not apply there.
-		const solid = demo.match(/<Button[^>]*accessibilityLabel="[^"]+"[^>]*>[\s\S]*?<\/Button>/g) ?? [];
+		const solid =
+			demo.match(
+				/<Button[^>]*accessibilityLabel="[^"]+"[^>]*>[\s\S]*?<\/Button>/g,
+			) ?? [];
 		const sunGlyph = demo.match(/<Sun[^/]*color=\{theme\.primaryForeground\}/);
 		expect(sunGlyph).toBeTruthy();
 		// leading/trailing icons on transparent variants keep foreground
 		// contrast; only the solid-fill icon must use the paired token
-		expect(demo).toMatch(/<Save size=\{16\} color=\{theme\.primaryForeground\}/);
+		expect(demo).toMatch(
+			/<Save size=\{16\} color=\{theme\.primaryForeground\}/,
+		);
 	});
 
 	it("demo copy is humanized and the shell insets content off the gesture bar", () => {

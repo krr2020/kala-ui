@@ -9,6 +9,7 @@ import type { ReactElement, ReactNode } from "react";
 import { useState } from "react";
 import { Image, Linking, Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import type { KalaTheme } from "../../types";
 import { Badge } from "../badge";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
@@ -24,10 +25,6 @@ import type {
 	ListProps,
 	ListSkeletonConfig,
 } from "./list.types";
-
-interface ThemeShape {
-	[key: string]: string | number;
-}
 
 const ICON_SIZES = { sm: 16, md: 20, lg: 24 } as const;
 const AVATAR_SIZES = { sm: 32, md: 40, lg: 48 } as const;
@@ -48,7 +45,7 @@ function SkeletonRow({
 }: {
 	variant: ListSkeletonConfig["variant"];
 	dense: boolean;
-	theme: ThemeShape;
+	theme: KalaTheme;
 }) {
 	const lineH = dense ? 12 : 16;
 	const avatar = (
@@ -102,7 +99,7 @@ export function List({
 	testID = "k-list",
 	children,
 }: ListProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 
 	const surface = [
 		{
@@ -214,7 +211,7 @@ export function ListItem({
 	testID = "k-list-item",
 	children,
 }: ListItemProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 
 	const base = {
 		flexDirection: "row" as const,
@@ -295,7 +292,7 @@ export function ListItemIcon({
 	style,
 	testID = "k-list-item-icon",
 }: ListItemIconProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 	const dim = ICON_SIZES[size];
 	return (
 		<View
@@ -328,7 +325,7 @@ export function ListItemAvatar({
 	style,
 	testID = "k-list-item-avatar",
 }: ListItemAvatarProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 	const [imgError, setImgError] = useState(false);
 	const dim = AVATAR_SIZES[size];
 	return (
@@ -381,7 +378,7 @@ export function ListItemTitle({
 	children,
 	...rest
 }: ListItemTitleProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 	return (
 		<RNText
 			testID={testID}
@@ -404,7 +401,7 @@ export function ListItemText({
 	children,
 	...rest
 }: ListItemTextProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as { theme: ThemeShape };
+	const { theme } = useUnistyles();
 	const clamp = lines ?? (truncate ? 1 : undefined);
 	return (
 		<RNText

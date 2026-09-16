@@ -91,7 +91,6 @@ export function Indicator({
 		};
 	}, [processing, pulse]);
 
-	const ramp = theme as unknown as Record<string, string>;
 	const hasLabel = label !== undefined && label !== null && label !== "";
 
 	return (
@@ -120,7 +119,7 @@ export function Indicator({
 								height: size,
 								minWidth: size,
 								borderRadius: size / 2,
-								backgroundColor: ramp[color],
+								backgroundColor: theme[color],
 								alignItems: "center",
 								justifyContent: "center",
 								zIndex: 50,
@@ -130,11 +129,11 @@ export function Indicator({
 								? {
 										paddingHorizontal: size / 3,
 										fontSize: size * 0.7,
-										color: ramp[`${color}Foreground`],
+										color: theme[`${color}Foreground`],
 									}
 								: { width: size },
 							withBorder
-								? { borderWidth: 2, borderColor: ramp.background }
+								? { borderWidth: 2, borderColor: theme.background }
 								: { borderWidth: 0 },
 							anchorStyle(position, offset, size / 2),
 							processing ? { opacity: pulse } : null,
@@ -145,7 +144,7 @@ export function Indicator({
 					{hasLabel ? (
 						<RNText
 							style={{
-								color: ramp[`${color}Foreground`],
+								color: theme[`${color}Foreground`],
 								fontSize: size * 0.7,
 								fontWeight: "700",
 							}}

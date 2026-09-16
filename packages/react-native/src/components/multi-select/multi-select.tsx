@@ -36,9 +36,7 @@ export function MultiSelect({
 	styles,
 	testID = "k-multi-select",
 }: MultiSelectProps): ReactElement {
-	const { theme } = useUnistyles() as unknown as {
-		theme: Record<string, string>;
-	};
+	const { theme } = useUnistyles();
 	const [internal, setInternal] = useState<string[]>(defaultValue ?? []);
 	const [open, setOpen] = useState(false);
 	const [search, setSearch] = useState("");

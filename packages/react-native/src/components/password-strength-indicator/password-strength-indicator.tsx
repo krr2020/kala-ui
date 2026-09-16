@@ -42,11 +42,7 @@ export function PasswordStrengthIndicator({
 	styles,
 	testID = "k-password-strength-indicator",
 }: PasswordStrengthIndicatorProps): ReactElement | null {
-	// ring-progress precedent: the ramp keys (success/warning) live in the
-	// theme definitions but outside UnistylesTheme's generated literal
-	const { theme } = useUnistyles() as unknown as {
-		theme: Record<string, string>;
-	};
+	const { theme } = useUnistyles();
 
 	if (!password) {
 		return null;

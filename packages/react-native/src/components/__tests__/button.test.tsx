@@ -82,9 +82,9 @@ describe("Button composed children layout", () => {
 		const wrapper = rowWrapperOf(screen.toJSON() as JSONRoot);
 		expect(wrapper).toBeTruthy();
 		const last = (wrapper?.children ?? []).at(-1);
-		expect(
-			(last as JSONNode | undefined)?.props?.testID ?? undefined,
-		).toBe("glyph");
+		expect((last as JSONNode | undefined)?.props?.testID ?? undefined).toBe(
+			"glyph",
+		);
 	});
 
 	it.each([
