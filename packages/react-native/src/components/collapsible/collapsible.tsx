@@ -5,8 +5,8 @@
  * until motion tokens land.
  */
 
-import { createContext, useContext, useState } from "react";
 import type { ReactElement } from "react";
+import { createContext, useContext, useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";

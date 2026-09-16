@@ -1,11 +1,10 @@
+import { themeNames } from "@kala-ui/react-native/themes";
 import { useRef, useState } from "react";
 import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { themeNames } from "@kala-ui/react-native/themes";
 import { UnistylesRuntime, useUnistyles } from "react-native-unistyles";
-import { componentGroups } from "./demos/components/registry";
-import { humanizeLabel } from "./demos/components/registry";
 import type { ComponentGroup } from "./demos/components/registry";
+import { componentGroups, humanizeLabel } from "./demos/components/registry";
 import { demoStyles } from "./demos/stylesheet";
 
 // themes whose backgrounds are dark → light status-bar icons

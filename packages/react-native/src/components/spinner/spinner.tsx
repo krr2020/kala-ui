@@ -5,9 +5,10 @@
  * withRepeat. The loop starts once per mount and stops in cleanup.
  * Ghost variant dims the whole wrapper to 0.6 (web's /60 alpha).
  */
-import { useEffect, useRef } from "react";
-import type { ReactElement } from "react";
+
 import { Loader } from "lucide-react-native";
+import type { ReactElement } from "react";
+import { useEffect, useRef } from "react";
 import { Animated, Easing } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";

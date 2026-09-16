@@ -954,7 +954,6 @@ describe("a11y contract", () => {
 			await fireEvent(screen.getByTestId("k-context-menu"), "longPress");
 			expect(screen.getByLabelText("Copy")).toBeTruthy();
 		});
-
 	});
 
 	describe("CopyButton", () => {

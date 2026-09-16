@@ -4,8 +4,9 @@
  * no withRepeat, the same tradeoff Spinner makes. Sizing is the
  * consumer's job via `style` (width / height / flex).
  */
-import { useEffect, useRef } from "react";
+
 import type { ReactElement } from "react";
+import { useEffect, useRef } from "react";
 import { Animated, Easing } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";

@@ -13,14 +13,21 @@ describe("NavLink anchor mode", () => {
 
 	it("keeps button semantics when no href is provided", () => {
 		render(<NavLink label="Toggle" />);
-		expect(screen.getByRole("button", { name: "Toggle" }).tagName).toBe("BUTTON");
+		expect(screen.getByRole("button", { name: "Toggle" }).tagName).toBe(
+			"BUTTON",
+		);
 	});
 
 	it("sets aria-current=page when active with href, nothing when inactive", () => {
 		const { rerender } = render(<NavLink href="/board" label="Board" active />);
-		expect(screen.getByRole("link", { name: "Board" })).toHaveAttribute("aria-current", "page");
+		expect(screen.getByRole("link", { name: "Board" })).toHaveAttribute(
+			"aria-current",
+			"page",
+		);
 		rerender(<NavLink href="/board" label="Board" active={false} />);
-		expect(screen.getByRole("link", { name: "Board" })).not.toHaveAttribute("aria-current");
+		expect(screen.getByRole("link", { name: "Board" })).not.toHaveAttribute(
+			"aria-current",
+		);
 	});
 
 	it("never spreads button-only props onto the anchor", () => {
@@ -37,7 +44,11 @@ describe("NavLink anchor mode", () => {
 		const onClick = vi.fn();
 		render(<NavLink href="/board" label="Board" onClick={onClick} />);
 		const link = screen.getByRole("link", { name: "Board" });
-		const e = new MouseEvent("click", { bubbles: true, cancelable: true, button: 0 });
+		const e = new MouseEvent("click", {
+			bubbles: true,
+			cancelable: true,
+			button: 0,
+		});
 		const preventDefault = vi.spyOn(e, "preventDefault");
 		link.dispatchEvent(e);
 		expect(preventDefault).toHaveBeenCalled();
@@ -48,8 +59,18 @@ describe("NavLink anchor mode", () => {
 		const onClick = vi.fn();
 		render(<NavLink href="/board" label="Board" onClick={onClick} />);
 		const link = screen.getByRole("link", { name: "Board" });
-		for (const modifier of [{ metaKey: true }, { ctrlKey: true }, { shiftKey: true }, { altKey: true }]) {
-			const e = new MouseEvent("click", { bubbles: true, cancelable: true, button: 0, ...modifier });
+		for (const modifier of [
+			{ metaKey: true },
+			{ ctrlKey: true },
+			{ shiftKey: true },
+			{ altKey: true },
+		]) {
+			const e = new MouseEvent("click", {
+				bubbles: true,
+				cancelable: true,
+				button: 0,
+				...modifier,
+			});
 			const spy = vi.spyOn(e, "preventDefault");
 			link.dispatchEvent(e);
 			expect(spy).not.toHaveBeenCalled();
@@ -60,7 +81,11 @@ describe("NavLink anchor mode", () => {
 	it("leaves middle-clicks to the browser", () => {
 		render(<NavLink href="/board" label="Board" />);
 		const link = screen.getByRole("link", { name: "Board" });
-		const e = new MouseEvent("click", { bubbles: true, cancelable: true, button: 1 });
+		const e = new MouseEvent("click", {
+			bubbles: true,
+			cancelable: true,
+			button: 1,
+		});
 		const spy = vi.spyOn(e, "preventDefault");
 		link.dispatchEvent(e);
 		expect(spy).not.toHaveBeenCalled();

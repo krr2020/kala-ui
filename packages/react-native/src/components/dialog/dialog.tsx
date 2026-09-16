@@ -7,21 +7,22 @@
  * in the dialog stay visible. Sizes map the web vocabulary: sm/md/lg
  * clamp to a centered panel, `full` opts out of the clamp.
  */
-import { useRef, useState } from "react";
+
+import { X } from "lucide-react-native";
 import type { ReactElement } from "react";
+import { useRef, useState } from "react";
 import {
 	KeyboardAvoidingView,
 	Modal,
 	Platform,
 	Pressable,
-	ScrollView,
 	Text as RNText,
+	ScrollView,
 	View,
 } from "react-native";
-import { X } from "lucide-react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { applySlot } from "../slot-styles";
 import { tokens } from "../../tokens";
+import { applySlot } from "../slot-styles";
 import type {
 	DialogPartProps,
 	DialogProps,
@@ -62,7 +63,9 @@ export function Dialog({
 
 	// drag opacity fades linearly to 0.5 across the threshold distance
 	const dragOpacity =
-		1 - Math.min(dragDy, DRAG_DISMISS_THRESHOLD) * (1 - MIN_DRAG_OPACITY) / DRAG_DISMISS_THRESHOLD;
+		1 -
+		(Math.min(dragDy, DRAG_DISMISS_THRESHOLD) * (1 - MIN_DRAG_OPACITY)) /
+			DRAG_DISMISS_THRESHOLD;
 
 	const responders = dismissable
 		? {
@@ -141,21 +144,21 @@ export function Dialog({
 					accessibilityViewIsModal
 					accessibilityLabel={accessibilityLabel}
 					{...responders}
-						style={applySlot(
-							{
-								width: isFull ? "100%" : "90%",
-								height: isFull ? "100%" : undefined,
-								maxWidth: isFull ? undefined : MAX_WIDTH[size],
-								maxHeight: isFull ? undefined : "90%",
-								borderRadius: isFull ? 0 : tokens.radius.card,
-								backgroundColor: theme.card,
-								borderWidth: 1,
-								borderColor: theme.border,
-								overflow: "hidden",
-								opacity: dragOpacity,
-							},
-							styles?.root,
-						)}
+					style={applySlot(
+						{
+							width: isFull ? "100%" : "90%",
+							height: isFull ? "100%" : undefined,
+							maxWidth: isFull ? undefined : MAX_WIDTH[size],
+							maxHeight: isFull ? undefined : "90%",
+							borderRadius: isFull ? 0 : tokens.radius.card,
+							backgroundColor: theme.card,
+							borderWidth: 1,
+							borderColor: theme.border,
+							overflow: "hidden",
+							opacity: dragOpacity,
+						},
+						styles?.root,
+					)}
 				>
 					{children}
 					{showCloseButton ? (
@@ -185,7 +188,11 @@ export function Dialog({
 	);
 }
 
-function DialogHeader({ children, style, testID = "k-dialog-header" }: DialogPartProps) {
+function DialogHeader({
+	children,
+	style,
+	testID = "k-dialog-header",
+}: DialogPartProps) {
 	const { theme } = useUnistyles();
 	return (
 		<View
@@ -202,7 +209,9 @@ function DialogHeader({ children, style, testID = "k-dialog-header" }: DialogPar
 			]}
 		>
 			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={{ color: theme.foreground, fontSize: 14 }}>{children}</RNText>
+				<RNText style={{ color: theme.foreground, fontSize: 14 }}>
+					{children}
+				</RNText>
 			) : (
 				children
 			)}
@@ -210,7 +219,11 @@ function DialogHeader({ children, style, testID = "k-dialog-header" }: DialogPar
 	);
 }
 
-function DialogFooter({ children, style, testID = "k-dialog-footer" }: DialogPartProps) {
+function DialogFooter({
+	children,
+	style,
+	testID = "k-dialog-footer",
+}: DialogPartProps) {
 	const { theme } = useUnistyles();
 	return (
 		<View
@@ -231,7 +244,9 @@ function DialogFooter({ children, style, testID = "k-dialog-footer" }: DialogPar
 			]}
 		>
 			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={{ color: theme.foreground, fontSize: 14 }}>{children}</RNText>
+				<RNText style={{ color: theme.foreground, fontSize: 14 }}>
+					{children}
+				</RNText>
 			) : (
 				children
 			)}
@@ -280,7 +295,11 @@ function DialogDescription({
 	);
 }
 
-function DialogBody({ children, style, testID = "k-dialog-body" }: DialogPartProps) {
+function DialogBody({
+	children,
+	style,
+	testID = "k-dialog-body",
+}: DialogPartProps) {
 	const { theme } = useUnistyles();
 	// ScrollView: long content scrolls; taps survive an open keyboard
 	// ("handled") so pressing Submit doesn't dismiss the keyboard first
@@ -293,7 +312,9 @@ function DialogBody({ children, style, testID = "k-dialog-body" }: DialogPartPro
 			style={style}
 		>
 			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={{ color: theme.foreground, fontSize: 14 }}>{children}</RNText>
+				<RNText style={{ color: theme.foreground, fontSize: 14 }}>
+					{children}
+				</RNText>
 			) : (
 				children
 			)}

@@ -110,7 +110,9 @@ function TabsTrigger({
 			className={cn(tabsTriggerVariants({ variant: finalVariant }), className)}
 			{...props}
 		>
-			<span className="relative z-10 inline-flex items-center gap-1.5">{children}</span>
+			<span className="relative z-10 inline-flex items-center gap-1.5">
+				{children}
+			</span>
 		</TabsPrimitive.Trigger>
 	);
 }

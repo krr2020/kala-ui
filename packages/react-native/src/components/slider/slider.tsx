@@ -10,8 +10,9 @@
  * the FIRST thumb only, matching the web's single Range arm. isLoading
  * renders the web's skeleton arm.
  */
-import { useRef, useState } from "react";
+
 import type { ReactElement } from "react";
+import { useRef, useState } from "react";
 import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Skeleton } from "../skeleton";
@@ -152,7 +153,10 @@ export function Slider({
 		<View
 			testID={testID}
 			accessibilityLabel={accessibilityLabel}
-			style={applySlot(applySlot({ opacity: disabled ? 0.5 : 1 }, style), styles?.root)}
+			style={applySlot(
+				applySlot({ opacity: disabled ? 0.5 : 1 }, style),
+				styles?.root,
+			)}
 		>
 			<View
 				testID="k-slider-track"

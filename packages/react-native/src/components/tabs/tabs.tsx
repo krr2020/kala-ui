@@ -1,5 +1,5 @@
-import { useState } from "react";
 import type { ReactElement } from "react";
+import { useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";

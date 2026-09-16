@@ -55,18 +55,18 @@ export function Progress({
 			]}
 		>
 			<View
-					testID="k-progress-indicator"
-					style={[
-						{
-							width: `${pct}%`,
-							height: "100%",
-							backgroundColor: themeMap[color],
-							alignItems: "center",
-							justifyContent: "center",
-						},
-						styles?.indicator,
-					]}
-				>
+				testID="k-progress-indicator"
+				style={[
+					{
+						width: `${pct}%`,
+						height: "100%",
+						backgroundColor: themeMap[color],
+						alignItems: "center",
+						justifyContent: "center",
+					},
+					styles?.indicator,
+				]}
+			>
 				{inner !== null && size !== "sm" ? (
 					<RNText
 						style={{

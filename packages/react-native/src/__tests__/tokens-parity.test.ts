@@ -179,12 +179,7 @@ describe("globals.css tokenizer", () => {
 describe("theme parity with globals.css", () => {
 	it("exports exactly 4 themes", () => {
 		expect(Object.keys(themes).sort()).toEqual(
-			[
-				"light",
-				"dark",
-				"high-contrast-light",
-				"high-contrast-dark",
-			].sort(),
+			["light", "dark", "high-contrast-light", "high-contrast-dark"].sort(),
 		);
 	});
 
@@ -202,7 +197,9 @@ describe("theme parity with globals.css", () => {
 	it("dark carries the .dark block (not silently :root)", () => {
 		const dark = themes.dark as Record<string, string | number>;
 		expect(dark.background).toBe("#151c29");
-		expect(dark.background).not.toBe((themes.light as Record<string, string | number>).background);
+		expect(dark.background).not.toBe(
+			(themes.light as Record<string, string | number>).background,
+		);
 	});
 
 	it("a deleted token breaks parity (missing-token detection works)", () => {
@@ -268,10 +265,9 @@ describe("cross-theme uniformity (crash regression guards)", () => {
 		for (const selector of EXPECTED_SELECTORS.slice(1)) {
 			const blockTokens = new Set(blocks.get(selector)?.keys() ?? []);
 			for (const token of rootTokens) {
-				expect(
-					blockTokens.has(token),
-					`${selector} is missing ${token}`,
-				).toBe(true);
+				expect(blockTokens.has(token), `${selector} is missing ${token}`).toBe(
+					true,
+				);
 			}
 		}
 	});
@@ -279,11 +275,9 @@ describe("cross-theme uniformity (crash regression guards)", () => {
 	it("every playground swatch token resolves to a hex color in all themes", () => {
 		for (const token of playgroundSwatchTokens()) {
 			for (const name of Object.keys(themes) as ThemeName[]) {
-				const value = (themes[name] as Record<string, string | number>)[
-					token
-				];
+				const value = (themes[name] as Record<string, string | number>)[token];
 				expect(
-						typeof value === "string" && /^#[0-9a-f]{6}$/.test(value),
+					typeof value === "string" && /^#[0-9a-f]{6}$/.test(value),
 					`${name}.${token} = ${String(value)}`,
 				).toBe(true);
 			}

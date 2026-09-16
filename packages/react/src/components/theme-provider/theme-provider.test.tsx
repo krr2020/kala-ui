@@ -261,7 +261,9 @@ describe("ThemeProvider", () => {
 			screen.getByRole("button", { name: "switch" }).click();
 		});
 
-		expect(window.localStorage.getItem("app-theme")).toBe("high-contrast-light");
+		expect(window.localStorage.getItem("app-theme")).toBe(
+			"high-contrast-light",
+		);
 		expect(
 			document.documentElement.classList.contains("high-contrast-light"),
 		).toBe(true);

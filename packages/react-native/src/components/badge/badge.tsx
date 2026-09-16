@@ -9,7 +9,12 @@ import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
-import type { BadgeColor, BadgeProps, BadgeShape, BadgeVariant } from "./badge.types";
+import type {
+	BadgeColor,
+	BadgeProps,
+	BadgeShape,
+	BadgeVariant,
+} from "./badge.types";
 
 interface KalaThemeShape {
 	[key: string]: string | number;
@@ -21,8 +26,16 @@ const RADIUS: Record<BadgeShape, number> = {
 };
 
 /** 'muted' has no ramp of its own — same borrow the web config makes. */
-const baseColor = (color: BadgeColor): "primary" | "secondary" | "destructive" | "success" | "warning" | "info" | "muted" =>
-	color;
+const baseColor = (
+	color: BadgeColor,
+):
+	| "primary"
+	| "secondary"
+	| "destructive"
+	| "success"
+	| "warning"
+	| "info"
+	| "muted" => color;
 
 function look(
 	variant: BadgeVariant,

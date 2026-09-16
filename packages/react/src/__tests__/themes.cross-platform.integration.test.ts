@@ -29,11 +29,11 @@ const SHARED_THEMES = [
 function extractWebThemes(source: string): string[] {
 	const match = source.match(/export const THEMES = \[([^\]]*)\]/);
 	if (!match) throw new Error("THEMES array not found in theme-provider.tsx");
-	return [...match[1].matchAll(/'([^']+)'/g)].map((m) => m[1]);
+	return [...match[1].matchAll(/['"]([^'"]+)['"]/g)].map((m) => m[1]);
 }
 
 function extractNativeThemeNames(source: string): string[] {
-	const match = source.match(/export const themes = \{([^\}]*)\}/);
+	const match = source.match(/export const themes = \{([^}]*)\}/);
 	if (!match) throw new Error("themes map not found in definitions.ts");
 	const lines = match[1].split(",").map((entry) => entry.trim());
 	return lines

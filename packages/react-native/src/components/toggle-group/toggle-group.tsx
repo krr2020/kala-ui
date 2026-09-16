@@ -4,8 +4,9 @@
  * active); multiple reports arrays. Size/variant flow group→item through
  * context, and the item-level disabled gates on top of group disabled.
  */
-import { createContext, useContext, useState } from "react";
+
 import type { ReactElement, ReactNode } from "react";
+import { createContext, useContext, useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
@@ -68,7 +69,15 @@ export function ToggleGroup({
 
 	return (
 		<ToggleGroupContext.Provider
-			value={{ type, values, disabled, size, variant, itemStyles: styles?.item, toggle }}
+			value={{
+				type,
+				values,
+				disabled,
+				size,
+				variant,
+				itemStyles: styles?.item,
+				toggle,
+			}}
 		>
 			<View
 				testID={testID}

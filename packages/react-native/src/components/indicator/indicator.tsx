@@ -6,12 +6,13 @@
  * is no gradient arm — solid theme-ramp fills only, matching the
  * deferred-gradient precedent in Progress.
  */
-import { useEffect, useRef } from "react";
+
 import type { ReactElement } from "react";
+import { useEffect, useRef } from "react";
 import { Animated, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
-import type { IndicatorProps, IndicatorPosition } from "./indicator.types";
+import type { IndicatorPosition, IndicatorProps } from "./indicator.types";
 
 type Axis = "start" | "center" | "end";
 
@@ -29,7 +30,11 @@ const ANCHORS: Record<IndicatorPosition, { vertical: Axis; horizontal: Axis }> =
 	};
 
 /** Centers the dot on the anchor point; offset insets the anchored edges. */
-function anchorStyle(position: IndicatorPosition, offset: number, half: number) {
+function anchorStyle(
+	position: IndicatorPosition,
+	offset: number,
+	half: number,
+) {
 	const { vertical, horizontal } = ANCHORS[position];
 	const style: Record<string, number | string> = {};
 	if (vertical === "start") style.top = -half + offset;

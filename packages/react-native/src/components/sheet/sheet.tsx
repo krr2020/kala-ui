@@ -73,18 +73,18 @@ export function Sheet({
 				testID="k-sheet-overlay"
 				accessibilityRole="button"
 				accessibilityLabel="Close sheet"
-					onPress={dismissable ? onClose : undefined}
-					style={applySlot(
-						{
-							position: "absolute",
-							top: 0,
-							right: 0,
-							bottom: 0,
-							left: 0,
-							backgroundColor: "rgba(0,0,0,0.5)",
-						},
-						styles?.overlay,
-					)}
+				onPress={dismissable ? onClose : undefined}
+				style={applySlot(
+					{
+						position: "absolute",
+						top: 0,
+						right: 0,
+						bottom: 0,
+						left: 0,
+						backgroundColor: "rgba(0,0,0,0.5)",
+					},
+					styles?.overlay,
+				)}
 			/>
 			<GestureDetector gesture={pan}>
 				<Animated.View
@@ -134,10 +134,7 @@ export function Sheet({
 	);
 }
 
-export function SheetBody({
-	children,
-	styles,
-}: SheetBodyProps): ReactElement {
+export function SheetBody({ children, styles }: SheetBodyProps): ReactElement {
 	const { theme } = useUnistyles();
 	return (
 		<View testID="k-sheet-body" style={applySlot({ gap: 8 }, styles?.root)}>

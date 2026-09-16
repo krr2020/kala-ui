@@ -4,8 +4,9 @@
  * The web's framer-motion sliding indicator becomes an absolutely-positioned
  * themed surface inside the active segment (no shared-layout animation dep).
  */
-import { useState } from "react";
+
 import type { ReactElement } from "react";
+import { useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";

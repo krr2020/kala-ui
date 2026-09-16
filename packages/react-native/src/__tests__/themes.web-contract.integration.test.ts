@@ -24,7 +24,9 @@ const SELECTOR_BY_THEME: Record<ThemeName, string> = {
 /** Parse flat `--token: value;` declarations out of one selector block. */
 function blockTokens(selector: string): Map<string, string> {
 	const css = readFileSync(CSS_PATH, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
-	const match = css.match(new RegExp(`([^{}]*${selector.replace(".", "\\.")}[^{}]*)\\{([^{}]*)\\}`));
+	const match = css.match(
+		new RegExp(`([^{}]*${selector.replace(".", "\\.")}[^{}]*)\\{([^{}]*)\\}`),
+	);
 	if (!match) throw new Error(`missing CSS block ${selector}`);
 	const decls = new Map<string, string>();
 	for (const decl of match[2].split(";")) {
@@ -52,7 +54,10 @@ describe("native themes ↔ web globals.css seam", () => {
 			const block = blockTokens(selector);
 			for (const key of KEY_TOKENS) {
 				const token = `--${key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)}`;
-				expect(block.has(token) || (selector === ":root" && root.has(token)), `${selector} missing ${token}`).toBe(true);
+				expect(
+					block.has(token) || (selector === ":root" && root.has(token)),
+					`${selector} missing ${token}`,
+				).toBe(true);
 			}
 		}
 	});

@@ -8,8 +8,9 @@
  * touches through (pointerEvents box-none) so an open toast never
  * blocks the screen behind it.
  */
-import { useEffect, useRef } from "react";
+
 import type { ReactElement } from "react";
+import { useEffect, useRef } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
@@ -94,10 +95,7 @@ function ToastTitle({
 		<RNText
 			testID={testID}
 			style={applySlot(
-				[
-					{ color: theme.foreground, fontSize: 15, fontWeight: "600" },
-					style,
-				],
+				[{ color: theme.foreground, fontSize: 15, fontWeight: "600" }, style],
 				styles?.root,
 			)}
 		>

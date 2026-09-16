@@ -51,34 +51,34 @@ export function Switch({
 			]}
 		>
 			<View
-					testID="k-switch-track"
+				testID="k-switch-track"
+				style={[
+					{
+						width: TRACK_W,
+						height: TRACK_H,
+						borderRadius: TRACK_H / 2,
+						backgroundColor: value ? theme.primary : theme.input,
+						padding: INSET,
+						alignItems: "flex-start",
+						justifyContent: "center",
+					},
+					styles?.track,
+				]}
+			>
+				<View
+					testID="k-switch-thumb"
 					style={[
 						{
-							width: TRACK_W,
-							height: TRACK_H,
-							borderRadius: TRACK_H / 2,
-							backgroundColor: value ? theme.primary : theme.input,
-							padding: INSET,
-							alignItems: "flex-start",
-							justifyContent: "center",
+							width: THUMB,
+							height: THUMB,
+							borderRadius: THUMB / 2,
+							backgroundColor: theme.card,
+							transform: [{ translateX: value ? THUMB_TRAVEL : 0 }],
 						},
-						styles?.track,
+						styles?.thumb,
 					]}
-				>
-					<View
-						testID="k-switch-thumb"
-						style={[
-							{
-								width: THUMB,
-								height: THUMB,
-								borderRadius: THUMB / 2,
-								backgroundColor: theme.card,
-								transform: [{ translateX: value ? THUMB_TRAVEL : 0 }],
-							},
-							styles?.thumb,
-						]}
-					/>
-				</View>
-			</Pressable>
+				/>
+			</View>
+		</Pressable>
 	);
 }

@@ -92,7 +92,6 @@ export function TimePicker({
 				{Array.from({ length: count }, (_, i) => {
 					const selected = i === selectedIndex;
 					return (
-
 						<Pressable
 							key={`${prefix}-${labelFor(i)}`}
 							testID={`k-time-picker-${prefix}-item-${i}`}

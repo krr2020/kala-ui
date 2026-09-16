@@ -280,7 +280,6 @@ export function Calendar({
 				</Pressable>
 			</View>
 			<View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-
 				{WEEKDAYS.map((day) => (
 					<RNText
 						key={day}

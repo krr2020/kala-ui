@@ -1,11 +1,7 @@
 import { Minus, Plus } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useState } from "react";
-import {
-	Pressable,
-	TextInput as RNTextInput,
-	View,
-} from "react-native";
+import { Pressable, TextInput as RNTextInput, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
 import { Icon } from "../icon";
@@ -56,7 +52,8 @@ export function NumberInput({
 	};
 
 	const current = controlled ? value : inner;
-	const display = draft !== null ? draft : current == null ? "" : String(current);
+	const display =
+		draft !== null ? draft : current == null ? "" : String(current);
 
 	const emit = (next: number | null) => {
 		if (!controlled) setInner(next);

@@ -4,10 +4,11 @@
  * variants, active look) is shared with ToggleGroup items through
  * toggleSurface. Every size keeps the 44dp touch floor like Button.
  */
-import { useState } from "react";
+
 import type { ReactElement, ReactNode } from "react";
-import { Pressable, Text as RNText, View } from "react-native";
+import { useState } from "react";
 import type { ViewStyle } from "react-native";
+import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
 import { applySlot } from "../slot-styles";
@@ -77,7 +78,9 @@ function ToggleContent({
 	size: ToggleSize;
 }): ReactElement {
 	return typeof children === "string" || typeof children === "number" ? (
-		<RNText style={{ color: fg, fontSize: TOGGLE_FONT[size], fontWeight: "500" }}>
+		<RNText
+			style={{ color: fg, fontSize: TOGGLE_FONT[size], fontWeight: "500" }}
+		>
 			{children}
 		</RNText>
 	) : (

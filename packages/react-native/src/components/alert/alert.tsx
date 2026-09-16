@@ -5,8 +5,7 @@
  * invisible after the first dismiss (the web trap, fixed the same way:
  * compare children identity and reopen).
  */
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import type { ReactElement } from "react";
+
 import {
 	AlertCircle,
 	AlertTriangle,
@@ -14,6 +13,8 @@ import {
 	Info,
 	X,
 } from "lucide-react-native";
+import type { ReactElement } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
@@ -47,8 +48,7 @@ function look(
 ): { bg: string; fg: string; border: string } {
 	const hex = (key: string) => String(theme[key]);
 	if (variant === "outline") {
-		const tint =
-			color === "muted" ? hex("mutedForeground") : hex(color);
+		const tint = color === "muted" ? hex("mutedForeground") : hex(color);
 		return { bg: "transparent", fg: tint, border: tint };
 	}
 	if (variant === "subtle") {
@@ -164,7 +164,10 @@ function AlertTitle({
 	return (
 		<RNText
 			testID={testID}
-			style={applySlot([{ color: fg, fontSize: 15, fontWeight: "600" }, style], styles?.root)}
+			style={applySlot(
+				[{ color: fg, fontSize: 15, fontWeight: "600" }, style],
+				styles?.root,
+			)}
 		>
 			{children}
 		</RNText>
@@ -182,7 +185,10 @@ function AlertDescription({
 	return (
 		<RNText
 			testID={testID}
-			style={applySlot([{ color: fg, fontSize: 14, fontWeight: "400" }, style], styles?.root)}
+			style={applySlot(
+				[{ color: fg, fontSize: 14, fontWeight: "400" }, style],
+				styles?.root,
+			)}
 		>
 			{children}
 		</RNText>

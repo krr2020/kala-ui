@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 // Package-name import (not a relative path) — exercises the library's
 // package.json exports map exactly the way the playground app consumes it.

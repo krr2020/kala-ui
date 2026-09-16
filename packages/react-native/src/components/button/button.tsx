@@ -120,7 +120,10 @@ function baseStyle(
 		borderColor: look.border,
 		opacity: dimmed ? 0.5 : 1,
 		overflow: "hidden",
-		hitSlop: hitSlop > 0 ? { top: hitSlop, bottom: hitSlop, left: 0, right: 0 } : undefined,
+		hitSlop:
+			hitSlop > 0
+				? { top: hitSlop, bottom: hitSlop, left: 0, right: 0 }
+				: undefined,
 	};
 }
 
@@ -199,7 +202,16 @@ export function Button({
 					{children}
 				</Text>
 			) : (
-				<View style={{ alignItems: "center", justifyContent: "center" }}>
+				// row container so composed icon+label children sit inline —
+				// RN's default column stacks them vertically
+				<View
+					style={{
+						flexDirection: "row",
+						alignItems: "center",
+						justifyContent: "center",
+						gap: size === "lg" ? 10 : size === "md" ? 8 : 6,
+					}}
+				>
 					{children}
 				</View>
 			)}

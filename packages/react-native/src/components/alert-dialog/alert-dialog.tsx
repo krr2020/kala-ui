@@ -7,21 +7,22 @@
  * web radix alert semantics. The container surfaces as a single
  * accessibility alert element.
  */
-import { createContext, useContext, useRef, useState } from "react";
+
 import type { ReactElement } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 import {
 	KeyboardAvoidingView,
 	Modal,
 	Platform,
-	ScrollView,
 	Text as RNText,
+	ScrollView,
 	View,
 } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { applySlot } from "../slot-styles";
 import { tokens } from "../../tokens";
-import { Button } from "../button";
 import type { ButtonProps } from "../button";
+import { Button } from "../button";
+import { applySlot } from "../slot-styles";
 import type {
 	AlertDialogPartProps,
 	AlertDialogProps,
@@ -144,7 +145,9 @@ export function AlertDialog({
 						styles?.root,
 					)}
 				>
-					<AlertDialogContext.Provider value={{ close: () => onOpenChangeRef.current(false) }}>
+					<AlertDialogContext.Provider
+						value={{ close: () => onOpenChangeRef.current(false) }}
+					>
 						{children}
 					</AlertDialogContext.Provider>
 				</View>
@@ -174,7 +177,9 @@ function AlertDialogHeader({
 			]}
 		>
 			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={{ color: theme.foreground, fontSize: 14 }}>{children}</RNText>
+				<RNText style={{ color: theme.foreground, fontSize: 14 }}>
+					{children}
+				</RNText>
 			) : (
 				children
 			)}
@@ -207,7 +212,9 @@ function AlertDialogFooter({
 			]}
 		>
 			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={{ color: theme.foreground, fontSize: 14 }}>{children}</RNText>
+				<RNText style={{ color: theme.foreground, fontSize: 14 }}>
+					{children}
+				</RNText>
 			) : (
 				children
 			)}
@@ -225,7 +232,10 @@ function AlertDialogTitle({
 		<RNText
 			testID={testID}
 			accessibilityRole="header"
-			style={[{ color: theme.foreground, fontSize: 18, fontWeight: "600" }, style]}
+			style={[
+				{ color: theme.foreground, fontSize: 18, fontWeight: "600" },
+				style,
+			]}
 		>
 			{children}
 		</RNText>
@@ -262,7 +272,9 @@ function AlertDialogBody({
 			style={style}
 		>
 			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={{ color: theme.foreground, fontSize: 14 }}>{children}</RNText>
+				<RNText style={{ color: theme.foreground, fontSize: 14 }}>
+					{children}
+				</RNText>
 			) : (
 				children
 			)}

@@ -4,8 +4,9 @@
  * 44dp touch floor; Check/Minus indicators come from lucide like the web.
  * Indeterminate presses resolve to checked, matching web convention.
  */
-import type { ReactElement } from "react";
+
 import { Check, Minus } from "lucide-react-native";
+import type { ReactElement } from "react";
 import { Pressable, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
@@ -33,7 +34,7 @@ export function Checkbox({
 			}}
 			accessibilityRole="checkbox"
 			accessibilityLabel={accessibilityLabel}
-				accessibilityState={{
+			accessibilityState={{
 				// RN's tri-state vocabulary is "mixed", not "indeterminate"
 				checked: value === "indeterminate" ? "mixed" : value,
 				disabled: disabled || undefined,
@@ -51,22 +52,21 @@ export function Checkbox({
 		>
 			<View
 				testID="k-checkbox-box"
-				style={[{
-					width: BOX,
-					height: BOX,
-					borderRadius: 6,
-					alignItems: "center",
-					justifyContent: "center",
-					backgroundColor: active ? theme.primary : theme.card,
-					borderWidth: 1,
-				borderColor: active ? theme.primary : theme.border,
-				},
-				styles?.box,
-			]}
+				style={[
+					{
+						width: BOX,
+						height: BOX,
+						borderRadius: 6,
+						alignItems: "center",
+						justifyContent: "center",
+						backgroundColor: active ? theme.primary : theme.card,
+						borderWidth: 1,
+						borderColor: active ? theme.primary : theme.border,
+					},
+					styles?.box,
+				]}
 			>
-				{value === true && (
-					<Check size={14} color={theme.primaryForeground} />
-				)}
+				{value === true && <Check size={14} color={theme.primaryForeground} />}
 				{value === "indeterminate" && (
 					<Minus size={14} color={theme.primaryForeground} />
 				)}

@@ -133,32 +133,32 @@ export function List({
 					Array.from({ length: itemCount }, (_, index) => {
 						const slot = `skeleton-row-${index + 1}`;
 						return (
-						<View key={slot}>
-							<View
-								style={{
-									paddingHorizontal: dense || skDense ? 12 : 16,
-									paddingVertical: dense || skDense ? 8 : 12,
-								}}
-							>
-								<SkeletonRow
-									variant={variant}
-									dense={dense || skDense}
-									theme={theme}
-								/>
-							</View>
-							{showDividers && index < itemCount - 1 ? (
+							<View key={slot}>
 								<View
-									testID="k-list-divider"
 									style={{
-										height: 1,
-										alignSelf: "stretch",
-										backgroundColor: String(theme.separator),
+										paddingHorizontal: dense || skDense ? 12 : 16,
+										paddingVertical: dense || skDense ? 8 : 12,
 									}}
-								/>
+								>
+									<SkeletonRow
+										variant={variant}
+										dense={dense || skDense}
+										theme={theme}
+									/>
+								</View>
+								{showDividers && index < itemCount - 1 ? (
+									<View
+										testID="k-list-divider"
+										style={{
+											height: 1,
+											alignSelf: "stretch",
+											backgroundColor: String(theme.separator),
+										}}
+									/>
 								) : null}
 							</View>
-							);
-						})}
+						);
+					})}
 			</View>
 		);
 	}
@@ -178,23 +178,23 @@ export function List({
 						? (item as { key?: unknown }).key
 						: null;
 				const rowKey =
-					(typeof own === "string" || typeof own === "number")
+					typeof own === "string" || typeof own === "number"
 						? own
 						: `row-${index}`;
 				return (
 					<View key={rowKey}>
-					{item}
-					{divided && index < last ? (
-						<View
-							testID="k-list-divider"
-							style={{
-								height: 1,
-								alignSelf: "stretch",
-								backgroundColor: String(theme.separator),
-							}}
-						/>
-					) : null}
-				</View>
+						{item}
+						{divided && index < last ? (
+							<View
+								testID="k-list-divider"
+								style={{
+									height: 1,
+									alignSelf: "stretch",
+									backgroundColor: String(theme.separator),
+								}}
+							/>
+						) : null}
+					</View>
 				);
 			})}
 		</View>

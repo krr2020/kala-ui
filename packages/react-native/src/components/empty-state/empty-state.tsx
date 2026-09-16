@@ -4,14 +4,15 @@
  * announces as a summary labelled with the title, and the action is a
  * 44dp-floor pressable. isLoading swaps the body for skeleton rows.
  */
-import type { ReactElement } from "react";
+
 import { Inbox } from "lucide-react-native";
+import type { ReactElement } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { applySlot } from "../slot-styles";
+import { tokens } from "../../tokens";
 import { Icon } from "../icon";
 import { Skeleton } from "../skeleton";
-import { tokens } from "../../tokens";
+import { applySlot } from "../slot-styles";
 import type { EmptyStateIcon, EmptyStateProps } from "./empty-state.types";
 
 const MIN_HEIGHT = { sm: 150, md: 300, lg: 500 } as const;
@@ -40,15 +41,27 @@ export function EmptyState({
 		borderWidth: 1,
 		borderStyle: "dashed" as const,
 		borderColor: destructive ? theme.destructive : theme.border,
-		backgroundColor: destructive ? `${theme.destructive}1A` : `${theme.muted}33`,
+		backgroundColor: destructive
+			? `${theme.destructive}1A`
+			: `${theme.muted}33`,
 	};
 
 	if (isLoading) {
 		return (
 			<View testID={testID} style={surface}>
-				<Skeleton animated={false} variant="circle" style={{ width: 64, height: 64 }} />
-				<Skeleton animated={false} style={{ width: 140, height: 14, marginTop: 16 }} />
-				<Skeleton animated={false} style={{ width: 200, height: 12, marginTop: 8 }} />
+				<Skeleton
+					animated={false}
+					variant="circle"
+					style={{ width: 64, height: 64 }}
+				/>
+				<Skeleton
+					animated={false}
+					style={{ width: 140, height: 14, marginTop: 16 }}
+				/>
+				<Skeleton
+					animated={false}
+					style={{ width: 200, height: 12, marginTop: 8 }}
+				/>
 			</View>
 		);
 	}
@@ -66,14 +79,17 @@ export function EmptyState({
 			<View
 				testID="k-empty-state-icon"
 				accessibilityElementsHidden={true}
-				style={applySlot({
-					width: 80,
-					height: 80,
-					borderRadius: 999,
-					backgroundColor: theme.muted,
-					alignItems: "center",
-					justifyContent: "center",
-				}, styles?.icon)}
+				style={applySlot(
+					{
+						width: 80,
+						height: 80,
+						borderRadius: 999,
+						backgroundColor: theme.muted,
+						alignItems: "center",
+						justifyContent: "center",
+					},
+					styles?.icon,
+				)}
 			>
 				<Icon icon={IconComponent} size="xl" color={theme.mutedForeground} />
 			</View>
@@ -115,17 +131,24 @@ export function EmptyState({
 					accessibilityRole="button"
 					accessibilityLabel={action.label}
 					onPress={action.onPress}
-					style={applySlot({
-						minHeight: 44,
-						paddingHorizontal: 16,
-						borderRadius: tokens.radius.control,
-						backgroundColor: theme.primary,
-						alignItems: "center",
-						justifyContent: "center",
-					}, styles?.action)}
+					style={applySlot(
+						{
+							minHeight: 44,
+							paddingHorizontal: 16,
+							borderRadius: tokens.radius.control,
+							backgroundColor: theme.primary,
+							alignItems: "center",
+							justifyContent: "center",
+						},
+						styles?.action,
+					)}
 				>
 					<RNText
-						style={{ color: theme.primaryForeground, fontSize: 14, fontWeight: "600" }}
+						style={{
+							color: theme.primaryForeground,
+							fontSize: 14,
+							fontWeight: "600",
+						}}
 					>
 						{action.label}
 					</RNText>

@@ -6,8 +6,9 @@
  * #RRGGBBAA hex alpha (10% ≈ "1A"). The remove affordance is a full 44dp
  * pressable pulled in with negative margins so the chip stays compact.
  */
-import type { ReactElement } from "react";
+
 import { X } from "lucide-react-native";
+import type { ReactElement } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Icon } from "../icon";
