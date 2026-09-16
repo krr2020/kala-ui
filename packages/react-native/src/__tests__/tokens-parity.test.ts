@@ -302,6 +302,15 @@ describe("layout restructure pins", () => {
 			space: { controlPx: 16, cardPad: 24, gutter: 16 },
 			size: {
 				controlH: 40,
+				font: {
+					xs: 12,
+					sm: 14,
+					md: 16,
+					lg: 18,
+					xl: 20,
+					"2xl": 24,
+					"3xl": 30,
+					},
 				icon: { xs: 14, sm: 16, md: 20, lg: 24, xl: 32 },
 			},
 			motion: {

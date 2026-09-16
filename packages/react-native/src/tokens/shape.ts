@@ -21,7 +21,16 @@ export const shape = {
 	},
 	size: {
 		controlH: 40,
-		// icon glyph ramp — the Icon size tiers resolve here, never raw px
+		// Text/Icon size tiers resolve here, never raw px
+		font: {
+			xs: 12,
+			sm: 14,
+			md: 16,
+			lg: 18,
+			xl: 20,
+			"2xl": 24,
+			"3xl": 30,
+		},
 		icon: {
 			xs: 14,
 			sm: 16,
