@@ -1,6 +1,6 @@
 /**
- * Non-component wiring for List: size tables, the shared divider
- * factory, skeleton row dimensions, and the themed card surface.
+ * Non-component wiring for List: size tables, skeleton row dimensions,
+ * the shared divider factory, and the themed card surface.
  */
 import type { ViewStyle } from "react-native";
 import { tokens } from "../../tokens";
@@ -18,6 +18,13 @@ export const AVATAR_SIZES: Record<ListItemIconSize, number> = {
 	md: 40,
 	lg: 48,
 };
+
+/** Skeleton row geometry — line height and leading circle diameters. */
+export const SKELETON = {
+	lineH: { dense: 12, regular: 16 },
+	avatarCircle: 32,
+	iconCircle: { dense: 16, regular: 20 },
+} as const;
 
 /** 1px full-bleed separator row drawn between items regardless of dense padding. */
 export function dividerStyle(theme: KalaTheme): ViewStyle {

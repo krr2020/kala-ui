@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { fireEvent, render } from "@testing-library/react-native";
 import { Linking, Text } from "react-native";
 import { tokens } from "../../tokens";
@@ -190,6 +191,21 @@ describe("List sub-components", () => {
 		}
 	});
 
+	it("ListItemAvatar maps sm/md/lg to the AVATAR_SIZES table", async () => {
+		const dims = [32, 40, 48];
+		for (const [i, size] of ["sm", "md", "lg"].entries()) {
+			const screen = await render(
+				<ListItemAvatar
+					name="Ada Lovelace"
+					size={size as "sm" | "md" | "lg"}
+				/>,
+			);
+			const s = flatStyle(node(screen, "k-list-item-avatar"));
+			expect(Number(s.width)).toBe(dims[i]);
+			expect(Number(s.borderRadius)).toBe(dims[i] / 2);
+		}
+	});
+
 	it("ListItemAvatar falls back to initials when the image errors", async () => {
 		const screen = await render(
 			<ListItemAvatar
@@ -284,6 +300,50 @@ describe("List loading arm", () => {
 		);
 		expect(custom.getByTestId("k-list")).toBeTruthy();
 		expect(custom.getByText("custom")).toBeTruthy();
+	});
+});
+
+describe("List source pins", () => {
+	it("list.styles.ts is the only size-table declarer in the folder", () => {
+		const dir = `${__dirname}/../list`;
+		for (const file of [
+			"list",
+			"list-skeleton",
+			"list-item",
+			"list-item-icon",
+			"list-item-avatar",
+			"list-item-content",
+			"list-item-title",
+			"list-item-text",
+			"list-item-action",
+			"list-item-badge",
+		]) {
+			const src = readFileSync(`${dir}/${file}.tsx`, "utf8");
+			expect(
+				`${file}.tsx declares a size table: ${src.match(/(ICON_SIZES|AVATAR_SIZES)\s*=/)}`,
+			).toBe(`${file}.tsx declares a size table: null`);
+			expect(
+				`${file}.tsx inlines the icon size ramp: ${src.match(/sm: 16|md: 20|lg: 24/)}`,
+			).toBe(`${file}.tsx inlines the icon size ramp: null`);
+		}
+	});
+
+	it("index barrel exports the 9 public components, not SkeletonRow", () => {
+		const index = readFileSync(`${__dirname}/../list/index.ts`, "utf8");
+		expect(index).not.toMatch(/SkeletonRow/);
+		for (const name of [
+			"List",
+			"ListItem",
+			"ListItemIcon",
+			"ListItemAvatar",
+			"ListItemContent",
+			"ListItemTitle",
+			"ListItemText",
+			"ListItemAction",
+			"ListItemBadge",
+		]) {
+			expect(index).toMatch(new RegExp(`\\b${name}\\b`));
+		}
 	});
 });
 
