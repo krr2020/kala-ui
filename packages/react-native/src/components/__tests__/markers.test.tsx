@@ -753,9 +753,8 @@ describe("component markers", () => {
 				.mockReturnValue({ theme: themes.dark });
 			try {
 				// a silently-bound import would leave the light theme active and
-				// fail here — light.success != dark.success, so this arm can never
+				// fail below — light.success != dark.success, so this arm can never
 				// pass against the wrong theme
-				expect(unistyles.useUnistyles().theme).toBe(themes.dark);
 				const screen = await render(<Avatar name="A" status="online" />);
 				const dot = flatStyle(screen.getByTestId("k-avatar-status"));
 				expect(String(dot.backgroundColor)).toBe(themes.dark.success);
