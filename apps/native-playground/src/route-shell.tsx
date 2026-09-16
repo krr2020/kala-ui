@@ -6,7 +6,7 @@ import { componentGroups } from "./demos/components/registry";
 import { demoStyles } from "./demos/stylesheet";
 
 // themes whose backgrounds are dark → light status-bar icons
-const DARK_THEMES = new Set(["dark", "dark-accent", "high-contrast-dark"]);
+const DARK_THEMES = new Set(["dark", "high-contrast-dark"]);
 
 // Two-row filter navigation: row 1 picks a group, row 2 picks a
 // component inside it. Selecting a group auto-selects its first

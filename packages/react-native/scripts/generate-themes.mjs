@@ -84,16 +84,12 @@ const toValue = (value) =>
 
 const SOURCES = {
 	light: [':root'],
-	neutral: ['.neutral'],
-	accent: [':root', '.accent'],
 	dark: ['.dark'],
-	'dark-accent': ['.dark', '.dark.accent'],
 	'high-contrast-light': ['.high-contrast-light'],
 	'high-contrast-dark': ['.high-contrast-dark'],
 };
 
 const varNames = {
-	'dark-accent': 'darkAccent',
 	'high-contrast-light': 'highContrastLight',
 	'high-contrast-dark': 'highContrastDark',
 };
@@ -103,9 +99,10 @@ const lines = [
 	'',
 	'// Transcribed from packages/react/src/styles/globals.css — regenerate with',
 	'// `node scripts/generate-themes.mjs`; parity with the CSS is enforced by',
-	'// src/__tests__/tokens-parity.test.ts. The `accent` theme is :root merged',
-	'// with the .accent overrides; `dark-accent` is .dark merged with .dark.accent',
-	'// (CSS cascade semantics). Colors are hex; alphas/spreads are numbers.',
+	'// src/__tests__/tokens-parity.test.ts. Mobile ships light/dark plus the',
+	'// high-contrast a11y pair; web-only brand variants (neutral/accent/',
+	'// dark-accent) are deliberately not transcribed. Colors are hex;',
+	'// alphas/spreads are numbers.',
 ];
 for (const [themeName, selectors] of Object.entries(SOURCES)) {
 	const merged = new Map();
@@ -130,10 +127,7 @@ for (const [themeName, selectors] of Object.entries(SOURCES)) {
 lines.push(
 	'export const themes = {',
 	'\tlight,',
-	'\tneutral,',
-	'\taccent,',
 	'\tdark,',
-	'\t"dark-accent": darkAccent,',
 	'\t"high-contrast-light": highContrastLight,',
 	'\t"high-contrast-dark": highContrastDark,',
 	'} as const satisfies Record<ThemeName, KalaTheme>;',

@@ -130,10 +130,7 @@ const blocks = parseBlocks(css);
 
 const EXPECTED_SELECTORS = [
 	":root",
-	".neutral",
-	".accent",
 	".dark",
-	".dark.accent",
 	".high-contrast-light",
 	".high-contrast-dark",
 ] as const;
@@ -141,10 +138,7 @@ const EXPECTED_SELECTORS = [
 /** CSS block composition per native theme (cascade semantics made explicit). */
 const THEME_SOURCES: Record<ThemeName, string[]> = {
 	light: [":root"],
-	neutral: [".neutral"],
-	accent: [":root", ".accent"],
 	dark: [".dark"],
-	"dark-accent": [".dark", ".dark.accent"],
 	"high-contrast-light": [".high-contrast-light"],
 	"high-contrast-dark": [".high-contrast-dark"],
 };
@@ -170,7 +164,7 @@ function resolvedCssTheme(name: ThemeName): Map<string, string | number> {
 }
 
 describe("globals.css tokenizer", () => {
-	it("finds all seven theme blocks", () => {
+	it("finds all four theme blocks", () => {
 		for (const selector of EXPECTED_SELECTORS) {
 			expect(blocks.has(selector), selector).toBe(true);
 		}
@@ -183,14 +177,11 @@ describe("globals.css tokenizer", () => {
 });
 
 describe("theme parity with globals.css", () => {
-	it("exports exactly 7 themes", () => {
+	it("exports exactly 4 themes", () => {
 		expect(Object.keys(themes).sort()).toEqual(
 			[
 				"light",
-				"neutral",
-				"accent",
 				"dark",
-				"dark-accent",
 				"high-contrast-light",
 				"high-contrast-dark",
 			].sort(),
@@ -208,18 +199,10 @@ describe("theme parity with globals.css", () => {
 		});
 	}
 
-	it("accent carries the .accent overrides (not silently dropped)", () => {
-		const accent = themes.accent as Record<string, string | number>;
-		expect(accent.cardBorderAlpha).toBe(0);
-		expect(accent.shadowAlpha).toBe(0.1);
-		expect(accent.shadowSpread).toBe(25);
-	});
-
-	it("dark-accent carries the .dark.accent overrides (not silently dropped)", () => {
-		const darkAccent = themes["dark-accent"] as Record<string, string | number>;
-		expect(darkAccent.background).toBe(hslToHex("hsl(224 76% 48%)"));
-		expect(darkAccent.backgroundAlpha).toBe(0.05);
-		expect(darkAccent.cardBorderAlpha).toBe(0);
+	it("dark carries the .dark block (not silently :root)", () => {
+		const dark = themes.dark as Record<string, string | number>;
+		expect(dark.background).toBe("#151c29");
+		expect(dark.background).not.toBe((themes.light as Record<string, string | number>).background);
 	});
 
 	it("a deleted token breaks parity (missing-token detection works)", () => {
