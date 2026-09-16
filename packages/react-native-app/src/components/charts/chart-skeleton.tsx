@@ -20,9 +20,9 @@ export function ChartSkeleton({
 		<View testID={testID} style={[{ gap: 12 }, style, styles?.root]}>
 			<Skeleton style={{ height, width: "100%" }} />
 			<View style={{ flexDirection: "row", gap: 12, justifyContent: "center" }}>
-				{Array.from({ length: legendCount }).map((_, i) => (
-					// biome-ignore lint/suspicious/noArrayIndexKey: fixed-length placeholder rows, never reordered
+				{Array.from({ length: legendCount }, (_, i) => (
 					<View
+						// biome-ignore lint/suspicious/noArrayIndexKey: fixed-length placeholder rows, never reordered
 						key={`legend-${i}`}
 						style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
 					>

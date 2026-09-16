@@ -291,8 +291,9 @@ describe("component app seam", () => {
 		expect(dividerAt).toBeLessThan(themeRowEnd);
 		// exactly one divider in that window (no double hairline).
 		expect(
-			shell.slice(themeRowStart, themeRowEnd).match(/demoStyles\.rowDivider/g)
-				?? [],
+			shell
+				.slice(themeRowStart, themeRowEnd)
+				.match(/demoStyles\.rowDivider/g) ?? [],
 		).toHaveLength(1);
 	});
 
@@ -328,7 +329,7 @@ describe("component app seam", () => {
 			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
 			"utf8",
 		);
-		const themeChipStart = shell.indexOf('k-theme-${name}');
+		const themeChipStart = shell.indexOf("k-theme-${name}");
 		expect(themeChipStart, "theme chip marker exists").toBeGreaterThan(-1);
 		const themeChipEnd = shell.indexOf("</Pressable>", themeChipStart);
 		expect(themeChipEnd, "theme chip Pressable closes").toBeGreaterThan(
@@ -350,9 +351,9 @@ describe("component app seam", () => {
 		const groupChip = block("groupChip");
 		const filterChip = block("filterChip");
 		expect(groupChip).not.toMatch(/borderColor: theme\.foreground/);
-		expect(
-			groupChip.replace("groupChip", ""),
-		).toBe(filterChip.replace("filterChip", ""));
+		expect(groupChip.replace("groupChip", "")).toBe(
+			filterChip.replace("filterChip", ""),
+		);
 		expect(groupChip).not.toMatch(/padding/);
 		expect(filterChip).not.toMatch(/padding/);
 	});
@@ -378,6 +379,10 @@ describe("component app seam", () => {
 					'accessibilityLabel="error field"': 1,
 					'accessibilityLabel="press me"': 1,
 					'accessibilityLabel="sun button"': 1,
+					'accessibilityLabel="save"': 1,
+					'accessibilityLabel="share"': 1,
+					'accessibilityLabel="next"': 1,
+					'accessibilityLabel="more"': 1,
 					'accessibilityLabel="open confirm dialog"': 1,
 					'accessibilityLabel="open demo dialog"': 1,
 					'accessibilityLabel="open demo sheet"': 1,
@@ -388,11 +393,11 @@ describe("component app seam", () => {
 					'accessibilityLabel="show toast"': 1,
 					'accessibilityLabel="sync"': 1,
 					'accessibilityLabel="volume"': 1,
-                        'accessibilityLabel="app components section"': 1,
+					'accessibilityLabel="app components section"': 1,
 					'accessibilityLabel="library components section"': 1,
-						"accessibilityLabel={`activate ${name} theme`}": 1,
-						"accessibilityLabel={`select ${name} group`}": 1,
-						"accessibilityLabel={`show ${name} preview`}": 1,
+					"accessibilityLabel={`activate ${name} theme`}": 1,
+					"accessibilityLabel={`select ${name} group`}": 1,
+					"accessibilityLabel={`show ${name} preview`}": 1,
 					'testID="k-demo-accordion"': 1,
 					'testID="k-demo-avatars"': 1,
 					'testID="k-demo-badges"': 1,

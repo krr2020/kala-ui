@@ -5,7 +5,7 @@
  * dumps transformed output for modules matching
  * KALA_DUMP_TRANSFORM=<substring> when debugging transform issues.
  */
-const path = require("path");
+const path = require("node:path");
 
 // jest-expo resolves babel-jest from its own dependency graph; resolving
 // from the preset's context keeps the version pinned to what the preset

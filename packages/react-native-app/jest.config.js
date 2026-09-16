@@ -14,8 +14,8 @@ module.exports = {
 		"^lucide-react-native$":
 			"<rootDir>/../react-native/node_modules/lucide-react-native/dist/cjs/lucide-react-native.js",
 		"^react-native-unistyles$": require.resolve("react-native-unistyles"),
-		"^react-native-unistyles/mocks$": require("path").join(
-			require("path").dirname(require.resolve("react-native-unistyles")),
+		"^react-native-unistyles/mocks$": require("node:path").join(
+			require("node:path").dirname(require.resolve("react-native-unistyles")),
 			"mocks.js",
 		),
 		"^@kala-ui/react-native$": "<rootDir>/../react-native/src/index.ts",
