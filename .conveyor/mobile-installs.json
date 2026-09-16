@@ -1,0 +1,11 @@
+{
+	"version": 1,
+	"installs": [
+		{
+			"device": "android:Pixel_8a",
+			"appId": "com.anonymous.kalanativeplayground",
+			"path": "/Users/rk/workspace/kala-ui/apps/native-playground/android/app/build/outputs/apk/release/app-release.apk",
+			"installedAt": 1789561868116
+		}
+	]
+}

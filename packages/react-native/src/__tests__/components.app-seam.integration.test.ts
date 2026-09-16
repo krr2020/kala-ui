@@ -263,11 +263,24 @@ describe("component app seam", () => {
 		expect(shell).toMatch(/\{group\.title\} · \{component\.label\}/);
 		expect(shell).toMatch(/Kala UI · Native/);
 		expect(shell).not.toMatch(/kala-ui · native/);
-		// the switcher strip is the FIRST header tier — pinned above the
-		// group/component chip rows, outside the scrolling preview content.
+		// the switcher strip is the ONLY pinned tier: it stays inside the
+		// SafeAreaView before the content ScrollView opens, while the group/
+		// component chip rows live INSIDE the scrolling routeContent.
 		expect(shell.indexOf("demoStyles.themeRow")).toBeLessThan(
 			shell.indexOf("demoStyles.chipRows"),
 		);
+		const contentScrollAt = shell.indexOf("demoStyles.routeContent");
+		expect(contentScrollAt).toBeGreaterThan(-1);
+		expect(shell.indexOf("demoStyles.themeRow")).toBeLessThan(contentScrollAt);
+		expect(shell.indexOf("demoStyles.chipRows")).toBeGreaterThan(
+			contentScrollAt,
+		);
+		expect(shell.indexOf("{preview()}"), "preview renders after chipRows").toBeGreaterThan(
+			shell.indexOf("demoStyles.chipRows"),
+		);
+		// chipRows is the first scrolling child — no stray chipRows View
+		// remains between the fixed divider and the content ScrollView.
+		expect(shell.slice(0, contentScrollAt)).not.toMatch(/demoStyles\.chipRows/);
 		// the strip is one non-wrapping scroll row (horizontal ScrollView)
 		// and its chips carry humanized title-case labels like the other rows.
 		const themeRowStart = shell.indexOf("demoStyles.themeRow");
@@ -310,6 +323,13 @@ describe("component app seam", () => {
 		};
 		const chipRows = block("chipRows");
 		expect(chipRows).toMatch(/paddingTop: (?:8|1[0-9]|2[0-9]|3[0-9])/);
+		// scrolling tier keeps its hairline seam but drops the opaque fill —
+		// the content ScrollView's own background covers overscroll now —
+		// and breaks out of the screen's 16px gutter so the horizontal chip
+		// rows span the full width (their own chipRowContent re-insets 16).
+		expect(chipRows).toMatch(/borderBottomWidth: 1/);
+		expect(chipRows).not.toMatch(/backgroundColor/);
+		expect(chipRows).toMatch(/marginHorizontal: -16/);
 		// vertical rhythm: theme strip bottom pad + 1px divider + group-row
 		// top pad lands in a comfortable 16–40dp band.
 		const themeRow = block("themeRow");

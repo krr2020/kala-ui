@@ -88,17 +88,18 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		paddingRight: 16,
 	},
 	chipRows: {
-		// gap + 1px inner divider == theme↔group seam (10 + 1 + 10) so all
-		// three header rows sit on one vertical rhythm; the gap pads BOTH
-		// sides of the inner divider, so the inner seam is 2×gap + 1
+		// gap + 1px inner divider == theme↔group seam (10 + 1 + 10) so the
+		// header rows sit on one vertical rhythm; the gap pads BOTH sides of
+		// the inner divider, so the inner seam is 2×gap + 1
 		gap: 10,
 		paddingTop: 10,
 		paddingBottom: 12,
 		borderBottomWidth: 1,
 		borderBottomColor: theme.border,
-		// sits above the themed content ScrollView — without an explicit
-		// fill the raw Android window background shows through
-		backgroundColor: theme.background,
+		// scrolls inside the content ScrollView — break out of its 16px
+		// gutter so the horizontal rows span full width; the ScrollView's
+		// own background covers the overscroll, no opaque fill needed here
+		marginHorizontal: -16,
 	},
 	// persistent theme switcher strip under the chip rows — theme-axis
 	// padding mirrors the content inset while staying out of the scroll

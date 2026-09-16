@@ -137,74 +137,91 @@ export function RouteShell() {
 				</ScrollView>
 			</View>
 			<View style={demoStyles.rowDivider} />
-			<View style={demoStyles.chipRows}>
-				<ScrollView
-					horizontal
-					style={demoStyles.routeBar}
-					contentContainerStyle={[demoStyles.picker, demoStyles.chipRowContent]}
-					showsHorizontalScrollIndicator={false}
-				>
-					{groupEntries("library").length > 0 && (
-						<View style={demoStyles.segment}>
-							<Text
-								style={[demoStyles.sectionHeader, demoStyles.sectionHeaderText]}
-								accessibilityRole="header"
-								accessibilityLabel="library components section"
-							>
-								Components
-							</Text>
-							{groupEntries("library").map(renderGroupChip)}
-						</View>
-					)}
-					{groupEntries("app").length > 0 && (
-						<View style={demoStyles.segment}>
-							<Text
-								style={[demoStyles.sectionHeader, demoStyles.sectionHeaderText]}
-								accessibilityRole="header"
-								accessibilityLabel="app components section"
-							>
-								App Components
-							</Text>
-							{groupEntries("app").map(renderGroupChip)}
-						</View>
-					)}
-				</ScrollView>
-				<View style={demoStyles.rowDivider} />
-				<ScrollView
-					ref={componentRow}
-					horizontal
-					style={demoStyles.routeBar}
-					contentContainerStyle={[demoStyles.picker, demoStyles.chipRowContent]}
-					showsHorizontalScrollIndicator={false}
-				>
-					{group.components.map(({ name, label }, index) => {
-						const on = index === componentIndex;
-						return (
-							<Pressable
-								key={`${group.name}-${name}`}
-								accessibilityRole="button"
-								accessibilityLabel={`show ${name} preview`}
-								onPress={() => selectComponent(index)}
-								style={[
-									demoStyles.chip,
-									demoStyles.filterChip,
-									on && demoStyles.chipActive,
-								]}
-							>
-								<Text
-									style={[demoStyles.chipText, on && demoStyles.chipTextActive]}
-								>
-									{label}
-								</Text>
-							</Pressable>
-						);
-					})}
-				</ScrollView>
-			</View>
+			{/* only the theme row is pinned; the group/component rows scroll
+			away with the preview so long demos get the full screen */}
 			<ScrollView
 				style={demoStyles.screen}
 				contentContainerStyle={demoStyles.routeContent}
 			>
+				<View style={demoStyles.chipRows}>
+					<ScrollView
+						horizontal
+						style={demoStyles.routeBar}
+						contentContainerStyle={[
+							demoStyles.picker,
+							demoStyles.chipRowContent,
+						]}
+						showsHorizontalScrollIndicator={false}
+					>
+						{groupEntries("library").length > 0 && (
+							<View style={demoStyles.segment}>
+								<Text
+									style={[
+										demoStyles.sectionHeader,
+										demoStyles.sectionHeaderText,
+									]}
+									accessibilityRole="header"
+									accessibilityLabel="library components section"
+								>
+									Components
+								</Text>
+								{groupEntries("library").map(renderGroupChip)}
+							</View>
+						)}
+						{groupEntries("app").length > 0 && (
+							<View style={demoStyles.segment}>
+								<Text
+									style={[
+										demoStyles.sectionHeader,
+										demoStyles.sectionHeaderText,
+									]}
+									accessibilityRole="header"
+									accessibilityLabel="app components section"
+								>
+									App Components
+								</Text>
+								{groupEntries("app").map(renderGroupChip)}
+							</View>
+						)}
+					</ScrollView>
+					<View style={demoStyles.rowDivider} />
+					<ScrollView
+						ref={componentRow}
+						horizontal
+						style={demoStyles.routeBar}
+						contentContainerStyle={[
+							demoStyles.picker,
+							demoStyles.chipRowContent,
+						]}
+						showsHorizontalScrollIndicator={false}
+					>
+						{group.components.map(({ name, label }, index) => {
+							const on = index === componentIndex;
+							return (
+								<Pressable
+									key={`${group.name}-${name}`}
+									accessibilityRole="button"
+									accessibilityLabel={`show ${name} preview`}
+									onPress={() => selectComponent(index)}
+									style={[
+										demoStyles.chip,
+										demoStyles.filterChip,
+										on && demoStyles.chipActive,
+									]}
+								>
+									<Text
+										style={[
+											demoStyles.chipText,
+											on && demoStyles.chipTextActive,
+										]}
+									>
+										{label}
+									</Text>
+								</Pressable>
+							);
+						})}
+					</ScrollView>
+				</View>
 				<Text style={demoStyles.current}>Kala UI · Native</Text>
 				<Text style={demoStyles.sectionTitle}>
 					{group.title} · {component.label}
