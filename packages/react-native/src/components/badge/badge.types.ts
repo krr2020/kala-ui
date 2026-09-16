@@ -13,7 +13,6 @@ export type BadgeColor =
 	| "muted";
 export type BadgeShape = "rounded" | "pill";
 
-/** Slot-style overrides — surgical per-part customization. */
 export interface BadgeProps {
 	children?: ReactNode;
 	variant?: BadgeVariant;

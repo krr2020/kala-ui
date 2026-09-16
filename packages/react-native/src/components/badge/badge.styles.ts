@@ -10,28 +10,33 @@ export const RADIUS: Record<BadgeShape, number> = {
 	pill: 999,
 };
 
-/** 'muted' has no ramp of its own — same borrow the web config makes. */
-const baseColor = (
-	color: BadgeColor,
-):
-	| "primary"
-	| "secondary"
-	| "destructive"
-	| "success"
-	| "warning"
-	| "info"
-	| "muted" => color;
+export interface BadgeLook {
+	/** surface fill; "transparent" for outline */
+	bg: string;
+	/** text hue for string/number children */
+	fg: string;
+	/** border hue; "transparent" when the variant draws no border */
+	border: string;
+	/** border width — outline is the only variant that draws one */
+	borderWidth: number;
+}
 
+/** 'muted' has no ramp of its own — each variant borrows, same as the web config. */
 export function look(
 	variant: BadgeVariant,
 	color: BadgeColor,
 	theme: KalaTheme,
-): { bg: string; fg: string; border: string } {
+): BadgeLook {
 	const hex = (key: ThemeToken) => String(theme[key]);
+
 	if (variant === "outline") {
-		const tint =
-			color === "muted" ? hex("mutedForeground") : hex(baseColor(color));
-		return { bg: "transparent", fg: tint, border: tint };
+		const tint = color === "muted" ? "mutedForeground" : color;
+		return {
+			bg: "transparent",
+			fg: hex(tint),
+			border: hex(tint),
+			borderWidth: 1,
+		};
 	}
 	if (variant === "subtle") {
 		if (color === "muted") {
@@ -39,16 +44,23 @@ export function look(
 				bg: hex("muted"),
 				fg: hex("mutedForeground"),
 				border: "transparent",
+				borderWidth: 0,
 			};
 		}
-		const tint = hex(baseColor(color));
-		return { bg: `${tint}1A`, fg: tint, border: "transparent" };
+		const tint = hex(color);
+		return {
+			bg: `${tint}1A`,
+			fg: tint,
+			border: "transparent",
+			borderWidth: 0,
+		};
 	}
-	// solid
-	const base = color === "muted" ? "accent" : baseColor(color);
+	// solid — muted borrows the accent surface pair
+	const base = color === "muted" ? "accent" : color;
 	return {
 		bg: hex(base),
 		fg: hex(`${base}Foreground`),
 		border: "transparent",
+		borderWidth: 0,
 	};
 }

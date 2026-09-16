@@ -1,5 +1,6 @@
 import { Badge } from "@kala-ui/react-native";
 import { View } from "react-native";
+import { useUnistyles } from "react-native-unistyles";
 import { DemoBlock } from "../demo-block";
 import { demoStyles } from "../stylesheet";
 
@@ -16,6 +17,7 @@ const COLORS = [
 const SHAPES = ["rounded", "pill"] as const;
 
 export function BadgeDemo() {
+	const { theme } = useUnistyles();
 	return (
 		<View testID="k-demo-badges" style={demoStyles.routeContent}>
 			<DemoBlock label="variants">
@@ -50,6 +52,24 @@ export function BadgeDemo() {
 					<Badge color="destructive">1</Badge>
 					<Badge color="destructive">12</Badge>
 					<Badge color="destructive">99+</Badge>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="slot overrides">
+				<View style={demoStyles.componentRow}>
+					<Badge variant="outline">default</Badge>
+					<Badge
+						variant="outline"
+						style={{ marginRight: 8 }}
+						slotStyles={{
+							root: {
+								borderWidth: 2,
+								borderColor: theme.destructive,
+								borderRadius: 999,
+							},
+						}}
+					>
+						slotStyles
+					</Badge>
 				</View>
 			</DemoBlock>
 		</View>
