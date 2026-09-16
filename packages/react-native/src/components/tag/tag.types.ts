@@ -22,7 +22,9 @@ export interface TagProps {
 	/** Icon rendered before the label. */
 	icon?: ReactNode;
 	children?: ReactNode;
-	/** slotStyles: root wins over the library surface. */
+	/** Root layout/positioning; sits below `slotStyles.root`. */
+	style?: StyleProp<ViewStyle>;
+	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
 		remove?: StyleProp<ViewStyle>;

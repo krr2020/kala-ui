@@ -1,6 +1,7 @@
-import { Tag } from "@kala-ui/react-native";
+import { Icon, Tag } from "@kala-ui/react-native";
 import { Sun } from "lucide-react-native";
 import { View } from "react-native";
+import { useUnistyles } from "react-native-unistyles";
 import { DemoBlock } from "../demo-block";
 import { demoStyles } from "../stylesheet";
 
@@ -16,6 +17,7 @@ const COLORS = [
 const SIZES = ["sm", "md", "lg"] as const;
 
 export function TagDemo() {
+	const { theme } = useUnistyles();
 	return (
 		<View testID="k-demo-tag" style={demoStyles.routeContent}>
 			<DemoBlock label="variants">
@@ -50,10 +52,27 @@ export function TagDemo() {
 					<Tag onRemove={() => undefined}>removable</Tag>
 					<Tag
 						variant="outline"
-						icon={<Sun size={14} />}
+						icon={<Icon icon={Sun} size="xs" color={theme.foreground} />}
 						onRemove={() => undefined}
 					>
 						icon + remove
+					</Tag>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="slot overrides">
+				<View style={demoStyles.componentRow}>
+					<Tag>default</Tag>
+					<Tag
+						style={{ marginRight: 8 }}
+						slotStyles={{
+							root: {
+								borderWidth: 2,
+								borderColor: theme.destructive,
+								backgroundColor: theme.background,
+							},
+						}}
+					>
+						slotStyles
 					</Tag>
 				</View>
 			</DemoBlock>

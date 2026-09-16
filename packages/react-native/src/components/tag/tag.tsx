@@ -23,6 +23,7 @@ export function Tag({
 	onRemove,
 	icon,
 	children,
+	style,
 	slotStyles,
 	testID = "k-tag",
 }: TagProps): ReactElement {
@@ -33,24 +34,35 @@ export function Tag({
 		<View
 			testID={testID}
 			style={applySlot(
-				{
-					flexDirection: "row",
-					alignItems: "center",
-					alignSelf: "flex-start",
-					gap: 4,
-					paddingHorizontal: PAD_H[size],
-					paddingVertical: PAD_V[size],
-					borderRadius: 999,
-					backgroundColor: bg,
-					borderWidth: variant === "outline" ? 1 : 0,
-					borderColor: border,
-				},
+				applySlot(
+					{
+						flexDirection: "row",
+						alignItems: "center",
+						alignSelf: "flex-start",
+						gap: 4,
+						paddingHorizontal: PAD_H[size],
+						paddingVertical: PAD_V[size],
+						borderRadius: 999,
+						backgroundColor: bg,
+						borderWidth: variant === "outline" ? 1 : 0,
+						borderColor: border,
+					},
+					style,
+				),
 				slotStyles?.root,
 			)}
 		>
 			{icon}
 			{children !== undefined && children !== null && (
-				<RNText style={{ color: fg, fontSize: FONT[size], fontWeight: "500" }}>
+				<RNText
+					style={{
+						color: fg,
+						fontSize: FONT[size],
+						lineHeight: FONT[size] + 4,
+						fontWeight: "500",
+						includeFontPadding: false,
+					}}
+				>
 					{children}
 				</RNText>
 			)}
