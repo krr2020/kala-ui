@@ -1,4 +1,5 @@
 import { Button } from "@kala-ui/react-native";
+import { humanizeLabel } from "./registry";
 import { Sun } from "lucide-react-native";
 import { useState } from "react";
 import { Text, View } from "react-native";
@@ -6,7 +7,7 @@ import { useUnistyles } from "react-native-unistyles";
 import { DemoBlock } from "../demo-block";
 import { demoStyles } from "../stylesheet";
 
-const VARIANTS = ["solid", "outline", "ghost", "subtle", "link"] as const;
+const VARIANTS = ["solid", "outline", "ghost", "subtle"] as const;
 const COLORS = ["primary", "secondary", "destructive", "muted"] as const;
 const SIZES = ["xs", "sm", "md", "lg"] as const;
 
@@ -19,7 +20,7 @@ export function ButtonDemo() {
 				<View style={demoStyles.componentRow}>
 					{VARIANTS.map((variant) => (
 						<Button key={variant} variant={variant}>
-							{variant}
+							{humanizeLabel(variant)}
 						</Button>
 					))}
 				</View>
@@ -28,7 +29,7 @@ export function ButtonDemo() {
 				<View style={demoStyles.componentRow}>
 					{COLORS.map((color) => (
 						<Button key={color} color={color}>
-							{color}
+							{humanizeLabel(color)}
 						</Button>
 					))}
 				</View>
@@ -37,7 +38,7 @@ export function ButtonDemo() {
 				<View style={demoStyles.componentRow}>
 					{SIZES.map((size) => (
 						<Button key={size} size={size}>
-							{size}
+							{humanizeLabel(size)}
 						</Button>
 					))}
 					<Button size="icon" accessibilityLabel="sun button">

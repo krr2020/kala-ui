@@ -245,13 +245,7 @@ describe("component markers", () => {
 		it("each variant arm produces a distinct style", async () => {
 			const seen = new Map<string, string>();
 			const screen = await render(<Button variant="solid">Go</Button>);
-			for (const variant of [
-				"solid",
-				"outline",
-				"ghost",
-				"subtle",
-				"link",
-			] as const) {
+			for (const variant of ["solid", "outline", "ghost", "subtle"] as const) {
 				await screen.rerender(<Button variant={variant}>Go</Button>);
 				const s = flatStyle(screen.getByTestId("k-button-root"));
 				const sig = JSON.stringify([

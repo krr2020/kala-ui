@@ -8,7 +8,7 @@ export type EmptyStateIcon = LucideIcon;
 export interface EmptyStateAction {
 	label: string;
 	onPress: () => void;
-	variant?: "solid" | "outline" | "ghost" | "subtle" | "link";
+	variant?: "solid" | "outline" | "ghost" | "subtle";
 }
 
 export interface EmptyStateProps {

@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 
-export type ButtonVariant = "solid" | "outline" | "ghost" | "subtle" | "link";
+/** Mobile-first variant set — inline secondary actions use 'ghost'. */
+export type ButtonVariant = "solid" | "outline" | "ghost" | "subtle";
 export type ButtonColor = "primary" | "secondary" | "destructive" | "muted";
 export type ButtonSize = "xs" | "sm" | "md" | "lg" | "icon";
 

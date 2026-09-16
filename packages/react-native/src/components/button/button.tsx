@@ -1,6 +1,6 @@
 /**
- * Button: token-driven pressable with the web variant vocabulary
- * (solid/outline/ghost/subtle/link × color × size). The pressed state
+ * Button: token-driven pressable with a mobile-first variant set
+ * (solid/outline/ghost/subtle × color × size). The pressed state
  * runs the motion.spring.snappy spring on the UI thread; every size
  * enforces the 44dp touch floor from the design specs.
  */
@@ -47,7 +47,6 @@ const FONT: Record<Exclude<ButtonSize, "icon">, number> = {
 interface VariantLook {
 	bg?: string;
 	border?: string;
-	underline?: "underline";
 }
 
 interface KalaThemeShape {
@@ -85,8 +84,6 @@ function variantLook(
 			return { bg: "transparent" };
 		case "subtle":
 			return { bg: theme.muted };
-		case "link":
-			return { underline: "underline" };
 		default:
 			return { bg: tint };
 	}
@@ -195,7 +192,6 @@ export function Button({
 						color: fg,
 						fontSize: size === "icon" ? 18 : FONT[size],
 						fontWeight: "500",
-						textDecorationLine: look.underline,
 					}}
 				>
 					{children}
