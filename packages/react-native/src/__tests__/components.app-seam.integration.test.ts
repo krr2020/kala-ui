@@ -265,6 +265,11 @@ describe("component app seam", () => {
 		expect(shell).toMatch(/\{group\.title\} · \{component\.label\}/);
 		expect(shell).toMatch(/Kala UI · Native/);
 		expect(shell).not.toMatch(/kala-ui · native/);
+		// the switcher strip is the FIRST header tier — pinned above the
+		// group/component chip rows, outside the scrolling preview content.
+		expect(shell.indexOf("demoStyles.themeRow")).toBeLessThan(
+			shell.indexOf("demoStyles.chipRows"),
+		);
 	});
 
 	it("humanizeLabel formats chip display text from raw names", async () => {

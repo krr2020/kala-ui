@@ -94,6 +94,39 @@ export function RouteShell() {
 						: "dark-content"
 				}
 			/>
+			{/* persistent theme switcher — first pinned header tier, above
+			the navigation rows; every preview can restyle without scrolling.
+			Stateless via the unistyles runtime; App.tsx's subscription
+			re-renders the whole tree */}
+			<View style={demoStyles.themeRow}>
+				<Text style={[demoStyles.sectionHeader, demoStyles.sectionHeaderText]}>
+					Theme
+				</Text>
+				<View style={demoStyles.picker}>
+					{themeNames.map((name) => {
+						const active = name === UnistylesRuntime.themeName;
+						return (
+							<Pressable
+								key={name}
+								testID={`k-theme-${name}`}
+								accessibilityRole="button"
+								accessibilityLabel={`activate ${name} theme`}
+								onPress={() => UnistylesRuntime.setTheme(name)}
+								style={[demoStyles.chip, active && demoStyles.chipActive]}
+							>
+								<Text
+									style={[
+										demoStyles.chipText,
+										active && demoStyles.chipTextActive,
+									]}
+								>
+									{name}
+								</Text>
+							</Pressable>
+						);
+					})}
+				</View>
+			</View>
 			<View style={demoStyles.chipRows}>
 				<ScrollView
 					horizontal
@@ -157,38 +190,6 @@ export function RouteShell() {
 						);
 					})}
 				</ScrollView>
-			</View>
-			{/* persistent theme switcher — every preview can restyle without
-			traveling back to the tokens route; stateless via the unistyles
-			runtime, App.tsx's subscription re-renders the whole tree */}
-			<View style={demoStyles.themeRow}>
-				<Text style={[demoStyles.sectionHeader, demoStyles.sectionHeaderText]}>
-					Theme
-				</Text>
-				<View style={demoStyles.picker}>
-					{themeNames.map((name) => {
-						const active = name === UnistylesRuntime.themeName;
-						return (
-							<Pressable
-								key={name}
-								testID={`k-theme-${name}`}
-								accessibilityRole="button"
-								accessibilityLabel={`activate ${name} theme`}
-								onPress={() => UnistylesRuntime.setTheme(name)}
-								style={[demoStyles.chip, active && demoStyles.chipActive]}
-							>
-								<Text
-									style={[
-										demoStyles.chipText,
-										active && demoStyles.chipTextActive,
-									]}
-								>
-									{name}
-								</Text>
-							</Pressable>
-						);
-					})}
-				</View>
 			</View>
 			<ScrollView
 				style={demoStyles.screen}
