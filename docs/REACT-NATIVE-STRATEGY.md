@@ -217,7 +217,7 @@ Original plan:
 
 ### Progress
 
-Steps 1–3 are complete. 36 components are live in
+Steps 1–3 are complete. 55 components are live in
 `packages/react-native/src/components/`, each with the folder convention
 (`{name}.tsx` + `{name}.types.ts` + `index.ts`), `k-*` testID markers,
 a11y assertions, slot-styles coverage, and a playground demo:
@@ -231,13 +231,21 @@ a11y assertions, slot-styles coverage, and a playground demo:
 | 4 | Label, Separator, Spinner, Progress | `c11a367` |
 | 5 | Skeleton, RadioGroup, Alert, Toast | `c6108ed` |
 | 6 | EmptyState, Tabs, Tag, SegmentedControl | `6ec37e1` |
-| 7 | Rating, Pagination | `e422add` |
+| 7 | Rating (Pagination removed in the re-scope) | `e422add` |
 | 8 | Slider | `808550e` |
 | 9 | Dialog, AlertDialog | `e1766b5` |
 | 10 | Toggle, ToggleGroup, Indicator | `7273ae1` |
 | 11 | Accordion, Collapsible | `b86f103` |
 | 12 | Textarea, Banner | `a6a55e5` |
-| 13 | List family (List, ListItem + Icon/Avatar/Content/Title/Text/Action/Badge slots, 5 skeleton variants) | `7d7c036` |
+| 13 | List family (List, ListItem + Icon/Avatar/Content/Title/Text/Action/Badge slots, 5 skeleton variants) | `3ff9e9b`, `7148093` |
+| 14 | Field, Select (bottom-sheet picker); NumberInput added with the re-scope `6677aa1` to close the forms gap | `1f85b9a` |
+| 15 | AvatarGroup, RingProgress, ErrorBoundary, LoadingOverlay (CopyButton landed in the Wave-19 sweep `ce7e141`) | `29c1b81` |
+| 16 | InputOtp, PasswordStrengthIndicator, Steps | `f5be98b` |
+| 17 | DropdownMenu (ActionSheet pattern), ContextMenu, Toolbar (since removed — see re-scope) | `b62be79` |
+| 18 | Timeline, TagInput, Table, Breadcrumbs (Table/Breadcrumbs since removed — see re-scope) | `1bc616f` |
+| 19 | Calendar, DatePicker, TimePicker, MultiSelect, Combobox — hand-rolled date math in `src/lib/date-utils.ts`, zero new runtime deps | `fc4a7c1`, `0c0c316`, `ce7e141` |
+| App A1 | `@kala-ui/react-native-app` scaffold + AppShell, Header, TabBar (+ skeletons), `isActivePath` | `155e4fd` |
+| App A2 | BarChart, DonutChart, Sparkline, ChartSkeleton, read-only DataTable (+ skeleton), MetricCard (+ skeleton) | `042632f` |
 
 Also landed: the tier-3 slot-styles customization contract
 (`15e9ffb`..`bf901ce`), mobile-hardened Dialog/AlertDialog (`0bfc7b0`),
@@ -245,26 +253,17 @@ and the playground App split into `demos/{tokens,basics,feedback,
 navigation,overlays}-demo.tsx` modules (`284d867`, `caf9a0c`) with an
 app-seam integration test pinning the render surface.
 
-Validation state at Wave 13: 270 scoped Jest tests green, both Vitest
-suites green, `tsc --noEmit` clean, Biome clean.
-
-### Pending
-
-Remaining web components, triaged by mobile value:
-
-| Wave | Components | Rationale |
-|------|------------|-----------|
-| 14 | Select, Field, NumberInput, InputGroup | forms completion; Select maps to a bottom-sheet picker, Field is the composable row primitive every later form control needs |
-| 15 | AvatarGroup, RingProgress, CopyButton, LoadingOverlay, ErrorBoundary | small (≤102 lines each), high-frequency |
-| 16 | InputOtp, PasswordStrengthIndicator, Steps | SMS-code auth + onboarding |
-| 17 | DropdownMenu (ActionSheet pattern), ContextMenu, Toolbar | overflow/long-press actions |
-| 18 | Timeline, TagInput, Table, Breadcrumbs | data display |
-| 19 | DatePicker, Calendar, TimePicker, MultiSelect, Combobox | large; consider community libs |
+The full web→native port is complete; the pending-wave table that
+lived here was superseded by the re-scope ledger below. Validation
+gates: the Jest suites (a11y, markers, slot-styles, per-component)
+and Vitest suites (tokens-parity, app-seam, exports-parity) green,
+`tsc --noEmit` and Biome clean.
 
 ### Mobile-scope re-scope (post-wave audit)
 
 An audit against the mobile-value triage above surfaced components that
-shipped by web-parity momentum and have since been **removed**:
+shipped by web-parity momentum and have since been **removed** (scope:
+58 → 55 components, `6677aa1`):
 
 - `Breadcrumbs` — desktop hierarchy idiom; native apps navigate via
   back-stack/drawer, not trail-of-links.
@@ -317,12 +316,17 @@ mobile table is a pressable list (sorting/filters/pagination stay web),
 both deliberate divergences from the web composites. Next: rollout
 step 4 (pilot in one app).
 
-## Open questions
+## Decisions (previously open questions)
 
-- New-architecture-only (RN 0.76+), or do any target apps still run
-  old architecture / Expo Go? Unistyles v3 supports both, but Reanimated
-  v4 is new-architecture-first — affects the pilot app choice.
-- Dark-mode token naming: reuse the web `high-contrast-*` pair or
-  introduce a native-specific `dim` theme?
-- Monetization/publishing: private registry for the native packages or
-  same public npm flow as web?
+- **New-architecture-only (RN 0.76+).** Reanimated v4 is
+  new-architecture-first and every consuming app is greenfield;
+  supporting old-arch / Expo Go doubles the test matrix for zero
+  consumer value. Unistyles v3 supports both, so this is a support
+  policy, not an engine constraint.
+- **Reuse the web `high-contrast-*` theme pair.** Token parity is the
+  core deliverable; a native-only `dim` theme forks the naming
+  contract for no gain. If a dim theme is ever wanted, it lands on web
+  first and ports under the same name.
+- **Public npm flow, same as web.** One changesets release pipeline for
+  all `@kala-ui/*` packages; the native pair publishes from the same
+  repo with `publishConfig.access: public`. No private registry.
