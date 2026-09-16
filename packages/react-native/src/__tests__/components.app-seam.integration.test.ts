@@ -320,6 +320,33 @@ describe("component app seam", () => {
 			pad(themeRow, "paddingBottom") + 1 + pad(chipRows, "paddingTop");
 		expect(gap).toBeGreaterThanOrEqual(16);
 		expect(gap).toBeLessThanOrEqual(40);
+		// uniform rhythm across ALL three rows: the group↔component seam
+		// (chipRows gap on both sides of the inner divider) must equal the
+		// theme↔group seam.
+		const innerSeam = 2 * pad(chipRows, "gap") + 1;
+		expect(innerSeam).toBe(gap);
+		// theme chips wear the same pill as group/filter chips — no tag look.
+		const shell = readFileSync(
+			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
+			"utf8",
+		);
+		const themeChipStart = shell.indexOf('k-theme-${name}');
+		expect(themeChipStart, "theme chip marker exists").toBeGreaterThan(-1);
+		const themeChipEnd = shell.indexOf("</Pressable>", themeChipStart);
+		expect(themeChipEnd, "theme chip Pressable closes").toBeGreaterThan(
+			themeChipStart,
+		);
+		const themePressable = shell.slice(themeChipStart, themeChipEnd);
+		// pill first, then the active override last so a selected chip keeps
+		// the pill shape and only swaps colors — never reverts to the tag look.
+		const chipAt = themePressable.indexOf("demoStyles.chip,");
+		const pillAt = themePressable.indexOf("demoStyles.filterChip,");
+		const activeAt = themePressable.indexOf("demoStyles.chipActive");
+		expect(chipAt).toBeGreaterThan(-1);
+		expect(pillAt).toBeGreaterThan(chipAt);
+		expect(activeAt).toBeGreaterThan(pillAt);
+		const chipActive = block("chipActive");
+		expect(chipActive).not.toMatch(/borderRadius/);
 		// group chips and filter chips are the same shape: identical style
 		// bodies modulo the key name; tier signal lives in text weight only.
 		const groupChip = block("groupChip");

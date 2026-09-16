@@ -118,7 +118,11 @@ export function RouteShell() {
 								accessibilityRole="button"
 								accessibilityLabel={`activate ${name} theme`}
 								onPress={() => UnistylesRuntime.setTheme(name)}
-								style={[demoStyles.chip, active && demoStyles.chipActive]}
+								style={[
+									demoStyles.chip,
+									demoStyles.filterChip,
+									active && demoStyles.chipActive,
+								]}
 							>
 								<Text
 									style={[

@@ -90,7 +90,10 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		paddingRight: 16,
 	},
 	chipRows: {
-		gap: 6,
+		// gap + 1px inner divider == theme↔group seam (10 + 1 + 10) so all
+		// three header rows sit on one vertical rhythm; the gap pads BOTH
+		// sides of the inner divider, so the inner seam is 2×gap + 1
+		gap: 10,
 		paddingTop: 10,
 		paddingBottom: 12,
 		borderBottomWidth: 1,
@@ -108,7 +111,7 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		gap: 8,
 		paddingHorizontal: 16,
 		paddingTop: 8,
-		paddingBottom: 8,
+		paddingBottom: 10,
 		backgroundColor: theme.background,
 	},
 	// divider between the group and component rows — explicit themed
