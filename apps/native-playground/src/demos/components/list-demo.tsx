@@ -1,4 +1,5 @@
 import {
+	Icon,
 	List,
 	ListItem,
 	ListItemAction,
@@ -10,6 +11,7 @@ import {
 	ListItemTitle,
 	Spinner,
 } from "@kala-ui/react-native";
+import { Flag, Inbox } from "lucide-react-native";
 import { useState } from "react";
 import { View } from "react-native";
 import { DemoBlock } from "../demo-block";
@@ -24,14 +26,14 @@ export function ListDemo() {
 					<ListItem>
 						<ListItemContent>
 							<ListItemTitle>Ada Lovelace</ListItemTitle>
-							<ListItemText>first programmer</ListItemText>
+							<ListItemText>First programmer</ListItemText>
 						</ListItemContent>
 					</ListItem>
 					<ListItem>
 						<ListItemContent>
 							<ListItemTitle>Alan Turing</ListItemTitle>
 							<ListItemText truncate>
-								machine intelligence and the imitation game, clamped to one line
+								Machine intelligence and the imitation game, clamped to one line
 								with a tail ellipsis
 							</ListItemText>
 						</ListItemContent>
@@ -41,16 +43,20 @@ export function ListDemo() {
 			<DemoBlock label="icons & badges">
 				<List>
 					<ListItem>
-						<ListItemIcon size="sm">✉</ListItemIcon>
+						<ListItemIcon size="sm">
+							<Icon icon={Inbox} size="sm" />
+						</ListItemIcon>
 						<ListItemContent>
-							<ListItemTitle>inbox</ListItemTitle>
+							<ListItemTitle>Inbox</ListItemTitle>
 						</ListItemContent>
 						<ListItemBadge color="primary">12</ListItemBadge>
 					</ListItem>
 					<ListItem>
-						<ListItemIcon size="md">⚑</ListItemIcon>
+						<ListItemIcon size="md">
+							<Icon icon={Flag} size="md" />
+						</ListItemIcon>
 						<ListItemContent>
-							<ListItemTitle>flagged</ListItemTitle>
+							<ListItemTitle>Flagged</ListItemTitle>
 						</ListItemContent>
 						<ListItemBadge color="success">active</ListItemBadge>
 					</ListItem>
@@ -62,14 +68,14 @@ export function ListDemo() {
 						<ListItemAvatar name="Ada Lovelace" size="sm" />
 						<ListItemContent>
 							<ListItemTitle>Ada Lovelace</ListItemTitle>
-							<ListItemText lines={1}>analytical engine</ListItemText>
+							<ListItemText lines={1}>Analytical engine</ListItemText>
 						</ListItemContent>
 					</ListItem>
 					<ListItem>
 						<ListItemAvatar name="Grace Hopper" size="sm" />
 						<ListItemContent>
 							<ListItemTitle>Grace Hopper</ListItemTitle>
-							<ListItemText lines={1}>compiler pioneer</ListItemText>
+							<ListItemText lines={1}>Compiler pioneer</ListItemText>
 						</ListItemContent>
 					</ListItem>
 				</List>
@@ -82,22 +88,22 @@ export function ListDemo() {
 						accessibilityLabel="tap me row"
 					>
 						<ListItemContent>
-							<ListItemTitle>{pressed ? "tapped!" : "tap me"}</ListItemTitle>
+							<ListItemTitle>{pressed ? "Tapped!" : "Tap me"}</ListItemTitle>
 						</ListItemContent>
 					</ListItem>
 					<ListItem active>
 						<ListItemContent>
-							<ListItemTitle>active row</ListItemTitle>
+							<ListItemTitle>Active row</ListItemTitle>
 						</ListItemContent>
 					</ListItem>
 					<ListItem disabled>
 						<ListItemContent>
-							<ListItemTitle>disabled row</ListItemTitle>
+							<ListItemTitle>Disabled row</ListItemTitle>
 						</ListItemContent>
 					</ListItem>
 					<ListItem dense>
 						<ListItemContent>
-							<ListItemTitle>dense row</ListItemTitle>
+							<ListItemTitle>Dense row</ListItemTitle>
 						</ListItemContent>
 						<ListItemAction>
 							<Spinner size="sm" />

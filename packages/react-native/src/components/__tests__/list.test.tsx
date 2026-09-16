@@ -191,6 +191,16 @@ describe("List sub-components", () => {
 		}
 	});
 
+	it("ListItemIcon string children render at the box dim fontSize", async () => {
+		for (const size of ["sm", "md", "lg"] as const) {
+			const screen = await render(
+				<ListItemIcon size={size}>glyph</ListItemIcon>,
+			);
+			const glyph = screen.getByText("glyph");
+			expect(flatStyle(glyph).fontSize).toBe(ICON_SIZES[size]);
+		}
+	});
+
 	it("ListItemAvatar maps sm/md/lg to the AVATAR_SIZES table", async () => {
 		const dims = [32, 40, 48];
 		for (const [i, size] of ["sm", "md", "lg"].entries()) {

@@ -4,8 +4,8 @@
 		{
 			"device": "android:Pixel_8a",
 			"appId": "com.anonymous.kalanativeplayground",
-			"path": "/Users/rk/workspace/kala-ui/apps/native-playground/android/app/build/outputs/apk/release/app-release.apk",
-			"installedAt": 1789564298504
+			"path": "/Users/rk/workspace/kala-ui/.conveyor/scratch/list-icons-verify.apk",
+			"installedAt": 1789567598099
 		}
 	]
 }

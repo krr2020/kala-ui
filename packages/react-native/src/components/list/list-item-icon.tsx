@@ -31,7 +31,12 @@ export function ListItemIcon({
 			]}
 		>
 			{typeof children === "string" ? (
-				<RNText style={{ color: color ?? String(theme.mutedForeground) }}>
+				<RNText
+					style={{
+						fontSize: dim,
+						color: color ?? String(theme.mutedForeground),
+					}}
+				>
 					{children}
 				</RNText>
 			) : (

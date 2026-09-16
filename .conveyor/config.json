@@ -66,8 +66,8 @@
     "spawns": {},
     "debug": {
       "llmCapture": {
-        "enabled": false,
-        "captureRequestBody": false,
+        "enabled": true,
+        "captureRequestBody": true,
         "captureResponseBody": true,
         "otlp": {
           "enabled": false
