@@ -1,9 +1,7 @@
 /**
- * Icon: the single sanctioned way to render vector icons from kala-ui.
- * Wraps lucide-react-native so apps never import it directly — a future
- * icon-set swap stays a one-file change (see REACT-NATIVE-STRATEGY.md).
- * Sizes are tokens, never raw px; color accepts a theme token key or a
- * raw string.
+ * Icon: renders the app-supplied {size, color} icon component with
+ * token-sourced px, theme color resolution, and label-driven a11y
+ * gating (hidden from the tree unless a label promotes it to image).
  */
 import type { ReactElement } from "react";
 import { View } from "react-native";

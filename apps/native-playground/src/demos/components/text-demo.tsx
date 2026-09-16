@@ -29,7 +29,9 @@ export function TextDemo() {
 			<DemoBlock label="sizes">
 				<View style={demoStyles.block}>
 					{SIZES.map((size) => (
-						<KText key={size}>size {size}</KText>
+						<KText key={size} size={size}>
+							size {size}
+						</KText>
 					))}
 				</View>
 			</DemoBlock>
