@@ -75,10 +75,10 @@ describe("button demo ↔ library seam", () => {
 		);
 		// end-of-scroll padding must extend the scroll CONTENT, not clip
 		// the ScrollView frame — pin it inside routeContent and forbid it
-		// on the screen frame
+		// on the screen frame (scoped to the screen block itself: a lazy
+		// [\s\S]* scan past its closing brace would false-positive on
+		// routeContent's intentional paddingBottom)
 		expect(stylesheet).toMatch(/routeContent: \{[\s\S]*?paddingBottom: 7[0-9]/);
-		expect(stylesheet).not.toMatch(
-			/screen: \{[\s\S]*?\},[\s\S]*?paddingBottom: 7[0-9]/,
-		);
+		expect(stylesheet).not.toMatch(/screen: \{[^}]*paddingBottom: 7[0-9]/);
 	});
 });
