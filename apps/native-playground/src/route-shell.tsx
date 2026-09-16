@@ -133,6 +133,7 @@ export function RouteShell() {
 					})}
 				</ScrollView>
 			</View>
+			<View style={demoStyles.rowDivider} />
 			<View style={demoStyles.chipRows}>
 				<ScrollView
 					horizontal

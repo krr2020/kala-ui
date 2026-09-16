@@ -106,12 +106,9 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		flexWrap: "wrap",
 		gap: 8,
 		paddingHorizontal: 16,
-		paddingVertical: 8,
+		paddingTop: 8,
+		paddingBottom: 8,
 		backgroundColor: theme.background,
-		// same themed hairline tier as the chip rows — separates the
-		// switcher strip from the scrolling preview content
-		borderBottomWidth: 1,
-		borderBottomColor: theme.border,
 	},
 	// divider between the group and component rows — explicit themed
 	// hairline so the row tiers read as distinct levels

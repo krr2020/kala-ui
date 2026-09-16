@@ -279,6 +279,23 @@ describe("component app seam", () => {
 		expect(themeRowBlock).toMatch(/horizontal/);
 		expect(themeRowBlock).not.toMatch(/flexWrap/);
 		expect(themeRowBlock).toMatch(/\{humanizeLabel\(name\)\}/);
+		// breathing room: the theme strip pads down from the top inset, and
+		// a standalone themed hairline separates it from the chip rows
+		// (themeRow → rowDivider → chipRows in source AND render order).
+		const themeRowStyle = stylesheet.slice(
+			stylesheet.indexOf("themeRow:"),
+			stylesheet.indexOf("rowDivider:"),
+		);
+		expect(themeRowStyle).toMatch(/paddingTop: 8/);
+		expect(themeRowStyle).not.toMatch(/borderBottom/);
+		const dividerAt = shell.indexOf("demoStyles.rowDivider", themeRowStart);
+		expect(dividerAt).toBeGreaterThan(themeRowStart);
+		expect(dividerAt).toBeLessThan(themeRowEnd);
+		// exactly one divider in that window (no double hairline).
+		expect(
+			shell.slice(themeRowStart, themeRowEnd).match(/demoStyles\.rowDivider/g)
+				?? [],
+		).toHaveLength(1);
 	});
 
 	it("humanizeLabel formats chip display text from raw names", async () => {
