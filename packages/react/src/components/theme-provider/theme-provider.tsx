@@ -10,11 +10,15 @@
 
 import * as React from 'react';
 
-/** Built-in theme names. `light` is the default and applies no class. */
+/**
+ * Built-in theme names: light/dark as the standard pair plus the
+ * high-contrast pair as an explicit a11y opt-in — the same contract as
+ * @kala-ui/react-native. Brand variants (neutral/accent) are not shipped
+ * themes; consumers express them by overriding tokens (see the example
+ * blocks in globals.css). `light` is the default and applies no class.
+ */
 export const THEMES = [
   'light',
-  'neutral',
-  'accent',
   'dark',
   'high-contrast-light',
   'high-contrast-dark',
@@ -27,8 +31,6 @@ export type Theme = ResolvedTheme | 'system';
 
 const THEME_CLASSES: Record<ResolvedTheme, string> = {
   light: '',
-  neutral: 'neutral',
-  accent: 'accent',
   dark: 'dark',
   'high-contrast-light': 'high-contrast-light',
   'high-contrast-dark': 'high-contrast-dark',

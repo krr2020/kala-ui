@@ -643,21 +643,13 @@ describe("Toast", () => {
 			expect(toaster).toHaveAttribute("data-sonner-theme", "dark");
 		});
 
-		it("maps neutral, accent and high-contrast-light to the light sonner theme", async () => {
-			for (const theme of ["neutral", "accent", "high-contrast-light"] as const) {
-				const { unmount } = render(
-					<ThemeProvider defaultTheme={theme}>
-						<Toast />
-					</ThemeProvider>,
-				);
-				toast(`Themed ${theme}`);
-				const toaster = await waitFor(() => {
-					expect(findToaster()).not.toBeNull();
-					return findToaster();
-				});
-				expect(toaster).toHaveAttribute("data-sonner-theme", "light");
-				unmount();
-			}
+		it("maps high-contrast-light to the light sonner theme", async () => {
+			const toaster = await renderThemedToast(
+				<ThemeProvider defaultTheme="high-contrast-light">
+					<Toast />
+				</ThemeProvider>,
+			);
+			expect(toaster).toHaveAttribute("data-sonner-theme", "light");
 		});
 
 		it("lets an explicit theme prop win over the provider", async () => {

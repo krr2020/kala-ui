@@ -83,6 +83,9 @@
     --info-foreground: hsl(355.7 100% 97.3%);
   }
 
+  /* Brand-variant example blocks — NOT shipped ThemeProvider themes.
+     They show how a consumer overrides tokens for a custom look; mobile
+     deliberately does not transcribe them (see generate-themes.mjs). */
   .neutral {
     --background: hsl(0 0% 100%);
     --foreground: hsl(220 100% 11%);

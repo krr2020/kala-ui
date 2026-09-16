@@ -1,6 +1,6 @@
 import { act, render, renderHook, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ThemeProvider, useTheme } from "./theme-provider";
+import { THEMES, ThemeProvider, useTheme } from "./theme-provider";
 
 const ALL_THEME_CLASSES = [
 	"dark",
@@ -64,6 +64,12 @@ describe("ThemeProvider", () => {
 		document.documentElement.style.colorScheme = "";
 	});
 
+	it("ships exactly the shared four-theme contract (light/dark + high-contrast a11y pair)", () => {
+		expect([...THEMES].sort()).toEqual(
+			["dark", "high-contrast-dark", "high-contrast-light", "light"].sort(),
+		);
+	});
+
 	it("applies no class and light color-scheme for the light theme", () => {
 		render(
 			<ThemeProvider defaultTheme="light">
@@ -86,6 +92,18 @@ describe("ThemeProvider", () => {
 		expect(screen.getByTestId("resolved").textContent).toBe("dark");
 		expect(document.documentElement.classList.contains("dark")).toBe(true);
 		expect(document.documentElement.style.colorScheme).toBe("dark");
+	});
+
+	it("applies the high-contrast classes with matching color-scheme", () => {
+		render(
+			<ThemeProvider defaultTheme="high-contrast-light">
+				<Probe />
+			</ThemeProvider>,
+		);
+		expect(
+			document.documentElement.classList.contains("high-contrast-light"),
+		).toBe(true);
+		expect(document.documentElement.style.colorScheme).toBe("light");
 	});
 
 	it("setTheme swaps classes, syncs color-scheme and persists the choice", () => {
@@ -123,11 +141,10 @@ describe("ThemeProvider", () => {
 			);
 		}
 		render(
-			<ThemeProvider defaultTheme="neutral">
+			<ThemeProvider defaultTheme="light">
 				<Switcher />
 			</ThemeProvider>,
 		);
-		expect(document.documentElement.classList.contains("neutral")).toBe(true);
 
 		act(() => {
 			screen.getByRole("button", { name: "switch" }).click();
@@ -136,23 +153,48 @@ describe("ThemeProvider", () => {
 		expect(
 			document.documentElement.classList.contains("high-contrast-dark"),
 		).toBe(true);
-		expect(document.documentElement.classList.contains("neutral")).toBe(false);
 		for (const cls of ALL_THEME_CLASSES) {
 			if (cls === "high-contrast-dark") continue;
 			expect(document.documentElement.classList.contains(cls)).toBe(false);
 		}
 	});
 
-	it("restores a persisted theme over defaultTheme", () => {
-		window.localStorage.setItem("kala-ui-theme", "accent");
+	it("falls back to defaultTheme when the stored theme is a removed variant", () => {
+		window.localStorage.setItem("kala-ui-theme", "neutral");
 		render(
 			<ThemeProvider defaultTheme="light">
 				<Probe />
 			</ThemeProvider>,
 		);
 
-		expect(screen.getByTestId("theme").textContent).toBe("accent");
-		expect(document.documentElement.classList.contains("accent")).toBe(true);
+		expect(screen.getByTestId("resolved").textContent).toBe("light");
+		expect(document.documentElement.className).toBe("");
+	});
+
+	it("falls back to defaultTheme for a stored accent variant too", () => {
+		window.localStorage.setItem("kala-ui-theme", "accent");
+		render(
+			<ThemeProvider defaultTheme="dark">
+				<Probe />
+			</ThemeProvider>,
+		);
+
+		expect(screen.getByTestId("resolved").textContent).toBe("dark");
+		expect(document.documentElement.classList.contains("accent")).toBe(false);
+	});
+
+	it("restores a persisted theme over defaultTheme", () => {
+		window.localStorage.setItem("kala-ui-theme", "high-contrast-dark");
+		render(
+			<ThemeProvider defaultTheme="light">
+				<Probe />
+			</ThemeProvider>,
+		);
+
+		expect(screen.getByTestId("theme").textContent).toBe("high-contrast-dark");
+		expect(
+			document.documentElement.classList.contains("high-contrast-dark"),
+		).toBe(true);
 	});
 
 	it("resolves system mode to dark when the OS prefers dark", () => {
@@ -204,7 +246,7 @@ describe("ThemeProvider", () => {
 		function Switcher() {
 			const { setTheme } = useTheme();
 			return (
-				<button type="button" onClick={() => setTheme("neutral")}>
+				<button type="button" onClick={() => setTheme("high-contrast-light")}>
 					switch
 				</button>
 			);
@@ -219,7 +261,9 @@ describe("ThemeProvider", () => {
 			screen.getByRole("button", { name: "switch" }).click();
 		});
 
-		expect(window.localStorage.getItem("app-theme")).toBe("neutral");
-		expect(document.documentElement.classList.contains("neutral")).toBe(true);
+		expect(window.localStorage.getItem("app-theme")).toBe("high-contrast-light");
+		expect(
+			document.documentElement.classList.contains("high-contrast-light"),
+		).toBe(true);
 	});
 });
