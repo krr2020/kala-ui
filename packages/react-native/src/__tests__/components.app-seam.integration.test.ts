@@ -204,6 +204,16 @@ describe("component app seam", () => {
 		expect(registry).toMatch(/name: "tag-input"\s*\}/);
 	});
 
+	it("humanizeLabel formats chip display text from raw names", async () => {
+		const { humanizeLabel } = (await import(
+			`${APP_PATH.replace("App.tsx", "demos/components/label.ts")}`
+		)) as { humanizeLabel: (name: string) => string };
+		expect(humanizeLabel("text-input")).toBe("Text Input");
+		expect(humanizeLabel("app chrome")).toBe("App Chrome");
+		expect(humanizeLabel("input-otp")).toBe("Input OTP");
+		expect(humanizeLabel("button")).toBe("Button");
+	});
+
 	it("render-surface census matches the pinned marker/label inventory", () => {
 		expect(markerCensus(sources)).toEqual(
 			new Map(

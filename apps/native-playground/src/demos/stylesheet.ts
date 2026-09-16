@@ -105,7 +105,6 @@ export const demoStyles = StyleSheet.create((theme) => ({
 	},
 	groupChipText: {
 		fontWeight: "700",
-		textTransform: "uppercase",
 		fontSize: 12,
 		letterSpacing: 0.3,
 	},

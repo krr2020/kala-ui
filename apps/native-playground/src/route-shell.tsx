@@ -54,7 +54,7 @@ export function RouteShell() {
 					contentContainerStyle={[demoStyles.picker, demoStyles.chipRowContent]}
 					showsHorizontalScrollIndicator={false}
 				>
-					{componentGroups.map(({ name }, index) => {
+					{componentGroups.map(({ name, label }, index) => {
 						const on = index === groupIndex;
 						return (
 							<Pressable
@@ -75,7 +75,7 @@ export function RouteShell() {
 										on && demoStyles.chipTextActive,
 									]}
 								>
-									{name}
+									{label}
 								</Text>
 							</Pressable>
 						);
@@ -88,7 +88,7 @@ export function RouteShell() {
 					contentContainerStyle={[demoStyles.picker, demoStyles.chipRowContent]}
 					showsHorizontalScrollIndicator={false}
 				>
-					{group.components.map(({ name }, index) => {
+					{group.components.map(({ name, label }, index) => {
 						const on = index === componentIndex;
 						return (
 							<Pressable
@@ -105,7 +105,7 @@ export function RouteShell() {
 								<Text
 									style={[demoStyles.chipText, on && demoStyles.chipTextActive]}
 								>
-									{name}
+									{label}
 								</Text>
 							</Pressable>
 						);
