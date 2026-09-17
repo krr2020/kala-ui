@@ -393,6 +393,42 @@ describe("Calendar", () => {
 			).toBe(true);
 		});
 
+		it("all three rows share the fixed GRID_W footprint with gap-4 columns", async () => {
+			const screen: Screen = await render(
+				<Calendar month={new Date(2026, 1, 1)} />,
+			);
+			const GRID_W = 36 * 7 + 4 * 6;
+			const weekdays = flatStyle(screen.getByTestId("k-calendar-weekdays"));
+			expect(weekdays.width).toBe(GRID_W);
+			expect(weekdays.gap).toBe(4);
+			const grid = flatStyle(screen.getByTestId("k-calendar-grid"));
+			expect(grid.width).toBe(GRID_W);
+			expect(grid.gap).toBe(4);
+			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
+			const months = flatStyle(screen.getByTestId("k-calendar-months"));
+			expect(months.width).toBe(GRID_W);
+			expect(months.gap).toBe(4);
+			// 3 columns + 2 gaps tile the same footprint as the 7-column rows
+			expect(
+				flatStyle(screen.getByTestId("k-calendar-month-option-0")).width,
+			).toBeCloseTo((GRID_W - 8) / 3);
+		});
+
+		it("day and weekday cells are fixed CELL_SIZE columns", async () => {
+			// Jan 1 2026 is a Thursday — mid-week start exercises the blanks
+			const screen: Screen = await render(
+				<Calendar month={new Date(2026, 0, 1)} />,
+			);
+			expect(
+				flatStyle(screen.getAllByTestId("k-calendar-weekday")[0]).width,
+			).toBe(36);
+			expect(
+				flatStyle(screen.getByTestId("k-calendar-day-2026-01-01")).width,
+			).toBe(36);
+			// 42 cells = 6 full rows of 7 regardless of month start offset
+			expect(screen.getAllByTestId(/^k-calendar-cell-/).length).toBe(42);
+		});
+
 		it("pressing an out-of-window month option is inert", async () => {
 			const screen: Screen = await render(
 				<Calendar

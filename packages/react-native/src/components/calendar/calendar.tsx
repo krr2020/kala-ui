@@ -46,6 +46,11 @@ const MONTHS = [
 	"December",
 ] as const;
 const CELL_SIZE = 36;
+const GRID_GAP = 4;
+// fixed 7-column footprint: every row (weekdays, days, months) shares it
+// so columns line up without relying on space-between distribution
+const GRID_W = CELL_SIZE * 7 + GRID_GAP * 6;
+const MONTH_OPTION_W = (GRID_W - GRID_GAP * 2) / 3;
 
 /**
  * Calendar: inline month grid. Modes mirror the web component — single
@@ -348,7 +353,15 @@ export function Calendar({
 					>
 						{pickerYear}
 					</RNText>
-					<View style={{ flexDirection: "row", flexWrap: "wrap", gap: 4 }}>
+				<View
+					testID="k-calendar-months"
+					style={{
+						flexDirection: "row",
+						flexWrap: "wrap",
+						width: GRID_W,
+						gap: GRID_GAP,
+					}}
+				>
 					{MONTHS.map((name, m) => {
 						const selected =
 							m === view.getMonth() && pickerYear === view.getFullYear();
@@ -366,7 +379,7 @@ export function Calendar({
 									setPickerOpen(false);
 								}}
 								style={({ pressed }) => ({
-									width: (CELL_SIZE + 4) * 2 + 4,
+									width: MONTH_OPTION_W,
 								height: CELL_SIZE,
 								borderRadius: 999,
 								alignItems: "center",
@@ -393,7 +406,14 @@ export function Calendar({
 			</View>
 		) : (
 			<>
-			<View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+			<View
+				testID="k-calendar-weekdays"
+				style={{
+					flexDirection: "row",
+					width: GRID_W,
+					gap: GRID_GAP,
+				}}
+			>
 			{WEEKDAYS.map((day) => (
 				<RNText
 					key={day}
@@ -410,7 +430,15 @@ export function Calendar({
 				</RNText>
 			))}
 			</View>
-			<View style={{ flexDirection: "row", flexWrap: "wrap", gap: 4 }}>
+			<View
+				testID="k-calendar-grid"
+				style={{
+					flexDirection: "row",
+					flexWrap: "wrap",
+					width: GRID_W,
+					gap: GRID_GAP,
+				}}
+			>
 				{cells.map(({ date, inMonth }) => {
 					const state = dayState(date, inMonth);
 					return (
