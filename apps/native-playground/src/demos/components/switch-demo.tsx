@@ -6,6 +6,7 @@ import { demoStyles } from "../stylesheet";
 
 export function SwitchDemo() {
 	const [sync, setSync] = useState(false);
+	const [battery, setBattery] = useState(true);
 	return (
 		<View testID="k-demo-switch" style={demoStyles.routeContent}>
 			<DemoBlock label="Basic">
@@ -34,6 +35,19 @@ export function SwitchDemo() {
 					value
 					onValueChange={() => undefined}
 				/>
+			</DemoBlock>
+			<DemoBlock label="Labels">
+				<Switch label="Background sync" value={sync} onValueChange={setSync} />
+				<Switch
+					label="Battery saver"
+					value={battery}
+					onValueChange={setBattery}
+				/>
+				<Switch
+					label="Enable automatic seat reconciliation across every workspace"
+					onValueChange={() => undefined}
+				/>
+				<Switch label="Locked label" disabled onValueChange={() => undefined} />
 			</DemoBlock>
 			<DemoBlock label="Long Field Copy">
 				<Field

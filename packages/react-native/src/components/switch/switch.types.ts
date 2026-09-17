@@ -4,6 +4,8 @@ export interface SwitchProps {
 	value?: boolean;
 	onValueChange?: (next: boolean) => void;
 	disabled?: boolean;
+	/** Visible text beside the track; also the a11y label fallback. */
+	label?: string;
 	accessibilityLabel?: string;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;

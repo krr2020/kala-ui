@@ -5,10 +5,11 @@
  * (track − thumb − 2× inset), no magic offsets.
  */
 import type { ReactElement } from "react";
-import { Pressable, View } from "react-native";
+import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
 import {
+	label as labelStyle,
 	root,
 	thumb as thumbStyle,
 	track,
@@ -23,6 +24,7 @@ export function Switch({
 	value = false,
 	onValueChange,
 	disabled = false,
+	label,
 	accessibilityLabel,
 	style,
 	slotStyles,
@@ -37,7 +39,7 @@ export function Switch({
 				if (!disabled) onValueChange?.(!value);
 			}}
 			accessibilityRole="switch"
-			accessibilityLabel={accessibilityLabel}
+			accessibilityLabel={accessibilityLabel ?? label}
 			accessibilityState={{
 				checked: value,
 				disabled: disabled || undefined,
@@ -56,6 +58,9 @@ export function Switch({
 					style={[thumbStyle(theme, value), slotStyles?.thumb]}
 				/>
 			</View>
+			{label !== undefined ? (
+				<RNText style={labelStyle(theme)}>{label}</RNText>
+			) : null}
 		</Pressable>
 	);
 }
