@@ -54,8 +54,8 @@ export function TextInputDemo() {
 					/>
 				</Field>
 				<TextInput
-					placeholder="Locked"
-					accessibilityLabel="locked input"
+					placeholder="Disabled"
+					accessibilityLabel="disabled input"
 					disabled
 				/>
 			</DemoBlock>
