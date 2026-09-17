@@ -119,6 +119,39 @@ describe("DatePicker", () => {
 			flatStyle(errored.getByTestId("k-date-picker")).borderColor,
 		);
 	});
+
+	it("explicit accessibilityLabel merges with the picked value for TalkBack", async () => {
+		const filled: Screen = await render(
+			<DatePicker
+				accessibilityLabel="check-in"
+				defaultValue={new Date(2026, 1, 10)}
+			/>,
+		);
+		const label = filled.getByTestId("k-date-picker").props
+			.accessibilityLabel as string;
+		expect(label).toContain("check-in");
+		expect(label).toContain("Feb 10, 2026");
+
+		const empty: Screen = await render(
+			<DatePicker accessibilityLabel="check-in" placeholder="pick a date" />,
+		);
+		expect(empty.getByTestId("k-date-picker").props.accessibilityLabel).toBe(
+			"check-in",
+		);
+	});
+
+	it("default label path: value alone when filled, placeholder when empty", async () => {
+		const filled: Screen = await render(
+			<DatePicker defaultValue={new Date(2026, 1, 10)} />,
+		);
+		expect(filled.getByTestId("k-date-picker").props.accessibilityLabel).toBe(
+			"Feb 10, 2026",
+		);
+		const empty: Screen = await render(<DatePicker placeholder="pick a date" />);
+		expect(empty.getByTestId("k-date-picker").props.accessibilityLabel).toBe(
+			"pick a date",
+		);
+	});
 });
 
 describe("DateRangePicker", () => {
@@ -225,5 +258,30 @@ describe("DateRangePicker", () => {
 	it("isLoading keeps the range marker on the skeleton surface", async () => {
 		const screen: Screen = await render(<DateRangePicker isLoading />);
 		expect(screen.getByTestId("k-date-picker-date-range-picker")).toBeTruthy();
+	});
+
+	it("explicit accessibilityLabel merges with the picked range for TalkBack", async () => {
+		const full: Screen = await render(
+			<DateRangePicker
+				accessibilityLabel="report window"
+				value={{ from: new Date(2026, 1, 4), to: new Date(2026, 1, 20) }}
+			/>,
+		);
+		const fullLabel = full.getByTestId("k-date-picker-date-range-picker").props
+			.accessibilityLabel as string;
+		expect(fullLabel).toContain("report window");
+		expect(fullLabel).toContain("Feb 4, 2026");
+		expect(fullLabel).toContain("Feb 20, 2026");
+
+		const partial: Screen = await render(
+			<DateRangePicker
+				accessibilityLabel="report window"
+				value={{ from: new Date(2026, 1, 4) }}
+			/>,
+		);
+		expect(
+				partial.getByTestId("k-date-picker-date-range-picker").props
+					.accessibilityLabel,
+		).toBe("report window, Feb 4, 2026");
 	});
 });

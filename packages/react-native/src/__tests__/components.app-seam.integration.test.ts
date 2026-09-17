@@ -571,6 +571,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="auto sync"': 1,
 					'accessibilityLabel="background sync"': 1,
 					'accessibilityLabel="bold"': 1,
+					'accessibilityLabel="bounded date"': 1,
 					'accessibilityLabel="check-in"': 1,
 					'accessibilityLabel="clamped at max"': 1,
 					'accessibilityLabel="clamped at min"': 1,

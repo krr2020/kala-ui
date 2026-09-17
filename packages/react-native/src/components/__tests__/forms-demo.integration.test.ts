@@ -126,4 +126,14 @@ describe("forms demos ↔ library seam", () => {
 		expect(src).not.toMatch(/placeholder="[a-z][a-z ]+"/);
 		expect(src).not.toMatch(/accessibilityLabel="[a-z]/);
 	});
+
+	it("date-picker demo pairs both pickers with Field and bounds a window", () => {
+		const src = demoSource("date-picker");
+		// single + range both ride in a Field so labels pair with the trigger
+		expect(src.match(/<Field/g)?.length).toBeGreaterThanOrEqual(2);
+		expect(src).toMatch(/<DateRangePicker[\s\S]*?<\/Field>/);
+		// bounded arm forwards a real min/max window to the sheet calendar
+		expect(src).toMatch(/<DatePicker[^>]*min=/);
+		expect(src).toMatch(/max=/);
+	});
 });

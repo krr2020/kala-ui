@@ -37,14 +37,20 @@ function TriggerChrome({
 	testID: string;
 	onPress: () => void;
 	style?: StyleProp<ViewStyle>;
-	accessibilityLabel: string;
+	accessibilityLabel?: string;
 }): ReactElement {
 	const { theme } = useUnistyles();
+	// an explicit field label must not hide the chosen value from TalkBack:
+	// combine when filled, keep the bare name while the placeholder shows
+	const announced =
+		accessibilityLabel && filled
+			? `${accessibilityLabel}, ${label}`
+			: (accessibilityLabel ?? label);
 	return (
 		<Pressable
 			testID={testID}
 			accessibilityRole="button"
-			accessibilityLabel={accessibilityLabel}
+			accessibilityLabel={announced}
 			accessibilityState={{ disabled, expanded }}
 			disabled={disabled}
 			onPress={disabled ? undefined : onPress}
@@ -93,7 +99,7 @@ export function DatePicker({
 	const [internal, setInternal] = useState<Date | undefined>(defaultValue);
 	const [open, setOpen] = useState(false);
 
-		const triggerDisabled = buttonDisabled || disabled === true;
+	const triggerDisabled = buttonDisabled || disabled === true;
 	const date = valueProp !== undefined ? valueProp : internal;
 
 	if (isLoading) {
@@ -125,9 +131,7 @@ export function DatePicker({
 				testID={testID}
 				onPress={() => setOpen(true)}
 				style={applySlot(applySlot({}, style), slotStyles?.root)}
-				accessibilityLabel={
-					accessibilityLabel ?? (date ? formatDay(date) : placeholder)
-				}
+				accessibilityLabel={accessibilityLabel}
 			/>
 			<Sheet open={open} onClose={() => setOpen(false)} snap="half">
 				<Calendar
@@ -213,7 +217,7 @@ export function DateRangePicker({
 				testID={testID}
 				onPress={() => setOpen(true)}
 				style={applySlot(applySlot({}, style), slotStyles?.root)}
-				accessibilityLabel={accessibilityLabel ?? label}
+				accessibilityLabel={accessibilityLabel}
 			/>
 			<Sheet open={open} onClose={() => setOpen(false)} snap="half">
 				<Calendar

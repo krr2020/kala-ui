@@ -22,10 +22,12 @@ export function DatePickerDemo() {
 				</Text>
 			</DemoBlock>
 			<DemoBlock label="Date Range">
-				<DateRangePicker
-					placeholder="pick a window"
-					accessibilityLabel="report window"
-				/>
+				<Field label="Report Window" description="first day to last day">
+					<DateRangePicker
+						placeholder="pick a window"
+						accessibilityLabel="report window"
+					/>
+				</Field>
 			</DemoBlock>
 			<DemoBlock label="Sizes">
 				<DatePicker
@@ -49,6 +51,14 @@ export function DatePickerDemo() {
 					placeholder="locked"
 					accessibilityLabel="locked date"
 					buttonDisabled
+				/>
+			</DemoBlock>
+			<DemoBlock label="Bounded">
+				<DatePicker
+					placeholder="this week only"
+					accessibilityLabel="bounded date"
+					min={new Date(2026, 8, 21)}
+					max={new Date(2026, 8, 27)}
 				/>
 			</DemoBlock>
 			<DemoBlock label="Prefilled">
