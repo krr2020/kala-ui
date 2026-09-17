@@ -1,6 +1,8 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { Text } from "react-native";
+import { themes } from "../../themes";
 import { InputOtp, InputOtpSeparator, InputOtpSlot } from "../input-otp";
+import { slot as slotStyle, slotSurface } from "../input-otp/input-otp.styles";
 
 type Screen = Awaited<ReturnType<typeof render>>;
 
@@ -17,15 +19,84 @@ function sixSlots() {
 	);
 }
 
-// a filled slot wraps its character in RNText; an empty one has no child
+// a filled slot wraps its character in RNText; an empty one has no child.
+// Pressable children arrive as a 2-array, so walk entries for a string.
 function charAt(slot: { props: { children?: unknown } }): unknown {
-	const child = slot.props.children as {
-		props?: { children?: unknown };
-	} | null;
-	return child?.props?.children ?? null;
+	const kids = slot.props.children;
+	const arr = Array.isArray(kids) ? kids : [kids];
+	for (const kid of arr) {
+		if (kid && typeof kid === "object" && "props" in kid) {
+			const text = (kid as { props?: { children?: unknown } }).props
+				?.children;
+			if (typeof text === "string") return text;
+		}
+	}
+	return null;
+}
+
+function flatStyle(node: {
+	props: { style?: unknown };
+}): Record<string, unknown> {
+	const out: Record<string, unknown> = {};
+	const walk = (entry: unknown): void => {
+		if (Array.isArray(entry)) {
+			for (const e of entry) walk(e);
+		} else if (entry) {
+			Object.assign(out, entry);
+		}
+	};
+	walk(node.props.style ?? []);
+	return out;
 }
 
 describe("InputOtp", () => {
+	it("slots sit on the standard input surface: card fill + border ring at rest, ring when active, input fill + dim when disabled", async () => {
+		const resting: Screen = await render(
+			<InputOtp maxLength={2}>
+				<InputOtpSlot index={0} />
+				<InputOtpSlot index={1} />
+			</InputOtp>,
+		);
+		const restSlot = flatStyle(resting.getAllByTestId("k-input-otp-slot")[1]);
+		expect(restSlot.backgroundColor).toBe(themes.light.card);
+		expect(restSlot.borderColor).toBe(themes.light.border);
+		// active slot (empty + at focus index) shows the focus ring token
+		const activeSlot = flatStyle(resting.getAllByTestId("k-input-otp-slot")[0]);
+		expect(activeSlot.borderColor).toBe(themes.light.ring);
+		const locked: Screen = await render(
+			<InputOtp maxLength={2} disabled>
+				<InputOtpSlot index={0} />
+				<InputOtpSlot index={1} />
+			</InputOtp>,
+		);
+		const disSlot = flatStyle(locked.getAllByTestId("k-input-otp-slot")[0]);
+		expect(disSlot.backgroundColor).toBe(themes.light.input);
+		// no focus ring in the disabled arm, even at the active index
+		expect(disSlot.borderColor).toBe(themes.light.border);
+		expect(disSlot.opacity).toBe(0.5);
+		// 44dp touch floor preserved on every arm
+		expect(slotStyle.minHeight).toBe(44);
+		expect(slotStyle.minWidth).toBe(44);
+	});
+
+	it("slotSurface pure fn maps both themes: card/border at rest, ring active, input disabled", () => {
+		expect(slotSurface(themes.light, {})).toEqual({
+			backgroundColor: themes.light.card,
+			borderColor: themes.light.border,
+			opacity: 1,
+		});
+		expect(slotSurface(themes.dark, { active: true }).borderColor).toBe(
+			themes.dark.ring,
+		);
+		expect(
+			slotSurface(themes.dark, { active: true, disabled: true }).borderColor,
+		).toBe(themes.dark.border);
+		expect(slotSurface(themes.dark, { disabled: true })).toEqual({
+			backgroundColor: themes.dark.input,
+			borderColor: themes.dark.border,
+			opacity: 0.5,
+		});
+	});
 	it("renders the root marker with one slot per InputOtpSlot child", async () => {
 		const screen: Screen = await render(
 			<InputOtp maxLength={6}>{sixSlots()}</InputOtp>,

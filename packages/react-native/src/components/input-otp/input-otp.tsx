@@ -20,12 +20,14 @@ import type { InputOtpProps, InputOtpSlotProps } from "./input-otp.types";
 interface OtpContextValue {
 	chars: string[];
 	activeIndex: number;
+	disabled: boolean;
 	pressSlot: (index: number) => void;
 }
 
 const OtpContext = createContext<OtpContextValue>({
 	chars: [],
 	activeIndex: 0,
+	disabled: false,
 	pressSlot: () => {},
 });
 
@@ -105,7 +107,9 @@ export function InputOtp({
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
-			<OtpContext.Provider value={{ chars, activeIndex, pressSlot }}>
+			<OtpContext.Provider
+				value={{ chars, activeIndex, disabled, pressSlot }}
+			>
 				{children}
 			</OtpContext.Provider>
 			<RNTextInput
@@ -139,21 +143,20 @@ export function InputOtpSlot({
 	testID = "k-input-otp-slot",
 }: InputOtpSlotProps): ReactElement {
 	const { theme } = useUnistyles();
-	const { chars, activeIndex, pressSlot } = useContext(OtpContext);
+	const { chars, activeIndex, disabled, pressSlot } = useContext(OtpContext);
 	const char = chars[index] ?? "";
 	const isActive = index === activeIndex && !char;
 
 	return (
 		<Pressable
 			testID={testID}
-			disabled={false}
-			onPress={() => pressSlot(index)}
+			disabled={disabled}
+			onPress={() => {
+				if (!disabled) pressSlot(index);
+			}}
 			style={[
 				otpStyle.slot,
-				{
-					borderColor: isActive ? theme.primary : theme.border,
-					backgroundColor: theme.input,
-				},
+				otpStyle.slotSurface(theme, { active: isActive, disabled }),
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
