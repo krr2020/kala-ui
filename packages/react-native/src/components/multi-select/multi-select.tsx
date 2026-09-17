@@ -276,7 +276,7 @@ export function MultiSelect({
 											hitSlop={4}
 											style={{ padding: 2 }}
 										>
-											<X size={12} color={theme.foreground} />
+											<X size={12} color={theme.secondaryForeground} />
 										</Pressable>
 									) : null}
 								</View>
