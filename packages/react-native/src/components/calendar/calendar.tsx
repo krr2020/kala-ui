@@ -47,10 +47,7 @@ const MONTHS = [
 ] as const;
 const CELL_SIZE = 36;
 const GRID_GAP = 4;
-// fixed 7-column footprint: every row (weekdays, days, months) shares it
-// so columns line up without relying on space-between distribution
-const GRID_W = CELL_SIZE * 7 + GRID_GAP * 6;
-const MONTH_OPTION_W = (GRID_W - GRID_GAP * 2) / 3;
+const MONTH_OPTION_W = "32%";
 
 /**
  * Calendar: inline month grid. Modes mirror the web component — single
@@ -358,7 +355,8 @@ export function Calendar({
 					style={{
 						flexDirection: "row",
 						flexWrap: "wrap",
-						width: GRID_W,
+						width: "100%",
+						justifyContent: "space-between",
 						gap: GRID_GAP,
 					}}
 				>
@@ -410,7 +408,9 @@ export function Calendar({
 				testID="k-calendar-weekdays"
 				style={{
 					flexDirection: "row",
-					width: GRID_W,
+					flexWrap: "wrap",
+					width: "100%",
+					justifyContent: "space-between",
 					gap: GRID_GAP,
 				}}
 			>
@@ -435,7 +435,8 @@ export function Calendar({
 				style={{
 					flexDirection: "row",
 					flexWrap: "wrap",
-					width: GRID_W,
+					width: "100%",
+					justifyContent: "space-between",
 					gap: GRID_GAP,
 				}}
 			>
