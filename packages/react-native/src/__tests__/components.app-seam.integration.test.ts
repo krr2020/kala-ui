@@ -167,8 +167,8 @@ describe("component app seam", () => {
 		// otp code entry + menu auto-sync/last-action + number-input +
 		// toppings + city + stay date + reminder time +
 		// app chrome tab + route selection (group + component) +
-		// button press counter.
-		expect(demoHooks).toBe(32);
+		// button press counter + card skeleton toggle (card-demo).
+		expect(demoHooks).toBe(33);
 	});
 
 	it("registry maps groups to components with dedicated demos and fallbacks", () => {
