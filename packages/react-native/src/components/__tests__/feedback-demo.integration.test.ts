@@ -1,7 +1,7 @@
 /**
- * Feedback demo seam: toast/banner/overlay copy reads as UI text and
- * the toast trigger announces itself in Title Case. Alert lives on its
- * own dedicated screen (alert-demo.tsx).
+ * Feedback demo seam: overlay/copy feedback copy reads as UI text.
+ * Alert, banner, and toast each live on their own dedicated screens
+ * (alert-demo.tsx / banner-demo.tsx / toast-demo.tsx).
  */
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -20,13 +20,9 @@ describe("feedback demo ↔ library seam", () => {
 		expect(src).not.toMatch(/label="[a-z]/);
 	});
 
-	it("has no alert arms left — they moved to the dedicated screen", () => {
+	it("has no alert/banner/toast arms left — they moved to dedicated screens", () => {
 		expect(src).not.toMatch(/<Alert/);
-	});
-
-	it("pins the humanized copy", () => {
-		expect(src).toMatch(/<Toast.Title>Saved<\/Toast.Title>/);
-		expect(src).toMatch(/<Toast.Description>Changes are live<\/Toast.Description>/);
-		expect(src).toMatch(/accessibilityLabel="Show Toast"/);
+		expect(src).not.toMatch(/<Banner/);
+		expect(src).not.toMatch(/<Toast/);
 	});
 });

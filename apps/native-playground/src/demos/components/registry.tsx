@@ -39,6 +39,7 @@ import { TextDemo } from "./text-demo";
 import { TextInputDemo } from "./text-input-demo";
 import { TextareaDemo } from "./textarea-demo";
 import { TimePickerDemo } from "./time-picker-demo";
+import { ToastDemo } from "./toast-demo";
 import { ToggleDemo } from "./toggle-demo";
 
 export { humanizeLabel } from "./label";
@@ -256,7 +257,11 @@ export const componentGroups: ComponentGroup[] = [
 				name: "banner",
 				render: () => <BannerDemo />,
 			},
-			{ label: humanizeLabel("toast"), name: "toast" },
+			{
+				label: humanizeLabel("toast"),
+				name: "toast",
+				render: () => <ToastDemo />,
+			},
 			{ label: humanizeLabel("progress"), name: "progress" },
 			{ label: humanizeLabel("ring-progress"), name: "ring-progress" },
 			{ label: humanizeLabel("spinner"), name: "spinner" },

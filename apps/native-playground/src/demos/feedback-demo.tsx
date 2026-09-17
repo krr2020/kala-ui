@@ -4,7 +4,6 @@ import {
 	ErrorBoundary,
 	LoadingOverlay,
 	PasswordStrengthIndicator,
-	Toast,
 } from "@kala-ui/react-native";
 import { useState } from "react";
 import { Text, View } from "react-native";
@@ -16,25 +15,10 @@ function ThrowOnce(): never {
 }
 
 export function FeedbackDemo() {
-	const [toastOpen, setToastOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [crashKey, setCrashKey] = useState(0);
 	return (
 		<>
-			<DemoBlock label="Toast">
-				<Button
-					variant="subtle"
-					size="sm"
-					onPress={() => setToastOpen(true)}
-					accessibilityLabel="Show Toast"
-				>
-					Show Toast
-				</Button>
-			</DemoBlock>
-			<Toast open={toastOpen} onOpenChange={setToastOpen} duration={2500}>
-				<Toast.Title>Saved</Toast.Title>
-				<Toast.Description>Changes are live</Toast.Description>
-			</Toast>
 			<DemoBlock label="Loading Overlay">
 				<View style={demoStyles.componentRow} testID="k-demo-loading-overlay">
 					<Button size="sm" onPress={() => setLoading(true)}>
