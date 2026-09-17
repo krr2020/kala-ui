@@ -15,6 +15,13 @@ export function RadioGroupDemo() {
 					<RadioGroup.Item value="scale" label="Scale" />
 				</RadioGroup>
 			</DemoBlock>
+			<DemoBlock label="Inline">
+				<RadioGroup defaultValue="team" orientation="horizontal">
+					<RadioGroup.Item value="solo" label="Solo" />
+					<RadioGroup.Item value="team" label="Team" />
+					<RadioGroup.Item value="scale" label="Scale" />
+				</RadioGroup>
+			</DemoBlock>
 			<DemoBlock label="With Descriptions">
 				<Field label="Billing Tier" description="change any time">
 					<RadioGroup value={tier} onValueChange={setTier}>

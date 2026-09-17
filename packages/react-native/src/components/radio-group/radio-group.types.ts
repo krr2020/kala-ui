@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 
+export type RadioGroupOrientation = "vertical" | "horizontal";
+
 export interface RadioGroupProps {
 	/** Value of the selected item (controlled single select). */
 	value?: string;
@@ -9,6 +11,8 @@ export interface RadioGroupProps {
 	onValueChange?: (value: string) => void;
 	/** Disables every item in the group. */
 	disabled?: boolean;
+	/** Layout of the items: stacked list (default) or wrapping inline row. */
+	orientation?: RadioGroupOrientation;
 	accessibilityLabel?: string;
 	children?: ReactNode;
 	/** Root layout/positioning; sits below `slotStyles.root`. */

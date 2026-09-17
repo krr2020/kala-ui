@@ -99,7 +99,7 @@ describe("RadioGroup", () => {
 		).toBe(true);
 	});
 
-	it("root groups items with the web-standard 12px gap; items keep the 44dp floor", async () => {
+	it("vertical root groups 44dp rows with the standard 4px list gap", async () => {
 		const screen: Screen = await render(
 			<RadioGroup value="a" testID="k-group">
 				<RadioGroup.Item value="a" label="Alpha" testID="k-radio-item-a" />
@@ -107,10 +107,57 @@ describe("RadioGroup", () => {
 			</RadioGroup>,
 		);
 		const root = flatStyle(screen.getByTestId("k-group"));
-		expect(root.gap).toBe(12);
+		expect(root.flexDirection).toBe("column");
+		expect(root.gap).toBe(4);
 		const item = flatStyle(screen.getByTestId("k-radio-item-a"));
 		expect(Number(item.minWidth)).toBeGreaterThanOrEqual(44);
 		expect(Number(item.minHeight)).toBeGreaterThanOrEqual(44);
+	});
+
+	it("horizontal orientation lays a wrapping inline row with the 16px gap", async () => {
+		const screen: Screen = await render(
+			<RadioGroup value="a" orientation="horizontal" testID="k-group-inline">
+				<RadioGroup.Item value="a" label="Alpha" testID="k-radio-item-a" />
+				<RadioGroup.Item value="b" label="Beta" testID="k-radio-item-b" />
+			</RadioGroup>,
+		);
+		const root = flatStyle(screen.getByTestId("k-group-inline"));
+		expect(root.flexDirection).toBe("row");
+		expect(root.flexWrap).toBe("wrap");
+		expect(root.gap).toBe(16);
+		const item = flatStyle(screen.getByTestId("k-radio-item-a"));
+		expect(Number(item.minHeight)).toBeGreaterThanOrEqual(44);
+	});
+
+	it("horizontal selection still flips the dot; long labels shrink instead of clipping", async () => {
+		const onValueChange = jest.fn();
+		const screen: Screen = await render(
+			<RadioGroup
+				defaultValue="a"
+				onValueChange={onValueChange}
+				orientation="horizontal"
+				testID="k-group-inline"
+			>
+				<RadioGroup.Item value="a" label="Alpha" testID="k-radio-item-a" />
+				<RadioGroup.Item
+					value="b"
+					label="A very long inline label that must wrap"
+					testID="k-radio-item-b"
+				/>
+			</RadioGroup>,
+		);
+		expect(
+			screen.getByTestId("k-radio-item-a-circle").children?.length ?? 0,
+		).toBeGreaterThan(0);
+		await fireEvent.press(screen.getByTestId("k-radio-item-b"));
+		expect(onValueChange).toHaveBeenCalledWith("b");
+		expect(
+			screen.getByTestId("k-radio-item-b-circle").children?.length ?? 0,
+		).toBeGreaterThan(0);
+		expect(screen.getByText("A very long inline label that must wrap")).toBeTruthy();
+		const shrink = flatStyle(screen.getByTestId("k-radio-item-b"));
+		expect(shrink.flexShrink).toBe(1);
+		expect(shrink.flexGrow).toBeUndefined();
 	});
 
 	it("standalone item without a label: 44dp floor and an accessible name", async () => {

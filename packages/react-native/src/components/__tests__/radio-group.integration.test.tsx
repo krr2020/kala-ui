@@ -40,6 +40,7 @@ describe("RadioGroup demo ↔ package seam", () => {
 		expect(source).toContain("hasError");
 		expect(source).toContain("disabled>");
 		expect(source).toContain('accessibilityLabel="anonymous radio"');
+		expect(source).toContain('orientation="horizontal"');
 	});
 
 	it("demo-shaped checked row: 22dp circle, standard 10dp dot on primary fill", async () => {
@@ -93,6 +94,23 @@ describe("RadioGroup demo ↔ package seam", () => {
 			picked.getByTestId("k-radio-item-invalid-dot", inclHidden),
 		);
 		expect(dot.backgroundColor).toBe(themes.light.destructive);
+	});
+
+	it("demo-shaped inline group: wrapping row with the 16px gap", async () => {
+		const screen = await render(
+			<RadioGroup defaultValue="solo" orientation="horizontal">
+				<RadioGroup.Item value="solo" label="Solo" testID="k-radio-item-solo" />
+				<RadioGroup.Item value="team" label="Team" testID="k-radio-item-team" />
+			</RadioGroup>,
+		);
+		const root = flatStyle(screen.getByTestId("k-radio-group"));
+		expect(root.flexDirection).toBe("row");
+		expect(root.flexWrap).toBe("wrap");
+		expect(root.gap).toBe(16);
+		expect(
+			screen.getByTestId("k-radio-item-solo-circle", inclHidden).children
+				?.length ?? 0,
+		).toBeGreaterThan(0);
 	});
 
 	it("demo-shaped group-disabled row: press is a no-op and disabled is announced", async () => {

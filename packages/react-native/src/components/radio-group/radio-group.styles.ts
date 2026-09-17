@@ -6,11 +6,21 @@ export const CIRCLE = 22;
 // matching the web md indicator ratio (8/16)
 export const DOT = 10;
 export const STROKE = 2;
-// web radioGroupStyles gap-3
-export const GROUP_GAP = 12;
+// standard stacked-list pitch: 44dp rows + 4 gap
+export const GROUP_GAP = 4;
+// inline row (web skeleton orientation=horizontal, gap-4)
+export const INLINE_GAP = 16;
 
-export function root(): ViewStyle {
-	return { flexDirection: "column", gap: GROUP_GAP, alignSelf: "flex-start" };
+export function root(orientation: "vertical" | "horizontal" = "vertical"): ViewStyle {
+	return orientation === "horizontal"
+		? {
+				flexDirection: "row",
+				flexWrap: "wrap",
+				gap: INLINE_GAP,
+				alignItems: "center",
+				alignSelf: "flex-start",
+			}
+		: { flexDirection: "column", gap: GROUP_GAP, alignSelf: "flex-start" };
 }
 
 export function item(isDisabled: boolean): ViewStyle {
@@ -20,6 +30,9 @@ export function item(isDisabled: boolean): ViewStyle {
 		flexDirection: "row",
 		alignItems: "center",
 		gap: 10,
+		// in the inline row a long-label item shrinks (body wraps) instead
+		// of clipping or pushing siblings out
+		flexShrink: 1,
 		opacity: isDisabled ? 0.5 : 1,
 	};
 }

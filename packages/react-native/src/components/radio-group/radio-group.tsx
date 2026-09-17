@@ -21,7 +21,11 @@ import {
 	label as labelStyle,
 	root as rootStyle,
 } from "./radio-group.styles";
-import type { RadioGroupItemProps, RadioGroupProps } from "./radio-group.types";
+import type {
+	RadioGroupItemProps,
+	RadioGroupOrientation,
+	RadioGroupProps,
+} from "./radio-group.types";
 
 interface RadioGroupState {
 	value?: string;
@@ -36,6 +40,7 @@ export function RadioGroup({
 	defaultValue,
 	onValueChange,
 	disabled = false,
+	orientation = "vertical",
 	accessibilityLabel,
 	children,
 	style,
@@ -64,7 +69,10 @@ export function RadioGroup({
 				accessible={true}
 				accessibilityRole="radiogroup"
 				accessibilityLabel={accessibilityLabel}
-				style={applySlot(applySlot(rootStyle(), style), slotStyles?.root)}
+				style={applySlot(
+					applySlot(rootStyle(orientation), style),
+					slotStyles?.root,
+				)}
 			>
 				{children}
 			</View>
