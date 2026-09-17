@@ -12,7 +12,13 @@ export function CheckboxDemo() {
 	const [bulk, setBulk] = useState<TriState>("indeterminate");
 	const cycle = (checked: boolean): void => {
 		setBulk((prev) =>
-			prev === false ? true : prev === true ? "indeterminate" : checked,
+			prev === false
+				? true
+				: prev === true
+					? "indeterminate"
+					: checked === true
+						? false
+						: checked,
 		);
 	};
 	return (
@@ -46,6 +52,7 @@ export function CheckboxDemo() {
 					disabled
 					onValueChange={() => undefined}
 				/>
+				<Checkbox label="Accept shipping terms" value={false} hasError />
 			</DemoBlock>
 			<DemoBlock label="Standalone">
 				<Checkbox accessibilityLabel="anonymous checkbox" value />

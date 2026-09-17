@@ -19,6 +19,7 @@ export function Checkbox({
 	value = false,
 	onValueChange,
 	disabled = false,
+	hasError = false,
 	label,
 	isLoading = false,
 	accessibilityLabel,
@@ -60,13 +61,19 @@ export function Checkbox({
 				<View testID="k-checkbox-wrap">
 					<View
 						testID="k-checkbox-box"
-						style={[boxStyle(theme, active), slotStyles?.box]}
+						style={[boxStyle(theme, active, hasError), slotStyles?.box]}
 					>
 						{value === true && (
-								<Check size={14} color={theme.primaryForeground} />
+								<Check
+									size={14}
+									color={hasError ? theme.destructive : theme.primaryForeground}
+								/>
 						)}
 						{value === "indeterminate" && (
-								<Minus size={14} color={theme.primaryForeground} />
+								<Minus
+									size={14}
+									color={hasError ? theme.destructive : theme.primaryForeground}
+								/>
 						)}
 					</View>
 				</View>

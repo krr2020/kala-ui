@@ -69,4 +69,21 @@ describe("Checkbox demo ↔ package seam", () => {
 			seen.every((payload) => typeof payload === "boolean"),
 		).toBe(true);
 	});
+
+	it("demo demo pins hasError and the closing tri-state cycle (source census)", () => {
+		const source = readFileSync(DEMO, "utf8");
+		expect(source).toContain("hasError");
+		// the cycle must close: indeterminate → unchecked on a true press
+		expect(source).toContain("? false");
+	});
+
+	it("demo-shaped hasError row: destructive resting border", async () => {
+		const { themes } = require("../../themes");
+		const screen = await render(
+				<Checkbox label="Accept shipping terms" value={false} hasError />,
+			);
+		const box = flatStyle(screen.getByTestId("k-checkbox-box", inclHidden));
+		expect(box.borderColor).toBe(themes.light.destructive);
+		expect(box.backgroundColor).toBe("transparent");
+	});
 });

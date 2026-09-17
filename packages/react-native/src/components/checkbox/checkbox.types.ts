@@ -5,6 +5,8 @@ export interface CheckboxProps {
 	value?: boolean | "indeterminate";
 	onValueChange?: (next: boolean) => void;
 	disabled?: boolean;
+	/** destructive border on the resting box; destructive icon when active */
+	hasError?: boolean;
 	/** text rendered beside the box; merged into the a11y label */
 	label?: string;
 	accessibilityLabel?: string;

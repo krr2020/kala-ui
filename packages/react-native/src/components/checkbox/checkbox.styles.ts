@@ -14,7 +14,11 @@ export function root(disabled: boolean): ViewStyle {
 	};
 }
 
-export function box(theme: KalaTheme, active: boolean): ViewStyle {
+export function box(
+	theme: KalaTheme,
+	active: boolean,
+	hasError = false,
+): ViewStyle {
 	const borderWidth = 2;
 	return {
 		width: BOX,
@@ -27,7 +31,11 @@ export function box(theme: KalaTheme, active: boolean): ViewStyle {
 		// width/height border-box, so the stroke draws inside the 22dp box
 		backgroundColor: active ? theme.primary : "transparent",
 		borderWidth,
-		borderColor: active ? theme.primary : theme.border,
+		borderColor: active
+			? theme.primary
+			: hasError
+				? theme.destructive
+				: theme.border,
 	};
 }
 
