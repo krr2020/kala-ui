@@ -602,6 +602,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="max rating"': 1,
 					'accessibilityLabel="medium date"': 1,
 					'accessibilityLabel="midnight"': 1,
+					'accessibilityLabel="month jumper"': 1,
 					'accessibilityLabel="more"': 1,
 					'accessibilityLabel="next week only"': 1,
 					'accessibilityLabel="next"': 1,

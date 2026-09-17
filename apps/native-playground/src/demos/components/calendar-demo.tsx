@@ -28,6 +28,16 @@ export function CalendarDemo() {
 					max={new Date(2026, 8, 24)}
 				/>
 			</DemoBlock>
+			<DemoBlock label="Month Picker">
+				{/* tap the month title to jump months or years; the window here is
+					three months so the picker also shows disabled months */}
+				<Calendar
+					accessibilityLabel="month jumper"
+					defaultValue={new Date(2026, 0, 15)}
+					min={new Date(2025, 11, 1)}
+					max={new Date(2026, 2, 31)}
+				/>
+			</DemoBlock>
 			<DemoBlock label="States">
 				<Calendar isLoading accessibilityLabel="loading calendar" />
 			</DemoBlock>
