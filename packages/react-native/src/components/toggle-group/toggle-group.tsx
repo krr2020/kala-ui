@@ -11,7 +11,7 @@ import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
-import { TOGGLE_FONT, toggleSurface } from "../toggle/toggle";
+import { TOGGLE_FONT, toggleSurface, StateGlyph } from "../toggle/toggle";
 import type { ToggleSize, ToggleVariant } from "../toggle/toggle.types";
 import type {
 	ToggleGroupItemProps,
@@ -167,6 +167,13 @@ export function ToggleGroupItem({
 			<ItemContent fg={look.fg} size={effSize}>
 				{children}
 			</ItemContent>
+			{itemDisabled ? (
+				<StateGlyph
+					active={active}
+					fg={look.fg}
+					testID="k-toggle-group-item-glyph"
+				/>
+			) : null}
 		</Pressable>
 	);
 }

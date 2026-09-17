@@ -145,9 +145,42 @@ describe("ToggleGroup", () => {
 				</ToggleGroupItem>
 			</ToggleGroup>,
 		);
-		const heights = items(screen).map((item) => Number(flatStyle(item).height));
+		const heights = items(screen).map((item) => Number(flatStyle(item).minHeight));
 		expect(heights[0]).toBe(44);
 		expect(heights[1]).toBe(36);
+	});
+
+	it("a disabled group item keeps its surface and shows a state glyph (Check when active, Lock when not)", async () => {
+		const screen = await render(
+			<ToggleGroup type="single" value="a">
+				<ToggleGroupItem value="a" disabled>
+					Active
+				</ToggleGroupItem>
+				<ToggleGroupItem value="b" disabled>
+					Idle
+				</ToggleGroupItem>
+			</ToggleGroup>,
+		);
+		const rows = items(screen);
+		expect(flatStyle(rows[0]).opacity).toBe(0.5);
+		expect(flatStyle(rows[1]).opacity).toBe(0.5);
+		expect(rows[0].props.accessibilityState.checked).toBe(true);
+		expect(rows[1].props.accessibilityState.checked).toBe(false);
+		const walk = (node: unknown, found: string[]): string[] => {
+			const n = node as { props?: { testID?: string }; children?: unknown };
+			if (n?.props?.testID?.startsWith("k-toggle-")) found.push(n.props.testID);
+			if (n?.children) {
+				for (const c of [n.children].flat()) walk(c, found);
+			}
+			return found;
+		};
+		const glyphRoot = walk(screen.toJSON(), []).filter((id) =>
+			id.includes("-glyph-"),
+		);
+		expect(glyphRoot.sort()).toEqual([
+			"k-toggle-group-item-glyph-check",
+			"k-toggle-group-item-glyph-lock",
+		]);
 	});
 
 	it("a disabled item never fires and dims; a disabled group gates all items", async () => {
