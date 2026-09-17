@@ -58,7 +58,12 @@ export function Checkbox({
 			]}
 		>
 			<View
-				style={{ minWidth: 44, minHeight: 44, alignItems: "center", justifyContent: "center" }}
+				style={{
+					minWidth: 44,
+					minHeight: 44,
+					alignItems: "center",
+					justifyContent: "center",
+				}}
 			>
 				<View
 					testID="k-checkbox-box"

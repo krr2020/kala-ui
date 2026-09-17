@@ -15,14 +15,20 @@ export function root(disabled: boolean): ViewStyle {
 }
 
 export function box(theme: KalaTheme, active: boolean): ViewStyle {
+	const borderWidth = 2;
 	return {
-		width: BOX,
-		height: BOX,
+		// border renders inside the 22dp box (RN has no border-box sizing):
+		// shrink by the stroke so the outer footprint is identical whether
+		// the border is 1px or 2px and the icon stays centered
+		width: BOX - 2 * borderWidth,
+		height: BOX - 2 * borderWidth,
 		borderRadius: 6,
 		alignItems: "center",
 		justifyContent: "center",
-		backgroundColor: active ? theme.primary : theme.card,
-		borderWidth: 1,
+		// resting box is border-defined, not card-filled: a card fill is
+		// invisible on card-colored surfaces (dark sheets/pages)
+		backgroundColor: active ? theme.primary : "transparent",
+		borderWidth,
 		borderColor: active ? theme.primary : theme.border,
 	};
 }

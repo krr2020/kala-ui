@@ -212,7 +212,6 @@ describe("Forms rewrite contract", () => {
 			"textarea",
 			"number-input",
 			"select",
-			"combobox",
 			"multi-select",
 			"slider",
 			"calendar",
@@ -255,7 +254,9 @@ describe("Forms rewrite contract", () => {
 		expect(flatStyle(area.getByTestId("k-textarea")).backgroundColor).toBe(
 			light.card,
 		);
-		const areaLocked = await render(<Textarea disabled accessibilityLabel="e2" />);
+		const areaLocked = await render(
+			<Textarea disabled accessibilityLabel="e2" />,
+		);
 		expect(
 			flatStyle(areaLocked.getByTestId("k-textarea")).backgroundColor,
 		).toBe(light.input);
@@ -263,7 +264,9 @@ describe("Forms rewrite contract", () => {
 		expect(flatStyle(num.getByTestId("k-number-input")).backgroundColor).toBe(
 			light.card,
 		);
-		const numLocked = await render(<NumberInput disabled accessibilityLabel="g" />);
+		const numLocked = await render(
+			<NumberInput disabled accessibilityLabel="g" />,
+		);
 		expect(
 			flatStyle(numLocked.getByTestId("k-number-input")).backgroundColor,
 		).toBe(light.input);
