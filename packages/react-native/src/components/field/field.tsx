@@ -40,16 +40,22 @@ export function Field({
 		rest.length === 0 && isValidElement(first)
 			? (first as ReactElement<Record<string, unknown>>)
 			: null;
-	const control =
-		onlyChild === null
-			? children
-			: cloneElement(onlyChild, {
-					accessibilityLabel:
-						(onlyChild.props.accessibilityLabel as string | undefined) ??
-						[label, description, invalid ? "invalid" : null]
-							.filter(Boolean)
-							.join(", "),
-				});
+		const control =
+			onlyChild === null
+				? children
+				: cloneElement(onlyChild, {
+						// the control's own label always wins; otherwise merge the
+						// field's copy (real error text — never a synthetic word)
+						accessibilityLabel:
+							(onlyChild.props.accessibilityLabel as string | undefined) ??
+							[label, description, errorText || null]
+								.filter(Boolean)
+								.join(", "),
+						// invalid state tints the control when it understands hasError;
+						// an explicit control-side value is never overridden
+						hasError:
+							(onlyChild.props.hasError as boolean | undefined) ?? invalid,
+					});
 
 	return (
 		<View

@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react-native";
 import { Text } from "react-native";
+import { themes } from "../../themes";
 import { Field } from "../field";
 import { TextInput } from "../text-input";
 
@@ -99,6 +100,34 @@ describe("Field", () => {
 		expect(error.color).toBeTruthy();
 	});
 
+	it("label merge drops empty parts — no stray separators", async () => {
+		const onlyLabel = await render(
+			<Field label="Solo">
+				<TextInput />
+			</Field>,
+		);
+		expect(onlyLabel.getByTestId("k-text-input").props.accessibilityLabel).toBe(
+			"Solo",
+		);
+		const descOnly = await render(
+			<Field description="just helper copy">
+				<TextInput />
+			</Field>,
+		);
+		expect(descOnly.getByTestId("k-text-input").props.accessibilityLabel).toBe(
+			"just helper copy",
+		);
+		const bare = await render(
+			<Field>
+				<TextInput />
+			</Field>,
+		);
+		// all parts empty → join is "" → treated as no label at all
+		const bareLabel = bare.getByTestId("k-text-input").props
+			.accessibilityLabel as string | undefined;
+		expect(bareLabel ? bareLabel.length : 0).toBe(0);
+	});
+
 	it("hasError arm without error copy still announces nothing but tints nothing structural", async () => {
 		const screen: Screen = await render(
 			<Field label="Email" hasError>
@@ -127,6 +156,32 @@ describe("Field", () => {
 			</Field>,
 		);
 		expect(screen.getByTestId("k-field-error").props.children).toBe("b, a");
+	});
+
+	it("invalid tint propagates: control ring turns destructive, own hasError wins", async () => {
+		const tinted = await render(
+			<Field label="API key" hasError>
+				<TextInput />
+			</Field>,
+		);
+		const tintedRing = flatStyle(tinted.getByTestId("k-text-input"));
+		expect(tintedRing.borderColor).toBe(themes.light.destructive);
+		const withCopy = await render(
+			<Field label="Email" error="broken">
+				<TextInput />
+			</Field>,
+		);
+		expect(flatStyle(withCopy.getByTestId("k-text-input")).borderColor).toBe(
+			themes.light.destructive,
+		);
+		const own = await render(
+			<Field label="Email" hasError>
+				<TextInput hasError={false} />
+			</Field>,
+		);
+		expect(
+			flatStyle(own.getByTestId("k-text-input")).borderColor,
+		).not.toBe(themes.light.destructive);
 	});
 
 	it("slotStyles.root slot overrides the surface", async () => {

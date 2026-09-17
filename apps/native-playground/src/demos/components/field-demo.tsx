@@ -31,6 +31,11 @@ export function FieldDemo() {
 					<TextInput defaultValue="Kala UI" />
 				</Field>
 			</DemoBlock>
+			<DemoBlock label="Error Tint">
+				<Field label="API Key" hasError>
+					<TextInput defaultValue="sk-live-kala" />
+				</Field>
+			</DemoBlock>
 			<DemoBlock label="Error Live Region">
 				<Field label="Invite Code" error="expired yesterday">
 					<TextInput defaultValue="KALA-2024" />
