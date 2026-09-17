@@ -18,6 +18,8 @@ export interface ComboboxProps {
 	searchPlaceholder?: string;
 	emptyText?: string;
 	disabled?: boolean;
+	/** destructive border on the trigger */
+	hasError?: boolean;
 	size?: "sm" | "md";
 	/** shows a clear affordance once a value exists; commits '' */
 	clearable?: boolean;

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { StyleProp, ViewStyle } from "react-native";
+import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 export interface FieldProps {
 	/** visible label rendered above the control; merged into the control's accessibilityLabel */
@@ -19,10 +19,10 @@ export interface FieldProps {
 	/** slotStyles: root wins over the library surface and `style`. */
 	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
-		label?: StyleProp<ViewStyle>;
+		label?: StyleProp<TextStyle>;
 		control?: StyleProp<ViewStyle>;
-		description?: StyleProp<ViewStyle>;
-		error?: StyleProp<ViewStyle>;
+		description?: StyleProp<TextStyle>;
+		error?: StyleProp<TextStyle>;
 	};
 	testID?: string;
 }

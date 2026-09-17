@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Pressable, Text as RNText, ScrollView, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { clampTimePart, pad2 } from "../../lib/date.utils";
@@ -53,12 +53,6 @@ export function TimePicker({
 		onValueChange?.(next);
 	};
 
-	if (isLoading) {
-		return (
-			<Skeleton testID={testID} style={[{ height: 44, width: 200 }, style]} />
-		);
-	}
-
 	const isPM = current.hours >= 12;
 	// 12h wheel: index 0 is "12", index i is hour i. 24h wheel: index i is hour i.
 	const hourIndex =
@@ -75,6 +69,28 @@ export function TimePicker({
 		return isPM ? (twelve % 12) + 12 : twelve % 12;
 	};
 
+	const wheelRefs = useRef(
+		new Map<"hour" | "minute" | "second", ScrollView | null>(new Map()),
+	);
+	// controlled value changes move the wheels to the new selection
+	useEffect(() => {
+		const sync = (prefix: "hour" | "minute" | "second", index: number) => {
+			wheelRefs.current.get(prefix)?.scrollTo({
+				y: index * ITEM,
+				animated: false,
+			});
+		};
+		sync("hour", hourIndex);
+		sync("minute", current.minutes);
+		if (showSeconds) sync("second", current.seconds ?? 0);
+	}, [hourIndex, current.minutes, current.seconds, showSeconds]);
+
+	if (isLoading) {
+		return (
+			<Skeleton testID={testID} style={[{ height: 44, width: 200 }, style]} />
+		);
+	}
+
 	const renderWheel = (
 		prefix: "hour" | "minute" | "second",
 		count: number,
@@ -82,8 +98,27 @@ export function TimePicker({
 		labelFor: (i: number) => string,
 		onPick: (i: number) => void,
 	): ReactElement => (
-		<View testID={`k-time-picker-${prefix}`} style={{ flex: 1 }}>
+		<View style={{ flex: 1 }}>
 			<ScrollView
+				testID={`k-time-picker-${prefix}`}
+				ref={(node) => {
+					wheelRefs.current.set(prefix, node);
+				}}
+				onLayout={() => {
+					// initial position: the selected row centers in the window
+					wheelRefs.current
+						.get(prefix)
+						?.scrollTo({ y: selectedIndex * ITEM, animated: false });
+				}}
+				onMomentumScrollEnd={(event) => {
+					// a flick commits the row the wheel settled on, not just taps
+					const y = event.nativeEvent.contentOffset.y;
+					const index = Math.max(
+						0,
+						Math.min(count - 1, Math.round(y / ITEM)),
+					);
+					onPick(index);
+				}}
 				style={{ height: WHEEL_HEIGHT }}
 				contentContainerStyle={{ paddingVertical: ITEM }}
 				snapToInterval={ITEM}

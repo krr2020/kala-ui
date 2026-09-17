@@ -9,6 +9,7 @@ import type { ReactElement } from "react";
 import { createContext, useContext } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { useUncontrolled } from "../../lib/use-uncontrolled.utils";
 import { applySlot } from "../slot-styles";
 import type { RadioGroupItemProps, RadioGroupProps } from "./radio-group.types";
 
@@ -25,6 +26,7 @@ const RadioGroupContext = createContext<RadioGroupState | null>(null);
 
 export function RadioGroup({
 	value,
+	defaultValue,
 	onValueChange,
 	disabled = false,
 	accessibilityLabel,
@@ -33,10 +35,19 @@ export function RadioGroup({
 	slotStyles,
 	testID = "k-radio-group",
 }: RadioGroupProps): ReactElement {
-	const state: RadioGroupState = {
+	const [current, setCurrent] = useUncontrolled<string | undefined>(
 		value,
+		defaultValue,
+	);
+	const state: RadioGroupState = {
+		value: current,
 		groupDisabled: disabled,
-		select: (next) => onValueChange?.(next),
+		select: (next) => {
+			// re-selecting the checked item is a no-op — radios don't unselect
+			if (next === current) return;
+			setCurrent(next);
+			onValueChange?.(next);
+		},
 	};
 	return (
 		<RadioGroupContext.Provider value={state}>
@@ -85,7 +96,10 @@ function RadioGroupItem({
 				if (!isDisabled) group.select(value);
 			}}
 			accessibilityRole="radio"
-			accessibilityLabel={accessibilityLabel ?? label}
+			accessibilityLabel={
+				accessibilityLabel ??
+				[label, description].filter(Boolean).join(", ")
+			}
 			accessibilityState={{ checked, disabled: isDisabled || undefined }}
 			style={applySlot(
 				applySlot(

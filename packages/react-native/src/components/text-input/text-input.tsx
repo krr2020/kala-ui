@@ -1,8 +1,9 @@
 import type { ReactElement, ReactNode } from "react";
 import { Text as RNText, TextInput as RNTextInput, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { tokens } from "../../tokens";
+import { useState } from "react";
 import { applySlot } from "../slot-styles";
+import * as fieldStyle from "./text-input.styles";
 import type { TextInputProps } from "./text-input.types";
 
 /**
@@ -22,19 +23,10 @@ export function TextInput({
 	...rest
 }: TextInputProps): ReactElement {
 	const { theme } = useUnistyles();
+	const [focused, setFocused] = useState(false);
 
 	const inputStyle = [
-		{
-			minHeight: 44,
-			backgroundColor: theme.input,
-			color: theme.foreground,
-			fontSize: 14,
-			paddingHorizontal: tokens.space.controlPx,
-			borderWidth: 1,
-			borderRadius: tokens.radius.input,
-			borderColor: hasError ? theme.destructive : theme.border,
-			opacity: disabled ? 0.5 : 1,
-		},
+		fieldStyle.field(theme, { hasError, disabled, focused }),
 		applySlot(applySlot({}, style), slotStyles?.root),
 	];
 
@@ -42,9 +34,7 @@ export function TextInput({
 	const sectionNode = (node: ReactNode, testID: string): ReactElement =>
 		typeof node === "string" || typeof node === "number" ? (
 			<View testID={testID} style={applySlot({}, slotStyles?.section)}>
-				<RNText style={{ fontSize: 14, color: theme.foreground }}>
-					{node}
-				</RNText>
+				<RNText style={fieldStyle.sectionText(theme)}>{node}</RNText>
 			</View>
 		) : (
 			<View testID={testID} style={applySlot({}, slotStyles?.section)}>
@@ -58,6 +48,14 @@ export function TextInput({
 			editable={disabled ? false : undefined}
 			accessibilityState={disabled ? { disabled: true } : undefined}
 			placeholderTextColor={theme.mutedForeground}
+			onFocus={(e) => {
+				setFocused(true);
+				rest.onFocus?.(e);
+			}}
+			onBlur={(e) => {
+				setFocused(false);
+				rest.onBlur?.(e);
+			}}
 			style={inputStyle}
 			{...rest}
 		/>
@@ -71,14 +69,7 @@ export function TextInput({
 		<View
 			testID="k-text-input-group"
 			style={[
-				{
-					flexDirection: "row",
-					alignItems: "center",
-					borderWidth: 1,
-					borderRadius: tokens.radius.input,
-					borderColor: hasError ? theme.destructive : theme.border,
-					opacity: disabled ? 0.5 : 1,
-				},
+				fieldStyle.group(theme, { hasError, disabled, focused }),
 				applySlot({}, slotStyles?.group),
 			]}
 		>

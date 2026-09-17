@@ -4,6 +4,7 @@ import { BasicsDemo } from "../basics-demo";
 import { ChartsDemo } from "../charts-demo";
 import { DataTableDemo } from "../data-table-demo";
 import { FeedbackDemo } from "../feedback-demo";
+import { FormsDemo } from "../forms-demo";
 import { NavigationDemo } from "../navigation-demo";
 import { OverlaysDemo } from "../overlays-demo";
 import { TokensDemo } from "../tokens-demo";
@@ -11,14 +12,32 @@ import { AvatarDemo } from "./avatar-demo";
 import { AvatarGroupDemo } from "./avatar-group-demo";
 import { BadgeDemo } from "./badge-demo";
 import { ButtonDemo } from "./button-demo";
+import { CalendarDemo } from "./calendar-demo";
 import { CardDemo } from "./card-demo";
+import { CheckboxDemo } from "./checkbox-demo";
+import { ComboboxDemo } from "./combobox-demo";
+import { DatePickerDemo } from "./date-picker-demo";
+import { FieldDemo } from "./field-demo";
 import { HeadingDemo } from "./heading-demo";
 import { IconDemo } from "./icon-demo";
+import { InputOtpDemo } from "./input-otp-demo";
 import { humanizeLabel } from "./label";
+import { LabelDemo } from "./label-demo";
 import { ListDemo } from "./list-demo";
+import { MultiSelectDemo } from "./multi-select-demo";
+import { NumberInputDemo } from "./number-input-demo";
+import { RadioGroupDemo } from "./radio-group-demo";
+import { RatingDemo } from "./rating-demo";
+import { SelectDemo } from "./select-demo";
 import { SeparatorDemo } from "./separator-demo";
+import { SliderDemo } from "./slider-demo";
+import { SwitchDemo } from "./switch-demo";
 import { TagDemo } from "./tag-demo";
 import { TextDemo } from "./text-demo";
+import { TextInputDemo } from "./text-input-demo";
+import { TextareaDemo } from "./textarea-demo";
+import { TimePickerDemo } from "./time-picker-demo";
+import { ToggleDemo } from "./toggle-demo";
 
 export { humanizeLabel } from "./label";
 
@@ -124,26 +143,98 @@ export const componentGroups: ComponentGroup[] = [
 		label: humanizeLabel("forms"),
 		title: "Forms & Inputs",
 		source: "library",
-		overview: () => <FeedbackDemo />,
+		overview: () => <FormsDemo />,
 		components: [
-			{ label: humanizeLabel("text-input"), name: "text-input" },
-			{ label: humanizeLabel("textarea"), name: "textarea" },
-			{ label: humanizeLabel("number-input"), name: "number-input" },
-			{ label: humanizeLabel("select"), name: "select" },
-			{ label: humanizeLabel("combobox"), name: "combobox" },
-			{ label: humanizeLabel("multi-select"), name: "multi-select" },
-			{ label: humanizeLabel("checkbox"), name: "checkbox" },
-			{ label: humanizeLabel("radio-group"), name: "radio-group" },
-			{ label: humanizeLabel("switch"), name: "switch" },
-			{ label: humanizeLabel("toggle"), name: "toggle" },
-			{ label: humanizeLabel("slider"), name: "slider" },
-			{ label: humanizeLabel("rating"), name: "rating" },
-			{ label: humanizeLabel("field"), name: "field" },
-			{ label: humanizeLabel("label"), name: "label" },
-			{ label: humanizeLabel("input-otp"), name: "input-otp" },
-			{ label: humanizeLabel("calendar"), name: "calendar" },
-			{ label: humanizeLabel("date-picker"), name: "date-picker" },
-			{ label: humanizeLabel("time-picker"), name: "time-picker" },
+			{
+				label: humanizeLabel("text-input"),
+				name: "text-input",
+				render: () => <TextInputDemo />,
+			},
+			{
+				label: humanizeLabel("textarea"),
+				name: "textarea",
+				render: () => <TextareaDemo />,
+			},
+			{
+				label: humanizeLabel("number-input"),
+				name: "number-input",
+				render: () => <NumberInputDemo />,
+			},
+			{
+				label: humanizeLabel("select"),
+				name: "select",
+				render: () => <SelectDemo />,
+			},
+			{
+				label: humanizeLabel("combobox"),
+				name: "combobox",
+				render: () => <ComboboxDemo />,
+			},
+			{
+				label: humanizeLabel("multi-select"),
+				name: "multi-select",
+				render: () => <MultiSelectDemo />,
+			},
+			{
+				label: humanizeLabel("checkbox"),
+				name: "checkbox",
+				render: () => <CheckboxDemo />,
+			},
+			{
+				label: humanizeLabel("radio-group"),
+				name: "radio-group",
+				render: () => <RadioGroupDemo />,
+			},
+			{
+				label: humanizeLabel("switch"),
+				name: "switch",
+				render: () => <SwitchDemo />,
+			},
+			{
+				label: humanizeLabel("toggle"),
+				name: "toggle",
+				render: () => <ToggleDemo />,
+			},
+			{
+				label: humanizeLabel("slider"),
+				name: "slider",
+				render: () => <SliderDemo />,
+			},
+			{
+				label: humanizeLabel("rating"),
+				name: "rating",
+				render: () => <RatingDemo />,
+			},
+			{
+				label: humanizeLabel("field"),
+				name: "field",
+				render: () => <FieldDemo />,
+			},
+			{
+				label: humanizeLabel("label"),
+				name: "label",
+				render: () => <LabelDemo />,
+			},
+			{
+				label: humanizeLabel("input-otp"),
+				name: "input-otp",
+				render: () => <InputOtpDemo />,
+			},
+			{
+				label: humanizeLabel("calendar"),
+				name: "calendar",
+				render: () => <CalendarDemo />,
+			},
+			{
+				label: humanizeLabel("date-picker"),
+				name: "date-picker",
+				render: () => <DatePickerDemo />,
+			},
+			{
+				label: humanizeLabel("time-picker"),
+				name: "time-picker",
+				render: () => <TimePickerDemo />,
+			},
 		],
 	},
 	{

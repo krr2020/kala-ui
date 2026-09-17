@@ -4,6 +4,8 @@ import type { StyleProp, ViewStyle } from "react-native";
 export interface RadioGroupProps {
 	/** Value of the selected item (controlled single select). */
 	value?: string;
+	/** uncontrolled seed; ignored when `value` is provided */
+	defaultValue?: string;
 	onValueChange?: (value: string) => void;
 	/** Disables every item in the group. */
 	disabled?: boolean;

@@ -12,20 +12,15 @@ import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
 import { applySlot } from "../slot-styles";
+import {
+	baseSurface,
+	PAD_X,
+	TOGGLE_FONT,
+	TOGGLE_HEIGHT,
+} from "./toggle.styles";
 import type { ToggleProps, ToggleSize, ToggleVariant } from "./toggle.types";
 
-export const TOGGLE_HEIGHT: Record<ToggleSize, number> = {
-	sm: 36,
-	md: tokens.size.controlH,
-	lg: 44,
-};
-
-const PAD_X: Record<ToggleSize, number> = { sm: 6, md: 8, lg: 10 };
-export const TOGGLE_FONT: Record<ToggleSize, number> = {
-	sm: 13,
-	md: 14,
-	lg: 16,
-};
+export { PAD_X, TOGGLE_FONT, TOGGLE_HEIGHT };
 
 interface SurfaceTheme {
 	accent: string;
@@ -50,15 +45,7 @@ export function toggleSurface({
 }): { style: ViewStyle; fg: string } {
 	return {
 		style: {
-			minHeight: 44,
-			minWidth: 44,
-			height: TOGGLE_HEIGHT[size],
-			paddingHorizontal: PAD_X[size],
-			alignItems: "center",
-			justifyContent: "center",
-			flexDirection: "row",
-			gap: 8,
-			borderRadius: tokens.radius.control,
+			...baseSurface(size),
 			backgroundColor: active ? theme.accent : "transparent",
 			borderWidth: variant === "outline" ? 1 : 0,
 			borderColor: theme.border,

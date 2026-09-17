@@ -14,7 +14,7 @@ import { applySlot } from "../slot-styles";
 import type { MultiSelectOption, MultiSelectProps } from "./multi-select.types";
 import { MultiSelectSkeleton } from "./multi-select-skeleton";
 
-const HEIGHTS = { sm: 36, md: 44 } as const;
+import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
 
 export function MultiSelect({
 	options,
@@ -27,6 +27,7 @@ export function MultiSelect({
 	maxSelected,
 	maxVisibleSelections = 3,
 	disabled = false,
+	hasError = false,
 	size = "md",
 	grouped = false,
 	showActions = true,
@@ -55,7 +56,12 @@ export function MultiSelect({
 		setSearch("");
 	};
 
-	const selectedOptions = options.filter((o) => selected.includes(o.value));
+	// chips render from the SELECTION, not the option list — orphan values
+	// (controlled value not yet in options, async load in flight) keep
+	// their raw value instead of vanishing
+	const selectedOptions = selected.map(
+		(v) => options.find((o) => o.value === v) ?? { value: v, label: v },
+	);
 	const displayedChips =
 		selectedOptions.length > maxVisibleSelections
 			? selectedOptions.slice(0, maxVisibleSelections)
@@ -178,7 +184,16 @@ export function MultiSelect({
 	}
 
 	if (isLoading) {
-		return <MultiSelectSkeleton testID="k-multi-select-skeleton" />;
+		return (
+			<MultiSelectSkeleton
+				testID={testID}
+				style={[
+					{ width: "100%", height: SURFACE_HEIGHTS[size] },
+					style,
+					slotStyles?.root,
+				]}
+			/>
+		);
 	}
 
 	const triggerLabel =
@@ -197,19 +212,7 @@ export function MultiSelect({
 				disabled={disabled}
 				onPress={() => setOpen((prev) => !prev)}
 				style={[
-					{
-						minHeight: HEIGHTS[size],
-						flexDirection: "row",
-						alignItems: "center",
-						justifyContent: "space-between",
-						gap: 8,
-						paddingHorizontal: 12,
-						borderWidth: 1,
-						borderRadius: 8,
-						borderColor: theme.border,
-						backgroundColor: theme.input,
-						opacity: disabled ? 0.5 : 1,
-					},
+					trigger(theme, { size, hasError, disabled }),
 					applySlot(applySlot({}, style), slotStyles?.root),
 				]}
 			>
@@ -283,7 +286,7 @@ export function MultiSelect({
 					▾
 				</RNText>
 			</Pressable>
-			<Sheet open={open} onClose={close}>
+			<Sheet open={open} onClose={close} snap="half" avoidKeyboard scrollable>
 				<View testID="k-multi-select-content" style={{ gap: 2 }}>
 					<TextInput
 						testID="k-multi-select-search"
@@ -367,11 +370,11 @@ export function MultiSelect({
 						>
 							{emptyText}
 						</RNText>
-					) : (
-						rows
-					)}
-				</View>
-			</Sheet>
+						) : (
+							rows
+						)}
+					</View>
+				</Sheet>
 		</>
 	);
 }

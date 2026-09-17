@@ -24,6 +24,8 @@ export interface MultiSelectProps {
 	/** chips shown in the trigger before the +N badge; default 3 */
 	maxVisibleSelections?: number;
 	disabled?: boolean;
+	/** destructive border on the trigger */
+	hasError?: boolean;
 	size?: "sm" | "md";
 	/** render group header rows for options carrying a group */
 	grouped?: boolean;

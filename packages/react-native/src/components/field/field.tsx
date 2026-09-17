@@ -3,15 +3,17 @@ import { Children, cloneElement, isValidElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
+import * as fieldStyle from "./field.styles";
 import type { FieldProps } from "./field.types";
 
 /**
  * Field: label + control + description + error composition. Web Field
  * wires aria-describedby/aria-invalid through context; RN has no such
  * attributes, so the contract moves to what RN can express — the
- * control's accessibilityLabel is merged with label + error (a control
- * that brings its own label always wins), and description/error render
- * as real, screen-reader-reachable text nodes.
+ * control's accessibilityLabel is merged with label + description + an
+ * "invalid" flag (a control that brings its own label always wins), the
+ * error renders as a polite live region so late-appearing validation
+ * copy is announced.
  */
 export function Field({
 	label,
@@ -31,9 +33,12 @@ export function Field({
 	const errorText = uniqueErrors.join(", ");
 	const invalid = hasError || uniqueErrors.length > 0;
 
+	// Children.toArray flattens single-element arrays ({[<Input/>]}) that
+	// Children.count + isValidElement miss.
+	const [first, ...rest] = Children.toArray(children);
 	const onlyChild =
-		Children.count(children) === 1 && isValidElement(children)
-			? (children as ReactElement<Record<string, unknown>>)
+		rest.length === 0 && isValidElement(first)
+			? (first as ReactElement<Record<string, unknown>>)
 			: null;
 	const control =
 		onlyChild === null
@@ -41,7 +46,7 @@ export function Field({
 			: cloneElement(onlyChild, {
 					accessibilityLabel:
 						(onlyChild.props.accessibilityLabel as string | undefined) ??
-						[label, invalid && errorText ? errorText : null]
+						[label, description, invalid ? "invalid" : null]
 							.filter(Boolean)
 							.join(", "),
 				});
@@ -55,13 +60,13 @@ export function Field({
 				<RNText
 					testID="k-field-label"
 					style={[
-						{ fontSize: 14, fontWeight: "500", color: theme.foreground },
+						fieldStyle.label(theme),
 						applySlot({}, slotStyles?.label),
 					]}
 				>
 					{label}
 					{required ? (
-						<RNText style={{ color: theme.destructive }}> *</RNText>
+						<RNText style={fieldStyle.required(theme)}> *</RNText>
 					) : null}
 				</RNText>
 			) : null}
@@ -72,7 +77,7 @@ export function Field({
 				<RNText
 					testID="k-field-description"
 					style={[
-						{ fontSize: 12, color: theme.mutedForeground },
+						fieldStyle.description(theme),
 						applySlot({}, slotStyles?.description),
 					]}
 				>
@@ -83,10 +88,8 @@ export function Field({
 				<RNText
 					testID="k-field-error"
 					accessibilityRole="alert"
-					style={[
-						{ fontSize: 12, color: theme.destructive },
-						applySlot({}, slotStyles?.error),
-					]}
+					accessibilityLiveRegion="polite"
+					style={[fieldStyle.error(theme), applySlot({}, slotStyles?.error)]}
 				>
 					{errorText}
 				</RNText>

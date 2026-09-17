@@ -149,7 +149,9 @@ export function Calendar({
 			}
 		}
 		const today = isSameDay(d, new Date());
-		const disabled = isDayDisabled(d);
+		// out-of-month leading/trailing cells dim and are not selectable —
+		// selecting a neighbor month's day from this grid is a misclick
+		const disabled = !inMonth || isDayDisabled(d);
 		return { selected, middle, today, disabled, inMonth };
 	};
 
@@ -267,7 +269,8 @@ export function Calendar({
 									disabled: state.disabled,
 									selected: state.selected,
 								}}
-								onPress={() => handleDayPress(date)}
+								disabled={state.disabled}
+								onPress={() => inMonth && handleDayPress(date)}
 								style={dayStyle(state)}
 							>
 								<RNText

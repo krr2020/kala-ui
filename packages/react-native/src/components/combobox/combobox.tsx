@@ -11,10 +11,10 @@ import { Pressable, Text as RNText, TextInput, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Sheet } from "../sheet";
 import { applySlot } from "../slot-styles";
+import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
+const HEIGHTS = SURFACE_HEIGHTS;
 import type { ComboboxProps } from "./combobox.types";
 import { ComboboxSkeleton } from "./combobox-skeleton";
-
-const HEIGHTS = { sm: 36, md: 44 } as const;
 
 export function Combobox({
 	options,
@@ -25,6 +25,7 @@ export function Combobox({
 	searchPlaceholder = "Search...",
 	emptyText = "No results found.",
 	disabled = false,
+	hasError = false,
 	size = "md",
 	clearable = false,
 	onSearchChange,
@@ -45,9 +46,11 @@ export function Combobox({
 	const isAsync = onSearchChange !== undefined;
 
 	const selectedOption = options.find((o) => o.value === current);
+	// an orphan value (not in options) renders its raw value, never a
+	// blank trigger — the parent may be mid async load
 	const displayLabel =
 		selectedOption?.label ??
-		(current ? (selectedLabel ?? placeholder) : placeholder);
+		(current ? (selectedLabel ?? current) : placeholder);
 
 	const commit = (next: string): void => {
 		if (!isControlled) setInternal(next);
@@ -61,7 +64,16 @@ export function Combobox({
 	};
 
 	if (isLoading) {
-		return <ComboboxSkeleton testID="k-combobox-skeleton" />;
+		return (
+			<ComboboxSkeleton
+				testID={testID}
+				style={[
+					{ width: "100%", height: SURFACE_HEIGHTS[size] },
+					style,
+					slotStyles?.root,
+				]}
+			/>
+		);
 	}
 
 	const query = search.toLowerCase();
@@ -82,24 +94,14 @@ export function Combobox({
 				disabled={disabled}
 				onPress={() => setOpen((prev) => !prev)}
 				style={[
-					{
-						minHeight: HEIGHTS[size],
-						flexDirection: "row",
-						alignItems: "center",
-						justifyContent: "space-between",
-						gap: 8,
-						paddingHorizontal: 12,
-						paddingRight: clearable && current ? 44 : 12,
-						borderWidth: 1,
-						borderRadius: 8,
-						borderColor: theme.border,
-						backgroundColor: theme.input,
-						opacity: disabled ? 0.5 : 1,
-					},
+					trigger(theme, { size, hasError, disabled }),
+					// keep room for the floating clear affordance
+					clearable && current ? { paddingRight: 44 } : undefined,
 					applySlot(applySlot({}, style), slotStyles?.root),
 				]}
 			>
 				<RNText
+					testID="k-combobox-value"
 					numberOfLines={1}
 					style={{
 						flex: 1,
@@ -126,13 +128,13 @@ export function Combobox({
 					style={{
 						position: "absolute",
 						right: 10,
-						top: HEIGHTS[size] / 2 - 10,
+						top: SURFACE_HEIGHTS[size] / 2 - 10,
 					}}
 				>
 					<X size={16} color={theme.mutedForeground} />
 				</Pressable>
 			) : null}
-			<Sheet open={open} onClose={close}>
+			<Sheet open={open} onClose={close} snap="half" avoidKeyboard scrollable>
 				<View testID="k-combobox-content" style={{ gap: 2 }}>
 					<TextInput
 						testID="k-combobox-search"
@@ -206,13 +208,13 @@ export function Combobox({
 													: theme.foreground,
 									}}
 								>
-									{option.label}
-								</RNText>
-							</Pressable>
-						))
-					)}
-				</View>
-			</Sheet>
-		</>
-	);
+						{option.label}
+					</RNText>
+				</Pressable>
+			))
+		)}
+			</View>
+		</Sheet>
+	</>
+);
 }

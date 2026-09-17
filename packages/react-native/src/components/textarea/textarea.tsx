@@ -7,9 +7,10 @@ import type { ReactElement } from "react";
 import type { StyleProp, TextStyle } from "react-native";
 import { TextInput as RNTextInput, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { tokens } from "../../tokens";
+import { useState } from "react";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
+import * as textareaStyle from "./textarea.styles";
 import type { TextareaProps } from "./textarea.types";
 
 export function Textarea({
@@ -23,7 +24,8 @@ export function Textarea({
 	...rest
 }: TextareaProps): ReactElement {
 	const { theme } = useUnistyles();
-	const minHeight = rows ? Math.max(80, rows * 24) : 80;
+	const [focused, setFocused] = useState(false);
+	const minHeight = textareaStyle.rowsToMinHeight(rows);
 
 	if (isLoading) {
 		return (
@@ -50,19 +52,20 @@ export function Textarea({
 			editable={disabled ? false : undefined}
 			accessibilityState={disabled ? { disabled: true } : undefined}
 			placeholderTextColor={theme.mutedForeground}
+			onFocus={(e) => {
+				setFocused(true);
+				rest.onFocus?.(e);
+			}}
+			onBlur={(e) => {
+				setFocused(false);
+				rest.onBlur?.(e);
+			}}
 			style={[
-				{
-					minHeight,
-					backgroundColor: theme.input,
-					color: theme.foreground,
-					fontSize: 14,
-					paddingHorizontal: tokens.space.controlPx,
-					paddingVertical: 8,
-					borderWidth: 1,
-					borderRadius: tokens.radius.input,
-					borderColor: hasError ? theme.destructive : theme.border,
-					opacity: disabled ? 0.5 : 1,
-				},
+				textareaStyle.field(theme, minHeight, {
+					hasError,
+					disabled,
+					focused,
+				}),
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 			{...rest}

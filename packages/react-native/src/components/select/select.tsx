@@ -1,18 +1,21 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
-import { Pressable, Text as RNText, View } from "react-native";
+import { FlatList, Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { useUncontrolled } from "../../lib/use-uncontrolled.utils";
 import { Sheet } from "../sheet";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
-import type { SelectProps } from "./select.types";
-
-const HEIGHTS = { sm: 36, md: 44 } as const;
+import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
+import { emptyLabel, optionLabel, optionRow } from "./select.styles";
+import type { SelectOption, SelectProps } from "./select.types";
 
 /**
  * Select: trigger + bottom-sheet options. The options surface is the
- * shared engine Sheet+List variants (MultiSelect/Combobox build on it
- * later); value identity is the option `value`, never the label.
+ * shared engine Sheet+FlatList (MultiSelect/Combobox build on it later);
+ * value identity is the option `value`, never the label. An orphan value
+ * (not in options) renders its raw value so async loads never blank the
+ * trigger.
  */
 export function Select({
 	options,
@@ -31,15 +34,16 @@ export function Select({
 	testID = "k-select",
 }: SelectProps): ReactElement {
 	const { theme } = useUnistyles();
-	const [internal, setInternal] = useState<string | undefined>(defaultValue);
+	const [current, setCurrent] = useUncontrolled<string | undefined>(
+		value,
+		defaultValue,
+	);
 	const [open, setOpen] = useState(false);
 
-	const isControlled = value !== undefined;
-	const current = isControlled ? value : internal;
 	const selected = options.find((option) => option.value === current);
 
 	const commit = (next: string): void => {
-		if (!isControlled) setInternal(next);
+		setCurrent(next);
 		onValueChange?.(next);
 		setOpen(false);
 	};
@@ -52,7 +56,7 @@ export function Select({
 			<Skeleton
 				testID={testID}
 				style={[
-					{ width: "100%", height: HEIGHTS[size] },
+					{ width: "100%", height: SURFACE_HEIGHTS[size] },
 					style,
 					slotStyles?.root,
 				]}
@@ -70,19 +74,7 @@ export function Select({
 				disabled={disabled}
 				onPress={() => setOpen((prev) => !prev)}
 				style={[
-					{
-						minHeight: HEIGHTS[size],
-						flexDirection: "row",
-						alignItems: "center",
-						justifyContent: "space-between",
-						gap: 8,
-						paddingHorizontal: 12,
-						borderWidth: 1,
-						borderRadius: 8,
-						borderColor: hasError ? theme.destructive : theme.border,
-						backgroundColor: theme.input,
-						opacity: disabled ? 0.5 : 1,
-					},
+					trigger(theme, { size, hasError, disabled }),
 					applySlot(applySlot({}, style), slotStyles?.root),
 				]}
 			>
@@ -98,7 +90,7 @@ export function Select({
 						applySlot({}, slotStyles?.value),
 					]}
 				>
-					{selected ? selected.label : placeholder}
+					{selected ? selected.label : (current ?? placeholder)}
 				</RNText>
 				<RNText
 					testID="k-select-chevron"
@@ -111,58 +103,50 @@ export function Select({
 					▾
 				</RNText>
 			</Pressable>
-			<Sheet open={open} onClose={() => setOpen(false)}>
-				<View testID="k-select-sheet" style={{ gap: 4 }}>
+			<Sheet open={open} onClose={() => setOpen(false)} snap="half">
+				<View testID="k-select-sheet" style={{ flex: 1 }}>
 					{options.length === 0 ? (
-						<RNText
-							testID="k-select-empty"
-							style={{ fontSize: 14, color: theme.mutedForeground }}
-						>
+						<RNText testID="k-select-empty" style={emptyLabel(theme)}>
 							No options
 						</RNText>
 					) : (
-						options.map((option) => {
-							const isSelected = option.value === current;
-							return (
-								<Pressable
-									key={option.value}
-									testID="k-select-option"
-									accessibilityRole="button"
-									accessibilityLabel={option.label}
-									accessibilityState={{
-										disabled: option.disabled ?? false,
-										selected: isSelected,
-									}}
-									disabled={option.disabled ?? false}
-									onPress={() => commit(option.value)}
-									style={[
-										{
-											minHeight: 44,
-											justifyContent: "center",
-											paddingHorizontal: 12,
-											borderRadius: 8,
-											backgroundColor: isSelected
-												? theme.primary
-												: "transparent",
-										},
-										applySlot({}, slotStyles?.option),
-									]}
-								>
-									<RNText
-										style={{
-											fontSize: 14,
-											color: isSelected
-												? theme.primaryForeground
-												: option.disabled
-													? theme.mutedForeground
-													: theme.foreground,
+						<FlatList
+							data={options}
+							initialNumToRender={options.length}
+							keyExtractor={(option: SelectOption) => option.value}
+							renderItem={({ item: option }) => {
+								const isSelected = option.value === current;
+								return (
+									<Pressable
+										testID="k-select-option"
+										accessibilityRole="button"
+										accessibilityLabel={option.label}
+										accessibilityState={{
+											disabled: option.disabled ?? false,
+											selected: isSelected,
 										}}
+										disabled={option.disabled ?? false}
+										onPress={() => commit(option.value)}
+										style={[
+											optionRow(isSelected),
+											...(isSelected
+												? [{ backgroundColor: theme.accent } as const]
+												: []),
+											applySlot({}, slotStyles?.option),
+										]}
 									>
-										{option.label}
-									</RNText>
-								</Pressable>
-							);
-						})
+										<RNText
+											style={optionLabel(theme, {
+												isSelected,
+												disabled: option.disabled ?? false,
+											})}
+										>
+											{option.label}
+										</RNText>
+									</Pressable>
+								);
+							}}
+						/>
 					)}
 				</View>
 			</Sheet>

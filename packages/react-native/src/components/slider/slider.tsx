@@ -17,11 +17,12 @@ import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
+import * as sliderStyle from "./slider.styles";
 import type { SliderProps } from "./slider.types";
 
-const THUMB_PX = 20;
-const TRACK_H = 8;
-const THUMB_R = THUMB_PX / 2;
+const THUMB_PX = sliderStyle.THUMB_PX;
+const TRACK_H = sliderStyle.TRACK_H;
+const THUMB_R = sliderStyle.THUMB_R;
 
 interface ResponderEvent {
 	nativeEvent?: { locationX?: number; pageX?: number };
@@ -51,8 +52,9 @@ export function Slider({
 	const values = controlled ? (value as number[]) : internal;
 	// gesture-space track width; rendering never reads it (percentage geometry)
 	const trackWidthRef = useRef(0);
-	// active thumb index — a ref so moves don't re-render before the value
-	let activeIndex = 0;
+	// active thumb index kept in a ref — a re-render between grant and move
+	// must not reset it to 0 (multi-thumb drags used to snap to thumb 0)
+	const activeIndexRef = useRef(0);
 
 	const span = max - min;
 
@@ -95,14 +97,14 @@ export function Slider({
 		const x = resolveX(evt);
 		if (x === undefined) return;
 		const v = xToValue(x);
-		// nearest thumb wins the gesture
-		activeIndex = values.reduce(
+		// nearest thumb wins the gesture (track press = jump the nearest thumb)
+		activeIndexRef.current = values.reduce(
 			(best, val, i) =>
 				Math.abs(v - val) < Math.abs(v - (values[best] ?? v)) ? i : best,
 			0,
 		);
 		const next = [...values];
-		next[activeIndex] = neighborClamp(activeIndex, v);
+		next[activeIndexRef.current] = neighborClamp(activeIndexRef.current, v);
 		commit(next);
 	};
 
@@ -111,7 +113,10 @@ export function Slider({
 		const x = resolveX(evt);
 		if (x === undefined) return;
 		const next = [...values];
-		next[activeIndex] = neighborClamp(activeIndex, xToValue(x));
+		next[activeIndexRef.current] = neighborClamp(
+			activeIndexRef.current,
+			xToValue(x),
+		);
 		commit(next);
 	};
 
@@ -166,28 +171,13 @@ export function Slider({
 				onStartShouldSetResponder={() => !disabled}
 				onResponderGrant={grant}
 				onResponderMove={move}
-				style={applySlot(
-					{
-						height: TRACK_H,
-						borderRadius: TRACK_H / 2,
-						backgroundColor: theme.muted,
-						justifyContent: "center",
-					},
-					slotStyles?.track,
-				)}
+				style={applySlot(sliderStyle.track(theme), slotStyles?.track)}
 			>
 				<View
 					testID="k-slider-range"
 					accessibilityElementsHidden={true}
 					style={applySlot(
-						{
-							position: "absolute",
-							left: 0,
-							height: TRACK_H,
-							borderRadius: TRACK_H / 2,
-							backgroundColor: theme.primary,
-							width: `${first === undefined ? 0 : pct(first)}%`,
-						},
+						sliderStyle.range(theme, first === undefined ? 0 : pct(first)),
 						slotStyles?.range,
 					)}
 				/>
@@ -205,26 +195,16 @@ export function Slider({
 								{ name: "increment" },
 								{ name: "decrement" },
 							]}
-							onAccessibilityAction={(e) => {
-								const action = e.nativeEvent.actionName;
-								if (action === "increment") adjust(i, 1);
-								else if (action === "decrement") adjust(i, -1);
-							}}
-							style={applySlot(
-								{
-									position: "absolute",
-									left: `${pct(v)}%`,
-									// center the thumb on its value point
-									marginLeft: -THUMB_R,
-									width: THUMB_PX,
-									height: THUMB_PX,
-									borderRadius: THUMB_R,
-									backgroundColor: theme.background,
-									borderWidth: 2,
-									borderColor: theme.primary,
-								},
-								slotStyles?.thumb,
-							)}
+						onAccessibilityAction={(e) => {
+							const action = e.nativeEvent.actionName;
+							if (action === "increment") adjust(i, 1);
+							else if (action === "decrement") adjust(i, -1);
+						}}
+						hitSlop={sliderStyle.THUMB_HIT_SLOP}
+						style={applySlot(
+							sliderStyle.thumb(theme, pct(v)),
+							slotStyles?.thumb,
+						)}
 						/>
 					);
 				})}

@@ -1,9 +1,10 @@
 import { Minus, Plus } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useState } from "react";
-import { Pressable, TextInput as RNTextInput, View } from "react-native";
+import { Platform, Pressable, TextInput as RNTextInput, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
+import { sanitizeNumberText } from "../../lib/number-input.utils";
 import { Icon } from "../icon";
 import { applySlot } from "../slot-styles";
 import type { NumberInputProps } from "./number-input.types";
@@ -114,16 +115,18 @@ export function NumberInput({
 			<RNTextInput
 				testID={`${testID}-input`}
 				value={display}
-				keyboardType="number-pad"
+				// number-pad cannot type minus; punctuation keyboard on iOS, plain
+				// keyboard on Android — sanitization keeps only valid numeric text
+				keyboardType={
+					Platform.OS === "ios" ? "numbers-and-punctuation" : "default"
+				}
 				editable={disabled ? false : undefined}
 				accessibilityState={disabled ? { disabled: true } : undefined}
 				accessibilityLabel={accessibilityLabel}
 				placeholder={placeholder}
 				placeholderTextColor={theme.mutedForeground}
 				onChangeText={(text) => {
-					// digits, minus, dot — number-pad can still surface stray
-					// characters on some keyboards
-					const sanitized = text.replace(/[^0-9.-]/g, "");
+					const sanitized = sanitizeNumberText(text);
 					setDraft(sanitized);
 					onValueChange?.(parse(sanitized));
 				}}

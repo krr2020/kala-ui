@@ -1,23 +1,26 @@
 /**
  * Checkbox: pressable owns its surface (no native CheckBox on iOS, one
  * deterministic press target everywhere). The 22dp box sits centered in a
- * 44dp touch floor; Check/Minus indicators come from lucide like the web.
- * Indeterminate presses resolve to checked, matching web convention.
+ * 44dp touch floor; an optional label renders beside it and merges into
+ * the a11y announcement. Indeterminate presses resolve to checked,
+ * matching web convention.
  */
 
 import { Check, Minus } from "lucide-react-native";
 import type { ReactElement } from "react";
-import { Pressable, View } from "react-native";
+import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
+import { box as boxStyle, label as labelStyle, root } from "./checkbox.styles";
 import type { CheckboxProps } from "./checkbox.types";
-
-const BOX = 22;
 
 export function Checkbox({
 	value = false,
 	onValueChange,
 	disabled = false,
+	label,
+	isLoading = false,
 	accessibilityLabel,
 	style,
 	slotStyles,
@@ -26,6 +29,15 @@ export function Checkbox({
 	const { theme } = useUnistyles();
 	const active = value !== false;
 
+	if (isLoading) {
+		return (
+			<Skeleton
+				testID={testID}
+				style={[{ width: 160, height: 24 }, style, slotStyles?.root]}
+			/>
+		);
+	}
+
 	return (
 		<Pressable
 			testID={testID}
@@ -33,44 +45,36 @@ export function Checkbox({
 				if (!disabled) onValueChange?.(value !== true);
 			}}
 			accessibilityRole="checkbox"
-			accessibilityLabel={accessibilityLabel}
+			accessibilityLabel={accessibilityLabel ?? label}
 			accessibilityState={{
 				// RN's tri-state vocabulary is "mixed", not "indeterminate"
 				checked: value === "indeterminate" ? "mixed" : value,
 				disabled: disabled || undefined,
 			}}
+			disabled={disabled}
 			style={[
-				{
-					minWidth: 44,
-					minHeight: 44,
-					alignItems: "center",
-					justifyContent: "center",
-					opacity: disabled ? 0.5 : 1,
-				},
+				root(disabled),
 				applySlot(applySlot([], style), slotStyles?.root),
 			]}
 		>
 			<View
-				testID="k-checkbox-box"
-				style={[
-					{
-						width: BOX,
-						height: BOX,
-						borderRadius: 6,
-						alignItems: "center",
-						justifyContent: "center",
-						backgroundColor: active ? theme.primary : theme.card,
-						borderWidth: 1,
-						borderColor: active ? theme.primary : theme.border,
-					},
-					slotStyles?.box,
-				]}
+				style={{ minWidth: 44, minHeight: 44, alignItems: "center", justifyContent: "center" }}
 			>
-				{value === true && <Check size={14} color={theme.primaryForeground} />}
-				{value === "indeterminate" && (
-					<Minus size={14} color={theme.primaryForeground} />
-				)}
+				<View
+					testID="k-checkbox-box"
+					style={[boxStyle(theme, active), slotStyles?.box]}
+				>
+					{value === true && (
+						<Check size={14} color={theme.primaryForeground} />
+					)}
+					{value === "indeterminate" && (
+						<Minus size={14} color={theme.primaryForeground} />
+					)}
+				</View>
 			</View>
+			{label !== undefined ? (
+				<RNText style={labelStyle(theme)}>{label}</RNText>
+			) : null}
 		</Pressable>
 	);
 }

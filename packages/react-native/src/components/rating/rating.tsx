@@ -1,10 +1,11 @@
 /**
  * Rating: the web star input on native pressables. Empty stars are the muted
- * foreground at 30% alpha (hex "4D"); fills borrow theme.warning like the
- * web's `text-warning`. RN has no clip-path: the half star is a 50%-width
+ * foreground at low alpha; fills borrow theme.warning like the web's
+ * `text-warning`. RN has no clip-path: the half star is a 50%-width
  * overflow window over a full-size filled star. allowHalf presses read the
  * press locationX (left half → N-0.5); a missing location falls back to the
- * whole star. readOnly drops the pressables and announces one summary.
+ * whole star. Both arms announce one summary — interactive stars are hidden
+ * from the a11y tree and the root exposes increment/decrement actions.
  */
 
 import { Star } from "lucide-react-native";
@@ -13,6 +14,7 @@ import { useState } from "react";
 import { Pressable, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
+import { emptyStarColor, root, starHit } from "./rating.styles";
 import type { RatingProps, RatingSize } from "./rating.types";
 
 const STAR_PX: Record<RatingSize, number> = { sm: 16, md: 20, lg: 28 };
@@ -39,12 +41,17 @@ export function Rating({
 	testID = "k-rating",
 }: RatingProps): ReactElement {
 	const { theme } = useUnistyles();
-	// controlled lock: a provided value prop always wins over internal state
+	// controlled lock: a provided value prop always wins over internal state;
+	// non-finite values (NaN) degrade to 0 so the control can still clear
 	const controlled = value !== undefined;
 	const [internal, setInternal] = useState(() => defaultValue);
-	const active = controlled ? (value as number) : internal;
+	const active = controlled && Number.isFinite(value)
+		? (value as number)
+		: controlled
+			? 0
+			: internal;
 	const px = STAR_PX[size];
-	const emptyColor = `${theme.mutedForeground}4D`;
+	const emptyColor = emptyStarColor(theme.mutedForeground);
 	const fillColor = theme.warning;
 
 	const commit = (next: number) => {
@@ -61,6 +68,13 @@ export function Rating({
 		}
 		// toggle off when the same value is pressed again
 		commit(next === active ? 0 : next);
+	};
+
+	const adjust = (delta: number) => {
+		if (readOnly || disabled) return;
+		const step = allowHalf ? 0.5 : 1;
+		const next = Math.min(count, Math.max(0, active + delta * step));
+		commit(next);
 	};
 
 	const fillFor = (star: number): Fill => {
@@ -103,9 +117,13 @@ export function Rating({
 		);
 	};
 
+	const stars = Array.from({ length: count }, (_, i) => i + 1).map((star) => (
+		<View key={star} style={{ justifyContent: "center" }}>
+			{starVisual(star)}
+		</View>
+	));
+
 	if (readOnly) {
-		// Read-only is presentation, not a row of dead buttons: the value is
-		// announced once, stars stay hidden from the a11y tree.
 		return (
 			<View
 				testID={testID}
@@ -117,16 +135,17 @@ export function Rating({
 					slotStyles?.root,
 				)}
 			>
-				{Array.from({ length: count }, (_, i) => i + 1).map((star) => (
-					<View
-						key={star}
-						testID="k-rating-star"
-						accessibilityElementsHidden={true}
-						style={{ justifyContent: "center" }}
-					>
-						{starVisual(star)}
-					</View>
-				))}
+				{stars.map((star, i) => (
+				<View
+					// biome-ignore lint/suspicious/noArrayIndexKey: star identity is its slot
+					key={i}
+					testID="k-rating-star"
+					accessibilityElementsHidden={true}
+					style={{ justifyContent: "center" }}
+				>
+					{star}
+				</View>
+			))}
 			</View>
 		);
 	}
@@ -134,18 +153,17 @@ export function Rating({
 	return (
 		<View
 			testID={testID}
-			accessibilityLabel={accessibilityLabel}
+			accessibilityLabel={`${accessibilityLabel}, ${active} of ${count}`}
+			accessibilityActions={[
+				{ name: "increment", label: "Increase rating" },
+				{ name: "decrement", label: "Decrease rating" },
+			]}
+			onAccessibilityAction={(event) => {
+				if (event.nativeEvent.actionName === "increment") adjust(1);
+				if (event.nativeEvent.actionName === "decrement") adjust(-1);
+			}}
 			style={applySlot(
-				applySlot(
-					[
-						{
-							flexDirection: "row",
-							alignItems: "center",
-							opacity: disabled ? 0.5 : 1,
-						},
-					],
-					style,
-				),
+				applySlot([root(disabled)], style),
 				slotStyles?.root,
 			)}
 		>
@@ -163,14 +181,7 @@ export function Rating({
 						}}
 						disabled={disabled}
 						onPress={(event) => press(event, star)}
-						style={applySlot(
-							{
-								minHeight: 44,
-								justifyContent: "center",
-								paddingHorizontal: 2,
-							},
-							slotStyles?.star,
-						)}
+						style={applySlot(starHit(), slotStyles?.star)}
 					>
 						{starVisual(star)}
 					</Pressable>

@@ -8,14 +8,13 @@ import { formatDay } from "../../lib/date.utils";
 import type { DateRangeValue } from "../calendar";
 import { Calendar } from "../calendar";
 import { Sheet } from "../sheet";
+import { SURFACE_HEIGHTS as HEIGHT, trigger as triggerRow } from "../input-surface.styles";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
 import type {
 	DatePickerProps,
 	DateRangePickerProps,
 } from "./date-picker.types";
-
-const HEIGHT = { sm: 44, md: 48 } as const;
 
 function TriggerChrome({
 	label,
@@ -50,18 +49,7 @@ function TriggerChrome({
 			disabled={disabled}
 			onPress={disabled ? undefined : onPress}
 			style={[
-				{
-					flexDirection: "row",
-					alignItems: "center",
-					gap: 8,
-					minHeight: HEIGHT[size],
-					paddingHorizontal: 12,
-					borderWidth: 1,
-					borderRadius: 8,
-					borderColor: hasError ? theme.destructive : theme.border,
-					backgroundColor: theme.background,
-					opacity: disabled ? 0.6 : 1,
-				},
+				triggerRow(theme, { size, hasError, disabled }),
 				style,
 			]}
 		>
@@ -105,8 +93,8 @@ export function DatePicker({
 	const [internal, setInternal] = useState<Date | undefined>(defaultValue);
 	const [open, setOpen] = useState(false);
 
+		const triggerDisabled = buttonDisabled || disabled === true;
 	const date = valueProp !== undefined ? valueProp : internal;
-	const triggerDisabled = buttonDisabled || disabled === true;
 
 	if (isLoading) {
 		return (

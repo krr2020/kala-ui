@@ -4,7 +4,8 @@
  * dismiss via RNGH Pan + Reanimated springs from the motion tokens.
  */
 import type { ReactElement } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
+import { KeyboardAvoidingView, Platform } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
 	runOnJS,
@@ -30,6 +31,8 @@ export function Sheet({
 	onClose,
 	snap = "peek",
 	dismissable = true,
+	scrollable = false,
+	avoidKeyboard = false,
 	style,
 	slotStyles,
 	children,
@@ -86,6 +89,11 @@ export function Sheet({
 					slotStyles?.overlay,
 				)}
 			/>
+			<KeyboardAvoidingView
+				behavior={avoidKeyboard && Platform.OS === "ios" ? "padding" : undefined}
+				pointerEvents="box-none"
+				style={{ flex: 1, justifyContent: "flex-end" }}
+			>
 			<GestureDetector gesture={pan}>
 				<Animated.View
 					testID="k-sheet-content"
@@ -127,9 +135,20 @@ export function Sheet({
 							slotStyles?.grabber,
 						)}
 					/>
-					{children}
+					{scrollable ? (
+						<ScrollView
+							testID="k-sheet-scroll"
+							showsVerticalScrollIndicator={false}
+							contentContainerStyle={{ gap: 4, paddingBottom: 8 }}
+						>
+							{children}
+						</ScrollView>
+					) : (
+						children
+					)}
 				</Animated.View>
 			</GestureDetector>
+			</KeyboardAvoidingView>
 		</View>
 	);
 }
