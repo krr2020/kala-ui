@@ -170,8 +170,9 @@ describe("component app seam", () => {
 		// (text/textarea/number/select/combobox/multi-select/checkbox×2/
 		// radio/switch/toggle/slider×2/rating/field×2/otp/calendar/date/
 		// time) + forms overview (email/plan/tier/terms) + the three-screen
-		// shell stack (screen + source + group + component indexes).
-		expect(demoHooks).toBe(58);
+		// shell stack (screen + source + group + component indexes) +
+		// dedicated alert demo (dismiss counter + re-show visibility).
+		expect(demoHooks).toBe(60);
 	});
 
 	it("landing offers exactly two package routes", () => {
@@ -650,6 +651,7 @@ describe("component app seam", () => {
 					'accessibilityLabel={`open ${entry.name} group`}': 1,
 					'accessibilityLabel={`show ${name} preview`}': 1,
 					'testID="k-demo-accordion"': 1,
+				'testID="k-demo-alert"': 1,
 					'testID="k-demo-app-shell"': 1,
 					'testID="k-demo-avatar-group"': 1,
 					'testID="k-demo-avatar-group-inline"': 1,

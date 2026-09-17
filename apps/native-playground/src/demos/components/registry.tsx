@@ -8,6 +8,7 @@ import { FormsDemo } from "../forms-demo";
 import { NavigationDemo } from "../navigation-demo";
 import { OverlaysDemo } from "../overlays-demo";
 import { TokensDemo } from "../tokens-demo";
+import { AlertDemo } from "./alert-demo";
 import { AvatarDemo } from "./avatar-demo";
 import { AvatarGroupDemo } from "./avatar-group-demo";
 import { BadgeDemo } from "./badge-demo";
@@ -244,7 +245,11 @@ export const componentGroups: ComponentGroup[] = [
 		source: "library",
 		overview: () => <FeedbackDemo />,
 		components: [
-			{ label: humanizeLabel("alert"), name: "alert" },
+			{
+				label: humanizeLabel("alert"),
+				name: "alert",
+				render: () => <AlertDemo />,
+			},
 			{ label: humanizeLabel("banner"), name: "banner" },
 			{ label: humanizeLabel("toast"), name: "toast" },
 			{ label: humanizeLabel("progress"), name: "progress" },
