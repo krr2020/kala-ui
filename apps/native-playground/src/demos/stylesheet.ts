@@ -170,10 +170,11 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		fontStyle: "italic",
 	},
 	routeContent: {
-		gap: 24,
+		gap: 32,
 		// horizontal gutter lives on the scroll CONTENT — padding on the
 		// ScrollView FRAME would clip child drawing (elevated shadows)
-		// without adding scrollable space
+		// without adding scrollable space; must stay in sync with
+		// chipRowContent's 16px re-inset so chip rows and content share one rail
 		paddingHorizontal: 16,
 		// end-of-scroll breathing room lives on the scroll CONTENT — the
 		// shell's SafeAreaView already consumes the gesture-bar inset, and
