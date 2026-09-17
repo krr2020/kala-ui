@@ -7,6 +7,7 @@ import type { ReactElement } from "react";
 import { Text as RNText } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
+import * as labelStyle from "./label.styles";
 import type { LabelProps } from "./label.types";
 
 export function Label({
@@ -21,17 +22,13 @@ export function Label({
 		<RNText
 			testID={testID}
 			style={[
-				{
-					fontSize: 14,
-					fontWeight: "500",
-					color: theme.foreground,
-				},
+				labelStyle.label(theme),
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			{children}
 			{required ? (
-				<RNText style={{ color: theme.destructive }}> *</RNText>
+				<RNText style={labelStyle.required(theme)}> *</RNText>
 			) : null}
 		</RNText>
 	);

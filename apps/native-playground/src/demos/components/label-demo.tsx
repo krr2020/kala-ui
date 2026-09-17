@@ -1,4 +1,4 @@
-import { Label } from "@kala-ui/react-native";
+import { Label, TextInput } from "@kala-ui/react-native";
 import { View } from "react-native";
 import { DemoBlock } from "../demo-block";
 import { demoStyles } from "../stylesheet";
@@ -15,8 +15,17 @@ export function LabelDemo() {
 				<Label>Display Name</Label>
 			</DemoBlock>
 			<DemoBlock label="Paired With Controls">
-				<Label required>Invite Code</Label>
-				<Label>Referral</Label>
+				<View style={demoStyles.fieldRow}>
+					<Label required>Invite Code</Label>
+					<TextInput accessibilityLabel="Invite Code" placeholder="KALA-2024" />
+				</View>
+				<View style={demoStyles.fieldRow}>
+					<Label>Referral</Label>
+					<TextInput
+						accessibilityLabel="Referral"
+						placeholder="friend@studio.com"
+					/>
+				</View>
 			</DemoBlock>
 			<DemoBlock label="Long Copy">
 				<Label required>Automatic seat reconciliation window</Label>
