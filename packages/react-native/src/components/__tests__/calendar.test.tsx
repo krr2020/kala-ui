@@ -498,7 +498,7 @@ describe("Calendar", () => {
 						typeof c === "object" &&
 						typeof (c as { props?: { testID?: string } }).props?.testID ===
 							"string" &&
-						(c as { props: { testID: string } }).props.testID.startsWith(
+						(c as unknown as { props: { testID: string } }).props.testID.startsWith(
 							"k-calendar-month-option-",
 					),
 				);

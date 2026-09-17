@@ -203,10 +203,7 @@ export { MultiSelect, MultiSelectSkeleton } from "./components/multi-select";
 export type { NumberInputProps } from "./components/number-input";
 export { NumberInput } from "./components/number-input";
 export type { PasswordStrengthIndicatorProps } from "./components/password-strength-indicator";
-export {
-	calculatePasswordStrength,
-	PasswordStrengthIndicator,
-} from "./components/password-strength-indicator";
+export { PasswordStrengthIndicator } from "./components/password-strength-indicator";
 export type {
 	ProgressColor,
 	ProgressProps,

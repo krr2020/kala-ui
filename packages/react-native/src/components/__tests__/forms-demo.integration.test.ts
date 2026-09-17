@@ -135,5 +135,8 @@ describe("forms demos ↔ library seam", () => {
 		// bounded arm forwards a real min/max window to the sheet calendar
 		expect(src).toMatch(/<DatePicker[^>]*min=/);
 		expect(src).toMatch(/max=/);
+		// sentence-case copy: placeholders and Field descriptions read as UI text
+		expect(src).not.toMatch(/placeholder="[a-z][a-z ]+"/);
+		expect(src).not.toMatch(/description="[a-z][a-z ]+"/);
 	});
 });
