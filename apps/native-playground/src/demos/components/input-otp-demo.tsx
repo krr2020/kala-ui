@@ -49,6 +49,12 @@ export function InputOtpDemo() {
 				</Field>
 			</DemoBlock>
 			<DemoBlock label="States">
+				<InputOtp maxLength={4} defaultValue="27">
+					<InputOtpSlot index={0} />
+					<InputOtpSlot index={1} />
+					<InputOtpSlot index={2} />
+					<InputOtpSlot index={3} />
+				</InputOtp>
 				<InputOtp maxLength={4} disabled>
 					<InputOtpSlot index={0} />
 					<InputOtpSlot index={1} />
