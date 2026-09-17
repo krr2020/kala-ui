@@ -8,6 +8,7 @@
 import type { ReactElement, ReactNode } from "react";
 import { useState } from "react";
 import type { ViewStyle } from "react-native";
+import { Check, Lock } from "lucide-react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
@@ -74,6 +75,29 @@ function ToggleContent({
 	);
 }
 
+/**
+ * Locked toggles keep their surface but gain a state glyph so they read as
+ * a disabled control instead of floating text. The glyph matches the state:
+ * checked shows Check (still recognizably on), unchecked shows Lock — a
+ * check there would read as pressed.
+ */
+export function StateGlyph({
+	active,
+	fg,
+	testID = "k-toggle-glyph",
+}: {
+	active: boolean;
+	fg: string;
+	testID?: string;
+}): ReactElement {
+	const Icon = active ? Check : Lock;
+	return (
+		<View testID={`${testID}-${active ? "check" : "lock"}`}>
+			<Icon size={14} color={fg} />
+		</View>
+	);
+}
+
 export function Toggle({
 	children,
 	pressed,
@@ -116,6 +140,9 @@ export function Toggle({
 			<ToggleContent fg={look.fg} size={size}>
 				{children}
 			</ToggleContent>
+			{disabled ? (
+				<StateGlyph active={active} fg={look.fg} testID="k-toggle-glyph" />
+			) : null}
 		</Pressable>
 	);
 }

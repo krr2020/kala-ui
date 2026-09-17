@@ -16,12 +16,13 @@ export const TOGGLE_FONT: Record<ToggleSize, number> = {
 	lg: 16,
 };
 
-/** per-tier height over the shared 44dp floor */
+/** per-tier height over the shared 44dp touch floor (hitSlop restores it) */
 export function baseSurface(size: ToggleSize): ViewStyle {
+	const height = TOGGLE_HEIGHT[size];
+	const hitSlop = Math.max(0, (44 - height) / 2);
 	return {
-		minHeight: 44,
+		minHeight: height,
 		minWidth: 44,
-		height: TOGGLE_HEIGHT[size],
 		paddingHorizontal: PAD_X[size],
 		alignItems: "center",
 		justifyContent: "center",
@@ -30,6 +31,10 @@ export function baseSurface(size: ToggleSize): ViewStyle {
 		// a long label shrinks the text instead of pushing past the parent
 		maxWidth: "100%",
 		borderRadius: tokens.radius.control,
+		hitSlop:
+			hitSlop > 0
+				? { top: hitSlop, bottom: hitSlop, left: 0, right: 0 }
+				: undefined,
 	};
 }
 

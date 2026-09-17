@@ -47,6 +47,18 @@ export function ToggleDemo() {
 				<Toggle accessibilityLabel="locked toggle" disabled>
 					Locked
 				</Toggle>
+				<Toggle accessibilityLabel="locked on" disabled pressed>
+					Locked On
+				</Toggle>
+				<View style={demoStyles.componentRow}>
+					<Toggle
+						accessibilityLabel="Locked outline"
+						disabled
+						variant="outline"
+					>
+						Outline
+					</Toggle>
+				</View>
 			</DemoBlock>
 			<DemoBlock label="Long Text">
 				<Toggle accessibilityLabel="long toggle" defaultPressed>
