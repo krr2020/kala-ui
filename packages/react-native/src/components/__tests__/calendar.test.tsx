@@ -212,22 +212,27 @@ describe("Calendar", () => {
 		expect(onValueChange).toHaveBeenCalledTimes(1);
 	});
 
+		// month label is now a Pressable: its text rides inside a child RNText
+		const labelText = (screen: Screen): string => {
+			const first = (
+				screen.getByTestId("k-calendar-month-label").props.children as unknown[]
+			)[0];
+			if (first && typeof first === "object" && "props" in first) {
+				return String((first as { props: { children?: string } }).props.children);
+			}
+			return String(first);
+		};
+
 	it("prev/next navigate across month and year boundaries", async () => {
 		const screen: Screen = await render(
 			<Calendar month={new Date(2026, 11, 1)} />,
 		);
-		expect(screen.getByTestId("k-calendar-month-label").props.children).toBe(
-			"December 2026",
-		);
+		expect(labelText(screen)).toBe("December 2026");
 		await fireEvent.press(screen.getByTestId("k-calendar-next"));
-		expect(screen.getByTestId("k-calendar-month-label").props.children).toBe(
-			"January 2027",
-		);
+		expect(labelText(screen)).toBe("January 2027");
 		await fireEvent.press(screen.getByTestId("k-calendar-prev"));
 		await fireEvent.press(screen.getByTestId("k-calendar-prev"));
-		expect(screen.getByTestId("k-calendar-month-label").props.children).toBe(
-			"November 2026",
-		);
+		expect(labelText(screen)).toBe("November 2026");
 	});
 
 	it("nav clamps at min/max: out-of-window next/prev are disabled and inert", async () => {
@@ -237,18 +242,14 @@ describe("Calendar", () => {
 		const next = screen.getByTestId("k-calendar-next");
 		expect(next.props.accessibilityState?.disabled).toBe(true);
 		await fireEvent.press(next);
-		expect(screen.getByTestId("k-calendar-month-label").props.children).toBe(
-			"February 2026",
-		);
+		expect(labelText(screen)).toBe("February 2026");
 		const minScreen: Screen = await render(
 			<Calendar month={new Date(2026, 1, 1)} min={new Date(2026, 1, 5)} />,
 		);
 		const prev = minScreen.getByTestId("k-calendar-prev");
 		expect(prev.props.accessibilityState?.disabled).toBe(true);
 		await fireEvent.press(prev);
-		expect(minScreen.getByTestId("k-calendar-month-label").props.children).toBe(
-			"February 2026",
-		);
+		expect(labelText(minScreen)).toBe("February 2026");
 		// days inside the visible month stay tappable within the window
 		const _onValueChange = jest.fn();
 		await fireEvent.press(minScreen.getByTestId("k-calendar-day-2026-02-10"));
@@ -276,6 +277,154 @@ describe("Calendar", () => {
 	it("CalendarSkeleton renders a bounded grid", async () => {
 		const screen: Screen = await render(<CalendarSkeleton cellCount={35} />);
 		expect(screen.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
+	});
+
+	describe("month/year picker", () => {
+		it("month label toggles the picker: day grid swaps out and back", async () => {
+			const screen: Screen = await render(
+				<Calendar month={new Date(2026, 1, 1)} />,
+			);
+			const label = screen.getByTestId("k-calendar-month-label");
+			expect(label.props.accessibilityRole).toBe("button");
+			await fireEvent.press(label);
+			expect(screen.getByTestId("k-calendar-month-picker")).toBeTruthy();
+			expect(screen.queryByTestId("k-calendar-day-2026-02-10")).toBeNull();
+			// day-grid chevrons are replaced by the picker's year chevrons
+			expect(screen.queryByTestId("k-calendar-next")).toBeNull();
+			expect(label.props.accessibilityState?.expanded).toBe(true);
+			await fireEvent.press(label);
+			expect(screen.queryByTestId("k-calendar-month-picker")).toBeNull();
+			expect(screen.getByTestId("k-calendar-day-2026-02-10")).toBeTruthy();
+			expect(label.props.accessibilityState?.expanded).toBe(false);
+		});
+
+		it("picker shows 12 full-name month options, view month selected", async () => {
+			const screen: Screen = await render(
+				<Calendar month={new Date(2026, 1, 1)} />,
+			);
+			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
+			const options = screen.getAllByTestId(/^k-calendar-month-option-\d+$/);
+			expect(options.length).toBe(12);
+				expect(
+					screen.getByTestId("k-calendar-month-option-2").props
+						.accessibilityLabel,
+				).toBe("March");
+			const feb = screen.getByTestId("k-calendar-month-option-1");
+			expect(feb.props.accessibilityState?.selected).toBe(true);
+			expect(
+				screen.getByTestId("k-calendar-month-option-0").props.accessibilityState
+				?.selected,
+			).toBe(false);
+		});
+
+		it("picking a month closes the picker and shows that month", async () => {
+			const screen: Screen = await render(
+				<Calendar month={new Date(2026, 1, 1)} />,
+			);
+			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
+			await fireEvent.press(screen.getByTestId("k-calendar-month-option-5"));
+			expect(screen.queryByTestId("k-calendar-month-picker")).toBeNull();
+			expect(screen.getByTestId("k-calendar-day-2026-06-10")).toBeTruthy();
+		});
+
+		it("year chevrons move the picker year and picking applies it", async () => {
+			const screen: Screen = await render(
+				<Calendar month={new Date(2026, 1, 1)} />,
+			);
+			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
+			await fireEvent.press(screen.getByTestId("k-calendar-year-next"));
+			expect(screen.getByTestId("k-calendar-year-label").props.children).toBe(
+				2027,
+			);
+			await fireEvent.press(screen.getByTestId("k-calendar-month-option-0"));
+			expect(screen.getByTestId("k-calendar-day-2027-01-10")).toBeTruthy();
+		});
+
+		it("year chevrons clamp at min/max with disabled state", async () => {
+			const screen: Screen = await render(
+				<Calendar
+					month={new Date(2026, 1, 1)}
+					min={new Date(2026, 1, 5)}
+					max={new Date(2026, 5, 20)}
+				/>,
+			);
+			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
+			const prev = screen.getByTestId("k-calendar-year-prev");
+			expect(prev.props.accessibilityLabel).toBe("Previous year");
+			expect(prev.props.accessibilityState?.disabled).toBe(true);
+			const next = screen.getByTestId("k-calendar-year-next");
+			expect(next.props.accessibilityLabel).toBe("Next year");
+			// max lands in 2026, so 2027 has no reachable months
+			expect(next.props.accessibilityState?.disabled).toBe(true);
+			await fireEvent.press(next);
+			expect(screen.getByTestId("k-calendar-year-label").props.children).toBe(
+				2026,
+			);
+			expect(
+				screen.getByTestId("k-calendar-month-option-6").props.accessibilityState
+				?.disabled,
+			).toBe(true);
+		});
+
+		it("out-of-window months disabled, boundary months enabled", async () => {
+			const screen: Screen = await render(
+				<Calendar
+					month={new Date(2026, 1, 1)}
+					min={new Date(2026, 1, 5)}
+					max={new Date(2026, 5, 20)}
+				/>,
+			);
+			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
+			expect(
+				screen.getByTestId("k-calendar-month-option-0").props.accessibilityState
+				?.disabled,
+			).toBe(true);
+			expect(
+				screen.getByTestId("k-calendar-month-option-1").props.accessibilityState
+				?.disabled,
+			).toBe(false);
+			expect(
+				screen.getByTestId("k-calendar-month-option-5").props.accessibilityState
+				?.disabled,
+			).toBe(false);
+			expect(
+				screen.getByTestId("k-calendar-month-option-6").props.accessibilityState
+				?.disabled,
+			).toBe(true);
+		});
+
+		it("pressing an out-of-window month option is inert", async () => {
+			const screen: Screen = await render(
+				<Calendar
+					month={new Date(2026, 1, 1)}
+					min={new Date(2026, 1, 5)}
+					max={new Date(2026, 5, 20)}
+				/>,
+			);
+			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
+			await fireEvent.press(screen.getByTestId("k-calendar-month-option-7"));
+			// picker still open, view month unchanged
+			expect(screen.getByTestId("k-calendar-month-picker")).toBeTruthy();
+			expect(
+				screen.getByTestId("k-calendar-month-option-1").props.accessibilityState
+					?.selected,
+			).toBe(true);
+		});
+
+		it("opening, navigating years, and picking months never commit a value", async () => {
+			const onValueChange = jest.fn();
+			const screen: Screen = await render(
+				<Calendar
+					month={new Date(2026, 1, 1)}
+					onValueChange={onValueChange}
+			/>,
+			);
+			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
+			await fireEvent.press(screen.getByTestId("k-calendar-year-prev"));
+			await fireEvent.press(screen.getByTestId("k-calendar-year-next"));
+			await fireEvent.press(screen.getByTestId("k-calendar-month-option-7"));
+			expect(onValueChange).not.toHaveBeenCalled();
+		});
 	});
 
 	it("day colors map straight from the active theme tokens", async () => {

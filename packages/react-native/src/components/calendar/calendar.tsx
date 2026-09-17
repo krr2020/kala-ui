@@ -30,6 +30,21 @@ const WEEKDAYS = [
 	"Friday",
 	"Saturday",
 ] as const;
+// Same for the picker's 4x3 grid — announced in full, shown 3 letters wide.
+const MONTHS = [
+	"January",
+	"February",
+	"March",
+	"April",
+	"May",
+	"June",
+	"July",
+	"August",
+	"September",
+	"October",
+	"November",
+	"December",
+] as const;
 const CELL_SIZE = 36;
 
 /**
@@ -61,6 +76,8 @@ export function Calendar({
 			? defaultValue
 			: (defaultValue as DateRangeValue | undefined)?.from;
 	const [view, setView] = useState(month ?? seed ?? new Date());
+	const [pickerOpen, setPickerOpen] = useState(false);
+	const [pickerYear, setPickerYear] = useState(view.getFullYear());
 	const [internal, setInternal] = useState<CalendarValue | undefined>(
 		defaultValue,
 	);
@@ -122,6 +139,20 @@ export function Calendar({
 		min !== undefined && monthIsBefore(addMonths(view, -1), min);
 	const nextDisabled =
 		max !== undefined && monthIsAfter(addMonths(view, 1), max);
+
+	// a month option is reachable when any of its days falls inside the window
+	const monthDisabled = (m: number): boolean => {
+		const first = new Date(pickerYear, m, 1);
+		const last = new Date(pickerYear, m + 1, 0);
+		return (
+			(min !== undefined && last < min && !isSameDay(last, min)) ||
+			(max !== undefined && first > max && !isSameDay(first, max))
+		);
+	};
+	const yearPrevDisabled =
+		min !== undefined && pickerYear <= min.getFullYear();
+	const yearNextDisabled =
+		max !== undefined && pickerYear >= max.getFullYear();
 
 	const dayState = (d: Date, inMonth: boolean) => {
 		let selected = false;
@@ -198,6 +229,27 @@ export function Calendar({
 					justifyContent: "space-between",
 				}}
 			>
+				{pickerOpen ? (
+				<Pressable
+					testID="k-calendar-year-prev"
+					accessibilityRole="button"
+					accessibilityLabel="Previous year"
+					accessibilityState={{ disabled: yearPrevDisabled }}
+					onPress={() =>
+						!yearPrevDisabled && setPickerYear(pickerYear - 1)
+					}
+					hitSlop={6}
+					style={({ pressed }) => ({
+						width: CELL_SIZE,
+						height: CELL_SIZE,
+						alignItems: "center",
+						justifyContent: "center",
+						opacity: yearPrevDisabled ? 0.35 : pressed ? 0.6 : 1,
+					})}
+				>
+					<ChevronLeft size={18} color={theme.foreground} />
+				</Pressable>
+			) : (
 				<Pressable
 					testID="k-calendar-prev"
 					accessibilityRole="button"
@@ -215,12 +267,51 @@ export function Calendar({
 				>
 					<ChevronLeft size={18} color={theme.foreground} />
 				</Pressable>
-				<RNText
-					testID="k-calendar-month-label"
-					style={{ color: theme.foreground, fontSize: 15, fontWeight: "600" }}
+			)}
+			<Pressable
+				testID="k-calendar-month-label"
+					accessibilityRole="button"
+					accessibilityLabel={formatMonthYear(view)}
+					accessibilityState={{ expanded: pickerOpen }}
+					onPress={() => {
+						setPickerYear(view.getFullYear());
+						setPickerOpen(!pickerOpen);
+					}}
+					style={({ pressed }) => ({
+						opacity: pressed ? 0.6 : 1,
+					})}
 				>
-					{formatMonthYear(view)}
-				</RNText>
+					<RNText
+						style={{
+							color: theme.foreground,
+							fontSize: 15,
+							fontWeight: "600",
+						}}
+					>
+						{formatMonthYear(view)}
+					</RNText>
+				</Pressable>
+			{pickerOpen ? (
+				<Pressable
+					testID="k-calendar-year-next"
+					accessibilityRole="button"
+					accessibilityLabel="Next year"
+					accessibilityState={{ disabled: yearNextDisabled }}
+					onPress={() =>
+						!yearNextDisabled && setPickerYear(pickerYear + 1)
+					}
+					hitSlop={6}
+					style={({ pressed }) => ({
+						width: CELL_SIZE,
+						height: CELL_SIZE,
+						alignItems: "center",
+						justifyContent: "center",
+						opacity: yearNextDisabled ? 0.35 : pressed ? 0.6 : 1,
+					})}
+				>
+					<ChevronRight size={18} color={theme.foreground} />
+				</Pressable>
+			) : (
 				<Pressable
 					testID="k-calendar-next"
 					accessibilityRole="button"
@@ -238,23 +329,86 @@ export function Calendar({
 				>
 					<ChevronRight size={18} color={theme.foreground} />
 				</Pressable>
+			)}
 			</View>
-			<View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-				{WEEKDAYS.map((day) => (
+			{pickerOpen ? (
+			<View
+				testID="k-calendar-month-picker"
+				style={{ gap: 8 }}
+			>
+
 					<RNText
-						key={day}
-						testID="k-calendar-weekday"
+						testID="k-calendar-year-label"
 						style={{
-							color: theme.mutedForeground,
-							fontSize: 12,
+							color: theme.foreground,
+							fontSize: 15,
 							fontWeight: "600",
-							width: CELL_SIZE,
-							textAlign: "center",
+							alignSelf: "center",
 						}}
 					>
-						{day[0]}
+						{pickerYear}
 					</RNText>
-				))}
+					<View style={{ flexDirection: "row", flexWrap: "wrap", gap: 4 }}>
+					{MONTHS.map((name, m) => {
+						const selected =
+							m === view.getMonth() && pickerYear === view.getFullYear();
+						const disabled = monthDisabled(m);
+						return (
+							<Pressable
+								key={name}
+								testID={`k-calendar-month-option-${m}`}
+								accessibilityRole="button"
+								accessibilityLabel={name}
+								accessibilityState={{ disabled, selected }}
+								disabled={disabled}
+								onPress={() => {
+									setView(new Date(pickerYear, m, 1));
+									setPickerOpen(false);
+								}}
+								style={({ pressed }) => ({
+									width: (CELL_SIZE + 4) * 2 + 4,
+								height: CELL_SIZE,
+								borderRadius: 999,
+								alignItems: "center",
+								justifyContent: "center",
+								backgroundColor: selected ? theme.primary : undefined,
+								opacity: disabled ? 0.35 : pressed ? 0.6 : 1,
+							})}
+							>
+							<RNText
+									style={{
+										color: selected
+											? theme.primaryForeground
+											: theme.foreground,
+										fontSize: 13,
+									fontWeight: selected ? "600" : "400",
+								}}
+							>
+								{name.slice(0, 3)}
+							</RNText>
+							</Pressable>
+						);
+					})}
+				</View>
+			</View>
+		) : (
+			<>
+			<View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+			{WEEKDAYS.map((day) => (
+				<RNText
+					key={day}
+					testID="k-calendar-weekday"
+					style={{
+						color: theme.mutedForeground,
+						fontSize: 12,
+						fontWeight: "600",
+						width: CELL_SIZE,
+						textAlign: "center",
+					}}
+				>
+					{day[0]}
+				</RNText>
+			))}
 			</View>
 			<View style={{ flexDirection: "row", flexWrap: "wrap", gap: 4 }}>
 				{cells.map(({ date, inMonth }) => {
@@ -287,6 +441,8 @@ export function Calendar({
 					);
 				})}
 			</View>
+			</>
+		)}
 		</View>
 	);
 }
