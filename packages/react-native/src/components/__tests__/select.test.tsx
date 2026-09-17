@@ -165,13 +165,53 @@ describe("Select sheet", () => {
 		expect(screen.queryByTestId("k-select-option")).toBeNull();
 	});
 
-	it("option rows are hairline-separated between rows only", async () => {
+	it("option rows use spacing only — no divider hairlines", async () => {
 		const screen: Screen = await render(<Select options={OPTIONS} />);
 		await fireEvent.press(screen.getByTestId("k-select"));
 		expect(screen.getAllByTestId("k-select-option")).toHaveLength(3);
 		expect(
-			screen.getAllByTestId("k-select-option-separator", inclHidden),
-		).toHaveLength(2);
+			screen.queryAllByTestId("k-select-option-separator", inclHidden),
+		).toHaveLength(0);
+	});
+
+	it("grouped=true renders group headers in first-seen order, ungrouped first", async () => {
+		const screen: Screen = await render(
+			<Select
+				options={[
+					{ value: "solo", label: "Solo" },
+					{ value: "a", label: "Alpha", group: "Letters" },
+					{ value: "1", label: "One", group: "Numbers" },
+					{ value: "b", label: "Beta", group: "Letters" },
+				]}
+				grouped
+			/>,
+		);
+		await fireEvent.press(screen.getByTestId("k-select"));
+		expect(screen.getByTestId("k-select-group-Letters")).toBeTruthy();
+		expect(screen.getByTestId("k-select-group-Numbers")).toBeTruthy();
+		const rows = screen.getAllByTestId("k-select-option");
+		expect(rows).toHaveLength(4);
+		// ungrouped first, then groups in first-seen order
+		expect(rows[0].props.accessibilityLabel).toBe("Solo");
+		expect(rows[1].props.accessibilityLabel).toBe("Alpha");
+		expect(rows[2].props.accessibilityLabel).toBe("Beta");
+		expect(rows[3].props.accessibilityLabel).toBe("One");
+	});
+
+	it("grouped composes with a 30-option list under the maxHeight clamp", async () => {
+		const long = Array.from({ length: 30 }, (_, i) => ({
+			value: `o-${i}`,
+			label: `Option ${i}`,
+			...(i % 3 === 0 ? { group: `Group ${i % 6}` } : {}),
+		}));
+		const screen: Screen = await render(<Select options={long} grouped />);
+		await fireEvent.press(screen.getByTestId("k-select"));
+		expect(screen.getAllByTestId("k-select-option")).toHaveLength(30);
+		expect(
+			screen.getAllByTestId(/k-select-group-Group \d/).length,
+		).toBeGreaterThan(0);
+		const style = flatStyle(screen.getByTestId("k-sheet-content", inclHidden));
+		expect(style.maxHeight).toBeGreaterThan(0);
 	});
 
 	it("sheet header defaults to the placeholder; label wins; close closes without committing", async () => {

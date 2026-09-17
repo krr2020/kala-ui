@@ -11,6 +11,9 @@ export interface SheetProps {
 	maxHeight?: number;
 	/** renders a header row above the content; no title means no header */
 	title?: string;
+	/** pinned below the body — stays visible while scrollable content moves
+	 * and above the software keyboard */
+	footer?: ReactNode;
 	/** shows the header close icon (forced off when dismissable=false) */
 	showClose?: boolean;
 	/** false blocks overlay-press dismissal (back/escape paths still fire) */

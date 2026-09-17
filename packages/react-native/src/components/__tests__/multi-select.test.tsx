@@ -225,6 +225,37 @@ describe("MultiSelect", () => {
 		expect(onValueChange).toHaveBeenLastCalledWith([]);
 	});
 
+	it("select all and clear all share one row: left / right aligned", async () => {
+		const flatten = require("react-native").StyleSheet.flatten;
+		const screen = await openSelect({ defaultValue: ["apple"] });
+		const actions = screen.getByTestId("k-multi-select-actions");
+		const row = flatten(actions.props.style);
+		expect(row.flexDirection).toBe("row");
+		expect(row.justifyContent).toBe("space-between");
+		const withinActions = within(actions);
+		expect(withinActions.getByTestId("k-multi-select-select-all")).toBeTruthy();
+		expect(withinActions.getByTestId("k-multi-select-clear-all")).toBeTruthy();
+		const clear = flatten(
+			withinActions.getByTestId("k-multi-select-clear-all").props.style,
+		);
+		expect(clear.alignSelf).toBe("flex-end");
+		// one compact row, not two stacked full-height rows
+		expect(flatten(actions.props.style).flexDirection).toBe("row");
+	});
+
+	it("chip container carries vertical breathing room so wrapped chips stay visible", async () => {
+		const flatten = require("react-native").StyleSheet.flatten;
+		const screen = await render(
+			<MultiSelect options={options} defaultValue={["apple", "banana"]} />,
+		);
+		const container = flatten(
+			screen.getByTestId("k-multi-select-chip-row").props.style,
+		);
+		expect(container.paddingVertical).toBeGreaterThan(0);
+		expect(container.flexWrap).toBe("wrap");
+		expect(screen.getAllByTestId("k-multi-select-chip")).toHaveLength(2);
+	});
+
 	it("rows use a checkbox look and the shared selected-row styling", async () => {
 		const flatten = require("react-native").StyleSheet.flatten;
 		const screen = await openSelect({ defaultValue: ["apple"] });

@@ -36,6 +36,45 @@ function flatStyle(node: {
 }
 
 describe("Select demo ↔ package Sheet seam", () => {
+	it("composeOffset math: keyboard translate composes with entry and drag", () => {
+		const { composeOffset } = require("../sheet/sheet.styles");
+		// keyboard closed: kb term is a no-op
+		expect(composeOffset(300, 0, 0)).toBe(300);
+		expect(composeOffset(300, 24, 0)).toBe(324);
+		// keyboard open: sheet lifts by kb while drag still adds
+		expect(composeOffset(300, 0, 260)).toBe(40);
+		expect(composeOffset(300, 24, 260)).toBe(64);
+		// drag-dismiss threshold still reads positive
+		expect(composeOffset(0, 120, 260)).toBe(-140);
+	});
+
+	it("header separator renders only when a title is present", async () => {
+		const { Sheet } = require("../sheet");
+		const titled = await render(
+			<Sheet open onClose={jest.fn()} title="Options">
+				<></>
+			</Sheet>,
+		);
+		const header = flatStyle(titled.getByTestId("k-sheet-header", inclHidden));
+		expect(header.borderBottomWidth).toBe(1);
+		expect(header.borderBottomColor).toBeTruthy();
+	});
+
+	it("footer renders pinned below the body, outside the scroll view", async () => {
+		const { Sheet } = require("../sheet");
+		const screen = await render(
+			<Sheet open onClose={jest.fn()} title="Options" scrollable footer={<></>}>
+				<></>
+			</Sheet>,
+		);
+		const footer = screen.getByTestId("k-sheet-footer", inclHidden);
+		expect(footer).toBeTruthy();
+		const flat = flatStyle(footer);
+		expect(flat.borderTopWidth).toBe(1);
+		// footer is a sibling AFTER the scroll container, never inside it
+		const scroll = screen.getByTestId("k-sheet-scroll", inclHidden);
+		expect(scroll.props.testID).not.toBe(footer.props.testID);
+	});
 	it("demo renders Selects the way this contract pins (source census)", () => {
 		const source = readFileSync(DEMO, "utf8");
 		expect(source).toContain("<Select");
@@ -66,8 +105,11 @@ describe("Select demo ↔ package Sheet seam", () => {
 			"Pick a fruit",
 		);
 		expect(screen.getByTestId("k-sheet-close", inclHidden)).toBeTruthy();
+		// option dividers are gone; the sheet header itself is separated
 		expect(
-			screen.getAllByTestId("k-select-option-separator", inclHidden),
-		).toHaveLength(2);
+			screen.queryAllByTestId("k-select-option-separator", inclHidden),
+		).toHaveLength(0);
+		const header = flatStyle(screen.getByTestId("k-sheet-header", inclHidden));
+		expect(header.borderBottomWidth).toBe(1);
 	});
 });

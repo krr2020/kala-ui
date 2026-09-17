@@ -19,12 +19,15 @@ import { Icon } from "../icon";
 import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
 import {
 	emptyLabel,
+	groupHeader,
 	optionLabel,
 	optionRow,
+	searchBlock,
 	searchField,
 } from "../select/select.styles";
 import { Sheet } from "../sheet";
 import { applySlot } from "../slot-styles";
+import { chip as chipStyle, chipText } from "./multi-select.styles";
 import type { MultiSelectOption, MultiSelectProps } from "./multi-select.types";
 import { MultiSelectSkeleton } from "./multi-select-skeleton";
 
@@ -35,7 +38,7 @@ export function MultiSelect({
 	onValueChange,
 	label,
 	placeholder = "Select options",
-	searchPlaceholder = "Search...",
+	searchPlaceholder = "Search options",
 	emptyText = "No results found.",
 	maxSelected,
 	maxVisibleSelections = 3,
@@ -191,12 +194,7 @@ export function MultiSelect({
 					<RNText
 						key={`group-${group}`}
 						testID={`k-multi-select-group-${group}`}
-						style={{
-							marginTop: 8,
-							fontSize: 12,
-							fontWeight: "600",
-							color: theme.mutedForeground,
-						}}
+						style={groupHeader(theme)}
 					>
 						{group}
 					</RNText>,
@@ -241,12 +239,16 @@ export function MultiSelect({
 				]}
 			>
 				<View
+					testID="k-multi-select-chip-row"
 					style={{
 						flex: 1,
 						flexDirection: "row",
 						flexWrap: "wrap",
 						alignItems: "center",
 						gap: 4,
+						// breathing room so wrapped chip rows render fully inside
+						// the trigger instead of clipping against its edge
+						paddingVertical: 6,
 					}}
 				>
 					{selectedOptions.length === 0 ? (
@@ -262,22 +264,9 @@ export function MultiSelect({
 								<View
 									key={option.value}
 									testID="k-multi-select-chip"
-									style={applySlot(
-										{
-											flexDirection: "row",
-											alignItems: "center",
-											gap: 4,
-											paddingHorizontal: 8,
-											height: 24,
-											borderRadius: 12,
-											backgroundColor: theme.secondary,
-										},
-										slotStyles?.chip,
-									)}
+									style={applySlot(chipStyle(theme), slotStyles?.chip)}
 								>
-									<RNText style={{ fontSize: 12, color: theme.foreground }}>
-										{option.label}
-									</RNText>
+									<RNText style={chipText(theme)}>{option.label}</RNText>
 									{!disabled ? (
 										<Pressable
 											testID="k-multi-select-chip-remove"
@@ -321,7 +310,7 @@ export function MultiSelect({
 				avoidKeyboard
 			>
 				<View testID="k-multi-select-content" style={{ flex: 1 }}>
-					<View testID="k-multi-select-fixed" style={{ gap: 2 }}>
+					<View testID="k-multi-select-fixed" style={searchBlock(theme)}>
 						<TextInput
 							testID="k-multi-select-search"
 							value={search}
@@ -331,64 +320,79 @@ export function MultiSelect({
 							accessibilityLabel={searchPlaceholder}
 							style={searchField(theme)}
 						/>
-						{showActions && maxSelected === undefined ? (
-							<Pressable
-								testID="k-multi-select-select-all"
-								accessibilityRole="button"
-								accessibilityLabel="Select all"
-								accessibilityState={{ checked: isAllSelected }}
-								onPress={selectAll}
+						{showActions ? (
+							// one row: Select all on the left, Clear all on the
+							// right — stacked full-width rows wasted vertical space
+							<View
+								testID="k-multi-select-actions"
 								style={{
-									minHeight: 44,
 									flexDirection: "row",
 									alignItems: "center",
-									gap: 8,
-									paddingHorizontal: 12,
-									borderBottomWidth: 1,
-									borderBottomColor: theme.border,
+									justifyContent: "space-between",
+									paddingVertical: 4,
 								}}
 							>
-								<View
-									style={{
-										width: 18,
-										height: 18,
-										borderRadius: 4,
-										borderWidth: 2,
-										borderColor: isAllSelected ? theme.primary : theme.border,
-										backgroundColor: isAllSelected
-											? theme.primary
-											: "transparent",
-										alignItems: "center",
-										justifyContent: "center",
-									}}
-								>
-									{isAllSelected ? (
-										<Check size={12} color={theme.primaryForeground} />
-									) : null}
-								</View>
-								<RNText style={{ fontSize: 14, color: theme.foreground }}>
-									Select all
-								</RNText>
-							</Pressable>
-						) : null}
-						{showActions && selected.length > 0 ? (
-							<Pressable
-								testID="k-multi-select-clear-all"
-								accessibilityRole="button"
-								accessibilityLabel="Clear all"
-								onPress={() => commit([])}
-								style={{
-									minHeight: 44,
-									justifyContent: "center",
-									paddingHorizontal: 12,
-									borderBottomWidth: 1,
-									borderBottomColor: theme.border,
-								}}
-							>
-								<RNText style={{ fontSize: 14, color: theme.destructive }}>
-									Clear all
-								</RNText>
-							</Pressable>
+								{maxSelected === undefined ? (
+									<Pressable
+										testID="k-multi-select-select-all"
+										accessibilityRole="button"
+										accessibilityLabel="Select all"
+										accessibilityState={{ checked: isAllSelected }}
+										onPress={selectAll}
+										style={{
+											minHeight: 44,
+											flexDirection: "row",
+											alignItems: "center",
+											gap: 8,
+										}}
+									>
+										<View
+											style={{
+												width: 18,
+												height: 18,
+												borderRadius: 4,
+												borderWidth: 2,
+												borderColor: isAllSelected
+													? theme.primary
+													: theme.border,
+												backgroundColor: isAllSelected
+													? theme.primary
+													: "transparent",
+												alignItems: "center",
+												justifyContent: "center",
+											}}
+										>
+											{isAllSelected ? (
+												<Check size={12} color={theme.primaryForeground} />
+											) : null}
+										</View>
+										<RNText style={{ fontSize: 14, color: theme.foreground }}>
+											Select all
+										</RNText>
+									</Pressable>
+								) : (
+									<View />
+								)}
+								{selected.length > 0 ? (
+									<Pressable
+										testID="k-multi-select-clear-all"
+										accessibilityRole="button"
+										accessibilityLabel="Clear all"
+										onPress={() => commit([])}
+										style={{
+											minHeight: 44,
+											justifyContent: "center",
+											alignSelf: "flex-end",
+										}}
+									>
+										<RNText style={{ fontSize: 14, color: theme.destructive }}>
+											Clear all
+										</RNText>
+									</Pressable>
+								) : (
+									<View />
+								)}
+							</View>
 						) : null}
 					</View>
 					{query.length > 0 && filtered.length === 0 ? (

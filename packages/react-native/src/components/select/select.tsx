@@ -1,7 +1,7 @@
 import { ChevronDown } from "lucide-react-native";
-import type { ReactElement } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { useState } from "react";
-import { FlatList, Pressable, Text as RNText, View } from "react-native";
+import { Pressable, Text as RNText, ScrollView, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { useUncontrolled } from "../../lib/use-uncontrolled.utils";
 import { Icon } from "../icon";
@@ -11,9 +11,10 @@ import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
 import {
 	emptyLabel,
+	groupHeader,
+	optionGap,
 	optionLabel,
 	optionRow,
-	optionSeparator,
 } from "./select.styles";
 import type { SelectOption, SelectProps } from "./select.types";
 
@@ -32,6 +33,7 @@ export function Select({
 	placeholder = "Select an option",
 	label,
 	size = "md",
+	grouped = false,
 	disabled = false,
 	hasError = false,
 	hasSuccess = false,
@@ -58,6 +60,67 @@ export function Select({
 
 	const announced =
 		accessibilityLabel ?? label ?? (selected ? selected.label : placeholder);
+
+	// ungrouped options first, then each group in first-seen order —
+	// the same ordering MultiSelect uses so the two pickers agree
+	const renderRow = (option: SelectOption, key?: string): ReactNode => {
+		const isSelected = option.value === current;
+		return (
+			<Pressable
+				key={key ?? option.value}
+				testID="k-select-option"
+				accessibilityRole="button"
+				accessibilityLabel={option.label}
+				accessibilityState={{
+					disabled: option.disabled ?? false,
+					selected: isSelected,
+				}}
+				disabled={option.disabled ?? false}
+				onPress={() => commit(option.value)}
+				style={[
+					optionRow(theme, isSelected),
+					applySlot({}, slotStyles?.option),
+				]}
+			>
+				<RNText
+					style={optionLabel(theme, {
+						isSelected,
+						disabled: option.disabled ?? false,
+					})}
+				>
+					{option.label}
+				</RNText>
+			</Pressable>
+		);
+	};
+	const buildRows = (list: SelectOption[]): ReactNode[] => {
+		if (!grouped) return list.map((option) => renderRow(option));
+		const ungrouped = list.filter((o) => o.group === undefined);
+		const groups: string[] = [];
+		for (const option of list) {
+			if (option.group && !groups.includes(option.group)) {
+				groups.push(option.group);
+			}
+		}
+		const rows: ReactNode[] = ungrouped.map((option) => renderRow(option));
+		for (const group of groups) {
+			rows.push(
+				<RNText
+					key={`group-${group}`}
+					testID={`k-select-group-${group}`}
+					style={groupHeader(theme)}
+				>
+					{group}
+				</RNText>,
+			);
+			rows.push(
+				...list
+					.filter((o) => o.group === group)
+					.map((option) => renderRow(option, `${group}-${option.value}`)),
+			);
+		}
+		return rows;
+	};
 
 	if (isLoading) {
 		return (
@@ -120,46 +183,13 @@ export function Select({
 							No options
 						</RNText>
 					) : (
-						<FlatList
-							data={options}
-							initialNumToRender={options.length}
-							keyExtractor={(option: SelectOption) => option.value}
-							ItemSeparatorComponent={() => (
-								<View
-									testID="k-select-option-separator"
-									style={optionSeparator(theme)}
-								/>
-							)}
-							renderItem={({ item: option }) => {
-								const isSelected = option.value === current;
-								return (
-									<Pressable
-										testID="k-select-option"
-										accessibilityRole="button"
-										accessibilityLabel={option.label}
-										accessibilityState={{
-											disabled: option.disabled ?? false,
-											selected: isSelected,
-										}}
-										disabled={option.disabled ?? false}
-										onPress={() => commit(option.value)}
-										style={[
-											optionRow(theme, isSelected),
-											applySlot({}, slotStyles?.option),
-										]}
-									>
-										<RNText
-											style={optionLabel(theme, {
-												isSelected,
-												disabled: option.disabled ?? false,
-											})}
-										>
-											{option.label}
-										</RNText>
-									</Pressable>
-								);
-							}}
-						/>
+						<ScrollView
+							testID="k-select-scroll"
+							showsVerticalScrollIndicator={false}
+							contentContainerStyle={{ gap: optionGap, paddingBottom: 8 }}
+						>
+							{buildRows(options)}
+						</ScrollView>
 					)}
 				</View>
 			</Sheet>

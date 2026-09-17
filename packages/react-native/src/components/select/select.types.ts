@@ -7,6 +7,8 @@ export interface SelectOption {
 	/** visible copy inside the trigger and the option row */
 	label: string;
 	disabled?: boolean;
+	/** flat grouping key; options sharing one render under a header row */
+	group?: string;
 }
 
 export interface SelectProps {
@@ -22,6 +24,8 @@ export interface SelectProps {
 	/** takes precedence over placeholder/selected for the trigger's accessibilityLabel */
 	label?: string;
 	size?: "sm" | "md";
+	/** render group header rows for options carrying a group */
+	grouped?: boolean;
 	disabled?: boolean;
 	hasError?: boolean;
 	/** tints the trigger border with the success token */

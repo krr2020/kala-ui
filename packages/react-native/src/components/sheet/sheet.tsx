@@ -15,6 +15,7 @@ import { X } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useCallback, useEffect, useState } from "react";
 import {
+	Keyboard,
 	KeyboardAvoidingView,
 	Modal,
 	Platform,
@@ -82,6 +83,7 @@ export function Sheet({
 	dismissable = true,
 	scrollable = false,
 	avoidKeyboard = false,
+	footer,
 	style,
 	slotStyles,
 	children,
@@ -96,6 +98,25 @@ export function Sheet({
 	const overlay = useSharedValue(0);
 	// user drag offset, composed with entry so both can act at once
 	const ty = useSharedValue(0);
+	// keyboard lift on Android (iOS uses KeyboardAvoidingView padding)
+	const kb = useSharedValue(0);
+
+	// Android: window insets resize handles most screens, but a bottom-
+	// anchored sheet inside a Modal does not participate — translate it up
+	// by the visible keyboard height so the search field stays in view
+	useEffect(() => {
+		if (!avoidKeyboard || Platform.OS !== "android") return;
+		const show = Keyboard.addListener("keyboardDidShow", (e) => {
+			kb.value = e.endCoordinates.height;
+		});
+		const hide = Keyboard.addListener("keyboardDidHide", () => {
+			kb.value = 0;
+		});
+		return () => {
+			show.remove();
+			hide.remove();
+		};
+	}, [avoidKeyboard, kb]);
 
 	useEffect(() => {
 		if (open) {
@@ -139,7 +160,17 @@ export function Sheet({
 		});
 
 	const sheetStyle = useAnimatedStyle(() => ({
-		transform: [{ translateY: composeOffset(entry.value, ty.value) }],
+		transform: [{ translateY: composeOffset(entry.value, ty.value, kb.value) }],
+		// while the keyboard is up, also shrink the auto-height clamp so the
+		// lifted sheet's top (and its pinned search) stays on screen instead
+		// of sliding past the status bar
+		...(snap === "auto" && kb.value > 0
+			? {
+					maxHeight:
+					(maxHeight ?? Math.round(windowHeight * MAX_HEIGHT_RATIO)) -
+					kb.value,
+				}
+			: {}),
 	}));
 
 	const overlayStyle = useAnimatedStyle(() => ({ opacity: overlay.value }));
@@ -240,7 +271,7 @@ export function Sheet({
 									)}
 								/>
 								{title ? (
-									<View testID="k-sheet-header" style={sheetHeader()}>
+									<View testID="k-sheet-header" style={sheetHeader(theme)}>
 										<Text
 											testID="k-sheet-title"
 											style={applySlot(sheetTitle(theme), slotStyles?.title)}
@@ -271,6 +302,14 @@ export function Sheet({
 								) : (
 									children
 								)}
+								{footer ? (
+									<View
+										testID="k-sheet-footer"
+										style={{ borderTopWidth: 1, borderTopColor: theme.border }}
+									>
+										{footer}
+									</View>
+								) : null}
 							</Animated.View>
 						</GestureDetector>
 					</KeyboardAvoidingView>

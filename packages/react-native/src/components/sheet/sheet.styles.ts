@@ -12,13 +12,14 @@ import { motion, tokens } from "../../tokens";
 // the content starts fully below the viewport instead of flashing at rest
 export const OFFSCREEN_Y = 10000;
 
-/** Drag offset adds to the entry/exit offset so dismissal and animation
- * compose instead of fighting for the transform. Runs inside worklets:
- * the directive lets the reanimated babel plugin copy it onto the UI
- * runtime, while plain JS callers (tests) run it unchanged. */
-export function composeOffset(entry: number, drag: number): number {
+/** Drag offset and keyboard lift add to the entry/exit offset so
+ * dismissal, animation and keyboard avoidance compose instead of fighting
+ * for the transform. Runs inside worklets: the directive lets the
+ * reanimated babel plugin copy it onto the UI runtime, while plain JS
+ * callers (tests) run it unchanged. */
+export function composeOffset(entry: number, drag: number, kb = 0): number {
 	"worklet";
-	return entry + drag;
+	return entry + drag - kb;
 }
 
 /** eased slide curve shared by the sheet entrance and exit */
@@ -26,12 +27,16 @@ export const SHEET_EASE = Easing.bezier(
 	...(motion.ease.standard as [number, number, number, number]),
 );
 
-export function sheetHeader(): ViewStyle {
+export function sheetHeader(theme: { separator: string }): ViewStyle {
 	return {
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
 		gap: tokens.space.gutter,
+		// hairline dividing the header from the body when a title renders
+		paddingBottom: 10,
+		borderBottomWidth: 1,
+		borderBottomColor: theme.separator,
 	};
 }
 

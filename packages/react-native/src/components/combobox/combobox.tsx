@@ -17,7 +17,12 @@ import {
 import { useUnistyles } from "react-native-unistyles";
 import { Icon } from "../icon";
 import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
-import { optionLabel, optionRow, searchField } from "../select/select.styles";
+import {
+	optionLabel,
+	optionRow,
+	searchBlock,
+	searchField,
+} from "../select/select.styles";
 import { Sheet } from "../sheet";
 import { applySlot } from "../slot-styles";
 import type { ComboboxProps } from "./combobox.types";
@@ -30,7 +35,7 @@ export function Combobox({
 	onValueChange,
 	placeholder = "Select an option",
 	label,
-	searchPlaceholder = "Search...",
+	searchPlaceholder = "Search options",
 	emptyText = "No results found.",
 	disabled = false,
 	hasError = false,
@@ -152,7 +157,7 @@ export function Combobox({
 				avoidKeyboard
 			>
 				<View testID="k-combobox-content" style={{ flex: 1 }}>
-					<View testID="k-combobox-fixed" style={{ gap: 2 }}>
+					<View testID="k-combobox-fixed" style={searchBlock(theme)}>
 						<TextInput
 							testID="k-combobox-search"
 							value={search}

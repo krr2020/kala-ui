@@ -132,6 +132,13 @@ describe("Combobox", () => {
 		);
 		const fixed = within(screen.getByTestId("k-combobox-fixed"));
 		expect(fixed.getByTestId("k-combobox-search")).toBeTruthy();
+		const fixedStyle = require("react-native").StyleSheet.flatten(
+			screen.getByTestId("k-combobox-fixed").props.style,
+		);
+		// visible separation between the pinned search and the options below
+		expect(fixedStyle.borderBottomWidth).toBe(1);
+		expect(fixedStyle.paddingBottom).toBeGreaterThan(0);
+		expect(fixedStyle.gap).toBeGreaterThan(2);
 		const scroll = within(
 			screen.getByTestId("k-combobox-scroll-content", inclHidden),
 		);
@@ -186,5 +193,12 @@ describe("Combobox", () => {
 	it("trigger renders the shared chevron icon marker", async () => {
 		const screen = await render(<Combobox options={options} />);
 		expect(screen.getByTestId("k-combobox-chevron", inclHidden)).toBeTruthy();
+	});
+
+	it("search placeholder defaults to sentence case", async () => {
+		const screen = await openCombobox();
+		expect(screen.getByTestId("k-combobox-search").props.placeholder).toBe(
+			"Search options",
+		);
 	});
 });

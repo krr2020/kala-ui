@@ -13,9 +13,18 @@ export function optionRow(theme: KalaTheme, isSelected: boolean): ViewStyle {
 	};
 }
 
-/** hairline between option rows only — the last row carries no border */
-export function optionSeparator(theme: KalaTheme): ViewStyle {
-	return { height: 1, backgroundColor: theme.separator };
+/** spacing between option rows only — dividers fight the rounded
+ * accent-wash selected row, so the list separates with space instead */
+export const optionGap = 2;
+
+/** header row above a group of options (Select/MultiSelect shared look) */
+export function groupHeader(theme: KalaTheme): TextStyle {
+	return {
+		marginTop: 8,
+		fontSize: 12,
+		fontWeight: "600",
+		color: theme.mutedForeground,
+	};
 }
 
 export function optionLabel(
@@ -42,6 +51,17 @@ export function searchField(theme: KalaTheme): TextStyle {
 		borderColor: theme.border,
 		fontSize: 14,
 		color: theme.foreground,
+	};
+}
+
+/** block wrapping the pinned search — separates the fixed controls from
+ * the scrolling option list below with padding + a hairline */
+export function searchBlock(theme: KalaTheme): ViewStyle {
+	return {
+		gap: 8,
+		paddingBottom: 10,
+		borderBottomWidth: 1,
+		borderBottomColor: theme.separator,
 	};
 }
 

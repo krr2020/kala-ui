@@ -10,14 +10,20 @@ const TOPPINGS = [
 	{ value: "caramel", label: "Caramel", group: "Sauces" },
 ];
 
+const LONG_LIST = Array.from({ length: 25 }, (_, i) => ({
+	value: `topping-${i}`,
+	label: `Topping ${i}`,
+	...(i % 4 === 0 ? { group: `Group ${i % 8}` } : {}),
+}));
+
 export function MultiSelectDemo() {
 	const [picked, setPicked] = useState<string[]>(["sprinkles"]);
 	return (
 		<View testID="k-demo-multi-select" style={demoStyles.routeContent}>
 			<DemoBlock label="Basic">
 				<MultiSelect
-					placeholder="pick toppings"
-					accessibilityLabel="toppings"
+					placeholder="Pick toppings"
+					accessibilityLabel="Toppings"
 					options={TOPPINGS}
 				/>
 			</DemoBlock>
@@ -26,27 +32,35 @@ export function MultiSelectDemo() {
 					grouped
 					value={picked}
 					onValueChange={setPicked}
-					placeholder="pick toppings"
-					accessibilityLabel="grouped toppings"
+					placeholder="Pick toppings"
+					accessibilityLabel="Grouped toppings"
 					options={TOPPINGS}
 				/>
 				<Text style={demoStyles.current}>
 					Picked: {picked.join(", ") || "none"}
 				</Text>
 			</DemoBlock>
+			<DemoBlock label="Long List">
+				<MultiSelect
+					grouped
+					placeholder="Pick toppings"
+					accessibilityLabel="Long list toppings"
+					options={LONG_LIST}
+				/>
+			</DemoBlock>
 			<DemoBlock label="Orphan Values">
 				{/* values outside the list keep their raw labels */}
 				<MultiSelect
 					value={["mint"]}
 					onValueChange={() => undefined}
-					accessibilityLabel="orphan toppings"
+					accessibilityLabel="Orphan toppings"
 					options={TOPPINGS}
 				/>
 			</DemoBlock>
 			<DemoBlock label="States">
 				<MultiSelect
-					placeholder="required"
-					accessibilityLabel="error multi select"
+					placeholder="Required"
+					accessibilityLabel="Error multi select"
 					hasError
 					options={TOPPINGS}
 				/>
