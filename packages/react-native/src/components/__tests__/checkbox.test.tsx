@@ -115,8 +115,9 @@ describe("Checkbox", () => {
 		const idle = flatStyle(inactive.getByTestId("k-checkbox-box"));
 		expect(idle.backgroundColor).toBe("transparent");
 		expect(idle.borderWidth).toBe(2);
-		// outer size stays 22: border renders inside via size compensation
-		expect((idle.width as number) + 2 * (idle.borderWidth as number)).toBe(22);
+		// RN sizes width/height as border-box — the stroke draws inside 22
+		expect(idle.width).toBe(22);
+		expect(idle.height).toBe(22);
 
 		const active = await render(<Checkbox value />);
 		const hot = flatStyle(active.getByTestId("k-checkbox-box"));

@@ -50,8 +50,8 @@ describe("Checkbox demo ↔ package seam", () => {
 		// no card fill — card-on-card is invisible in dark sheets/pages
 		expect(box.backgroundColor).toBe("transparent");
 		expect(box.borderWidth).toBe(2);
-		expect((box.width as number) + 2 * (box.borderWidth as number)).toBe(22);
-		expect((box.height as number) + 2 * (box.borderWidth as number)).toBe(22);
+		expect(box.width).toBe(22);
+		expect(box.height).toBe(22);
 	});
 
 	it("tri-state cycling row presses always deliver boolean payloads", async () => {
