@@ -1,4 +1,9 @@
-import type { StyleProp, TextStyle, ViewStyle } from "react-native";
+import type {
+	StyleProp,
+	TextInputProps,
+	TextStyle,
+	ViewStyle,
+} from "react-native";
 
 export interface NumberInputProps {
 	/** controlled numeric value; null = empty field. Rendered verbatim, even outside [min, max] — the parent owns clamping for its own state. */
@@ -17,7 +22,11 @@ export interface NumberInputProps {
 	disabled?: boolean;
 	/** destructive border on the field */
 	hasError?: boolean;
+	/** success border for validated values; hasError wins when both are set */
+	hasSuccess?: boolean;
 	placeholder?: string;
+	/** overrides the platform numeric keyboard default (decimal on Android, numbers-and-punctuation on iOS) */
+	keyboardType?: TextInputProps["keyboardType"];
 	/** label merged onto the inner field */
 	accessibilityLabel?: string;
 	/** stepper labels, default "Increase" / "Decrease" */

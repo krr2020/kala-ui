@@ -1,5 +1,6 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { useState } from "react";
+import { Platform } from "react-native";
 
 import { NumberInput } from "../number-input";
 
@@ -146,5 +147,75 @@ describe("NumberInput", () => {
 		expect(increment(screen).props.accessibilityLabel).toBe("Increase");
 		expect(decrement(screen).props.accessibilityLabel).toBe("Decrease");
 		expect(input(screen).props.accessibilityLabel).toBe("quantity");
+	});
+
+	it("opens a numeric keyboard: numeric on Android, numbers-and-punctuation on iOS", async () => {
+		const realOS = Platform.OS;
+		try {
+			(Platform as { OS: string }).OS = "android";
+			let screen = await render(<NumberInput value={1} />);
+			expect(input(screen).props.keyboardType).toBe("numeric");
+			(Platform as { OS: string }).OS = "ios";
+			screen = await render(<NumberInput value={1} />);
+			expect(input(screen).props.keyboardType).toBe("numbers-and-punctuation");
+		} finally {
+			(Platform as { OS: string }).OS = realOS;
+		}
+	});
+
+	it("a consumer keyboardType overrides the platform default", async () => {
+		const screen = await render(
+			<NumberInput value={1} keyboardType="numeric" />,
+		);
+		expect(input(screen).props.keyboardType).toBe("numeric");
+	});
+
+	it("negative entry survives the sanitizer and commits a negative value", async () => {
+		const onValueChange = jest.fn();
+		const screen = await render(
+			<NumberInput min={-10} onValueChange={onValueChange} />,
+		);
+		await fireEvent.changeText(input(screen), "-");
+		await fireEvent.changeText(input(screen), "-3");
+		await fireEvent(input(screen), "blur");
+		expect(onValueChange).toHaveBeenLastCalledWith(-3);
+		expect(input(screen).props.value).toBe("-3");
+	});
+
+	it("renders symmetric 1px separator dividers flanking the input", async () => {
+		const screen = await render(<NumberInput value={1} />);
+		const flat = (node: { props: { style?: unknown } }) =>
+			require("react-native").StyleSheet.flatten(node.props.style) ?? {};
+		const dividers = screen.getAllByTestId("k-number-input-divider");
+		expect(dividers.length).toBe(2);
+		for (const d of dividers) {
+			const s = flat(d);
+			expect(s.width).toBe(1);
+			expect(s.backgroundColor).toBe(
+				require("../../themes").themes.light.separator,
+			);
+		}
+		// border parity with the other input surfaces
+		expect(flat(screen.getByTestId("k-number-input")).borderRadius).toBe(
+			require("../../tokens").tokens.radius.input,
+		);
+	});
+
+	it("surface parity: hasError destructive, hasSuccess success, disabled input fill", async () => {
+		const light = require("../../themes").themes.light;
+		const flat = (node: { props: { style?: unknown } }) =>
+			require("react-native").StyleSheet.flatten(node.props.style) ?? {};
+		const err = await render(<NumberInput value={1} hasError />);
+		expect(flat(err.getByTestId("k-number-input")).borderColor).toBe(
+			light.destructive,
+		);
+		const ok = await render(<NumberInput value={1} hasSuccess />);
+		expect(flat(ok.getByTestId("k-number-input")).borderColor).toBe(
+			light.success,
+		);
+		const locked = await render(<NumberInput value={1} disabled />);
+		expect(flat(locked.getByTestId("k-number-input")).backgroundColor).toBe(
+			light.input,
+		);
 	});
 });

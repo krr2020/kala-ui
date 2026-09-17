@@ -6,8 +6,8 @@ import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
 import { sanitizeNumberText } from "../../lib/number-input.utils";
 import { Icon } from "../icon";
-import { surfaceFill } from "../input-surface.styles";
 import { applySlot } from "../slot-styles";
+import * as numberStyle from "./number-input.styles";
 import type { NumberInputProps } from "./number-input.types";
 
 /**
@@ -27,7 +27,9 @@ export function NumberInput({
 	step = 1,
 	disabled = false,
 	hasError = false,
+	hasSuccess = false,
 	placeholder,
+	keyboardType,
 	accessibilityLabel,
 	incrementLabel = "Increase",
 	decrementLabel = "Decrease",
@@ -75,52 +77,48 @@ export function NumberInput({
 		emit(clamp(base + direction * step));
 	};
 
-	const stepperStyle = (pressed: boolean) => [
-		{
-			minHeight: 44,
-			minWidth: 40,
-			alignItems: "center" as const,
-			justifyContent: "center" as const,
-			opacity: disabled ? 0.5 : pressed ? 0.7 : 1,
-		},
-		applySlot({}, slotStyles?.stepper),
-	];
+	// numeric keyboard by platform: Android's numeric pad is the only
+	// reliably-supported digit layout (decimal/decimal-pad fall back to
+	// QWERTY on many OEM keyboards); iOS numbers-and-punctuation adds the
+	// minus key neither number-pad style has.
+	const defaultKeyboard =
+		Platform.OS === "ios" ? "numbers-and-punctuation" : "numeric";
+
+	const stepperButton = (
+		label: string,
+		icon: typeof Minus,
+		id: string,
+	) => (
+		<Pressable
+			testID={`${testID}-${id}`}
+			accessibilityRole="button"
+			accessibilityLabel={label}
+			accessibilityState={disabled ? { disabled: true } : undefined}
+			disabled={disabled}
+			onPress={() => stepBy(id === "decrement" ? -1 : 1)}
+			style={({ pressed }) => [
+				numberStyle.stepperRow(disabled, pressed),
+				applySlot({}, slotStyles?.stepper),
+			]}
+		>
+			<Icon icon={icon} size="sm" color="foreground" />
+		</Pressable>
+	);
 
 	return (
 		<View
 			testID={testID}
 			style={[
-				{
-					flexDirection: "row",
-					alignItems: "center",
-					borderWidth: 1,
-					borderRadius: tokens.radius.input,
-					borderColor: hasError ? theme.destructive : theme.border,
-					backgroundColor: surfaceFill(theme, { disabled }),
-					overflow: "hidden",
-				},
+				numberStyle.rootRow(theme, { hasError, hasSuccess, disabled }),
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
-			<Pressable
-				testID={`${testID}-decrement`}
-				accessibilityRole="button"
-				accessibilityLabel={decrementLabel}
-				accessibilityState={disabled ? { disabled: true } : undefined}
-				disabled={disabled}
-				onPress={() => stepBy(-1)}
-				style={({ pressed }) => stepperStyle(pressed)}
-			>
-				<Icon icon={Minus} size="sm" color="muted" />
-			</Pressable>
+			{stepperButton(decrementLabel, Minus, "decrement")}
+			<View testID={`${testID}-divider`} style={numberStyle.divider(theme)} />
 			<RNTextInput
 				testID={`${testID}-input`}
 				value={display}
-				// number-pad cannot type minus; punctuation keyboard on iOS, plain
-				// keyboard on Android — sanitization keeps only valid numeric text
-				keyboardType={
-					Platform.OS === "ios" ? "numbers-and-punctuation" : "default"
-				}
+				keyboardType={keyboardType ?? defaultKeyboard}
 				editable={disabled ? false : undefined}
 				accessibilityState={disabled ? { disabled: true } : undefined}
 				accessibilityLabel={accessibilityLabel}
@@ -140,21 +138,13 @@ export function NumberInput({
 						fontSize: 14,
 						color: theme.foreground,
 						paddingHorizontal: tokens.space.controlPx,
+						textAlign: "center",
 					},
 					applySlot({}, slotStyles?.input),
 				]}
 			/>
-			<Pressable
-				testID={`${testID}-increment`}
-				accessibilityRole="button"
-				accessibilityLabel={incrementLabel}
-				accessibilityState={disabled ? { disabled: true } : undefined}
-				disabled={disabled}
-				onPress={() => stepBy(1)}
-				style={({ pressed }) => stepperStyle(pressed)}
-			>
-				<Icon icon={Plus} size="sm" color="muted" />
-			</Pressable>
+			<View testID={`${testID}-divider`} style={numberStyle.divider(theme)} />
+			{stepperButton(incrementLabel, Plus, "increment")}
 		</View>
 	);
 }

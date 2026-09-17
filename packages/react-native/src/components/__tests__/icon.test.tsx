@@ -97,6 +97,13 @@ describe("Icon", () => {
 		);
 	});
 
+	it("wrapper View sizes itself to the icon so the svg never collapses", async () => {
+		const screen = await render(<Icon icon={Sun} size="sm" />);
+		const node = screen.getByTestId("k-icon", inclHidden).props;
+		expect(node.style.width).toBe(ICON_SIZE_PX.sm);
+		expect(node.style.height).toBe(ICON_SIZE_PX.sm);
+	});
+
 	it("slotStyles.root slot overrides the empty base", async () => {
 		const screen = await render(
 			<Icon icon={Sun} slotStyles={{ root: { margin: 5 } }} />,
