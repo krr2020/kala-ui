@@ -144,10 +144,7 @@ export function Select({
 										disabled={option.disabled ?? false}
 										onPress={() => commit(option.value)}
 										style={[
-											optionRow(isSelected),
-											...(isSelected
-												? [{ backgroundColor: theme.accent } as const]
-												: []),
+											optionRow(theme, isSelected),
 											applySlot({}, slotStyles?.option),
 										]}
 									>

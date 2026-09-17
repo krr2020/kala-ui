@@ -1,4 +1,4 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent, render, within } from "@testing-library/react-native";
 import type { ComboboxOption } from "../combobox";
 import { Combobox } from "../combobox";
 
@@ -122,5 +122,69 @@ describe("Combobox", () => {
 			screen.getByTestId("k-combobox").props.style,
 		);
 		expect(flat.borderWidth).toBe(7);
+	});
+
+	it("opens a titled sheet with the search fixed outside the scroll region", async () => {
+		const screen = await openCombobox();
+		expect(screen.getByTestId("k-sheet-header")).toBeTruthy();
+		expect(screen.getByTestId("k-sheet-title").props.children).toBe(
+			"Select an option",
+		);
+		const fixed = within(screen.getByTestId("k-combobox-fixed"));
+		expect(fixed.getByTestId("k-combobox-search")).toBeTruthy();
+		const scroll = within(
+			screen.getByTestId("k-combobox-scroll-content", inclHidden),
+		);
+		expect(scroll.queryByTestId("k-combobox-search", inclHidden)).toBeNull();
+		expect(
+			screen.getAllByTestId(/k-combobox-option-\d/, inclHidden).length,
+		).toBeGreaterThan(0);
+	});
+
+	it("selected option row uses the shared accent look like Select", async () => {
+		const flatten = require("react-native").StyleSheet.flatten;
+		const chosen = await openCombobox({ defaultValue: "banana" });
+		const comboRow = flatten(
+			chosen.getByTestId("k-combobox-option-1", inclHidden).props.style,
+		);
+		const { Select } = require("../select");
+		const reference = await render(
+			<Select
+				options={[
+					{ value: "apple", label: "Apple" },
+					{ value: "banana", label: "Banana" },
+				]}
+				defaultValue="banana"
+				accessibilityLabel="pick"
+			/>,
+		);
+		await fireEvent.press(reference.getByTestId("k-select"));
+		const selectRow = flatten(
+			reference.getAllByTestId("k-select-option")[1].props.style,
+		);
+		expect(comboRow.backgroundColor).toBe(selectRow.backgroundColor);
+	});
+
+	it("async mode with empty query keeps the header, search and an empty scroll region", async () => {
+		const screen = await openCombobox({ onSearchChange: jest.fn() });
+		expect(screen.getByTestId("k-combobox-content", inclHidden)).toBeTruthy();
+		expect(
+			within(screen.getByTestId("k-combobox-fixed")).getByTestId(
+				"k-combobox-search",
+			),
+		).toBeTruthy();
+		expect(
+			screen.queryAllByTestId("k-combobox-option", inclHidden),
+		).toHaveLength(0);
+		const scrollContent = require("react-native").StyleSheet.flatten(
+			screen.getByTestId("k-combobox-scroll-content", inclHidden).props
+				.contentContainerStyle,
+		);
+		expect(scrollContent.minHeight).toBeGreaterThan(0);
+	});
+
+	it("trigger renders the shared chevron icon marker", async () => {
+		const screen = await render(<Combobox options={options} />);
+		expect(screen.getByTestId("k-combobox-chevron", inclHidden)).toBeTruthy();
 	});
 });

@@ -1017,6 +1017,11 @@ describe("a11y contract", () => {
 			).toBe(true);
 			const row = screen.getByTestId("k-multi-select-option-0");
 			expect(row.props.accessibilityState?.checked).toBe(true);
+			// checkbox marker stays a11y-transparent: the row carries the state
+			expect(
+				screen.queryByTestId("k-multi-select-checkbox-0")?.props
+					.accessibilityLabel,
+			).toBeUndefined();
 		});
 
 		it("combobox trigger announces its label and expanded state", async () => {

@@ -1,13 +1,15 @@
-import type { ViewStyle } from "react-native";
+import type { TextStyle, ViewStyle } from "react-native";
 import type { KalaTheme } from "../../types";
 
-export function optionRow(isSelected: boolean): ViewStyle {
+/** shared option-row surface for the whole select family (Select/Combobox/
+ * MultiSelect) — a selected row is a subtle accent wash, not a filled pill */
+export function optionRow(theme: KalaTheme, isSelected: boolean): ViewStyle {
 	return {
 		minHeight: 44,
 		justifyContent: "center",
 		paddingHorizontal: 12,
 		borderRadius: 8,
-		backgroundColor: isSelected ? "transparent" : "transparent",
+		backgroundColor: isSelected ? theme.accent : "transparent",
 	};
 }
 
@@ -27,6 +29,19 @@ export function optionLabel(
 			: variant.disabled
 				? theme.mutedForeground
 				: theme.foreground,
+	};
+}
+
+/** shared search-field look for picker sheets (Combobox/MultiSelect) */
+export function searchField(theme: KalaTheme): TextStyle {
+	return {
+		minHeight: 40,
+		paddingHorizontal: 12,
+		borderWidth: 1,
+		borderRadius: 8,
+		borderColor: theme.border,
+		fontSize: 14,
+		color: theme.foreground,
 	};
 }
 

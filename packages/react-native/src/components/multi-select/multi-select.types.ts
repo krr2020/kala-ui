@@ -17,6 +17,8 @@ export interface MultiSelectProps {
 	/** fires with the full array on every add/remove/clear */
 	onValueChange?: (value: string[]) => void;
 	placeholder?: string;
+	/** title rendered in the sheet header; defaults to the placeholder */
+	label?: string;
 	searchPlaceholder?: string;
 	emptyText?: string;
 	/** cap on selections; additions gate at the cap, removals stay free */

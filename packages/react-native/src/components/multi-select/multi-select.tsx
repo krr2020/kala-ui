@@ -4,24 +4,37 @@
  * trigger shows chips with a +N overflow badge. Select-all commits the
  * enabled values only and collapses to [] when complete.
  */
-import { Check, X } from "lucide-react-native";
+import { Check, ChevronDown, X } from "lucide-react-native";
 import type { ReactElement, ReactNode } from "react";
 import { useState } from "react";
-import { Pressable, Text as RNText, TextInput, View } from "react-native";
+import {
+	Pressable,
+	Text as RNText,
+	ScrollView,
+	TextInput,
+	View,
+} from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { Icon } from "../icon";
+import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
+import {
+	emptyLabel,
+	optionLabel,
+	optionRow,
+	searchField,
+} from "../select/select.styles";
 import { Sheet } from "../sheet";
 import { applySlot } from "../slot-styles";
 import type { MultiSelectOption, MultiSelectProps } from "./multi-select.types";
 import { MultiSelectSkeleton } from "./multi-select-skeleton";
-
-import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
 
 export function MultiSelect({
 	options,
 	value,
 	defaultValue,
 	onValueChange,
-	placeholder = "Select options...",
+	label,
+	placeholder = "Select options",
 	searchPlaceholder = "Search...",
 	emptyText = "No results found.",
 	maxSelected,
@@ -107,43 +120,55 @@ export function MultiSelect({
 				disabled={isDisabled}
 				onPress={() => toggle(option.value)}
 				style={applySlot(
-					{
-						minHeight: 44,
-						flexDirection: "row",
-						alignItems: "center",
-						gap: 8,
-						paddingHorizontal: 12,
-						borderRadius: 8,
-						backgroundColor: isSelected ? theme.primary : "transparent",
-						opacity: isDisabled && !isSelected ? 0.5 : 1,
-					},
+					[
+						optionRow(theme, isSelected),
+						{
+							flexDirection: "row",
+							alignItems: "center",
+							gap: 8,
+							opacity: isDisabled && !isSelected ? 0.5 : 1,
+						},
+					],
 					slotStyles?.option,
 				)}
 			>
 				{isSelected ? (
-					<Check size={14} color={theme.primaryForeground} />
+					<View
+						testID={`k-multi-select-checkbox-${slot}`}
+						style={{
+							width: 18,
+							height: 18,
+							borderRadius: 4,
+							borderWidth: 2,
+							borderColor: theme.primary,
+							backgroundColor: theme.primary,
+							alignItems: "center",
+							justifyContent: "center",
+						}}
+					>
+						<Check size={12} color={theme.primaryForeground} />
+					</View>
 				) : (
 					<View
+						testID={`k-multi-select-checkbox-${slot}`}
 						style={{
-							width: 14,
-							height: 14,
-							borderRadius: 7,
-							borderWidth: 1,
+							width: 18,
+							height: 18,
+							borderRadius: 4,
+							borderWidth: 2,
 							borderColor: theme.border,
 						}}
 					/>
 				)}
 				<RNText
 					numberOfLines={1}
-					style={{
-						flex: 1,
-						fontSize: 14,
-						color: isSelected
-							? theme.primaryForeground
-							: option.disabled === true
-								? theme.mutedForeground
-								: theme.foreground,
-					}}
+					style={[
+						optionLabel(theme, {
+							isSelected,
+							disabled: option.disabled === true,
+						}),
+						{ flex: 1 },
+					]}
 				>
 					{option.label}
 				</RNText>
@@ -186,7 +211,6 @@ export function MultiSelect({
 	if (isLoading) {
 		return (
 			<MultiSelectSkeleton
-				testID={testID}
 				style={[
 					{ width: "100%", height: SURFACE_HEIGHTS[size] },
 					style,
@@ -282,99 +306,106 @@ export function MultiSelect({
 						</>
 					)}
 				</View>
-				<RNText style={{ fontSize: 12, color: theme.mutedForeground }}>
-					▾
-				</RNText>
+				<Icon
+					icon={ChevronDown}
+					size="sm"
+					color="mutedForeground"
+					testID="k-multi-select-chevron"
+				/>
 			</Pressable>
-			<Sheet open={open} onClose={close} snap="half" avoidKeyboard scrollable>
-				<View testID="k-multi-select-content" style={{ gap: 2 }}>
-					<TextInput
-						testID="k-multi-select-search"
-						value={search}
-						onChangeText={setSearch}
-						placeholder={searchPlaceholder}
-						placeholderTextColor={theme.mutedForeground}
-						accessibilityLabel={searchPlaceholder}
-						style={{
-							minHeight: 40,
-							paddingHorizontal: 12,
-							borderWidth: 1,
-							borderRadius: 8,
-							borderColor: theme.border,
-							fontSize: 14,
-							color: theme.foreground,
-						}}
-					/>
-					{showActions && maxSelected === undefined ? (
-						<Pressable
-							testID="k-multi-select-select-all"
-							accessibilityRole="button"
-							accessibilityLabel="Select all"
-							accessibilityState={{ checked: isAllSelected }}
-							onPress={selectAll}
-							style={{
-								minHeight: 44,
-								flexDirection: "row",
-								alignItems: "center",
-								gap: 8,
-								paddingHorizontal: 12,
-								borderBottomWidth: 1,
-								borderBottomColor: theme.border,
-							}}
-						>
-							{isAllSelected ? (
-								<Check size={14} color={theme.primary} />
-							) : (
+			<Sheet
+				open={open}
+				onClose={close}
+				snap="auto"
+				title={label ?? placeholder}
+				avoidKeyboard
+			>
+				<View testID="k-multi-select-content" style={{ flex: 1 }}>
+					<View testID="k-multi-select-fixed" style={{ gap: 2 }}>
+						<TextInput
+							testID="k-multi-select-search"
+							value={search}
+							onChangeText={setSearch}
+							placeholder={searchPlaceholder}
+							placeholderTextColor={theme.mutedForeground}
+							accessibilityLabel={searchPlaceholder}
+							style={searchField(theme)}
+						/>
+						{showActions && maxSelected === undefined ? (
+							<Pressable
+								testID="k-multi-select-select-all"
+								accessibilityRole="button"
+								accessibilityLabel="Select all"
+								accessibilityState={{ checked: isAllSelected }}
+								onPress={selectAll}
+								style={{
+									minHeight: 44,
+									flexDirection: "row",
+									alignItems: "center",
+									gap: 8,
+									paddingHorizontal: 12,
+									borderBottomWidth: 1,
+									borderBottomColor: theme.border,
+								}}
+							>
 								<View
 									style={{
-										width: 14,
-										height: 14,
-										borderRadius: 7,
-										borderWidth: 1,
-										borderColor: theme.border,
+										width: 18,
+										height: 18,
+										borderRadius: 4,
+										borderWidth: 2,
+										borderColor: isAllSelected ? theme.primary : theme.border,
+										backgroundColor: isAllSelected
+											? theme.primary
+											: "transparent",
+										alignItems: "center",
+										justifyContent: "center",
 									}}
-								/>
-							)}
-							<RNText style={{ fontSize: 14, color: theme.foreground }}>
-								Select all
-							</RNText>
-						</Pressable>
-					) : null}
-					{showActions && selected.length > 0 ? (
-						<Pressable
-							testID="k-multi-select-clear-all"
-							accessibilityRole="button"
-							accessibilityLabel="Clear all"
-							onPress={() => commit([])}
-							style={{
-								minHeight: 44,
-								justifyContent: "center",
-								paddingHorizontal: 12,
-								borderBottomWidth: 1,
-								borderBottomColor: theme.border,
-							}}
-						>
-							<RNText style={{ fontSize: 14, color: theme.destructive }}>
-								Clear all
-							</RNText>
-						</Pressable>
-					) : null}
+								>
+									{isAllSelected ? (
+										<Check size={12} color={theme.primaryForeground} />
+									) : null}
+								</View>
+								<RNText style={{ fontSize: 14, color: theme.foreground }}>
+									Select all
+								</RNText>
+							</Pressable>
+						) : null}
+						{showActions && selected.length > 0 ? (
+							<Pressable
+								testID="k-multi-select-clear-all"
+								accessibilityRole="button"
+								accessibilityLabel="Clear all"
+								onPress={() => commit([])}
+								style={{
+									minHeight: 44,
+									justifyContent: "center",
+									paddingHorizontal: 12,
+									borderBottomWidth: 1,
+									borderBottomColor: theme.border,
+								}}
+							>
+								<RNText style={{ fontSize: 14, color: theme.destructive }}>
+									Clear all
+								</RNText>
+							</Pressable>
+						) : null}
+					</View>
 					{query.length > 0 && filtered.length === 0 ? (
-						<RNText
-							testID="k-multi-select-empty"
-							style={{
-								paddingVertical: 12,
-								fontSize: 14,
-								color: theme.mutedForeground,
-							}}
-						>
+						<RNText testID="k-multi-select-empty" style={emptyLabel(theme)}>
 							{emptyText}
 						</RNText>
-						) : (
-							rows
-						)}
-					</View>
-				</Sheet>
+					) : (
+						<ScrollView
+							testID="k-multi-select-scroll"
+							showsVerticalScrollIndicator={false}
+							contentContainerStyle={{ minHeight: 44 }}
+						>
+							{rows}
+						</ScrollView>
+					)}
+				</View>
+			</Sheet>
 		</>
 	);
 }

@@ -4,15 +4,22 @@
  * switches to async mode (rows come from the caller, empty search shows
  * none). Committing closes the sheet.
  */
-import { X } from "lucide-react-native";
+import { ChevronDown, X } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useState } from "react";
-import { Pressable, Text as RNText, TextInput, View } from "react-native";
+import {
+	Pressable,
+	Text as RNText,
+	ScrollView,
+	TextInput,
+	View,
+} from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { Icon } from "../icon";
+import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
+import { optionLabel, optionRow, searchField } from "../select/select.styles";
 import { Sheet } from "../sheet";
 import { applySlot } from "../slot-styles";
-import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
-const HEIGHTS = SURFACE_HEIGHTS;
 import type { ComboboxProps } from "./combobox.types";
 import { ComboboxSkeleton } from "./combobox-skeleton";
 
@@ -21,7 +28,8 @@ export function Combobox({
 	value,
 	defaultValue,
 	onValueChange,
-	placeholder = "Select option...",
+	placeholder = "Select an option",
+	label,
 	searchPlaceholder = "Search...",
 	emptyText = "No results found.",
 	disabled = false,
@@ -66,7 +74,6 @@ export function Combobox({
 	if (isLoading) {
 		return (
 			<ComboboxSkeleton
-				testID={testID}
 				style={[
 					{ width: "100%", height: SURFACE_HEIGHTS[size] },
 					style,
@@ -114,9 +121,12 @@ export function Combobox({
 				>
 					{displayLabel}
 				</RNText>
-				<RNText style={{ fontSize: 12, color: theme.mutedForeground }}>
-					▾
-				</RNText>
+				<Icon
+					icon={ChevronDown}
+					size="sm"
+					color="mutedForeground"
+					testID="k-combobox-chevron"
+				/>
 			</Pressable>
 			{clearable && current !== "" && !disabled ? (
 				<Pressable
@@ -134,28 +144,28 @@ export function Combobox({
 					<X size={16} color={theme.mutedForeground} />
 				</Pressable>
 			) : null}
-			<Sheet open={open} onClose={close} snap="half" avoidKeyboard scrollable>
-				<View testID="k-combobox-content" style={{ gap: 2 }}>
-					<TextInput
-						testID="k-combobox-search"
-						value={search}
-						onChangeText={(text) => {
-							setSearch(text);
-							onSearchChange?.(text);
-						}}
-						placeholder={searchPlaceholder}
-						placeholderTextColor={theme.mutedForeground}
-						accessibilityLabel={searchPlaceholder}
-						style={{
-							minHeight: 40,
-							paddingHorizontal: 12,
-							borderWidth: 1,
-							borderRadius: 8,
-							borderColor: theme.border,
-							fontSize: 14,
-							color: theme.foreground,
-						}}
-					/>
+			<Sheet
+				open={open}
+				onClose={close}
+				snap="auto"
+				title={label ?? placeholder}
+				avoidKeyboard
+			>
+				<View testID="k-combobox-content" style={{ flex: 1 }}>
+					<View testID="k-combobox-fixed" style={{ gap: 2 }}>
+						<TextInput
+							testID="k-combobox-search"
+							value={search}
+							onChangeText={(text) => {
+								setSearch(text);
+								onSearchChange?.(text);
+							}}
+							placeholder={searchPlaceholder}
+							placeholderTextColor={theme.mutedForeground}
+							accessibilityLabel={searchPlaceholder}
+							style={searchField(theme)}
+						/>
+					</View>
 					{!isAsync && query.length > 0 && visible.length === 0 ? (
 						<RNText
 							testID="k-combobox-empty"
@@ -168,53 +178,46 @@ export function Combobox({
 							{emptyText}
 						</RNText>
 					) : (
-						visible.map((option, index) => (
-							<Pressable
-								key={option.value}
-								testID={`k-combobox-option-${index}`}
-								accessibilityRole="button"
-								accessibilityLabel={option.label}
-								accessibilityState={{
-									disabled: option.disabled ?? false,
-									selected: option.value === current,
-								}}
-								disabled={option.disabled ?? false}
-								onPress={() => {
-									commit(option.value);
-									close();
-								}}
-								style={applySlot(
-									{
-										minHeight: 44,
-										justifyContent: "center",
-										paddingHorizontal: 12,
-										borderRadius: 8,
-										backgroundColor:
-											option.value === current ? theme.primary : "transparent",
-										opacity: option.disabled ? 0.5 : 1,
-									},
-									slotStyles?.option,
-								)}
-							>
-								<RNText
-									numberOfLines={1}
-									style={{
-										fontSize: 14,
-										color:
-											option.value === current
-												? theme.primaryForeground
-												: option.disabled
-													? theme.mutedForeground
-													: theme.foreground,
+						<ScrollView
+							testID="k-combobox-scroll-content"
+							showsVerticalScrollIndicator={false}
+							contentContainerStyle={{ minHeight: 44 }}
+						>
+							{visible.map((option, index) => (
+								<Pressable
+									key={option.value}
+									testID={`k-combobox-option-${index}`}
+									accessibilityRole="button"
+									accessibilityLabel={option.label}
+									accessibilityState={{
+										disabled: option.disabled ?? false,
+										selected: option.value === current,
 									}}
+									disabled={option.disabled ?? false}
+									onPress={() => {
+										commit(option.value);
+										close();
+									}}
+									style={applySlot(
+										optionRow(theme, option.value === current),
+										slotStyles?.option,
+									)}
 								>
-						{option.label}
-					</RNText>
-				</Pressable>
-			))
-		)}
-			</View>
-		</Sheet>
-	</>
-);
+									<RNText
+										numberOfLines={1}
+										style={optionLabel(theme, {
+											isSelected: option.value === current,
+											disabled: option.disabled ?? false,
+										})}
+									>
+										{option.label}
+									</RNText>
+								</Pressable>
+							))}
+						</ScrollView>
+					)}
+				</View>
+			</Sheet>
+		</>
+	);
 }

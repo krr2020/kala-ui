@@ -14,6 +14,8 @@ export interface ComboboxProps {
 	defaultValue?: string;
 	/** fires with the option value on commit, then the sheet closes */
 	onValueChange?: (value: string) => void;
+	/** title rendered in the sheet header; defaults to the placeholder */
+	label?: string;
 	placeholder?: string;
 	searchPlaceholder?: string;
 	emptyText?: string;

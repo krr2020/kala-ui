@@ -1,4 +1,4 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent, render, within } from "@testing-library/react-native";
 import type { MultiSelectOption } from "../multi-select";
 import { MultiSelect } from "../multi-select";
 
@@ -189,5 +189,68 @@ describe("MultiSelect", () => {
 			screen.getByTestId("k-multi-select").props.style,
 		);
 		expect(flat.borderWidth).toBe(7);
+	});
+
+	it("opens a titled sheet with search and actions fixed above the scrolling rows", async () => {
+		const screen = await openSelect({ defaultValue: ["apple"] });
+		expect(screen.getByTestId("k-sheet-header")).toBeTruthy();
+		expect(screen.getByTestId("k-sheet-title").props.children).toBe(
+			"Select options",
+		);
+		const fixed = within(screen.getByTestId("k-multi-select-fixed"));
+		expect(fixed.getByTestId("k-multi-select-search")).toBeTruthy();
+		expect(fixed.getByTestId("k-multi-select-select-all")).toBeTruthy();
+		expect(fixed.getByTestId("k-multi-select-clear-all")).toBeTruthy();
+		const scroll = within(
+			screen.getByTestId("k-multi-select-scroll", inclHidden),
+		);
+		expect(
+			scroll.getAllByTestId(/k-multi-select-option-\d/, inclHidden),
+		).toHaveLength(4);
+		expect(
+			scroll.queryByTestId("k-multi-select-search", inclHidden),
+		).toBeNull();
+	});
+
+	it("clear all only appears once something is selected", async () => {
+		const onValueChange = jest.fn();
+		const screen = await openSelect({ onValueChange });
+		expect(
+			screen.queryByTestId("k-multi-select-clear-all", inclHidden),
+		).toBeNull();
+		await fireEvent.press(
+			screen.getAllByTestId(/k-multi-select-option-\d/, inclHidden)[0],
+		);
+		await fireEvent.press(screen.getByTestId("k-multi-select-clear-all"));
+		expect(onValueChange).toHaveBeenLastCalledWith([]);
+	});
+
+	it("rows use a checkbox look and the shared selected-row styling", async () => {
+		const flatten = require("react-native").StyleSheet.flatten;
+		const screen = await openSelect({ defaultValue: ["apple"] });
+		const row = flatten(
+			screen.getByTestId("k-multi-select-option-0", inclHidden).props.style,
+		);
+		const { Select } = require("../select");
+		const reference = await render(
+			<Select
+				options={[
+					{ value: "apple", label: "Apple" },
+					{ value: "banana", label: "Banana" },
+				]}
+				defaultValue="apple"
+				accessibilityLabel="pick"
+			/>,
+		);
+		await fireEvent.press(reference.getByTestId("k-select"));
+		const selectRow = flatten(
+			reference.getAllByTestId("k-select-option")[0].props.style,
+		);
+		expect(row.backgroundColor).toBe(selectRow.backgroundColor);
+		// rounded-square checkbox, never a circle
+		const box = flatten(
+			screen.getByTestId("k-multi-select-checkbox-0", inclHidden).props.style,
+		);
+		expect(box.borderRadius).toBeLessThan(box.width / 2);
 	});
 });
