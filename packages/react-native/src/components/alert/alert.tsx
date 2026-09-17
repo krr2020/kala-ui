@@ -12,7 +12,16 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
-import { ICONS, look } from "./alert.styles";
+import {
+	bodyStyle,
+	descriptionStyle,
+	dismissStyle,
+	ICONS,
+	look,
+	plainTextStyle,
+	rootStyle,
+	titleStyle,
+} from "./alert.styles";
 import type {
 	AlertDescriptionProps,
 	AlertProps,
@@ -59,23 +68,14 @@ export function Alert({
 			accessibilityRole="alert"
 			accessibilityLabel={accessibilityLabel}
 			style={[
-				{
-					flexDirection: "row",
-					alignItems: "flex-start",
-					gap: 10,
-					padding: 12,
-					borderRadius: 8,
-					backgroundColor: bg,
-					borderColor: border,
-					borderWidth: variant === "outline" ? 1 : 0,
-				},
+				rootStyle(bg, border, variant === "outline"),
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
 			{showIcon ? <Icon size={18} color={fg} /> : null}
-			<View style={{ flex: 1, gap: 2 }}>
+			<View style={bodyStyle}>
 				{typeof children === "string" || typeof children === "number" ? (
-					<RNText style={{ color: fg, fontSize: 14 }}>{children}</RNText>
+					<RNText style={plainTextStyle(fg)}>{children}</RNText>
 				) : (
 					<AlertColorContext.Provider value={fg}>
 						{children}
@@ -92,7 +92,7 @@ export function Alert({
 						setHidden(true);
 						onDismiss?.();
 					}}
-					style={applySlot({ padding: 2, opacity: 0.8 }, slotStyles?.dismiss)}
+					style={applySlot(dismissStyle, slotStyles?.dismiss)}
 				>
 					<X size={16} color={fg} />
 				</Pressable>
@@ -113,7 +113,7 @@ function AlertTitle({
 		<RNText
 			testID={testID}
 			style={applySlot(
-				[{ color: fg, fontSize: 15, fontWeight: "600" }, style],
+				[titleStyle(fg), style],
 				slotStyles?.root,
 			)}
 		>
@@ -134,7 +134,7 @@ function AlertDescription({
 		<RNText
 			testID={testID}
 			style={applySlot(
-				[{ color: fg, fontSize: 14, fontWeight: "400" }, style],
+				[descriptionStyle(fg), style],
 				slotStyles?.root,
 			)}
 		>

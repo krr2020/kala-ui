@@ -26,4 +26,14 @@ describe("feedback demo ↔ library seam", () => {
 		expect(src).toMatch(/<Toast.Description>Changes are live<\/Toast.Description>/);
 		expect(src).toMatch(/accessibilityLabel="Show Toast"/);
 	});
+
+	it("alerts block covers the variant × color arms", () => {
+		expect(src.match(/<Alert[\s\S]*?>/g)?.length).toBeGreaterThanOrEqual(6);
+		expect(src).toMatch(/<Alert variant="solid" color="destructive">/);
+		expect(src).toMatch(/<Alert.Title>Payment failed<\/Alert.Title>/);
+		expect(src).toMatch(/showIcon=\{false\}/);
+		// sentence case: no lowercase-start visible copy inside the alerts block
+		const alertsBlock = src.match(/label="Alerts">([\s\S]*?)<\/DemoBlock>/)?.[1] ?? "";
+		expect(alertsBlock).not.toMatch(/>(?:Title|Description)>[a-z]/);
+	});
 });

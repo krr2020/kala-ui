@@ -32,6 +32,19 @@ export function FeedbackDemo() {
 				<Alert variant="outline" color="warning">
 					Storage almost full
 				</Alert>
+				<Alert variant="solid" color="primary">
+					<Alert.Title>New version available</Alert.Title>
+					<Alert.Description>Refresh to apply</Alert.Description>
+				</Alert>
+				<Alert variant="solid" color="destructive">
+					<Alert.Title>Payment failed</Alert.Title>
+					<Alert.Description>Retry the charge in the app</Alert.Description>
+				</Alert>
+				<Alert color="info">Heads up: quotas reset Monday</Alert>
+				<Alert color="secondary" showIcon={false}>
+					<Alert.Title>Silent arm, no icon</Alert.Title>
+					<Alert.Description>Icon off still reads correctly</Alert.Description>
+				</Alert>
 			</DemoBlock>
 			<DemoBlock label="Toast">
 				<Button
