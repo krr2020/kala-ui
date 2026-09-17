@@ -169,8 +169,70 @@ describe("component app seam", () => {
 		// toggle + card press counter + 18 dedicated forms demos
 		// (text/textarea/number/select/combobox/multi-select/checkbox×2/
 		// radio/switch/toggle/slider×2/rating/field×2/otp/calendar/date/
-		// time) + forms overview (email/plan/tier/terms).
-		expect(demoHooks).toBe(53);
+		// time) + forms overview (email/plan/tier/terms) + the three-screen
+		// shell stack (screen + source + group + component indexes).
+		expect(demoHooks).toBe(55);
+	});
+
+	it("landing offers exactly two package routes", () => {
+		const shell = readFileSync(
+			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
+			"utf8",
+		);
+		expect(shell).toMatch(/testID="k-landing-root"/);
+		expect(shell).toMatch(/testID="k-landing-library"/);
+		expect(shell).toMatch(/testID="k-landing-app"/);
+		expect(shell).toMatch(/accessibilityLabel="open native components"/);
+		expect(shell).toMatch(/accessibilityLabel="open native app components"/);
+		// opening a route remembers which source the list screen shows
+		expect(shell).toMatch(/setRouteSource\("library"\)/);
+		expect(shell).toMatch(/setRouteSource\("app"\)/);
+	});
+
+	it("route screens list only the tapped source's groups", () => {
+		const shell = readFileSync(
+			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
+			"utf8",
+		);
+		expect(shell).toMatch(/testID="k-group-list-root"/);
+		expect(shell).toMatch(/k-group-row-\$\{entry\.name\}/);
+		expect(shell).toMatch(/source === routeSource/);
+		// rows preview their size: component count per group
+		expect(shell).toMatch(/\{entry\.components\.length\}/);
+	});
+
+	it("group screen pins theme row above the group's own component chips", () => {
+		const shell = readFileSync(
+			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
+			"utf8",
+		);
+		expect(shell).toMatch(/testID="k-group-root"/);
+		// every group open resets to the first component — a componentIndex
+		// carried over from a previously visited group would render an
+		// out-of-group preview under the new heading
+		expect(shell).toMatch(
+			/setGroupIndex\(index\);[\s\S]*?setComponentIndex\(0\);/,
+		);
+		expect(shell).toMatch(/\{group\.title\} · \{component\.label\}/);
+	});
+
+	it("back navigation pops one level from buttons and hardware back", () => {
+		const shell = readFileSync(
+			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
+			"utf8",
+		);
+		expect(shell).toMatch(/"k-back-home"/);
+		expect(shell).toMatch(/"back to home"/);
+		expect(shell).toMatch(/"k-back-groups"/);
+		expect(shell).toMatch(/"back to groups"/);
+		expect(shell).toMatch(/BackHandler\.addEventListener\(/);
+		expect(shell).toMatch(/"hardwareBackPress"/);
+		// consuming only above the landing screen — at landing the handler
+		// returns false so the OS default (exit) still runs; the subscription
+		// is removed on unmount
+		expect(shell).toMatch(/screen === "landing"/);
+		expect(shell).toMatch(/return false/);
+		expect(shell).toMatch(/\.remove\(\)/);
 	});
 
 	it("registry maps groups to components with dedicated demos and fallbacks", () => {
@@ -239,15 +301,17 @@ describe("component app seam", () => {
 			);
 		}
 		expect(registry.match(/source: "app"/g) ?? []).toHaveLength(3);
-		// distinct chip + header styles exist and the shell applies them.
+		// landing segregates by package: two entry cards filter groups by
+		// their source — the app card carries the app tint, both captions
+		// reuse the uppercase section header style
 		expect(stylesheet).toMatch(/sectionHeader:/);
 		expect(stylesheet).toMatch(/appChip:/);
 		expect(stylesheet).toMatch(/appChipText:/);
-		expect(shell).toMatch(/source === "app"/);
+		expect(shell).toMatch(/k-landing-library/);
+		expect(shell).toMatch(/k-landing-app/);
+		expect(shell).toMatch(/source === routeSource/);
 		expect(shell).toMatch(/demoStyles\.sectionHeader/);
 		expect(shell).toMatch(/demoStyles\.appChip/);
-		// a section header renders only when its segment is non-empty.
-		expect(shell).toMatch(/\.length > 0/);
 	});
 
 	it("theme switcher is hoisted into the shell header for every preview", () => {
@@ -276,31 +340,30 @@ describe("component app seam", () => {
 		// heads each preview.
 		expect(shell).toMatch(/\{group\.title\} · \{component\.label\}/);
 		expect(shell).not.toMatch(/Kala UI · Native/);
-		// the switcher strip is the ONLY pinned tier: it stays inside the
-		// SafeAreaView before the content ScrollView opens, while the group/
-		// component chip rows live INSIDE the scrolling routeContent.
-		expect(shell.indexOf("demoStyles.themeRow")).toBeLessThan(
-			shell.indexOf("demoStyles.chipRows"),
-		);
-		const contentScrollAt = shell.indexOf("demoStyles.routeContent");
+		// the switcher strip is the ONLY pinned tier: on the group screen it
+		// stays before the content ScrollView, while the component chip row
+		// lives INSIDE the scrolling routeContent. The landing/list screens
+		// render before the group screen and never carry the pinned tiers.
+		const themeRowStart = shell.indexOf("demoStyles.themeRow");
+		expect(themeRowStart).toBeGreaterThan(-1);
+		expect(
+			shell.slice(0, themeRowStart),
+			"no pinned tier before the group screen",
+		).not.toMatch(/demoStyles\.(themeRow|chipRows)/);
+		const groupScreen = shell.slice(themeRowStart);
+		const contentScrollAt = groupScreen.indexOf("demoStyles.routeContent");
 		expect(contentScrollAt).toBeGreaterThan(-1);
-		expect(shell.indexOf("demoStyles.themeRow")).toBeLessThan(contentScrollAt);
-		expect(shell.indexOf("demoStyles.chipRows")).toBeGreaterThan(
+		expect(groupScreen.indexOf("demoStyles.chipRows")).toBeGreaterThan(
 			contentScrollAt,
 		);
 		expect(
-			shell.indexOf("{preview()}"),
+			groupScreen.indexOf("{preview()}"),
 			"preview renders after chipRows",
-		).toBeGreaterThan(shell.indexOf("demoStyles.chipRows"));
-		// chipRows is the first scrolling child — no stray chipRows View
-		// remains between the fixed divider and the content ScrollView.
-		expect(shell.slice(0, contentScrollAt)).not.toMatch(/demoStyles\.chipRows/);
+		).toBeGreaterThan(groupScreen.indexOf("demoStyles.chipRows"));
 		// the strip is one non-wrapping scroll row (horizontal ScrollView)
 		// and its chips carry humanized title-case labels like the other rows.
-		const themeRowStart = shell.indexOf("demoStyles.themeRow");
-		const themeRowEnd = shell.indexOf("demoStyles.chipRows");
-		const themeRowBlock = shell.slice(themeRowStart, themeRowEnd);
-		expect(themeRowStart).toBeGreaterThan(-1);
+		const stripEnd = groupScreen.indexOf("demoStyles.chipRows");
+		const themeRowBlock = groupScreen.slice(0, stripEnd);
 		expect(themeRowBlock).toMatch(/horizontal/);
 		expect(themeRowBlock).not.toMatch(/flexWrap/);
 		expect(themeRowBlock).toMatch(/\{humanizeLabel\(name\)\}/);
@@ -313,14 +376,12 @@ describe("component app seam", () => {
 		);
 		expect(themeRowStyle).toMatch(/paddingTop: 8/);
 		expect(themeRowStyle).not.toMatch(/borderBottom/);
-		const dividerAt = shell.indexOf("demoStyles.rowDivider", themeRowStart);
-		expect(dividerAt).toBeGreaterThan(themeRowStart);
-		expect(dividerAt).toBeLessThan(themeRowEnd);
+		const dividerAt = groupScreen.indexOf("demoStyles.rowDivider");
+		expect(dividerAt).toBeGreaterThan(0);
+		expect(dividerAt).toBeLessThan(stripEnd);
 		// exactly one divider in that window (no double hairline).
 		expect(
-			shell
-				.slice(themeRowStart, themeRowEnd)
-				.match(/demoStyles\.rowDivider/g) ?? [],
+			groupScreen.slice(0, stripEnd).match(/demoStyles\.rowDivider/g) ?? [],
 		).toHaveLength(1);
 	});
 
@@ -417,28 +478,25 @@ describe("component app seam", () => {
 		expect(block("themeRow")).not.toMatch(/flexWrap/);
 		expect(block("routeBar")).toMatch(/flexGrow: 0/);
 		const pickerUsages = shell.match(/demoStyles\.picker/g) ?? [];
-		expect(pickerUsages).toHaveLength(3);
+		expect(pickerUsages).toHaveLength(2);
 		// every picker-backed ScrollView opens horizontal with the indicator
 		// hidden — the opening-tag head of each chunk carries both props
 		const rowChunks = shell
 			.split("<ScrollView")
 			.slice(1)
 			.filter((chunk) => chunk.slice(0, 400).includes("demoStyles.picker"));
-		expect(rowChunks).toHaveLength(3);
+		expect(rowChunks).toHaveLength(2);
 		for (const chunk of rowChunks) {
 			const head = chunk.slice(0, 400);
 			expect(head).toMatch(/horizontal/);
 			expect(head).toMatch(/showsHorizontalScrollIndicator=\{false\}/);
 		}
-		// the app segment separator renders INLINE between the two segments —
-		// a vertical rule inside the same scrolling row, never its own line.
-		expect(block("segmentRule")).toMatch(/width: 1/);
-		const ruleAt = shell.indexOf("demoStyles.segmentRule");
-		expect(ruleAt).toBeGreaterThan(-1);
-		const libEnd = shell.indexOf("App Components", ruleAt);
-		const libStart = shell.lastIndexOf("Components", ruleAt);
-		expect(libStart).toBeGreaterThan(-1);
-		expect(libEnd).toBeGreaterThan(ruleAt);
+		// the two route entry cards stack full-width on the landing screen —
+		// package segregation lives on the cards, not an inline row rule
+		expect(block("landingCard")).not.toMatch(/flexDirection/);
+		expect(shell.indexOf("k-landing-library")).toBeLessThan(
+			shell.indexOf("k-landing-app"),
+		);
 	});
 
 	it("end-of-scroll padding extends the scroll content, not the frame", () => {
@@ -475,7 +533,6 @@ describe("component app seam", () => {
 				Object.entries({
 					'accessibilityLabel="agree to terms"': 1,
 					'accessibilityLabel="anonymous checkbox"': 1,
-					'accessibilityLabel="app components section"': 1,
 					'accessibilityLabel="appointment"': 1,
 					'accessibilityLabel="auto sync"': 1,
 					'accessibilityLabel="background sync"': 1,
@@ -498,7 +555,6 @@ describe("component app seam", () => {
 					'accessibilityLabel="fruit"': 1,
 					'accessibilityLabel="grouped toppings"': 1,
 					'accessibilityLabel="home city"': 1,
-					'accessibilityLabel="library components section"': 1,
 					'accessibilityLabel="loading calendar"': 1,
 					'accessibilityLabel="loading list"': 1,
 					'accessibilityLabel="locked date"': 1,
@@ -521,6 +577,8 @@ describe("component app seam", () => {
 					'accessibilityLabel="open confirm dialog"': 1,
 					'accessibilityLabel="open demo dialog"': 1,
 					'accessibilityLabel="open demo sheet"': 1,
+					'accessibilityLabel="open native app components"': 1,
+					'accessibilityLabel="open native components"': 1,
 					'accessibilityLabel="Open the notifications card"': 1,
 					'accessibilityLabel="order notes"': 1,
 					'accessibilityLabel="orphan city"': 1,
@@ -553,10 +611,10 @@ describe("component app seam", () => {
 					'accessibilityLabel="toppings"': 1,
 					'accessibilityLabel="trip window"': 1,
 					'accessibilityLabel="volume"': 2,
-					'accessibilityLabel={`${size} toggle`}': 1,
-					'accessibilityLabel={`activate ${name} theme`}': 1,
-					'accessibilityLabel={`select ${name} group`}': 1,
-					'accessibilityLabel={`show ${name} preview`}': 1,
+					"accessibilityLabel={`${size} toggle`}": 1,
+					"accessibilityLabel={`activate ${name} theme`}": 1,
+					"accessibilityLabel={`open ${entry.name} group`}": 1,
+					"accessibilityLabel={`show ${name} preview`}": 1,
 					'testID="k-demo-accordion"': 1,
 					'testID="k-demo-app-shell"': 1,
 					'testID="k-demo-avatar-group-inline"': 1,
@@ -616,8 +674,14 @@ describe("component app seam", () => {
 					'testID="k-demo-timeline"': 1,
 					'testID="k-demo-toggle"': 1,
 					'testID="k-demo-toggles"': 1,
-					'testID={`k-swatch-${token}`}': 1,
-					'testID={`k-theme-${name}`}': 1,
+					'testID="k-group-list-root"': 1,
+					'testID="k-group-root"': 1,
+					'testID="k-landing-app"': 1,
+					'testID="k-landing-library"': 1,
+					'testID="k-landing-root"': 1,
+					"testID={`k-group-row-${entry.name}`}": 1,
+					"testID={`k-swatch-${token}`}": 1,
+					"testID={`k-theme-${name}`}": 1,
 				}),
 			),
 		);

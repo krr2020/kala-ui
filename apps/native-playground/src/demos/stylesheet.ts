@@ -188,6 +188,53 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		alignItems: "center",
 		gap: 8,
 	},
+	// landing + route screens — full-width stacked cards, never an inline
+	// row: package segregation reads as two distinct destinations
+	landingHero: {
+		gap: 4,
+	},
+	landingCard: {
+		gap: 6,
+		padding: 16,
+		borderRadius: 12,
+		borderWidth: 1,
+		borderColor: theme.border,
+		backgroundColor: theme.card,
+	},
+	landingCardHead: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+	},
+	landingCardTitle: {
+		color: theme.foreground,
+		fontSize: 18,
+		fontWeight: "700",
+	},
+	landingCardMeta: {
+		color: theme.mutedForeground,
+		fontSize: 13,
+	},
+	listColumn: {
+		gap: 12,
+	},
+	listRowTitle: {
+		color: theme.foreground,
+		fontSize: 15,
+		fontWeight: "600",
+	},
+	backButton: {
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 4,
+		minHeight: 44,
+		alignSelf: "flex-start",
+	},
+	backLabel: {
+		color: theme.foreground,
+		fontSize: 14,
+		fontWeight: "500",
+	},
 }));
 
 export const SWATCH_TOKENS = [

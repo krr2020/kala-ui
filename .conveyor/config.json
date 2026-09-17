@@ -9,7 +9,7 @@
     "overrides": {}
   },
   "execution": {
-    "worktrees": true
+    "worktrees": false
   },
   "agent": {
     "defaultMode": "build",
@@ -21,8 +21,8 @@
       "cooldownMs": 900000
     },
     "compaction": {
-      "autoEnabled": false,
-      "thresholdPercent": 80,
+      "autoEnabled": true,
+      "thresholdPercent": 20,
       "keepRecentTokens": 20000,
       "readEarlyEnabled": false
     },
@@ -97,7 +97,7 @@
     "laneCap": 1,
     "budget": {
       "warnTokens": 1500000,
-      "hardStopTokens": 30000000,
+      "hardStopTokens": 300000000,
       "scope": "run"
     },
     "planReviewGate": false,
@@ -310,8 +310,10 @@
     }
   },
   "autocomplete": {
-    "enabled": false,
-    "models": {},
+    "enabled": true,
+    "models": {
+      "default": "zai-coding-plan/glm-5.3-flash"
+    },
     "fimMode": "auto",
     "debounce": "adaptive",
     "candidates": 1,
