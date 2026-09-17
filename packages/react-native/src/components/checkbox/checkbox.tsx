@@ -1,9 +1,9 @@
 /**
  * Checkbox: pressable owns its surface (no native CheckBox on iOS, one
- * deterministic press target everywhere). The 22dp box sits centered in a
- * 44dp touch floor; an optional label renders beside it and merges into
- * the a11y announcement. Indeterminate presses resolve to checked,
- * matching web convention.
+ * deterministic press target everywhere). The full row is the 44dp touch
+ * floor; the 22dp box hugs the optional label at the row gap so no dead
+ * space splits them. Indeterminate presses resolve to checked, matching
+ * web convention.
  */
 
 import { Check, Minus } from "lucide-react-native";
@@ -57,26 +57,19 @@ export function Checkbox({
 				applySlot(applySlot([], style), slotStyles?.root),
 			]}
 		>
-			<View
-				style={{
-					minWidth: 44,
-					minHeight: 44,
-					alignItems: "center",
-					justifyContent: "center",
-				}}
-			>
-				<View
-					testID="k-checkbox-box"
-					style={[boxStyle(theme, active), slotStyles?.box]}
-				>
-					{value === true && (
-						<Check size={14} color={theme.primaryForeground} />
-					)}
-					{value === "indeterminate" && (
-						<Minus size={14} color={theme.primaryForeground} />
-					)}
+				<View testID="k-checkbox-wrap" style={{ alignSelf: "flex-start" }}>
+					<View
+						testID="k-checkbox-box"
+						style={[boxStyle(theme, active), slotStyles?.box]}
+					>
+						{value === true && (
+								<Check size={14} color={theme.primaryForeground} />
+						)}
+						{value === "indeterminate" && (
+								<Minus size={14} color={theme.primaryForeground} />
+						)}
+					</View>
 				</View>
-			</View>
 			{label !== undefined ? (
 				<RNText style={labelStyle(theme)}>{label}</RNText>
 			) : null}

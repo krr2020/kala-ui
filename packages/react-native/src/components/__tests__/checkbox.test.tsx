@@ -132,6 +132,23 @@ describe("Checkbox", () => {
 		expect(mid.borderColor).toBe(hot.borderColor);
 	});
 
+	it("wrapper collapses to the box; root owns the 44dp touch floor in every arm", async () => {
+		const flat = (node: { props: { style?: unknown } }) =>
+			flatStyle(node);
+		const enabled = await render(<Checkbox value={false} />);
+		const wrap = flat(enabled.getByTestId("k-checkbox-wrap"));
+		expect(wrap.minWidth).toBeUndefined();
+		expect(wrap.minHeight).toBeUndefined();
+		expect(flat(enabled.getByTestId("k-checkbox")).minHeight).toBe(44);
+
+		const disabled = await render(<Checkbox value disabled />);
+		expect(flat(disabled.getByTestId("k-checkbox")).minHeight).toBe(44);
+
+		const bare = await render(<Checkbox accessibilityLabel="anon" />);
+		expect(flat(bare.getByTestId("k-checkbox")).minHeight).toBe(44);
+		expect(bare.getByTestId("k-checkbox-wrap")).toBeTruthy();
+	});
+
 	it("slot overrides reach the box and root", async () => {
 		const screen: Screen = await render(
 			<Checkbox
