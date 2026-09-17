@@ -6,6 +6,8 @@ import { demoStyles } from "../stylesheet";
 
 export function RadioGroupDemo() {
 	const [tier, setTier] = useState("team");
+	const [fallback, setFallback] = useState("none-of-the-above");
+	const picked = fallback === "solo" || fallback === "team";
 	return (
 		<View testID="k-demo-radio-group" style={demoStyles.routeContent}>
 			<DemoBlock label="Basic">
@@ -53,6 +55,34 @@ export function RadioGroupDemo() {
 				<RadioGroup defaultValue="only">
 					<RadioGroup.Item value="only" accessibilityLabel="anonymous radio" />
 				</RadioGroup>
+			</DemoBlock>
+			<DemoBlock label="Long Labels">
+				<RadioGroup defaultValue="wrap">
+					<RadioGroup.Item
+						value="wrap"
+						label="Enable quarterly rollover with automatic seat reconciliation across every workspace"
+						description="Applies to annual billing cycles where seats were added mid-cycle and prorated"
+					/>
+				</RadioGroup>
+				<RadioGroup defaultValue="compact" orientation="horizontal">
+					<RadioGroup.Item value="compact" label="Compact" />
+					<RadioGroup.Item
+						value="verbose"
+						label="A particularly verbose inline option"
+					/>
+				</RadioGroup>
+			</DemoBlock>
+			<DemoBlock label="Unmatched Default">
+				<RadioGroup
+					defaultValue="none-of-the-above"
+					onValueChange={setFallback}
+				>
+					<RadioGroup.Item value="solo" label="Solo" />
+					<RadioGroup.Item value="team" label="Team" />
+				</RadioGroup>
+				<Text style={demoStyles.current}>
+					{picked ? `Tier: ${fallback}` : "Tier: nothing selected yet"}
+				</Text>
 			</DemoBlock>
 		</View>
 	);

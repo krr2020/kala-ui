@@ -76,9 +76,9 @@ export function body(): ViewStyle {
 }
 
 export function label(theme: KalaTheme): TextStyle {
-	return { color: theme.foreground, fontSize: 15 };
+	return { color: theme.foreground, fontSize: 15, flexShrink: 1 };
 }
 
 export function description(theme: KalaTheme): TextStyle {
-	return { color: theme.mutedForeground, fontSize: 13 };
+	return { color: theme.mutedForeground, fontSize: 13, flexShrink: 1 };
 }

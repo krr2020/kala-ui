@@ -41,6 +41,10 @@ describe("RadioGroup demo ↔ package seam", () => {
 		expect(source).toContain("disabled>");
 		expect(source).toContain('accessibilityLabel="anonymous radio"');
 		expect(source).toContain('orientation="horizontal"');
+		// edge-case arms: long text and an unmatched default seed
+		expect(source).toContain("Long Labels");
+		expect(source).toContain("Unmatched Default");
+		expect(source).toContain('useState("none-of-the-above")');
 	});
 
 	it("demo-shaped checked row: 22dp circle, standard 10dp dot on primary fill", async () => {
