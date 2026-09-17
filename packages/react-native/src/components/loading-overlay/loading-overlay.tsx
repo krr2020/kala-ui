@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
 import { Spinner } from "../spinner";
+import { scrimStyle } from "./loading-overlay.styles";
 import type { LoadingOverlayProps } from "./loading-overlay.types";
 
 /**
@@ -20,7 +21,7 @@ export function LoadingOverlay({
 	slotStyles,
 	testID = "k-loading-overlay",
 }: LoadingOverlayProps): ReactElement | null {
-	useUnistyles();
+	const { theme } = useUnistyles();
 	if (!visible) return null;
 
 	return (
@@ -28,17 +29,8 @@ export function LoadingOverlay({
 			testID={testID}
 			accessibilityLabel={accessibilityLabel}
 			style={[
-				{
-					position: "absolute",
-					top: 0,
-					left: 0,
-					right: 0,
-					bottom: 0,
-					zIndex,
-					backgroundColor: "rgba(0,0,0,0.5)",
-					alignItems: "center",
-					justifyContent: "center",
-				},
+				scrimStyle(theme),
+				{ zIndex },
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
@@ -46,5 +38,3 @@ export function LoadingOverlay({
 		</View>
 	);
 }
-
-export type { ReactNode as LoadingOverlayChildren };

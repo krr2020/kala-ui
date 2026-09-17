@@ -24,39 +24,39 @@ export function BasicsDemo() {
 	const [plan, setPlan] = useState("pro");
 	return (
 		<>
-			<DemoBlock label="text input">
+			<DemoBlock label="Text Input">
 				<View style={demoStyles.componentRow} testID="k-demo-input">
-					<TextInput placeholder="email" accessibilityLabel="email field" />
+					<TextInput placeholder="Email" accessibilityLabel="email field" />
 					<TextInput
-						placeholder="error"
+						placeholder="Error"
 						accessibilityLabel="error field"
 						hasError
 					/>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="controls">
+			<DemoBlock label="Controls">
 				<View style={demoStyles.componentRow} testID="k-demo-controls">
 					<Checkbox
 						accessibilityLabel="agree to terms"
 						value={agree}
 						onValueChange={setAgree}
 					/>
-					<KText size="sm">agree</KText>
+					<KText size="sm">Agree</KText>
 					<Switch
 						accessibilityLabel="auto sync"
 						value={sync}
 						onValueChange={setSync}
 					/>
-					<KText size="sm">sync</KText>
+					<KText size="sm">Sync</KText>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="labels">
+			<DemoBlock label="Labels">
 				<View style={demoStyles.componentRow} testID="k-demo-labels">
-					<Label required>email</Label>
-					<Label>notes</Label>
+					<Label required>Email</Label>
+					<Label>Notes</Label>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="spinners">
+			<DemoBlock label="Spinners">
 				<View style={demoStyles.componentRow} testID="k-demo-spinners">
 					<Spinner size="sm" />
 					<Spinner />
@@ -64,21 +64,21 @@ export function BasicsDemo() {
 					<Spinner size="xl" variant="ghost" />
 				</View>
 			</DemoBlock>
-			<DemoBlock label="progress">
+			<DemoBlock label="Progress">
 				<View testID="k-demo-progress">
 					<Progress value={30} />
 					<Progress value={70} color="success" showValue />
-					<Progress value={50} color="info" label="uploading" />
+					<Progress value={50} color="info" label="Upload Progress" />
 				</View>
 			</DemoBlock>
-			<DemoBlock label="skeletons">
+			<DemoBlock label="Skeletons">
 				<View style={demoStyles.componentRow} testID="k-demo-skeletons">
 					<Skeleton style={{ width: 96, height: 12 }} />
 					<Skeleton variant="circle" style={{ width: 32, height: 32 }} />
 					<Skeleton style={{ width: 64, height: 12 }} variant="rect" />
 				</View>
 			</DemoBlock>
-			<DemoBlock label="radio group">
+			<DemoBlock label="Radio Group">
 				<View style={demoStyles.componentRow} testID="k-demo-radios">
 					<RadioGroup
 						value={plan}
@@ -88,17 +88,17 @@ export function BasicsDemo() {
 						<RadioGroup.Item
 							value="basic"
 							label="Basic"
-							description="one project"
+							description="One project"
 						/>
 						<RadioGroup.Item
 							value="pro"
 							label="Pro"
-							description="unlimited projects"
+							description="Unlimited projects"
 						/>
 					</RadioGroup>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="avatar group">
+			<DemoBlock label="Avatar Group">
 				<View
 					style={demoStyles.componentRow}
 					testID="k-demo-avatar-group-inline"
@@ -115,7 +115,7 @@ export function BasicsDemo() {
 					/>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="ring progress">
+			<DemoBlock label="Ring Progress">
 				<View style={demoStyles.componentRow} testID="k-demo-ring-progress">
 					<RingProgress
 						value={72}
@@ -133,32 +133,32 @@ export function BasicsDemo() {
 					/>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="steps">
+			<DemoBlock label="Steps">
 				<View style={demoStyles.componentRow} testID="k-demo-steps">
 					<Steps
 						items={[
-							{ title: "account", description: "email + password" },
-							{ title: "profile", description: "name + avatar" },
-							{ title: "confirm" },
+							{ title: "Account", description: "Email + password" },
+							{ title: "Profile", description: "Name + avatar" },
+							{ title: "Confirm" },
 						]}
 						defaultValue={2}
 						onStepChange={() => undefined}
 					/>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="timeline">
+			<DemoBlock label="Timeline">
 				<View style={demoStyles.componentRow} testID="k-demo-timeline">
 					<Timeline
 						items={[
 							{
-								title: "order placed",
-								description: "cart locked",
+								title: "Order placed",
+								description: "Cart locked",
 								timestamp: "09:00",
 							},
-							{ title: "shipped", timestamp: "12:30", status: "success" },
+							{ title: "Shipped", timestamp: "12:30", status: "success" },
 							{
-								title: "delivered",
-								description: "signed at the door",
+								title: "Delivered",
+								description: "Signed at the door",
 								status: "warning",
 							},
 						]}

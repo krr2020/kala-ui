@@ -13,9 +13,13 @@ import { tokens } from "../../tokens";
 import { Icon } from "../icon";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
+import {
+	descriptionStyle,
+	iconCircleStyle,
+	surfaceStyle,
+	titleStyle,
+} from "./empty-state.styles";
 import type { EmptyStateIcon, EmptyStateProps } from "./empty-state.types";
-
-const MIN_HEIGHT = { sm: 150, md: 300, lg: 500 } as const;
 
 export function EmptyState({
 	icon,
@@ -31,20 +35,7 @@ export function EmptyState({
 	testID = "k-empty-state",
 }: EmptyStateProps): ReactElement {
 	const { theme } = useUnistyles();
-	const destructive = color === "destructive";
-	const surface = {
-		alignItems: "center" as const,
-		justifyContent: "center" as const,
-		minHeight: MIN_HEIGHT[size],
-		padding: size === "sm" ? 16 : 32,
-		borderRadius: tokens.radius.card,
-		borderWidth: 1,
-		borderStyle: "dashed" as const,
-		borderColor: destructive ? theme.destructive : theme.border,
-		backgroundColor: destructive
-			? `${theme.destructive}1A`
-			: `${theme.muted}33`,
-	};
+	const surface = surfaceStyle(size, color, theme);
 
 	if (isLoading) {
 		return (
@@ -79,32 +70,13 @@ export function EmptyState({
 			<View
 				testID="k-empty-state-icon"
 				accessibilityElementsHidden={true}
-				style={applySlot(
-					{
-						width: 80,
-						height: 80,
-						borderRadius: 999,
-						backgroundColor: theme.muted,
-						alignItems: "center",
-						justifyContent: "center",
-					},
-					slotStyles?.icon,
-				)}
+				style={applySlot(iconCircleStyle(theme), slotStyles?.icon)}
 			>
 				<Icon icon={IconComponent} size="xl" color={theme.mutedForeground} />
 			</View>
 			<RNText
 				testID="k-empty-state-title"
-				style={applySlot(
-					{
-						marginTop: 16,
-						fontSize: 18,
-						fontWeight: "600",
-						color: theme.foreground,
-						textAlign: "center",
-					},
-					slotStyles?.title,
-				)}
+				style={applySlot(titleStyle(theme), slotStyles?.title)}
 			>
 				{title}
 			</RNText>
@@ -112,13 +84,7 @@ export function EmptyState({
 				<RNText
 					testID="k-empty-state-description"
 					style={applySlot(
-						{
-							marginTop: 8,
-							marginBottom: 16,
-							fontSize: 14,
-							color: theme.mutedForeground,
-							textAlign: "center",
-						},
+						descriptionStyle(theme),
 						slotStyles?.description,
 					)}
 				>

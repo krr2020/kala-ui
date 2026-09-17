@@ -14,6 +14,12 @@ import { useEffect, useRef } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
+import {
+	descriptionStyle,
+	rootStyle,
+	titleStyle,
+	viewportStyle,
+} from "./toast.styles";
 import type {
 	ToastDescriptionProps,
 	ToastProps,
@@ -49,19 +55,7 @@ export function Toast({
 		<View
 			testID="k-toast-viewport"
 			pointerEvents="box-none"
-			style={[
-				{
-					position: "absolute",
-					top: 0,
-					right: 0,
-					bottom: 0,
-					left: 0,
-					zIndex: 200,
-					justifyContent: position === "top" ? "flex-start" : "flex-end",
-					padding: 16,
-				},
-				slotStyles?.viewport,
-			]}
+			style={[viewportStyle(position), applySlot({}, slotStyles?.viewport)]}
 		>
 			<View
 				testID={testID}
@@ -69,18 +63,7 @@ export function Toast({
 				accessible={true}
 				accessibilityRole="alert"
 				accessibilityLabel={accessibilityLabel}
-				style={[
-					{
-						alignSelf: "stretch",
-						backgroundColor: theme.card,
-						borderWidth: 1,
-						borderColor: theme.border,
-						borderRadius: 10,
-						padding: 14,
-						gap: 2,
-					},
-					applySlot(applySlot({}, style), slotStyles?.root),
-				]}
+				style={[rootStyle(theme), applySlot(applySlot({}, style), slotStyles?.root)]}
 			>
 				{children}
 			</View>
@@ -99,7 +82,7 @@ function ToastTitle({
 		<RNText
 			testID={testID}
 			style={applySlot(
-				[{ color: theme.foreground, fontSize: 15, fontWeight: "600" }, style],
+				[titleStyle(theme), style],
 				slotStyles?.root,
 			)}
 		>
@@ -119,7 +102,7 @@ function ToastDescription({
 		<RNText
 			testID={testID}
 			style={applySlot(
-				[{ color: theme.mutedForeground, fontSize: 14 }, style],
+				[descriptionStyle(theme), style],
 				slotStyles?.root,
 			)}
 		>

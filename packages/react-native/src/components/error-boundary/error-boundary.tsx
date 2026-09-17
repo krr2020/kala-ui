@@ -1,19 +1,11 @@
 import type { Component, ErrorInfo, ReactNode } from "react";
 import { Component as ReactComponent } from "react";
+import { resetKeysDiffer } from "../../lib/error.utils";
 import type {
 	ErrorBoundaryProps,
 	ErrorBoundaryState,
 } from "./error-boundary.types";
 import { ErrorFallback } from "./error-fallback";
-
-function resetKeysDiffer(a?: unknown[], b?: unknown[]): boolean {
-	const prev = a ?? [];
-	const next = b ?? [];
-	return (
-		prev.length !== next.length ||
-		prev.some((key, i) => !Object.is(key, next[i]))
-	);
-}
 
 /**
  * ErrorBoundary: catches render errors anywhere below, swaps in the
@@ -71,5 +63,3 @@ export class ErrorBoundary extends ReactComponent<
 		return this.props.children;
 	}
 }
-
-export type { Component as ErrorBoundaryBase };

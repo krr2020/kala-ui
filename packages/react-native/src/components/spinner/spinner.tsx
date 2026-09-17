@@ -12,9 +12,8 @@ import { useEffect, useRef } from "react";
 import { Animated, Easing } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
-import type { SpinnerProps, SpinnerSize } from "./spinner.types";
-
-const SIZE: Record<SpinnerSize, number> = { sm: 16, md: 24, lg: 32, xl: 48 };
+import { SIZE, variantColor, wrapperStyle } from "./spinner.styles";
+import type { SpinnerProps } from "./spinner.types";
 
 export function Spinner({
 	size = "md",
@@ -49,23 +48,14 @@ export function Spinner({
 		outputRange: ["0deg", "360deg"],
 	});
 
-	const color =
-		variant === "white"
-			? theme.primaryForeground
-			: variant === "muted" || variant === "ghost"
-				? theme.mutedForeground
-				: theme.primary;
+	const color = variantColor(variant, theme);
 
 	return (
 		<Animated.View
 			testID={testID}
 			accessibilityLabel={accessibilityLabel ?? label}
 			style={[
-				{
-					alignItems: "center",
-					justifyContent: "center",
-					opacity: variant === "ghost" ? 0.6 : 1,
-				},
+				wrapperStyle(variant),
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>

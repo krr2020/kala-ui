@@ -3,6 +3,11 @@ import { Text as RNText, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
+import {
+	labelOverlayStyle,
+	labelTextStyle,
+	rootStyle,
+} from "./ring-progress.styles";
 import type {
 	RingProgressProps,
 	RingProgressSection,
@@ -53,12 +58,7 @@ export function RingProgress({
 				now: Math.min(100, Math.round(total)),
 			}}
 			style={[
-				{
-					width: size,
-					height: size,
-					alignItems: "center",
-					justifyContent: "center",
-				},
+				rootStyle(size),
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
@@ -99,22 +99,14 @@ export function RingProgress({
 				<View
 					testID="k-ring-progress-label"
 					style={[
-						{
-							position: "absolute",
-							top: 0,
-							left: 0,
-							right: 0,
-							bottom: 0,
-							alignItems: "center",
-							justifyContent: "center",
-						},
+						labelOverlayStyle,
 						applySlot({}, slotStyles?.label),
 					]}
 				>
 					{typeof label === "string" || typeof label === "number" ? (
-						<RNText style={{ fontSize: 14, color: String(theme.foreground) }}>
-							{label}
-						</RNText>
+								<RNText style={labelTextStyle(theme)}>
+								{label}
+							</RNText>
 					) : (
 						label
 					)}
@@ -124,4 +116,3 @@ export function RingProgress({
 	);
 }
 
-export type { ReactNode as RingProgressLabel };

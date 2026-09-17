@@ -9,9 +9,8 @@ import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
-import type { ProgressProps, ProgressSize } from "./progress.types";
-
-const HEIGHT: Record<ProgressSize, number> = { sm: 4, md: 10, lg: 16 };
+import { indicatorStyle, trackStyle, valueStyle } from "./progress.styles";
+import type { ProgressProps } from "./progress.types";
 
 export function Progress({
 	value = 0,
@@ -41,38 +40,20 @@ export function Progress({
 			accessibilityLabel={accessibilityLabel}
 			accessibilityValue={{ min, max, now: clamped }}
 			style={[
-				{
-					width: "100%",
-					height: HEIGHT[size],
-					borderRadius: 999,
-					// 20% alpha ≈ "33" in #RRGGBBAA — web's bg-primary/20
-					backgroundColor: `${String(theme.primary)}33`,
-					overflow: "hidden",
-					flexDirection: "row",
-				},
+				trackStyle(size, theme),
 				applySlot(applySlot([], style), slotStyles?.root),
 			]}
 		>
 			<View
 				testID="k-progress-indicator"
 				style={[
-					{
-						width: `${pct}%`,
-						height: "100%",
-						backgroundColor: theme[color],
-						alignItems: "center",
-						justifyContent: "center",
-					},
+					indicatorStyle(pct, theme[color]),
 					slotStyles?.indicator,
 				]}
 			>
 				{inner !== null && size !== "sm" ? (
 					<RNText
-						style={{
-							color: theme[`${color}Foreground`],
-							fontSize: size === "lg" ? 12 : 10,
-							fontWeight: "500",
-						}}
+						style={valueStyle(theme[`${color}Foreground`], size)}
 					>
 						{inner}
 					</RNText>

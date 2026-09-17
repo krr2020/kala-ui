@@ -38,7 +38,7 @@ export function FeedbackDemo() {
 					variant="subtle"
 					size="sm"
 					onPress={() => setToastOpen(true)}
-					accessibilityLabel="show toast"
+					accessibilityLabel="Show Toast"
 				>
 					Show Toast
 				</Button>

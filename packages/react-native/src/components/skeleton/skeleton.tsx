@@ -10,9 +10,8 @@ import { useEffect, useRef } from "react";
 import { Animated, Easing } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
-import type { SkeletonProps, SkeletonVariant } from "./skeleton.types";
-
-const RADIUS: Record<SkeletonVariant, number> = { rect: 8, circle: 999 };
+import { RADIUS } from "./skeleton.styles";
+import type { SkeletonProps } from "./skeleton.types";
 
 export function Skeleton({
 	variant = "rect",

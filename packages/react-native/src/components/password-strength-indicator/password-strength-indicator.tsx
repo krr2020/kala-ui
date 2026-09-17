@@ -8,6 +8,15 @@ import {
 	STRENGTH_LABELS,
 } from "../../lib/password-strength.utils";
 import { applySlot } from "../slot-styles";
+import {
+	barColor as barColorFor,
+	barRowStyle,
+	hintStyle,
+	labelRowStyle,
+	labelStyle,
+	rootStyle,
+	segmentStyle,
+} from "./password-strength-indicator.styles";
 import type { PasswordStrengthIndicatorProps } from "./password-strength-indicator.types";
 
 /**
@@ -28,15 +37,7 @@ export function PasswordStrengthIndicator({
 	}
 
 	const strength = calculatePasswordStrength(password);
-
-	const barColor =
-		strength === 0
-			? theme.destructive
-			: strength === 1
-				? theme.destructive
-				: strength === 2
-					? theme.warning
-					: theme.success;
+	const barColor = barColorFor(strength, theme);
 
 	return (
 		<View
@@ -45,51 +46,30 @@ export function PasswordStrengthIndicator({
 			accessibilityLabel={`Password strength: ${STRENGTH_LABELS[strength]}`}
 			accessibilityValue={{ min: 0, max: PASSWORD_MAX_STRENGTH, now: strength }}
 			style={[
-				{ marginTop: 12 },
+				rootStyle,
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
-			<View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-				<RNText
-					style={{
-						fontSize: 12,
-						fontWeight: "500",
-						color: theme.mutedForeground,
-					}}
-				>
-					Password Strength
-				</RNText>
-				<RNText
-					style={{
-						fontSize: 12,
-						fontWeight: "500",
-						color: theme.mutedForeground,
-					}}
-				>
+			<View style={labelRowStyle}>
+				<RNText style={labelStyle(theme)}>Password Strength</RNText>
+				<RNText style={labelStyle(theme)}>
 					{STRENGTH_LABELS[strength]}
 				</RNText>
 			</View>
-			<View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
+			<View style={barRowStyle}>
 				{Array.from({ length: PASSWORD_MAX_STRENGTH }, (_, level) => (
 					<View
 						// biome-ignore lint/suspicious/noArrayIndexKey: segment position is the identity
 						key={level}
 						testID="k-password-strength-segment"
 						style={[
-							{
-								flex: 1,
-								height: 8,
-								borderRadius: 999,
-								backgroundColor: level < strength ? barColor : theme.muted,
-							},
+							segmentStyle(level < strength, barColor, theme),
 							applySlot({}, slotStyles?.segment),
 						]}
 					/>
 				))}
 			</View>
-			<RNText
-				style={{ fontSize: 12, marginTop: 8, color: theme.mutedForeground }}
-			>
+			<RNText style={hintStyle(theme)}>
 				Use {PASSWORD_MIN_LENGTH}+ characters with uppercase, lowercase,
 				numbers, and symbols
 			</RNText>
