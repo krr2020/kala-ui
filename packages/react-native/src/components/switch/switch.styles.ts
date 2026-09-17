@@ -29,21 +29,44 @@ export function track(theme: KalaTheme, value: boolean): ViewStyle {
 		height: TRACK_H,
 		borderRadius: TRACK_H / 2,
 		backgroundColor: value ? theme.primary : theme.input,
-		padding: INSET,
-		alignItems: "flex-start",
-		justifyContent: "center",
 	};
 }
 
-export function thumb(theme: KalaTheme, value: boolean): ViewStyle {
+// the off pill's stroke is an absolute overlay, not a borderWidth on the
+// track: a border shrinks the content box (24 - 2 stroke - 2x2 padding =
+// 18dp), which starves the 20dp thumb's vertical centering and drops it
+// below center. The overlay outlines without touching child layout.
+export function trackStroke(theme: KalaTheme): ViewStyle {
 	return {
+		position: "absolute",
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+		borderRadius: TRACK_H / 2,
+		borderWidth: 1,
+		borderColor: theme.border,
+	};
+}
+
+export function thumb(value: boolean, disabled: boolean): ViewStyle {
+	return {
+		position: "absolute",
+		top: INSET,
+		left: INSET,
 		width: THUMB,
 		height: THUMB,
 		borderRadius: THUMB / 2,
-		// unchecked thumb is muted, not card: card sits within a hair of the
-		// input track in dark themes (both #1e-slate), leaving the off circle
-		// invisible exactly when the user needs to see the off state
-		backgroundColor: value ? theme.card : theme.mutedForeground,
+		// constant knob: white + shadow reads as a floating knob on every
+		// track color (light or dark) — state lives entirely on the track.
+		// disabled drops the shadow: under the row's 0.5 opacity it renders
+		// as a smudge that pulls the knob visually below center
+		backgroundColor: "#ffffff",
+		elevation: disabled ? 0 : 2,
+		shadowColor: "#000000",
+		shadowOpacity: disabled ? 0 : 0.15,
+		shadowRadius: 2,
+		shadowOffset: { width: 0, height: 1 },
 		transform: [{ translateX: value ? THUMB_TRAVEL : 0 }],
 	};
 }

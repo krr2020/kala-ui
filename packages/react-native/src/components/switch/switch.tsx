@@ -13,6 +13,7 @@ import {
 	root,
 	thumb as thumbStyle,
 	track,
+	trackStroke,
 	THUMB,
 	THUMB_TRAVEL,
 	TRACK_H,
@@ -53,9 +54,15 @@ export function Switch({
 				testID="k-switch-track"
 				style={[track(theme, value), slotStyles?.track]}
 			>
+				{value ? null : (
+					<View
+						testID="k-switch-stroke"
+						style={trackStroke(theme)}
+					/>
+				)}
 				<View
 					testID="k-switch-thumb"
-					style={[thumbStyle(theme, value), slotStyles?.thumb]}
+					style={[thumbStyle(value, disabled), slotStyles?.thumb]}
 				/>
 			</View>
 			{label !== undefined ? (

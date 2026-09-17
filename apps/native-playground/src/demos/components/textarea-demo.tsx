@@ -60,7 +60,7 @@ export function TextareaDemo() {
 					defaultValue={"Incident timeline: gateway returned 502s for 11 minutes while the edge cache absorbed load; failover completed without customer impact and the postmortem is scheduled. ".repeat(
 						3,
 					)}
-					accessibilityLabel="long textarea value"
+					accessibilityLabel="Long textarea value"
 					rows={4}
 				/>
 			</DemoBlock>
