@@ -3,6 +3,8 @@
  * compound Card API — this pins that every compound part is exercised,
  * that the compound layout (padding none + elevated media card) is used,
  * and that the demo stays registered in the playground registry.
+ * Plain .ts on purpose: the package vitest include only collects
+ * .test.ts files under src/.
  */
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -21,10 +23,7 @@ describe("card demo ↔ library seam", () => {
 	const demo = readFileSync(DEMO_PATH, "utf8");
 
 	it("imports the compound API from the library package", () => {
-		const block = demo.match(
-			/import \{[\s\S]*?\} from "@kala-ui\/react-native";/,
-		);
-		expect(block).toBeTruthy();
+		expect(demo).toMatch(/import \{[\s\S]*\} from "@kala-ui\/react-native";/);
 		for (const part of [
 			"Card",
 			"CardHeader",
@@ -49,22 +48,37 @@ describe("card demo ↔ library seam", () => {
 	});
 
 	it("exercises markers with position/color props and the overlay", () => {
-		expect(demo).toMatch(
-			/<CardMarker color="primary" position="top-right">/,
-		);
+		expect(demo).toMatch(/<CardMarker color="primary" position="top-right">/);
 		expect(demo).toMatch(/<CardMarker variant="icon" color="destructive">/);
 		expect(demo).toMatch(/<CardImageOverlay>/);
 	});
 
-	it("wires the loading state through the Card API", () => {
-		expect(demo).toMatch(/isLoading=\{loading\}/);
-		expect(demo).not.toMatch(/Skeleton/);
+	it("wires the loading state through the Card API and shows both cards", () => {
+		expect(demo).toMatch(/<Card isLoading>/);
+		expect(demo).toMatch(/\{!loading && \(/);
+		// loading visuals come from the Card API — the demo renders no
+		// skeleton elements of its own (the toggle label may say "Skeleton")
+		expect(demo).not.toMatch(/<Skeleton/);
+		expect(demo).not.toMatch(/CardSkeletonStack/);
 	});
 
-	it("shows variant coverage with raw API values", () => {
-		expect(demo).toMatch(/<Card>/);
-		expect(demo).toMatch(/<Card variant="elevated">/);
-		expect(demo).toMatch(/<Card variant="outlined">/);
+	it("uses sentence-case copy throughout", () => {
+		for (const copy of [
+			'label="Variants"',
+			'label="Compound Anatomy"',
+			'label="Markers"',
+			'label="Loading"',
+			"Flat — hairline border",
+			"Elevated — themed shadow",
+			"Outlined — strong border",
+			"Lakeside Cabin",
+			"From $142 / night",
+			"Trail Closed",
+			"Daily Digest",
+		]) {
+			expect(demo).toContain(copy);
+		}
+		expect(demo).not.toMatch(/label="[a-z]/);
 	});
 
 	it("is registered as a playground preview", () => {

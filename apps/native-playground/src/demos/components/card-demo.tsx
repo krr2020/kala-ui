@@ -20,15 +20,15 @@ import { demoStyles } from "../stylesheet";
 
 function CardVariantsBlock() {
 	return (
-		<DemoBlock label="variants">
+		<DemoBlock label="Variants">
 			<Card>
-				<KText size="sm">flat — hairline border</KText>
+				<KText size="sm">Flat — hairline border</KText>
 			</Card>
 			<Card variant="elevated">
-				<KText size="sm">elevated — themed shadow</KText>
+				<KText size="sm">Elevated — themed shadow</KText>
 			</Card>
 			<Card variant="outlined">
-				<KText size="sm">outlined — strong border</KText>
+				<KText size="sm">Outlined — strong border</KText>
 			</Card>
 		</DemoBlock>
 	);
@@ -36,15 +36,15 @@ function CardVariantsBlock() {
 
 function CompoundBlock() {
 	return (
-		<DemoBlock label="compound anatomy">
+		<DemoBlock label="Compound Anatomy">
 			<Card padding="none" variant="elevated">
 				<CardImage
 					source={{ uri: "https://picsum.photos/seed/kala-cabin/640/360" }}
 					alt="A cabin above the lake"
 				/>
 				<CardHeader>
-					<CardTitle>lakeside cabin</CardTitle>
-					<CardSubtitle>from $142 / night</CardSubtitle>
+					<CardTitle>Lakeside Cabin</CardTitle>
+					<CardSubtitle>From $142 / night</CardSubtitle>
 					<CardDescription>
 						Two bedrooms, a wood stove, and a dock that catches the morning
 						light.
@@ -56,10 +56,10 @@ function CompoundBlock() {
 					</KText>
 				</CardContent>
 				<CardFooter>
-					<Button size="sm">book</Button>
+					<Button size="sm">Book</Button>
 					<CardAction>
 						<Button size="sm" variant="ghost">
-							save
+							Save
 						</Button>
 					</CardAction>
 				</CardFooter>
@@ -70,14 +70,14 @@ function CompoundBlock() {
 
 function MarkerBlock() {
 	return (
-		<DemoBlock label="markers">
+		<DemoBlock label="Markers">
 			<Card variant="outlined">
 				<CardMarker color="primary" position="top-right">
-					new
+					New
 				</CardMarker>
 				<CardHeader>
-					<CardTitle>releases</CardTitle>
-					<CardDescription>positioned corner chips</CardDescription>
+					<CardTitle>Releases</CardTitle>
+					<CardDescription>Positioned corner chips</CardDescription>
 				</CardHeader>
 			</Card>
 			<Card padding="none">
@@ -89,8 +89,8 @@ function MarkerBlock() {
 					<CardMarker variant="icon" color="destructive">
 						!
 					</CardMarker>
-					<CardTitle>trail closed</CardTitle>
-					<CardDescription>
+					<CardTitle style={{ color: "#ffffff" }}>Trail Closed</CardTitle>
+					<CardDescription style={{ color: "#ffffffcc" }}>
 						Overlay pins content to the media edge.
 					</CardDescription>
 				</CardImageOverlay>
@@ -102,24 +102,24 @@ function MarkerBlock() {
 function LoadingBlock() {
 	const [loading, setLoading] = useState(true);
 	return (
-		<DemoBlock label="loading">
-			<Card isLoading={loading}>
+		<DemoBlock label="Loading">
+			<Card isLoading>
 				<CardHeader>
-					<CardTitle>daily digest</CardTitle>
-					<CardDescription>summary of activity</CardDescription>
+					<CardTitle>Daily Digest</CardTitle>
+					<CardDescription>Summary of activity</CardDescription>
 				</CardHeader>
 			</Card>
-			<Button size="sm" variant="outline" onPress={() => setLoading((v) => !v)}>
-				{loading ? "show content" : "show skeleton"}
-			</Button>
 			{!loading && (
 				<Card>
-					<CardTitle>daily digest</CardTitle>
+					<CardTitle>Daily Digest</CardTitle>
 					<CardDescription>
 						11 mentions, 3 follows, and one spike from Product Hunt.
 					</CardDescription>
 				</Card>
 			)}
+			<Button size="sm" variant="outline" onPress={() => setLoading((v) => !v)}>
+				{loading ? "Show Content" : "Show Skeleton Only"}
+			</Button>
 		</DemoBlock>
 	);
 }

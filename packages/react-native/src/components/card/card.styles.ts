@@ -76,6 +76,13 @@ export const CLIP: ViewStyle = {
 	borderRadius: tokens.radius.card,
 };
 
+/** Media flush against following anatomy: square bottom corners. */
+export const CLIP_TOP: ViewStyle = {
+	overflow: "hidden",
+	borderTopLeftRadius: tokens.radius.card,
+	borderTopRightRadius: tokens.radius.card,
+};
+
 export const HEADER: ViewStyle = {
 	padding: tokens.space.cardPad,
 	gap: 6,
@@ -146,6 +153,24 @@ export const OVERLAY: ViewStyle = {
 	justifyContent: "flex-end",
 	padding: tokens.space.cardPad,
 };
+
+/** Translucent dark backdrop so overlay copy reads on any image. */
+export const OVERLAY_SCRIM: ViewStyle = {
+	position: "absolute",
+	top: 0,
+	bottom: 0,
+	left: 0,
+	right: 0,
+	backgroundColor: withAlpha("#000000", 0.45),
+};
+
+/** Overlay text is always light — the scrim behind it is always dark. */
+export function overlayBody(): TextStyle {
+	return {
+		fontSize: tokens.size.font.sm,
+		color: "#ffffff",
+	};
+}
 
 export const MARKER_POSITION: Record<CardMarkerPosition, ViewStyle> = {
 	"top-left": { position: "absolute", top: GAP, left: GAP },

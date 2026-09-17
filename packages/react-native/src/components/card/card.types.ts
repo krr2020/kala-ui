@@ -112,6 +112,8 @@ export interface CardImageProps {
 
 export interface CardImageOverlayProps {
 	children?: ReactNode;
+	/** Dark backdrop behind the content so copy reads on any image. @default true */
+	scrim?: boolean;
 	style?: StyleProp<ViewStyle>;
 	slotStyles?: {
 		root?: StyleProp<ViewStyle>;

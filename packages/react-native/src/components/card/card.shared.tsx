@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { Children } from "react";
 import { Text as RNText } from "react-native";
 import type { KalaTheme } from "../../types";
-import { body } from "./card.styles";
+import { body, overlayBody } from "./card.styles";
 import { CardImage } from "./card-image";
 import { CardImageOverlay } from "./card-image-overlay";
 
@@ -14,6 +14,14 @@ import { CardImageOverlay } from "./card-image-overlay";
 export function wrapBare(children: ReactNode, theme: KalaTheme): ReactNode {
 	if (typeof children === "string" || typeof children === "number") {
 		return <RNText style={body(theme)}>{children}</RNText>;
+	}
+	return children;
+}
+
+/** Overlay variant: text is always light over the dark scrim. */
+export function wrapBareLight(children: ReactNode): ReactNode {
+	if (typeof children === "string" || typeof children === "number") {
+		return <RNText style={overlayBody()}>{children}</RNText>;
 	}
 	return children;
 }

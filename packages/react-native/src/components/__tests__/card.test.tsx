@@ -97,7 +97,11 @@ describe("Card media clipping", () => {
 		expect(Number(root.elevation)).toBeGreaterThan(0);
 		expect(root.overflow).not.toBe("hidden");
 		expect(clip.overflow).toBe("hidden");
-		expect(Number(clip.borderRadius)).toBe(tokens.radius.card);
+		// content follows the image: only the TOP corners round so the
+		// media meets the anatomy flush
+		expect(Number(clip.borderTopLeftRadius)).toBe(tokens.radius.card);
+		expect(Number(clip.borderTopRightRadius)).toBe(tokens.radius.card);
+		expect(Number(clip.borderRadius ?? 0)).toBe(0);
 	});
 
 	it("the clip wrapper wraps only the media, never the anatomy", async () => {
@@ -383,6 +387,46 @@ describe("CardImageOverlay", () => {
 	it("absolutely covers the card", async () => {
 		const screen = await screenOf(
 			<CardImageOverlay testID="k-card-overlay">
+				<CardTitle>t</CardTitle>
+			</CardImageOverlay>,
+		);
+		const s = flatStyle(screen.getByTestId("k-card-overlay"));
+		expect(s.position).toBe("absolute");
+		expect(Number(s.top)).toBe(0);
+		expect(Number(s.bottom)).toBe(0);
+		expect(Number(s.left)).toBe(0);
+		expect(Number(s.right)).toBe(0);
+	});
+});
+
+describe("CardImageOverlay scrim", () => {
+	it("renders a translucent dark scrim and light bare text on any image", async () => {
+		const screen = await screenOf(
+			<CardImageOverlay>trail closed</CardImageOverlay>,
+		);
+		const scrim = flatStyle(screen.getByTestId("k-card-overlay-scrim"));
+		expect(scrim.position).toBe("absolute");
+		const bg = String(scrim.backgroundColor);
+		expect(bg).toMatch(/^#000000[0-9a-f]{2}$/i);
+		expect(bg.endsWith("00")).toBe(false);
+		const overlay = screen.getByTestId("k-card-overlay");
+		const text = overlay.children.find(
+				(c) =>
+					typeof c === "object" &&
+					"props" in c &&
+					(c as { props?: { children?: unknown } }).props?.children ===
+						"trail closed",
+			) as { props: { style?: unknown } };
+		const ts = StyleSheet.flatten(text.props.style) as Record<
+			string,
+			unknown
+		>;
+		expect(lower(ts.color)).toBe("#ffffff");
+	});
+
+	it("still absolute-fills its box", async () => {
+		const screen = await screenOf(
+			<CardImageOverlay>
 				<CardTitle>t</CardTitle>
 			</CardImageOverlay>,
 		);

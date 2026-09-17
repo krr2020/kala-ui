@@ -10,9 +10,9 @@ import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
 import { hasMediaChild, isMedia } from "./card.shared";
-import { body, CLIP, GAP, surface } from "./card.styles";
-import { CardImage } from "./card-image";
+import { body, CLIP, CLIP_TOP, GAP, surface } from "./card.styles";
 import type { CardProps } from "./card.types";
+import { CardImage } from "./card-image";
 import { CardSkeletonStack } from "./card-skeleton";
 
 /**
@@ -53,6 +53,29 @@ function groupMedia(children: ReactNode): ReactNode {
 		}
 	});
 	flush();
+	// A clip that ends the card keeps its bottom corners rounded; a
+	// clip with anatomy below it goes square so the media meets the next
+	// part flush.
+	const last = out[out.length - 1];
+	const isClip = (node: ReactNode) =>
+		!!node &&
+		typeof node === "object" &&
+		"props" in node &&
+		(node as { props?: { testID?: string } }).props?.testID === "k-card-clip";
+	if (!isClip(last)) {
+		for (let i = 0; i < out.length; i++) {
+			if (isClip(out[i])) {
+				const clipChildren = (
+					out[i] as React.ReactElement<{ children: ReactNode }>
+				).props.children;
+				out[i] = (
+					<View testID="k-card-clip" style={CLIP_TOP} key={`clip-${i}`}>
+						{clipChildren}
+					</View>
+				);
+			}
+		}
+	}
 	return out;
 }
 
