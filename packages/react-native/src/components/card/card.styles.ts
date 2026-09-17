@@ -3,7 +3,12 @@
  * and the marker palette mapping. Pure mapping helpers take the theme
  * as a parameter so components stay the only thing in card.tsx.
  */
-import type { DimensionValue, ImageStyle, TextStyle, ViewStyle } from "react-native";
+import type {
+	DimensionValue,
+	ImageStyle,
+	TextStyle,
+	ViewStyle,
+} from "react-native";
 import { tokens } from "../../tokens";
 import type { KalaTheme } from "../../types";
 import type {
@@ -200,8 +205,12 @@ export function markerColors(
 /** Fixed skeleton geometry for the isLoading arm. */
 export const SKELETON_AVATAR = 40;
 
-export const SKELETON_ROWS: { width: DimensionValue; height: number }[] = [
-	{ width: "60%", height: 16 },
-	{ width: "100%", height: 12 },
-	{ width: "80%", height: 12 },
+export const SKELETON_ROWS: {
+	key: string;
+	width: DimensionValue;
+	height: number;
+}[] = [
+	{ key: "title", width: "60%", height: 16 },
+	{ key: "line-1", width: "100%", height: 12 },
+	{ key: "line-2", width: "80%", height: 12 },
 ];

@@ -110,17 +110,80 @@ describe("Card media clipping", () => {
 				<CardFooter>f</CardFooter>
 			</Card>,
 		);
-		const clip = screen.getByTestId("k-card-clip");
+		const clips = screen.getAllByTestId("k-card-clip");
+		expect(clips.length).toBe(1);
+		const clip = clips[0];
 		// Only the image lives inside the clip wrapper; header/footer stay
 		// siblings so the elevation shadow region is never overflow-clipped.
 		expect(clip.children.length).toBe(1);
 		expect((clip.children[0] as { props: { testID?: string } }).props.testID).toBe(
-				"k-card-image",
+			"k-card-image",
 			);
 		expect(screen.getByTestId("k-card-header")).toBeTruthy();
 		expect(screen.getByTestId("k-card-footer")).toBeTruthy();
 		const footer = flatStyle(screen.getByTestId("k-card-footer"));
 		expect(Number(footer.borderTopWidth)).toBe(1);
+	});
+
+	it("consecutive media share ONE clip wrapper — the overlay covers the image", async () => {
+		const screen = await screenOf(
+			<Card variant="elevated" padding="none">
+				<CardImage source={{ uri: "https://x.test/a.jpg" }} alt="a" />
+				<CardImageOverlay>
+					<CardTitle>trail closed</CardTitle>
+				</CardImageOverlay>
+			</Card>,
+		);
+		const clips = screen.getAllByTestId("k-card-clip");
+		expect(clips.length).toBe(1);
+		expect(clips[0].children.length).toBe(2);
+		expect(
+				(clips[0].children[0] as { props: { testID?: string } }).props.testID,
+			).toBe("k-card-image");
+		expect(
+				(clips[0].children[1] as { props: { testID?: string } }).props.testID,
+			).toBe("k-card-overlay");
+		const overlay = flatStyle(screen.getByTestId("k-card-overlay"));
+		expect(overlay.position).toBe("absolute");
+		// elevated + media + overlay: the root never hides overflow (shadow
+		// survives) while the single clip wrapper owns the corner radius.
+		const root = flatStyle(screen.getByTestId("k-card"));
+		expect(root.overflow).not.toBe("hidden");
+		expect(Number(root.elevation)).toBeGreaterThan(0);
+		expect(Number(flatStyle(clips[0]).borderRadius)).toBe(tokens.radius.card);
+	});
+
+	it("separate media runs: the image gets a clip, an overlay-only run attaches to the card root", async () => {
+		const screen = await screenOf(
+			<Card padding="none">
+				<CardImage source={{ uri: "https://x.test/a.jpg" }} alt="a" />
+				<CardHeader>
+					<CardTitle>t</CardTitle>
+				</CardHeader>
+				<CardImageOverlay>o</CardImageOverlay>
+			</Card>,
+		);
+		// image run is clipped; header renders between; the overlay-only
+		// run is NOT wrapped — a zero-height clip would render nothing, so
+		// its absolute inset resolves against the card root instead.
+		const clips = screen.getAllByTestId("k-card-clip");
+		expect(clips.length).toBe(1);
+		expect(
+				(clips[0].children[0] as { props: { testID?: string } }).props.testID,
+			).toBe("k-card-image");
+		expect(screen.getByTestId("k-card-header")).toBeTruthy();
+		const overlay = screen.getByTestId("k-card-overlay");
+		const root = screen.getByTestId("k-card");
+		expect(
+				root.children.some(
+					(c) =>
+						typeof c === "object" &&
+						"props" in c &&
+						(c as { props?: { testID?: string } }).props?.testID ===
+							"k-card-overlay",
+				),
+			).toBe(true);
+		expect(overlay).toBeTruthy();
 	});
 
 	it("plain cards render no clip wrapper", async () => {

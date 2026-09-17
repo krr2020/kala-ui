@@ -19,9 +19,7 @@ export function wrapBare(children: ReactNode, theme: KalaTheme): ReactNode {
 }
 
 /** True when the child element is a CardImage or CardImageOverlay. */
-export function isMedia(
-	child: ReactNode,
-): child is React.ReactElement {
+export function isMedia(child: ReactNode): child is React.ReactElement {
 	return (
 		!!child &&
 		typeof child === "object" &&

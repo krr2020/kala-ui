@@ -8,7 +8,6 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		flex: 1,
 		backgroundColor: theme.background,
 		paddingTop: 8,
-		paddingHorizontal: 16,
 	},
 	title: {
 		color: theme.foreground,
@@ -161,6 +160,10 @@ export const demoStyles = StyleSheet.create((theme) => ({
 	},
 	routeContent: {
 		gap: 24,
+		// horizontal gutter lives on the scroll CONTENT — padding on the
+		// ScrollView FRAME would clip child drawing (elevated shadows)
+		// without adding scrollable space
+		paddingHorizontal: 16,
 		// end-of-scroll breathing room lives on the scroll CONTENT — the
 		// shell's SafeAreaView already consumes the gesture-bar inset, and
 		// padding on the ScrollView frame would clip the viewport without

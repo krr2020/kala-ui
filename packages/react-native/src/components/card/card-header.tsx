@@ -2,9 +2,9 @@ import type { ReactElement } from "react";
 import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
+import { wrapBare } from "./card.shared";
 import { HEADER } from "./card.styles";
 import type { CardHeaderProps } from "./card.types";
-import { wrapBare } from "./card.shared";
 
 export function CardHeader({
 	children,
