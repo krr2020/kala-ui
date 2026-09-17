@@ -16,6 +16,7 @@ import { RadioGroup } from "../radio-group";
 import { Rating } from "../rating";
 import { Select } from "../select";
 import { TextInput } from "../text-input";
+import { Textarea } from "../textarea";
 import { TimePicker } from "../time-picker";
 
 const { existsSync, readFileSync } = require("node:fs");
@@ -228,5 +229,59 @@ describe("Forms rewrite contract", () => {
 			const src = readFileSync(stylesPath, "utf8");
 			expect(`${name}.styles.ts hex: ${src}`).not.toMatch(/#[0-9a-f]{3,8}\b/i);
 		}
+	});
+
+	it("input surfaces rest on card and reserve the input token for the disabled fill; hasSuccess pins the success border", async () => {
+		const light = require("../../themes").themes.light;
+		const idle = await render(<TextInput accessibilityLabel="a" />);
+		expect(flatStyle(idle.getByTestId("k-text-input")).backgroundColor).toBe(
+			light.card,
+		);
+		const locked = await render(<TextInput disabled accessibilityLabel="b" />);
+		expect(flatStyle(locked.getByTestId("k-text-input")).backgroundColor).toBe(
+			light.input,
+		);
+		const valid = await render(<TextInput hasSuccess accessibilityLabel="c" />);
+		expect(flatStyle(valid.getByTestId("k-text-input")).borderColor).toBe(
+			light.success,
+		);
+		const both = await render(
+			<TextInput hasError hasSuccess accessibilityLabel="d" />,
+		);
+		expect(flatStyle(both.getByTestId("k-text-input")).borderColor).toBe(
+			light.destructive,
+		);
+		const area = await render(<Textarea accessibilityLabel="e" />);
+		expect(flatStyle(area.getByTestId("k-textarea")).backgroundColor).toBe(
+			light.card,
+		);
+		const areaLocked = await render(<Textarea disabled accessibilityLabel="e2" />);
+		expect(
+			flatStyle(areaLocked.getByTestId("k-textarea")).backgroundColor,
+		).toBe(light.input);
+		const num = await render(<NumberInput accessibilityLabel="f" />);
+		expect(flatStyle(num.getByTestId("k-number-input")).backgroundColor).toBe(
+			light.card,
+		);
+		const numLocked = await render(<NumberInput disabled accessibilityLabel="g" />);
+		expect(
+			flatStyle(numLocked.getByTestId("k-number-input")).backgroundColor,
+		).toBe(light.input);
+	});
+
+	it("sectioned TextInput: the group owns the chrome and the inner input flexes without its own border", async () => {
+		const screen = await render(
+			<TextInput
+				leftSection="@"
+				rightSection=".com"
+				accessibilityLabel="email"
+			/>,
+		);
+		const group = flatStyle(screen.getByTestId("k-text-input-group"));
+		expect(group.borderWidth).toBe(1);
+		expect(Number(group.paddingHorizontal)).toBeGreaterThan(0);
+		const inner = flatStyle(screen.getByTestId("k-text-input"));
+		expect(inner.borderWidth).toBeUndefined();
+		expect(inner.flex).toBe(1);
 	});
 });

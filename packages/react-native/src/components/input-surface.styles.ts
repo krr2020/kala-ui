@@ -9,6 +9,7 @@ import type { KalaTheme } from "../types";
 export interface InputSurfaceOptions {
 	size?: "sm" | "md";
 	hasError?: boolean;
+	hasSuccess?: boolean;
 	disabled?: boolean;
 	focused?: boolean;
 }
@@ -17,15 +18,30 @@ export const SURFACE_HEIGHTS = { sm: 36, md: 44 } as const;
 
 export function surfaceBorder(
 	theme: KalaTheme,
-	{ hasError = false, focused = false }: InputSurfaceOptions = {},
+	{
+		hasError = false,
+		hasSuccess = false,
+		focused = false,
+	}: InputSurfaceOptions = {},
 ): string {
 	if (hasError) return theme.destructive;
+	if (hasSuccess) return theme.success;
 	if (focused) return theme.ring;
 	return theme.border;
 }
 
+// The input token is the muted disabled fill; resting fields sit on card
+// so the idle state never reads as disabled (web parity: bg-card /
+// disabled:bg-input).
+export function surfaceFill(
+	theme: KalaTheme,
+	{ disabled = false }: InputSurfaceOptions = {},
+): string {
+	return disabled ? theme.input : theme.card;
+}
+
 export function trigger(theme: KalaTheme, options: InputSurfaceOptions = {}): ViewStyle {
-	const { size = "md", hasError = false, disabled = false } = options;
+	const { size = "md", disabled = false } = options;
 	return {
 		minHeight: SURFACE_HEIGHTS[size],
 		flexDirection: "row",
@@ -36,7 +52,7 @@ export function trigger(theme: KalaTheme, options: InputSurfaceOptions = {}): Vi
 		borderWidth: 1,
 		borderRadius: 8,
 		borderColor: surfaceBorder(theme, options),
-		backgroundColor: theme.input,
+		backgroundColor: surfaceFill(theme, options),
 		opacity: disabled ? 0.5 : 1,
 	};
 }

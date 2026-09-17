@@ -1,7 +1,7 @@
 import type { TextStyle } from "react-native";
 import { tokens } from "../../tokens";
 import type { KalaTheme } from "../../types";
-import { surfaceBorder } from "../input-surface.styles";
+import { surfaceBorder, surfaceFill } from "../input-surface.styles";
 
 export function rowsToMinHeight(rows?: number): number {
 	return rows ? Math.max(80, rows * 24) : 80;
@@ -14,7 +14,7 @@ export function field(
 ): TextStyle {
 	return {
 		minHeight,
-		backgroundColor: theme.input,
+		backgroundColor: surfaceFill(theme, opts),
 		color: theme.foreground,
 		fontSize: 14,
 		paddingHorizontal: tokens.space.controlPx,

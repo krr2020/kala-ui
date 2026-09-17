@@ -14,6 +14,7 @@ import type { TextInputProps } from "./text-input.types";
  */
 export function TextInput({
 	hasError = false,
+	hasSuccess = false,
 	disabled = false,
 	leftSection,
 	rightSection,
@@ -24,9 +25,12 @@ export function TextInput({
 }: TextInputProps): ReactElement {
 	const { theme } = useUnistyles();
 	const [focused, setFocused] = useState(false);
+	const grouped = Boolean(leftSection || rightSection);
 
 	const inputStyle = [
-		fieldStyle.field(theme, { hasError, disabled, focused }),
+		grouped
+			? fieldStyle.fieldInGroup(theme)
+			: fieldStyle.field(theme, { hasError, hasSuccess, disabled, focused }),
 		applySlot(applySlot({}, style), slotStyles?.root),
 	];
 
@@ -69,7 +73,7 @@ export function TextInput({
 		<View
 			testID="k-text-input-group"
 			style={[
-				fieldStyle.group(theme, { hasError, disabled, focused }),
+				fieldStyle.group(theme, { hasError, hasSuccess, disabled, focused }),
 				applySlot({}, slotStyles?.group),
 			]}
 		>

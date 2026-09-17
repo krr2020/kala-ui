@@ -14,28 +14,47 @@ export function TextInputDemo() {
 		<View testID="k-demo-text-input" style={demoStyles.routeContent}>
 			<DemoBlock label="Basic">
 				<TextInput placeholder="you@studio.com" accessibilityLabel="email" />
-				<TextInput placeholder="search projects" accessibilityLabel="search" />
+				<TextInput placeholder="Search projects" accessibilityLabel="search" />
 			</DemoBlock>
-			<DemoBlock label="In A Field">
-				<Field label="Display Name" description="visible on your profile">
-					<TextInput value={bio} onChangeText={setBio} hasError={invalid} />
+			<DemoBlock label="In a Field">
+				<Field
+					label="Display Name"
+					description="Visible on your profile"
+					error={invalid ? "Must be at least 3 characters" : undefined}
+				>
+					<TextInput
+						placeholder="Ada Lovelace"
+						value={bio}
+						onChangeText={setBio}
+						hasError={invalid}
+					/>
 				</Field>
 			</DemoBlock>
 			<DemoBlock label="Sections">
 				<TextInput
-					placeholder="email"
+					placeholder="Email"
 					accessibilityLabel="email with icon"
 					leftSection={<Mail size={16} color={theme.mutedForeground} />}
+					rightSection=".com"
 				/>
 			</DemoBlock>
 			<DemoBlock label="States">
+				<Field error="Unknown account">
+					<TextInput
+						placeholder="Unknown account"
+						accessibilityLabel="error input"
+						hasError
+					/>
+				</Field>
+				<Field>
+					<TextInput
+						value="ada@studio.com"
+						accessibilityLabel="valid input"
+						hasSuccess
+					/>
+				</Field>
 				<TextInput
-					placeholder="unknown account"
-					accessibilityLabel="error input"
-					hasError
-				/>
-				<TextInput
-					placeholder="locked"
+					placeholder="Locked"
 					accessibilityLabel="locked input"
 					disabled
 				/>

@@ -26,7 +26,7 @@ describe("Textarea", () => {
 		const s = flatStyle(screen.getByTestId("k-textarea"));
 		expect(s.minHeight).toBe(80);
 		expect(s.borderColor).toBe(theme().border);
-		expect(s.backgroundColor).toBe(theme().input);
+		expect(s.backgroundColor).toBe(theme().card);
 	});
 
 	it("rows maps to a larger minHeight (web parity: rows * line height)", async () => {

@@ -6,6 +6,7 @@ import { useUnistyles } from "react-native-unistyles";
 import { tokens } from "../../tokens";
 import { sanitizeNumberText } from "../../lib/number-input.utils";
 import { Icon } from "../icon";
+import { surfaceFill } from "../input-surface.styles";
 import { applySlot } from "../slot-styles";
 import type { NumberInputProps } from "./number-input.types";
 
@@ -95,7 +96,7 @@ export function NumberInput({
 					borderWidth: 1,
 					borderRadius: tokens.radius.input,
 					borderColor: hasError ? theme.destructive : theme.border,
-					backgroundColor: theme.input,
+					backgroundColor: surfaceFill(theme, { disabled }),
 					overflow: "hidden",
 				},
 				applySlot(applySlot({}, style), slotStyles?.root),

@@ -102,4 +102,18 @@ describe("forms demos ↔ library seam", () => {
 			expect(feedback).not.toMatch(new RegExp(`<${gone}[\\s/>]`));
 		}
 	});
+
+	it("text-input demo exercises every input state arm with humanized copy", () => {
+		const src = demoSource("text-input");
+		// error copy rides on Field, not the bare input
+		expect(src).toMatch(/<Field[^>]*error=/);
+		expect(src).toMatch(/hasError/);
+		expect(src).toMatch(/hasSuccess/);
+		expect(src).toMatch(/disabled/);
+		// sections demo both arms: icon node + raw string
+		expect(src).toMatch(/leftSection=/);
+		expect(src).toMatch(/rightSection=/);
+		// sentence-case placeholders (raw emails stay lowercase by convention)
+		expect(src).not.toMatch(/placeholder="[a-z][a-z ]+"/);
+	});
 });
