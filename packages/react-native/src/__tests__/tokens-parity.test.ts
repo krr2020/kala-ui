@@ -604,7 +604,6 @@ describe("layout restructure pins", () => {
 				"ToggleProps",
 				"ToggleSize",
 				"ToggleVariant",
-				"calculatePasswordStrength",
 				"motion",
 				"themeNames",
 				"themes",
