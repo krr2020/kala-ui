@@ -10,7 +10,12 @@ export function rowsToMinHeight(rows?: number): number {
 export function field(
 	theme: KalaTheme,
 	minHeight: number,
-	opts: { hasError?: boolean; disabled?: boolean; focused?: boolean } = {},
+	opts: {
+		hasError?: boolean;
+		hasSuccess?: boolean;
+		disabled?: boolean;
+		focused?: boolean;
+	} = {},
 ): TextStyle {
 	return {
 		minHeight,

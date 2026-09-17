@@ -15,6 +15,7 @@ import type { TextareaProps } from "./textarea.types";
 
 export function Textarea({
 	hasError = false,
+	hasSuccess = false,
 	disabled = false,
 	rows,
 	isLoading = false,
@@ -63,6 +64,7 @@ export function Textarea({
 			style={[
 				textareaStyle.field(theme, minHeight, {
 					hasError,
+					hasSuccess,
 					disabled,
 					focused,
 				}),

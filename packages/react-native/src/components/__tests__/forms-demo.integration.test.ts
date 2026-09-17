@@ -116,4 +116,14 @@ describe("forms demos ↔ library seam", () => {
 		// sentence-case placeholders (raw emails stay lowercase by convention)
 		expect(src).not.toMatch(/placeholder="[a-z][a-z ]+"/);
 	});
+
+	it("textarea demo exercises every input state arm with humanized copy", () => {
+		const src = demoSource("textarea");
+		expect(src).toMatch(/<Field[^>]*error=/);
+		expect(src).toMatch(/hasError/);
+		expect(src).toMatch(/hasSuccess/);
+		expect(src).toMatch(/disabled/);
+		expect(src).not.toMatch(/placeholder="[a-z][a-z ]+"/);
+		expect(src).not.toMatch(/accessibilityLabel="[a-z]/);
+	});
 });

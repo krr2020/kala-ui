@@ -11,35 +11,45 @@ export function TextareaDemo() {
 		<View testID="k-demo-textarea" style={demoStyles.routeContent}>
 			<DemoBlock label="Basic">
 				<Textarea
-					placeholder="order notes"
-					accessibilityLabel="order notes"
+					placeholder="Order notes"
+					accessibilityLabel="Order notes"
 					rows={3}
 				/>
 				<Textarea
-					placeholder="feedback"
-					accessibilityLabel="feedback"
+					placeholder="Feedback"
+					accessibilityLabel="Feedback"
 					rows={5}
 				/>
 			</DemoBlock>
-			<DemoBlock label="In A Field">
+			<DemoBlock label="In a Field">
 				<Field
 					label="Delivery Notes"
-					description="optional, 500 characters"
-					error={invalid ? "tell us a little more" : undefined}
+					description="Optional, up to 500 characters"
+					error={invalid ? "Tell us a little more" : undefined}
 				>
 					<Textarea value={notes} onChangeText={setNotes} hasError={invalid} />
 				</Field>
 			</DemoBlock>
 			<DemoBlock label="States">
+				<Field error="Over the 500-character limit">
+					<Textarea
+						placeholder="Too long"
+						accessibilityLabel="Error textarea"
+						hasError
+						rows={2}
+					/>
+				</Field>
+				<Field>
+					<Textarea
+						value="Left at the front desk with the neighbor."
+						accessibilityLabel="Valid textarea"
+						hasSuccess
+						rows={2}
+					/>
+				</Field>
 				<Textarea
-					placeholder="too long"
-					accessibilityLabel="error textarea"
-					hasError
-					rows={2}
-				/>
-				<Textarea
-					placeholder="locked"
-					accessibilityLabel="locked textarea"
+					placeholder="Disabled"
+					accessibilityLabel="Disabled textarea"
 					disabled
 					rows={2}
 				/>

@@ -49,6 +49,17 @@ describe("Textarea", () => {
 		expect(s.borderColor).not.toBe(theme().border);
 	});
 
+	it("hasSuccess arm pins the success border; hasError wins when both are set", async () => {
+		const valid = await render(<Textarea hasSuccess />);
+		expect(flatStyle(valid.getByTestId("k-textarea")).borderColor).toBe(
+			theme().success,
+		);
+		const both = await render(<Textarea hasError hasSuccess />);
+		expect(flatStyle(both.getByTestId("k-textarea")).borderColor).toBe(
+			theme().destructive,
+		);
+	});
+
 	it("disabled arm blocks editing and announces disabled state", async () => {
 		const screen = await render(<Textarea disabled />);
 		const input = screen.getByTestId("k-textarea");

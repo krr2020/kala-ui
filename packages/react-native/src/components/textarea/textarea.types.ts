@@ -8,6 +8,8 @@ export interface TextareaProps
 	extends Omit<RNTextInputProps, "allowFontScaling"> {
 	/** destructive border; validation copy stays app-side */
 	hasError?: boolean;
+	/** success border for validated values; hasError wins when both are set */
+	hasSuccess?: boolean;
 	/** parity with Button's disabled: flips editable + a11y state */
 	disabled?: boolean;
 	/** visual row hint — maps to minHeight (web parity: min-h-[80px]) */
