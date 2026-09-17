@@ -2,7 +2,8 @@
  * RadioGroup: controlled single-select list — no Radix on native, so the
  * group owns the selected value via context and each item is a pressable
  * radio with its own surface (Checkbox precedent: pressable owns the
- * 44dp touch floor). The container constrains nothing beyond direction.
+ * 44dp touch floor). The container keeps the web-standard gap; the active
+ * dot is the standard half-circle mark inside the primary fill.
  */
 
 import type { ReactElement } from "react";
@@ -11,10 +12,16 @@ import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { useUncontrolled } from "../../lib/use-uncontrolled.utils";
 import { applySlot } from "../slot-styles";
+import {
+	body as bodyStyle,
+	circle as circleStyle,
+	description as descriptionStyle,
+	dot as dotStyle,
+	item as itemStyle,
+	label as labelStyle,
+	root as rootStyle,
+} from "./radio-group.styles";
 import type { RadioGroupItemProps, RadioGroupProps } from "./radio-group.types";
-
-const CIRCLE = 22;
-const DOT = 12;
 
 interface RadioGroupState {
 	value?: string;
@@ -57,13 +64,7 @@ export function RadioGroup({
 				accessible={true}
 				accessibilityRole="radiogroup"
 				accessibilityLabel={accessibilityLabel}
-				style={applySlot(
-					applySlot(
-						[{ flexDirection: "column", gap: 4, alignSelf: "flex-start" }],
-						style,
-					),
-					slotStyles?.root,
-				)}
+				style={applySlot(applySlot(rootStyle(), style), slotStyles?.root)}
 			>
 				{children}
 			</View>
@@ -76,6 +77,7 @@ function RadioGroupItem({
 	label,
 	description,
 	disabled = false,
+	hasError = false,
 	accessibilityLabel,
 	style,
 	slotStyles,
@@ -102,58 +104,28 @@ function RadioGroupItem({
 			}
 			accessibilityState={{ checked, disabled: isDisabled || undefined }}
 			style={applySlot(
-				applySlot(
-					[
-						{
-							minWidth: 44,
-							minHeight: 44,
-							flexDirection: "row",
-							alignItems: "center",
-							gap: 10,
-							opacity: isDisabled ? 0.5 : 1,
-						},
-					],
-					style,
-				),
+				applySlot(itemStyle(isDisabled), style),
 				slotStyles?.root,
 			)}
 		>
 			<View
 				testID={`${testID}-circle`}
-				style={{
-					width: CIRCLE,
-					height: CIRCLE,
-					borderRadius: 999,
-					borderWidth: 1,
-					alignItems: "center",
-					justifyContent: "center",
-					backgroundColor: checked ? theme.primary : theme.card,
-					borderColor: checked ? theme.primary : theme.border,
-				}}
+				style={circleStyle(theme, checked, hasError)}
 			>
 				{checked ? (
 					<View
 						testID={`${testID}-dot`}
-						style={{
-							width: DOT,
-							height: DOT,
-							borderRadius: 999,
-							backgroundColor: theme.primaryForeground,
-						}}
+						style={dotStyle(theme, hasError)}
 					/>
 				) : null}
 			</View>
 			{label !== undefined || description !== undefined ? (
-				<View style={{ gap: 1 }}>
+				<View style={bodyStyle()}>
 					{label !== undefined ? (
-						<RNText style={{ color: theme.foreground, fontSize: 15 }}>
-							{label}
-						</RNText>
+						<RNText style={labelStyle(theme)}>{label}</RNText>
 					) : null}
 					{description !== undefined ? (
-						<RNText style={{ color: theme.mutedForeground, fontSize: 13 }}>
-							{description}
-						</RNText>
+						<RNText style={descriptionStyle(theme)}>{description}</RNText>
 					) : null}
 				</View>
 			) : null}

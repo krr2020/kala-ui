@@ -30,6 +30,23 @@ export function RadioGroupDemo() {
 					<RadioGroup.Item value="b" label="Unavailable" disabled />
 				</RadioGroup>
 			</DemoBlock>
+			<DemoBlock label="Error">
+				<RadioGroup value="valid">
+					<RadioGroup.Item value="valid" label="Valid choice" />
+					<RadioGroup.Item value="invalid" label="Invalid choice" hasError />
+				</RadioGroup>
+			</DemoBlock>
+			<DemoBlock label="Group Disabled">
+				<RadioGroup value="a" disabled>
+					<RadioGroup.Item value="a" label="Locked in" />
+					<RadioGroup.Item value="b" label="Locked out" />
+				</RadioGroup>
+			</DemoBlock>
+			<DemoBlock label="Standalone">
+				<RadioGroup defaultValue="only">
+					<RadioGroup.Item value="only" accessibilityLabel="anonymous radio" />
+				</RadioGroup>
+			</DemoBlock>
 		</View>
 	);
 }

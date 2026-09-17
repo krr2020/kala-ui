@@ -28,6 +28,8 @@ export interface RadioGroupItemProps {
 	/** Secondary text below the label. */
 	description?: string;
 	disabled?: boolean;
+	/** destructive stroke on the resting circle; destructive dot on the primary fill when checked */
+	hasError?: boolean;
 	accessibilityLabel?: string;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;

@@ -1106,7 +1106,7 @@ describe("text parts and untouched defaults", () => {
 
 		const cb = await render(<Checkbox accessibilityLabel="c" />);
 		expect(flatStyle(cb.getByTestId("k-checkbox-box", incl)).borderWidth).toBe(
-			1,
+			2,
 		);
 
 		const sep = await render(<Separator />);
