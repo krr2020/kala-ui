@@ -171,8 +171,9 @@ describe("component app seam", () => {
 		// radio/switch/toggle/slider×2/rating/field×2/otp/calendar/date/
 		// time) + forms overview (email/plan/tier/terms) + the three-screen
 		// shell stack (screen + source + group + component indexes) +
-		// dedicated alert demo (dismiss counter + re-show visibility).
-		expect(demoHooks).toBe(60);
+		// dedicated alert demo (dismiss counter + re-show visibility) +
+		// dedicated banner demo (close counter + re-show visibility).
+		expect(demoHooks).toBe(61);
 	});
 
 	it("landing offers exactly two package routes", () => {

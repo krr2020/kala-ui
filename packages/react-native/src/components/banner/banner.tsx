@@ -10,7 +10,19 @@ import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
-import { DEFAULT_SKELETON, positionStyle, tone } from "./banner.styles";
+import {
+	closeStyle,
+	contentStyle,
+	DEFAULT_SKELETON,
+	plainTextStyle,
+	positionStyle,
+	rootStyle,
+	skeletonCloseStyle,
+	skeletonIconStyle,
+	skeletonLineStyle,
+	skeletonRowStyle,
+	tone,
+} from "./banner.styles";
 import type { BannerProps, BannerSkeletonConfig } from "./banner.types";
 
 function SkeletonRow({
@@ -19,13 +31,13 @@ function SkeletonRow({
 	config: Required<BannerSkeletonConfig>;
 }): ReactElement {
 	return (
-		<View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+		<View style={skeletonRowStyle}>
 			{config.showIcon ? (
-				<Skeleton variant="circle" animated style={{ width: 16, height: 16 }} />
+				<Skeleton variant="circle" animated style={skeletonIconStyle} />
 			) : null}
-			<Skeleton animated style={{ height: 16, flex: 1, maxWidth: 256 }} />
+			<Skeleton animated style={skeletonLineStyle} />
 			{config.showCloseButton ? (
-				<Skeleton animated style={{ width: 16, height: 16 }} />
+				<Skeleton animated style={skeletonCloseStyle} />
 			) : null}
 		</View>
 	);
@@ -57,15 +69,7 @@ export function Banner({
 			accessibilityLabel={accessibilityLabel}
 			accessibilityLiveRegion={isAlert ? "assertive" : "polite"}
 			style={[
-				{
-					flexDirection: "row",
-					alignItems: "center",
-					justifyContent: "space-between",
-					gap: 16,
-					paddingHorizontal: 16,
-					paddingVertical: 12,
-					backgroundColor: bg,
-				},
+				rootStyle(bg),
 				positionStyle(position),
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
@@ -73,7 +77,7 @@ export function Banner({
 			<View
 				testID="k-banner-content"
 				style={[
-					{ flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
+					contentStyle,
 					applySlot({}, slotStyles?.content),
 				]}
 			>
@@ -84,9 +88,7 @@ export function Banner({
 						<SkeletonRow config={{ ...DEFAULT_SKELETON, ...skeletonConfig }} />
 					)
 				) : typeof children === "string" || typeof children === "number" ? (
-					<RNText style={{ color: fg, fontSize: 14, fontWeight: "500" }}>
-						{children}
-					</RNText>
+					<RNText style={plainTextStyle(fg)}>{children}</RNText>
 				) : (
 					children
 				)}
@@ -98,10 +100,7 @@ export function Banner({
 					accessibilityLabel="Close banner"
 					hitSlop={8}
 					onPress={onClose}
-					style={[
-						{ padding: 4 },
-						applySlot({ opacity: 0.9 }, slotStyles?.close),
-					]}
+					style={[closeStyle, applySlot({}, slotStyles?.close)]}
 				>
 					<X size={16} color={fg} />
 				</Pressable>

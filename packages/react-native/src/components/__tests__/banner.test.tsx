@@ -161,6 +161,61 @@ describe("Banner loading state", () => {
 	});
 });
 
+describe("Banner resolved style tables", () => {
+	it("root carries the row layout table plus the tone surface", async () => {
+		const screen = await render(<Banner>msg</Banner>);
+		const s = flatStyle(screen.getByTestId("k-banner"));
+		expect(s.flexDirection).toBe("row");
+		expect(s.alignItems).toBe("center");
+		expect(s.justifyContent).toBe("space-between");
+		expect(s.gap).toBe(16);
+		expect(s.paddingHorizontal).toBe(16);
+		expect(s.paddingVertical).toBe(12);
+		expect(s.backgroundColor).toBe(theme().info);
+	});
+
+	it("content row and plain-text typography match the tables", async () => {
+		const screen = await render(<Banner>msg</Banner>);
+		const content = flatStyle(screen.getByTestId("k-banner-content"));
+		expect(content.flex).toBe(1);
+		expect(content.flexDirection).toBe("row");
+		expect(content.gap).toBe(12);
+		const text = flatStyle(screen.getByText("msg"));
+		expect(text.fontSize).toBe(14);
+		expect(text.fontWeight).toBe("500");
+		expect(text.color).toBe(theme().infoForeground);
+	});
+
+	it("close pressable carries its padding/opacity slots", async () => {
+		const screen = await render(<Banner onClose={() => undefined}>m</Banner>);
+		const s = flatStyle(screen.getByTestId("k-banner-close"));
+		expect(s.padding).toBe(4);
+		expect(s.opacity).toBe(0.9);
+	});
+
+	it("skeleton row geometry: row gap 12, icon 16×16, line 16h flex1 max256, close 16×16", async () => {
+		const screen = await render(<Banner isLoading>m</Banner>);
+		const content = screen.getByTestId("k-banner-content");
+		const row = content.children[0] as { props: { style?: unknown } };
+		const rowStyle = flatStyle(row);
+		expect(rowStyle.flexDirection).toBe("row");
+		expect(rowStyle.alignItems).toBe("center");
+		expect(rowStyle.gap).toBe(12);
+		const blocks = screen.getAllByTestId("k-skeleton");
+		expect(blocks).toHaveLength(3);
+		const icon = flatStyle(blocks[0]);
+		expect(icon.width).toBe(16);
+		expect(icon.height).toBe(16);
+		const line = flatStyle(blocks[1]);
+		expect(line.height).toBe(16);
+		expect(line.flex).toBe(1);
+		expect(line.maxWidth).toBe(256);
+		const close = flatStyle(blocks[2]);
+		expect(close.width).toBe(16);
+		expect(close.height).toBe(16);
+	});
+});
+
 describe("Banner edges", () => {
 	it("renders the surface with no children", async () => {
 		const screen = await render(<Banner />);

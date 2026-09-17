@@ -12,6 +12,7 @@ import { AlertDemo } from "./alert-demo";
 import { AvatarDemo } from "./avatar-demo";
 import { AvatarGroupDemo } from "./avatar-group-demo";
 import { BadgeDemo } from "./badge-demo";
+import { BannerDemo } from "./banner-demo";
 import { ButtonDemo } from "./button-demo";
 import { CalendarDemo } from "./calendar-demo";
 import { CardDemo } from "./card-demo";
@@ -250,7 +251,11 @@ export const componentGroups: ComponentGroup[] = [
 				name: "alert",
 				render: () => <AlertDemo />,
 			},
-			{ label: humanizeLabel("banner"), name: "banner" },
+			{
+				label: humanizeLabel("banner"),
+				name: "banner",
+				render: () => <BannerDemo />,
+			},
 			{ label: humanizeLabel("toast"), name: "toast" },
 			{ label: humanizeLabel("progress"), name: "progress" },
 			{ label: humanizeLabel("ring-progress"), name: "ring-progress" },

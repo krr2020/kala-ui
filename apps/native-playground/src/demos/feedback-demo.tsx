@@ -1,5 +1,4 @@
 import {
-	Banner,
 	Button,
 	CopyButton,
 	ErrorBoundary,
@@ -18,7 +17,6 @@ function ThrowOnce(): never {
 
 export function FeedbackDemo() {
 	const [toastOpen, setToastOpen] = useState(false);
-	const [bannerOn, setBannerOn] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [crashKey, setCrashKey] = useState(0);
 	return (
@@ -37,19 +35,6 @@ export function FeedbackDemo() {
 				<Toast.Title>Saved</Toast.Title>
 				<Toast.Description>Changes are live</Toast.Description>
 			</Toast>
-			<DemoBlock label="Banner">
-				<View style={demoStyles.componentRow} testID="k-demo-banner">
-					{bannerOn ? (
-						<Banner position="static" onClose={() => setBannerOn(false)}>
-							Sync pauses at midnight
-						</Banner>
-					) : (
-						<Button size="sm" onPress={() => setBannerOn(true)}>
-							Show Banner
-						</Button>
-					)}
-				</View>
-			</DemoBlock>
 			<DemoBlock label="Loading Overlay">
 				<View style={demoStyles.componentRow} testID="k-demo-loading-overlay">
 					<Button size="sm" onPress={() => setLoading(true)}>
