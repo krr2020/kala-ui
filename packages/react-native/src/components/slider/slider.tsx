@@ -1,14 +1,12 @@
 /**
  * Slider: the web Radix slider on native raw responders — not PanResponder,
  * because a single-pointer slider needs no gesture arbitration and the raw
- * responder protocol stays pure JS under jest. Geometry is percentage-based
- * (range fill and thumb positions), so a thumb center sits exactly on its
- * value point — including at the min/max bounds, like the web thumbs that
- * overflow the track by half a thumb. Track width is only needed to map
- * gesture x back to a value, so it lives in a ref filled by onLayout (no
- * state, no re-render dependency). The range fill spans the track start to
- * the FIRST thumb only, matching the web's single Range arm. isLoading
- * renders the web's skeleton arm.
+ * responder protocol stays pure JS under jest. Thumbs ride an inset rail so
+ * 0%/100% stay flush with the line ends, and the range fill spans the first
+ * to the LAST thumb (web Range semantics). Gesture x is mapped over the same
+ * inset rail the thumbs render in, so touch and visuals agree. Track width
+ * lives in a ref filled by onLayout (no state, no re-render dependency).
+ * isLoading renders the web's skeleton arm.
  */
 
 import type { ReactElement } from "react";
@@ -67,7 +65,9 @@ export function Slider({
 	const xToValue = (x: number): number => {
 		const w = trackWidthRef.current;
 		if (w <= 0) return min;
-		const frac = Math.min(1, Math.max(0, x / w));
+		// gesture space matches the render rail: [THUMB_R, w−THUMB_R]
+		const rail = Math.max(0, w - 2 * THUMB_R);
+		const frac = Math.min(1, Math.max(0, (x - THUMB_R) / rail));
 		return stepTo(min + frac * span);
 	};
 
@@ -151,16 +151,17 @@ export function Slider({
 		);
 	}
 
-	const first = values[0];
+	const first = values[0] ?? min;
+	const last = values[values.length - 1] ?? min;
+	const single = values.length <= 1;
+	const rangeLeft = single ? 0 : pct(first);
+	const rangeRight = pct(last);
 
 	return (
 		<View
 			testID={testID}
 			accessibilityLabel={accessibilityLabel}
-			style={applySlot(
-				applySlot({ opacity: disabled ? 0.5 : 1 }, style),
-				slotStyles?.root,
-			)}
+			style={applySlot(applySlot(sliderStyle.root(disabled), style), slotStyles?.root)}
 		>
 			<View
 				testID="k-slider-track"
@@ -173,41 +174,43 @@ export function Slider({
 				onResponderMove={move}
 				style={applySlot(sliderStyle.track(theme), slotStyles?.track)}
 			>
-				<View
-					testID="k-slider-range"
-					accessibilityElementsHidden={true}
-					style={applySlot(
-						sliderStyle.range(theme, first === undefined ? 0 : pct(first)),
-						slotStyles?.range,
-					)}
-				/>
-				{values.map((v, i) => {
-					return (
-						<View
-							// biome-ignore lint/suspicious/noArrayIndexKey: thumb identity is its slot — values change every drag frame, so value keys would remount thumbs mid-gesture
-							key={i}
-							testID="k-slider-thumb"
-							accessibilityRole="adjustable"
-							accessibilityLabel={accessibilityLabel}
-							accessibilityValue={{ min, max, now: v }}
-							accessibilityState={{ disabled: disabled || undefined }}
-							accessibilityActions={[
-								{ name: "increment" },
-								{ name: "decrement" },
-							]}
-						onAccessibilityAction={(e) => {
-							const action = e.nativeEvent.actionName;
-							if (action === "increment") adjust(i, 1);
-							else if (action === "decrement") adjust(i, -1);
-						}}
-						hitSlop={sliderStyle.THUMB_HIT_SLOP}
+				<View testID="k-slider-rail" style={sliderStyle.rail()}>
+					<View
+						testID="k-slider-range"
+						accessibilityElementsHidden={true}
 						style={applySlot(
-							sliderStyle.thumb(theme, pct(v)),
-							slotStyles?.thumb,
+							sliderStyle.range(theme, rangeLeft, rangeRight, single, disabled),
+							slotStyles?.range,
 						)}
-						/>
-					);
-				})}
+					/>
+					{values.map((v, i) => {
+						return (
+							<View
+								// biome-ignore lint/suspicious/noArrayIndexKey: thumb identity is its slot — values change every drag frame, so value keys would remount thumbs mid-gesture
+								key={i}
+								testID="k-slider-thumb"
+								accessibilityRole="adjustable"
+								accessibilityLabel={accessibilityLabel}
+								accessibilityValue={{ min, max, now: v }}
+								accessibilityState={{ disabled: disabled || undefined }}
+								accessibilityActions={[
+									{ name: "increment" },
+									{ name: "decrement" },
+								]}
+								onAccessibilityAction={(e) => {
+									const action = e.nativeEvent.actionName;
+									if (action === "increment") adjust(i, 1);
+									else if (action === "decrement") adjust(i, -1);
+								}}
+								hitSlop={sliderStyle.THUMB_HIT_SLOP}
+								style={applySlot(
+									sliderStyle.thumb(theme, pct(v), disabled, i),
+									slotStyles?.thumb,
+								)}
+							/>
+						);
+					})}
+				</View>
 			</View>
 		</View>
 	);

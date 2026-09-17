@@ -1727,12 +1727,16 @@ describe("component markers", () => {
 			expect(screen.getByTestId("k-slider-thumb", inclHidden)).toBeTruthy();
 		});
 
-		it("positions range and thumb by percent of the value span", async () => {
+		it("positions range and thumb by percent of the value span on an inset rail", async () => {
 			const screen = await render(
 				<Slider value={[50]} accessibilityLabel="vol" />,
 			);
 			const s = flatStyle(screen.getByTestId("k-slider-range", inclHidden));
-			expect(String(s.width)).toBe("50%");
+			expect(String(s.left)).toBe("-10");
+			expect(String(s.right)).toBe("50%");
+			const rail = flatStyle(screen.getByTestId("k-slider-rail", inclHidden));
+			expect(rail.left).toBe(10);
+			expect(rail.right).toBe(10);
 			const thumbS = flatStyle(
 				screen.getByTestId("k-slider-thumb", inclHidden),
 			);
@@ -1755,7 +1759,7 @@ describe("component markers", () => {
 			expect(onValueChange).toHaveBeenCalledWith([50]);
 			// uncontrolled: internal state repositions the markers, not just the callback
 			const s = flatStyle(screen.getByTestId("k-slider-range", inclHidden));
-			expect(String(s.width)).toBe("50%");
+			expect(String(s.right)).toBe("50%");
 		});
 
 		it("controlled value prop wins over a tap", async () => {
@@ -1773,7 +1777,7 @@ describe("component markers", () => {
 			expect(onValueChange).toHaveBeenCalledWith([50]);
 			// callback fired, but the controlled prop still owns the fill
 			const s = flatStyle(screen.getByTestId("k-slider-range", inclHidden));
-			expect(String(s.width)).toBe("25%");
+			expect(String(s.right)).toBe("75%");
 		});
 
 		it("rounds to step and never emits float drift", async () => {
@@ -1809,8 +1813,9 @@ describe("component markers", () => {
 			);
 			const track = screen.getByTestId("k-slider-track", inclHidden);
 			await layout(track, 200);
-			await grant(track, 60);
-			expect(onValueChange).toHaveBeenCalledWith([40]);
+			// gesture space is the inset rail: (60−10)/(200−20) = 0.5 → 10+0.5*100
+			await grant(track, 100);
+			expect(onValueChange).toHaveBeenCalledWith([60]);
 		});
 
 		it("clamps taps beyond the track edges to min/max", async () => {
@@ -1830,7 +1835,7 @@ describe("component markers", () => {
 			expect(onValueChange).toHaveBeenLastCalledWith([100]);
 		});
 
-		it("multi-thumb: nearest thumb moves and the range fill spans start→first only", async () => {
+		it("multi-thumb: nearest thumb moves and the range fill spans first→last thumb", async () => {
 			const onValueChange = jest.fn();
 			const screen = await render(
 				<Slider
@@ -1844,12 +1849,13 @@ describe("component markers", () => {
 			);
 			const track = screen.getByTestId("k-slider-track", inclHidden);
 			await layout(track, 200);
-			// 140px of 200 → 70; nearest thumb is the second (75)
+			// 140px maps over the inset rail: (140−10)/180 ≈ 0.72 → 72; nearest thumb is the second (75)
 			await grant(track, 140);
-			expect(onValueChange).toHaveBeenLastCalledWith([25, 70]);
-			// fill stays start→first thumb (25%), never spans to the second
+			expect(onValueChange).toHaveBeenLastCalledWith([25, 72]);
+			// fill spans first→last thumb (25% left, right edge at 100−72=28%)
 			const s = flatStyle(screen.getByTestId("k-slider-range", inclHidden));
-			expect(String(s.width)).toBe("25%");
+			expect(String(s.left)).toBe("25%");
+			expect(String(s.right)).toBe("28%");
 		});
 
 		it("empty values renders the track with no thumbs and no crash", async () => {
@@ -1860,7 +1866,7 @@ describe("component markers", () => {
 			expect(screen.queryByTestId("k-slider-thumb")).toBeNull();
 		});
 
-		it("disabled blocks gestures and dims", async () => {
+		it("disabled blocks gestures and styles parts explicitly", async () => {
 			const onValueChange = jest.fn();
 			const screen = await render(
 				<Slider
@@ -1875,8 +1881,16 @@ describe("component markers", () => {
 			expect(track.props.onStartShouldSetResponder()).toBe(false);
 			await grant(track, 100);
 			expect(onValueChange).not.toHaveBeenCalled();
+			// disabled rides part tokens, not a root opacity fade
+			const { themes } = require("../../themes");
 			const root = flatStyle(screen.getByTestId("k-slider", inclHidden));
-			expect(Number(root.opacity)).toBe(0.5);
+			expect(root.opacity).toBeUndefined();
+			const range = flatStyle(screen.getByTestId("k-slider-range", inclHidden));
+			expect(range.backgroundColor).toBe(themes.light.mutedForeground);
+			const thumb = flatStyle(
+				screen.getByTestId("k-slider-thumb", inclHidden),
+			);
+			expect(thumb.borderColor).toBe(themes.light.mutedForeground);
 		});
 
 		it("isLoading renders the skeleton arm instead of the interactive track", async () => {
@@ -2192,9 +2206,10 @@ describe("component markers", () => {
 					</Toggle>,
 				);
 				const s = flatStyle(screen.getByTestId("k-toggle"));
-				heights.push(Number(s.height));
-				expect(Number(s.minHeight)).toBe(44);
+				heights.push(Number(s.minHeight));
 				expect(Number(s.minWidth)).toBe(44);
+				const hit = s.hitSlop as { top?: number } | undefined;
+				expect(44 + 2 * (hit?.top ?? 0)).toBeGreaterThanOrEqual(44);
 			}
 			expect(heights).toEqual([36, 40, 44]);
 		});
