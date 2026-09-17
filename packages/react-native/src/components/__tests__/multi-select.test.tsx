@@ -256,6 +256,20 @@ describe("MultiSelect", () => {
 		expect(screen.getAllByTestId("k-multi-select-chip")).toHaveLength(2);
 	});
 
+	it("chip text uses secondaryForeground so the pill stays legible on dark themes", async () => {
+		const flatten = require("react-native").StyleSheet.flatten;
+		const { useUnistyles } = require("react-native-unistyles");
+		const screen = await render(
+			<MultiSelect options={options} defaultValue={["apple"]} />,
+		);
+		const theme = useUnistyles().theme;
+		const text = flatten(
+			screen.getAllByTestId("k-multi-select-chip")[0].props.children[0].props
+				.style,
+		);
+		expect(text.color).toBe(theme.secondaryForeground);
+	});
+
 	it("rows use a checkbox look and the shared selected-row styling", async () => {
 		const flatten = require("react-native").StyleSheet.flatten;
 		const screen = await openSelect({ defaultValue: ["apple"] });
