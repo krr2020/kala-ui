@@ -393,25 +393,26 @@ describe("Calendar", () => {
 			).toBe(true);
 		});
 
-		it("all three rows share the fixed GRID_W footprint with gap-4 columns", async () => {
+		it("all three rows fill the width: 100% + space-between + gap-4", async () => {
 			const screen: Screen = await render(
 				<Calendar month={new Date(2026, 1, 1)} />,
 			);
-			const GRID_W = 36 * 7 + 4 * 6;
 			const weekdays = flatStyle(screen.getByTestId("k-calendar-weekdays"));
-			expect(weekdays.width).toBe(GRID_W);
+			expect(weekdays.width).toBe("100%");
+			expect(weekdays.justifyContent).toBe("space-between");
 			expect(weekdays.gap).toBe(4);
 			const grid = flatStyle(screen.getByTestId("k-calendar-grid"));
-			expect(grid.width).toBe(GRID_W);
+			expect(grid.width).toBe("100%");
+			expect(grid.justifyContent).toBe("space-between");
 			expect(grid.gap).toBe(4);
 			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
 			const months = flatStyle(screen.getByTestId("k-calendar-months"));
-			expect(months.width).toBe(GRID_W);
+			expect(months.width).toBe("100%");
+			expect(months.justifyContent).toBe("space-between");
 			expect(months.gap).toBe(4);
-			// 3 columns + 2 gaps tile the same footprint as the 7-column rows
 			expect(
 				flatStyle(screen.getByTestId("k-calendar-month-option-0")).width,
-			).toBeCloseTo((GRID_W - 8) / 3);
+			).toBe("32%");
 		});
 
 		it("day and weekday cells are fixed CELL_SIZE columns", async () => {
