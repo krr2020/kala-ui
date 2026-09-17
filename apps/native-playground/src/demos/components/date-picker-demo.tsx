@@ -51,6 +51,13 @@ export function DatePickerDemo() {
 					buttonDisabled
 				/>
 			</DemoBlock>
+			<DemoBlock label="Prefilled">
+				<DatePicker
+					defaultValue={new Date(2026, 0, 15)}
+					placeholder="prefilled"
+					accessibilityLabel="prefilled date"
+				/>
+			</DemoBlock>
 		</View>
 	);
 }

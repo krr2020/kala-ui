@@ -24,6 +24,17 @@ const LONG_LIST = Array.from({ length: 30 }, (_, i) => ({
 	...(i % 3 === 0 ? { group: `Region ${i % 6}` } : {}),
 }));
 
+const LONG_LABELS = [
+	{
+		value: "eu-west-1",
+		label: "Europe (Ireland) — primary region with read replicas",
+	},
+	{
+		value: "us-east-2",
+		label: "United States (Ohio) — failover region with cold storage",
+	},
+];
+
 export function SelectDemo() {
 	const [fruit, setFruit] = useState<string | undefined>(undefined);
 	return (
@@ -79,6 +90,22 @@ export function SelectDemo() {
 					placeholder="Locked"
 					accessibilityLabel="Locked select"
 					disabled
+					options={FRUITS}
+				/>
+			</DemoBlock>
+			<DemoBlock label="Long Labels">
+				<Select
+					placeholder="Pick a region"
+					accessibilityLabel="long region"
+					options={LONG_LABELS}
+				/>
+			</DemoBlock>
+			<DemoBlock label="Orphan Value">
+				{/* a value outside the options renders raw instead of blanking */}
+				<Select
+					value="a-really-long-unlisted-option-value"
+					onValueChange={() => undefined}
+					accessibilityLabel="orphan select"
 					options={FRUITS}
 				/>
 			</DemoBlock>

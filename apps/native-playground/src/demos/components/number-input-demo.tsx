@@ -59,6 +59,20 @@ export function NumberInputDemo() {
 					accessibilityLabel="Disabled quantity"
 				/>
 			</DemoBlock>
+			<DemoBlock label="Boundaries">
+				<NumberInput
+					defaultValue={0}
+					min={0}
+					max={6}
+					accessibilityLabel="clamped at min"
+				/>
+				<NumberInput
+					defaultValue={6}
+					min={0}
+					max={6}
+					accessibilityLabel="clamped at max"
+				/>
+			</DemoBlock>
 		</View>
 	);
 }

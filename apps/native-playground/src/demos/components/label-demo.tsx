@@ -18,6 +18,12 @@ export function LabelDemo() {
 				<Label required>Invite Code</Label>
 				<Label>Referral</Label>
 			</DemoBlock>
+			<DemoBlock label="Long Copy">
+				<Label required>Automatic seat reconciliation window</Label>
+				<Label>
+					Quarterly rollover with prorated billing adjustments across workspaces
+				</Label>
+			</DemoBlock>
 		</View>
 	);
 }

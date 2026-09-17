@@ -45,6 +45,11 @@ export function SliderDemo() {
 					disabled
 				/>
 			</DemoBlock>
+			<DemoBlock label="Boundaries">
+				<Slider accessibilityLabel="slider at min" defaultValue={[0]} />
+				<Slider accessibilityLabel="slider at max" defaultValue={[100]} />
+				<Slider accessibilityLabel="collapsed range" defaultValue={[40, 40]} />
+			</DemoBlock>
 		</View>
 	);
 }

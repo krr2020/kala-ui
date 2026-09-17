@@ -33,6 +33,17 @@ export function TimePickerDemo() {
 			<DemoBlock label="States">
 				<TimePicker accessibilityLabel="locked time" disabled />
 			</DemoBlock>
+			<DemoBlock label="Boundaries">
+				<TimePicker
+					defaultValue={{ hours: 0, minutes: 0 }}
+					accessibilityLabel="midnight"
+				/>
+				<TimePicker
+					showSeconds
+					defaultValue={{ hours: 23, minutes: 59, seconds: 59 }}
+					accessibilityLabel="end of day"
+				/>
+			</DemoBlock>
 		</View>
 	);
 }

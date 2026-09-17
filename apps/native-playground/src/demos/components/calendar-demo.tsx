@@ -31,6 +31,12 @@ export function CalendarDemo() {
 			<DemoBlock label="States">
 				<Calendar isLoading accessibilityLabel="loading calendar" />
 			</DemoBlock>
+			<DemoBlock label="Preselected">
+				<Calendar
+					accessibilityLabel="preselected stay"
+					defaultValue={new Date(2026, 0, 15)}
+				/>
+			</DemoBlock>
 		</View>
 	);
 }

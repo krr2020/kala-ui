@@ -48,6 +48,11 @@ export function ToggleDemo() {
 					Locked
 				</Toggle>
 			</DemoBlock>
+			<DemoBlock label="Long Text">
+				<Toggle accessibilityLabel="long toggle" defaultPressed>
+					Uninterrupted power supply status
+				</Toggle>
+			</DemoBlock>
 		</View>
 	);
 }

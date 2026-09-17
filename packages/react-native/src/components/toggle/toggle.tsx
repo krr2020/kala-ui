@@ -15,6 +15,7 @@ import { applySlot } from "../slot-styles";
 import {
 	baseSurface,
 	PAD_X,
+	text as textStyle,
 	TOGGLE_FONT,
 	TOGGLE_HEIGHT,
 } from "./toggle.styles";
@@ -65,11 +66,7 @@ function ToggleContent({
 	size: ToggleSize;
 }): ReactElement {
 	return typeof children === "string" || typeof children === "number" ? (
-		<RNText
-			style={{ color: fg, fontSize: TOGGLE_FONT[size], fontWeight: "500" }}
-		>
-			{children}
-		</RNText>
+		<RNText style={textStyle(size, fg)}>{children}</RNText>
 	) : (
 		<View style={{ alignItems: "center", justifyContent: "center" }}>
 			{children}

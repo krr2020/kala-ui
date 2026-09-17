@@ -25,6 +25,10 @@ export function RatingDemo() {
 			<DemoBlock label="States">
 				<Rating accessibilityLabel="locked rating" value={2} disabled />
 			</DemoBlock>
+			<DemoBlock label="Boundaries">
+				<Rating accessibilityLabel="zero rating" value={0} readOnly />
+				<Rating accessibilityLabel="max rating" value={5} readOnly />
+			</DemoBlock>
 		</View>
 	);
 }

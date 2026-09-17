@@ -54,6 +54,14 @@ export function FieldDemo() {
 				<Label required>Card Number</Label>
 				<Label>Holder Name</Label>
 			</DemoBlock>
+			<DemoBlock label="Long Copy">
+				<Field
+					label="Workspace slug for internationalization teams"
+					description="Lowercase letters, numbers and dashes; used in every workspace URL your teammates click"
+				>
+					<TextInput defaultValue="kala-internationalization-workspace" />
+				</Field>
+			</DemoBlock>
 		</View>
 	);
 }

@@ -56,6 +56,25 @@ export function InputOtpDemo() {
 					<InputOtpSlot index={3} />
 				</InputOtp>
 			</DemoBlock>
+			<DemoBlock label="Full Code">
+				<InputOtp maxLength={6} defaultValue="901234">
+					<InputOtpSlot index={0} />
+					<InputOtpSlot index={1} />
+					<InputOtpSlot index={2} />
+					<InputOtpSlot index={3} />
+					<InputOtpSlot index={4} />
+					<InputOtpSlot index={5} />
+				</InputOtp>
+			</DemoBlock>
+			<DemoBlock label="Overflow">
+				{/* values longer than maxLength are sliced to fit the slots */}
+				<InputOtp maxLength={4} defaultValue="999999999">
+					<InputOtpSlot index={0} />
+					<InputOtpSlot index={1} />
+					<InputOtpSlot index={2} />
+					<InputOtpSlot index={3} />
+				</InputOtp>
+			</DemoBlock>
 		</View>
 	);
 }

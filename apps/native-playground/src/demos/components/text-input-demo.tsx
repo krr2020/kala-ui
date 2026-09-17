@@ -59,6 +59,16 @@ export function TextInputDemo() {
 					disabled
 				/>
 			</DemoBlock>
+			<DemoBlock label="Long Text">
+				<TextInput
+					value="Support escalation aaaa@example.com ref KEF-2026-0917-000123 pending confirmation"
+					accessibilityLabel="long value"
+				/>
+				<TextInput
+					placeholder="Very long placeholder copy that must truncate at the field edge instead of wrapping"
+					accessibilityLabel="long placeholder"
+				/>
+			</DemoBlock>
 		</View>
 	);
 }

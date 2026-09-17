@@ -15,6 +15,17 @@ const LONG_LIST = Array.from({ length: 25 }, (_, i) => ({
 	label: `City ${i}`,
 }));
 
+const LONG_LABELS = [
+	{
+		value: "osaka",
+		label: "Osaka — Kansai region hub with night market access",
+	},
+	{
+		value: "montreal",
+		label: "Montréal — bilingual metro with winter bike network",
+	},
+];
+
 export function ComboboxDemo() {
 	const [city, setCity] = useState<string | undefined>(undefined);
 	return (
@@ -58,6 +69,13 @@ export function ComboboxDemo() {
 					accessibilityLabel="Error combobox"
 					hasError
 					options={CITIES}
+				/>
+			</DemoBlock>
+			<DemoBlock label="Long Labels">
+				<Combobox
+					placeholder="Search destinations"
+					accessibilityLabel="long destination"
+					options={LONG_LABELS}
 				/>
 			</DemoBlock>
 		</View>

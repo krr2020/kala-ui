@@ -1,4 +1,4 @@
-import type { ViewStyle } from "react-native";
+import type { TextStyle, ViewStyle } from "react-native";
 import { tokens } from "../../tokens";
 import type { ToggleSize } from "./toggle.types";
 
@@ -27,6 +27,19 @@ export function baseSurface(size: ToggleSize): ViewStyle {
 		justifyContent: "center",
 		flexDirection: "row",
 		gap: 8,
+		// a long label shrinks the text instead of pushing past the parent
+		maxWidth: "100%",
 		borderRadius: tokens.radius.control,
+	};
+}
+
+export function text(size: ToggleSize, fg: string): TextStyle {
+	return {
+		color: fg,
+		fontSize: TOGGLE_FONT[size],
+		fontWeight: "500",
+		// long labels wrap inside the surface instead of widening it
+		flexShrink: 1,
+		textAlign: "center",
 	};
 }

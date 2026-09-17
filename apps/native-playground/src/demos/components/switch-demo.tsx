@@ -35,6 +35,18 @@ export function SwitchDemo() {
 					onValueChange={() => undefined}
 				/>
 			</DemoBlock>
+			<DemoBlock label="Long Field Copy">
+				<Field
+					label="Enable automatic seat reconciliation across every workspace"
+					description="Prorated adjustments for mid-cycle additions; reconciliations run twice a day"
+				>
+					<Switch
+						accessibilityLabel="seat reconciliation"
+						value={sync}
+						onValueChange={setSync}
+					/>
+				</Field>
+			</DemoBlock>
 		</View>
 	);
 }

@@ -16,6 +16,14 @@ const LONG_LIST = Array.from({ length: 25 }, (_, i) => ({
 	...(i % 4 === 0 ? { group: `Group ${i % 8}` } : {}),
 }));
 
+const LONG_LABELS = [
+	{
+		value: "gelato",
+		label: "Artisanal gelato bar with seasonal rotating flavors",
+	},
+	{ value: "custard", label: "Slow-churned frozen custard made to order" },
+];
+
 export function MultiSelectDemo() {
 	const [picked, setPicked] = useState<string[]>(["sprinkles"]);
 	return (
@@ -63,6 +71,13 @@ export function MultiSelectDemo() {
 					accessibilityLabel="Error multi select"
 					hasError
 					options={TOPPINGS}
+				/>
+			</DemoBlock>
+			<DemoBlock label="Long Labels">
+				<MultiSelect
+					placeholder="Pick a dessert"
+					accessibilityLabel="long dessert"
+					options={LONG_LABELS}
 				/>
 			</DemoBlock>
 		</View>

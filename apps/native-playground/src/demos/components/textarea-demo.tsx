@@ -54,6 +54,16 @@ export function TextareaDemo() {
 					rows={2}
 				/>
 			</DemoBlock>
+			<DemoBlock label="Long Text">
+				{/* long values wrap instead of clipping */}
+				<Textarea
+					defaultValue={"Incident timeline: gateway returned 502s for 11 minutes while the edge cache absorbed load; failover completed without customer impact and the postmortem is scheduled. ".repeat(
+						3,
+					)}
+					accessibilityLabel="long textarea value"
+					rows={4}
+				/>
+			</DemoBlock>
 		</View>
 	);
 }
