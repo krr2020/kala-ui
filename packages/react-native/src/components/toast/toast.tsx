@@ -51,7 +51,11 @@ export function Toast({
 			pointerEvents="box-none"
 			style={[
 				{
-					...({ position: "absolute", inset: 0 } as const),
+					position: "absolute",
+					top: 0,
+					right: 0,
+					bottom: 0,
+					left: 0,
 					zIndex: 200,
 					justifyContent: position === "top" ? "flex-start" : "flex-end",
 					padding: 16,

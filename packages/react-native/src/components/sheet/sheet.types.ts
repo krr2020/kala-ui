@@ -1,12 +1,18 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 
-export type SheetSnap = "peek" | "half" | "full";
+export type SheetSnap = "auto" | "peek" | "half" | "full";
 
 export interface SheetProps {
 	open: boolean;
 	onClose: () => void;
 	snap?: SheetSnap;
+	/** caps snap="auto" content height (px); defaults to 85% of the window */
+	maxHeight?: number;
+	/** renders a header row above the content; no title means no header */
+	title?: string;
+	/** shows the header close icon (forced off when dismissable=false) */
+	showClose?: boolean;
 	/** false blocks overlay-press dismissal (back/escape paths still fire) */
 	dismissable?: boolean;
 	/** wraps children in a ScrollView so long bodies scroll; off keeps
@@ -22,6 +28,7 @@ export interface SheetProps {
 		overlay?: StyleProp<ViewStyle>;
 		content?: StyleProp<ViewStyle>;
 		grabber?: StyleProp<ViewStyle>;
+		title?: StyleProp<ViewStyle>;
 	};
 	children: ReactNode;
 }

@@ -11,6 +11,11 @@ export function optionRow(isSelected: boolean): ViewStyle {
 	};
 }
 
+/** hairline between option rows only — the last row carries no border */
+export function optionSeparator(theme: KalaTheme): ViewStyle {
+	return { height: 1, backgroundColor: theme.separator };
+}
+
 export function optionLabel(
 	theme: KalaTheme,
 	variant: { isSelected: boolean; disabled: boolean },
@@ -25,6 +30,9 @@ export function optionLabel(
 	};
 }
 
-export function emptyLabel(theme: KalaTheme): { fontSize: number; color: string } {
+export function emptyLabel(theme: KalaTheme): {
+	fontSize: number;
+	color: string;
+} {
 	return { fontSize: 14, color: theme.mutedForeground };
 }

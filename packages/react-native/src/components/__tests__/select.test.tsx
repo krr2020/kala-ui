@@ -34,7 +34,8 @@ describe("Select trigger", () => {
 		);
 		expect(screen.getByTestId("k-select")).toBeTruthy();
 		expect(screen.getByTestId("k-select-value")).toBeTruthy();
-		expect(screen.getByTestId("k-select-chevron")).toBeTruthy();
+		// Icon is a11y-hidden by default — the marker query must opt in
+		expect(screen.getByTestId("k-select-chevron", inclHidden)).toBeTruthy();
 	});
 
 	it("button role + label; placeholder styled muted vs a selected value", async () => {
@@ -89,6 +90,28 @@ describe("Select trigger", () => {
 		const b = flatStyle(errored.getByTestId("k-select")).borderColor;
 		expect(a).not.toBe(b);
 	});
+
+	it("hasSuccess tints the border — distinct from plain and error", async () => {
+		const plain: Screen = await render(<Select options={OPTIONS} />);
+		const errored: Screen = await render(<Select options={OPTIONS} hasError />);
+		const success: Screen = await render(
+			<Select options={OPTIONS} hasSuccess />,
+		);
+		const a = flatStyle(plain.getByTestId("k-select")).borderColor;
+		const b = flatStyle(errored.getByTestId("k-select")).borderColor;
+		const c = flatStyle(success.getByTestId("k-select")).borderColor;
+		expect(c).not.toBe(a);
+		expect(c).not.toBe(b);
+	});
+
+	it("chevron renders a sized Icon carrying the slot override", async () => {
+		const screen: Screen = await render(
+			<Select options={OPTIONS} slotStyles={{ chevron: { width: 33 } }} />,
+		);
+		const chevron = screen.getByTestId("k-select-chevron", inclHidden);
+		expect(flatStyle(chevron).width).toBe(33);
+		expect(flatStyle(chevron).height).toBeGreaterThan(0);
+	});
 });
 
 describe("Select sheet", () => {
@@ -140,6 +163,62 @@ describe("Select sheet", () => {
 		await fireEvent.press(screen.getByTestId("k-sheet-overlay", inclHidden));
 		expect(onValueChange).not.toHaveBeenCalled();
 		expect(screen.queryByTestId("k-select-option")).toBeNull();
+	});
+
+	it("option rows are hairline-separated between rows only", async () => {
+		const screen: Screen = await render(<Select options={OPTIONS} />);
+		await fireEvent.press(screen.getByTestId("k-select"));
+		expect(screen.getAllByTestId("k-select-option")).toHaveLength(3);
+		expect(
+			screen.getAllByTestId("k-select-option-separator", inclHidden),
+		).toHaveLength(2);
+	});
+
+	it("sheet header defaults to the placeholder; label wins; close closes without committing", async () => {
+		const onValueChange = jest.fn();
+		const screen: Screen = await render(
+			<Select
+				options={OPTIONS}
+				placeholder="Pick a fruit"
+				onValueChange={onValueChange}
+			/>,
+		);
+		await fireEvent.press(screen.getByTestId("k-select"));
+		expect(screen.getByTestId("k-sheet-title", inclHidden).props.children).toBe(
+			"Pick a fruit",
+		);
+		await fireEvent.press(screen.getByTestId("k-sheet-close", inclHidden));
+		expect(onValueChange).not.toHaveBeenCalled();
+		expect(screen.queryAllByTestId("k-select-option")).toHaveLength(0);
+
+		const labelled: Screen = await render(
+			<Select options={OPTIONS} label="Fruit" placeholder="Pick a fruit" />,
+		);
+		await fireEvent.press(labelled.getByTestId("k-select"));
+		expect(
+			labelled.getByTestId("k-sheet-title", inclHidden).props.children,
+		).toBe("Fruit");
+	});
+
+	it("sheet sizes to content (auto) under a maxHeight clamp, not a fixed height", async () => {
+		const screen: Screen = await render(<Select options={OPTIONS} />);
+		await fireEvent.press(screen.getByTestId("k-select"));
+		const style = flatStyle(screen.getByTestId("k-sheet-content", inclHidden));
+		expect(style.height).toBeUndefined();
+		expect(style.maxHeight).toBeGreaterThan(0);
+	});
+
+	it("empty options with header: zero separators, header + close + empty state render", async () => {
+		const screen: Screen = await render(
+			<Select options={[]} placeholder="Nothing here" />,
+		);
+		await fireEvent.press(screen.getByTestId("k-select"));
+		expect(
+			screen.queryAllByTestId("k-select-option-separator", inclHidden),
+		).toHaveLength(0);
+		expect(screen.getByTestId("k-sheet-title", inclHidden)).toBeTruthy();
+		expect(screen.getByTestId("k-sheet-close", inclHidden)).toBeTruthy();
+		expect(screen.getByTestId("k-select-empty")).toBeTruthy();
 	});
 
 	it("uncontrolled defaultValue seeds; controlled value locks until parent re-renders", async () => {
@@ -194,12 +273,12 @@ describe("Select sheet", () => {
 		expect(rows[0].props.accessibilityState?.selected).toBeFalsy();
 	});
 
-	it("stray controlled value falls back to placeholder, never undefined", async () => {
+	it("orphan controlled value renders its raw value — async loads never blank the trigger", async () => {
 		const screen: Screen = await render(
 			<Select options={OPTIONS} value="ghost" placeholder="Pick one" />,
 		);
 		const value = screen.getByTestId("k-select-value");
-		expect(value.props.children).toBe("Pick one");
+		expect(value.props.children).toBe("ghost");
 	});
 
 	it("slotStyles.root slot wins over the library trigger surface", async () => {

@@ -28,14 +28,38 @@ jest.mock('react-native-reanimated', () => {
 		View: (props: unknown) => React.createElement(View, props),
 	};
 
+	// real reanimated invokes the completion callback (finished=true)
+	// when an animation ends; the mock mirrors that synchronously so
+	// exit-then-unmount wiring stays observable under jest. Configs are
+	// recorded so tests can pin timing/easing vs spring usage per path.
+	const makeAnimate = () => {
+		const calls: Record<string, unknown>[] = [];
+		const fn = (to: unknown, a?: unknown, b?: unknown) => {
+			const config = typeof a === 'function' ? undefined : a;
+			const callback = typeof a === 'function' ? a : b;
+			calls.push({ to, config });
+			if (typeof callback === 'function') callback(true);
+			return to;
+		};
+		return Object.assign(fn, { mockConfigs: calls });
+	};
+	const withTiming = makeAnimate();
+	const withSpring = makeAnimate();
+	// Easing must come from reanimated (worklet-compatible); the mock's
+	// bezier just echoes the control points so config assertions compare
+	// the same object shape the real runtime produces
+	const Easing = {
+		bezier: (...points: number[]) => ({ __bezier: points }),
+	};
 	return {
 		__esModule: true,
 		default: Animated,
 		Animated,
+		Easing,
 		useSharedValue: (initial: unknown) => ({ value: initial }),
 		useAnimatedStyle: (factory: () => unknown) => factory(),
-		withSpring: (to: number) => to,
-		withTiming: (to: number) => to,
+		withSpring,
+		withTiming,
 		runOnJS: (fn: (...args: unknown[]) => unknown) => fn,
 	};
 });

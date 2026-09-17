@@ -17,7 +17,18 @@ import { Banner } from "../banner";
 
 import { BUTTON_SPRING, Button } from "../button";
 import { Calendar } from "../calendar";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardImage, CardMarker, CardSubtitle, CardTitle } from "../card";
+import {
+	Card,
+	CardAction,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardImage,
+	CardMarker,
+	CardSubtitle,
+	CardTitle,
+} from "../card";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Combobox } from "../combobox";
@@ -2415,7 +2426,8 @@ describe("component markers", () => {
 			);
 			expect(screen.getByTestId("k-select")).toBeTruthy();
 			expect(screen.getByTestId("k-select-value")).toBeTruthy();
-			expect(screen.getByTestId("k-select-chevron")).toBeTruthy();
+			// chevron Icon is decorative → a11y-hidden; the query opts in
+			expect(screen.getByTestId("k-select-chevron", inclHidden)).toBeTruthy();
 			await fireEvent.press(screen.getByTestId("k-select"));
 			expect(screen.getAllByTestId("k-select-option").length).toBe(2);
 			expect(screen.getByTestId("k-select-sheet")).toBeTruthy();
@@ -2867,4 +2879,3 @@ describe("component markers", () => {
 		});
 	});
 });
-

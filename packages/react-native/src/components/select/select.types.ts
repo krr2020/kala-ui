@@ -24,6 +24,8 @@ export interface SelectProps {
 	size?: "sm" | "md";
 	disabled?: boolean;
 	hasError?: boolean;
+	/** tints the trigger border with the success token */
+	hasSuccess?: boolean;
 	/** swaps the trigger for a skeleton surface while keeping the k-select marker */
 	isLoading?: boolean;
 	accessibilityLabel?: string;

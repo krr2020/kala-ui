@@ -16,17 +16,17 @@ export function SelectDemo() {
 		<View testID="k-demo-select" style={demoStyles.routeContent}>
 			<DemoBlock label="Basic">
 				<Select
-					placeholder="pick a fruit"
-					accessibilityLabel="fruit"
+					placeholder="Pick a fruit"
+					accessibilityLabel="Fruit"
 					options={FRUITS}
 				/>
 			</DemoBlock>
 			<DemoBlock label="In A Field">
-				<Field label="Fruit" description="one per basket" required>
+				<Field label="Fruit" description="One per basket" required>
 					<Select
 						value={fruit}
 						onValueChange={setFruit}
-						placeholder="pick a fruit"
+						placeholder="Pick a fruit"
 						options={FRUITS}
 					/>
 				</Field>
@@ -34,8 +34,8 @@ export function SelectDemo() {
 			</DemoBlock>
 			<DemoBlock label="Long List">
 				<Select
-					placeholder="pick a timezone"
-					accessibilityLabel="timezone"
+					placeholder="Pick a timezone"
+					accessibilityLabel="Timezone"
 					options={Array.from({ length: 12 }, (_, i) => ({
 						value: `tz-${i}`,
 						label: `Timezone ${i}`,
@@ -44,14 +44,20 @@ export function SelectDemo() {
 			</DemoBlock>
 			<DemoBlock label="States">
 				<Select
-					placeholder="required"
-					accessibilityLabel="error select"
+					placeholder="Required"
+					accessibilityLabel="Error select"
 					hasError
 					options={FRUITS}
 				/>
 				<Select
-					placeholder="locked"
-					accessibilityLabel="locked select"
+					placeholder="Valid"
+					accessibilityLabel="Valid select"
+					hasSuccess
+					options={FRUITS}
+				/>
+				<Select
+					placeholder="Locked"
+					accessibilityLabel="Locked select"
 					disabled
 					options={FRUITS}
 				/>

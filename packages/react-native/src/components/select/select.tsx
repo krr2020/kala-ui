@@ -1,13 +1,20 @@
+import { ChevronDown } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useState } from "react";
 import { FlatList, Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { useUncontrolled } from "../../lib/use-uncontrolled.utils";
+import { Icon } from "../icon";
+import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
 import { Sheet } from "../sheet";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
-import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
-import { emptyLabel, optionLabel, optionRow } from "./select.styles";
+import {
+	emptyLabel,
+	optionLabel,
+	optionRow,
+	optionSeparator,
+} from "./select.styles";
 import type { SelectOption, SelectProps } from "./select.types";
 
 /**
@@ -27,6 +34,7 @@ export function Select({
 	size = "md",
 	disabled = false,
 	hasError = false,
+	hasSuccess = false,
 	isLoading = false,
 	accessibilityLabel,
 	style,
@@ -74,7 +82,7 @@ export function Select({
 				disabled={disabled}
 				onPress={() => setOpen((prev) => !prev)}
 				style={[
-					trigger(theme, { size, hasError, disabled }),
+					trigger(theme, { size, hasError, hasSuccess, disabled }),
 					applySlot(applySlot({}, style), slotStyles?.root),
 				]}
 			>
@@ -92,18 +100,20 @@ export function Select({
 				>
 					{selected ? selected.label : (current ?? placeholder)}
 				</RNText>
-				<RNText
+				<Icon
+					icon={ChevronDown}
+					size="sm"
+					color="mutedForeground"
 					testID="k-select-chevron"
-					accessibilityElementsHidden={false}
-					style={applySlot(
-						{ fontSize: 14, color: theme.mutedForeground },
-						slotStyles?.chevron,
-					)}
-				>
-					▾
-				</RNText>
+					slotStyles={{ root: slotStyles?.chevron }}
+				/>
 			</Pressable>
-			<Sheet open={open} onClose={() => setOpen(false)} snap="half">
+			<Sheet
+				open={open}
+				onClose={() => setOpen(false)}
+				snap="auto"
+				title={label ?? placeholder}
+			>
 				<View testID="k-select-sheet" style={{ flex: 1 }}>
 					{options.length === 0 ? (
 						<RNText testID="k-select-empty" style={emptyLabel(theme)}>
@@ -114,6 +124,12 @@ export function Select({
 							data={options}
 							initialNumToRender={options.length}
 							keyExtractor={(option: SelectOption) => option.value}
+							ItemSeparatorComponent={() => (
+								<View
+									testID="k-select-option-separator"
+									style={optionSeparator(theme)}
+								/>
+							)}
 							renderItem={({ item: option }) => {
 								const isSelected = option.value === current;
 								return (
