@@ -81,7 +81,7 @@ describe("Switch", () => {
 		const off = await render(<Switch accessibilityLabel="s" />);
 		const offThumb = flatStyle(off.getByTestId("k-switch-thumb"));
 		const offTrack = flatStyle(off.getByTestId("k-switch-track"));
-		expect(offThumb.backgroundColor).toBe("#ffffff");
+		expect(offThumb.backgroundColor).toBe(themes.light.mutedForeground);
 		expect(offThumb.borderRadius).toBe(10);
 		expect(offThumb.elevation).toBe(2);
 		expect(offThumb.shadowOpacity).toBe(0.15);
@@ -94,17 +94,20 @@ describe("Switch", () => {
 		const on = await render(<Switch value accessibilityLabel="s" />);
 		const onThumb = flatStyle(on.getByTestId("k-switch-thumb"));
 		const onTrack = flatStyle(on.getByTestId("k-switch-track"));
-		expect(onThumb.backgroundColor).toBe("#ffffff");
+		expect(onThumb.backgroundColor).toBe(themes.light.primaryForeground);
 		expect(onThumb.elevation).toBe(2);
 		expect(onTrack.backgroundColor).toBe(themes.light.primary);
 		expect(on.queryByTestId("k-switch-stroke")).toBeNull();
 		expect(onTrack.width).toBe(40);
 		expect(onTrack.height).toBe(24);
-		// knob visibility invariant: the white knob rides the track fill —
-		// the pill colors must never be white in any theme
+		// knob visibility invariant: the knob rides the track fill — its
+		// tokens must differ from the pill colors in every theme. Dark pins
+		// guard the exact non-white knob pair the design promises.
+		expect(themes.dark.primaryForeground).toBe("#0f172a");
+		expect(themes.dark.mutedForeground).toBe("#94a3b8");
 		for (const [name, theme] of Object.entries(themes)) {
-			expect(theme.input).not.toBe("#ffffff");
-			expect(theme.primary).not.toBe("#ffffff");
+			expect(theme.input).not.toBe(theme.mutedForeground);
+			expect(theme.primary).not.toBe(theme.primaryForeground);
 		}
 	});
 
@@ -115,7 +118,7 @@ describe("Switch", () => {
 		const root = flatStyle(screen.getByTestId("k-switch"));
 		expect(root.opacity).toBe(0.5);
 		const thumb = flatStyle(screen.getByTestId("k-switch-thumb"));
-		expect(thumb.backgroundColor).toBe("#ffffff");
+		expect(thumb.backgroundColor).toBe(themes.light.primaryForeground);
 		// locked knob drops its shadow — no smudge pulling it below center
 		expect(thumb.elevation).toBe(0);
 		expect(thumb.shadowOpacity).toBe(0);

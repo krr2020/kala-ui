@@ -62,7 +62,7 @@ export function Switch({
 				)}
 				<View
 					testID="k-switch-thumb"
-					style={[thumbStyle(value, disabled), slotStyles?.thumb]}
+					style={[thumbStyle(theme, value, disabled), slotStyles?.thumb]}
 				/>
 			</View>
 			{label !== undefined ? (

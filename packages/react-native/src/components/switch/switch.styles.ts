@@ -49,7 +49,11 @@ export function trackStroke(theme: KalaTheme): ViewStyle {
 	};
 }
 
-export function thumb(value: boolean, disabled: boolean): ViewStyle {
+export function thumb(
+	theme: KalaTheme,
+	value: boolean,
+	disabled: boolean,
+): ViewStyle {
 	return {
 		position: "absolute",
 		top: INSET,
@@ -57,11 +61,11 @@ export function thumb(value: boolean, disabled: boolean): ViewStyle {
 		width: THUMB,
 		height: THUMB,
 		borderRadius: THUMB / 2,
-		// constant knob: white + shadow reads as a floating knob on every
-		// track color (light or dark) — state lives entirely on the track.
-		// disabled drops the shadow: under the row's 0.5 opacity it renders
-		// as a smudge that pulls the knob visually below center
-		backgroundColor: "#ffffff",
+		// constant knob geometry, theme-aware knob color: the on-knob uses
+	// primaryForeground (the token designed to sit on primary — navy in
+	// dark), the off-knob mutedForeground (soft slate in dark, visible on
+	// the input pill yet never stark white)
+		backgroundColor: value ? theme.primaryForeground : theme.mutedForeground,
 		elevation: disabled ? 0 : 2,
 		shadowColor: "#000000",
 		shadowOpacity: disabled ? 0 : 0.15,
