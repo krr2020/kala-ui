@@ -270,10 +270,11 @@ describe("component app seam", () => {
 		// compact themeRow style is defined and applied in the shell.
 		expect(stylesheet).toMatch(/themeRow:/);
 		expect(shell).toMatch(/demoStyles\.themeRow/);
-		// header text formatting: humanized component label + re-cased line.
+		// header text formatting: humanized component label; the redundant
+		// branding line was removed from the shell — the section title alone
+		// heads each preview.
 		expect(shell).toMatch(/\{group\.title\} · \{component\.label\}/);
-		expect(shell).toMatch(/Kala UI · Native/);
-		expect(shell).not.toMatch(/kala-ui · native/);
+		expect(shell).not.toMatch(/Kala UI · Native/);
 		// the switcher strip is the ONLY pinned tier: it stays inside the
 		// SafeAreaView before the content ScrollView opens, while the group/
 		// component chip rows live INSIDE the scrolling routeContent.
@@ -389,6 +390,54 @@ describe("component app seam", () => {
 		);
 		expect(groupChip).not.toMatch(/padding/);
 		expect(filterChip).not.toMatch(/padding/);
+	});
+
+	it("header chip rows stay single-line and scroll horizontally", () => {
+		const shell = readFileSync(
+			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
+			"utf8",
+		);
+		const stylesheet = readFileSync(
+			`${APP_PATH.replace("App.tsx", "demos/stylesheet.ts")}`,
+			"utf8",
+		);
+		const block = (name: string): string => {
+			const start = stylesheet.indexOf(`\t${name}: {`);
+			expect(start, `${name} block exists`).toBeGreaterThan(-1);
+			const end = stylesheet.indexOf("\t},", start);
+			return stylesheet.slice(start, end);
+		};
+		// the shared chip-row container never wraps — a wrapped row breaks the
+		// scrolling contract, so overflow must scroll instead.
+		expect(block("picker")).not.toMatch(/flexWrap/);
+		// the theme strip is one non-wrapping line: label + scroll view inline,
+		// and the scroll frame flexes to the remaining width so overflow scrolls
+		// instead of clipping or pushing the row to two lines.
+		expect(block("themeRow")).not.toMatch(/flexWrap/);
+		expect(block("routeBar")).toMatch(/flexGrow: 0/);
+		const pickerUsages = shell.match(/demoStyles\.picker/g) ?? [];
+		expect(pickerUsages).toHaveLength(3);
+		// every picker-backed ScrollView opens horizontal with the indicator
+		// hidden — the opening-tag head of each chunk carries both props
+		const rowChunks = shell
+			.split("<ScrollView")
+			.slice(1)
+			.filter((chunk) => chunk.slice(0, 400).includes("demoStyles.picker"));
+		expect(rowChunks).toHaveLength(3);
+		for (const chunk of rowChunks) {
+			const head = chunk.slice(0, 400);
+			expect(head).toMatch(/horizontal/);
+			expect(head).toMatch(/showsHorizontalScrollIndicator=\{false\}/);
+		}
+		// the app segment separator renders INLINE between the two segments —
+		// a vertical rule inside the same scrolling row, never its own line.
+		expect(block("segmentRule")).toMatch(/width: 1/);
+		const ruleAt = shell.indexOf("demoStyles.segmentRule");
+		expect(ruleAt).toBeGreaterThan(-1);
+		const libEnd = shell.indexOf("App Components", ruleAt);
+		const libStart = shell.lastIndexOf("Components", ruleAt);
+		expect(libStart).toBeGreaterThan(-1);
+		expect(libEnd).toBeGreaterThan(ruleAt);
 	});
 
 	it("end-of-scroll padding extends the scroll content, not the frame", () => {

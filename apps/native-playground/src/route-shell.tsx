@@ -104,7 +104,7 @@ export function RouteShell() {
 				</Text>
 				<ScrollView
 					horizontal
-					style={demoStyles.routeBar}
+					style={demoStyles.themeScroll}
 					contentContainerStyle={[demoStyles.picker, demoStyles.chipRowContent]}
 					showsHorizontalScrollIndicator={false}
 				>
@@ -168,6 +168,10 @@ export function RouteShell() {
 								{groupEntries("library").map(renderGroupChip)}
 							</View>
 						)}
+						{groupEntries("library").length > 0 &&
+							groupEntries("app").length > 0 && (
+								<View style={demoStyles.segmentRule} />
+							)}
 						{groupEntries("app").length > 0 && (
 							<View style={demoStyles.segment}>
 								<Text
@@ -222,7 +226,6 @@ export function RouteShell() {
 						})}
 					</ScrollView>
 				</View>
-				<Text style={demoStyles.current}>Kala UI · Native</Text>
 				<Text style={demoStyles.sectionTitle}>
 					{group.title} · {component.label}
 				</Text>

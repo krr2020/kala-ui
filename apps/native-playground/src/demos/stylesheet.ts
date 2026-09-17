@@ -20,7 +20,7 @@ export const demoStyles = StyleSheet.create((theme) => ({
 	},
 	picker: {
 		flexDirection: "row",
-		flexWrap: "wrap",
+		alignItems: "center",
 		gap: 8,
 	},
 	chip: {
@@ -101,16 +101,20 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		marginHorizontal: -16,
 	},
 	// persistent theme switcher strip under the chip rows — theme-axis
-	// padding mirrors the content inset while staying out of the scroll
+	// padding mirrors the content inset while staying out of the scroll;
+	// one line: the label is fixed and the chip scroll flexes to the
+	// remaining width so overflow scrolls instead of wrapping
 	themeRow: {
 		flexDirection: "row",
 		alignItems: "center",
-		flexWrap: "wrap",
 		gap: 8,
 		paddingHorizontal: 16,
 		paddingTop: 8,
 		paddingBottom: 10,
 		backgroundColor: theme.background,
+	},
+	themeScroll: {
+		flex: 1,
 	},
 	// divider between the group and component rows — explicit themed
 	// hairline so the row tiers read as distinct levels
@@ -139,6 +143,13 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		flexDirection: "row",
 		alignItems: "center",
 		gap: 8,
+	},
+	// vertical rule between the library and app segments — inline child of
+	// the same scrolling row so it never drops to its own line
+	segmentRule: {
+		width: 1,
+		alignSelf: "stretch",
+		backgroundColor: theme.border,
 	},
 	sectionHeader: {
 		paddingVertical: 8,
