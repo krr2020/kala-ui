@@ -53,6 +53,12 @@ describe("card demo ↔ library seam", () => {
 		expect(demo).toMatch(/<CardImageOverlay>/);
 	});
 
+	it("exercises the pressable arm with a tap counter", () => {
+		expect(demo).toMatch(/<Card[\s\S]*?onPress=\{\(\) => setTaps/);
+		expect(demo).toMatch(/accessibilityLabel="Open the notifications card"/);
+		expect(demo).toMatch(/flush\n/);
+	});
+
 	it("wires the loading state through the Card API and shows both cards", () => {
 		expect(demo).toMatch(/<Card isLoading>/);
 		expect(demo).toMatch(/\{!loading && \(/);

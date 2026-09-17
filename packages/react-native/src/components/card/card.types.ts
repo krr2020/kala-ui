@@ -12,9 +12,9 @@ export type CardVariant = "flat" | "elevated" | "outlined";
 export type CardPadding = "none" | "md";
 
 /**
- * Card is a pure surface — it takes no onPress and renders no press
- * feedback. A pressable card composes react-native's Pressable around
- * it, the same way web cards compose a button.
+ * Card is a pure surface by default — no onPress, no press feedback.
+ * Passing onPress turns it into a pressable with button semantics and
+ * a radius-clipped pressed layer, the way web cards compose a button.
  */
 export interface CardProps {
 	children?: ReactNode;
@@ -26,6 +26,12 @@ export interface CardProps {
 	isLoading?: boolean;
 	/** Replaces the generated skeleton entirely. */
 	skeleton?: ReactNode;
+	/** Makes the card pressable with button a11y semantics. */
+	onPress?: () => void;
+	/** Disables the pressable arm; never fires onPress while set. */
+	disabled?: boolean;
+	/** Optional label when the card's content isn't its own description. */
+	accessibilityLabel?: string;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */
@@ -102,6 +108,8 @@ export interface CardImageProps {
 	source: ImageSourcePropType;
 	/** Feeds the accessibility label; RN images have no alt attribute. */
 	alt?: string;
+	/** Rounds only the top corners so media meets following anatomy flush. */
+	flush?: boolean;
 	/** Defaults: width 100%, aspect 16/9, cover. */
 	style?: StyleProp<ImageStyle>;
 	slotStyles?: {

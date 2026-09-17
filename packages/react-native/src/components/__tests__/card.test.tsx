@@ -3,7 +3,9 @@
  * clipping, themed sub-parts, marker palette with graceful theme-key
  * fallback, skeleton loading, and slotStyles precedence.
  */
-import { act, render } from "@testing-library/react-native";
+import { readdirSync, readFileSync } from "node:fs";
+import { join, resolve } from "node:path";
+import { act, fireEvent, render } from "@testing-library/react-native";
 import { StyleSheet } from "react-native";
 import { themes } from "../../themes";
 import { tokens } from "../../tokens";
@@ -20,7 +22,7 @@ import {
 	CardSubtitle,
 	CardTitle,
 } from "../card";
-import { markerColors, withAlpha } from "../card/card.styles";
+import { markerColors, overlayScrim, withAlpha } from "../card/card.styles";
 
 type Screen = Awaited<ReturnType<typeof render>>;
 
@@ -76,14 +78,14 @@ describe("Card variants", () => {
 			</Card>,
 		);
 		expect(Number(flatStyle(screen.getByTestId("k-card")).padding)).toBe(0);
-		expect(
-			Number(flatStyle(screen.getByTestId("k-card-header")).padding),
-		).toBe(tokens.space.cardPad);
+		expect(Number(flatStyle(screen.getByTestId("k-card-header")).padding)).toBe(
+			tokens.space.cardPad,
+		);
 	});
 });
 
 describe("Card media clipping", () => {
-	it("image cards clip via the inner wrapper, never the elevated root", async () => {
+	it("clip radius is owned by flush, not position: unset flush keeps the full radius", async () => {
 		const screen = await screenOf(
 			<Card variant="elevated" padding="none">
 				<CardImage source={{ uri: "https://x.test/a.jpg" }} alt="a" />
@@ -97,11 +99,53 @@ describe("Card media clipping", () => {
 		expect(Number(root.elevation)).toBeGreaterThan(0);
 		expect(root.overflow).not.toBe("hidden");
 		expect(clip.overflow).toBe("hidden");
-		// content follows the image: only the TOP corners round so the
-		// media meets the anatomy flush
+		expect(Number(clip.borderRadius)).toBe(tokens.radius.card);
+		expect(clip.borderTopLeftRadius).toBeUndefined();
+	});
+
+	it("flush=true rounds only the top corners where media meets anatomy", async () => {
+		const screen = await screenOf(
+			<Card variant="elevated" padding="none">
+				<CardImage flush source={{ uri: "https://x.test/a.jpg" }} alt="a" />
+				<CardHeader>
+					<CardTitle>t</CardTitle>
+				</CardHeader>
+			</Card>,
+		);
+		const clip = flatStyle(screen.getByTestId("k-card-clip"));
+		expect(clip.overflow).toBe("hidden");
 		expect(Number(clip.borderTopLeftRadius)).toBe(tokens.radius.card);
 		expect(Number(clip.borderTopRightRadius)).toBe(tokens.radius.card);
 		expect(Number(clip.borderRadius ?? 0)).toBe(0);
+	});
+
+	it("flush wins even when the image is the last child (explicit prop over position)", async () => {
+		const screen = await screenOf(
+			<Card padding="none">
+				<CardHeader>
+					<CardTitle>t</CardTitle>
+				</CardHeader>
+				<CardImage flush source={{ uri: "https://x.test/a.jpg" }} alt="a" />
+			</Card>,
+		);
+		const clip = flatStyle(screen.getByTestId("k-card-clip"));
+		expect(Number(clip.borderTopLeftRadius)).toBe(tokens.radius.card);
+		expect(Number(clip.borderRadius ?? 0)).toBe(0);
+	});
+
+	it("a run of two images takes the FIRST image's flush", async () => {
+		const screen = await screenOf(
+			<Card padding="none">
+				<CardImage source={{ uri: "https://x.test/a.jpg" }} alt="a" />
+				<CardImage flush source={{ uri: "https://x.test/b.jpg" }} alt="b" />
+			</Card>,
+		);
+		const clips = screen.getAllByTestId("k-card-clip");
+		expect(clips.length).toBe(1);
+		expect(clips[0].children.length).toBe(2);
+		// shared clip → one radius; the first media in the run decides
+		expect(Number(flatStyle(clips[0]).borderRadius)).toBe(tokens.radius.card);
+		expect(flatStyle(clips[0]).borderTopLeftRadius).toBeUndefined();
 	});
 
 	it("the clip wrapper wraps only the media, never the anatomy", async () => {
@@ -120,9 +164,9 @@ describe("Card media clipping", () => {
 		// Only the image lives inside the clip wrapper; header/footer stay
 		// siblings so the elevation shadow region is never overflow-clipped.
 		expect(clip.children.length).toBe(1);
-		expect((clip.children[0] as { props: { testID?: string } }).props.testID).toBe(
-			"k-card-image",
-			);
+		expect(
+			(clip.children[0] as { props: { testID?: string } }).props.testID,
+		).toBe("k-card-image");
 		expect(screen.getByTestId("k-card-header")).toBeTruthy();
 		expect(screen.getByTestId("k-card-footer")).toBeTruthy();
 		const footer = flatStyle(screen.getByTestId("k-card-footer"));
@@ -142,11 +186,11 @@ describe("Card media clipping", () => {
 		expect(clips.length).toBe(1);
 		expect(clips[0].children.length).toBe(2);
 		expect(
-				(clips[0].children[0] as { props: { testID?: string } }).props.testID,
-			).toBe("k-card-image");
+			(clips[0].children[0] as { props: { testID?: string } }).props.testID,
+		).toBe("k-card-image");
 		expect(
-				(clips[0].children[1] as { props: { testID?: string } }).props.testID,
-			).toBe("k-card-overlay");
+			(clips[0].children[1] as { props: { testID?: string } }).props.testID,
+		).toBe("k-card-overlay");
 		const overlay = flatStyle(screen.getByTestId("k-card-overlay"));
 		expect(overlay.position).toBe("absolute");
 		// elevated + media + overlay: the root never hides overflow (shadow
@@ -173,20 +217,20 @@ describe("Card media clipping", () => {
 		const clips = screen.getAllByTestId("k-card-clip");
 		expect(clips.length).toBe(1);
 		expect(
-				(clips[0].children[0] as { props: { testID?: string } }).props.testID,
-			).toBe("k-card-image");
+			(clips[0].children[0] as { props: { testID?: string } }).props.testID,
+		).toBe("k-card-image");
 		expect(screen.getByTestId("k-card-header")).toBeTruthy();
 		const overlay = screen.getByTestId("k-card-overlay");
 		const root = screen.getByTestId("k-card");
 		expect(
-				root.children.some(
-					(c) =>
-						typeof c === "object" &&
-						"props" in c &&
-						(c as { props?: { testID?: string } }).props?.testID ===
-							"k-card-overlay",
-				),
-			).toBe(true);
+			root.children.some(
+				(c) =>
+					typeof c === "object" &&
+					"props" in c &&
+					(c as { props?: { testID?: string } }).props?.testID ===
+						"k-card-overlay",
+			),
+		).toBe(true);
 		expect(overlay).toBeTruthy();
 	});
 
@@ -400,27 +444,34 @@ describe("CardImageOverlay", () => {
 });
 
 describe("CardImageOverlay scrim", () => {
-	it("renders a translucent dark scrim and light bare text on any image", async () => {
+	it("derives the scrim from the themed overlay tokens in every theme", () => {
+		// pure mapping helper: light and dark both resolve overlay+alpha
+		for (const theme of [themes.light, themes.dark]) {
+			const scrim = overlayScrim(theme);
+			expect(scrim.backgroundColor).toBe(
+				withAlpha(theme.overlay, theme.overlayAlpha),
+			);
+		}
+	});
+
+	it("renders the themed scrim and light bare text on any image", async () => {
 		const screen = await screenOf(
 			<CardImageOverlay>trail closed</CardImageOverlay>,
 		);
 		const scrim = flatStyle(screen.getByTestId("k-card-overlay-scrim"));
 		expect(scrim.position).toBe("absolute");
-		const bg = String(scrim.backgroundColor);
-		expect(bg).toMatch(/^#000000[0-9a-f]{2}$/i);
-		expect(bg.endsWith("00")).toBe(false);
+		expect(scrim.backgroundColor).toBe(
+			withAlpha(themes.light.overlay, themes.light.overlayAlpha),
+		);
 		const overlay = screen.getByTestId("k-card-overlay");
 		const text = overlay.children.find(
-				(c) =>
-					typeof c === "object" &&
-					"props" in c &&
-					(c as { props?: { children?: unknown } }).props?.children ===
-						"trail closed",
-			) as { props: { style?: unknown } };
-		const ts = StyleSheet.flatten(text.props.style) as Record<
-			string,
-			unknown
-		>;
+			(c) =>
+				typeof c === "object" &&
+				"props" in c &&
+				(c as { props?: { children?: unknown } }).props?.children ===
+					"trail closed",
+		) as { props: { style?: unknown } };
+		const ts = StyleSheet.flatten(text.props.style) as Record<string, unknown>;
 		expect(lower(ts.color)).toBe("#ffffff");
 	});
 
@@ -484,13 +535,14 @@ describe("CardMarker", () => {
 describe("Card slotStyles precedence", () => {
 	it("root slot beats style beats library defaults", async () => {
 		const screen = await screenOf(
-			<Card style={{ borderWidth: 3 }} slotStyles={{ root: { borderWidth: 7 } }}>
+			<Card
+				style={{ borderWidth: 3 }}
+				slotStyles={{ root: { borderWidth: 7 } }}
+			>
 				card
 			</Card>,
 		);
-		expect(
-			Number(flatStyle(screen.getByTestId("k-card")).borderWidth),
-		).toBe(7);
+		expect(Number(flatStyle(screen.getByTestId("k-card")).borderWidth)).toBe(7);
 	});
 
 	it("sub-parts honor style and slotStyles too", async () => {
@@ -521,8 +573,84 @@ describe("withAlpha", () => {
 	});
 });
 
+describe("Card pressable arm", () => {
+	it("with onPress the root is a button-role pressable that fires", async () => {
+		const onPress = jest.fn();
+		const screen = await screenOf(
+			<Card onPress={onPress} accessibilityLabel="open booking">
+				body
+			</Card>,
+		);
+		const card = screen.getByTestId("k-card");
+		expect(card.props.accessibilityRole).toBe("button");
+		expect(card.props.accessibilityLabel).toBe("open booking");
+		await fireEvent.press(card);
+		expect(onPress).toHaveBeenCalledTimes(1);
+	});
+
+	it("disabled pressables expose disabled state and never fire", async () => {
+		const onPress = jest.fn();
+		const screen = await screenOf(
+			<Card onPress={onPress} disabled>
+				body
+			</Card>,
+		);
+		const card = screen.getByTestId("k-card");
+		expect(card.props.accessibilityState).toEqual({ disabled: true });
+		await fireEvent.press(card);
+		expect(onPress).not.toHaveBeenCalled();
+	});
+
+	it("isLoading pressables never fire", async () => {
+		const onPress = jest.fn();
+		const screen = await screenOf(
+			<Card onPress={onPress} isLoading>
+				body
+			</Card>,
+		);
+		await fireEvent.press(screen.getByTestId("k-card"));
+		expect(onPress).not.toHaveBeenCalled();
+	});
+
+	it("press-in shows a themed radius-clipped layer without touching the root surface", async () => {
+		const screen = await screenOf(
+			<Card onPress={() => undefined} variant="elevated" padding="none">
+				<CardImage source={{ uri: "https://x.test/a.jpg" }} alt="a" />
+				<CardHeader>
+					<CardTitle>t</CardTitle>
+				</CardHeader>
+			</Card>,
+		);
+		const card = screen.getByTestId("k-card");
+		const before = flatStyle(card);
+		expect(screen.queryByTestId("k-card-pressed")).toBeNull();
+		await fireEvent(card, "pressIn", { nativeEvent: {} });
+		const layer = flatStyle(screen.getByTestId("k-card-pressed"));
+		expect(layer.position).toBe("absolute");
+		expect(Number(layer.borderRadius)).toBe(tokens.radius.card);
+		expect(layer.backgroundColor).toBe(withAlpha(themes.light.overlay, 0.08));
+		const after = flatStyle(card);
+		expect(after.overflow).not.toBe("hidden");
+		expect(after.elevation).toBe(before.elevation);
+		expect(after.shadowOpacity).toBe(before.shadowOpacity);
+	});
+});
+
+describe("Card token discipline", () => {
+	it("no hardcoded #000000 remains in the card sources", () => {
+		const dir = resolve(__dirname, "../card");
+		for (const file of readdirSync(dir)) {
+			if (!file.endsWith(".tsx") && !file.endsWith(".ts")) continue;
+			const src = readFileSync(join(dir, file), "utf8");
+			expect(`${file}: ${src}`).not.toMatch(
+				/["']#000000["']/i,
+			);
+		}
+	});
+});
+
 describe("Card a11y surface", () => {
-	it("the root is a plain surface, not an accessible element itself", async () => {
+	it("without onPress the root is a plain surface, not accessible itself", async () => {
 		const screen = await screenOf(
 			<Card>
 				<CardTitle>readable</CardTitle>
@@ -530,6 +658,7 @@ describe("Card a11y surface", () => {
 		);
 		const card = screen.getByTestId("k-card");
 		expect(card.props.accessible).not.toBe(true);
+		expect(card.props.accessibilityRole).toBeUndefined();
 		expect(screen.getByText("readable")).toBeTruthy();
 	});
 });

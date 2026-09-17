@@ -9,10 +9,15 @@ import type { CardImageProps } from "./card.types";
 export function CardImage({
 	source,
 	alt,
+	flush,
 	style,
 	slotStyles,
 	testID = "k-card-image",
 }: CardImageProps): ReactElement {
+	// `flush` is consumed by the parent Card's clip logic (groupMedia),
+	// not by the image itself — destructured here so the prop is an
+	// explicit part of the component's signature.
+	void flush;
 	const { theme } = useUnistyles();
 	const [failed, setFailed] = useState(false);
 	const composed = [IMAGE, applySlot(applySlot({}, style), slotStyles?.root)];

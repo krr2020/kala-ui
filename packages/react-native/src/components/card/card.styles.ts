@@ -154,15 +154,30 @@ export const OVERLAY: ViewStyle = {
 	padding: tokens.space.cardPad,
 };
 
-/** Translucent dark backdrop so overlay copy reads on any image. */
-export const OVERLAY_SCRIM: ViewStyle = {
-	position: "absolute",
-	top: 0,
-	bottom: 0,
-	left: 0,
-	right: 0,
-	backgroundColor: withAlpha("#000000", 0.45),
-};
+/** Scrim behind overlay content, from the theme's overlay tokens. */
+export function overlayScrim(theme: KalaTheme): ViewStyle {
+	return {
+		position: "absolute",
+		top: 0,
+		bottom: 0,
+		left: 0,
+		right: 0,
+		backgroundColor: withAlpha(theme.overlay, theme.overlayAlpha),
+	};
+}
+
+/** Pressed layer for the pressable arm — radius matches the surface. */
+export function pressedLayer(theme: KalaTheme): ViewStyle {
+	return {
+		position: "absolute",
+		top: 0,
+		bottom: 0,
+		left: 0,
+		right: 0,
+		borderRadius: tokens.radius.card,
+		backgroundColor: withAlpha(theme.overlay, 0.08),
+	};
+}
 
 /** Overlay text is always light — the scrim behind it is always dark. */
 export function overlayBody(): TextStyle {

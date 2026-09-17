@@ -167,8 +167,9 @@ describe("component app seam", () => {
 		// otp code entry + menu auto-sync/last-action + number-input +
 		// toppings + city + stay date + reminder time +
 		// app chrome tab + route selection (group + component) +
-		// button press counter + card skeleton toggle (card-demo).
-		expect(demoHooks).toBe(33);
+		// button press counter + card skeleton toggle + card press
+		// counter (card-demo).
+		expect(demoHooks).toBe(34);
 	});
 
 	it("registry maps groups to components with dedicated demos and fallbacks", () => {
@@ -422,6 +423,7 @@ describe("component app seam", () => {
 		expect(markerCensus(sources)).toEqual(
 			new Map(
 				Object.entries({
+					'accessibilityLabel="Open the notifications card"': 1,
 					'accessibilityLabel="agree to terms"': 1,
 					'accessibilityLabel="auto sync"': 1,
 					'accessibilityLabel="bold"': 1,

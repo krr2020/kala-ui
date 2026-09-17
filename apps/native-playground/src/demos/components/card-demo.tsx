@@ -39,6 +39,7 @@ function CompoundBlock() {
 		<DemoBlock label="Compound Anatomy">
 			<Card padding="none" variant="elevated">
 				<CardImage
+					flush
 					source={{ uri: "https://picsum.photos/seed/kala-cabin/640/360" }}
 					alt="A cabin above the lake"
 				/>
@@ -99,6 +100,28 @@ function MarkerBlock() {
 	);
 }
 
+function PressableBlock() {
+	const [taps, setTaps] = useState(0);
+	return (
+		<DemoBlock label="Pressable">
+			<Card
+				variant="elevated"
+				onPress={() => setTaps((n) => n + 1)}
+				accessibilityLabel="Open the notifications card"
+			>
+				<CardHeader>
+					<CardTitle>Tap This Card</CardTitle>
+					<CardSubtitle>Opened {taps} times</CardSubtitle>
+				</CardHeader>
+				<CardDescription>
+					The whole surface is the target — press feedback stays inside the
+					radius.
+				</CardDescription>
+			</Card>
+		</DemoBlock>
+	);
+}
+
 function LoadingBlock() {
 	const [loading, setLoading] = useState(true);
 	return (
@@ -132,6 +155,7 @@ export function CardDemo() {
 		>
 			<CardVariantsBlock />
 			<CompoundBlock />
+			<PressableBlock />
 			<MarkerBlock />
 			<LoadingBlock />
 		</ScrollView>

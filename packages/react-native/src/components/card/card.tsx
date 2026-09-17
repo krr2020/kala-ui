@@ -5,13 +5,20 @@
  * shadow or the card anatomy.
  */
 import type { ReactElement, ReactNode } from "react";
-import { Children } from "react";
-import { Text as RNText, View } from "react-native";
+import { Children, useState } from "react";
+import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
 import { hasMediaChild, isMedia } from "./card.shared";
-import { body, CLIP, CLIP_TOP, GAP, surface } from "./card.styles";
-import type { CardProps } from "./card.types";
+import {
+	body,
+	CLIP,
+	CLIP_TOP,
+	GAP,
+	pressedLayer,
+	surface,
+} from "./card.styles";
+import type { CardImageProps, CardProps } from "./card.types";
 import { CardImage } from "./card-image";
 import { CardSkeletonStack } from "./card-skeleton";
 
@@ -19,11 +26,23 @@ import { CardSkeletonStack } from "./card-skeleton";
  * Wrap each run of consecutive media children in its own clip View.
  * A run with no flow-sized media (overlay-only) is emitted unwrapped —
  * a clip View holding only absolutely-positioned children collapses
- * to zero height and would render nothing.
+ * to zero height and would render nothing. Identity checks decide run
+ * membership only; the clip radius comes from the run's FIRST
+ * CardImage `flush` prop, never from sibling position.
  */
 function groupMedia(children: ReactNode): ReactNode {
 	const out: ReactNode[] = [];
 	let run: ReactNode[] = [];
+	const runFlush = (): boolean => {
+		const first = run.find(
+			(child): child is React.ReactElement<CardImageProps> =>
+				!!child &&
+				typeof child === "object" &&
+				"type" in child &&
+				child.type === CardImage,
+		);
+		return !!first && first.props.flush === true;
+	};
 	const flush = () => {
 		if (run.length === 0) return;
 		const sized = run.some(
@@ -35,7 +54,11 @@ function groupMedia(children: ReactNode): ReactNode {
 		);
 		if (sized) {
 			out.push(
-				<View testID="k-card-clip" style={CLIP} key={`clip-${out.length}`}>
+				<View
+					testID="k-card-clip"
+					style={runFlush() ? CLIP_TOP : CLIP}
+					key={`clip-${out.length}`}
+				>
 					{run}
 				</View>,
 			);
@@ -53,29 +76,6 @@ function groupMedia(children: ReactNode): ReactNode {
 		}
 	});
 	flush();
-	// A clip that ends the card keeps its bottom corners rounded; a
-	// clip with anatomy below it goes square so the media meets the next
-	// part flush.
-	const last = out[out.length - 1];
-	const isClip = (node: ReactNode) =>
-		!!node &&
-		typeof node === "object" &&
-		"props" in node &&
-		(node as { props?: { testID?: string } }).props?.testID === "k-card-clip";
-	if (!isClip(last)) {
-		for (let i = 0; i < out.length; i++) {
-			if (isClip(out[i])) {
-				const clipChildren = (
-					out[i] as React.ReactElement<{ children: ReactNode }>
-				).props.children;
-				out[i] = (
-					<View testID="k-card-clip" style={CLIP_TOP} key={`clip-${i}`}>
-						{clipChildren}
-					</View>
-				);
-			}
-		}
-	}
 	return out;
 }
 
@@ -85,11 +85,15 @@ export function Card({
 	padding = "md",
 	isLoading = false,
 	skeleton,
+	onPress,
+	disabled = false,
+	accessibilityLabel,
 	style,
 	slotStyles,
 	testID = "k-card",
 }: CardProps): ReactElement {
 	const { theme } = useUnistyles();
+	const [pressed, setPressed] = useState(false);
 	const content = isLoading ? (skeleton ?? <CardSkeletonStack />) : children;
 	const bare =
 		!isLoading && (typeof content === "string" || typeof content === "number");
@@ -97,16 +101,39 @@ export function Card({
 	const laidOut: ReactNode = hasMediaChild(content)
 		? groupMedia(content)
 		: inner;
+	const surfaceStyle = [
+		surface(theme, variant, padding),
+		{ gap: GAP },
+		applySlot(applySlot({}, style), slotStyles?.root),
+	];
+	if (!onPress) {
+		return (
+			<View testID={testID} style={surfaceStyle}>
+				{laidOut}
+			</View>
+		);
+	}
+	const effectiveDisabled = disabled || isLoading;
 	return (
-		<View
+		<Pressable
 			testID={testID}
-			style={[
-				surface(theme, variant, padding),
-				{ gap: GAP },
-				applySlot(applySlot({}, style), slotStyles?.root),
-			]}
+			onPress={() => {
+				// guarded internally so disabled/loading cards can't fire even
+				// when the host still delivers the event
+				if (!effectiveDisabled) onPress();
+			}}
+			onPressIn={() => setPressed(true)}
+			onPressOut={() => setPressed(false)}
+			accessibilityRole="button"
+			accessibilityLabel={accessibilityLabel}
+			accessibilityState={disabled ? { disabled: true } : undefined}
+			disabled={effectiveDisabled}
+			style={surfaceStyle}
 		>
+			{pressed && !effectiveDisabled && (
+				<View testID="k-card-pressed" style={pressedLayer(theme)} />
+			)}
 			{laidOut}
-		</View>
+		</Pressable>
 	);
 }
