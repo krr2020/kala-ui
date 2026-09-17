@@ -4,9 +4,17 @@ import { Text, View } from "react-native";
 import { DemoBlock } from "../demo-block";
 import { demoStyles } from "../stylesheet";
 
+type TriState = false | true | "indeterminate";
+
 export function CheckboxDemo() {
 	const [agree, setAgree] = useState(false);
 	const [news, setNews] = useState(true);
+	const [bulk, setBulk] = useState<TriState>("indeterminate");
+	const cycle = (checked: boolean): void => {
+		setBulk((prev) =>
+			prev === false ? true : prev === true ? "indeterminate" : checked,
+		);
+	};
 	return (
 		<View testID="k-demo-checkbox" style={demoStyles.routeContent}>
 			<DemoBlock label="With Labels">
@@ -25,11 +33,10 @@ export function CheckboxDemo() {
 				</Text>
 			</DemoBlock>
 			<DemoBlock label="Tri-State">
-				<Checkbox
-					label="Select all rows"
-					value="indeterminate"
-					onValueChange={() => undefined}
-				/>
+				<Checkbox label="Select all rows" value={bulk} onValueChange={cycle} />
+				<Text style={demoStyles.current}>
+					Taps cycle unchecked → checked → indeterminate
+				</Text>
 			</DemoBlock>
 			<DemoBlock label="States">
 				<Checkbox label="Loading preferences" isLoading />
