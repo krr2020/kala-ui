@@ -17,7 +17,7 @@ import { Banner } from "../banner";
 
 import { BUTTON_SPRING, Button } from "../button";
 import { Calendar } from "../calendar";
-import { Card } from "../card";
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardImage, CardMarker, CardSubtitle, CardTitle } from "../card";
 import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Combobox } from "../combobox";
@@ -589,6 +589,33 @@ describe("component markers", () => {
 				child.props.style,
 			) as Record<string, unknown>;
 			expect(String(childStyle.color).startsWith("#")).toBe(true);
+		});
+
+		it("Card compound parts render their k-card-* markers", async () => {
+			const screen = await render(
+				<Card padding="none" variant="elevated">
+					<CardImage source={{ uri: "https://x.test/a.jpg" }} alt="a" />
+					<CardHeader>
+						<CardTitle>title</CardTitle>
+						<CardSubtitle>subtitle</CardSubtitle>
+						<CardDescription>description</CardDescription>
+						<CardAction>act</CardAction>
+					</CardHeader>
+					<CardContent>content</CardContent>
+					<CardFooter>footer</CardFooter>
+					<CardMarker color="primary">new</CardMarker>
+				</Card>,
+			);
+			expect(screen.getByTestId("k-card-clip")).toBeTruthy();
+			expect(screen.getByTestId("k-card-image")).toBeTruthy();
+			expect(screen.getByTestId("k-card-header")).toBeTruthy();
+			expect(screen.getByTestId("k-card-title")).toBeTruthy();
+			expect(screen.getByTestId("k-card-subtitle")).toBeTruthy();
+			expect(screen.getByTestId("k-card-description")).toBeTruthy();
+			expect(screen.getByTestId("k-card-action")).toBeTruthy();
+			expect(screen.getByTestId("k-card-content")).toBeTruthy();
+			expect(screen.getByTestId("k-card-footer")).toBeTruthy();
+			expect(screen.getByTestId("k-card-marker")).toBeTruthy();
 		});
 	});
 

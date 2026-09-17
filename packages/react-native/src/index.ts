@@ -58,8 +58,37 @@ export type {
 	DateRangeValue,
 } from "./components/calendar";
 export { Calendar, CalendarSkeleton } from "./components/calendar";
-export type { CardProps } from "./components/card";
-export { Card } from "./components/card";
+export type {
+	CardActionProps,
+	CardContentProps,
+	CardDescriptionProps,
+	CardFooterProps,
+	CardHeaderProps,
+	CardImageOverlayProps,
+	CardImageProps,
+	CardMarkerColor,
+	CardMarkerPosition,
+	CardMarkerProps,
+	CardMarkerVariant,
+	CardPadding,
+	CardProps,
+	CardSubtitleProps,
+	CardTitleProps,
+	CardVariant,
+} from "./components/card";
+export {
+	Card,
+	CardAction,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardImage,
+	CardImageOverlay,
+	CardMarker,
+	CardSubtitle,
+	CardTitle,
+} from "./components/card";
 export type { CheckboxProps } from "./components/checkbox";
 export { Checkbox } from "./components/checkbox";
 export type {
