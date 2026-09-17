@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { buildMonth, iso } from "../../lib/calendar.utils";
+import { buildMonth, chunk, iso } from "../../lib/calendar.utils";
 import {
 	addMonths,
 	formatMonthYear,
@@ -47,7 +47,6 @@ const MONTHS = [
 ] as const;
 const CELL_SIZE = 36;
 const GRID_GAP = 4;
-const MONTH_OPTION_W = "32%";
 
 /**
  * Calendar: inline month grid. Modes mirror the web component — single
@@ -189,15 +188,14 @@ export function Calendar({
 	};
 
 	const dayStyle = (
-		state: ReturnType<typeof dayState>,
-	): StyleProp<ViewStyle> => [
-		{
-			width: CELL_SIZE,
-			height: CELL_SIZE,
-			borderRadius: 999,
-			alignItems: "center",
-			justifyContent: "center",
-		},
+	state: ReturnType<typeof dayState>,
+): StyleProp<ViewStyle> => [
+	{
+		height: CELL_SIZE,
+		borderRadius: 999,
+		alignItems: "center",
+		justifyContent: "center",
+	},
 		state.selected && {
 			backgroundColor: theme.primary,
 			borderWidth: 0,
@@ -350,17 +348,20 @@ export function Calendar({
 					>
 						{pickerYear}
 					</RNText>
-				<View
-					testID="k-calendar-months"
-					style={{
-						flexDirection: "row",
-						flexWrap: "wrap",
-						width: "100%",
-						justifyContent: "space-between",
-						gap: GRID_GAP,
-					}}
-				>
-					{MONTHS.map((name, m) => {
+			<View
+				testID="k-calendar-months"
+				style={{ gap: GRID_GAP }}
+			>
+				{chunk(
+					MONTHS.map((name, m) => ({ name, m })),
+					3,
+				).map((row, i) => (
+					<View
+						key={row[0].name}
+						testID="k-calendar-month-row"
+						style={{ flexDirection: "row", gap: GRID_GAP }}
+					>
+						{row.map(({ name, m }) => {
 						const selected =
 							m === view.getMonth() && pickerYear === view.getFullYear();
 						const disabled = monthDisabled(m);
@@ -377,8 +378,9 @@ export function Calendar({
 									setPickerOpen(false);
 								}}
 								style={({ pressed }) => ({
-									width: MONTH_OPTION_W,
-								height: CELL_SIZE,
+									flexGrow: 1,
+									flexBasis: 0,
+									height: CELL_SIZE,
 								borderRadius: 999,
 								alignItems: "center",
 								justifyContent: "center",
@@ -397,23 +399,16 @@ export function Calendar({
 							>
 								{name.slice(0, 3)}
 							</RNText>
-							</Pressable>
-						);
-					})}
+								</Pressable>
+								);
+							})}
+						</View>
+					))}
 				</View>
 			</View>
 		) : (
 			<>
-			<View
-				testID="k-calendar-weekdays"
-				style={{
-					flexDirection: "row",
-					flexWrap: "wrap",
-					width: "100%",
-					justifyContent: "space-between",
-					gap: GRID_GAP,
-				}}
-			>
+			<View testID="k-calendar-weekdays" style={{ flexDirection: "row", gap: GRID_GAP }}>
 			{WEEKDAYS.map((day) => (
 				<RNText
 					key={day}
@@ -422,7 +417,8 @@ export function Calendar({
 						color: theme.mutedForeground,
 						fontSize: 12,
 						fontWeight: "600",
-						width: CELL_SIZE,
+						flexGrow: 1,
+						flexBasis: 0,
 						textAlign: "center",
 					}}
 				>
@@ -430,46 +426,49 @@ export function Calendar({
 				</RNText>
 			))}
 			</View>
-			<View
-				testID="k-calendar-grid"
-				style={{
-					flexDirection: "row",
-					flexWrap: "wrap",
-					width: "100%",
-					justifyContent: "space-between",
-					gap: GRID_GAP,
-				}}
-			>
-				{cells.map(({ date, inMonth }) => {
-					const state = dayState(date, inMonth);
-					return (
-						<View key={iso(date)} testID={`k-calendar-cell-${iso(date)}`}>
-							<Pressable
-								testID={`k-calendar-day-${iso(date)}`}
-								accessibilityRole="button"
-								accessibilityLabel={`${date.getDate()} ${formatMonthYear(date)}`}
-								accessibilityState={{
-									disabled: state.disabled,
-									selected: state.selected,
-								}}
-								disabled={state.disabled}
-								onPress={() => inMonth && handleDayPress(date)}
-								style={dayStyle(state)}
+				<View testID="k-calendar-grid" style={{ gap: GRID_GAP }}>
+				{chunk(cells, 7).map((week, w) => (
+					<View
+						key={w}
+						testID="k-calendar-week"
+						style={{ flexDirection: "row", gap: GRID_GAP }}
+					>
+						{week.map(({ date, inMonth }) => {
+						const state = dayState(date, inMonth);
+						return (
+							<View
+								key={iso(date)}
+								testID={`k-calendar-cell-${iso(date)}`}
+								style={{ flexGrow: 1, flexBasis: 0 }}
 							>
-								<RNText
-									style={{
-										color: labelColor(state),
-										fontSize: 14,
-										fontWeight: state.selected ? "600" : "400",
+							<Pressable
+									testID={`k-calendar-day-${iso(date)}`}
+									accessibilityRole="button"
+									accessibilityLabel={`${date.getDate()} ${formatMonthYear(date)}`}
+									accessibilityState={{
+										disabled: state.disabled,
+										selected: state.selected,
 									}}
+									disabled={state.disabled}
+									onPress={() => inMonth && handleDayPress(date)}
+									style={[dayStyle(state), { width: "100%" }]}
 								>
-									{date.getDate()}
-								</RNText>
-							</Pressable>
-						</View>
-					);
-				})}
-			</View>
+								<RNText
+										style={{
+											color: labelColor(state),
+											fontSize: 14,
+											fontWeight: state.selected ? "600" : "400",
+										}}
+									>
+										{date.getDate()}
+									</RNText>
+								</Pressable>
+							</View>
+							);
+						})}
+					</View>
+				))}
+				</View>
 			</>
 		)}
 		</View>

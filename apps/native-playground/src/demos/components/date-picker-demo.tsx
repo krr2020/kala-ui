@@ -9,11 +9,11 @@ export function DatePickerDemo() {
 	return (
 		<View testID="k-demo-date-picker" style={demoStyles.routeContent}>
 			<DemoBlock label="Single Date">
-				<Field label="Check-In" description="any date from today">
+				<Field label="Check-In" description="Any date from today">
 					<DatePicker
 						value={stay}
 						onValueChange={setStay}
-						placeholder="pick a date"
+						placeholder="Pick a date"
 						accessibilityLabel="check-in"
 					/>
 				</Field>
@@ -22,9 +22,9 @@ export function DatePickerDemo() {
 				</Text>
 			</DemoBlock>
 			<DemoBlock label="Date Range">
-				<Field label="Report Window" description="first day to last day">
+				<Field label="Report Window" description="First day to last day">
 					<DateRangePicker
-						placeholder="pick a window"
+						placeholder="Pick a window"
 						accessibilityLabel="report window"
 					/>
 				</Field>
@@ -32,30 +32,30 @@ export function DatePickerDemo() {
 			<DemoBlock label="Sizes">
 				<DatePicker
 					size="sm"
-					placeholder="small"
+					placeholder="Small"
 					accessibilityLabel="small date"
 				/>
 				<DatePicker
 					size="md"
-					placeholder="medium"
+					placeholder="Medium"
 					accessibilityLabel="medium date"
 				/>
 			</DemoBlock>
 			<DemoBlock label="States">
 				<DatePicker
-					placeholder="required"
+					placeholder="Required"
 					accessibilityLabel="error date"
 					hasError
 				/>
 				<DatePicker
-					placeholder="locked"
+					placeholder="Locked"
 					accessibilityLabel="locked date"
 					buttonDisabled
 				/>
 			</DemoBlock>
 			<DemoBlock label="Bounded">
 				<DatePicker
-					placeholder="this week only"
+					placeholder="This week only"
 					accessibilityLabel="bounded date"
 					min={new Date(2026, 8, 21)}
 					max={new Date(2026, 8, 27)}
@@ -64,7 +64,7 @@ export function DatePickerDemo() {
 			<DemoBlock label="Prefilled">
 				<DatePicker
 					defaultValue={new Date(2026, 0, 15)}
-					placeholder="prefilled"
+					placeholder="Prefilled"
 					accessibilityLabel="prefilled date"
 				/>
 			</DemoBlock>

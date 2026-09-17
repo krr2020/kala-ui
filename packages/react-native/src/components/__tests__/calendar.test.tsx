@@ -1,4 +1,5 @@
 import { fireEvent, render } from "@testing-library/react-native";
+import { View } from "react-native";
 import {
 	addMonths,
 	clampTimePart,
@@ -10,6 +11,7 @@ import {
 	monthIsBefore,
 	startOfMonth,
 } from "../../lib/date.utils";
+import { chunk } from "../../lib/calendar.utils";
 import { Calendar, CalendarSkeleton } from "../calendar";
 
 const inclHidden = { includeHiddenElements: true } as const;
@@ -89,6 +91,16 @@ describe("date.utils", () => {
 	it("formatMonthYear renders the header label", () => {
 		expect(formatMonthYear(new Date(2026, 0, 15))).toBe("January 2026");
 		expect(formatMonthYear(new Date(2026, 11, 1))).toBe("December 2026");
+	});
+
+	it("chunk splits into fixed-size rows (even, ragged, empty)", () => {
+		expect(chunk([1, 2, 3, 4, 5, 6, 7], 7)).toEqual([[1, 2, 3, 4, 5, 6, 7]]);
+		expect(chunk(Array.from({ length: 42 }, (_, i) => i), 7)).toHaveLength(6);
+		expect(chunk([1, 2, 3, 4, 5], 3)).toEqual([
+			[1, 2, 3],
+			[4, 5],
+		]);
+		expect(chunk([], 7)).toEqual([]);
 	});
 });
 
@@ -393,41 +405,111 @@ describe("Calendar", () => {
 			).toBe(true);
 		});
 
-		it("all three rows fill the width: 100% + space-between + gap-4", async () => {
+		// TestInstance children include text nodes; only element cells count
+		const weekCells = (week: { children: unknown[] }): number =>
+			week.children.filter(
+				(c) =>
+					!!c &&
+					typeof c === "object" &&
+					typeof (c as { props?: { testID?: string } }).props?.testID ===
+						"string" &&
+					(c as { props: { testID: string } }).props.testID.startsWith(
+						"k-calendar-cell-",
+					),
+			).length;
+
+		it("day grid is week rows of exactly 7 flex columns — no wrap", async () => {
+			// Feb 1 2026 is a Sunday — zero leading blanks
+			const feb: Screen = await render(
+				<Calendar month={new Date(2026, 1, 1)} />,
+			);
+			// Jan 1 2026 is a Thursday — 4 leading blanks
+			const jan: Screen = await render(
+				<Calendar month={new Date(2026, 0, 1)} />,
+			);
+			for (const screen of [feb, jan]) {
+				const weeks = screen.getAllByTestId("k-calendar-week");
+				expect(weeks).toHaveLength(6);
+				for (const week of weeks) {
+					expect(weekCells(week)).toBe(7);
+				}
+				const grid = flatStyle(screen.getByTestId("k-calendar-grid"));
+				expect(grid.flexWrap).toBeUndefined();
+				expect(grid.justifyContent).toBeUndefined();
+			}
+			const wrapper = flatStyle(jan.getByTestId("k-calendar-cell-2026-01-15"));
+			expect(wrapper.flexGrow).toBe(1);
+			expect(wrapper.flexBasis).toBe(0);
+			const day = flatStyle(jan.getByTestId("k-calendar-day-2026-01-15"));
+			expect(day.width).toBe("100%");
+			expect(day.height).toBe(36);
+			expect(jan.getAllByTestId(/^k-calendar-cell-/).length).toBe(42);
+		});
+
+		it("weekday header uses the same 7-column flex math", async () => {
 			const screen: Screen = await render(
 				<Calendar month={new Date(2026, 1, 1)} />,
 			);
-			const weekdays = flatStyle(screen.getByTestId("k-calendar-weekdays"));
-			expect(weekdays.width).toBe("100%");
-			expect(weekdays.justifyContent).toBe("space-between");
-			expect(weekdays.gap).toBe(4);
-			const grid = flatStyle(screen.getByTestId("k-calendar-grid"));
-			expect(grid.width).toBe("100%");
-			expect(grid.justifyContent).toBe("space-between");
-			expect(grid.gap).toBe(4);
-			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
-			const months = flatStyle(screen.getByTestId("k-calendar-months"));
-			expect(months.width).toBe("100%");
-			expect(months.justifyContent).toBe("space-between");
-			expect(months.gap).toBe(4);
-			expect(
-				flatStyle(screen.getByTestId("k-calendar-month-option-0")).width,
-			).toBe("32%");
+			const header = flatStyle(screen.getByTestId("k-calendar-weekdays"));
+			expect(header.flexWrap).toBeUndefined();
+			for (const day of screen.getAllByTestId("k-calendar-weekday")) {
+				const style = flatStyle(day);
+				expect(style.flexGrow).toBe(1);
+				expect(style.flexBasis).toBe(0);
+				expect(style.textAlign).toBe("center");
+				expect(style.width).toBeUndefined();
+			}
 		});
 
-		it("day and weekday cells are fixed CELL_SIZE columns", async () => {
-			// Jan 1 2026 is a Thursday — mid-week start exercises the blanks
+		it("leading and trailing blanks fill columns and stay inert", async () => {
 			const screen: Screen = await render(
 				<Calendar month={new Date(2026, 0, 1)} />,
 			);
+			const leading = flatStyle(screen.getByTestId("k-calendar-cell-2025-12-28"));
+			expect(leading.flexGrow).toBe(1);
 			expect(
-				flatStyle(screen.getAllByTestId("k-calendar-weekday")[0]).width,
-			).toBe(36);
-			expect(
-				flatStyle(screen.getByTestId("k-calendar-day-2026-01-01")).width,
-			).toBe(36);
-			// 42 cells = 6 full rows of 7 regardless of month start offset
-			expect(screen.getAllByTestId(/^k-calendar-cell-/).length).toBe(42);
+				screen.getByTestId("k-calendar-day-2025-12-28").props.accessibilityState
+					?.disabled,
+			).toBe(true);
+		});
+
+		it("week rows stay 7 columns inside a narrow container", async () => {
+			const screen: Screen = await render(
+				<View style={{ width: 200 }}>
+				<Calendar month={new Date(2026, 1, 1)} />
+			</View>,
+			);
+			for (const week of screen.getAllByTestId("k-calendar-week")) {
+				expect(weekCells(week)).toBe(7);
+			}
+		});
+
+		it("month picker is 4 rows of 3 flex columns", async () => {
+			const screen: Screen = await render(
+				<Calendar month={new Date(2026, 1, 1)} />,
+			);
+			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
+			const rows = screen.getAllByTestId("k-calendar-month-row");
+			expect(rows).toHaveLength(4);
+			for (const row of rows) {
+				const options = row.children.filter(
+					(c) =>
+						!!c &&
+						typeof c === "object" &&
+						typeof (c as { props?: { testID?: string } }).props?.testID ===
+							"string" &&
+						(c as { props: { testID: string } }).props.testID.startsWith(
+							"k-calendar-month-option-",
+					),
+				);
+				expect(options).toHaveLength(3);
+				for (const option of options) {
+					const style = flatStyle(option as unknown as { props: { style?: unknown } });
+					expect(style.flexGrow).toBe(1);
+					expect(style.flexBasis).toBe(0);
+					expect(style.width).toBeUndefined();
+				}
+			}
 		});
 
 		it("pressing an out-of-window month option is inert", async () => {

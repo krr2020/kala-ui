@@ -9,6 +9,15 @@ export const iso = (d: Date): string =>
 		d.getDate(),
 	).padStart(2, "0")}`;
 
+/** Split items into fixed-size rows; the last row may be short. */
+export function chunk<T>(items: T[], size: number): T[][] {
+	const rows: T[][] = [];
+	for (let i = 0; i < items.length; i += size) {
+		rows.push(items.slice(i, i + size));
+	}
+	return rows;
+}
+
 /** 42 cells: leading days of the previous month, this month, trailing next. */
 export function buildMonth(view: Date): { date: Date; inMonth: boolean }[] {
 	const year = view.getFullYear();
