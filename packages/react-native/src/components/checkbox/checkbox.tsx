@@ -57,7 +57,7 @@ export function Checkbox({
 				applySlot(applySlot([], style), slotStyles?.root),
 			]}
 		>
-				<View testID="k-checkbox-wrap" style={{ alignSelf: "flex-start" }}>
+				<View testID="k-checkbox-wrap">
 					<View
 						testID="k-checkbox-box"
 						style={[boxStyle(theme, active), slotStyles?.box]}
