@@ -111,4 +111,8 @@ export const popoverStyles = {
 		},
 		defaultVariants: {},
 	},
+	body: {
+		base: "text-sm",
+		padded: "p-4",
+	},
 } as const;

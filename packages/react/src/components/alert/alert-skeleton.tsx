@@ -17,6 +17,10 @@ export interface AlertSkeletonProps extends AlertSkeletonConfig {
 	 */
 	className?: string;
 	/**
+	 * Inline style for the skeleton container
+	 */
+	style?: React.CSSProperties;
+	/**
 	 * Test ID for querying the element
 	 */
 	"data-testid"?: string;
@@ -37,6 +41,7 @@ export function AlertSkeleton({
 	color = "primary",
 	showIcon = true,
 	className,
+	style,
 	"data-testid": dataTestId,
 }: AlertSkeletonProps) {
 	return (
@@ -44,6 +49,7 @@ export function AlertSkeleton({
 			data-kala-component="alert-skeleton"
 			data-testid={dataTestId || "alert-skeleton"}
 			role="alert"
+			style={style}
 			className={cn(
 				alertStyles.base,
 				alertStyles.compoundVariants?.find(

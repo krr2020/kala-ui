@@ -1,4 +1,5 @@
 import type * as React from "react";
+import type { SlotStyles } from "../../lib/slot-styles";
 
 export interface NumberInputProps
 	extends Omit<
@@ -23,4 +24,6 @@ export interface NumberInputProps
 	hasError?: boolean;
 	/** Show loading skeleton */
 	isLoading?: boolean;
+	/** Per-part overrides: `root` wins over `className`/`style` in every arm; `increment`/`decrement` target the stepper buttons, `divider` their inner borders. */
+	slotStyles?: SlotStyles;
 }

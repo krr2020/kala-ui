@@ -1,4 +1,6 @@
 export { cn } from "./lib/utils";
+export { applySlot, mergeStyle } from "./lib/slot-styles";
+export type { AppliedSlot, SlotStyle, SlotStyles } from "./lib/slot-styles";
 
 // Main entry point for @kala-ui/react
 // Export all components

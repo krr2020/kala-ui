@@ -1,5 +1,6 @@
 import type * as React from "react";
 import { cardStyles } from "../../config/card";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
 import { Heading } from "../heading";
@@ -11,24 +12,31 @@ export interface CardProps extends React.ComponentProps<"div"> {
 	isLoading?: boolean;
 	skeletonConfig?: CardSkeletonConfig;
 	skeleton?: React.ReactNode;
+	/** Per-part overrides: `root` wins over the legacy `className`/`style` props, in every render arm. */
+	slotStyles?: SlotStyles;
 }
 
 function Card({
 	ref,
 	className,
+	style,
+	slotStyles,
 	isLoading = false,
 	skeletonConfig,
 	skeleton,
 	children,
 	...props
 }: CardProps) {
+	const root = applySlot(cn(cardStyles.base, className), slotStyles?.root);
+	const rootStyle = mergeStyle(style, root.style);
 	if (isLoading) {
 		if (skeleton) {
 			return (
 				<Box
 					data-kala-component="card"
 					ref={ref}
-					className={cn(cardStyles.base, className)}
+					style={rootStyle}
+					className={root.className}
 				>
 					{skeleton}
 				</Box>
@@ -41,7 +49,8 @@ function Card({
 		<Box
 			data-kala-component="card"
 			ref={ref}
-			className={cn(cardStyles.base, className)}
+				className={root.className}
+			style={rootStyle}
 			{...props}
 		>
 			{children}
@@ -49,11 +58,18 @@ function Card({
 	);
 }
 
-function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
+function CardHeader({
+	className,
+	style,
+	slotStyles,
+	...props
+}: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const root = applySlot(cn(cardStyles.header, className), slotStyles?.root);
 	return (
 		<Box
 			data-kala-component="card-header"
-			className={cn(cardStyles.header, className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);
@@ -61,14 +77,18 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
 
 function CardTitle({
 	className,
+	style,
+	slotStyles,
 	...props
-}: React.HTMLAttributes<HTMLHeadingElement>) {
+}: React.HTMLAttributes<HTMLHeadingElement> & { slotStyles?: SlotStyles }) {
+	const root = applySlot(cn(cardStyles.title, className), slotStyles?.root);
 	return (
 		<Heading
 			data-kala-component="card-title"
 			as="h5"
 			size="h6"
-			className={cn(cardStyles.title, className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);
@@ -76,13 +96,17 @@ function CardTitle({
 
 function CardSubtitle({
 	className,
+	style,
+	slotStyles,
 	...props
-}: React.HTMLAttributes<HTMLHeadingElement>) {
+}: React.HTMLAttributes<HTMLHeadingElement> & { slotStyles?: SlotStyles }) {
+	const root = applySlot(cn(cardStyles.subtitle, className), slotStyles?.root);
 	return (
 		<Heading
 			data-kala-component="card-subtitle"
 			as="h6"
-			className={cn(cardStyles.subtitle, className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);
@@ -90,42 +114,70 @@ function CardSubtitle({
 
 function CardDescription({
 	className,
+	style,
+	slotStyles,
 	...props
-}: Omit<React.ComponentProps<"p">, "color">) {
+}: Omit<React.ComponentProps<"p">, "color"> & { slotStyles?: SlotStyles }) {
+	const root = applySlot(
+		cn(cardStyles.description, className),
+		slotStyles?.root,
+	);
 	return (
 		<Text
 			data-kala-component="card-description"
-			className={cn(cardStyles.description, className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);
 }
 
-function CardAction({ className, ...props }: React.ComponentProps<"div">) {
+function CardAction({
+	className,
+	style,
+	slotStyles,
+	...props
+}: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const root = applySlot(cn("ml-auto", className), slotStyles?.root);
 	return (
 		<Box
 			data-kala-component="card-action"
-			className={cn("ml-auto", className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);
 }
 
-function CardContent({ className, ...props }: React.ComponentProps<"div">) {
+function CardContent({
+	className,
+	style,
+	slotStyles,
+	...props
+}: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const root = applySlot(cn(cardStyles.content, className), slotStyles?.root);
 	return (
 		<Box
 			data-kala-component="card-content"
-			className={cn(cardStyles.content, className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);
 }
 
-function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
+function CardFooter({
+	className,
+	style,
+	slotStyles,
+	...props
+}: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const root = applySlot(cn(cardStyles.footer, className), slotStyles?.root);
 	return (
 		<Box
 			data-kala-component="card-footer"
-			className={cn(cardStyles.footer, className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);

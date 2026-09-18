@@ -1,0 +1,1046 @@
+/**
+ * Web slotStyles contract: every component accepts `slotStyles={{ root,
+ * <part> }}`. Strings merge as Tailwind classes (slot last, so slots win on
+ * conflict), objects merge as inline style (slot keys win). Precedence is
+ * uniform: library defaults → legacy className/style → slotStyles.<part>.
+ */
+import fs from "node:fs";
+import { fileURLToPath } from "node:url";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+
+import { Alert } from "../components/alert";
+import { Badge } from "../components/badge";
+import { Button } from "../components/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/card";
+import {
+	Dialog,
+	DialogBody,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from "../components/dialog";
+import { Input } from "../components/input";
+import { Tag } from "../components/tag";
+import {
+	DatePicker,
+	DateRangePicker,
+} from "../components/date-picker";
+import { FileUpload } from "../components/file-upload";
+import { NumberInput } from "../components/number-input";
+import { TagInput } from "../components/tag-input";
+import { TimePicker } from "../components/time-picker";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "../components/select";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/tooltip";
+import { Popover, PopoverBody, PopoverContent, PopoverTrigger } from "../components/popover";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../components/dropdown-menu";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/tabs";
+import { Banner } from "../components/banner";
+import { AvatarGroup } from "../components/avatar-group";
+import { Progress } from "../components/progress";
+import { EmptyState } from "../components/empty-state";
+import { applySlot, mergeStyle } from "../lib/slot-styles";
+
+describe("applySlot / mergeStyle units", () => {
+	it("undefined and null slot keep the base untouched with no style", () => {
+		expect(applySlot("p-2 m-4", undefined)).toEqual({
+			className: "p-2 m-4",
+		});
+		expect(applySlot("p-2", null)).toEqual({ className: "p-2" });
+	});
+
+	it("string slot is appended after the base and wins on conflict", () => {
+		const { className, style } = applySlot("p-2 text-sm", "p-6");
+		expect(className).toBe("text-sm p-6");
+		expect(style).toBeUndefined();
+	});
+
+	it("object slot becomes inline style, classes untouched", () => {
+		const { className, style } = applySlot("p-2", { marginTop: 4 });
+		expect(className).toBe("p-2");
+		expect(style).toEqual({ marginTop: 4 });
+	});
+
+	it("mergeStyle: slot wins per key, disjoint keys merge, empty stays empty", () => {
+		expect(mergeStyle({ marginTop: 1 }, { marginTop: 2, marginLeft: 3 })).toEqual(
+			{ marginTop: 2, marginLeft: 3 },
+		);
+		expect(mergeStyle(undefined, undefined)).toBeUndefined();
+		expect(mergeStyle({ marginTop: 1 }, undefined)).toEqual({ marginTop: 1 });
+	});
+
+	it("mixed channels coexist: slot string + user style object, slot object + user className", () => {
+		const root = applySlot("p-2", "p-6");
+		const style = mergeStyle({ color: "red" }, root.style);
+		expect(root.className).toBe("p-6");
+		expect(style).toEqual({ color: "red" });
+
+		const obj = applySlot("p-2", { color: "blue" });
+		expect(obj.className).toBe("p-2");
+		expect(mergeStyle({ color: "red" }, obj.style)).toEqual({ color: "blue" });
+	});
+});
+
+describe("Button slotStyles", () => {
+	it("root slot beats legacy className on a conflicting utility", () => {
+		render(
+			<Button className="p-2" slotStyles={{ root: "p-6" }}>
+				Go
+			</Button>,
+		);
+		const btn = screen.getByRole("button");
+		expect(btn).toHaveClass("p-6");
+		expect(btn).not.toHaveClass("p-2");
+	});
+
+	it("object root slot lands as inline style above the spread style prop", () => {
+		render(
+			<Button style={{ marginTop: 1 }} slotStyles={{ root: { marginTop: 9 } }}>
+				Go
+			</Button>,
+		);
+		expect(screen.getByRole("button").style.marginTop).toBe("9px");
+	});
+
+	it("spinner slot reaches the loading icon", () => {
+		render(
+			<Button isLoading slotStyles={{ spinner: "my-spin" }}>
+				Go
+			</Button>,
+		);
+		const svg = screen.getByRole("button").querySelector("svg");
+		expect(svg).toHaveClass("my-spin");
+	});
+
+	it("absent slotStyles renders the exact pre-change class string", () => {
+		render(<Button>Go</Button>);
+		expect(screen.getByRole("button").className).toBe(
+			"cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--kala-radius-control)] text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed kala-focus-ring kala-touch h-[var(--kala-control-h)] px-[var(--kala-control-px)] py-2 bg-primary text-primary-foreground hover:bg-primary/90",
+		);
+	});
+});
+
+describe("Alert slotStyles", () => {
+	it("icon and dismiss slots reach their nodes", () => {
+		render(
+			<Alert dismissable slotStyles={{ icon: "my-icon", dismiss: "my-dismiss" }}>
+				x
+			</Alert>,
+		);
+		const root = screen.getByRole("alert");
+		expect(root.querySelector("svg")).toHaveClass("my-icon");
+		expect(screen.getByLabelText("Dismiss alert")).toHaveClass("my-dismiss");
+	});
+
+	it("root slot beats legacy className", () => {
+		render(
+			<Alert className="p-2" slotStyles={{ root: "p-6" }}>
+				x
+			</Alert>,
+		);
+		expect(screen.getByRole("alert")).toHaveClass("p-6");
+		expect(screen.getByRole("alert")).not.toHaveClass("p-2");
+	});
+
+	it("skeleton arm keeps slotStyles.root", () => {
+		const { container } = render(
+			<Alert isLoading slotStyles={{ root: "my-w-64" }}>
+				x
+			</Alert>,
+		);
+		expect(
+			container.querySelector('[data-kala-component="alert-skeleton"]'),
+		).toHaveClass("my-w-64");
+	});
+
+	it("absent slotStyles renders the exact pre-change class string", () => {
+		const { container } = render(
+			<Alert variant="subtle" color="primary">
+				x
+			</Alert>,
+		);
+		expect(
+			container.querySelector('[data-kala-component="alert"]')?.className,
+		).toBe(
+			"relative w-full rounded-lg px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 border bg-primary/10 border-primary/20 text-primary [&>svg]:text-primary",
+		);
+	});
+});
+
+describe("Badge slotStyles", () => {
+	it("root slot beats legacy className on the loaded arm", () => {
+		render(
+			<span data-testid="holder">
+				<Badge className="w-10" slotStyles={{ root: "w-64" }}>
+					x
+				</Badge>
+			</span>,
+		);
+		const badge = screen
+			.getByTestId("holder")
+			.querySelector('[data-slot="badge"]');
+		expect(badge).toHaveClass("w-64");
+		expect(badge).not.toHaveClass("w-10");
+	});
+
+	it("skeleton arm keeps slotStyles.root", () => {
+		const { container } = render(
+			<Badge isLoading slotStyles={{ root: "my-w-64" }}>
+				x
+			</Badge>,
+		);
+		expect(container.querySelector('[data-kala-component="badge"]')).toHaveClass(
+			"my-w-64",
+		);
+	});
+});
+
+describe("Tag slotStyles", () => {
+	it("icon wrapper and remove button slots reach their nodes", () => {
+		render(
+			<Tag
+				icon={<span data-testid="tag-icon" />}
+				onRemove={() => {}}
+				slotStyles={{ icon: "my-ico", remove: "my-rm" }}
+			>
+				x
+			</Tag>,
+		);
+		expect(screen.getByTestId("tag-icon").parentElement).toHaveClass("my-ico");
+		expect(screen.getByLabelText("Remove")).toHaveClass("my-rm");
+	});
+
+	it("root slot beats legacy className", () => {
+		const { container } = render(
+			<Tag className="w-10" slotStyles={{ root: "w-64" }}>
+				x
+			</Tag>,
+		);
+		const tag = container.querySelector('[data-slot="tag"]');
+		expect(tag).toHaveClass("w-64");
+		expect(tag).not.toHaveClass("w-10");
+	});
+});
+
+describe("Input slotStyles", () => {
+	it("root slot beats legacy className", () => {
+		render(<Input className="p-2" slotStyles={{ root: "p-6" }} />);
+		const input = screen.getByRole("textbox");
+		expect(input).toHaveClass("p-6");
+		expect(input).not.toHaveClass("p-2");
+	});
+
+	it("skeleton arm keeps slotStyles.root", () => {
+		const { container } = render(
+			<Input isLoading slotStyles={{ root: "my-w-64" }} />,
+		);
+		expect(container.querySelector('[data-kala-component="input"]')).toHaveClass(
+			"my-w-64",
+		);
+	});
+
+	it("absent slotStyles renders the exact pre-change class string", () => {
+		render(<Input />);
+		expect(screen.getByRole("textbox").className).toBe(
+			"cursor-text flex h-[var(--kala-control-h)] w-full rounded-[var(--kala-radius-input,var(--kala-radius-control))] border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 kala-focus-ring kala-surface-input file:mr-3 file:py-1 file:px-2 file:rounded-sm file:border-0 file:text-xs file:font-medium file:bg-muted file:text-muted-foreground hover:file:bg-accent",
+		);
+	});
+});
+
+describe("Card slotStyles", () => {
+	it("card root and compound part roots accept slotStyles", () => {
+		const { container } = render(
+			<Card className="w-10" slotStyles={{ root: "w-64" }}>
+				<CardHeader slotStyles={{ root: "my-hd" }}>
+					<CardTitle slotStyles={{ root: "my-ti" }}>T</CardTitle>
+					<CardDescription slotStyles={{ root: "my-de" }}>D</CardDescription>
+				</CardHeader>
+				<CardContent slotStyles={{ root: "my-ct" }}>C</CardContent>
+				<CardFooter slotStyles={{ root: "my-ft" }}>F</CardFooter>
+			</Card>,
+		);
+		const q = (name: string) =>
+			container.querySelector(`[data-kala-component="${name}"]`);
+		expect(q("card")).toHaveClass("w-64");
+		expect(q("card")).not.toHaveClass("w-10");
+		expect(q("card-header")).toHaveClass("my-hd");
+		expect(q("card-title")).toHaveClass("my-ti");
+		expect(q("card-description")).toHaveClass("my-de");
+		expect(q("card-content")).toHaveClass("my-ct");
+		expect(q("card-footer")).toHaveClass("my-ft");
+	});
+});
+
+describe("Dialog slotStyles", () => {
+	it("content root slot beats legacy className, close and closeIcon slots reach their nodes", () => {
+		render(
+			<Dialog open>
+				<DialogContent
+					className="p-2"
+					slotStyles={{
+						root: "p-6",
+						close: "my-close",
+						closeIcon: "my-x",
+						overlay: "my-ov",
+					}}
+				>
+					x
+				</DialogContent>
+			</Dialog>,
+		);
+		const content = document.body.querySelector('[data-slot="dialog-content"]');
+		expect(content).toHaveClass("p-6");
+		expect(content).not.toHaveClass("p-2");
+		expect(document.body.querySelector('[data-slot="dialog-close"]')).toHaveClass(
+			"my-close",
+		);
+		expect(
+			document.body.querySelector('[data-slot="dialog-close"]')?.querySelector("svg"),
+		).toHaveClass("my-x");
+		expect(
+			document.body.querySelector('[data-slot="dialog-overlay"]'),
+		).toHaveClass("my-ov");
+	});
+
+	it("header, body, title, description, footer each take their own root slot", () => {
+		render(
+			<Dialog open>
+				<DialogContent showCloseButton={false}>
+					<DialogHeader slotStyles={{ root: "my-hd" }}>
+						<DialogTitle slotStyles={{ root: "my-ti" }}>T</DialogTitle>
+						<DialogDescription slotStyles={{ root: "my-de" }}>
+							D
+						</DialogDescription>
+					</DialogHeader>
+					<DialogBody slotStyles={{ root: "my-bd" }}>B</DialogBody>
+					<DialogFooter slotStyles={{ root: "my-ft" }}>F</DialogFooter>
+				</DialogContent>
+			</Dialog>,
+		);
+		const q = (slot: string) =>
+			document.body.querySelector(`[data-slot="dialog-${slot}"]`);
+		expect(q("header")).toHaveClass("my-hd");
+		expect(q("title")).toHaveClass("my-ti");
+		expect(q("description")).toHaveClass("my-de");
+		expect(q("body")).toHaveClass("my-bd");
+		expect(q("footer")).toHaveClass("my-ft");
+	});
+});
+
+describe("NumberInput slotStyles", () => {
+	it("increment, decrement and divider slots reach the stepper chrome", () => {
+		render(
+			<NumberInput
+				slotStyles={{
+					increment: "my-inc",
+					decrement: "my-dec",
+					divider: "border-red-500",
+				}}
+			/>,
+		);
+		expect(screen.getByLabelText("Increase value")).toHaveClass("my-inc");
+		expect(screen.getByLabelText("Decrease value")).toHaveClass("my-dec");
+		expect(screen.getByLabelText("Increase value")).toHaveClass(
+			"border-red-500",
+		);
+		expect(screen.getByLabelText("Decrease value")).toHaveClass(
+			"border-red-500",
+		);
+	});
+
+	it("root slot beats legacy className and survives the skeleton arm", () => {
+		const { container, rerender } = render(
+			<NumberInput className="w-10" slotStyles={{ root: "w-64" }} />,
+		);
+		const root = container.querySelector('[data-slot="number-input"]');
+		expect(root).toHaveClass("w-64");
+		expect(root).not.toHaveClass("w-10");
+		rerender(<NumberInput isLoading slotStyles={{ root: "w-64" }} />);
+		expect(
+			container.querySelector('[data-kala-component="number-input"]'),
+		).toHaveClass("w-64");
+	});
+});
+
+describe("TagInput slotStyles", () => {
+	it("tag, remove and clear slots reach their nodes", () => {
+		render(
+			<TagInput
+				defaultValue={["a", "b"]}
+				slotStyles={{ tag: "my-tag", remove: "my-rm", clear: "my-cl" }}
+			/>,
+		);
+		const tags = document.body.querySelectorAll('[data-slot="badge"]');
+		expect(tags.length).toBe(2);
+		expect(tags[0]).toHaveClass("my-tag");
+		expect(screen.getByLabelText("Remove a")).toHaveClass("my-rm");
+		expect(screen.getByLabelText("Clear all tags")).toHaveClass("my-cl");
+	});
+
+	it("root slot beats legacy className on the chip container", () => {
+		const { container } = render(
+			<TagInput className="w-10" slotStyles={{ root: "w-64" }} />,
+		);
+		const chip = container.querySelector(".kala-surface-input");
+		expect(chip).toHaveClass("w-64");
+		expect(chip).not.toHaveClass("w-10");
+	});
+});
+
+describe("TimePicker slotStyles", () => {
+	it("hour, minute, second and colon slots reach their columns", () => {
+		const { container } = render(
+			<TimePicker showSeconds slotStyles={{
+				hour: "my-h",
+				minute: "my-m",
+				second: "my-s",
+				colon: "my-c",
+			}} />,
+		);
+		const cols = container.querySelectorAll(
+			'[data-kala-component="time-picker-time-column"]',
+		);
+		expect(cols.length).toBe(3);
+		expect(cols[0]).toHaveClass("my-h");
+		expect(cols[1]).toHaveClass("my-m");
+		expect(cols[2]).toHaveClass("my-s");
+		const colons = container.querySelectorAll('[data-slot="time-picker-colon"]');
+		expect(colons.length).toBe(2);
+		expect(colons[0]).toHaveClass("my-c");
+	});
+
+	it("root slot beats legacy className and survives the skeleton arm", () => {
+		const { container, rerender } = render(
+			<TimePicker className="w-10" slotStyles={{ root: "w-64" }} />,
+		);
+		expect(container.querySelector('[data-slot="time-picker"]')).toHaveClass(
+			"w-64",
+		);
+		rerender(<TimePicker isLoading slotStyles={{ root: "w-64" }} />);
+		expect(
+			container.querySelector('[data-kala-component="time-picker"]'),
+		).toHaveClass("w-64");
+	});
+});
+
+describe("DatePicker slotStyles", () => {
+	it("icon slot reaches the calendar glyph; root beats buttonClassName", () => {
+		const { container } = render(
+			<DatePicker buttonClassName="w-10" slotStyles={{ root: "w-64", icon: "my-ic" }} />,
+		);
+		const button = container.querySelector("button");
+		expect(button).toHaveClass("w-64");
+		expect(button).not.toHaveClass("w-10");
+		expect(button?.querySelector("svg")).toHaveClass("my-ic");
+	});
+
+	it("loading arms keep slotStyles.root on both pickers", () => {
+		const { container, rerender } = render(
+			<DatePicker isLoading slotStyles={{ root: "w-64" }} />,
+		);
+		expect(
+			container.querySelector('[data-kala-component="date-picker"]'),
+		).toHaveClass("w-64");
+		rerender(
+			<DateRangePicker isLoading slotStyles={{ root: "w-64" }} />,
+		);
+		expect(
+			container.querySelector(
+				'[data-kala-component="date-picker-date-range-picker"]',
+			),
+		).toHaveClass("w-64");
+	});
+});
+
+describe("FileUpload slotStyles", () => {
+	it("icon slot reaches the dropzone icon circle; root beats legacy className", () => {
+		const { container } = render(
+			<FileUpload className="w-10" slotStyles={{ root: "w-64", icon: "my-ic" }} />,
+		);
+		const root = container.querySelector('[data-kala-component="file-upload"]');
+		expect(root).toHaveClass("w-64");
+		expect(root).not.toHaveClass("w-10");
+		expect(container.querySelector("svg")?.parentElement).toHaveClass("my-ic");
+	});
+});
+
+describe("TimePicker structure", () => {
+	it("renders columns in HH : MM order with one separator and no seconds column by default", () => {
+		const { container } = render(<TimePicker />);
+		const labels = Array.from(
+			container.querySelectorAll(
+				'[data-kala-component="time-picker-time-column"] > span',
+			),
+		).map((el) => el.textContent);
+		expect(labels).toEqual(["HH", "MM"]);
+		expect(
+			container.querySelectorAll('[data-slot="time-picker-colon"]').length,
+		).toBe(1);
+	});
+
+	it("keeps HH : MM : SS order with two separators and slots landing on each column", () => {
+		const { container } = render(
+			<TimePicker
+				showSeconds
+				slotStyles={{ hour: "my-h", minute: "my-m", second: "my-s", colon: "my-c" }}
+			/>,
+		);
+		const cols = container.querySelectorAll(
+			'[data-kala-component="time-picker-time-column"]',
+		);
+		const labels = Array.from(cols).map((c) => c.querySelector("span")?.textContent);
+		expect(labels).toEqual(["HH", "MM", "SS"]);
+		const colons = container.querySelectorAll('[data-slot="time-picker-colon"]');
+		expect(colons.length).toBe(2);
+		expect(colons[0].nextElementSibling).toBe(cols[1]);
+		expect(colons[1].nextElementSibling).toBe(cols[2]);
+		expect(cols[0]).toHaveClass("my-h");
+		expect(cols[1]).toHaveClass("my-m");
+		expect(cols[2]).toHaveClass("my-s");
+		expect(colons[0]).toHaveClass("my-c");
+	});
+
+	it("hourCycle=12 appends the AM/PM toggle after the minute column", () => {
+		const { container } = render(<TimePicker hourCycle={12} />);
+		const cols = container.querySelectorAll(
+			'[data-kala-component="time-picker-time-column"]',
+		);
+		const periodButtons = container.querySelectorAll("button[aria-pressed]");
+		expect(periodButtons.length).toBe(2);
+		expect(periodButtons[0].textContent).toBe("AM");
+		expect(periodButtons[1].textContent).toBe("PM");
+		expect(cols[1].nextElementSibling?.querySelector("button[aria-pressed]")).toBe(
+			periodButtons[0] as HTMLButtonElement,
+		);
+	});
+});
+
+describe("Select slotStyles", () => {
+it("chevron slot beats its config base and reaches the glyph", () => {
+	render(
+		<Select defaultValue="a">
+			<SelectTrigger slotStyles={{ chevron: "my-chev size-8" }}>pick</SelectTrigger>
+		</Select>,
+	);
+		const chevron = screen.getByRole("combobox").querySelector("svg");
+		expect(chevron).toHaveClass("my-chev");
+		expect(chevron).toHaveClass("size-8");
+		expect(chevron).not.toHaveClass("size-4");
+	});
+
+	it("itemIndicator slot beats its config base on the check glyph", () => {
+		render(
+			<Select defaultValue="a" open>
+				<SelectTrigger>pick</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="a" slotStyles={{ itemIndicator: "my-chk size-6" }}>
+						a
+					</SelectItem>
+			</SelectContent>
+			</Select>,
+		);
+		const check = document.body.querySelector(
+			'[data-kala-component="select-item"] svg',
+		);
+		expect(check).toHaveClass("my-chk");
+		expect(check).not.toHaveClass("size-4");
+	});
+});
+
+describe("Tooltip slotStyles", () => {
+	it("content root and arrow slots land on the portal-rendered surface", () => {
+		render(
+			<TooltipProvider>
+				<Tooltip open>
+					<TooltipTrigger>trg</TooltipTrigger>
+				<TooltipContent
+						slotStyles={{ root: "my-ttc", arrow: "my-tta" }}
+					/>
+			</Tooltip>
+			</TooltipProvider>,
+		);
+		expect(
+			document.body.querySelector('[data-slot="tooltip-content"]'),
+		).not.toBeNull();
+		expect(document.body.innerHTML).toContain("my-ttc");
+		expect(document.body.innerHTML).toContain("my-tta");
+	});
+});
+
+describe("Popover slotStyles", () => {
+	it("body slot reaches the body region under its config base", () => {
+		render(
+			<Popover open>
+				<PopoverTrigger>trg</PopoverTrigger>
+				<PopoverContent>
+					<PopoverBody slotStyles={{ root: "my-pb text-lg" }}>body</PopoverBody>
+				</PopoverContent>
+			</Popover>,
+		);
+		const body = document.body.querySelector(
+			'[data-kala-component="popover-body"]',
+		);
+		expect(body).toHaveClass("my-pb");
+		expect(body).toHaveClass("text-lg");
+		expect(body).not.toHaveClass("text-sm");
+	});
+});
+
+describe("DropdownMenu slotStyles", () => {
+	it("content root slot lands on the portal-rendered surface", () => {
+		render(
+			<DropdownMenu open>
+				<DropdownMenuTrigger>trg</DropdownMenuTrigger>
+				<DropdownMenuContent slotStyles={{ root: "my-dmc" }} />
+			</DropdownMenu>,
+		);
+		expect(document.body.innerHTML).toContain("my-dmc");
+	});
+});
+
+describe("Tabs slotStyles", () => {
+	it("list, trigger and content slots reach their nodes", () => {
+		const { container } = render(
+			<Tabs defaultValue="a">
+				<TabsList slotStyles={{ root: "my-list" }}>
+					<TabsTrigger value="a" slotStyles={{ root: "my-trg" }}>
+						A
+					</TabsTrigger>
+				</TabsList>
+				<TabsContent value="a" slotStyles={{ root: "my-ct" }}>
+					c
+				</TabsContent>
+			</Tabs>,
+		);
+		expect(container.querySelector('[data-slot="tabs-list"]')).toHaveClass(
+			"my-list",
+		);
+		expect(container.querySelector('[data-slot="tabs-trigger"]')).toHaveClass(
+			"my-trg",
+		);
+		expect(container.querySelector('[data-slot="tabs-content"]')).toHaveClass(
+			"my-ct",
+		);
+	});
+});
+
+describe("Banner slotStyles", () => {
+	it("actions, close and icon slots land when onClose renders the close button", () => {
+		const { container } = render(
+			<Banner
+				onClose={() => {}}
+				slotStyles={{ actions: "my-act", close: "my-cl", icon: "my-ic" }}
+			>
+				x
+			</Banner>,
+		);
+		expect(
+			container.querySelector('[data-kala-component="banner"] > div'),
+		).toHaveClass("my-act");
+		expect(screen.getByLabelText("Close banner")).toHaveClass("my-cl");
+		expect(screen.getByLabelText("Close banner").querySelector("svg")).toHaveClass(
+			"my-ic",
+		);
+	});
+
+	it("without onClose the actions slot still lands and no close button renders", () => {
+		const { container } = render(
+			<Banner slotStyles={{ actions: "my-act" }}>x</Banner>,
+		);
+		expect(
+			container.querySelector('[data-kala-component="banner"] > div'),
+		).toHaveClass("my-act");
+		expect(screen.queryByLabelText("Close banner")).toBeNull();
+	});
+});
+
+describe("AvatarGroup slotStyles", () => {
+	it("ring slot lands on every visible avatar; overflow chip only when overflowing", () => {
+		const avatars = [
+			{ fallback: "A" },
+			{ fallback: "B" },
+			{ fallback: "C" },
+		];
+		const { container, rerender } = render(
+			<AvatarGroup
+				avatars={avatars}
+				max={3}
+				showTooltip={false}
+				slotStyles={{ ring: "my-ring" }}
+			/>,
+		);
+		expect(container.querySelectorAll(".my-ring").length).toBe(3);
+		expect(container.querySelector(".my-ovf")).toBeNull();
+
+		rerender(
+			<AvatarGroup
+				avatars={avatars}
+				max={1}
+				showTooltip={false}
+				slotStyles={{ ring: "my-ring", overflow: "my-ovf" }}
+			/>,
+		);
+		expect(container.querySelectorAll(".my-ring").length).toBe(1);
+		const chip = container.querySelector(".my-ovf");
+		expect(chip?.textContent).toContain("+2");
+	});
+});
+
+describe("Progress slotStyles", () => {
+	it("indicator and label slots reach their nodes over the config bases", () => {
+		const { container } = render(
+			<Progress
+				value={50}
+				showValue
+				label="uploading"
+				slotStyles={{ indicator: "my-ind", label: "my-lbl" }}
+			/>,
+		);
+		const indicator = container.querySelector(
+			'[data-kala-component="progress"] > div',
+		);
+		expect(indicator).toHaveClass("my-ind");
+		expect(screen.getByText("uploading")).toHaveClass("my-lbl");
+	});
+});
+
+describe("EmptyState slotStyles", () => {
+	it("icon, title and description slots land with a component icon", () => {
+		const { container } = render(
+			<EmptyState
+				title="Nothing here"
+				description="Try something else"
+				slotStyles={{ icon: "my-ic", title: "my-ti", description: "my-de" }}
+			/>,
+		);
+		expect(container.querySelector("svg")?.parentElement).toHaveClass("my-ic");
+		expect(screen.getByText("Nothing here")).toHaveClass("my-ti");
+		expect(screen.getByText("Try something else")).toHaveClass("my-de");
+	});
+
+	it("icon slot lands on the emoji wrapper for a string icon", () => {
+		const { container } = render(
+			<EmptyState
+				icon="📦"
+				title="Nothing here"
+				slotStyles={{ icon: "my-ic" }}
+			/>,
+		);
+		const wrapper = container.querySelector(
+			'[data-kala-component="empty-state"] > div',
+		);
+		expect(wrapper).toHaveClass("my-ic");
+		expect(wrapper?.querySelector("span")).toHaveClass("inline-block");
+	});
+});
+
+/**
+ * Style-file guard: per-part base classes for the components wired in this
+ * contract live in src/config/<name>.ts style tables (keys = slot part
+ * names), never inlined in the component .tsx. Each entry pins the exact
+ * pre-extraction base string so a silent re-inline or reword fails here.
+ */
+const readSource = (relative: string) =>
+	fs.readFileSync(fileURLToPath(new URL(relative, import.meta.url)), "utf8");
+
+// Short generic bases (e.g. "size-4") legitimately appear on other parts'
+// glyphs, so absence is asserted on the re-inline call shape instead.
+type StyleTableEntry = {
+	part: string;
+	tsx: string;
+	config: string;
+	base: string;
+	absent?: string;
+};
+
+const styleTableEntries = [
+	{
+		part: "dialog.overlay",
+		tsx: "../components/dialog/dialog.tsx",
+		config: "../config/dialog.ts",
+		base: "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-30 bg-overlay backdrop-blur-sm",
+	},
+	{
+		part: "dialog.content",
+		tsx: "../components/dialog/dialog.tsx",
+		config: "../config/dialog.ts",
+		base: "bg-card text-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed inset-0 z-30 flex flex-col w-full h-full max-h-none translate-x-0 translate-y-0 rounded-none border duration-200 kala-surface-card",
+	},
+	{
+		part: "dialog.close",
+		tsx: "../components/dialog/dialog.tsx",
+		config: "../config/dialog.ts",
+		base: "absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 disabled:pointer-events-none p-1 hover:bg-accent",
+	},
+	{
+		part: "dialog.header",
+		tsx: "../components/dialog/dialog.tsx",
+		config: "../config/dialog.ts",
+		base: "flex flex-col gap-1.5 px-6 py-4 border-b",
+	},
+	{
+		part: "dialog.footer",
+		tsx: "../components/dialog/dialog.tsx",
+		config: "../config/dialog.ts",
+		base: "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end px-6 py-4 border-t bg-muted/50 rounded-b-lg",
+	},
+	{
+		part: "dialog.title",
+		tsx: "../components/dialog/dialog.tsx",
+		config: "../config/dialog.ts",
+		base: "text-lg font-semibold leading-none tracking-tight text-foreground",
+	},
+	{
+		part: "dialog.description",
+		tsx: "../components/dialog/dialog.tsx",
+		config: "../config/dialog.ts",
+		base: "text-sm leading-relaxed text-muted-foreground",
+	},
+	{
+		part: "dialog.body",
+		tsx: "../components/dialog/dialog.tsx",
+		config: "../config/dialog.ts",
+		base: "flex-auto overflow-y-auto px-6 py-4 min-h-0",
+	},
+	{
+		part: "tooltip.content",
+		tsx: "../components/tooltip/tooltip.tsx",
+		config: "../config/tooltip.ts",
+		base: "z-30 rounded-md border bg-popover px-3 py-1.5 text-xs text-popover-foreground duration-200 animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 kala-surface-popover",
+	},
+	{
+		part: "tooltip.arrow",
+		tsx: "../components/tooltip/tooltip.tsx",
+		config: "../config/tooltip.ts",
+		base: "z-30 size-2.5 rotate-225 border-t border-l bg-popover border-inherit -translate-y-[50%] kala-surface-popover",
+	},
+	{
+		part: "tag.icon",
+		tsx: "../components/tag/tag.tsx",
+		config: "../config/tag.ts",
+		base: "shrink-0",
+	},
+	{
+		part: "tag.remove",
+		tsx: "../components/tag/tag.tsx",
+		config: "../config/tag.ts",
+		base: "shrink-0 rounded-full hover:opacity-70 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-current transition-opacity",
+	},
+	{
+		part: "banner.actions",
+		tsx: "../components/banner/banner.tsx",
+		config: "../config/banner.ts",
+		base: "flex-1 flex items-center gap-3",
+	},
+	{
+		part: "banner.close",
+		tsx: "../components/banner/banner.tsx",
+		config: "../config/banner.ts",
+		base: "kala-touch cursor-pointer shrink-0 p-1 rounded hover:bg-overlay/20 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
+	},
+	{
+		part: "banner.icon",
+		tsx: "../components/banner/banner.tsx",
+		config: "../config/banner.ts",
+		base: "w-4 h-4",
+	},
+	{
+		part: "emptyState.icon",
+		tsx: "../components/empty-state/empty-state.tsx",
+		config: "../config/empty-state.ts",
+		base: "flex h-20 w-20 items-center justify-center rounded-full bg-muted",
+	},
+	{
+		part: "emptyState.title",
+		tsx: "../components/empty-state/empty-state.tsx",
+		config: "../config/empty-state.ts",
+		base: "mt-4 text-lg font-semibold text-foreground",
+	},
+	{
+		part: "emptyState.description",
+		tsx: "../components/empty-state/empty-state.tsx",
+		config: "../config/empty-state.ts",
+		base: "mb-4 mt-2 max-w-sm text-center text-sm text-muted-foreground",
+	},
+	{
+		part: "numberInput.root",
+		tsx: "../components/number-input/number-input.tsx",
+		config: "../config/number-input.ts",
+		base: "flex w-full rounded-md border bg-card kala-surface-input transition-colors",
+	},
+	{
+		part: "numberInput.increment",
+		tsx: "../components/number-input/number-input.tsx",
+		config: "../config/number-input.ts",
+		base: "flex items-center justify-center px-2.5 text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors border-l border-inherit",
+	},
+	{
+		part: "numberInput.decrement",
+		tsx: "../components/number-input/number-input.tsx",
+		config: "../config/number-input.ts",
+		base: "flex items-center justify-center px-2.5 text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors border-r border-inherit",
+	},
+	{
+		part: "tagInput.root",
+		tsx: "../components/tag-input/tag-input.tsx",
+		config: "../config/tag-input.ts",
+		base: "flex min-h-[2.5rem] w-full flex-wrap gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm kala-surface-input",
+	},
+	{
+		part: "tagInput.remove",
+		tsx: "../components/tag-input/tag-input.tsx",
+		config: "../config/tag-input.ts",
+		base: "ml-0.5 rounded-sm p-0.5 hover:bg-muted-foreground/20",
+	},
+	{
+		part: "tagInput.clear",
+		tsx: "../components/tag-input/tag-input.tsx",
+		config: "../config/tag-input.ts",
+		base: "absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-sm",
+	},
+	{
+		part: "timePicker.root",
+		tsx: "../components/time-picker/time-picker.tsx",
+		config: "../config/time-picker.ts",
+		base: "inline-flex flex-col rounded-md border bg-card p-3 kala-surface-input",
+	},
+	{
+		part: "timePicker.column",
+		tsx: "../components/time-picker/time-picker.tsx",
+		config: "../config/time-picker.ts",
+		base: "flex flex-col items-center gap-1 min-w-0",
+	},
+	{
+		part: "timePicker.colon",
+		tsx: "../components/time-picker/time-picker.tsx",
+		config: "../config/time-picker.ts",
+		base: "flex items-center self-center mt-5 text-muted-foreground font-bold text-lg select-none",
+	},
+	{
+		part: "timePicker.option",
+		tsx: "../components/time-picker/time-picker.tsx",
+		config: "../config/time-picker.ts",
+		base: "w-10 h-8 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+	},
+	{
+		part: "timePicker.period",
+		tsx: "../components/time-picker/time-picker.tsx",
+		config: "../config/time-picker.ts",
+		base: "w-10 h-8 rounded-md text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+	},
+	{
+		part: "datePicker.trigger",
+		tsx: "../components/date-picker/date-picker.tsx",
+		config: "../config/date-picker.ts",
+		base: "w-[280px] justify-start text-left font-normal",
+	},
+	{
+		part: "datePicker.triggerRange",
+		tsx: "../components/date-picker/date-picker.tsx",
+		config: "../config/date-picker.ts",
+		base: "w-[300px] justify-start text-left font-normal",
+	},
+	{
+		part: "datePicker.icon",
+		tsx: "../components/date-picker/date-picker.tsx",
+		config: "../config/date-picker.ts",
+		base: "mr-2 h-4 w-4",
+	},
+	{
+		part: "datePicker.content",
+		tsx: "../components/date-picker/date-picker.tsx",
+		config: "../config/date-picker.ts",
+		base: "w-auto p-0",
+	},
+	{
+		part: "fileUpload.dropzone",
+		tsx: "../components/file-upload/file-upload.tsx",
+		config: "../config/file-upload.ts",
+		base: "relative flex flex-col items-center justify-center w-full p-6 border-2 border-dashed rounded transition-colors cursor-pointer kala-surface-input",
+	},
+	{
+		part: "fileUpload.icon",
+		tsx: "../components/file-upload/file-upload.tsx",
+		config: "../config/file-upload.ts",
+		base: "p-3 mb-3 rounded-full bg-muted",
+	},
+	{
+		part: "avatarGroup.ring",
+		tsx: "../components/avatar-group/avatar-group.tsx",
+		config: "../config/avatar-group.ts",
+		base: "ring-2 ring-background -ml-2 first:ml-0 transition-transform hover:z-10 hover:-translate-y-0.5",
+	},
+	{
+		part: "avatarGroup.overflow",
+		tsx: "../components/avatar-group/avatar-group.tsx",
+		config: "../config/avatar-group.ts",
+		base: "ring-2 ring-background -ml-2",
+	},
+	{
+		part: "progress.root",
+		tsx: "../components/progress/progress.tsx",
+		config: "../config/progress.ts",
+		base: "relative w-full overflow-hidden rounded-full bg-primary/20",
+	},
+	{
+		part: "progress.indicator",
+		tsx: "../components/progress/progress.tsx",
+		config: "../config/progress.ts",
+		base: "h-full w-full flex-1 transition-all duration-500 ease-in-out",
+	},
+	{
+		part: "progress.valueLabel",
+		tsx: "../components/progress/progress.tsx",
+		config: "../config/progress.ts",
+		base: "flex h-full items-center justify-center text-xs font-medium",
+	},
+	{
+		part: "button.spinner",
+		tsx: "../components/button/button.tsx",
+		config: "../config/button.ts",
+		base: "animate-spin h-4 w-4",
+	},
+	{
+		part: "alert.icon",
+		tsx: "../components/alert/alert.tsx",
+		config: "../config/alert.ts",
+		base: "size-4 translate-y-0.5",
+	},
+	{
+		part: "alert.dismiss",
+		tsx: "../components/alert/alert.tsx",
+		config: "../config/alert.ts",
+		base: "cursor-pointer absolute right-2 top-2 rounded-md p-1 hover:bg-accent transition-colors",
+	},
+	{
+		part: "popover.body",
+		tsx: "../components/popover/popover.tsx",
+		config: "../config/popover.ts",
+		base: "text-sm",
+	},
+	{
+		part: "select.chevron",
+		tsx: "../components/select/select.tsx",
+		config: "../config/select.ts",
+		base: "size-4 opacity-50",
+	},
+	{
+		part: "select.itemIndicator",
+		tsx: "../components/select/select.tsx",
+		config: "../config/select.ts",
+		base: "size-4",
+		absent: 'applySlot("size-4",',
+	},
+] as const satisfies readonly StyleTableEntry[];
+
+describe("style tables own the base classes", () => {
+	it.each(styleTableEntries)(
+		"$part base lives verbatim in its config table and not in the component",
+		({ tsx, config, base, absent }) => {
+			expect(readSource(config)).toContain(base);
+			expect(readSource(tsx)).not.toContain(absent ?? base);
+		},
+	);
+});

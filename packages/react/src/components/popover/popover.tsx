@@ -4,6 +4,7 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { cva } from "class-variance-authority";
 import * as React from "react";
 import { type PopoverColor, popoverStyles } from "../../config/popover";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 
 export const popoverVariants = cva(popoverStyles.base, {
@@ -80,6 +81,11 @@ export interface PopoverContentProps
 	 * Tint the PopoverHeader strip of a default (surface) popover
 	 */
 	headerColor?: PopoverColor;
+	/**
+	 * Per-part overrides: `root` wins over `className`/`style` on the content
+	 * surface, `arrow` targets the arrow glyph.
+	 */
+	slotStyles?: SlotStyles;
 }
 
 interface PopoverColorContextValue {
@@ -93,6 +99,8 @@ const PopoverColorContext =
 
 function PopoverContent({
 	className,
+	style,
+	slotStyles,
 	align = "center",
 	sideOffset = 4,
 	variant = "default",
@@ -105,46 +113,58 @@ function PopoverContent({
 	const hasColoredHeader = headerColor !== undefined;
 	const padding = hasColoredHeader ? "none" : "md";
 	const arrowColor = headerColor ?? (variant === "solid" ? color : undefined);
+	const root = applySlot(
+		cn(
+			"group",
+			popoverVariants({ variant, color, padding }),
+			className,
+		),
+		slotStyles?.root,
+	);
+	const arrow = applySlot(
+		cn(
+			"border-l border-t bg-inherit border-inherit",
+			popoverArrowVariants({ color: arrowColor }),
+			!arrowColor &&
+				"bg-popover [border-color:var(--border)] kala-surface-popover",
+		),
+		slotStyles?.arrow,
+	);
 
 	return (
 		<PopoverColorContext.Provider
 			data-kala-component="popover-content"
 			value={{ variant, color, headerColor }}
 		>
-			<PopoverPrimitive.Portal>
-				<PopoverPrimitive.Content
-					data-slot="popover-content"
-					data-variant={variant}
-					align={align}
-					sideOffset={sideOffset}
-					className={cn(
-						"group",
-						popoverVariants({ variant, color, padding }),
-						className,
-					)}
-					{...props}
-				>
-					{children}
-					{showArrow && (
-						<PopoverPrimitive.Arrow asChild width={12} height={6}>
-							<div
-								className={cn(
-									"border-l border-t bg-inherit border-inherit",
-									popoverArrowVariants({ color: arrowColor }),
-									!arrowColor &&
-										"bg-popover [border-color:var(--border)] kala-surface-popover",
-								)}
-								style={{
+		<PopoverPrimitive.Portal>
+			<PopoverPrimitive.Content
+				data-slot="popover-content"
+				data-variant={variant}
+				align={align}
+				sideOffset={sideOffset}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
+				{...props}
+			>
+				{children}
+				{showArrow && (
+					<PopoverPrimitive.Arrow asChild width={12} height={6}>
+						<div
+							className={arrow.className}
+							style={mergeStyle(
+								{
 									transform:
 										variant === "default" && !hasColoredHeader
 											? "translateY(-50%) rotate(225deg)"
 											: "translateY(-50%) rotate(45deg)",
-								}}
-							/>
-						</PopoverPrimitive.Arrow>
-					)}
-				</PopoverPrimitive.Content>
-			</PopoverPrimitive.Portal>
+									},
+									arrow.style,
+								)}
+						/>
+					</PopoverPrimitive.Arrow>
+				)}
+			</PopoverPrimitive.Content>
+		</PopoverPrimitive.Portal>
 		</PopoverColorContext.Provider>
 	);
 }
@@ -153,48 +173,72 @@ function PopoverContent({
 // Popover Header
 // ============================================================================
 
-export interface PopoverHeaderProps
-	extends Omit<React.ComponentProps<"div">, "color"> {
-	/**
-	 * Tint the header strip. Falls back to the parent PopoverContent's
-	 * headerColor (or its color for solid popovers); plain when unset.
-	 */
-	color?: PopoverColor;
-}
+	export interface PopoverHeaderProps
+		extends Omit<React.ComponentProps<"div">, "color"> {
+		/**
+		 * Tint the header strip. Falls back to the parent PopoverContent's
+		 * headerColor (or its color for solid popovers); plain when unset.
+		 */
+		color?: PopoverColor;
+		/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
+		slotStyles?: SlotStyles;
+	}
 
-function PopoverHeader({ className, color, ...props }: PopoverHeaderProps) {
-	const context = React.useContext(PopoverColorContext);
-	const effectiveColor =
-		color ??
-		context?.headerColor ??
-		(context?.variant === "solid" ? context.color : undefined);
+	function PopoverHeader({
+		className,
+		style,
+		slotStyles,
+		color,
+		...props
+	}: PopoverHeaderProps) {
+		const context = React.useContext(PopoverColorContext);
+		const effectiveColor =
+			color ??
+			context?.headerColor ??
+			(context?.variant === "solid" ? context.color : undefined);
+		const root = applySlot(
+			cn(popoverHeaderVariants({ color: effectiveColor }), className),
+			slotStyles?.root,
+		);
 
-	return (
-		<div
-			data-kala-component="popover-header"
-			className={cn(
-				popoverHeaderVariants({ color: effectiveColor }),
-				className,
-			)}
-			{...props}
-		/>
-	);
-}
+		return (
+			<div
+				data-kala-component="popover-header"
+				className={root.className}
+				style={mergeStyle(style, root.style)}
+				{...props}
+			/>
+		);
+	}
 
 // ============================================================================
 // Popover Body
 // ============================================================================
 
-function PopoverBody({ className, ...props }: React.ComponentProps<"div">) {
+function PopoverBody({
+	className,
+	style,
+	slotStyles,
+	...props
+}: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
 	const context = React.useContext(PopoverColorContext);
 	const hasColoredHeader =
 		context?.headerColor !== undefined ||
 		(context?.variant === "solid" && context.color !== undefined);
+	const root = applySlot(
+		cn(
+			popoverStyles.body.base,
+			hasColoredHeader && popoverStyles.body.padded,
+			className,
+		),
+		slotStyles?.root,
+	);
 
 	return (
 		<div
 			data-kala-component="popover-body"
-			className={cn("text-sm", hasColoredHeader ? "p-4" : "", className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);

@@ -4,6 +4,8 @@ import { useUncontrolled } from "@kala-ui/react-hooks";
 import * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { timePickerStyles } from "../../config/time-picker";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Skeleton } from "../skeleton/skeleton";
 import type { TimePickerProps, TimeValue } from "./time-picker.types";
 
@@ -15,12 +17,14 @@ function TimeColumn({
 	onSelect,
 	disabled,
 	label,
+	slot,
 }: {
 	values: number[];
 	selected: number;
 	onSelect: (v: number) => void;
 	disabled?: boolean;
 	label: string;
+	slot?: SlotStyles["root"];
 }) {
 	const containerRef = React.useRef<HTMLDivElement>(null);
 	// First alignment happens before user interaction — jump without
@@ -54,10 +58,13 @@ function TimeColumn({
 		isFirstAlignRef.current = false;
 	}, [selected]);
 
+	const columnRoot = applySlot(timePickerStyles.column, slot);
+
 	return (
 		<div
 			data-kala-component="time-picker-time-column"
-			className="flex flex-col items-center gap-1 min-w-0"
+			className={columnRoot.className}
+			style={columnRoot.style}
 		>
 			<span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">
 				{label}
@@ -75,7 +82,7 @@ function TimeColumn({
 						disabled={disabled}
 						onClick={() => onSelect(v)}
 						className={cn(
-							"w-10 h-8 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+							timePickerStyles.option,
 							v === selected
 								? "bg-primary text-primary-foreground"
 								: "text-foreground hover:bg-accent hover:text-accent-foreground",
@@ -90,6 +97,19 @@ function TimeColumn({
 	);
 }
 
+function Colon({ slot }: { slot?: SlotStyles["root"] }) {
+	const root = applySlot(timePickerStyles.colon, slot);
+	return (
+		<div
+			data-slot="time-picker-colon"
+			className={root.className}
+			style={root.style}
+		>
+			:
+		</div>
+	);
+}
+
 function TimePicker({
 	value,
 	defaultValue,
@@ -100,6 +120,8 @@ function TimePicker({
 	hasError = false,
 	isLoading = false,
 	className,
+	style,
+	slotStyles,
 }: TimePickerProps) {
 	const [current, commit] = useUncontrolled<TimeValue>({
 		value,
@@ -148,11 +170,22 @@ function TimePicker({
 		commit({ ...current, hours: h24 });
 	};
 
+	const root = applySlot(
+		cn(
+			timePickerStyles.root,
+			hasError && "border-destructive",
+			disabled && "opacity-50",
+			className,
+		),
+		slotStyles?.root,
+	);
+
 	if (isLoading) {
 		return (
 			<Skeleton
 				data-kala-component="time-picker"
-				className={cn("h-[216px] w-full rounded-md", className)}
+				style={mergeStyle(style, root.style)}
+				className={cn("h-[216px] w-full rounded-md", root.className)}
 			/>
 		);
 	}
@@ -161,12 +194,8 @@ function TimePicker({
 		<div
 			data-kala-component="time-picker"
 			data-slot="time-picker"
-			className={cn(
-				"inline-flex flex-col rounded-md border bg-card p-3 kala-surface-input",
-				hasError && "border-destructive",
-				disabled && "opacity-50",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 		>
 			<div className="flex gap-2 items-start">
 				<TimeColumn
@@ -175,44 +204,42 @@ function TimePicker({
 					selected={displayHour}
 					onSelect={handleHourSelect}
 					disabled={disabled}
+					slot={slotStyles?.hour}
 				/>
 
-				<div className="flex items-center self-center mt-5 text-muted-foreground font-bold text-lg select-none">
-					:
-				</div>
-
+				<Colon slot={slotStyles?.colon} />
 				<TimeColumn
 					label="MM"
 					values={minutes}
 					selected={current.minutes}
 					onSelect={(m) => commit({ ...current, minutes: m })}
 					disabled={disabled}
+					slot={slotStyles?.minute}
 				/>
 
 				{showSeconds && (
 					<>
-						<div className="flex items-center self-center mt-5 text-muted-foreground font-bold text-lg select-none">
-							:
-						</div>
+						<Colon slot={slotStyles?.colon} />
 						<TimeColumn
 							label="SS"
 							values={seconds}
 							selected={current.seconds ?? 0}
 							onSelect={(s) => commit({ ...current, seconds: s })}
 							disabled={disabled}
+							slot={slotStyles?.second}
 						/>
 					</>
 				)}
 
 				{hourCycle === 12 && (
-					<div className="flex flex-col gap-1 mt-6 ml-1">
+					<div className={timePickerStyles.periodGroup}>
 						<button
 							type="button"
 							disabled={disabled}
 							onClick={handlePeriodToggle}
 							aria-pressed={period === "AM"}
 							className={cn(
-								"w-10 h-8 rounded-md text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+								timePickerStyles.period,
 								period === "AM"
 									? "bg-primary text-primary-foreground"
 									: "text-foreground hover:bg-accent",
@@ -227,7 +254,7 @@ function TimePicker({
 							onClick={handlePeriodToggle}
 							aria-pressed={period === "PM"}
 							className={cn(
-								"w-10 h-8 rounded-md text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+								timePickerStyles.period,
 								period === "PM"
 									? "bg-primary text-primary-foreground"
 									: "text-foreground hover:bg-accent",

@@ -259,4 +259,5 @@ export const buttonStyles = {
 		fullWidth: false,
 		rounded: false,
 	} as const,
+	spinner: "animate-spin h-4 w-4",
 };

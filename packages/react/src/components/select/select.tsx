@@ -5,13 +5,16 @@ import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import type * as React from "react";
 
 import {
+	selectChevronStyles,
 	selectContentStyles,
+	selectItemIndicatorStyles,
 	selectItemStyles,
 	selectLabelStyles,
 	selectScrollButtonStyles,
 	selectSeparatorStyles,
 	selectTriggerStyles,
 } from "../../config/select";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton";
 
@@ -54,6 +57,8 @@ export const selectTriggerVariants = cva(selectTriggerStyles.base, {
 function SelectTrigger({
 	ref,
 	className,
+	style,
+	slotStyles,
 	size = "md",
 	isLoading = false,
 	children,
@@ -61,32 +66,45 @@ function SelectTrigger({
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
 	size?: "sm" | "md";
 	isLoading?: boolean;
+	/** Per-part overrides: `root` wins over `className`/`style` in every arm, `chevron` targets the dropdown glyph. */
+	slotStyles?: SlotStyles;
 }) {
+	const root = applySlot(
+		cn(
+			"w-full rounded-md flex items-center justify-between",
+			size === "sm" ? "h-9" : "h-10",
+			className,
+		),
+		slotStyles?.root ?? null,
+	);
 	if (isLoading) {
 		return (
 			<Skeleton
 				data-kala-component="select-trigger"
-				className={cn(
-					"w-full rounded-md flex items-center justify-between",
-					size === "sm" ? "h-9" : "h-10",
-					className,
-				)}
+				style={mergeStyle(style, root.style)}
+				className={cn(root.className)}
 			/>
 		);
 	}
 
+	const chevron = applySlot(selectChevronStyles.base, slotStyles?.chevron);
 	return (
 		<SelectPrimitive.Trigger
 			data-kala-component="select-trigger"
 			ref={ref}
 			data-slot="select-trigger"
 			data-size={size}
-			className={cn(selectTriggerVariants({ size }), className)}
+			className={cn(selectTriggerVariants({ size }), root.className)}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		>
 			{children}
 			<SelectPrimitive.Icon asChild>
-				<ChevronDown className="size-4 opacity-50" aria-hidden="true" />
+				<ChevronDown
+					className={chevron.className}
+					style={chevron.style}
+					aria-hidden="true"
+				/>
 			</SelectPrimitive.Icon>
 		</SelectPrimitive.Trigger>
 	);
@@ -131,6 +149,8 @@ SelectScrollDownButton.displayName =
 function SelectContent({
 	ref,
 	className,
+	style,
+	slotStyles,
 	children,
 	position = "popper",
 	align = "center",
@@ -138,20 +158,27 @@ function SelectContent({
 	...props
 }: React.ComponentProps<typeof SelectPrimitive.Content> & {
 	matchTriggerWidth?: boolean;
+	/** Per-part overrides: `root` wins over `className`/`style` on the portal-rendered surface. */
+	slotStyles?: SlotStyles;
 }) {
+	const root = applySlot(
+		cn(
+			selectContentStyles.base,
+			matchTriggerWidth
+				? "w-(--radix-select-trigger-width)"
+				: "min-w-[8rem]",
+			position === "popper" && selectContentStyles.popper,
+			className,
+		),
+		slotStyles?.root,
+	);
 	return (
 		<SelectPrimitive.Portal data-kala-component="select-content">
 			<SelectPrimitive.Content
 				ref={ref}
 				data-slot="select-content"
-				className={cn(
-					selectContentStyles.base,
-					matchTriggerWidth
-						? "w-(--radix-select-trigger-width)"
-						: "min-w-[8rem]",
-					position === "popper" && selectContentStyles.popper,
-					className,
-				)}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 				position={position}
 				align={align}
 				{...props}
@@ -189,20 +216,35 @@ function SelectLabel({
 function SelectItem({
 	ref,
 	className,
+	style,
+	slotStyles,
 	children,
 	...props
-}: React.ComponentProps<typeof SelectPrimitive.Item>) {
+}: React.ComponentProps<typeof SelectPrimitive.Item> & {
+	/** Per-part overrides: `root` wins over `className`/`style`, `itemIndicator` targets the check glyph. */
+	slotStyles?: SlotStyles;
+}) {
+	const root = applySlot(cn(selectItemStyles.base, className), slotStyles?.root);
+	const itemIndicator = applySlot(
+		selectItemIndicatorStyles.base,
+		slotStyles?.itemIndicator,
+	);
 	return (
 		<SelectPrimitive.Item
 			data-kala-component="select-item"
 			ref={ref}
 			data-slot="select-item"
-			className={cn(selectItemStyles.base, className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		>
 			<span className="absolute right-2 flex size-3.5 items-center justify-center">
 				<SelectPrimitive.ItemIndicator>
-					<Check className="size-4" aria-hidden="true" />
+					<Check
+						className={itemIndicator.className}
+						style={itemIndicator.style}
+						aria-hidden="true"
+					/>
 				</SelectPrimitive.ItemIndicator>
 			</span>
 			<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

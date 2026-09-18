@@ -1,3 +1,5 @@
+import type { SlotStyles } from "../../lib/slot-styles";
+
 export interface TimeValue {
 	hours: number;
 	minutes: number;
@@ -23,4 +25,12 @@ export interface TimePickerProps {
 	isLoading?: boolean;
 	/** Additional className on the root element */
 	className?: string;
+	/** Inline style on the root element */
+	style?: React.CSSProperties;
+	/**
+	 * Per-part overrides: `root` wins over `className`/`style` in every
+	 * arm; `hour`/`minute`/`second` target the scroll columns, `colon` the
+	 * ":" separators.
+	 */
+	slotStyles?: SlotStyles;
 }

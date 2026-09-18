@@ -5,6 +5,8 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import * as React from "react";
 import type { DateRange } from "react-day-picker";
+import { datePickerStyles } from "../../config/date-picker";
+import { applySlot, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
 import { Calendar } from "../calendar";
@@ -28,6 +30,8 @@ export interface DatePickerProps
 	buttonClassName?: string;
 	formatStr?: string;
 	isLoading?: boolean;
+	/** Per-part overrides: `root` wins over `buttonClassName` on the trigger and the loading skeleton, `icon` targets the calendar glyph. */
+	slotStyles?: SlotStyles;
 }
 
 export function DatePicker({
@@ -41,6 +45,7 @@ export function DatePicker({
 	buttonClassName,
 	formatStr = "PPP",
 	isLoading = false,
+	slotStyles,
 	...props
 }: DatePickerProps) {
 	const [date, setDate] = useUncontrolled<Date | undefined>({
@@ -51,13 +56,27 @@ export function DatePicker({
 	const [open, setOpen] = React.useState(false);
 
 	if (isLoading) {
+		const skeletonRoot = applySlot(
+			cn("h-10 w-[280px] rounded-md", buttonClassName),
+			slotStyles?.root,
+		);
 		return (
 			<Skeleton
 				data-kala-component="date-picker"
-				className={cn("h-10 w-[280px] rounded-md", buttonClassName)}
+				className={skeletonRoot.className}
 			/>
 		);
 	}
+
+	const trigger = applySlot(
+		cn(
+			datePickerStyles.trigger,
+			!date && "text-muted-foreground",
+			buttonClassName,
+		),
+		slotStyles?.root,
+	);
+	const icon = applySlot(datePickerStyles.icon, slotStyles?.icon);
 
 	return (
 		<Popover
@@ -68,18 +87,17 @@ export function DatePicker({
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
-					className={cn(
-						"w-[280px] justify-start text-left font-normal",
-						!date && "text-muted-foreground",
-						buttonClassName,
-					)}
+					className={trigger.className}
 					disabled={buttonDisabled}
 				>
-					<CalendarIcon className="mr-2 h-4 w-4" />
+					<CalendarIcon className={icon.className} style={icon.style} />
 					{date ? format(date, formatStr) : <span>{placeholder}</span>}
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className={cn("w-auto p-0", className)} align="start">
+			<PopoverContent
+				className={cn(datePickerStyles.content, className)}
+				align="start"
+			>
 				<Calendar
 					{...props}
 					mode="single"
@@ -121,6 +139,8 @@ export interface DateRangePickerProps
 	buttonClassName?: string;
 	formatStr?: string;
 	isLoading?: boolean;
+	/** Per-part overrides: `root` wins over `buttonClassName` on the trigger and the loading skeleton, `icon` targets the calendar glyph. */
+	slotStyles?: SlotStyles;
 }
 
 export function DateRangePicker({
@@ -134,6 +154,7 @@ export function DateRangePicker({
 	buttonClassName,
 	formatStr = "LLL dd, y",
 	isLoading = false,
+	slotStyles,
 	...props
 }: DateRangePickerProps) {
 	const [dateRange, setDateRange] = useUncontrolled<DateRange | undefined>({
@@ -153,13 +174,27 @@ export function DateRangePicker({
 	};
 
 	if (isLoading) {
+		const skeletonRoot = applySlot(
+			cn("h-10 w-[300px] rounded-md", buttonClassName),
+			slotStyles?.root,
+		);
 		return (
 			<Skeleton
 				data-kala-component="date-picker-date-range-picker"
-				className={cn("h-10 w-[300px] rounded-md", buttonClassName)}
+				className={skeletonRoot.className}
 			/>
 		);
 	}
+
+	const trigger = applySlot(
+		cn(
+			datePickerStyles.triggerRange,
+			!dateRange && "text-muted-foreground",
+			buttonClassName,
+		),
+		slotStyles?.root,
+	);
+	const icon = applySlot(datePickerStyles.icon, slotStyles?.icon);
 
 	return (
 		<Popover
@@ -170,14 +205,10 @@ export function DateRangePicker({
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
-					className={cn(
-						"w-[300px] justify-start text-left font-normal",
-						!dateRange && "text-muted-foreground",
-						buttonClassName,
-					)}
+					className={trigger.className}
 					disabled={buttonDisabled}
 				>
-					<CalendarIcon className="mr-2 h-4 w-4" />
+					<CalendarIcon className={icon.className} style={icon.style} />
 					{dateRange?.from ? (
 						dateRange.to ? (
 							<>
@@ -192,7 +223,10 @@ export function DateRangePicker({
 					)}
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className={cn("w-auto p-0", className)} align="start">
+			<PopoverContent
+				className={cn(datePickerStyles.content, className)}
+				align="start"
+			>
 				<Calendar
 					{...props}
 					mode="range"

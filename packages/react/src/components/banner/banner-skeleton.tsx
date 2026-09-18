@@ -16,6 +16,10 @@ export interface BannerSkeletonProps extends BannerSkeletonConfig {
 	 */
 	className?: string;
 	/**
+	 * Inline style for the skeleton container
+	 */
+	style?: React.CSSProperties;
+	/**
 	 * Test ID for querying the element
 	 */
 	"data-testid"?: string;
@@ -36,12 +40,14 @@ export function BannerSkeleton({
 	showIcon = true,
 	showCloseButton = true,
 	className,
+	style,
 	"data-testid": dataTestId,
 }: BannerSkeletonProps) {
 	return (
 		<div
 			data-kala-component="banner-skeleton"
 			data-testid={dataTestId || "banner-skeleton"}
+			style={style}
 			className={cn(
 				"w-full px-4 py-3 text-sm font-medium flex items-center justify-between gap-4",
 				color === "info" && "bg-info text-info-foreground",

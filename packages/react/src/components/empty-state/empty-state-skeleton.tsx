@@ -5,6 +5,7 @@
  * Provides zero-CLS skeleton state that matches actual empty state layout.
  */
 
+import type * as React from "react";
 import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton";
 import type { EmptyStateSkeletonConfig } from "../skeleton/skeleton.types";
@@ -15,6 +16,10 @@ export interface EmptyStateSkeletonProps extends EmptyStateSkeletonConfig {
 	 * Additional className for the skeleton container
 	 */
 	className?: string;
+	/**
+	 * Inline styles for the skeleton container
+	 */
+	style?: React.CSSProperties;
 	/**
 	 * Test ID for querying the element
 	 */
@@ -35,12 +40,14 @@ export function EmptyStateSkeleton({
 	showIcon = true,
 	showAction = false,
 	className,
+	style,
 	"data-testid": dataTestId,
 }: EmptyStateSkeletonProps) {
 	return (
 		<div
 			data-kala-component="empty-state-skeleton"
 			data-testid={dataTestId || "empty-state-skeleton"}
+			style={style}
 			className={cn(
 				"flex flex-col items-center justify-center rounded-lg border p-8 text-center",
 				className,

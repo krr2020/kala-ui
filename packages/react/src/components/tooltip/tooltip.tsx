@@ -4,6 +4,8 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import type * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { tooltipStyles } from "../../config/tooltip";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 function TooltipProvider({
 	delayDuration = 0,
@@ -45,24 +47,29 @@ function TooltipTrigger({
 
 function TooltipContent({
 	className,
+	style,
+	slotStyles,
 	sideOffset = 4,
 	children,
 	...props
-}: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+}: React.ComponentProps<typeof TooltipPrimitive.Content> & {
+	/** Per-part overrides: `root` wins over `className`/`style` on the content surface, `arrow` targets the arrow glyph. */
+	slotStyles?: SlotStyles;
+}) {
+	const root = applySlot(tooltipStyles.content, slotStyles?.root ?? null);
+	const arrow = applySlot(tooltipStyles.arrow, slotStyles?.arrow);
 	return (
 		<TooltipPrimitive.Portal data-kala-component="tooltip-content">
 			<TooltipPrimitive.Content
 				data-slot="tooltip-content"
 				sideOffset={sideOffset}
-				className={cn(
-					"z-30 rounded-md border bg-popover px-3 py-1.5 text-xs text-popover-foreground duration-200 animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 kala-surface-popover",
-					className,
-				)}
+				className={cn(root.className, className)}
+				style={mergeStyle(style, root.style)}
 				{...props}
 			>
 				{children}
 				<TooltipPrimitive.Arrow asChild width={10} height={5}>
-					<div className="z-30 size-2.5 rotate-225 border-t border-l bg-popover border-inherit -translate-y-[50%] kala-surface-popover" />
+					<div className={arrow.className} style={arrow.style} />
 				</TooltipPrimitive.Arrow>
 			</TooltipPrimitive.Content>
 		</TooltipPrimitive.Portal>

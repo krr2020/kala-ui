@@ -10,6 +10,7 @@ import {
 import * as React from "react";
 
 import { alertStyles } from "../../config/alert";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
 import type { AlertProps } from "./alert.types";
@@ -33,6 +34,8 @@ const colorIcons = {
 
 function Alert({
 	className,
+	style,
+	slotStyles,
 	variant = "subtle",
 	color = "primary",
 	dismissable = false,
@@ -58,12 +61,14 @@ function Alert({
 	});
 
 	if (isLoading) {
+		const skeletonRoot = applySlot(className, slotStyles?.root);
 		if (skeleton) {
 			return (
 				<Box
 					data-kala-component="alert"
 					data-slot="alert"
-					className={cn(alertVariants({ variant, color }), className)}
+					className={skeletonRoot.className}
+					style={mergeStyle(style, skeletonRoot.style)}
 					{...props}
 				>
 					{skeleton}
@@ -76,7 +81,8 @@ function Alert({
 				variant={variant ?? "subtle"}
 				color={color ?? "primary"}
 				showIcon={showIcon}
-				className={className}
+				className={skeletonRoot.className}
+				style={mergeStyle(style, skeletonRoot.style)}
 				{...props}
 			/>
 		);
@@ -90,6 +96,12 @@ function Alert({
 	if (!isVisible) return null;
 
 	const Icon = colorIcons[color ?? "primary"] ?? Info;
+	const icon = applySlot(alertStyles.icon, slotStyles?.icon);
+	const dismiss = applySlot(alertStyles.dismiss, slotStyles?.dismiss);
+	const root = applySlot(
+		cn(alertVariants({ variant, color }), dismissable && "pr-10", className),
+		slotStyles?.root,
+	);
 	const hasCustomIcon = React.Children.toArray(children).some((child) => {
 		if (!React.isValidElement(child)) return false;
 		const type = child.type;
@@ -115,15 +127,16 @@ function Alert({
 			data-kala-component="alert"
 			data-slot="alert"
 			role="alert"
-			className={cn(
-				alertVariants({ variant, color }),
-				dismissable && "pr-10",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		>
 			{showIcon && !hasCustomIcon && (
-				<Icon className="size-4 translate-y-0.5" aria-hidden="true" />
+				<Icon
+					className={icon.className}
+					style={icon.style}
+					aria-hidden="true"
+				/>
 			)}
 			{children}
 			{dismissable && (
@@ -131,7 +144,8 @@ function Alert({
 					as="button"
 					type="button"
 					onClick={handleDismiss}
-					className="cursor-pointer absolute right-2 top-2 rounded-md p-1 hover:bg-accent transition-colors"
+					className={dismiss.className}
+					style={dismiss.style}
 					aria-label="Dismiss alert"
 				>
 					<X className="h-4 w-4" />

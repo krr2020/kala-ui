@@ -2,6 +2,8 @@
 
 import { CloudUpload, File as FileIcon, X } from "lucide-react";
 import * as React from "react";
+import { fileUploadStyles } from "../../config/file-upload";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
 
@@ -19,6 +21,8 @@ export interface FileUploadProps
 	error?: string;
 	progress?: number;
 	onError?: (error: string) => void;
+	/** Per-part overrides: `root` wins over `className`/`style`, `icon` targets the dropzone glyph circle. */
+	slotStyles?: SlotStyles;
 }
 
 export function FileUpload({
@@ -31,6 +35,8 @@ export function FileUpload({
 	progress,
 	onError,
 	className,
+	style,
+	slotStyles,
 	...props
 }: FileUploadProps) {
 	const [isDragging, setIsDragging] = React.useState(false);
@@ -114,10 +120,14 @@ export function FileUpload({
 		return `${parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]}`;
 	};
 
+	const root = applySlot(cn(fileUploadStyles.root, className), slotStyles?.root);
+	const iconCircle = applySlot(fileUploadStyles.icon, slotStyles?.icon);
+
 	return (
 		<div
 			data-kala-component="file-upload"
-			className={cn("w-full", className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		>
 			{/* Native file input lives outside the trigger so no interactive
@@ -180,7 +190,7 @@ export function FileUpload({
 					aria-invalid={error ? true : undefined}
 					aria-describedby={error ? errorId : undefined}
 					className={cn(
-						"relative flex flex-col items-center justify-center w-full p-6 border-2 border-dashed rounded transition-colors cursor-pointer kala-surface-input",
+						fileUploadStyles.dropzone,
 						"kala-focus-ring",
 						isDragging
 							? "border-primary bg-primary/10"
@@ -190,7 +200,10 @@ export function FileUpload({
 						className,
 					)}
 				>
-					<div className="p-3 mb-3 rounded-full bg-muted">
+					<div
+						className={iconCircle.className}
+						style={iconCircle.style}
+					>
 						<CloudUpload className="w-6 h-6 text-muted-foreground" />
 					</div>
 					<p className="mb-1 text-sm font-medium text-foreground">

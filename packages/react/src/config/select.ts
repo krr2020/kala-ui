@@ -33,3 +33,11 @@ export const selectItemStyles = {
 export const selectSeparatorStyles = {
 	base: "bg-separator pointer-events-none -mx-1 my-1 h-px",
 };
+
+export const selectChevronStyles = {
+	base: "size-4 opacity-50",
+};
+
+export const selectItemIndicatorStyles = {
+	base: "size-4",
+};

@@ -1,7 +1,9 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { Inbox, type LucideIcon } from "lucide-react";
 import type * as React from "react";
+import { emptyStateStyles } from "../../config/empty-state";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Button } from "../button";
 import type { EmptyStateSkeletonConfig } from "../skeleton/skeleton.types";
 import { EmptyStateSkeleton } from "./empty-state-skeleton";
@@ -41,10 +43,14 @@ export interface EmptyStateProps
 	isLoading?: boolean;
 	skeletonConfig?: EmptyStateSkeletonConfig;
 	skeleton?: React.ReactNode;
+	/** Per-part overrides: `root` wins over `className`/`style` in every arm; `icon`/`title`/`description`/`action` target the inner nodes. */
+	slotStyles?: SlotStyles;
 }
 
 function EmptyState({
 	className,
+	style,
+	slotStyles,
 	color,
 	size,
 	icon,
@@ -58,13 +64,19 @@ function EmptyState({
 	ref,
 	...props
 }: EmptyStateProps) {
+	const root = applySlot(
+		cn(emptyStateVariants({ color, size }), className),
+		slotStyles?.root,
+	);
+	const rootStyle = mergeStyle(style, root.style);
 	if (isLoading) {
 		if (skeleton) {
 			return (
 				<div
 					data-kala-component="empty-state"
 					ref={ref}
-					className={cn(emptyStateVariants({ color, size }), className)}
+					className={root.className}
+					style={rootStyle}
 					{...props}
 				>
 					{skeleton}
@@ -74,7 +86,8 @@ function EmptyState({
 		return (
 			<EmptyStateSkeleton
 				data-kala-component="empty-state"
-				className={cn(emptyStateVariants({ color, size }), className)}
+				className={root.className}
+				style={rootStyle}
 				{...skeletonConfig}
 			/>
 		);
@@ -82,37 +95,50 @@ function EmptyState({
 
 	const resolvedIcon = icon ?? Inbox;
 	const IconComponent = typeof resolvedIcon === "string" ? null : resolvedIcon;
+	const iconCircle = applySlot(emptyStateStyles.icon, slotStyles?.icon);
+	const titleSlot = applySlot(emptyStateStyles.title, slotStyles?.title);
+	const descriptionSlot = applySlot(
+		emptyStateStyles.description,
+		slotStyles?.description,
+	);
+	const actionSlot = applySlot(null, slotStyles?.action ?? null);
 
 	return (
 		<div
 			data-kala-component="empty-state"
 			ref={ref}
-			className={cn(emptyStateVariants({ color, size }), className)}
+			className={root.className}
+			style={rootStyle}
 			{...props}
 		>
 			<div
-				className="flex h-20 w-20 items-center justify-center rounded-full bg-muted"
+				className={iconCircle.className}
+				style={iconCircle.style}
 				aria-hidden="true"
 			>
 				{typeof resolvedIcon === "string" ? (
 					<span
-						className={cn(
-							"inline-block h-10 w-10 text-muted-foreground",
-							resolvedIcon,
-						)}
+						className={cn("inline-block h-10 w-10 text-muted-foreground", resolvedIcon)}
 					/>
 				) : IconComponent ? (
 					<IconComponent className="h-10 w-10 text-muted-foreground" />
 				) : null}
 			</div>
-			<h3 className="mt-4 text-lg font-semibold text-foreground">{title}</h3>
+			<h3 className={titleSlot.className} style={titleSlot.style}>
+				{title}
+			</h3>
 			{description && (
-				<p className="mb-4 mt-2 max-w-sm text-center text-sm text-muted-foreground">
+				<p className={descriptionSlot.className} style={descriptionSlot.style}>
 					{description}
 				</p>
 			)}
 			{action && (
-				<Button onClick={action.onClick} variant={action.variant}>
+				<Button
+				onClick={action.onClick}
+				variant={action.variant}
+				className={actionSlot.className}
+				style={actionSlot.style}
+			>
 					{action.label}
 				</Button>
 			)}

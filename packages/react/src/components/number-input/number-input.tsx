@@ -3,6 +3,8 @@
 import { Minus, Plus } from "lucide-react";
 import * as React from "react";
 
+import { numberInputStyles } from "../../config/number-input";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton/skeleton";
 import type { NumberInputProps } from "./number-input.types";
@@ -14,6 +16,8 @@ const NUMERIC_TEXT_PATTERN = /^[0-9.eE+-]*$/;
 
 function NumberInput({
 	className,
+	style,
+	slotStyles,
 	min,
 	max,
 	step = 1,
@@ -133,15 +137,25 @@ function NumberInput({
 		onBlur?.(e);
 	};
 
+	const root = applySlot(
+		cn(
+			numberInputStyles.root,
+			"focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-0",
+			size === "sm" ? "h-8" : "h-10",
+			hasError && "border-destructive focus-within:kala-ring-destructive",
+			disabled && "opacity-50 cursor-not-allowed",
+			className,
+		),
+		slotStyles?.root,
+	);
+	const rootStyle = mergeStyle(style, root.style);
+
 	if (isLoading) {
 		return (
 			<Skeleton
 				data-kala-component="number-input"
-				className={cn(
-					"w-full rounded-md",
-					size === "sm" ? "h-8" : "h-10",
-					className,
-				)}
+				className={cn("w-full rounded-md", size === "sm" ? "h-8" : "h-10", root.className)}
+				style={rootStyle}
 			/>
 		);
 	}
@@ -158,18 +172,21 @@ function NumberInput({
 	const displayValue =
 		inputText ?? (currentValue === "" ? "" : String(currentValue));
 
+	const decrementSlot = applySlot(
+		numberInputStyles.decrement,
+		cn(slotStyles?.decrement, slotStyles?.divider),
+	);
+	const incrementSlot = applySlot(
+		numberInputStyles.increment,
+		cn(slotStyles?.increment, slotStyles?.divider),
+	);
+
 	return (
 		<div
 			data-kala-component="number-input"
 			data-slot="number-input"
-			className={cn(
-				"flex w-full rounded-md border bg-card kala-surface-input transition-colors",
-				"focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-0",
-				size === "sm" ? "h-8" : "h-10",
-				hasError && "border-destructive focus-within:kala-ring-destructive",
-				disabled && "opacity-50 cursor-not-allowed",
-				className,
-			)}
+			className={root.className}
+			style={rootStyle}
 		>
 			<button
 				type="button"
@@ -177,8 +194,9 @@ function NumberInput({
 				aria-label="Decrease value"
 				onClick={decrement}
 				disabled={disabled || isAtMin}
-				className="flex items-center justify-center px-2.5 text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors border-r border-inherit"
-			>
+				className={decrementSlot.className}
+				style={decrementSlot.style}
+		>
 				<Minus
 					aria-hidden="true"
 					className={cn("stroke-2", size === "sm" ? "h-3 w-3" : "h-4 w-4")}
@@ -207,7 +225,8 @@ function NumberInput({
 				aria-label="Increase value"
 				onClick={increment}
 				disabled={disabled || isAtMax}
-				className="flex items-center justify-center px-2.5 text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors border-l border-inherit"
+				className={incrementSlot.className}
+				style={incrementSlot.style}
 			>
 				<Plus
 					aria-hidden="true"

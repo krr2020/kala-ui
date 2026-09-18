@@ -2,7 +2,9 @@
 
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 import type * as React from "react";
+import { progressStyles } from "../../config/progress";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import type { ProgressBarProps, ProgressProps } from "./progress.types";
 
 type ProgressColor =
@@ -14,27 +16,17 @@ type ProgressColor =
 	| "info";
 type ProgressSize = "sm" | "md" | "lg";
 
-const sizeClasses: Record<ProgressSize, string> = {
-	sm: "h-1",
-	md: "h-2.5",
-	lg: "h-4",
-};
+const sizeClasses = progressStyles.sizes;
 
-const colorClasses: Record<ProgressColor, string> = {
-	primary: "bg-primary",
-	secondary: "bg-secondary",
-	destructive: "bg-destructive",
-	success: "bg-success",
-	warning: "bg-warning",
-	info: "bg-info",
-};
+const colorClasses = progressStyles.colors;
 
-const stripedGradient =
-	"bg-[linear-gradient(45deg,color-mix(in_srgb,var(--foreground)_15%,transparent)_25%,transparent_25%,transparent_50%,color-mix(in_srgb,var(--foreground)_15%,transparent)_50%,color-mix(in_srgb,var(--foreground)_15%,transparent)_75%,transparent_75%,transparent)]";
+const stripedGradient = progressStyles.stripedGradient;
 
 function Progress({
 	ref,
 	className,
+	style,
+	slotStyles,
 	value = 0,
 	max = 100,
 	min = 0,
@@ -50,42 +42,53 @@ function Progress({
 	const clampedValue = Math.min(Math.max(value ?? 0, min), max);
 	const percentage = ((clampedValue - min) / (max - min)) * 100;
 
+	const root = applySlot(
+		cn(progressStyles.root, sizeClasses[size], className),
+		slotStyles?.root,
+	);
+	const indicator = applySlot(
+		cn(
+			progressStyles.indicator,
+			colorClasses[color],
+			striped && stripedGradient,
+			striped && "bg-size-[1rem_1rem]",
+			animated && striped && "animate-progress-stripes",
+		),
+		slotStyles?.indicator,
+	);
+	const valueLabel = applySlot(
+		cn(
+			progressStyles.valueLabel,
+			color === "primary" && "text-primary-foreground",
+			color === "success" && "text-success-foreground",
+			color === "info" && "text-info-foreground",
+			color === "warning" && "text-warning-foreground",
+			color === "destructive" && "text-destructive-foreground",
+			size === "md" && "text-[10px]",
+			size === "lg" && "text-xs",
+		),
+		slotStyles?.label,
+	);
+
 	return (
 		<ProgressPrimitive.Root
 			data-kala-component="progress"
 			ref={ref}
-			className={cn(
-				"relative w-full overflow-hidden rounded-full bg-primary/20",
-				sizeClasses[size],
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			value={clampedValue}
 			max={max}
 			{...props}
 		>
 			<ProgressPrimitive.Indicator
-				className={cn(
-					"h-full w-full flex-1 transition-all duration-500 ease-in-out",
-					colorClasses[color],
-					striped && stripedGradient,
-					striped && "bg-size-[1rem_1rem]",
-					animated && striped && "animate-progress-stripes",
+				className={indicator.className}
+				style={mergeStyle(
+					{ transform: `translateX(-${100 - percentage}%)` },
+					indicator.style,
 				)}
-				style={{ transform: `translateX(-${100 - percentage}%)` }}
 			>
 				{(label || showValue) && size !== "sm" && (
-					<span
-						className={cn(
-							"flex h-full items-center justify-center text-xs font-medium",
-							color === "primary" && "text-primary-foreground",
-							color === "success" && "text-success-foreground",
-							color === "info" && "text-info-foreground",
-							color === "warning" && "text-warning-foreground",
-							color === "destructive" && "text-destructive-foreground",
-							size === "md" && "text-[10px]",
-							size === "lg" && "text-xs",
-						)}
-					>
+					<span className={valueLabel.className} style={valueLabel.style}>
 						{label || (showValue && `${Math.round(percentage)}%`)}
 					</span>
 				)}
@@ -158,7 +161,7 @@ function ProgressGroup({
 			ref={ref}
 			role="presentation"
 			className={cn(
-				"relative w-full overflow-hidden rounded-full bg-primary/20 flex",
+				progressStyles.group,
 				sizeClasses[size],
 				className,
 			)}

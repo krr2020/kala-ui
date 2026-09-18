@@ -4,6 +4,8 @@ import { useUncontrolled } from "@kala-ui/react-hooks";
 import { X } from "lucide-react";
 import * as React from "react";
 
+import { applySlot, type SlotStyles } from "../../lib/slot-styles";
+import { tagInputStyles } from "../../config/tag-input";
 import { cn } from "../../lib/utils";
 import { Badge } from "../badge";
 
@@ -51,6 +53,12 @@ export interface TagInputProps
 	 * Show error state
 	 */
 	hasError?: boolean;
+	/**
+	 * Per-part overrides: `root` wins over `className` on the chip container,
+	 * `tag` targets each chip, `remove` a chip's X button, `clear` the
+	 * clear-all button.
+	 */
+	slotStyles?: SlotStyles;
 }
 
 export function TagInput({
@@ -64,6 +72,7 @@ export function TagInput({
 	validateTag,
 	transformTag = (tag: string) => tag.trim(),
 	className,
+	slotStyles,
 	placeholder = "Type and press comma...",
 	disabled = false,
 	hasError = false,
@@ -200,18 +209,39 @@ export function TagInput({
 		}
 	};
 
-	return (
-		<div data-kala-component="tag-input" className="relative w-full">
-			{/* biome-ignore lint/a11y/noStaticElementInteractions: click/keyboard anywhere in the chip container routes focus to the embedded input, which is the interactive element */}
-			<div
-				className={cn(
-					"flex min-h-[2.5rem] w-full flex-wrap gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm kala-surface-input",
-					"kala-focus-within-ring",
-					hasError && "border-destructive kala-focus-within-ring-destructive",
-					disabled && "cursor-not-allowed bg-muted",
-					tags.length > 0 && "pr-10",
-					className,
-				)}
+		const chipRoot = applySlot(
+			cn(
+				tagInputStyles.root,
+				"kala-focus-within-ring",
+				hasError && "border-destructive kala-focus-within-ring-destructive",
+				disabled && "cursor-not-allowed bg-muted",
+				tags.length > 0 && "pr-10",
+				className,
+			),
+			slotStyles?.root,
+		);
+		const removeSlot = applySlot(
+			cn(
+				tagInputStyles.remove,
+				disabled && "cursor-not-allowed opacity-50",
+			),
+			slotStyles?.remove,
+		);
+		const clearSlot = applySlot(
+			cn(
+				tagInputStyles.clear,
+				"text-muted-foreground hover:text-foreground hover:bg-accent",
+				"transition-colors",
+			),
+			slotStyles?.clear,
+		);
+
+		return (
+			<div data-kala-component="tag-input" className="relative w-full">
+				{/* biome-ignore lint/a11y/noStaticElementInteractions: click/keyboard anywhere in the chip container routes focus to the embedded input, which is the interactive element */}
+				<div
+					className={chipRoot.className}
+				style={chipRoot.style}
 				onClick={handleContainerClick}
 				onKeyDown={handleContainerKeyDown}
 				tabIndex={-1}
@@ -222,6 +252,7 @@ export function TagInput({
 						key={`${tag}-${index}`}
 						color="secondary"
 						className="flex items-center gap-1 pl-2 pr-1 py-0 h-6 text-xs"
+						slotStyles={{ root: slotStyles?.tag }}
 					>
 						<span>{tag}</span>
 						<button
@@ -231,10 +262,8 @@ export function TagInput({
 								removeTag(index);
 							}}
 							disabled={disabled}
-							className={cn(
-								"ml-0.5 rounded-sm p-0.5 hover:bg-muted-foreground/20",
-								disabled && "cursor-not-allowed opacity-50",
-							)}
+							className={removeSlot.className}
+							style={removeSlot.style}
 							aria-label={`Remove ${tag}`}
 						>
 							<X className="h-3 w-3" />
@@ -275,11 +304,8 @@ export function TagInput({
 				<button
 					type="button"
 					onClick={clearAllTags}
-					className={cn(
-						"absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-sm",
-						"text-muted-foreground hover:text-foreground hover:bg-accent",
-						"transition-colors",
-					)}
+					className={clearSlot.className}
+					style={clearSlot.style}
 					aria-label="Clear all tags"
 				>
 					<X className="h-4 w-4" />

@@ -3,6 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 
 import { badgeStyles } from "../../config/badge";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton";
 
@@ -14,6 +15,8 @@ const badgeVariants = cva(badgeStyles.base, {
 
 function Badge({
 	className,
+	style,
+	slotStyles,
 	variant,
 	color,
 	shape,
@@ -24,14 +27,18 @@ function Badge({
 	VariantProps<typeof badgeVariants> & {
 		asChild?: boolean;
 		isLoading?: boolean;
+		/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
+		slotStyles?: SlotStyles;
 	}) {
+	const root = applySlot(className, slotStyles?.root);
 	if (isLoading) {
 		return (
 			<Skeleton
 				data-kala-component="badge"
+				style={mergeStyle(style, root.style)}
 				className={cn(
 					"inline-flex h-5 w-16 items-center rounded-full",
-					className,
+					root.className,
 				)}
 			/>
 		);
@@ -43,7 +50,8 @@ function Badge({
 		<Comp
 			data-kala-component="badge"
 			data-slot="badge"
-			className={cn(badgeVariants({ variant, color, shape }), className)}
+			className={cn(badgeVariants({ variant, color, shape }), root.className)}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);

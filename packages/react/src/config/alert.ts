@@ -147,4 +147,7 @@ export const alertStyles = {
 		variant: "subtle",
 		color: "primary",
 	} as const,
+	icon: "size-4 translate-y-0.5",
+	dismiss:
+		"cursor-pointer absolute right-2 top-2 rounded-md p-1 hover:bg-accent transition-colors",
 } as const;

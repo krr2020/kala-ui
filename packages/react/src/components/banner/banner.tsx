@@ -12,6 +12,8 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 import type * as React from "react";
+import { bannerStyles } from "../../config/banner";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import type { BannerSkeletonConfig } from "../skeleton/skeleton.types";
 import { BannerSkeleton } from "./banner-skeleton";
@@ -55,60 +57,79 @@ export interface BannerProps
 	isLoading?: boolean;
 	skeletonConfig?: BannerSkeletonConfig;
 	skeleton?: React.ReactNode;
+	/** Per-part overrides: `root` wins over `className`/`style`, `actions` targets the content row, `icon`/`close` the close glyph/button. */
+	slotStyles?: SlotStyles;
 }
 
 export function Banner({
-	className,
-	color,
-	position,
-	onClose,
-	children,
-	role = "status",
-	isLoading = false,
-	skeletonConfig,
-	skeleton,
-	...props
+className,
+style,
+slotStyles,
+color,
+position,
+onClose,
+children,
+role = "status",
+isLoading = false,
+skeletonConfig,
+skeleton,
+...props
 }: BannerProps) {
-	if (isLoading) {
-		if (skeleton) {
-			return (
-				<div
-					data-kala-component="banner"
-					className={cn(bannerVariants({ color, position }), className)}
-					role={role}
-					{...props}
-				>
-					{skeleton}
-				</div>
-			);
-		}
+const root = applySlot(
+	cn(bannerVariants({ color, position }), className),
+	slotStyles?.root,
+);
+const rootStyle = mergeStyle(style, root.style);
+if (isLoading) {
+	if (skeleton) {
 		return (
-			<BannerSkeleton
+			<div
 				data-kala-component="banner"
-				className={cn(bannerVariants({ color, position }), className)}
-				{...skeletonConfig}
-			/>
+				className={root.className}
+				style={rootStyle}
+				role={role}
+				{...props}
+			>
+				{skeleton}
+			</div>
 		);
 	}
-
 	return (
-		<div
+		<BannerSkeleton
 			data-kala-component="banner"
-			className={cn(bannerVariants({ color, position }), className)}
-			role={role}
-			{...props}
-		>
-			<div className="flex-1 flex items-center gap-3">{children}</div>
-			{onClose && (
-				<button
-					type="button"
-					onClick={onClose}
-					className="kala-touch cursor-pointer shrink-0 p-1 rounded hover:bg-overlay/20 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring"
-					aria-label="Close banner"
-				>
-					<X className="w-4 h-4" aria-hidden="true" />
-				</button>
-			)}
-		</div>
+			className={root.className}
+			style={rootStyle}
+			{...skeletonConfig}
+		/>
 	);
+}
+
+const actions = applySlot(bannerStyles.actions, slotStyles?.actions);
+const close = applySlot(bannerStyles.close, slotStyles?.close);
+const icon = applySlot(bannerStyles.icon, slotStyles?.icon);
+
+return (
+	<div
+		data-kala-component="banner"
+		className={root.className}
+		style={rootStyle}
+		role={role}
+		{...props}
+	>
+		<div className={actions.className} style={actions.style}>
+			{children}
+		</div>
+		{onClose && (
+			<button
+				type="button"
+				onClick={onClose}
+				className={close.className}
+				style={close.style}
+				aria-label="Close banner"
+			>
+				<X className={icon.className} style={icon.style} aria-hidden="true" />
+			</button>
+		)}
+	</div>
+);
 }

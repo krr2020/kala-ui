@@ -1,6 +1,8 @@
 "use client";
 
+import { avatarGroupStyles } from "../../config/avatar-group";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import {
 	Avatar,
 	AvatarFallback,
@@ -31,6 +33,8 @@ export interface AvatarGroupProps extends React.ComponentProps<"div"> {
 	showTooltip?: boolean;
 	/** Additional className */
 	className?: string;
+	/** Per-part overrides: `root` wins over `className`/`style`, `ring` targets each avatar's ring, `overflow` the "+N" chip. */
+	slotStyles?: SlotStyles;
 }
 
 function AvatarGroup({
@@ -39,17 +43,27 @@ function AvatarGroup({
 	size = "md",
 	showTooltip = true,
 	className,
+	style,
+	slotStyles,
 	ref,
 	...props
 }: AvatarGroupProps) {
 	const visible = avatars.slice(0, max);
 	const overflow = avatars.length - max;
 
+	const ring = applySlot(avatarGroupStyles.ring, slotStyles?.ring);
+	const overflowChip = applySlot(avatarGroupStyles.overflow, slotStyles?.overflow);
+	const root = applySlot(
+		cn(avatarGroupStyles.root, className),
+		slotStyles?.root,
+	);
+
 	const avatarEl = (avatar: AvatarItem, index: number) => (
 		<Avatar
 			key={index}
 			size={size}
-			className="ring-2 ring-background -ml-2 first:ml-0 transition-transform hover:z-10 hover:-translate-y-0.5"
+			className={ring.className}
+			style={ring.style}
 		>
 			{avatar.src && (
 				<AvatarImage src={avatar.src} alt={avatar.alt ?? avatar.fallback} />
@@ -63,7 +77,8 @@ function AvatarGroup({
 			<div
 				data-slot="avatar-group"
 				ref={ref}
-				className={cn("flex items-center", className)}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 				{...props}
 			>
 				{visible.map((avatar, index) =>
@@ -77,8 +92,12 @@ function AvatarGroup({
 					),
 				)}
 
-				{overflow > 0 && (
-					<Avatar size={size} className="ring-2 ring-background -ml-2">
+					{overflow > 0 && (
+					<Avatar
+						size={size}
+						className={overflowChip.className}
+						style={overflowChip.style}
+					>
 						<AvatarFallback color="muted">+{overflow}</AvatarFallback>
 					</Avatar>
 				)}

@@ -3,7 +3,9 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import type * as React from "react";
+import { dialogStyles } from "../../config/dialog";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Box } from "../box";
 import { Text } from "../text";
 
@@ -57,16 +59,19 @@ function DialogClose({
 
 function DialogOverlay({
 	className,
+	style,
+	slotStyles,
 	...props
-}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+}: React.ComponentProps<typeof DialogPrimitive.Overlay> & {
+	slotStyles?: SlotStyles;
+}) {
+	const root = applySlot(dialogStyles.overlay, slotStyles?.root ?? null);
 	return (
 		<DialogPrimitive.Overlay
 			data-kala-component="dialog-overlay"
 			data-slot="dialog-overlay"
-			className={cn(
-				"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-30 bg-overlay backdrop-blur-sm",
-				className,
-			)}
+			className={cn(root.className, className)}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);
@@ -74,6 +79,8 @@ function DialogOverlay({
 
 function DialogContent({
 	className,
+	style,
+	slotStyles,
 	children,
 	showCloseButton = true,
 	size = "md",
@@ -81,44 +88,43 @@ function DialogContent({
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
 	showCloseButton?: boolean;
 	size?: "sm" | "md" | "lg" | "xl" | "full";
+	/** Per-part overrides: `root` wins over `className`/`style`; `overlay` targets the backdrop, `close` the close button, `closeIcon` its glyph. */
+	slotStyles?: SlotStyles;
 }) {
-	const sizeClasses = {
-		sm: "sm:inset-auto sm:h-auto sm:w-[90vw] sm:max-w-sm sm:max-h-[90vh] sm:rounded-lg sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]",
-		md: "sm:inset-auto sm:h-auto sm:w-[90vw] sm:max-w-lg sm:max-h-[90vh] sm:rounded-lg sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]",
-		lg: "sm:inset-auto sm:h-auto sm:w-[90vw] sm:max-w-2xl sm:max-h-[90vh] sm:rounded-lg sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]",
-		xl: "sm:inset-auto sm:h-auto sm:w-[90vw] sm:max-w-4xl sm:max-h-[90vh] sm:rounded-lg sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]",
-		// The base styling is the mobile full-bleed layout (inset-0, w-full
-		// h-full, no max clamp); every other size re-clamps it into a centered
-		// panel at the sm: breakpoint. "full" opts out of that clamp — the same
-		// contract as Drawer's "full" — for content-heavy overlays.
-		full: "",
-	};
+	const root = applySlot(
+		cn(dialogStyles.content, dialogStyles.sizes[size], className),
+		slotStyles?.root,
+	);
+	const close = applySlot(
+		cn(dialogStyles.close, "kala-focus-ring"),
+		slotStyles?.close,
+	);
+	const closeIcon = applySlot(dialogStyles.closeIcon, slotStyles?.closeIcon);
 
 	return (
 		<DialogPortal
 			data-kala-component="dialog-content"
 			data-slot="dialog-portal"
 		>
-			<DialogOverlay />
+			<DialogOverlay slotStyles={{ root: slotStyles?.overlay }} />
 			<DialogPrimitive.Content
 				data-slot="dialog-content"
-				className={cn(
-					"bg-card text-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed inset-0 z-30 flex flex-col w-full h-full max-h-none translate-x-0 translate-y-0 rounded-none border duration-200 kala-surface-card",
-					sizeClasses[size],
-					className,
-				)}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 				{...props}
 			>
 				{children}
 				{showCloseButton && (
 					<DialogPrimitive.Close
 						data-slot="dialog-close"
-						className={cn(
-							"absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 disabled:pointer-events-none p-1 hover:bg-accent",
-							"kala-focus-ring",
-						)}
+						className={close.className}
+						style={close.style}
 					>
-						<X className="size-5" aria-hidden="true" />
+						<X
+							className={closeIcon.className}
+							style={closeIcon.style}
+							aria-hidden="true"
+						/>
 						<Text as="span" className="sr-only">
 							Close
 						</Text>
@@ -131,21 +137,30 @@ function DialogContent({
 
 function DialogHeader({
 	className,
+	style,
+	slotStyles,
 	fixed = true,
 	...props
 }: React.ComponentProps<"div"> & {
 	/** When true (default), header stays fixed at the top of the modal. Set to false to allow header to scroll with content. */
 	fixed?: boolean;
+	/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
+	slotStyles?: SlotStyles;
 }) {
+	const root = applySlot(
+		cn(
+			dialogStyles.header,
+			fixed && "shrink-0",
+			className,
+		),
+		slotStyles?.root,
+	);
 	return (
 		<Box
 			data-kala-component="dialog-header"
 			data-slot="dialog-header"
-			className={cn(
-				"flex flex-col gap-1.5 px-6 py-4 border-b",
-				fixed && "shrink-0",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);
@@ -153,21 +168,30 @@ function DialogHeader({
 
 function DialogFooter({
 	className,
+	style,
+	slotStyles,
 	fixed = false,
 	...props
 }: React.ComponentProps<"div"> & {
 	/** When true, footer stays fixed at the bottom of the modal (content scrolls between header and footer) */
 	fixed?: boolean;
+	/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
+	slotStyles?: SlotStyles;
 }) {
+	const root = applySlot(
+		cn(
+			dialogStyles.footer,
+			fixed && "shrink-0",
+			className,
+		),
+		slotStyles?.root,
+	);
 	return (
 		<Box
 			data-kala-component="dialog-footer"
 			data-slot="dialog-footer"
-			className={cn(
-				"flex flex-col-reverse gap-2 sm:flex-row sm:justify-end px-6 py-4 border-t bg-muted/50 rounded-b-lg",
-				fixed && "shrink-0",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);
@@ -175,20 +199,26 @@ function DialogFooter({
 
 function DialogTitle({
 	className,
+	style,
+	slotStyles,
 	translationKey,
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Title> & {
 	/** Optional translation key for title text */
 	translationKey?: string;
+	/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
+	slotStyles?: SlotStyles;
 }) {
+	const root = applySlot(
+		cn(dialogStyles.title, className),
+		slotStyles?.root,
+	);
 	return (
 		<DialogPrimitive.Title
 			data-kala-component="dialog-title"
 			data-slot="dialog-title"
-			className={cn(
-				"text-lg font-semibold leading-none tracking-tight text-foreground",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);
@@ -196,27 +226,46 @@ function DialogTitle({
 
 function DialogDescription({
 	className,
+	style,
+	slotStyles,
 	descriptionKey,
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Description> & {
 	/** Optional translation key for description text */
 	descriptionKey?: string;
+	/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
+	slotStyles?: SlotStyles;
 }) {
+	const root = applySlot(
+		cn(dialogStyles.description, className),
+		slotStyles?.root,
+	);
 	return (
 		<DialogPrimitive.Description
 			data-kala-component="dialog-description"
 			data-slot="dialog-description"
-			className={cn("text-sm leading-relaxed text-muted-foreground", className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);
 }
-function DialogBody({ className, ...props }: React.ComponentProps<"div">) {
+function DialogBody({
+	className,
+	style,
+	slotStyles,
+	...props
+}: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const root = applySlot(
+		cn(dialogStyles.body, className),
+		slotStyles?.root,
+	);
 	return (
 		<Box
 			data-kala-component="dialog-body"
 			data-slot="dialog-body"
-			className={cn("flex-auto overflow-y-auto px-6 py-4 min-h-0", className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);

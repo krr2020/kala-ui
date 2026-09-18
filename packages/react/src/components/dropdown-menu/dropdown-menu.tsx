@@ -5,6 +5,7 @@ import { Check, ChevronRight, Circle } from "lucide-react";
 import type * as React from "react";
 
 import { dropdownMenuStyles } from "../../config/dropdown-menu";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 
 function DropdownMenu({
@@ -45,15 +46,22 @@ function DropdownMenuTrigger({
 
 function DropdownMenuContent({
 	className,
+	style,
+	slotStyles,
 	sideOffset = 4,
 	...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Content> & {
+	/** Per-part overrides: `root` wins over `className`/`style` on the portal-rendered surface. */
+	slotStyles?: SlotStyles;
+}) {
+	const root = applySlot(dropdownMenuStyles.content, slotStyles?.root);
 	return (
 		<DropdownMenuPrimitive.Portal data-kala-component="dropdown-menu-content">
 			<DropdownMenuPrimitive.Content
 				data-slot="dropdown-menu-content"
 				sideOffset={sideOffset}
-				className={cn(dropdownMenuStyles.content, className)}
+				className={cn(root.className, className)}
+				style={mergeStyle(style, root.style)}
 				{...props}
 			/>
 		</DropdownMenuPrimitive.Portal>
@@ -74,25 +82,34 @@ function DropdownMenuGroup({
 
 function DropdownMenuItem({
 	className,
+	style,
+	slotStyles,
 	inset,
 	color,
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Item> & {
 	inset?: boolean;
 	color?: "destructive";
+	/** Per-part overrides: `root` wins over `className`/`style`. */
+	slotStyles?: SlotStyles;
 }) {
+	const root = applySlot(
+		cn(
+			dropdownMenuStyles.item.base,
+			inset && dropdownMenuStyles.item.inset,
+			color === "destructive" && dropdownMenuStyles.item.destructive,
+			className,
+		),
+		slotStyles?.root,
+	);
 	return (
 		<DropdownMenuPrimitive.Item
 			data-kala-component="dropdown-menu-item"
 			data-slot="dropdown-menu-item"
 			data-inset={inset}
 			data-color={color}
-			className={cn(
-				dropdownMenuStyles.item.base,
-				inset && dropdownMenuStyles.item.inset,
-				color === "destructive" && dropdownMenuStyles.item.destructive,
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);

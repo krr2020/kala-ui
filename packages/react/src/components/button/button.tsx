@@ -6,6 +6,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import { buttonStyles } from "../../config/button";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import type { ButtonProps } from "./button.types";
 
@@ -15,26 +16,26 @@ const buttonVariants = cva(buttonStyles.base, {
 	defaultVariants: buttonStyles.defaultVariants,
 });
 
-export function Button({
-	ref,
-	className,
-	variant,
-	color,
-	size,
-	fullWidth,
-	rounded,
-	isLoading,
-	asChild = false,
-	children,
-	disabled,
-	...props
-}: ButtonProps) {
-	const Comp = asChild ? Slot : "button";
-	const effectiveDisabled = isLoading || disabled;
-	return (
-		<Comp
-			data-kala-component="button"
-			className={cn(
+	export function Button({
+		ref,
+		className,
+		style,
+		slotStyles,
+		variant,
+		color,
+		size,
+		fullWidth,
+		rounded,
+		isLoading,
+		asChild = false,
+		children,
+		disabled,
+		...props
+	}: ButtonProps) {
+		const Comp = asChild ? Slot : "button";
+		const effectiveDisabled = isLoading || disabled;
+		const root = applySlot(
+			cn(
 				buttonVariants({
 					variant,
 					color,
@@ -44,24 +45,33 @@ export function Button({
 					className,
 				}),
 				// asChild renders arbitrary elements (e.g. <a>) where the
-				// `disabled` attribute is invalid — fall back to ARIA + CSS
+					// `disabled` attribute is invalid — fall back to ARIA + CSS
 				asChild &&
 					effectiveDisabled &&
 					"pointer-events-none aria-disabled:opacity-50 aria-disabled:cursor-not-allowed",
-			)}
-			ref={ref}
-			disabled={asChild ? undefined : effectiveDisabled}
-			aria-disabled={asChild ? effectiveDisabled || undefined : undefined}
-			aria-busy={isLoading || undefined}
-			{...props}
-		>
+			),
+			slotStyles?.root,
+		);
+		const spinner = applySlot(buttonStyles.spinner, slotStyles?.spinner);
+		return (
+			<Comp
+				data-kala-component="button"
+				className={root.className}
+				style={mergeStyle(style, root.style)}
+				ref={ref}
+				disabled={asChild ? undefined : effectiveDisabled}
+				aria-disabled={asChild ? effectiveDisabled || undefined : undefined}
+				aria-busy={isLoading || undefined}
+				{...props}
+			>
 			{asChild ? (
 				children
 			) : (
 				<>
 					{isLoading && (
 						<svg
-							className="animate-spin h-4 w-4"
+							className={spinner.className}
+							style={spinner.style}
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
 							viewBox="0 0 24 24"

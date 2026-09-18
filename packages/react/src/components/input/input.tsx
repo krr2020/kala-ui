@@ -13,6 +13,7 @@
 import { Eye, EyeOff } from "lucide-react";
 import * as React from "react";
 import { inputStyles } from "../../config/input";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton";
 import type { InputProps } from "./input.types";
@@ -20,6 +21,8 @@ import type { InputProps } from "./input.types";
 export function Input({
 	ref,
 	className,
+	style,
+	slotStyles,
 	type: typeProp = "text",
 	showPasswordToggle = false,
 	prefixIcon,
@@ -46,12 +49,25 @@ export function Input({
 	const hasSuffix =
 		!!suffixIcon || (typeProp === "password" && showPasswordToggle);
 
+	const root = applySlot(
+		cn(
+			inputStyles.base,
+			inputStyles.file,
+			hasError && inputStyles.error,
+			hasSuccess && inputStyles.success,
+			className,
+		),
+		slotStyles?.root,
+	);
+	const rootStyle = mergeStyle(style, root.style);
+
 	// Show loading skeleton
 	if (isLoading) {
 		return (
 			<Skeleton
 				data-kala-component="input"
-				className={cn("h-10 w-full rounded-md", className)}
+				style={rootStyle}
+				className={cn("h-10 w-full rounded-md", root.className)}
 			/>
 		);
 	}
@@ -62,13 +78,8 @@ export function Input({
 			<input
 				data-kala-component="input"
 				type={internalType}
-				className={cn(
-					inputStyles.base,
-					inputStyles.file,
-					hasError && inputStyles.error,
-					hasSuccess && inputStyles.success,
-					className,
-				)}
+				className={root.className}
+				style={rootStyle}
 				ref={ref}
 				{...props}
 			/>
@@ -87,14 +98,11 @@ export function Input({
 			<input
 				type={internalType}
 				className={cn(
-					inputStyles.base,
-					inputStyles.file,
+					root.className,
 					hasPrefix && "pl-10",
 					hasSuffix && "pr-10",
-					hasError && inputStyles.error,
-					hasSuccess && inputStyles.success,
-					className,
 				)}
+				style={rootStyle}
 				ref={ref}
 				{...props}
 			/>
