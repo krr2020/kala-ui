@@ -29,8 +29,6 @@ import { Icon } from "../icon";
 import { Indicator } from "../indicator";
 import { InputOtp, InputOtpSlot } from "../input-otp";
 import { Label } from "../label";
-import { List } from "../list";
-import { LoadingOverlay } from "../loading-overlay";
 import { MultiSelect } from "../multi-select";
 import { NumberInput } from "../number-input";
 import { Progress } from "../progress";
@@ -311,14 +309,6 @@ describe("root slot sweep — every component accepts slotStyles.root", () => {
 				render(<Label slotStyles={{ root: { fontSize: 33 } }}>l</Label>),
 		},
 		{
-			name: "LoadingOverlay",
-			marker: "k-loading-overlay",
-			render: () =>
-				render(
-					<LoadingOverlay visible slotStyles={{ root: { borderWidth: 7 } }} />,
-				),
-		},
-		{
 			name: "MultiSelect",
 			marker: "k-multi-select",
 			render: () =>
@@ -533,11 +523,6 @@ describe("root slot sweep — every component accepts slotStyles.root", () => {
 					/>,
 				),
 		},
-		{
-			name: "List",
-			marker: "k-list",
-			render: () => render(<List slotStyles={{ root: { borderWidth: 7 } }} />),
-		},
 	];
 
 	for (const fixture of fixtures) {
@@ -553,8 +538,8 @@ describe("root slot sweep — every component accepts slotStyles.root", () => {
 		});
 	}
 
-	it("the sweep covers all 49 components", () => {
-		expect(fixtures.length).toBe(49);
+	it("the sweep covers all 47 components", () => {
+		expect(fixtures.length).toBe(47);
 	});
 });
 

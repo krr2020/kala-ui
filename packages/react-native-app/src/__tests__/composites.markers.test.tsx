@@ -8,6 +8,16 @@ import {
 	CopyButton,
 	EmptyState,
 	ErrorBoundary,
+	List,
+	ListItem,
+	ListItemAction,
+	ListItemAvatar,
+	ListItemBadge,
+	ListItemContent,
+	ListItemIcon,
+	ListItemText,
+	ListItemTitle,
+	LoadingOverlay,
 	PasswordStrengthIndicator,
 	Steps,
 	Timeline,
@@ -119,5 +129,56 @@ describe("composite markers", () => {
 		expect(screen.getAllByTestId("k-timeline-item")).toHaveLength(2);
 		expect(screen.getAllByTestId("k-timeline-dot")).toHaveLength(2);
 		expect(screen.getAllByTestId("k-timeline-line")).toHaveLength(1);
+	});
+
+	it("List renders container, divider and sub-component markers", async () => {
+		const screen = await render(
+			<List>
+				<ListItem interactive onPress={() => undefined}>
+					<ListItemAvatar name="Ada Lovelace" />
+					<ListItemContent>
+						<ListItemTitle>orders</ListItemTitle>
+						<ListItemText lines={1}>queued for pickup</ListItemText>
+					</ListItemContent>
+					<ListItemAction>
+						<ListItemBadge color="success">3</ListItemBadge>
+					</ListItemAction>
+				</ListItem>
+				<ListItem>
+					<ListItemIcon size="sm">i</ListItemIcon>
+					<ListItemContent>
+						<ListItemTitle>returns</ListItemTitle>
+					</ListItemContent>
+				</ListItem>
+			</List>,
+		);
+		expect(screen.getByTestId("k-list")).toBeTruthy();
+		expect(screen.getAllByTestId("k-list-item").length).toBe(2);
+		expect(screen.getByTestId("k-list-divider")).toBeTruthy();
+		expect(screen.getByTestId("k-list-item-avatar")).toBeTruthy();
+		expect(screen.getAllByTestId("k-list-item-content").length).toBe(2);
+		expect(screen.getAllByTestId("k-list-item-title").length).toBe(2);
+		expect(screen.getByTestId("k-list-item-text")).toBeTruthy();
+		expect(screen.getByTestId("k-list-item-action")).toBeTruthy();
+		expect(screen.getByTestId("k-list-item-badge")).toBeTruthy();
+		expect(screen.getByTestId("k-list-item-icon")).toBeTruthy();
+	});
+
+	it("List isLoading keeps k-list and drops rows", async () => {
+		const screen = await render(
+			<List isLoading skeletonConfig={{ itemCount: 2 }} />,
+		);
+		expect(screen.getByTestId("k-list")).toBeTruthy();
+		expect(
+			screen.getAllByTestId("k-skeleton", inclHidden).length,
+		).toBeGreaterThan(0);
+		expect(screen.queryByTestId("k-list-item")).toBeNull();
+	});
+
+	it("LoadingOverlay renders only while visible", async () => {
+		const hidden = await render(<LoadingOverlay visible={false} />);
+		expect(hidden.queryByTestId("k-loading-overlay")).toBeNull();
+		const shown = await render(<LoadingOverlay visible />);
+		expect(shown.getByTestId("k-loading-overlay")).toBeTruthy();
 	});
 });

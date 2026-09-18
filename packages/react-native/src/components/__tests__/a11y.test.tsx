@@ -25,8 +25,6 @@ import { Field } from "../field";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
 import { InputOtp, InputOtpSlot } from "../input-otp";
-import { List, ListItem } from "../list";
-import { LoadingOverlay } from "../loading-overlay";
 import { MultiSelect } from "../multi-select";
 import { NumberInput } from "../number-input";
 import { Progress } from "../progress";
@@ -670,36 +668,6 @@ describe("a11y contract", () => {
 		});
 	});
 
-	describe("List", () => {
-		it("interactive rows announce button role; disabled announces state", async () => {
-			const screen = await render(
-				<ListItem interactive onPress={() => undefined}>
-					row
-				</ListItem>,
-			);
-			expect(screen.getByRole("button", { name: "row" })).toBeTruthy();
-
-			const off = await render(
-				<ListItem interactive disabled onPress={() => undefined}>
-					row
-				</ListItem>,
-			);
-			expect(
-				off.getByTestId("k-list-item").props.accessibilityState?.disabled,
-			).toBe(true);
-		});
-
-		it("href rows announce link role and the container is a list", async () => {
-			const screen = await render(
-				<List>
-					<ListItem href="https://example.com">docs</ListItem>
-				</List>,
-			);
-			expect(screen.getByTestId("k-list").props.accessibilityRole).toBe("list");
-			expect(screen.getByRole("link", { name: "docs" })).toBeTruthy();
-		});
-	});
-
 	describe("Textarea", () => {
 		it("announces disabled state and blocks editing", async () => {
 			const screen = await render(
@@ -782,17 +750,6 @@ describe("a11y contract", () => {
 				max: 100,
 				now: 30,
 			});
-		});
-	});
-
-	describe("LoadingOverlay", () => {
-		it("announces itself while visible and stays absent when hidden", async () => {
-			const shown = await render(<LoadingOverlay visible />);
-			expect(
-				shown.getByTestId("k-loading-overlay").props.accessibilityLabel,
-			).toBe("Loading");
-			const hidden = await render(<LoadingOverlay visible={false} />);
-			expect(hidden.queryByTestId("k-loading-overlay")).toBeNull();
 		});
 	});
 

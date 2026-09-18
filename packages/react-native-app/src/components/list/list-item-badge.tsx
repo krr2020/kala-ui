@@ -2,7 +2,7 @@
  * ListItemBadge: trailing status pill — delegates to Badge.
  */
 import type { ReactElement } from "react";
-import { Badge } from "../badge";
+import { Badge } from "@kala-ui/react-native";
 import type { ListItemBadgeProps } from "./list.types";
 
 export function ListItemBadge({

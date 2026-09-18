@@ -4,7 +4,7 @@
  */
 import type { ReactElement, ReactNode } from "react";
 import { View } from "react-native";
-import { Skeleton } from "../skeleton";
+import { Skeleton } from "@kala-ui/react-native";
 import { SKELETON } from "./list.styles";
 import type { ListSkeletonConfig } from "./list.types";
 

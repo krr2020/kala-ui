@@ -108,8 +108,6 @@ describe("component app seam", () => {
 			"Collapsible",
 			"Banner",
 			"Textarea",
-			"List",
-			"ListItem",
 			"Tabs",
 			"SegmentedControl",
 			"Tag",
@@ -133,7 +131,6 @@ describe("component app seam", () => {
 			"Select",
 			"AvatarGroup",
 			"RingProgress",
-			"LoadingOverlay",
 		]) {
 			expect(unionImports.has(name), `playground imports ${name}`).toBe(true);
 			expect(exported.has(name), `entry exports ${name}`).toBe(true);

@@ -42,18 +42,6 @@ import { Icon } from "../icon";
 import { Indicator } from "../indicator";
 import { InputOtp, InputOtpSeparator, InputOtpSlot } from "../input-otp";
 import { Label } from "../label";
-import {
-	List,
-	ListItem,
-	ListItemAction,
-	ListItemAvatar,
-	ListItemBadge,
-	ListItemContent,
-	ListItemIcon,
-	ListItemText,
-	ListItemTitle,
-} from "../list";
-import { LoadingOverlay } from "../loading-overlay";
 import { MultiSelect } from "../multi-select";
 
 import { NumberInput } from "../number-input";
@@ -2318,52 +2306,6 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("List", () => {
-		it("renders container, divider and sub-component markers", async () => {
-			const screen = await render(
-				<List>
-					<ListItem interactive onPress={() => undefined}>
-						<ListItemAvatar name="Ada Lovelace" />
-						<ListItemContent>
-							<ListItemTitle>orders</ListItemTitle>
-							<ListItemText lines={1}>queued for pickup</ListItemText>
-						</ListItemContent>
-						<ListItemAction>
-							<ListItemBadge color="success">3</ListItemBadge>
-						</ListItemAction>
-					</ListItem>
-					<ListItem>
-						<ListItemIcon size="sm">i</ListItemIcon>
-						<ListItemContent>
-							<ListItemTitle>returns</ListItemTitle>
-						</ListItemContent>
-					</ListItem>
-				</List>,
-			);
-			expect(screen.getByTestId("k-list")).toBeTruthy();
-			expect(screen.getAllByTestId("k-list-item").length).toBe(2);
-			expect(screen.getByTestId("k-list-divider")).toBeTruthy();
-			expect(screen.getByTestId("k-list-item-avatar")).toBeTruthy();
-			expect(screen.getAllByTestId("k-list-item-content").length).toBe(2);
-			expect(screen.getAllByTestId("k-list-item-title").length).toBe(2);
-			expect(screen.getByTestId("k-list-item-text")).toBeTruthy();
-			expect(screen.getByTestId("k-list-item-action")).toBeTruthy();
-			expect(screen.getByTestId("k-list-item-badge")).toBeTruthy();
-			expect(screen.getByTestId("k-list-item-icon")).toBeTruthy();
-		});
-
-		it("isLoading keeps k-list and drops rows", async () => {
-			const screen = await render(
-				<List isLoading skeletonConfig={{ itemCount: 2 }} />,
-			);
-			expect(screen.getByTestId("k-list")).toBeTruthy();
-			expect(
-				screen.getAllByTestId("k-skeleton", inclHidden).length,
-			).toBeGreaterThan(0);
-			expect(screen.queryByTestId("k-list-item")).toBeNull();
-		});
-	});
-
 	describe("Field, Select, TextInput sections", () => {
 		it("Field renders label/control/description/error markers", async () => {
 			const screen = await render(
@@ -2415,7 +2357,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("AvatarGroup, RingProgress, LoadingOverlay", () => {
+	describe("AvatarGroup, RingProgress", () => {
 		it("AvatarGroup renders container, member and overflow markers", async () => {
 			const screen = await render(
 				<AvatarGroup
@@ -2432,17 +2374,10 @@ describe("component markers", () => {
 			expect(screen.getByTestId("k-avatar-group-overflow")).toBeTruthy();
 		});
 
-		it("RingProgress renders root and label markers", async () => {
-			const screen = await render(<RingProgress value={40} label="40%" />);
-			expect(screen.getByTestId("k-ring-progress")).toBeTruthy();
-			expect(screen.getByTestId("k-ring-progress-label")).toBeTruthy();
-		});
-
-	it("LoadingOverlay renders only while visible", async () => {
-		const hidden = await render(<LoadingOverlay visible={false} />);
-		expect(hidden.queryByTestId("k-loading-overlay")).toBeNull();
-		const shown = await render(<LoadingOverlay visible />);
-		expect(shown.getByTestId("k-loading-overlay")).toBeTruthy();
+	it("RingProgress renders root and label markers", async () => {
+		const screen = await render(<RingProgress value={40} label="40%" />);
+		expect(screen.getByTestId("k-ring-progress")).toBeTruthy();
+		expect(screen.getByTestId("k-ring-progress-label")).toBeTruthy();
 	});
 });
 

@@ -7,7 +7,7 @@
 import type { ReactElement } from "react";
 import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { applySlot } from "../slot-styles";
+import { applySlot } from "@kala-ui/react-native";
 import { dividerStyle, surfaceStyle } from "./list.styles";
 import type { ListProps } from "./list.types";
 import { SkeletonRow } from "./list-skeleton";

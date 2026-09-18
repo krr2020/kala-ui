@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { StyleProp, TextProps, ViewStyle } from "react-native";
-import type { BadgeColor } from "../badge/badge.types";
+import type { BadgeColor } from "@kala-ui/react-native";
 
 export type ListItemIconSize = "sm" | "md" | "lg";
 export type ListSkeletonVariant =

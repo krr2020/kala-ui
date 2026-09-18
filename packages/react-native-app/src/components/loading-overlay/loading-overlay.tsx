@@ -1,8 +1,8 @@
 import type { ReactElement } from "react";
 import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { applySlot } from "../slot-styles";
-import { Spinner } from "../spinner";
+import { applySlot } from "@kala-ui/react-native";
+import { Spinner } from "@kala-ui/react-native";
 import { scrimStyle } from "./loading-overlay.styles";
 import type { LoadingOverlayProps } from "./loading-overlay.types";
 

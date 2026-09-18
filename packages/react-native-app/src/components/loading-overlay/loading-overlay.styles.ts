@@ -3,7 +3,7 @@
  * the veil re-tints with dark mode instead of a hardcoded black.
  */
 import type { ViewStyle } from "react-native";
-import type { KalaTheme } from "../../types";
+import type { KalaTheme } from "@kala-ui/react-native";
 
 export const scrimStyle = (theme: KalaTheme): ViewStyle => ({
 	position: "absolute",

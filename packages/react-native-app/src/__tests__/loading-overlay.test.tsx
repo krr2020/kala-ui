@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react-native";
+import { LoadingOverlay } from "@kala-ui/react-native-app";
 import { Text } from "react-native";
-import { LoadingOverlay } from "../loading-overlay";
 
 type Screen = Awaited<ReturnType<typeof render>>;
 
@@ -67,9 +67,9 @@ describe("LoadingOverlay", () => {
 
 	it("absorbs touches: pointerEvents is auto while visible", async () => {
 		const screen: Screen = await render(<LoadingOverlay visible />);
-		expect(flatStyle(screen.getByTestId("k-loading-overlay")).pointerEvents).toBe(
-			"auto",
-		);
+		expect(
+			flatStyle(screen.getByTestId("k-loading-overlay")).pointerEvents,
+		).toBe("auto");
 	});
 
 	it("announces through a polite live region", async () => {

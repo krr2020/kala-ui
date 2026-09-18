@@ -6,7 +6,7 @@
 import type { ReactElement } from "react";
 import { Linking, Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { applySlot } from "../slot-styles";
+import { applySlot } from "@kala-ui/react-native";
 import type { ListItemProps } from "./list.types";
 
 export function ListItem({

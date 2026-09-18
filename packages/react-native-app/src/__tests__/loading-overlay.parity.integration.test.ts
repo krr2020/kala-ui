@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest";
 
 /**
  * Cross-package LoadingOverlay contract: the web component
- * (packages/react) and the native rebuild (packages/react-native) must
- * keep the same loader vocabulary and loading-state a11y semantics.
+ * (packages/react) and the native composite (packages/react-native-app)
+ * must keep the same loader vocabulary and loading-state a11y semantics.
  * Static parse on purpose — importing either component pulls a DOM or
  * react-native environment this vitest runner cannot execute; the source
  * text is the contract (same technique as components.app-seam).
@@ -22,10 +22,7 @@ const NATIVE_SOURCE = readFileSync(
 	"utf8",
 );
 const NATIVE_TYPES = readFileSync(
-	resolve(
-		__dirname,
-		"../components/loading-overlay/loading-overlay.types.ts",
-	),
+	resolve(__dirname, "../components/loading-overlay/loading-overlay.types.ts"),
 	"utf8",
 );
 
@@ -42,7 +39,9 @@ describe("LoadingOverlay web ↔ native parity", () => {
 		expect(WEB_SOURCE).toMatch(/loaderChildren \?/);
 		expect(WEB_SOURCE).toMatch(/<Spinner size="lg" \{/);
 		expect(NATIVE_SOURCE).toMatch(/\{children \?\? \(/);
-		expect(NATIVE_SOURCE).toMatch(/<Spinner size="lg" label=\{accessibilityLabel\}/);
+		expect(NATIVE_SOURCE).toMatch(
+			/<Spinner size="lg" label=\{accessibilityLabel\}/,
+		);
 	});
 
 	it("loading state is announced and busy on both platforms", () => {

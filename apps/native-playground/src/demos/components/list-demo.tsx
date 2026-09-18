@@ -1,5 +1,4 @@
 import {
-	Icon,
 	List,
 	ListItem,
 	ListItemAction,
@@ -9,8 +8,8 @@ import {
 	ListItemIcon,
 	ListItemText,
 	ListItemTitle,
-	Spinner,
-} from "@kala-ui/react-native";
+} from "@kala-ui/react-native-app";
+import { Icon, Spinner } from "@kala-ui/react-native";
 import { Flag, Inbox } from "lucide-react-native";
 import { useState } from "react";
 import { View } from "react-native";
@@ -21,7 +20,7 @@ export function ListDemo() {
 	const [pressed, setPressed] = useState(false);
 	return (
 		<View testID="k-demo-list" style={demoStyles.routeContent}>
-			<DemoBlock label="simple rows">
+			<DemoBlock label="Simple rows">
 				<List>
 					<ListItem>
 						<ListItemContent>
@@ -40,7 +39,7 @@ export function ListDemo() {
 					</ListItem>
 				</List>
 			</DemoBlock>
-			<DemoBlock label="icons & badges">
+			<DemoBlock label="Icons & badges">
 				<List>
 					<ListItem>
 						<ListItemIcon size="sm">
@@ -62,7 +61,7 @@ export function ListDemo() {
 					</ListItem>
 				</List>
 			</DemoBlock>
-			<DemoBlock label="avatars & secondary text">
+			<DemoBlock label="Avatars & secondary text">
 				<List>
 					<ListItem>
 						<ListItemAvatar name="Ada Lovelace" size="sm" />
@@ -80,7 +79,7 @@ export function ListDemo() {
 					</ListItem>
 				</List>
 			</DemoBlock>
-			<DemoBlock label="interactive & states">
+			<DemoBlock label="Interactive & states">
 				<List>
 					<ListItem
 						interactive
@@ -111,7 +110,7 @@ export function ListDemo() {
 					</ListItem>
 				</List>
 			</DemoBlock>
-			<DemoBlock label="loading skeleton">
+			<DemoBlock label="Loading skeleton">
 				<List
 					isLoading
 					accessibilityLabel="loading list"

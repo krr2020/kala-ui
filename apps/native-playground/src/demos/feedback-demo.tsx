@@ -1,6 +1,7 @@
-import { Button, LoadingOverlay } from "@kala-ui/react-native";
+import { Button } from "@kala-ui/react-native";
 import {
 	CopyButton,
+	LoadingOverlay,
 	PasswordStrengthIndicator,
 } from "@kala-ui/react-native-app";
 import { useState } from "react";

@@ -139,6 +139,7 @@ export const componentGroups: ComponentGroup[] = [
 			{
 				label: humanizeLabel("list"),
 				name: "list",
+				source: "app",
 				render: () => <ListDemo />,
 			},
 			{
@@ -317,6 +318,7 @@ export const componentGroups: ComponentGroup[] = [
 			{
 				label: humanizeLabel("loading-overlay"),
 				name: "loading-overlay",
+				source: "app",
 				render: () => <LoadingOverlayDemo />,
 			},
 			{

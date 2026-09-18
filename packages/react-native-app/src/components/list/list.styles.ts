@@ -3,8 +3,8 @@
  * the shared divider factory, and the themed card surface.
  */
 import type { ViewStyle } from "react-native";
-import { tokens } from "../../tokens";
-import type { KalaTheme } from "../../types";
+import { tokens } from "@kala-ui/react-native";
+import type { KalaTheme } from "@kala-ui/react-native";
 import type { ListItemIconSize } from "./list.types";
 
 export const ICON_SIZES: Record<ListItemIconSize, number> = {

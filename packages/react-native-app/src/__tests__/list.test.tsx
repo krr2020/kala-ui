@@ -1,8 +1,7 @@
 import { readFileSync } from "node:fs";
 import { fireEvent, render } from "@testing-library/react-native";
+import { tokens } from "@kala-ui/react-native";
 import { Linking, Text } from "react-native";
-import { tokens } from "../../tokens";
-import { Badge } from "../badge";
 import {
 	List,
 	ListItem,
@@ -13,8 +12,11 @@ import {
 	ListItemIcon,
 	ListItemText,
 	ListItemTitle,
-} from "../list";
-import { AVATAR_SIZES, ICON_SIZES } from "../list/list.styles";
+} from "@kala-ui/react-native-app";
+import { Badge } from "@kala-ui/react-native";
+import { AVATAR_SIZES, ICON_SIZES } from "../components/list/list.styles";
+
+const inclHidden = { includeHiddenElements: true } as const;
 
 type Screen = Awaited<ReturnType<typeof render>>;
 
@@ -281,7 +283,9 @@ describe("List loading arm", () => {
 				<List isLoading skeletonConfig={{ variant, itemCount: 2 }} />,
 			);
 			expect(screen.getByTestId("k-list")).toBeTruthy();
-			expect(screen.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
+			expect(
+				screen.getAllByTestId("k-skeleton", inclHidden).length,
+			).toBeGreaterThan(0);
 			// skeleton rows must stay chrome-free: the list surface is the
 			// only backgroundColor-bearing node in the loading arm
 			const countBg = (json: unknown): number => {
@@ -303,7 +307,9 @@ describe("List loading arm", () => {
 		const dense = await render(
 			<List isLoading dense skeletonConfig={{ itemCount: 1 }} />,
 		);
-		expect(dense.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
+		expect(
+			dense.getAllByTestId("k-skeleton", inclHidden).length,
+		).toBeGreaterThan(0);
 
 		const custom = await render(
 			<List isLoading skeleton={<Text>custom</Text>} />,
@@ -315,7 +321,7 @@ describe("List loading arm", () => {
 
 describe("List source pins", () => {
 	it("list.styles.ts is the only size-table declarer in the folder", () => {
-		const dir = `${__dirname}/../list`;
+		const dir = `${__dirname}/../components/list`;
 		for (const file of [
 			"list",
 			"list-skeleton",
@@ -339,7 +345,10 @@ describe("List source pins", () => {
 	});
 
 	it("index barrel exports the 9 public components, not SkeletonRow", () => {
-		const index = readFileSync(`${__dirname}/../list/index.ts`, "utf8");
+		const index = readFileSync(
+			`${__dirname}/../components/list/index.ts`,
+			"utf8",
+		);
 		expect(index).not.toMatch(/SkeletonRow/);
 		for (const name of [
 			"List",
