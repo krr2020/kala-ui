@@ -65,6 +65,12 @@ describe("Slider geometry", () => {
 });
 
 describe("Slider disabled", () => {
+	it("track fill uses the input token — visible on the light background", async () => {
+		const screen = await render(<Slider value={[0]} accessibilityLabel="v" />);
+		const track = flatStyle(screen.getByTestId("k-slider-track", inclHidden));
+		expect(track.backgroundColor).toBe(themes.light.input);
+	});
+
 	it("disabled styles parts explicitly — no opacity fade, thumb never transparent", async () => {
 		const screen = await render(
 			<Slider value={[50]} accessibilityLabel="v" disabled />,

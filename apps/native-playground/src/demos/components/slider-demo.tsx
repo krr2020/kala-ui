@@ -46,9 +46,27 @@ export function SliderDemo() {
 				/>
 			</DemoBlock>
 			<DemoBlock label="Boundaries">
-				<Slider accessibilityLabel="slider at min" defaultValue={[0]} />
-				<Slider accessibilityLabel="slider at max" defaultValue={[100]} />
-				<Slider accessibilityLabel="collapsed range" defaultValue={[40, 40]} />
+				<Field
+					label="At Minimum (0)"
+					description="thumb flush with the line start"
+				>
+					<Slider accessibilityLabel="slider at min" defaultValue={[0]} />
+				</Field>
+				<Field
+					label="At Maximum (100)"
+					description="thumb flush with the line end"
+				>
+					<Slider accessibilityLabel="slider at max" defaultValue={[100]} />
+				</Field>
+				<Field
+					label="Equal Thumbs (40, 40)"
+					description="both thumbs stacked at the same point"
+				>
+					<Slider
+						accessibilityLabel="collapsed range"
+						defaultValue={[40, 40]}
+					/>
+				</Field>
 			</DemoBlock>
 		</View>
 	);
