@@ -21,23 +21,23 @@ import {
 	View,
 } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { tokens } from "../../tokens";
 import { applySlot } from "../slot-styles";
+import {
+	cardStyle,
+	closeStyle,
+	descriptionStyle,
+	DRAG_DISMISS_THRESHOLD,
+	footerStyle,
+	headerStyle,
+	partTextStyle,
+	scrimStyle,
+	titleStyle,
+} from "./dialog.styles";
 import type {
 	DialogPartProps,
 	DialogProps,
-	DialogSize,
 	DialogTextProps,
 } from "./dialog.types";
-
-const MAX_WIDTH: Record<Exclude<DialogSize, "full">, number> = {
-	sm: 384,
-	md: 512,
-	lg: 672,
-};
-
-const DRAG_DISMISS_THRESHOLD = 96;
-const MIN_DRAG_OPACITY = 0.5;
 
 export function Dialog({
 	open,
@@ -59,13 +59,6 @@ export function Dialog({
 	onOpenChangeRef.current = onOpenChange;
 
 	const close = () => onOpenChangeRef.current(false);
-	const isFull = size === "full";
-
-	// drag opacity fades linearly to 0.5 across the threshold distance
-	const dragOpacity =
-		1 -
-		(Math.min(dragDy, DRAG_DISMISS_THRESHOLD) * (1 - MIN_DRAG_OPACITY)) /
-			DRAG_DISMISS_THRESHOLD;
 
 	const responders = dismissable
 		? {
@@ -109,17 +102,7 @@ export function Dialog({
 				accessibilityRole="button"
 				accessibilityLabel="Close dialog"
 				onPress={dismissable ? close : undefined}
-				style={applySlot(
-					{
-						position: "absolute",
-						top: 0,
-						right: 0,
-						bottom: 0,
-						left: 0,
-						backgroundColor: "rgba(0,0,0,0.5)",
-					},
-					slotStyles?.overlay,
-				)}
+				style={applySlot(scrimStyle(theme), slotStyles?.overlay)}
 			/>
 			{/* box-none: the wrapper only positions the card; taps outside it
 			    fall through to the overlay Pressable beneath */}
@@ -144,21 +127,7 @@ export function Dialog({
 					accessibilityViewIsModal
 					accessibilityLabel={accessibilityLabel}
 					{...responders}
-					style={applySlot(
-						{
-							width: isFull ? "100%" : "90%",
-							height: isFull ? "100%" : undefined,
-							maxWidth: isFull ? undefined : MAX_WIDTH[size],
-							maxHeight: isFull ? undefined : "90%",
-							borderRadius: isFull ? 0 : tokens.radius.card,
-							backgroundColor: theme.card,
-							borderWidth: 1,
-							borderColor: theme.border,
-							overflow: "hidden",
-							opacity: dragOpacity,
-						},
-						slotStyles?.root,
-					)}
+					style={applySlot(cardStyle(theme, size, dragDy), slotStyles?.root)}
 				>
 					{children}
 					{showCloseButton ? (
@@ -168,16 +137,7 @@ export function Dialog({
 							accessibilityLabel="Close dialog"
 							hitSlop={8}
 							onPress={close}
-							style={applySlot(
-								{
-									position: "absolute",
-									top: 10,
-									right: 10,
-									padding: 6,
-									borderRadius: tokens.radius.control,
-								},
-								slotStyles?.close,
-							)}
+							style={applySlot(closeStyle(), slotStyles?.close)}
 						>
 							<X size={20} color={theme.foreground} />
 						</Pressable>
@@ -195,23 +155,9 @@ function DialogHeader({
 }: DialogPartProps) {
 	const { theme } = useUnistyles();
 	return (
-		<View
-			testID={testID}
-			style={[
-				{
-					paddingHorizontal: 24,
-					paddingVertical: 16,
-					borderBottomWidth: 1,
-					borderColor: theme.border,
-					gap: 6,
-				},
-				style,
-			]}
-		>
+		<View testID={testID} style={[headerStyle(theme), style]}>
 			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={{ color: theme.foreground, fontSize: 14 }}>
-					{children}
-				</RNText>
+				<RNText style={partTextStyle(theme)}>{children}</RNText>
 			) : (
 				children
 			)}
@@ -226,27 +172,9 @@ function DialogFooter({
 }: DialogPartProps) {
 	const { theme } = useUnistyles();
 	return (
-		<View
-			testID={testID}
-			style={[
-				{
-					flexDirection: "row",
-					justifyContent: "flex-end",
-					flexWrap: "wrap",
-					gap: 8,
-					paddingHorizontal: 24,
-					paddingVertical: 16,
-					borderTopWidth: 1,
-					borderColor: theme.border,
-					backgroundColor: theme.muted,
-				},
-				style,
-			]}
-		>
+		<View testID={testID} style={[footerStyle(theme), style]}>
 			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={{ color: theme.foreground, fontSize: 14 }}>
-					{children}
-				</RNText>
+				<RNText style={partTextStyle(theme)}>{children}</RNText>
 			) : (
 				children
 			)}
@@ -265,10 +193,7 @@ function DialogTitle({
 		<RNText
 			testID={testID}
 			accessibilityRole="header"
-			style={applySlot(
-				[{ color: theme.foreground, fontSize: 18, fontWeight: "600" }, style],
-				slotStyles?.root,
-			)}
+			style={applySlot([titleStyle(theme), style], slotStyles?.root)}
 		>
 			{children}
 		</RNText>
@@ -285,10 +210,7 @@ function DialogDescription({
 	return (
 		<RNText
 			testID={testID}
-			style={applySlot(
-				[{ color: theme.mutedForeground, fontSize: 14 }, style],
-				slotStyles?.root,
-			)}
+			style={applySlot([descriptionStyle(theme), style], slotStyles?.root)}
 		>
 			{children}
 		</RNText>
@@ -312,9 +234,7 @@ function DialogBody({
 			style={style}
 		>
 			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={{ color: theme.foreground, fontSize: 14 }}>
-					{children}
-				</RNText>
+				<RNText style={partTextStyle(theme)}>{children}</RNText>
 			) : (
 				children
 			)}

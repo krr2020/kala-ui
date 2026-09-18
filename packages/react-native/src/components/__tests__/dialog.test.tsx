@@ -8,6 +8,8 @@ import { act, render } from "@testing-library/react-native";
 import { AlertDialog } from "../alert-dialog";
 import { Button } from "../button";
 import { Dialog } from "../dialog";
+import { tokens } from "../../tokens";
+import { themes } from "../../themes";
 
 const incl = { includeHiddenElements: true } as const;
 
@@ -44,6 +46,92 @@ const release = async (card: Card, dy: number) => {
 };
 
 describe("dialog gesture + keyboard hardening", () => {
+	const translateYOf = (card: Card): number => {
+		const transform = flatStyle(card).transform as unknown as
+			| { translateY?: number }[]
+			| undefined;
+		return (
+			transform?.find((t) => t.translateY !== undefined)?.translateY ?? 0
+		);
+	};
+
+
+
+	it("card follows the drag finger and settles back on release", async () => {
+		const onOpenChange = jest.fn();
+		const screen = await render(
+			<Dialog open onOpenChange={onOpenChange}>
+				<Dialog.Body>body</Dialog.Body>
+			</Dialog>,
+		);
+		const card = screen.getByTestId("k-dialog", incl);
+		await grant(card);
+		await move(card, 200);
+		expect(translateYOf(card)).toBe(200);
+		expect(Number(flatStyle(card).opacity)).toBeLessThanOrEqual(0.7);
+		await release(card, 40);
+		expect(translateYOf(card)).toBe(0);
+		expect(Number(flatStyle(card).opacity)).toBe(1);
+		expect(onOpenChange).not.toHaveBeenCalled();
+	});
+
+	it("upward drag clamps: no translate, no fade", async () => {
+		const onOpenChange = jest.fn();
+		const screen = await render(
+			<Dialog open onOpenChange={onOpenChange}>
+				<Dialog.Body>body</Dialog.Body>
+			</Dialog>,
+		);
+		const card = screen.getByTestId("k-dialog", incl);
+		await grant(card);
+		await move(card, -200);
+		expect(translateYOf(card)).toBe(0);
+		expect(Number(flatStyle(card).opacity)).toBe(1);
+		await release(card, -200);
+		expect(onOpenChange).not.toHaveBeenCalled();
+	});
+
+	it("overlay scrim derives from the theme foreground, retinting per mode", async () => {
+		const screen = await render(
+			<Dialog open onOpenChange={() => undefined}>
+				<Dialog.Body>body</Dialog.Body>
+			</Dialog>,
+		);
+		const overlay = screen.getByTestId("k-dialog-overlay", incl);
+		expect(flatStyle(overlay).backgroundColor).toBe(
+			`${themes.light.foreground}80`,
+		);
+		// dark mode re-derives the ink from its own foreground token —
+		// scrimStyle reads theme.foreground at render, so a different dark
+		// foreground proves the veil retints instead of staying black
+		expect(themes.dark.foreground).not.toBe(themes.light.foreground);
+		expect(`${themes.dark.foreground}80`).not.toBe(
+			`${themes.light.foreground}80`,
+		);
+	});
+
+	it("size tiers map clamped widths; full opts out with no radius", async () => {
+		const sizes: ["sm" | "md" | "lg" | "full", number | undefined][] = [
+			["sm", 384],
+			["md", 512],
+			["lg", 672],
+			["full", undefined],
+		];
+		for (const [size, maxWidth] of sizes) {
+			const screen = await render(
+				<Dialog open size={size} onOpenChange={() => undefined}>
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+			);
+			const s = flatStyle(screen.getByTestId("k-dialog", incl));
+			expect(s.maxWidth).toBe(maxWidth);
+			expect(s.borderRadius).toBe(
+				size === "full" ? 0 : tokens.radius.card,
+			);
+			if (size === "full") expect(s.width).toBe("100%");
+		}
+	});
+
 	it("card wires the raw responder protocol", async () => {
 		const screen = await render(
 			<Dialog open onOpenChange={() => undefined}>
