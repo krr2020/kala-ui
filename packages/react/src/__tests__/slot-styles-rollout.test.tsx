@@ -123,6 +123,9 @@ type Row = {
 	render: (p: OverrideProps) => React.ReactElement;
 	/** Addressable internal chrome; find() resolves the node from the family root. */
 	parts?: { slot: string; find: (root: Element | null) => Element | null }[];
+	/** Style keys probed by the object-slot test; override when the component
+	 *  animates a key (e.g. framer-motion owns collapse's opacity). */
+	objectStyleKeys?: [string, string];
 };
 
 const byMarker = (root: Element | null, marker: string) =>
@@ -471,6 +474,7 @@ const rows: Row[] = [
 				<div>x</div>
 			</Collapse>
 		),
+		objectStyleKeys: ["marginTop", "maxWidth"],
 	},
 	{
 		family: "steps",
@@ -647,7 +651,9 @@ describe.each(rows)("$marker slotStyles", (row) => {
 		expect(el?.className).not.toContain("w-10");
 		for (const part of row.parts ?? []) {
 			const node = part.find(el);
-			expect(node?.className).toContain(`k-slot-${part.slot}`);
+			// SVG elements expose className as SVGAnimatedString, not a string.
+			const partClasses = node?.getAttribute("class") ?? node?.className;
+			expect(partClasses).toContain(`k-slot-${part.slot}`);
 		}
 		expect(document.body.innerHTML).not.toContain("slotStyles");
 		const leaked = errorSpy.mock.calls.filter((c) =>
@@ -659,16 +665,20 @@ describe.each(rows)("$marker slotStyles", (row) => {
 	});
 
 	it("object root slot wins per key over the style prop", () => {
+		const [key1, key2] = row.objectStyleKeys ?? ["marginTop", "opacity"];
+		const val2 = key2 === "opacity" ? "0.5" : "42px";
 		const { unmount } = render(
 			row.render({
-				style: { marginTop: "1px" },
-				slotStyles: { root: { marginTop: "9px", opacity: "0.5" } },
+				style: { [key1]: "1px" } as React.CSSProperties,
+				slotStyles: {
+					root: { [key1]: "9px", [key2]: val2 } as React.CSSProperties,
+				},
 			}),
 		);
 		const el = findEl(row.marker) as HTMLElement | null;
 		expect(el).not.toBeNull();
-		expect(el?.style.marginTop).toBe("9px");
-		expect(el?.style.opacity).toBe("0.5");
+		expect(el?.style.getPropertyValue(key1)).toBe("9px");
+		expect(el?.style.getPropertyValue(key2)).toBe(val2);
 		unmount();
 	});
 });
@@ -783,6 +793,58 @@ const BASELINES: Record<string, string> = {
 	text: "text-foreground",
 	flex: "flex",
 };
+
+describe("table slotStyles root channel", () => {
+	it("lands on the scroll container, not the inner table", () => {
+		const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+		const { unmount } = render(
+			<Table className="w-10" slotStyles={{ root: "k-slot-root w-64" }}>
+				<tbody>
+					<tr>
+						<td>x</td>
+					</tr>
+				</tbody>
+			</Table>,
+		);
+		const container = findEl("table");
+		expect(container?.className).toContain("k-slot-root");
+		expect(container?.className).toContain("w-64");
+		expect(container?.className).toContain("kala-surface-card");
+		expect(container?.className).not.toContain("w-10");
+		// Legacy className keeps flowing to the inner <table> for column sizing.
+		const innerTable = container?.querySelector("table");
+		expect(innerTable?.className).toContain("w-10");
+		expect(innerTable?.className).toContain("w-full");
+		expect(innerTable?.className).not.toContain("k-slot-root");
+		const leaked = errorSpy.mock.calls.filter((c) =>
+			String(c[0]).includes("slotStyles"),
+		);
+		expect(leaked).toEqual([]);
+		errorSpy.mockRestore();
+		unmount();
+	});
+
+	it("object root slot wins per key on the container", () => {
+		const { unmount } = render(
+			<Table
+				style={{ marginTop: "1px" } as React.CSSProperties}
+				slotStyles={{
+					root: { marginTop: "9px", maxWidth: "42px" } as React.CSSProperties,
+				}}
+			>
+				<tbody>
+					<tr>
+						<td>x</td>
+					</tr>
+				</tbody>
+			</Table>,
+		);
+		const container = findEl("table") as HTMLElement | null;
+		expect(container?.style.getPropertyValue("marginTop")).toBe("9px");
+		expect(container?.style.getPropertyValue("maxWidth")).toBe("42px");
+		unmount();
+	});
+});
 
 describe("absent slotStyles baselines", () => {
 	it("pagination-item renders the pre-rollout class string", () => {
