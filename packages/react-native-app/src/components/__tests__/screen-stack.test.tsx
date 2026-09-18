@@ -1,4 +1,6 @@
+import { motion } from "@kala-ui/react-native/tokens";
 import { fireEvent, render } from "@testing-library/react-native";
+import { useState } from "react";
 import {
 	AccessibilityInfo,
 	BackHandler,
@@ -7,8 +9,6 @@ import {
 	Text,
 } from "react-native";
 import * as Reanimated from "react-native-reanimated";
-import { motion } from "@kala-ui/react-native/tokens";
-import { useState } from "react";
 import { ScreenStack } from "../screen-stack";
 
 // the shared jest.setup mock records every withTiming/withSpring call config
@@ -445,5 +445,27 @@ describe("ScreenStack", () => {
 		expect(timingCalls.length).toBeGreaterThan(0);
 		expect(screen.queryByText("list-body", inclHidden)).toBeNull();
 		expect(screen.getByText("landing-body")).toBeTruthy();
+	});
+
+	it("popping the last entry empties the stack: root exits, no residual layers", async () => {
+		const onRequestPop = jest.fn();
+		const screen = await render(
+			<ScreenStack
+				entries={[entryOf("solo", "solo")]}
+				onRequestPop={onRequestPop}
+			/>,
+		);
+		expect(screen.getByText("solo-body")).toBeTruthy();
+
+		timingCalls.length = 0;
+		await screen.rerender(
+			<ScreenStack entries={[]} onRequestPop={onRequestPop} />,
+		);
+		// the root animates out rather than resetting invisibly
+		expect(timingCalls.some((c) => c.to === 0)).toBe(true);
+		expect(screen.queryByText("solo-body", inclHidden)).toBeNull();
+		// nothing survives in the container: no content layer, no scrim
+		expect(screen.queryByTestId("k-screen-content-solo")).toBeNull();
+		expect(screen.queryByTestId("k-screen-stack-scrim")).toBeNull();
 	});
 });

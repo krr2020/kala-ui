@@ -115,13 +115,14 @@ function ScreenLayer({
 		if (phase === "exiting") {
 			// worklet callbacks may only capture primitives: `entry` carries React
 			// children, which reanimated cannot copy across the bridge
+			const exitKey = entry.key;
 			const exitCallback = onExitedRef.current;
 			if (reduceMotion || presentation === "none") {
 				progress.value = 0;
-				exitCallback(entry.key);
+				exitCallback(exitKey);
 			} else {
 				progress.value = withTiming(0, EXIT_CONFIG, (finished) => {
-					if (finished) runOnJS(exitCallback)(entry.key);
+					if (finished) runOnJS(exitCallback)(exitKey);
 				});
 			}
 		}

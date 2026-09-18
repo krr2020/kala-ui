@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import type {
 	ScreenStackEntry,
@@ -114,5 +116,19 @@ describe("diffStack", () => {
 		).toEqual({
 			type: "none",
 		});
+	});
+});
+
+describe("worklet closure guard", () => {
+	it("runOnJS arguments are pre-extracted primitives, never entry members", () => {
+		// reanimated copies every closure variable a worklet body references;
+		// evaluating entry.key inside one drags the whole FiberNode across the
+		// bridge and crashes at runtime, so the component must extract first
+		const source = readFileSync(
+			resolve(__dirname, "../screen-stack/screen-stack.tsx"),
+			"utf8",
+		);
+		expect(source).not.toMatch(/runOnJS\([^)]*\)\(\s*(entry|spec)\./);
+		expect(source).not.toMatch(/\)\(\s*entry\./);
 	});
 });
