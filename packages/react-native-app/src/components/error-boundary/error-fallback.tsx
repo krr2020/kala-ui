@@ -1,8 +1,8 @@
 import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { Button } from "../button";
-import { applySlot } from "../slot-styles";
+import { Button } from "@kala-ui/react-native";
+import { applySlot } from "@kala-ui/react-native";
 import {
 	fallbackDescription,
 	fallbackRoot,

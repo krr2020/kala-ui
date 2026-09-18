@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
-import type { ButtonColor, ButtonVariant } from "../button/button.types";
+import type { ButtonColor, ButtonVariant } from "@kala-ui/react-native";
 
 /** Injects the platform clipboard writer; RN has no navigator.clipboard. */
 export type ClipboardWriter = (text: string) => Promise<void>;

@@ -14,11 +14,20 @@ module.exports = {
 		"^lucide-react-native$":
 			"<rootDir>/../react-native/node_modules/lucide-react-native/dist/cjs/lucide-react-native.js",
 		"^react-native-unistyles$": require.resolve("react-native-unistyles"),
+		// core-source imports ("@kala-ui/react-native" maps into
+		// ../react-native/src) must resolve reanimated to the same copy this
+		// package's jest.setup mocks, or sheet.styles' Easing import loads the
+		// real native build under jest and crashes at module scope.
+		"^react-native-reanimated$": require.resolve("react-native-reanimated"),
 		"^react-native-unistyles/mocks$": require("node:path").join(
 			require("node:path").dirname(require.resolve("react-native-unistyles")),
 			"mocks.js",
 		),
 		"^@kala-ui/react-native$": "<rootDir>/../react-native/src/index.ts",
+		"^@kala-ui/react-native/themes$":
+			"<rootDir>/../react-native/src/themes/index.ts",
+		"^@kala-ui/react-native/types$":
+			"<rootDir>/../react-native/src/types/index.ts",
 	},
 	transformIgnorePatterns: [
 		"/node_modules/(?!(.pnpm|react-native|@react-native|@react-native-community|expo|@expo|@expo-google-fonts|react-navigation|@react-navigation|@sentry/react-native|native-base|standard-navigation|react-native-svg|react-native-unistyles|react-native-gesture-handler|react-native-reanimated|lucide-react-native))",

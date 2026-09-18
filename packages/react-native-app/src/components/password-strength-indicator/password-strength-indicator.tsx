@@ -7,7 +7,7 @@ import {
 	PASSWORD_MIN_LENGTH,
 	STRENGTH_LABELS,
 } from "../../lib/password-strength.utils";
-import { applySlot } from "../slot-styles";
+import { applySlot } from "@kala-ui/react-native";
 import {
 	barColor as barColorFor,
 	barRowStyle,

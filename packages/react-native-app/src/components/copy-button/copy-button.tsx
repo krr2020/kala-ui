@@ -9,7 +9,7 @@ import { Check, Copy } from "lucide-react-native";
 import { useCallback, useRef, useState } from "react";
 
 import { useUnistyles } from "react-native-unistyles";
-import { Button } from "../button";
+import { Button } from "@kala-ui/react-native";
 import type { CopyButtonProps } from "./copy-button.types";
 
 export function CopyButton({

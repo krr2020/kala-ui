@@ -1,7 +1,7 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { Text } from "react-native";
-import type { StepItem } from "../steps";
-import { Steps } from "../steps";
+import type { StepItem } from "../components/steps";
+import { Steps } from "../components/steps";
 
 type Screen = Awaited<ReturnType<typeof render>>;
 

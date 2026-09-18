@@ -37,6 +37,12 @@ jest.mock("react-native-reanimated", () => {
 		withSpring: (to: number) => to,
 		withTiming: (to: number) => to,
 		runOnJS: (fn: (...args: unknown[]) => unknown) => fn,
+		// Easing must come from reanimated (worklet-compatible); the mock's
+		// bezier echoes the control points so config assertions compare the
+		// same object shape the real runtime produces
+		Easing: {
+			bezier: (...points: number[]) => ({ __bezier: points }),
+		},
 	};
 });
 

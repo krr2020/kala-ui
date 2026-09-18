@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
-import type { IconComponent } from "../icon";
+import type { IconComponent } from "@kala-ui/react-native";
 
 /** Any icon-library component taking {size, color} — see Icon. */
 export type EmptyStateIcon = IconComponent;

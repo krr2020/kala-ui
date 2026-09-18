@@ -47,7 +47,11 @@ export type {
 	BannerSkeletonConfig,
 } from "./components/banner";
 export { Banner } from "./components/banner";
-export type { ButtonProps } from "./components/button";
+export type {
+	ButtonColor,
+	ButtonProps,
+	ButtonVariant,
+} from "./components/button";
 export { Button } from "./components/button";
 export type {
 	CalendarMode,
@@ -102,11 +106,6 @@ export { Combobox, ComboboxSkeleton } from "./components/combobox";
 export type { ContextMenuProps } from "./components/context-menu";
 export { ContextMenu } from "./components/context-menu";
 export type {
-	ClipboardWriter,
-	CopyButtonProps,
-} from "./components/copy-button";
-export { CopyButton } from "./components/copy-button";
-export type {
 	DatePickerProps,
 	DateRangePickerProps,
 	PickerCalendarProps,
@@ -127,18 +126,6 @@ export type {
 	DropdownMenuSeparatorItem,
 } from "./components/dropdown-menu";
 export { DropdownMenu } from "./components/dropdown-menu";
-export type {
-	EmptyStateAction,
-	EmptyStateIcon,
-	EmptyStateProps,
-} from "./components/empty-state";
-export { EmptyState } from "./components/empty-state";
-export type {
-	ErrorBoundaryProps,
-	ErrorFallbackProps,
-	ErrorFallbackVariant,
-} from "./components/error-boundary";
-export { ErrorBoundary, ErrorFallback } from "./components/error-boundary";
 export type { FieldProps } from "./components/field";
 export { Field } from "./components/field";
 export type {
@@ -202,8 +189,6 @@ export type {
 export { MultiSelect, MultiSelectSkeleton } from "./components/multi-select";
 export type { NumberInputProps } from "./components/number-input";
 export { NumberInput } from "./components/number-input";
-export type { PasswordStrengthIndicatorProps } from "./components/password-strength-indicator";
-export { PasswordStrengthIndicator } from "./components/password-strength-indicator";
 export type {
 	ProgressColor,
 	ProgressProps,
@@ -253,12 +238,8 @@ export type {
 	SpinnerVariant,
 } from "./components/spinner";
 export { Spinner } from "./components/spinner";
-export type {
-	StepItem,
-	StepsOrientation,
-	StepsProps,
-} from "./components/steps";
-export { Steps } from "./components/steps";
+export type { SlotStyles, SlotStyle } from "./components/slot-styles";
+export { applySlot } from "./components/slot-styles";
 export type { SwitchProps } from "./components/switch";
 export { Switch } from "./components/switch";
 export type { TabsItem, TabsProps } from "./components/tabs";
@@ -279,12 +260,6 @@ export type { TextareaProps } from "./components/textarea";
 export { Textarea } from "./components/textarea";
 export type { TimePickerProps, TimeValue } from "./components/time-picker";
 export { TimePicker } from "./components/time-picker";
-export type {
-	TimelineItemData,
-	TimelineProps,
-	TimelineStatus,
-} from "./components/timeline";
-export { Timeline } from "./components/timeline";
 export type {
 	ToastDescriptionProps,
 	ToastPosition,

@@ -3,8 +3,8 @@
  * builder, icon circle, and text styles — theme/token-in, style-out.
  */
 import type { ViewStyle } from "react-native";
-import { tokens } from "../../tokens";
-import type { KalaTheme } from "../../types";
+import { tokens } from "@kala-ui/react-native";
+import type { KalaTheme } from "@kala-ui/react-native/types";
 import type { EmptyStateProps } from "./empty-state.types";
 
 export const MIN_HEIGHT = { sm: 150, md: 300, lg: 500 } as const;

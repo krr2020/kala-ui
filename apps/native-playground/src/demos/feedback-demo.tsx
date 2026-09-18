@@ -1,26 +1,21 @@
+import { Button, LoadingOverlay } from "@kala-ui/react-native";
 import {
-	Button,
 	CopyButton,
-	ErrorBoundary,
-	LoadingOverlay,
 	PasswordStrengthIndicator,
-} from "@kala-ui/react-native";
+} from "@kala-ui/react-native-app";
 import { useState } from "react";
 import { Text, View } from "react-native";
 import { DemoBlock } from "./demo-block";
 import { demoStyles } from "./stylesheet";
 
-function ThrowOnce(): never {
-	throw new Error("demo crash");
-}
-
+// Group overview: one composed status story over the feedback family —
+// per-component screens live in ./components.
 export function FeedbackDemo() {
 	const [loading, setLoading] = useState(false);
-	const [crashKey, setCrashKey] = useState(0);
 	return (
-		<>
-			<DemoBlock label="Loading Overlay">
-				<View style={demoStyles.componentRow} testID="k-demo-loading-overlay">
+		<View style={demoStyles.routeContent} testID="k-demo-feedback">
+			<DemoBlock label="Order Status">
+				<View style={[demoStyles.componentRow, { minHeight: 96 }]}>
 					<Button size="sm" onPress={() => setLoading(true)}>
 						Simulate Fetch
 					</Button>
@@ -29,26 +24,12 @@ export function FeedbackDemo() {
 					</LoadingOverlay>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="Password Strength">
-				<View style={demoStyles.componentRow} testID="k-demo-password-strength">
-					<PasswordStrengthIndicator password="Aaaaaaaaaaaa1!" />
-				</View>
+			<DemoBlock label="Clipboard">
+				<CopyButton value="kala-ui" writeClipboard={async () => undefined} />
 			</DemoBlock>
-			<DemoBlock label="Copy Button">
-				<View style={demoStyles.componentRow} testID="k-demo-copy-button">
-					<CopyButton value="kala-ui" writeClipboard={async () => undefined} />
-				</View>
+			<DemoBlock label="Password">
+				<PasswordStrengthIndicator password="Correct Horse Battery 9!" />
 			</DemoBlock>
-			<DemoBlock label="Error Boundary">
-				<View style={demoStyles.componentRow} testID="k-demo-error-boundary">
-					<ErrorBoundary resetKeys={[crashKey]}>
-						{crashKey % 2 === 1 ? <ThrowOnce /> : <Text>Boundary healthy</Text>}
-					</ErrorBoundary>
-					<Button size="sm" onPress={() => setCrashKey((k) => k + 1)}>
-						Toggle Crash
-					</Button>
-				</View>
-			</DemoBlock>
-		</>
+		</View>
 	);
 }

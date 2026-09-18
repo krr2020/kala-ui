@@ -7,7 +7,7 @@
 import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { applySlot } from "../slot-styles";
+import { applySlot } from "@kala-ui/react-native";
 import type {
 	TimelineItemData,
 	TimelineProps,

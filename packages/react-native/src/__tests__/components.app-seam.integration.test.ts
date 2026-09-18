@@ -112,7 +112,6 @@ describe("component app seam", () => {
 			"ListItem",
 			"Tabs",
 			"SegmentedControl",
-			"EmptyState",
 			"Tag",
 			"Rating",
 			"Slider",
@@ -122,10 +121,8 @@ describe("component app seam", () => {
 			"ToggleGroup",
 			"DropdownMenu",
 			"ContextMenu",
-			"Timeline",
 			"MultiSelect",
 			"Combobox",
-			"CopyButton",
 			"NumberInput",
 			"Calendar",
 			"DatePicker",
@@ -137,7 +134,6 @@ describe("component app seam", () => {
 			"AvatarGroup",
 			"RingProgress",
 			"LoadingOverlay",
-			"ErrorBoundary",
 		]) {
 			expect(unionImports.has(name), `playground imports ${name}`).toBe(true);
 			expect(exported.has(name), `entry exports ${name}`).toBe(true);
@@ -176,8 +172,15 @@ describe("component app seam", () => {
 		// dedicated toast demo (basic/position/auto/manual/long arms) +
 		// dedicated progress demo (upload stepper) + dedicated
 		// ring-progress demo (sync stepper) + dedicated spinner demo
-		// (loading toggle) + dedicated skeleton demo (fetch toggle).
-		expect(demoHooks).toBe(71);
+		// (loading toggle) + dedicated skeleton demo (fetch toggle) +
+		// the per-component screens: loading-overlay + error-boundary
+		// (crash) + empty-state (skeleton) + password (live text) +
+		// tabs + steps + segmented + toggle-group (align/formats) +
+		// accordion + collapsible + dropdown (checkbox) + context
+		// (last action) + dialog + alert-dialog + sheet + metric-card
+		// (skeleton) + bar-chart (skeleton) — feedback nav overlays
+		// overviews shrank to composed stories.
+		expect(demoHooks).toBe(79);
 	});
 
 	it("landing offers exactly two package routes", () => {
@@ -295,9 +298,13 @@ describe("component app seam", () => {
 			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
 			"utf8",
 		);
-		// source is required on every group: one declaration per title
-		// (trailing comma keeps the interface's union type out of the count).
-		expect(registry.match(/source: "(?:library|app)",/g) ?? []).toHaveLength(
+		// source is required on every group: one declaration per title.
+		// Entry-level source overrides (composite widgets that live in the
+		// app package) sit next to `render:` — anchor the count on the group
+		// header shape (`overview:` follower) so they stay out of it.
+		const groupSources =
+			registry.match(/source: "(?:library|app)",\s*\n\s*overview:/g) ?? [];
+		expect(groupSources).toHaveLength(
 			(registry.match(/title: "/g) ?? []).length,
 		);
 		// exactly the react-native-app-backed groups are app-sourced.
@@ -306,7 +313,9 @@ describe("component app seam", () => {
 				new RegExp(`name: "${name}",[\\s\\S]*?source: "app"`),
 			);
 		}
-		expect(registry.match(/source: "app"/g) ?? []).toHaveLength(3);
+		expect(
+			registry.match(/source: "app",\s*\n\s*overview:/g) ?? [],
+		).toHaveLength(3);
 		// landing segregates by package: two entry cards filter groups by
 		// their source — the app card carries the app tint, both captions
 		// reuse the uppercase section header style
@@ -557,7 +566,9 @@ describe("component app seam", () => {
 		expect(markerCensus(sources)).toEqual(
 			new Map(
 				Object.entries({
+					'accessibilityLabel="Archiving project"': 1,
 					'accessibilityLabel="City"': 1,
+					'accessibilityLabel="Fetching orders"': 1,
 					'accessibilityLabel="Disabled quantity"': 1,
 					'accessibilityLabel="Disabled textarea"': 1,
 					'accessibilityLabel="Error combobox"': 1,
@@ -566,6 +577,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="Error select"': 1,
 					'accessibilityLabel="Error textarea"': 1,
 					'accessibilityLabel="Feedback"': 1,
+					'accessibilityLabel="account password"': 1,
 					'accessibilityLabel="Fruit"': 1,
 					'accessibilityLabel="Grouped fruit"': 1,
 					'accessibilityLabel="Grouped toppings"': 1,
@@ -712,11 +724,13 @@ describe("component app seam", () => {
 					'testID="k-demo-accordion"': 1,
 					'testID="k-demo-toast"': 1,
 					'testID="k-demo-alert"': 1,
+					'testID="k-demo-alert-dialog"': 1,
 					'testID="k-demo-app-shell"': 1,
 					'testID="k-demo-avatar-group"': 1,
 					'testID="k-demo-avatar-group-inline"': 1,
 					'testID="k-demo-avatars"': 1,
 					'testID="k-demo-badges"': 1,
+					'testID="k-demo-bar-chart"': 1,
 					'testID="k-demo-banner"': 1,
 					'testID="k-demo-button"': 1,
 					'testID="k-demo-calendar"': 2,
@@ -731,8 +745,11 @@ describe("component app seam", () => {
 					'testID="k-demo-data-table"': 1,
 					'testID="k-demo-date-picker"': 2,
 					'testID="k-demo-dialog"': 1,
+					'testID="k-demo-donut-chart"': 1,
 					'testID="k-demo-dropdown-menu"': 1,
+					'testID="k-demo-empty-state"': 1,
 					'testID="k-demo-error-boundary"': 1,
+					'testID="k-demo-feedback"': 1,
 					'testID="k-demo-field"': 1,
 					'testID="k-demo-forms"': 1,
 					'testID="k-demo-heading"': 1,
@@ -744,6 +761,7 @@ describe("component app seam", () => {
 					'testID="k-demo-labels"': 1,
 					'testID="k-demo-list"': 1,
 					'testID="k-demo-loading-overlay"': 1,
+					'testID="k-demo-metric-card"': 1,
 					'testID="k-demo-multi-select"': 1,
 					'testID="k-demo-number-input"': 1,
 					'testID="k-demo-password-strength"': 1,
@@ -752,17 +770,20 @@ describe("component app seam", () => {
 					'testID="k-demo-radios"': 1,
 					'testID="k-demo-rating"': 2,
 					'testID="k-demo-ring-progress"': 2,
-					'testID="k-demo-segmented"': 1,
+					'testID="k-demo-segmented-control"': 1,
 					'testID="k-demo-select"': 1,
 					'testID="k-demo-separator"': 1,
+					'testID="k-demo-sheet"': 1,
 					'testID="k-demo-skeleton"': 1,
 				'testID="k-demo-skeletons"': 1,
 					'testID="k-demo-slider"': 2,
+					'testID="k-demo-sparkline"': 1,
 					'testID="k-demo-spinner"': 1,
 				'testID="k-demo-spinners"': 1,
 					'testID="k-demo-steps"': 1,
 					'testID="k-demo-switch"': 1,
 					'testID="k-demo-tabs"': 1,
+					'testID="k-demo-theming"': 1,
 					'testID="k-demo-tag"': 1,
 					'testID="k-demo-tags"': 1,
 					'testID="k-demo-text"': 1,
@@ -772,6 +793,7 @@ describe("component app seam", () => {
 					'testID="k-demo-timeline"': 1,
 					'testID="k-demo-toggle"': 1,
 					'testID="k-demo-toggles"': 1,
+					'testID="k-demo-toggle-group"': 1,
 					'testID="k-group-list-root"': 1,
 					'testID="k-group-root"': 1,
 					'testID="k-landing-app"': 1,

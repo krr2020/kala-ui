@@ -3,7 +3,7 @@
  * PasswordStrengthIndicator.
  */
 import type { ViewStyle } from "react-native";
-import type { KalaTheme } from "../../types";
+import type { KalaTheme } from "@kala-ui/react-native/types";
 
 export const barColor = (strength: number, theme: KalaTheme): string =>
 	strength <= 1

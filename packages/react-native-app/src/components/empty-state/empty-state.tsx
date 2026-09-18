@@ -9,10 +9,10 @@ import { Inbox } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { tokens } from "../../tokens";
-import { Icon } from "../icon";
-import { Skeleton } from "../skeleton";
-import { applySlot } from "../slot-styles";
+import { tokens } from "@kala-ui/react-native";
+import { Icon } from "@kala-ui/react-native";
+import { Skeleton } from "@kala-ui/react-native";
+import { applySlot } from "@kala-ui/react-native";
 import {
 	descriptionStyle,
 	iconCircleStyle,

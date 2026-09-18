@@ -33,12 +33,9 @@ import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Combobox } from "../combobox";
 import { ContextMenu } from "../context-menu";
-import { CopyButton } from "../copy-button";
 import { DatePicker, DateRangePicker } from "../date-picker";
 import { Dialog } from "../dialog";
 import { DropdownMenu } from "../dropdown-menu";
-import { EmptyState } from "../empty-state";
-import { ErrorBoundary } from "../error-boundary";
 import { Field } from "../field";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
@@ -60,7 +57,6 @@ import { LoadingOverlay } from "../loading-overlay";
 import { MultiSelect } from "../multi-select";
 
 import { NumberInput } from "../number-input";
-import { PasswordStrengthIndicator } from "../password-strength-indicator";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Rating } from "../rating";
@@ -72,7 +68,6 @@ import { Sheet } from "../sheet";
 import { Skeleton } from "../skeleton";
 import { Slider } from "../slider";
 import { Spinner } from "../spinner";
-import { Steps } from "../steps";
 import { Switch } from "../switch";
 
 import { Tabs } from "../tabs";
@@ -81,7 +76,6 @@ import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Textarea } from "../textarea";
 import { TimePicker } from "../time-picker";
-import { Timeline } from "../timeline";
 import { Toast } from "../toast";
 import { Toggle } from "../toggle";
 import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
@@ -219,13 +213,6 @@ describe("component markers", () => {
 		expect(screen.getByTestId("k-time-picker")).toBeTruthy();
 		expect(screen.getByTestId("k-time-picker-hour")).toBeTruthy();
 		expect(screen.getByTestId("k-time-picker-minute")).toBeTruthy();
-	});
-
-	it("CopyButton renders k-copy-button", async () => {
-		const screen = await render(
-			<CopyButton value="demo" writeClipboard={async () => undefined} />,
-		);
-		expect(screen.getByTestId("k-copy-button")).toBeTruthy();
 	});
 
 	it("NumberInput exposes root, input and stepper markers", async () => {
@@ -1009,20 +996,19 @@ describe("component markers", () => {
 	// Label/Separator/Spinner/Progress sits LAST in file order on purpose:
 	// its spinner test manually unmounts, which poisons TLB's registry for
 	// later renders in the same file.
-	describe("Tabs, SegmentedControl, EmptyState, Tag", () => {
+	describe("Tabs, SegmentedControl, Tag", () => {
 		const TAB_ITEMS = [
 			{ value: "one", label: "One" },
 			{ value: "two", label: "Two" },
 		];
 
-		it("Tabs/SegmentedControl/EmptyState/Tag render their k-* markers", async () => {
+		it("Tabs/SegmentedControl/Tag render their k-* markers", async () => {
 			const screen = await render(
 				<>
 					<Tabs defaultValue="one" items={TAB_ITEMS}>
 						one body
 					</Tabs>
 					<SegmentedControl data={["day", "week"]} />
-					<EmptyState title="No projects yet" />
 					<Tag>beta</Tag>
 				</>,
 			);
@@ -1032,7 +1018,6 @@ describe("component markers", () => {
 			expect(screen.getByTestId("k-tab-content-one")).toBeTruthy();
 			expect(screen.getByTestId("k-segmented")).toBeTruthy();
 			expect(screen.getAllByTestId("k-segment").length).toBe(2);
-			expect(screen.getByTestId("k-empty-state")).toBeTruthy();
 			expect(screen.getByTestId("k-tag")).toBeTruthy();
 		});
 
@@ -1175,48 +1160,7 @@ describe("component markers", () => {
 			expect(disabled.props.accessibilityState?.disabled).toBe(true);
 		});
 
-		it("EmptyState renders icon/title/description/action; isLoading swaps to skeleton", async () => {
-			const onPress = jest.fn();
-			const screen = await render(
-				<EmptyState
-					title="No projects"
-					description="Create your first one"
-					action={{ label: "New project", onPress }}
-				/>,
-			);
-			expect(screen.getByTestId("k-empty-state-icon", inclHidden)).toBeTruthy();
-			expect(screen.getByText("No projects")).toBeTruthy();
-			expect(screen.getByText("Create your first one")).toBeTruthy();
-			await fireEvent.press(screen.getByTestId("k-empty-state-action"));
-			expect(onPress).toHaveBeenCalledTimes(1);
-
-			await screen.rerender(<EmptyState title="No projects" isLoading />);
-			expect(screen.queryByText("No projects")).toBeNull();
-			expect(
-				screen.getAllByTestId("k-skeleton", inclHidden).length,
-			).toBeGreaterThan(0);
-		});
-
-		it("EmptyState size arms produce distinct heights; destructive tint differs", async () => {
-			const seen = new Set<number>();
-			const screen = await render(<EmptyState title="t" size="sm" />);
-			for (const size of ["sm", "md", "lg"] as const) {
-				await screen.rerender(<EmptyState title="t" size={size} />);
-				seen.add(
-					Number(flatStyle(screen.getByTestId("k-empty-state")).minHeight),
-				);
-			}
-			expect(seen.size).toBe(3);
-
-			await screen.rerender(<EmptyState title="t" />);
-			const def = flatStyle(screen.getByTestId("k-empty-state"));
-			await screen.rerender(<EmptyState title="t" color="destructive" />);
-			const dest = flatStyle(screen.getByTestId("k-empty-state"));
-			expect(dest.borderColor).not.toBe(def.borderColor);
-			expect(String(dest.backgroundColor).startsWith("#")).toBe(true);
-		});
-
-		it("every Tag variant×color arm produces a distinct style triple", async () => {
+	it("every Tag variant×color arm produces a distinct style triple", async () => {
 			const variants = ["solid", "outline", "subtle"] as const;
 			const colors = [
 				"primary",
@@ -2471,7 +2415,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("AvatarGroup, RingProgress, LoadingOverlay, ErrorBoundary", () => {
+	describe("AvatarGroup, RingProgress, LoadingOverlay", () => {
 		it("AvatarGroup renders container, member and overflow markers", async () => {
 			const screen = await render(
 				<AvatarGroup
@@ -2494,66 +2438,31 @@ describe("component markers", () => {
 			expect(screen.getByTestId("k-ring-progress-label")).toBeTruthy();
 		});
 
-		it("LoadingOverlay renders only while visible", async () => {
-			const hidden = await render(<LoadingOverlay visible={false} />);
-			expect(hidden.queryByTestId("k-loading-overlay")).toBeNull();
-			const shown = await render(<LoadingOverlay visible />);
-			expect(shown.getByTestId("k-loading-overlay")).toBeTruthy();
-		});
-
-		it("ErrorBoundary renders the fallback markers on crash", async () => {
-			const Boom = (): never => {
-				throw new Error("markers");
-			};
-			const screen = await render(
-				<ErrorBoundary>
-					<Boom />
-				</ErrorBoundary>,
-			);
-			expect(screen.getByTestId("k-error-fallback")).toBeTruthy();
-			expect(screen.getByTestId("k-error-fallback-title")).toBeTruthy();
-			expect(screen.getByTestId("k-error-fallback-description")).toBeTruthy();
-			expect(screen.getByTestId("k-error-fallback-reset")).toBeTruthy();
-		});
+	it("LoadingOverlay renders only while visible", async () => {
+		const hidden = await render(<LoadingOverlay visible={false} />);
+		expect(hidden.queryByTestId("k-loading-overlay")).toBeNull();
+		const shown = await render(<LoadingOverlay visible />);
+		expect(shown.getByTestId("k-loading-overlay")).toBeTruthy();
 	});
+});
 
-	describe("InputOtp, PasswordStrengthIndicator, Steps", () => {
-		it("InputOtp renders root, slot, field and separator markers", async () => {
-			const screen = await render(
-				<InputOtp maxLength={4}>
-					<InputOtpSlot index={0} />
-					<InputOtpSeparator />
-					<InputOtpSlot index={1} />
-					<InputOtpSlot index={2} />
-					<InputOtpSlot index={3} />
-				</InputOtp>,
-			);
-			expect(screen.getByTestId("k-input-otp")).toBeTruthy();
-			expect(screen.getAllByTestId("k-input-otp-slot")).toHaveLength(4);
-			expect(screen.getByTestId("k-input-otp-separator")).toBeTruthy();
-			expect(screen.getByTestId("k-input-otp-field")).toBeTruthy();
+describe("InputOtp", () => {
+	it("InputOtp renders root, slot, field and separator markers", async () => {
+		const screen = await render(
+			<InputOtp maxLength={4}>
+				<InputOtpSlot index={0} />
+				<InputOtpSeparator />
+				<InputOtpSlot index={1} />
+				<InputOtpSlot index={2} />
+				<InputOtpSlot index={3} />
+			</InputOtp>,
+		);
+		expect(screen.getByTestId("k-input-otp")).toBeTruthy();
+		expect(screen.getAllByTestId("k-input-otp-slot")).toHaveLength(4);
+		expect(screen.getByTestId("k-input-otp-separator")).toBeTruthy();
+		expect(screen.getByTestId("k-input-otp-field")).toBeTruthy();
 		});
-
-		it("PasswordStrengthIndicator renders root and segment markers", async () => {
-			const screen = await render(
-				<PasswordStrengthIndicator password="Aaaaaaaaaaaa1!" />,
-			);
-			expect(screen.getByTestId("k-password-strength-indicator")).toBeTruthy();
-			expect(screen.getAllByTestId("k-password-strength-segment")).toHaveLength(
-				4,
-			);
-		});
-
-		it("Steps renders root, row, indicator and line markers", async () => {
-			const screen = await render(
-				<Steps items={[{ title: "one" }, { title: "two" }]} value={1} />,
-			);
-			expect(screen.getByTestId("k-steps")).toBeTruthy();
-			expect(screen.getAllByTestId("k-step")).toHaveLength(2);
-			expect(screen.getByTestId("k-step-indicator-1")).toBeTruthy();
-			expect(screen.getAllByTestId("k-step-line")).toHaveLength(1);
-		});
-	});
+});
 
 	describe("DropdownMenu, ContextMenu", () => {
 		it("DropdownMenu exposes trigger and sheet row markers", async () => {
@@ -2603,21 +2512,7 @@ describe("component markers", () => {
 		});
 	});
 
-	describe("Timeline", () => {
-		it("Timeline exposes item, dot and line markers", async () => {
-			const screen = await render(
-				<Timeline
-					items={[{ title: "one", status: "success" }, { title: "two" }]}
-				/>,
-			);
-			expect(screen.getByTestId("k-timeline")).toBeTruthy();
-			expect(screen.getAllByTestId("k-timeline-item")).toHaveLength(2);
-			expect(screen.getAllByTestId("k-timeline-dot")).toHaveLength(2);
-			expect(screen.getAllByTestId("k-timeline-line")).toHaveLength(1);
-		});
-	});
-
-	describe("MultiSelect, Combobox", () => {
+describe("MultiSelect, Combobox", () => {
 		it("MultiSelect exposes trigger, chips and sheet row markers", async () => {
 			const screen = await render(
 				<MultiSelect

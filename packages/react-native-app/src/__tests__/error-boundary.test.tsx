@@ -1,6 +1,6 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { Text } from "react-native";
-import { ErrorBoundary, ErrorFallback } from "../error-boundary";
+import { ErrorBoundary, ErrorFallback } from "../components/error-boundary";
 
 type Screen = Awaited<ReturnType<typeof render>>;
 

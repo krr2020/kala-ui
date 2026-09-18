@@ -30,7 +30,7 @@ function exportNames(): Set<string> {
 }
 
 describe("entry exports pin", () => {
-	it("exports exactly the Wave-A1 + A2 surface", () => {
+	it("exports exactly the app-composite surface", () => {
 		expect(exportNames()).toEqual(
 			new Set([
 				"AppShell",
@@ -40,6 +40,9 @@ describe("entry exports pin", () => {
 				"BarChartProps",
 				"ChartSkeleton",
 				"ChartSkeletonProps",
+				"ClipboardWriter",
+				"CopyButton",
+				"CopyButtonProps",
 				"DataTable",
 				"DataTableColumn",
 				"DataTableProps",
@@ -48,6 +51,15 @@ describe("entry exports pin", () => {
 				"DonutChart",
 				"DonutChartDatum",
 				"DonutChartProps",
+				"EmptyState",
+				"EmptyStateAction",
+				"EmptyStateIcon",
+				"EmptyStateProps",
+				"ErrorBoundary",
+				"ErrorBoundaryProps",
+				"ErrorFallback",
+				"ErrorFallbackProps",
+				"ErrorFallbackVariant",
 				"Header",
 				"HeaderAction",
 				"HeaderProps",
@@ -57,13 +69,23 @@ describe("entry exports pin", () => {
 				"MetricCardProps",
 				"MetricCardSkeleton",
 				"MetricCardSkeletonProps",
+				"PasswordStrengthIndicator",
+				"PasswordStrengthIndicatorProps",
 				"Sparkline",
 				"SparklineProps",
+				"StepItem",
+				"Steps",
+				"StepsOrientation",
+				"StepsProps",
 				"TabBar",
 				"TabBarItemData",
 				"TabBarProps",
 				"TabBarSkeleton",
 				"TabBarSkeletonProps",
+				"Timeline",
+				"TimelineItemData",
+				"TimelineProps",
+				"TimelineStatus",
 				"isActivePath",
 			]),
 		);

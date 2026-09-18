@@ -6,7 +6,7 @@
  * exercised against the actual clock.
  */
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
-import { CopyButton } from "../copy-button";
+import { CopyButton } from "@kala-ui/react-native-app";
 
 const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
 

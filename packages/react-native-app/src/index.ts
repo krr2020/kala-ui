@@ -4,6 +4,23 @@
 export type { AppShellProps } from "./components/app-shell";
 export { AppShell } from "./components/app-shell";
 export type {
+	ClipboardWriter,
+	CopyButtonProps,
+} from "./components/copy-button";
+export { CopyButton } from "./components/copy-button";
+export type {
+	EmptyStateAction,
+	EmptyStateIcon,
+	EmptyStateProps,
+} from "./components/empty-state";
+export { EmptyState } from "./components/empty-state";
+export type {
+	ErrorBoundaryProps,
+	ErrorFallbackProps,
+	ErrorFallbackVariant,
+} from "./components/error-boundary";
+export { ErrorBoundary, ErrorFallback } from "./components/error-boundary";
+export type {
 	BarChartDatum,
 	BarChartProps,
 	ChartSkeletonProps,
@@ -40,4 +57,18 @@ export type {
 	TabBarSkeletonProps,
 } from "./components/tab-bar";
 export { TabBar, TabBarSkeleton } from "./components/tab-bar";
+export type { PasswordStrengthIndicatorProps } from "./components/password-strength-indicator";
+export { PasswordStrengthIndicator } from "./components/password-strength-indicator";
+export type {
+	StepItem,
+	StepsOrientation,
+	StepsProps,
+} from "./components/steps";
+export { Steps } from "./components/steps";
+export type {
+	TimelineItemData,
+	TimelineProps,
+	TimelineStatus,
+} from "./components/timeline";
+export { Timeline } from "./components/timeline";
 export { isActivePath } from "./lib/active-path";

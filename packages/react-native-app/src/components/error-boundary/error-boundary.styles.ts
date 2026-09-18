@@ -3,7 +3,7 @@
  * and EmptyState so both share one MIN_HEIGHT scale.
  */
 import type { ViewStyle } from "react-native";
-import type { KalaTheme } from "../../types";
+import type { KalaTheme } from "@kala-ui/react-native/types";
 
 export const MIN_HEIGHT = { page: 400, section: 200 } as const;
 

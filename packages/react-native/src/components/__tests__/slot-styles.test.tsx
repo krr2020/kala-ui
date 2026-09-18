@@ -20,12 +20,9 @@ import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Combobox } from "../combobox";
 import { ContextMenu } from "../context-menu";
-import { CopyButton } from "../copy-button";
 import { DatePicker, DateRangePicker } from "../date-picker";
 import { Dialog } from "../dialog";
 import { DropdownMenu } from "../dropdown-menu";
-import { EmptyState } from "../empty-state";
-import { ErrorFallback } from "../error-boundary";
 import { Field } from "../field";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
@@ -36,7 +33,6 @@ import { List } from "../list";
 import { LoadingOverlay } from "../loading-overlay";
 import { MultiSelect } from "../multi-select";
 import { NumberInput } from "../number-input";
-import { PasswordStrengthIndicator } from "../password-strength-indicator";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Rating } from "../rating";
@@ -49,7 +45,6 @@ import { Skeleton } from "../skeleton";
 import { Slider } from "../slider";
 import { applySlot } from "../slot-styles";
 import { Spinner } from "../spinner";
-import { Steps } from "../steps";
 import { Switch } from "../switch";
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
@@ -57,7 +52,6 @@ import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Textarea } from "../textarea";
 import { TimePicker } from "../time-picker";
-import { Timeline } from "../timeline";
 import { Toast } from "../toast";
 import { Toggle } from "../toggle";
 import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
@@ -210,18 +204,6 @@ describe("root slot sweep — every component accepts slotStyles.root", () => {
 				),
 		},
 		{
-			name: "CopyButton",
-			marker: "k-copy-button",
-			render: () =>
-				render(
-					<CopyButton
-						value="demo"
-						writeClipboard={async () => undefined}
-						slotStyles={{ root: { borderWidth: 7 } }}
-					/>,
-				),
-		},
-		{
 			name: "Collapsible",
 			marker: "k-collapsible",
 			render: () =>
@@ -279,24 +261,6 @@ describe("root slot sweep — every component accepts slotStyles.root", () => {
 						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
-		},
-		{
-			name: "EmptyState",
-			marker: "k-empty-state",
-			render: () =>
-				render(
-					<EmptyState
-						title="empty"
-						description="nothing"
-						slotStyles={{ root: { borderWidth: 7 } }}
-					/>,
-				),
-		},
-		{
-			name: "ErrorFallback",
-			marker: "k-error-fallback",
-			render: () =>
-				render(<ErrorFallback slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
 			name: "Field",
@@ -372,17 +336,6 @@ describe("root slot sweep — every component accepts slotStyles.root", () => {
 				render(
 					<NumberInput
 						defaultValue={1}
-						slotStyles={{ root: { borderWidth: 7 } }}
-					/>,
-				),
-		},
-		{
-			name: "PasswordStrengthIndicator",
-			marker: "k-password-strength-indicator",
-			render: () =>
-				render(
-					<PasswordStrengthIndicator
-						password="secret1!"
 						slotStyles={{ root: { borderWidth: 7 } }}
 					/>,
 				),
@@ -492,18 +445,6 @@ describe("root slot sweep — every component accepts slotStyles.root", () => {
 				render(<Spinner slotStyles={{ root: { borderWidth: 7 } }} />),
 		},
 		{
-			name: "Steps",
-			marker: "k-steps",
-			render: () =>
-				render(
-					<Steps
-						items={[{ title: "a" }, { title: "b" }]}
-						value={1}
-						slotStyles={{ root: { borderWidth: 7 } }}
-					/>,
-				),
-		},
-		{
 			name: "Switch",
 			marker: "k-switch",
 			render: () =>
@@ -555,17 +496,6 @@ describe("root slot sweep — every component accepts slotStyles.root", () => {
 			marker: "k-time-picker",
 			render: () =>
 				render(<TimePicker slotStyles={{ root: { borderWidth: 7 } }} />),
-		},
-		{
-			name: "Timeline",
-			marker: "k-timeline",
-			render: () =>
-				render(
-					<Timeline
-						items={[{ title: "one" }, { title: "two" }]}
-						slotStyles={{ root: { borderWidth: 7 } }}
-					/>,
-				),
 		},
 		{
 			name: "Toast",
@@ -623,8 +553,8 @@ describe("root slot sweep — every component accepts slotStyles.root", () => {
 		});
 	}
 
-	it("the sweep covers all 55 components", () => {
-		expect(fixtures.length).toBe(55);
+	it("the sweep covers all 49 components", () => {
+		expect(fixtures.length).toBe(49);
 	});
 });
 
@@ -855,39 +785,7 @@ describe("multi-part slots", () => {
 		).toBe(6);
 	});
 
-	it("empty-state icon/title/description/action carry distinct overrides", async () => {
-		const screen = await render(
-			<EmptyState
-				title="t"
-				description="d"
-				action={{ label: "go", onPress: () => undefined }}
-				slotStyles={{
-					icon: { borderWidth: 2 },
-					title: { fontSize: 40 },
-					description: { fontSize: 41 },
-					action: { borderWidth: 3 },
-				}}
-			/>,
-		);
-		expect(
-			Number(
-				flatStyle(screen.getByTestId("k-empty-state-icon", incl)).borderWidth,
-			),
-		).toBe(2);
-		expect(
-			Number(flatStyle(screen.getByTestId("k-empty-state-title")).fontSize),
-		).toBe(40);
-		expect(
-			Number(
-				flatStyle(screen.getByTestId("k-empty-state-description")).fontSize,
-			),
-		).toBe(41);
-		expect(
-			Number(flatStyle(screen.getByTestId("k-empty-state-action")).borderWidth),
-		).toBe(3);
-	});
-
-	it("alert.dismiss overrides the dismiss pressable", async () => {
+it("alert.dismiss overrides the dismiss pressable", async () => {
 		const screen = await render(
 			<Alert dismissable slotStyles={{ dismiss: { borderWidth: 3 } }} />,
 		);

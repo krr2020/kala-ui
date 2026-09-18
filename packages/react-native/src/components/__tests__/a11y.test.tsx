@@ -18,12 +18,9 @@ import { Checkbox } from "../checkbox";
 import { Collapsible } from "../collapsible";
 import { Combobox } from "../combobox";
 import { ContextMenu } from "../context-menu";
-import { CopyButton } from "../copy-button";
 import { DatePicker } from "../date-picker";
 import { Dialog } from "../dialog";
 import { DropdownMenu } from "../dropdown-menu";
-import { EmptyState } from "../empty-state";
-import { ErrorFallback } from "../error-boundary";
 import { Field } from "../field";
 import { Heading } from "../heading";
 import { Icon } from "../icon";
@@ -32,7 +29,6 @@ import { List, ListItem } from "../list";
 import { LoadingOverlay } from "../loading-overlay";
 import { MultiSelect } from "../multi-select";
 import { NumberInput } from "../number-input";
-import { PasswordStrengthIndicator } from "../password-strength-indicator";
 import { Progress } from "../progress";
 import { RadioGroup } from "../radio-group";
 import { Rating } from "../rating";
@@ -43,7 +39,6 @@ import { Separator } from "../separator";
 import { Sheet } from "../sheet";
 import { Slider } from "../slider";
 import { Spinner } from "../spinner";
-import { Steps } from "../steps";
 import { Switch } from "../switch";
 import { Tabs } from "../tabs";
 import { Tag } from "../tag";
@@ -51,7 +46,6 @@ import { Text } from "../text";
 import { TextInput } from "../text-input";
 import { Textarea } from "../textarea";
 import { TimePicker } from "../time-picker";
-import { Timeline } from "../timeline";
 import { Toast } from "../toast";
 
 // TLB v14 queries are a11y-aware: deliberately-hidden elements (Icon without
@@ -467,23 +461,6 @@ describe("a11y contract", () => {
 		});
 	});
 
-	describe("EmptyState", () => {
-		it("announces the title and exposes the action as a button", async () => {
-			const onPress = jest.fn();
-			const screen = await render(
-				<EmptyState
-					title="No projects yet"
-					description="Create your first project"
-					action={{ label: "New project", onPress }}
-				/>,
-			);
-			expect(screen.getByTestId("k-empty-state").props.accessibilityLabel).toBe(
-				"No projects yet",
-			);
-			expect(screen.getByRole("button", { name: "New project" })).toBeTruthy();
-		});
-	});
-
 	describe("Rating", () => {
 		it("exposes pressable stars with per-star labels and selected state", async () => {
 			const screen = await render(<Rating value={3} />);
@@ -819,15 +796,6 @@ describe("a11y contract", () => {
 		});
 	});
 
-	describe("ErrorFallback", () => {
-		it("announces as an alert", async () => {
-			const screen = await render(<ErrorFallback />);
-			expect(
-				screen.getByTestId("k-error-fallback").props.accessibilityRole,
-			).toBe("alert");
-		});
-	});
-
 	describe("Field", () => {
 		it("merges label + error into the control's accessibilityLabel", async () => {
 			const screen = await render(
@@ -867,35 +835,6 @@ describe("a11y contract", () => {
 				screen.getByTestId("k-input-otp-field").props.accessibilityState
 					?.disabled,
 			).toBe(true);
-		});
-	});
-
-	describe("PasswordStrengthIndicator", () => {
-		it("announces the strength tier with meter semantics", async () => {
-			const screen = await render(
-				<PasswordStrengthIndicator password="Aaaaaaaaaaaa1!" />,
-			);
-			const root = screen.getByTestId("k-password-strength-indicator");
-			expect(root.props.accessibilityLabel).toContain("Strong");
-			expect(root.props.accessibilityValue).toEqual({ min: 0, max: 4, now: 4 });
-		});
-	});
-
-	describe("Steps", () => {
-		it("each step announces its position and state", async () => {
-			const screen = await render(
-				<Steps
-					items={[{ title: "Account" }, { title: "Profile" }]}
-					value={2}
-					onStepChange={() => undefined}
-				/>,
-			);
-			expect(
-				screen.getByLabelText("Step 1 of 2: Account (completed)"),
-			).toBeTruthy();
-			expect(
-				screen.getByLabelText("Step 2 of 2: Profile (current step)"),
-			).toBeTruthy();
 		});
 	});
 
@@ -953,46 +892,6 @@ describe("a11y contract", () => {
 			);
 			await fireEvent(screen.getByTestId("k-context-menu"), "longPress");
 			expect(screen.getByLabelText("Copy")).toBeTruthy();
-		});
-	});
-
-	describe("CopyButton", () => {
-		it("announces the copied flash on a polite live region", async () => {
-			const screen = await render(
-				<CopyButton
-					value="invite link"
-					writeClipboard={async () => undefined}
-				/>,
-			);
-			const button = screen.getByTestId("k-copy-button");
-			expect(button.props.accessibilityRole).toBe("button");
-			expect(button.props.accessibilityLabel).toBe("Copy to clipboard");
-			expect(button.props.accessibilityLiveRegion).toBe("polite");
-
-			await fireEvent.press(button);
-			await waitFor(() =>
-				expect(button.props.accessibilityLabel).toBe("Copied!"),
-			);
-		});
-	});
-
-	describe("Timeline", () => {
-		it("Timeline items announce title, timestamp and description", async () => {
-			const screen = await render(
-				<Timeline
-					items={[
-						{
-							title: "Shipped",
-							description: "in transit",
-							timestamp: "12:30",
-						},
-					]}
-				/>,
-			);
-			const item = screen.getByTestId("k-timeline-item");
-			expect(item.props.accessibilityLabel).toContain("Shipped");
-			expect(item.props.accessibilityLabel).toContain("12:30");
-			expect(item.props.accessibilityLabel).toContain("in transit");
 		});
 	});
 

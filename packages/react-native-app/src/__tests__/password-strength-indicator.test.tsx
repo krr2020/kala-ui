@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react-native";
-import { themes } from "../../themes";
-import { PasswordStrengthIndicator } from "../password-strength-indicator";
+import { themes } from "@kala-ui/react-native/themes";
+import { PasswordStrengthIndicator } from "../components/password-strength-indicator";
 
 type Screen = Awaited<ReturnType<typeof render>>;
 

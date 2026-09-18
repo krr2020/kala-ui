@@ -16,12 +16,12 @@ Verify visually in `apps/native-playground` — Metro watches this package's sou
 ## Structure
 
 - `src/themes/definitions.ts` — 4 Unistyles themes: `light`, `dark`, `high-contrast-light`, `high-contrast-dark`. Hex colors, alpha/spread as numbers. Web-only brand variants (neutral/accent/dark-accent) are deliberately NOT transcribed. Parity with the CSS is enforced by `src/__tests__/tokens-parity.test.ts` — regenerate after any web token change.
-- `src/components/` — 53 components mirroring web families:
-  - Core: button, card, avatar, avatar-group, badge, tag, text, heading, icon, separator, indicator, copy-button, toggle.
-  - Forms: text-input, textarea, number-input, select, combobox, multi-select, checkbox, radio-group, switch, slider, rating, date-picker, time-picker, calendar, input-otp, field, label, password-strength-indicator.
+- `src/components/` — 47 reusable unit components mirroring web families (compound widgets live in `@kala-ui/react-native-app`):
+  - Core: button, card, avatar, avatar-group, badge, tag, text, heading, icon, separator, indicator, toggle.
+  - Forms: text-input, textarea, number-input, select, combobox, multi-select, checkbox, radio-group, switch, slider, rating, date-picker, time-picker, calendar, input-otp, field, label.
   - Overlays: dialog, alert-dialog, sheet, dropdown-menu, context-menu, toast.
-  - Feedback/display: alert, banner, progress, ring-progress, spinner, skeleton, loading-overlay, empty-state, error-boundary, accordion, collapsible, tabs, steps, timeline, list, segmented-control, toggle-group.
-- `src/components/<name>/` — `<name>.tsx` (JSX only) + `<name>.styles.ts` (style tables + pure mapping helpers like `look()`/`tone()`). Shared surface helpers: `input-surface.styles.ts`, `slot-styles.ts`.
+  - Feedback/display: alert, banner, progress, ring-progress, spinner, skeleton, loading-overlay, accordion, collapsible, tabs, list, segmented-control, toggle-group.
+- `src/components/<name>/` — `<name>.tsx` (JSX only) + `<name>.styles.ts` (style tables + pure mapping helpers like `look()`/`tone()`). Shared surface helpers: `input-surface.styles.ts`, `slot-styles.ts` (its `applySlot`/`SlotStyles` re-export from the root barrel so composite packages share one slot-merge helper).
 - `src/lib/<name>.utils.ts` — pure utilities, dot-file naming (NOT `<name>-utils.ts`).
 - Exports: root barrel `src/index.ts`; subpaths `./themes`, `./tokens`, `./types`.
 

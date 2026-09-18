@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react-native";
 import { StyleSheet } from "react-native";
-import type { TimelineItemData } from "../timeline";
-import { Timeline } from "../timeline";
+import type { TimelineItemData } from "../components/timeline";
+import { Timeline } from "../components/timeline";
 
 type Screen = Awaited<ReturnType<typeof render>>;
 
