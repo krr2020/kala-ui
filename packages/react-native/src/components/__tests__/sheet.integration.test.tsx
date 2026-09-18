@@ -11,6 +11,8 @@ import { join } from "node:path";
 import { fireEvent, render } from "@testing-library/react-native";
 import { View } from "react-native";
 import { Select } from "../select";
+import { Combobox } from "../combobox";
+import { MultiSelect } from "../multi-select";
 
 const inclHidden = { includeHiddenElements: true } as const;
 
@@ -93,6 +95,38 @@ describe("Select demo ↔ package Sheet seam", () => {
 		expect(source).not.toContain('snap="');
 		expect(source).toContain("hasSuccess");
 	});
+	it("sheet-engine pickers mount the Sheet Modal so inset fixes propagate", async () => {
+		const combobox = await render(
+			<Combobox
+				accessibilityLabel="Comb"
+				options={[
+					{ value: "a", label: "Alpha" },
+					{ value: "b", label: "Beta" },
+				]}
+			/>,
+		);
+		await fireEvent.press(combobox.getByTestId("k-combobox"));
+		expect(
+			combobox.getByTestId("k-sheet-modal", inclHidden).props
+				.navigationBarTranslucent,
+		).toBe(true);
+
+		const multi = await render(
+			<MultiSelect
+				accessibilityLabel="Multi"
+				options={[
+					{ value: "a", label: "Alpha" },
+					{ value: "b", label: "Beta" },
+				]}
+			/>,
+		);
+		await fireEvent.press(multi.getByTestId("k-multi-select"));
+		expect(
+			multi.getByTestId("k-sheet-modal", inclHidden).props
+				.navigationBarTranslucent,
+		).toBe(true);
+	});
+
 	it("demo-shaped Select opens an auto-sized titled sheet with separators", async () => {
 		const screen: Screen = await render(
 			<Select
@@ -139,5 +173,33 @@ describe("Select demo ↔ package Sheet seam", () => {
 		}
 		// themed tokens only — no hardcoded overlay/grey literals in the demo
 		expect(source).not.toContain("rgba(");
+	});
+
+	it("sheet demo pins a fixed-header, fixed-actions scrollable form (source census)", () => {
+		const source = readFileSync(SHEET_DEMO, "utf8");
+		expect(source).toContain('title="Create task"');
+		expect(source).toContain('accessibilityLabel="Discard form"');
+		expect(source).toContain('accessibilityLabel="Save task"');
+		// the form inputs sit at the END of the scrollable body so the demo
+		// actually exercises body-scroll under fixed header/footer tiers
+		const formTitle = source.indexOf('title="Create task"');
+		const lastInput = source.lastIndexOf("<TextInput");
+		expect(lastInput).toBeGreaterThan(formTitle);
+		expect(source.match(/<TextInput/g)?.length ?? 0).toBeGreaterThanOrEqual(3);
+	});
+
+	it("sheet demo pins a long-form stress variation (source census)", () => {
+		const source = readFileSync(SHEET_DEMO, "utf8");
+		expect(source).toContain('title="Event details"');
+		expect(source).toContain('accessibilityLabel="Save event"');
+		// full-snap stress sheet with a dense field list: the long form
+		// generates its 8 fields from one mapped TextInput (length: 8),
+		// on top of the search + create-task literals
+		expect(source).toContain("length: 8");
+		expect(source.match(/<TextInput/g)?.length ?? 0).toBeGreaterThanOrEqual(4);
+		const longForm = source.indexOf('title="Event details"');
+		expect(longForm).toBeGreaterThan(-1);
+		expect(source.indexOf('avoidKeyboard', longForm)).toBeGreaterThan(longForm);
+		expect(source).toContain('snap="full"');
 	});
 });

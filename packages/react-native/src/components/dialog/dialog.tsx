@@ -16,9 +16,9 @@ import {
 	Modal,
 	Platform,
 	Pressable,
-	StatusBar,
 	View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
 import { DialogBody } from "./dialog-body";
@@ -48,6 +48,7 @@ export function Dialog({
 	children,
 }: DialogProps): ReactElement | null {
 	const { theme } = useUnistyles();
+	const insets = useSafeAreaInsets();
 	const isFull = size === "full";
 	const [dragDy, setDragDy] = useState(0);
 	// start Y of the active drag; null = no gesture in flight
@@ -87,9 +88,11 @@ export function Dialog({
 
 	return (
 		<Modal
+			testID="k-dialog-modal"
 			visible={open}
 			transparent
 			statusBarTranslucent
+			navigationBarTranslucent
 			animationType="fade"
 			onRequestClose={() => {
 				if (dismissable) close();
@@ -117,11 +120,14 @@ export function Dialog({
 					left: 0,
 					alignItems: "center",
 					justifyContent: "center",
-					// full bleeds into the wrapper's gutters; tiers keep the 16 rail
+					// statusBarTranslucent draws under the bar — pad the wrapper
+					// to the safe-area top inset and clear the gesture nav bar at
+					// the bottom; tiered cards keep their 16 rail, full bleeds
+					// horizontally but still clears both bars
 					padding: isFull ? 0 : 16,
-					// statusBarTranslucent draws under the bar — pull content
-					// below it so the full-size card's header stays visible
-					paddingTop: (isFull ? 0 : 16) + safeTopPadding(StatusBar.currentHeight),
+					paddingTop:
+						(isFull ? 0 : 16) + safeTopPadding(insets.top || undefined),
+					paddingBottom: isFull ? insets.bottom : 16,
 				}}
 			>
 				<View

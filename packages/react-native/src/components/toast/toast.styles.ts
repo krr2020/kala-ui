@@ -5,7 +5,18 @@
 import type { ViewStyle } from "react-native";
 import type { KalaTheme } from "../../types";
 
-export const viewportStyle = (position: "top" | "bottom"): ViewStyle => ({
+export interface ToastViewportInsets {
+	/** safe-area top inset — pushes a top toast below the status bar */
+	top: number;
+	/** larger of the nav-bar inset and the visible keyboard height — a
+	 * bottom toast must clear whichever surface it sits above */
+	bottom: number;
+}
+
+export const viewportStyle = (
+	position: "top" | "bottom",
+	insets: ToastViewportInsets,
+): ViewStyle => ({
 	position: "absolute",
 	top: 0,
 	right: 0,
@@ -14,6 +25,11 @@ export const viewportStyle = (position: "top" | "bottom"): ViewStyle => ({
 	zIndex: 200,
 	justifyContent: position === "top" ? "flex-start" : "flex-end",
 	padding: 16,
+	// each end pads only for the surface it sits against: a top toast
+	// clears the status bar, a bottom toast clears the nav bar / keyboard
+	...(position === "top"
+		? { paddingTop: 16 + insets.top }
+		: { paddingBottom: 16 + insets.bottom }),
 });
 
 export const rootStyle = (theme: KalaTheme): ViewStyle => ({

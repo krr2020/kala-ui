@@ -10,8 +10,9 @@
  */
 
 import type { ReactElement } from "react";
-import { useEffect, useRef } from "react";
-import { Text as RNText, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Keyboard, Text as RNText, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
 import {
@@ -38,6 +39,24 @@ export function Toast({
 	testID = "k-toast",
 }: ToastProps): ReactElement | null {
 	const { theme } = useUnistyles();
+	const insets = useSafeAreaInsets();
+	// a bottom toast must clear the keyboard too, whichever is the taller
+	// surface; 0 means no keyboard visible
+	const [kbHeight, setKbHeight] = useState(0);
+	useEffect(() => {
+		const show = Keyboard.addListener("keyboardDidShow", (e) => {
+			setKbHeight(e.endCoordinates.height);
+		});
+		const hide = Keyboard.addListener("keyboardDidHide", () => setKbHeight(0));
+		// a toast can mount while a field's keyboard is already open; with
+		// no keyboard reported the nav-bar inset is the bottom surface
+		const openKb = Keyboard.metrics();
+		if (openKb) setKbHeight(openKb.height);
+		return () => {
+			show.remove();
+			hide.remove();
+		};
+	}, []);
 	// timer effect stays keyed on [open, duration] only — a new inline
 	// callback each render must not restart the countdown
 	const onOpenChangeRef = useRef(onOpenChange);
@@ -55,7 +74,13 @@ export function Toast({
 		<View
 			testID="k-toast-viewport"
 			pointerEvents="box-none"
-			style={[viewportStyle(position), applySlot({}, slotStyles?.viewport)]}
+			style={[
+				viewportStyle(position, {
+					top: insets.top,
+					bottom: Math.max(insets.bottom, kbHeight),
+				}),
+				applySlot({}, slotStyles?.viewport),
+			]}
 		>
 			<View
 				testID={testID}

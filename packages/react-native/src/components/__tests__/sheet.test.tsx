@@ -1,11 +1,14 @@
-import { fireEvent, render } from "@testing-library/react-native";
-import { Dimensions, Text } from "react-native";
+import { act, fireEvent, render } from "@testing-library/react-native";
+import { Dimensions, Keyboard, Platform, Text } from "react-native";
 import * as Reanimated from "react-native-reanimated";
 import { themes } from "../../themes/definitions";
-import { motion } from "../../tokens";
+import { motion, tokens } from "../../tokens";
 import { Sheet } from "../sheet";
 import {
 	composeOffset,
+	keyboardLift,
+	keyboardShrink,
+	KEYBOARD_BOTTOM_GAP,
 	OFFSCREEN_Y,
 	sheetOverlay,
 	SHEET_EASE,
@@ -49,6 +52,32 @@ describe("composeOffset", () => {
 		expect(composeOffset(320, 0)).toBe(320);
 		expect(composeOffset(320, 40)).toBe(360);
 		expect(composeOffset(0, -12)).toBe(-12);
+	});
+});
+
+describe("keyboardLift + keyboardShrink", () => {
+	const H = 2400;
+	it("lift is always the full keyboard height — the footer rides the keyboard top", () => {
+		expect(
+			keyboardLift({ kbHeight: 883, windowHeight: H, topInset: 132, sheetHeight: 2268 }),
+		).toBe(883);
+		expect(
+			keyboardLift({ kbHeight: 0, windowHeight: H, topInset: 132, sheetHeight: 2268 }),
+		).toBe(0);
+	});
+	it("tall sheet sheds exactly the height that would poke above the top inset once lifted", () => {
+		// 2268 - (2400 - 132 - 883) = 2268 - 1385 = 883
+		expect(
+			keyboardShrink({ kbHeight: 883, windowHeight: H, topInset: 132, sheetHeight: 2268 }),
+		).toBe(883);
+	});
+	it("small sheets keep their height; zero kb never shrinks", () => {
+		expect(
+			keyboardShrink({ kbHeight: 883, windowHeight: H, topInset: 132, sheetHeight: 120 }),
+		).toBe(0);
+		expect(
+			keyboardShrink({ kbHeight: 0, windowHeight: H, topInset: 132, sheetHeight: 2268 }),
+		).toBe(0);
 	});
 });
 
@@ -136,6 +165,134 @@ describe("Sheet", () => {
 		);
 		await fireEvent.press(screen.getByTestId("k-sheet-close", inclHidden));
 		expect(onClose).toHaveBeenCalledTimes(1);
+	});
+
+	it("header breathes vertically and bleeds its divider to the sheet edges", async () => {
+		const screen: Screen = await render(
+			<Sheet open onClose={() => {}} title="Options">
+				<Text>content</Text>
+			</Sheet>,
+		);
+		const header = flatStyle(screen.getByTestId("k-sheet-header", inclHidden));
+		expect(header.paddingTop).toBe(2);
+		expect(header.paddingBottom).toBe(8);
+		expect(header.borderBottomWidth).toBe(1);
+		// negative margin cancels the content gutter so the hairline spans
+		// edge to edge while the inner padding restores the text rail
+		expect(header.marginHorizontal).toBe(-tokens.space.gutter);
+		expect(header.paddingHorizontal).toBe(tokens.space.gutter);
+	});
+
+	it("close affordance is a rounded outlined bubble inside the 44px hit target", async () => {
+		const screen: Screen = await render(
+			<Sheet open onClose={() => {}} title="Options">
+				<Text>content</Text>
+			</Sheet>,
+		);
+		const hit = flatStyle(screen.getByTestId("k-sheet-close", inclHidden));
+		expect(hit.width).toBe(44);
+		expect(hit.height).toBe(44);
+		const bubble = flatStyle(
+			screen.getByTestId("k-sheet-close-bubble", inclHidden),
+		);
+		expect(bubble.width).toBe(32);
+		expect(bubble.height).toBe(32);
+		expect(bubble.borderRadius).toBe(999);
+		expect(bubble.borderWidth).toBe(1);
+		expect(bubble.borderColor).toBe(themes.light.border);
+	});
+
+	it("footer divider bleeds to the sheet edges symmetrically with the header", async () => {
+		const screen: Screen = await render(
+			<Sheet open onClose={() => {}} title="Options" footer={<Text>done</Text>}>
+				<Text>content</Text>
+			</Sheet>,
+		);
+		const footer = flatStyle(screen.getByTestId("k-sheet-footer", inclHidden));
+		expect(footer.marginHorizontal).toBe(-tokens.space.gutter);
+		expect(footer.paddingHorizontal).toBe(tokens.space.gutter);
+		expect(footer.paddingTop).toBeGreaterThan(0);
+		expect(footer.borderTopWidth).toBe(1);
+	});
+
+	it("slotStyles.header overrides win over the bleed/spacing defaults", async () => {
+		const screen: Screen = await render(
+			<Sheet
+				open
+				onClose={() => {}}
+				title="Options"
+				slotStyles={{ header: { paddingTop: 20, marginHorizontal: -8 } }}
+			>
+				<Text>content</Text>
+			</Sheet>,
+		);
+		const header = flatStyle(screen.getByTestId("k-sheet-header", inclHidden));
+		expect(header.paddingTop).toBe(20);
+		expect(header.marginHorizontal).toBe(-8);
+	});
+
+	it("long wrapping title keeps the close target unsquashed at 44px", async () => {
+		const screen: Screen = await render(
+			<Sheet
+				open
+				onClose={() => {}}
+				title="A very long sheet title that wraps onto several lines and would squeeze a flexible trailing control out of its hit target"
+			>
+				<Text>content</Text>
+			</Sheet>,
+		);
+		const hit = flatStyle(screen.getByTestId("k-sheet-close", inclHidden));
+		expect(hit.width).toBe(44);
+		expect(hit.flexShrink).toBe(0);
+		expect(
+				screen.getByTestId("k-sheet-close-bubble", inclHidden),
+		).toBeTruthy();
+	});
+
+	it("avoidKeyboard on Android registers show/hide listeners and releases them", async () => {
+		const original = Platform.OS;
+		Object.defineProperty(Platform, "OS", {
+			value: "android",
+			configurable: true,
+		});
+		const spy = jest.spyOn(Keyboard, "addListener");
+		try {
+			const screen: Screen = await render(
+				<Sheet open onClose={() => {}} snap="auto" avoidKeyboard>
+					<Text>content</Text>
+				</Sheet>,
+			);
+			const events = spy.mock.calls.map((call) => call[0]);
+			expect(events).toContain("keyboardDidShow");
+			expect(events).toContain("keyboardDidHide");
+			// the registered show callback must accept the RN event shape
+			const show = spy.mock.calls.find((c) => c[0] === "keyboardDidShow")?.[1];
+			expect(() =>
+				show?.({ endCoordinates: { height: 264 } } as never),
+			).not.toThrow();
+			screen.unmount();
+		} finally {
+			spy.mockRestore();
+			Object.defineProperty(Platform, "OS", {
+				value: original,
+				configurable: true,
+			});
+		}
+	});
+
+	it("sheet is bottom-anchored — fixed snaps can never place content above the window top", async () => {
+		const screen: Screen = await render(
+			<Sheet open onClose={() => {}} snap="full" title="Options">
+				<Text>content</Text>
+			</Sheet>,
+		);
+		const content = flatStyle(
+			screen.getByTestId("k-sheet-content", inclHidden),
+		);
+		const { height } = Dimensions.get("window");
+		expect(content.position).toBe("absolute");
+		expect(content.bottom).toBe(0);
+		expect(content.height).toBe(Math.round(height * 0.9));
 	});
 
 	it("showClose=false keeps the title but drops the close icon", async () => {
@@ -342,10 +499,12 @@ describe("Sheet", () => {
 	});
 
 	it("snap peek/half/full map to 120 / 50% / 90% heights", async () => {
-		for (const [snap, height] of [
+		const { height } = Dimensions.get("window");
+		for (const [snap, height0] of [
 			["peek", 120],
-			["half", "50%"],
-			["full", "90%"],
+			["half", Math.round(height * 0.5)],
+			// zero-inset mock keeps the status-bar clamp from binding
+			["full", Math.round(height * 0.9)],
 		] as const) {
 			const screen: Screen = await render(
 				<Sheet open onClose={() => {}} snap={snap}>
@@ -354,7 +513,7 @@ describe("Sheet", () => {
 			);
 			expect(
 				flatStyle(screen.getByTestId("k-sheet-content", inclHidden)).height,
-			).toBe(height);
+			).toBe(height0);
 		}
 	});
 
@@ -384,6 +543,169 @@ describe("Sheet", () => {
 			</Sheet>,
 		);
 		expect(plain.queryByTestId("k-sheet-scroll", inclHidden)).toBeNull();
+	});
+
+	describe("safe area + keyboard awareness", () => {
+		const safeArea = require("react-native-safe-area-context");
+		const setInsets = (top: number, bottom: number): void =>
+			safeArea.__setSafeAreaInsets({ top, bottom, left: 0, right: 0 });
+
+		it("Modal draws under both system bars", async () => {
+			const screen: Screen = await render(
+				<Sheet open onClose={() => {}}>
+					<Text>content</Text>
+				</Sheet>,
+			);
+			const modal = screen.getByTestId("k-sheet-modal", inclHidden);
+			expect(modal.props.statusBarTranslucent).toBe(true);
+			expect(modal.props.navigationBarTranslucent).toBe(true);
+		});
+
+		it("bottom padding clears the gesture nav bar via the bottom inset", async () => {
+			setInsets(0, 48);
+			try {
+				const screen: Screen = await render(
+					<Sheet open onClose={() => {}}>
+						<Text>content</Text>
+					</Sheet>,
+				);
+				const content = flatStyle(
+					screen.getByTestId("k-sheet-content", inclHidden),
+				);
+				expect(content.paddingBottom).toBe(tokens.space.cardPad + 48);
+			} finally {
+				setInsets(0, 0);
+			}
+		});
+
+		it("keyboard open swaps bottom padding to the small gap; hide restores it", async () => {
+		setInsets(0, 48);
+		const original = Platform.OS;
+		Object.defineProperty(Platform, "OS", {
+			value: "android",
+			configurable: true,
+		});
+		const spy = jest.spyOn(Keyboard, "addListener");
+		try {
+			const screen: Screen = await render(
+				<Sheet open onClose={() => {}} snap="full" avoidKeyboard>
+				<Text>content</Text>
+				</Sheet>,
+			);
+			const events = spy.mock.calls.map((call) => call[0]);
+			expect(events).toContain("keyboardDidShow");
+			expect(events).toContain("keyboardDidHide");
+
+			const show = spy.mock.calls.find((c) => c[0] === "keyboardDidShow")?.[1];
+			const hide = spy.mock.calls.find((c) => c[0] === "keyboardDidHide")?.[1];
+			await act(async () => {
+				show?.({ endCoordinates: { height: 264 } } as never);
+			});
+			let content = flatStyle(
+				screen.getByTestId("k-sheet-content", inclHidden),
+			);
+			expect(content.paddingBottom).toBe(KEYBOARD_BOTTOM_GAP);
+			// full snap (1201 of the 1334 mock window) sheds the height that
+			// would poke above the inset-free window once lifted by 264
+			expect(content.height).toBe(1070);
+
+			await act(async () => {
+				hide?.(undefined as never);
+			});
+				content = flatStyle(screen.getByTestId("k-sheet-content", inclHidden));
+				expect(content.paddingBottom).toBe(tokens.space.cardPad + 48);
+				// snap height restored with the keyboard gone
+				expect(content.height).toBe(1201);
+			} finally {
+				spy.mockRestore();
+				Object.defineProperty(Platform, "OS", {
+					value: original,
+					configurable: true,
+				});
+				setInsets(0, 0);
+			}
+		});
+
+		it("avoidKeyboard=false registers no listeners and never changes layout", async () => {
+			const spy = jest.spyOn(Keyboard, "addListener");
+			try {
+				await render(
+					<Sheet open onClose={() => {}} snap="full">
+					<Text>content</Text>
+				</Sheet>,
+				);
+			expect(spy).not.toHaveBeenCalled();
+			} finally {
+				spy.mockRestore();
+			}
+		});
+
+		it("iOS registers keyboardWillShow/Hide, not the Did pair", async () => {
+			const original = Platform.OS;
+			Object.defineProperty(Platform, "OS", {
+				value: "ios",
+				configurable: true,
+			});
+			const spy = jest.spyOn(Keyboard, "addListener");
+			try {
+				const screen: Screen = await render(
+					<Sheet open onClose={() => {}} avoidKeyboard>
+						<Text>content</Text>
+					</Sheet>,
+				);
+				const events = spy.mock.calls.map((call) => call[0]);
+				expect(events).toContain("keyboardWillShow");
+				expect(events).toContain("keyboardWillHide");
+				expect(events).not.toContain("keyboardDidShow");
+				screen.unmount();
+			} finally {
+				spy.mockRestore();
+				Object.defineProperty(Platform, "OS", {
+					value: original,
+					configurable: true,
+				});
+			}
+		});
+
+		it("full snap clamps its height when the top inset would collide", async () => {
+			const { height } = Dimensions.get("window");
+			// force the clamp to bind: an inset larger than the 10% slack
+			setInsets(Math.round(height * 0.2), 0);
+			try {
+				const screen: Screen = await render(
+					<Sheet open onClose={() => {}} snap="full">
+						<Text>content</Text>
+					</Sheet>,
+				);
+				const content = flatStyle(
+					screen.getByTestId("k-sheet-content", inclHidden),
+				);
+				expect(content.height).toBe(
+					Math.min(Math.round(height * 0.9), height - Math.round(height * 0.2)),
+				);
+			} finally {
+				setInsets(0, 0);
+			}
+		});
+
+		it("mounting with the keyboard already open initializes keyboard padding", async () => {
+			const metrics = jest.spyOn(Keyboard, "metrics").mockReturnValue({
+				height: 300,
+			} as never);
+			try {
+				const screen: Screen = await render(
+					<Sheet open onClose={() => {}} snap="full" avoidKeyboard>
+						<Text>content</Text>
+					</Sheet>,
+				);
+				const content = flatStyle(
+					screen.getByTestId("k-sheet-content", inclHidden),
+				);
+				expect(content.paddingBottom).toBe(KEYBOARD_BOTTOM_GAP);
+			} finally {
+				metrics.mockRestore();
+			}
+		});
 	});
 
 	it("slotStyles overlay/content/grabber overrides still apply inside the Modal", async () => {

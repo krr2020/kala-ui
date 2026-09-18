@@ -7,11 +7,16 @@
 
 import { readFileSync } from "node:fs";
 import { act, render } from "@testing-library/react-native";
+import { Platform, Text } from "react-native";
 import { themes } from "../../themes";
 import { tokens } from "../../tokens";
 import { AlertDialog } from "../alert-dialog";
 import { Button } from "../button";
 import { Dialog } from "../dialog";
+
+const safeArea = require("react-native-safe-area-context");
+const setInsets = (top: number, bottom: number): void =>
+	safeArea.__setSafeAreaInsets({ top, bottom, left: 0, right: 0 });
 
 const incl = { includeHiddenElements: true } as const;
 
@@ -208,6 +213,79 @@ describe("dialog gesture + keyboard hardening", () => {
 		);
 		const kav = flatStyle(screen.getByTestId("k-dialog-keyboard-view", incl));
 		expect(Number(kav.paddingTop)).toBeGreaterThan(0);
+	});
+
+	it("insets drive the wrapper: top inset pads the top, bottom inset pads below, no StatusBar hack", async () => {
+		const source = readFileSync(`${__dirname}/../dialog/dialog.tsx`, "utf8");
+		expect(source).not.toContain("StatusBar.currentHeight");
+		// jest-expo runs as ios where KeyboardAvoidingView behavior="padding"
+		// appends its own paddingBottom — pin android so the wrapper padding
+		// is the flattened truth
+		const original = Platform.OS;
+		Object.defineProperty(Platform, "OS", { value: "android", configurable: true });
+		setInsets(132, 48);
+		try {
+			const screen = await render(
+				<Dialog open onOpenChange={() => undefined}>
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+			);
+			const kav = flatStyle(screen.getByTestId("k-dialog-keyboard-view", incl));
+			expect(Number(kav.paddingTop)).toBe(16 + 132);
+			expect(Number(kav.paddingBottom)).toBe(16);
+			const modal = screen.getByTestId("k-dialog-modal", incl).props;
+			expect(modal.navigationBarTranslucent).toBe(true);
+			expect(modal.statusBarTranslucent).toBe(true);
+		} finally {
+			setInsets(0, 0);
+			Object.defineProperty(Platform, "OS", {
+				value: original,
+				configurable: true,
+			});
+		}
+	});
+
+	it("AlertDialog composes Dialog's inset-aware wrapper — no StatusBar fallback of its own", async () => {
+		const source = readFileSync(
+			`${__dirname}/../alert-dialog/alert-dialog.tsx`,
+			"utf8",
+		);
+		expect(source).toContain('from "../dialog"');
+		expect(source).not.toContain("StatusBar");
+		const screen = await render(
+			<AlertDialog open onOpenChange={() => undefined}>
+				<AlertDialog.Header>
+					<AlertDialog.Title>t</AlertDialog.Title>
+				</AlertDialog.Header>
+				<AlertDialog.Body>body</AlertDialog.Body>
+			</AlertDialog>,
+		);
+		expect(
+			screen.getByTestId("k-alert-dialog-keyboard-view", incl),
+		).toBeTruthy();
+	});
+
+	it("full-size dialog bleeds horizontally but clears both bars via insets", async () => {
+		const original = Platform.OS;
+		Object.defineProperty(Platform, "OS", { value: "android", configurable: true });
+		setInsets(132, 48);
+		try {
+			const screen = await render(
+				<Dialog open onOpenChange={() => undefined} size="full">
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+			);
+			const kav = flatStyle(screen.getByTestId("k-dialog-keyboard-view", incl));
+			expect(Number(kav.paddingTop)).toBe(132);
+			expect(Number(kav.paddingBottom)).toBe(48);
+			expect(Number(kav.padding)).toBe(0);
+		} finally {
+			setInsets(0, 0);
+			Object.defineProperty(Platform, "OS", {
+				value: original,
+				configurable: true,
+			});
+		}
 	});
 
 	it("compound parts keep their markers after the file split", async () => {

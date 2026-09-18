@@ -1,4 +1,4 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import { act, fireEvent, render } from "@testing-library/react-native";
 import { Toast } from "../toast";
 
 const inclHidden = { includeHiddenElements: true } as const;
@@ -113,6 +113,119 @@ describe("Toast resolved style tables", () => {
 		);
 		const vt = flatStyle(top.getByTestId("k-toast-viewport", inclHidden));
 		expect(vt.justifyContent).toBe("flex-start");
+	});
+
+	it("safe-area insets stack on the rail: top toast clears the status bar, bottom clears the nav bar", async () => {
+		const safeArea = require("react-native-safe-area-context");
+		safeArea.__setSafeAreaInsets({ top: 132, bottom: 48, left: 0, right: 0 });
+		try {
+			const top = await render(
+				<Toast open onOpenChange={() => {}} position="top">
+					<Toast.Title>Saved</Toast.Title>
+				</Toast>,
+			);
+			const vt = flatStyle(top.getByTestId("k-toast-viewport", inclHidden));
+			expect(vt.paddingTop).toBe(16 + 132);
+			expect("paddingBottom" in vt).toBe(false);
+			expect(vt.padding).toBe(16);
+
+			const bottom = await render(
+				<Toast open onOpenChange={() => {}} position="bottom">
+					<Toast.Title>Saved</Toast.Title>
+				</Toast>,
+			);
+			const vb = flatStyle(bottom.getByTestId("k-toast-viewport", inclHidden));
+			expect(vb.paddingBottom).toBe(16 + 48);
+			expect(vb.padding).toBe(16);
+		} finally {
+			safeArea.__setSafeAreaInsets({ top: 0, bottom: 0, left: 0, right: 0 });
+		}
+	});
+
+	it("no keyboard reported: bottom padding falls back to the nav-bar inset only", async () => {
+		const safeArea = require("react-native-safe-area-context");
+		safeArea.__setSafeAreaInsets({ top: 132, bottom: 48, left: 0, right: 0 });
+		const { Keyboard } = require("react-native");
+		const metrics = jest.spyOn(Keyboard, "metrics").mockReturnValue(null);
+		try {
+			const screen = await render(
+				<Toast open onOpenChange={() => {}} position="bottom">
+				<Toast.Title>Saved</Toast.Title>
+			</Toast>,
+			);
+			const vb = flatStyle(screen.getByTestId("k-toast-viewport", inclHidden));
+			expect(vb.paddingBottom).toBe(16 + 48);
+		} finally {
+			metrics.mockRestore();
+			safeArea.__setSafeAreaInsets({ top: 0, bottom: 0, left: 0, right: 0 });
+		}
+	});
+
+	it("mounting with the keyboard already open lifts above it", async () => {
+		const safeArea = require("react-native-safe-area-context");
+		safeArea.__setSafeAreaInsets({ top: 132, bottom: 48, left: 0, right: 0 });
+		const { Keyboard } = require("react-native");
+		const metrics = jest
+			.spyOn(Keyboard, "metrics")
+			.mockReturnValue({ height: 760 } as never);
+		try {
+			const screen = await render(
+				<Toast open onOpenChange={() => {}} position="bottom">
+				<Toast.Title>Saved</Toast.Title>
+			</Toast>,
+			);
+			const vb = flatStyle(screen.getByTestId("k-toast-viewport", inclHidden));
+			expect(vb.paddingBottom).toBe(16 + 760);
+		} finally {
+			metrics.mockRestore();
+			safeArea.__setSafeAreaInsets({ top: 0, bottom: 0, left: 0, right: 0 });
+		}
+	});
+
+	it("bottom toast rides above an open keyboard; hide restores the nav-bar inset", async () => {
+		const safeArea = require("react-native-safe-area-context");
+		safeArea.__setSafeAreaInsets({ top: 132, bottom: 48, left: 0, right: 0 });
+		const { Keyboard } = require("react-native");
+		const emitter = (
+			Keyboard as unknown as {
+				_emitter: { emit: (name: string, event: unknown) => void };
+			}
+		)._emitter;
+		const spy = jest.spyOn(Keyboard, "addListener");
+		try {
+			const screen = await render(
+				<Toast open onOpenChange={() => {}} position="bottom">
+					<Toast.Title>Saved</Toast.Title>
+				</Toast>,
+			);
+			const show = spy.mock.calls.find((c) => c[0] === "keyboardDidShow")?.[1];
+			const hide = spy.mock.calls.find((c) => c[0] === "keyboardDidHide")?.[1];
+			void show;
+			void hide;
+			await act(async () => {
+				emitter.emit("keyboardDidShow", {
+					endCoordinates: { height: 840 },
+			});
+			});
+			let vb = flatStyle(screen.getByTestId("k-toast-viewport", inclHidden));
+			expect(vb.paddingBottom).toBe(16 + 840);
+			// a smaller re-show (emoji panel) recomputes, not just the first show
+			await act(async () => {
+				emitter.emit("keyboardDidShow", {
+					endCoordinates: { height: 620 },
+			});
+			});
+			vb = flatStyle(screen.getByTestId("k-toast-viewport", inclHidden));
+			expect(vb.paddingBottom).toBe(16 + 620);
+			await act(async () => {
+				emitter.emit("keyboardDidHide", {});
+			});
+			vb = flatStyle(screen.getByTestId("k-toast-viewport", inclHidden));
+			expect(vb.paddingBottom).toBe(16 + 48);
+		} finally {
+			spy.mockRestore();
+			safeArea.__setSafeAreaInsets({ top: 0, bottom: 0, left: 0, right: 0 });
+		}
 	});
 
 	it("root surfaces the card table: bg/border/radius/padding/gap/stretch", async () => {

@@ -3,7 +3,7 @@
  * geometry, and themed scrim/card/close surfaces. Compound part styles
  * live in their own part files.
  */
-import { Platform, type ViewStyle } from "react-native";
+import type { ViewStyle } from "react-native";
 import { tokens } from "../../tokens";
 import type { KalaTheme } from "../../types";
 import type { DialogSize } from "./dialog.types";
@@ -84,10 +84,9 @@ export const closeStyle = (): ViewStyle => ({
 });
 
 /**
- * Status-bar clearance for the dialog wrapper. `full` renders edge to
- * edge under a translucent status bar, so the wrapper pads down by the
- * platform's bar height (expo's RN mock reports currentHeight; the 24
- * fallback covers environments where it is undefined).
+ * Status-bar clearance for the dialog wrapper. The translucent Modal
+ * draws under the bar, so the wrapper pads down by the safe-area top
+ * inset; the 24 fallback covers environments reporting no inset.
  */
-export const safeTopPadding = (currentHeight: number | undefined): number =>
-	Platform.select({ ios: 47, default: currentHeight ?? 24 }) ?? 24;
+export const safeTopPadding = (topInset: number | undefined): number =>
+	topInset ?? 24;

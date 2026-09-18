@@ -10,6 +10,9 @@
 import 'react-native-unistyles/mocks';
 import { themes } from './src/themes';
 
+// zero-inset default keeps component geometry deterministic in tests;
+// __setSafeAreaInsets lets individual suites pin non-zero bars
+
 jest.mock(
   'react-native-unistyles',
   () => require('react-native-unistyles/mocks'),
@@ -89,6 +92,30 @@ jest.mock('react-native', () => {
 			prop === 'Modal' ? Modal : Reflect.get(target, prop),
 	});
 });
+
+// zero-inset default keeps component geometry deterministic in tests;
+// mockSafeAreaInsets is mutable via the exported setter so individual
+// suites can pin non-zero system bars (jest hoists factories: only
+// `mock`-prefixed out-of-scope names are reachable inside them)
+const mockSafeAreaInsets = {
+	current: { top: 0, bottom: 0, left: 0, right: 0 } as {
+		top: number;
+		bottom: number;
+		left: number;
+		right: number;
+	},
+};
+jest.mock(
+	'react-native-safe-area-context',
+	() => ({
+		__esModule: true,
+		useSafeAreaInsets: () => mockSafeAreaInsets.current,
+		__setSafeAreaInsets: (insets: typeof mockSafeAreaInsets.current) => {
+			mockSafeAreaInsets.current = insets;
+		},
+	}),
+	{ virtual: true }
+);
 
 jest.mock('react-native-gesture-handler', () => {
 	const React = require('react');

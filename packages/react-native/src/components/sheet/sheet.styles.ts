@@ -27,6 +27,43 @@ export const SHEET_EASE = Easing.bezier(
 	...(motion.ease.standard as [number, number, number, number]),
 );
 
+/** bottom gap while the software keyboard is up — the keyboard replaces
+ * the nav bar as the surface to clear, so the card pad collapses to this */
+export const KEYBOARD_BOTTOM_GAP = 8;
+
+/** Keyboard geometry for a bottom-anchored sheet: the sheet lifts by the
+ * FULL keyboard height (its bottom rides the keyboard top) and sheds only
+ * the height that would poke above the top inset. Pure math on plain
+ * numbers so the JS-thread listener can call it and worklets only read
+ * the result through the shared value. */
+export interface KeyboardAdjust {
+	kbHeight: number;
+	windowHeight: number;
+	topInset: number;
+	sheetHeight: number;
+}
+
+/** translateY applied while the keyboard is up — always the full visible
+ * keyboard height so the pinned footer clears it. */
+export function keyboardLift({ kbHeight }: KeyboardAdjust): number {
+	return Math.max(0, kbHeight);
+}
+
+/** height the sheet must shed so its lifted top stops below the status
+ * bar; 0 whenever the window still fits the sheet above the keyboard */
+export function keyboardShrink({
+	kbHeight,
+	windowHeight,
+	topInset,
+	sheetHeight,
+}: KeyboardAdjust): number {
+	if (kbHeight <= 0) return 0;
+	return Math.max(
+		0,
+		sheetHeight - (windowHeight - topInset - kbHeight),
+	);
+}
+
 /** Overlay backdrop color composed from the theme's overlay + overlayAlpha
  * tokens — themes differ in overlay strength, so a shared hardcode would
  * wash out dark mode. Pure JS: the string is resolved on the JS thread and
@@ -54,8 +91,14 @@ export function sheetHeader(theme: { separator: string }): ViewStyle {
 		alignItems: "center",
 		justifyContent: "space-between",
 		gap: tokens.space.gutter,
-		// hairline dividing the header from the body when a title renders
-		paddingBottom: 10,
+		// breathing room around the title row, above and below — kept tight;
+		// the grabber tier above already supplies the sheet's inner rhythm
+		paddingTop: 2,
+		paddingBottom: 8,
+		// negative margin cancels the content gutter so the hairline spans
+		// the sheet edge to edge; inner padding restores the text rail
+		marginHorizontal: -tokens.space.gutter,
+		paddingHorizontal: tokens.space.gutter,
 		borderBottomWidth: 1,
 		borderBottomColor: theme.separator,
 	};
@@ -70,11 +113,39 @@ export function sheetTitle(theme: { foreground: string }): {
 }
 
 export function sheetCloseHit(): ViewStyle {
-	// 44px hit target per the touch-target floor
+	// 44px hit target per the touch-target floor; never yields space to a
+	// long wrapping title
 	return {
 		width: 44,
 		height: 44,
+		flexShrink: 0,
 		alignItems: "center",
 		justifyContent: "center",
+	};
+}
+
+/** drawn affordance inside the close hit target — the Pressable keeps the
+ * 44px target; this circle is what the user sees */
+export function sheetCloseBubble(theme: { border: string }): ViewStyle {
+	return {
+		width: 32,
+		height: 32,
+		borderRadius: 999,
+		borderWidth: 1,
+		borderColor: theme.border,
+		alignItems: "center",
+		justifyContent: "center",
+	};
+}
+
+/** pinned footer tier — mirrors the header: hairline bleeding edge to
+ * edge, padded content rail, breathing room below the body */
+export function sheetFooter(theme: { border: string }): ViewStyle {
+	return {
+		marginHorizontal: -tokens.space.gutter,
+		paddingHorizontal: tokens.space.gutter,
+		paddingTop: 12,
+		borderTopWidth: 1,
+		borderTopColor: theme.border,
 	};
 }

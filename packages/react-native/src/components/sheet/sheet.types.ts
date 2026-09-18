@@ -30,6 +30,7 @@ export interface SheetProps {
 		root?: StyleProp<ViewStyle>;
 		overlay?: StyleProp<ViewStyle>;
 		content?: StyleProp<ViewStyle>;
+		header?: StyleProp<ViewStyle>;
 		grabber?: StyleProp<ViewStyle>;
 		title?: StyleProp<ViewStyle>;
 	};

@@ -8,15 +8,16 @@
  * reserved for the drag spring-back gesture. The Modal (not an absolute
  * fill) owns the window: an `inset`-shorthand absolute root silently
  * collapses on native, so the sheet is a flex:1 child of the modal window
- * instead.
+ * instead. Keyboard avoidance lifts the sheet when the budget allows and
+ * otherwise shrinks it by the visible keyboard height so the pinned
+ * footer always rides above the keyboard.
  */
 
 import { X } from "lucide-react-native";
 import type { ReactElement } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
 	Keyboard,
-	KeyboardAvoidingView,
 	Modal,
 	Platform,
 	Pressable,
@@ -25,6 +26,7 @@ import {
 	useWindowDimensions,
 	View,
 } from "react-native";
+import type { KeyboardEventName } from "react-native";
 import {
 	Gesture,
 	GestureDetector,
@@ -37,12 +39,16 @@ import Animated, {
 	withSpring,
 	withTiming,
 } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useUnistyles } from "react-native-unistyles";
 import { motion, tokens } from "../../tokens";
 import { Icon } from "../icon";
 import { applySlot } from "../slot-styles";
 import {
 	composeOffset,
+	keyboardLift,
+	keyboardShrink,
+	KEYBOARD_BOTTOM_GAP,
 	OFFSCREEN_Y,
 	sheetCloseBubble,
 	sheetCloseHit,
@@ -54,11 +60,9 @@ import {
 } from "./sheet.styles";
 import type { SheetBodyProps, SheetProps, SheetSnap } from "./sheet.types";
 
-const SNAP_HEIGHT: Record<Exclude<SheetSnap, "auto">, number | `${number}%`> = {
-	peek: 120,
-	half: "50%",
-	full: "90%",
-};
+const PEEK_HEIGHT = 120;
+const HALF_RATIO = 0.5;
+const FULL_RATIO = 0.9;
 
 const MAX_HEIGHT_RATIO = 0.85;
 
@@ -72,6 +76,19 @@ const EXIT_CONFIG = {
 } as const;
 
 const DRAG_DISMISS_THRESHOLD = 96;
+
+/** static snap height in px (percent snaps resolve against the window) */
+function snapPixelHeight(
+	snap: Exclude<SheetSnap, "auto">,
+	windowHeight: number,
+	topInset: number,
+): number {
+	if (snap === "peek") return PEEK_HEIGHT;
+	if (snap === "half") return Math.round(windowHeight * HALF_RATIO);
+	return topInset > windowHeight * 0.1
+		? windowHeight - topInset
+		: Math.round(windowHeight * FULL_RATIO);
+}
 
 // pressable carrying the fade-in overlay opacity
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -94,6 +111,15 @@ export function Sheet({
 	const { theme } = useUnistyles();
 	const [mounted, setMounted] = useState(open);
 	const { height: windowHeight } = useWindowDimensions();
+	const insets = useSafeAreaInsets();
+	// measured content height drives the status-bar-safe keyboard lift
+	const contentHeight = useRef(0);
+	// bottom padding mode: keyboard up swaps the nav-bar clearance for a
+	// small gap (the keyboard itself is the surface to clear then)
+	const [kbUp, setKbUp] = useState(false);
+	// height the sheet sheds while the keyboard covers its lower reach —
+	// used when lifting alone can't clear the keyboard (tall/full sheets)
+	const [kbShrink, setKbShrink] = useState(0);
 
 	// entry/exit offset: OFFSCREEN_Y until the content is measured, then
 	// the snap height (offscreen start) springing to 0, or back on exit
@@ -101,25 +127,58 @@ export function Sheet({
 	const overlay = useSharedValue(0);
 	// user drag offset, composed with entry so both can act at once
 	const ty = useSharedValue(0);
-	// keyboard lift on Android (iOS uses KeyboardAvoidingView padding)
+	// keyboard lift; 0 whenever the shrink already covers the keyboard
 	const kb = useSharedValue(0);
 
-	// Android: window insets resize handles most screens, but a bottom-
-	// anchored sheet inside a Modal does not participate — translate it up
-	// by the visible keyboard height so the search field stays in view
+	const baseHeight =
+		snap === "auto"
+			? undefined
+			: snapPixelHeight(snap, windowHeight, insets.top);
+
+	// Keyboard avoidance on both platforms: lift the sheet by the visible
+	// keyboard height, clamped so the sheet top can never ride into the
+	// status bar; when the budget runs out (tall/full sheets) shrink the
+	// sheet instead so the pinned footer stays above the keyboard. iOS
+	// fires the Will pair; Android only has the Did pair.
 	useEffect(() => {
-		if (!avoidKeyboard || Platform.OS !== "android") return;
-		const show = Keyboard.addListener("keyboardDidShow", (e) => {
-			kb.value = e.endCoordinates.height;
+		if (!avoidKeyboard) return;
+		const events: { show: KeyboardEventName; hide: KeyboardEventName } =
+			Platform.OS === "ios"
+				? { show: "keyboardWillShow", hide: "keyboardWillHide" }
+				: { show: "keyboardDidShow", hide: "keyboardDidHide" };
+		const apply = (height: number): void => {
+			const sheetHeight =
+				contentHeight.current ||
+				(baseHeight ?? Math.round(windowHeight * MAX_HEIGHT_RATIO));
+			kb.value = keyboardLift({
+				kbHeight: height,
+				windowHeight,
+				topInset: insets.top,
+				sheetHeight,
+			});
+			// shed only the height that would poke above the top inset once lifted
+			setKbShrink(
+				keyboardShrink({
+					kbHeight: height,
+					windowHeight,
+					topInset: insets.top,
+					sheetHeight,
+				}),
+			);
+			setKbUp(height > 0);
+		};
+		const show = Keyboard.addListener(events.show, (e) => {
+			apply(e.endCoordinates.height);
 		});
-		const hide = Keyboard.addListener("keyboardDidHide", () => {
-			kb.value = 0;
-		});
+		const hide = Keyboard.addListener(events.hide, () => apply(0));
+		// a sheet can mount while a field's keyboard is already open
+		const openKb = Keyboard.metrics();
+		if (openKb) apply(openKb.height);
 		return () => {
 			show.remove();
 			hide.remove();
 		};
-	}, [avoidKeyboard, kb]);
+	}, [avoidKeyboard, kb, windowHeight, insets.top, baseHeight]);
 
 	useEffect(() => {
 		if (open) {
@@ -140,7 +199,10 @@ export function Sheet({
 	}, [open, mounted, entry, overlay]);
 
 	const onContentLayout = useCallback(
-		(event: { nativeEvent: { layout: { height: number } } }) => {
+		(event: {
+			nativeEvent: { layout: { height: number } };
+		}) => {
+			contentHeight.current = event.nativeEvent.layout.height;
 			if (entry.value === OFFSCREEN_Y && open) {
 				entry.value = event.nativeEvent.layout.height;
 				entry.value = withTiming(0, ENTER_CONFIG);
@@ -163,17 +225,7 @@ export function Sheet({
 		});
 
 	const sheetStyle = useAnimatedStyle(() => ({
-		transform: [{ translateY: composeOffset(entry.value, ty.value, kb.value) }],
-		// while the keyboard is up, also shrink the auto-height clamp so the
-		// lifted sheet's top (and its pinned search) stays on screen instead
-		// of sliding past the status bar
-		...(snap === "auto" && kb.value > 0
-			? {
-					maxHeight:
-					(maxHeight ?? Math.round(windowHeight * MAX_HEIGHT_RATIO)) -
-					kb.value,
-				}
-			: {}),
+			transform: [{ translateY: composeOffset(entry.value, ty.value, kb.value) }],
 	}));
 
 	const overlayStyle = useAnimatedStyle(() => ({ opacity: overlay.value }));
@@ -187,43 +239,38 @@ export function Sheet({
 			transparent
 			animationType="none"
 			statusBarTranslucent
+			navigationBarTranslucent
 			// Android hardware back; a locked sheet stays open
 			onRequestClose={dismissable ? onClose : () => {}}
 		>
-			{/* the Modal is its own native window — gestures inside it need
-			 * their own root view or the drag-to-dismiss pan never attaches */}
-			<GestureHandlerRootView testID="k-sheet-gesture-root" style={{ flex: 1 }}>
-                <View
-					testID="k-sheet-root"
-					style={applySlot(applySlot({ flex: 1 }, style), slotStyles?.root)}
+				{/* the Modal is its own native window — gestures inside it need
+				 * their own root view or the drag-to-dismiss pan never attaches */}
+				<GestureHandlerRootView testID="k-sheet-gesture-root" style={{ flex: 1 }}>
+					<View
+						testID="k-sheet-root"
+						style={applySlot(applySlot({ flex: 1 }, style), slotStyles?.root)}
 				>
-					<AnimatedPressable
-						testID="k-sheet-overlay"
-						accessibilityRole="button"
-						accessibilityLabel="Close sheet"
-						onPress={dismissable ? onClose : undefined}
-						style={[
-							overlayStyle,
-							applySlot(
-								{
-									position: "absolute",
-									top: 0,
-									right: 0,
-									bottom: 0,
-									left: 0,
-									backgroundColor: sheetOverlay(theme),
-								},
-								slotStyles?.overlay,
-							),
-						]}
-					/>
-					<KeyboardAvoidingView
-						behavior={
-							avoidKeyboard && Platform.OS === "ios" ? "padding" : undefined
-						}
-						pointerEvents="box-none"
-						style={{ flex: 1, justifyContent: "flex-end" }}
-					>
+						<AnimatedPressable
+							testID="k-sheet-overlay"
+							accessibilityRole="button"
+							accessibilityLabel="Close sheet"
+							onPress={dismissable ? onClose : undefined}
+							style={[
+								overlayStyle,
+								applySlot(
+									{
+										position: "absolute",
+										top: 0,
+										right: 0,
+										bottom: 0,
+										left: 0,
+										backgroundColor: sheetOverlay(theme),
+									},
+									slotStyles?.overlay,
+								),
+							]}
+						/>
+						{/* box-none: taps outside the sheet fall through to the overlay */}
 						<GestureDetector gesture={pan}>
 							<Animated.View
 								testID="k-sheet-content"
@@ -237,21 +284,34 @@ export function Sheet({
 											left: 0,
 											right: 0,
 											bottom: 0,
-											// auto hugs content under maxHeight; fixed snaps pin height
+											// auto hugs content under maxHeight; fixed snaps get
+											// their pixel height, shrunk while a keyboard covers
+											// the lower reach so the footer stays above it; full
+											// snap stops below a translucent status bar
 											...(snap === "auto"
 												? {
 														maxHeight:
-															maxHeight ??
-															Math.round(windowHeight * MAX_HEIGHT_RATIO),
+															(maxHeight ??
+																Math.round(windowHeight * MAX_HEIGHT_RATIO)) -
+															kbShrink,
 													}
-												: { height: SNAP_HEIGHT[snap] }),
+												: {
+														height: Math.max(
+															0,
+															(baseHeight ?? windowHeight) - kbShrink,
+														),
+													}),
 											backgroundColor: theme.card,
 											borderTopLeftRadius: tokens.radius.card,
 											borderTopRightRadius: tokens.radius.card,
 											borderTopWidth: 1,
 											borderColor: theme.border,
 											paddingTop: 8,
-											paddingBottom: tokens.space.cardPad,
+											// nav-bar clearance with the keyboard hidden; a small gap
+											// once the keyboard replaces the nav bar as the bottom surface
+											paddingBottom: kbUp
+												? KEYBOARD_BOTTOM_GAP
+												: tokens.space.cardPad + insets.bottom,
 											paddingHorizontal: tokens.space.gutter,
 											gap: 12,
 										},
@@ -274,7 +334,10 @@ export function Sheet({
 									)}
 								/>
 								{title ? (
-									<View testID="k-sheet-header" style={sheetHeader(theme)}>
+									<View
+										testID="k-sheet-header"
+										style={applySlot(sheetHeader(theme), slotStyles?.header)}
+									>
 										<Text
 											testID="k-sheet-title"
 											style={applySlot(sheetTitle(theme), slotStyles?.title)}
@@ -317,8 +380,7 @@ export function Sheet({
 								) : null}
 							</Animated.View>
 						</GestureDetector>
-					</KeyboardAvoidingView>
-				</View>
+					</View>
 			</GestureHandlerRootView>
 		</Modal>
 	);

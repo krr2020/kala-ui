@@ -47,15 +47,16 @@
 		"test:watch": "jest --watch",
 		"test:coverage": "vitest run --coverage"
 	},
-	"peerDependencies": {
-		"lucide-react-native": ">=1.46.0",
-		"react": ">=19.2.0",
-		"react-native": ">=0.86.0",
-		"react-native-gesture-handler": ">=2.32.0",
-		"react-native-reanimated": ">=4.5.0",
-		"react-native-svg": ">=15.15.0",
-		"react-native-unistyles": "3.3.0"
-	},
+  "peerDependencies": {
+    "lucide-react-native": ">=1.46.0",
+    "react": ">=19.2.0",
+    "react-native": ">=0.86.0",
+    "react-native-gesture-handler": ">=2.32.0",
+    "react-native-reanimated": ">=4.5.0",
+    "react-native-safe-area-context": ">=5.0.0",
+    "react-native-svg": ">=15.15.0",
+    "react-native-unistyles": "3.3.0"
+  },
 	"devDependencies": {
 		"@testing-library/react-native": "catalog:",
 		"@types/jest": "catalog:",
@@ -67,8 +68,9 @@
 		"react": "19.2.3",
 		"react-native": "catalog:",
 		"react-native-gesture-handler": "catalog:",
-		"react-native-reanimated": "catalog:",
-		"react-native-unistyles": "catalog:",
+    "react-native-reanimated": "catalog:",
+    "react-native-safe-area-context": "catalog:",
+    "react-native-unistyles": "catalog:",
 		"test-renderer": "1.2.0",
 		"typescript": "catalog:",
 		"vitest": "catalog:"

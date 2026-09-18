@@ -26,11 +26,18 @@ export function SheetDemo() {
 	const [shareOpen, setShareOpen] = useState(false);
 	const [searchOpen, setSearchOpen] = useState(false);
 	const [termsOpen, setTermsOpen] = useState(false);
+	const [formOpen, setFormOpen] = useState(false);
+	const [longFormOpen, setLongFormOpen] = useState(false);
 	const [locked, setLocked] = useState(false);
 	const [inStock, setInStock] = useState(true);
 	const [onSale, setOnSale] = useState(false);
 	const [freeShipping, setFreeShipping] = useState(false);
 	const [query, setQuery] = useState("");
+	const [taskTitle, setTaskTitle] = useState("");
+	const [taskNotes, setTaskNotes] = useState("");
+	const [eventFields, setEventFields] = useState(() =>
+		Array.from({ length: 8 }, () => ""),
+	);
 
 	const openAt = (s: Snap) => {
 		setSnap(s);
@@ -79,6 +86,22 @@ export function SheetDemo() {
 						accessibilityLabel="Open search sheet"
 					>
 						Keyboard input
+					</Button>
+					<Button
+						size="sm"
+						variant="outline"
+						onPress={() => setFormOpen(true)}
+						accessibilityLabel="Open form sheet"
+					>
+						Form
+					</Button>
+					<Button
+						size="sm"
+						variant="outline"
+						onPress={() => setLongFormOpen(true)}
+						accessibilityLabel="Open long form stress sheet"
+					>
+						Long form
 					</Button>
 					<Button
 						size="sm"
@@ -212,6 +235,118 @@ export function SheetDemo() {
 								Clause {i + 1}: the body scrolls while the sheet stays at half
 								height and the footer stays pinned.
 							</KText>
+						))}
+					</View>
+				</Sheet.Body>
+			</Sheet>
+
+			{/* form: header and actions are fixed tiers; only the body scrolls.
+			 * Inputs sit at the end so reaching them exercises the scroll while
+			 * Cancel/Create and the title never move */}
+			<Sheet
+				open={formOpen}
+				onClose={() => setFormOpen(false)}
+				snap="half"
+				title="Create task"
+				scrollable
+				avoidKeyboard
+				footer={
+					<View style={demoStyles.componentRow}>
+						<Button
+							variant="ghost"
+							style={{ flex: 1 }}
+							onPress={() => setFormOpen(false)}
+							accessibilityLabel="Discard form"
+						>
+							Cancel
+						</Button>
+						<Button
+							style={{ flex: 1 }}
+							onPress={() => setFormOpen(false)}
+							accessibilityLabel="Save task"
+						>
+							Create
+						</Button>
+					</View>
+				}
+			>
+				<Sheet.Body>
+					<View style={{ gap: 12 }}>
+						<KText size="sm" color="muted">
+							Scroll to the fields at the bottom — the header and the actions
+							stay pinned.
+						</KText>
+						{Array.from({ length: 3 }, (_, i) => (
+							<KText key={`ctx-${String(i + 1)}`} size="sm" color="muted">
+								Context row {i + 1} pushing the form fields below the fold.
+							</KText>
+						))}
+						<TextInput
+							placeholder="Task title"
+							value={taskTitle}
+							onChangeText={setTaskTitle}
+							accessibilityLabel="Task title"
+						/>
+						<TextInput
+							placeholder="Notes"
+							value={taskNotes}
+							onChangeText={setTaskNotes}
+							accessibilityLabel="Task notes"
+						/>
+					</View>
+				</Sheet.Body>
+			</Sheet>
+
+			{/* long-form stress: full-height sheet crammed with fields. Only the
+			 * body scrolls; header and actions stay pinned. Try it with the
+			 * keyboard up on the lowest field to check the sheet stays below the
+			 * status bar and the footer stays reachable */}
+			<Sheet
+				open={longFormOpen}
+				onClose={() => setLongFormOpen(false)}
+				snap="full"
+				title="Event details"
+				scrollable
+				avoidKeyboard
+				footer={
+					<View style={demoStyles.componentRow}>
+						<Button
+							variant="ghost"
+							style={{ flex: 1 }}
+							onPress={() => setLongFormOpen(false)}
+							accessibilityLabel="Discard event"
+						>
+							Cancel
+						</Button>
+						<Button
+							style={{ flex: 1 }}
+							onPress={() => setLongFormOpen(false)}
+							accessibilityLabel="Save event"
+						>
+							Save
+						</Button>
+					</View>
+				}
+			>
+				<Sheet.Body>
+					<View style={{ gap: 12 }}>
+						<KText size="sm" color="muted">
+							Full snap: the sheet fills 90% of the window. Scroll the fields
+							and open the keyboard on the last one — the header never rides
+							into the status bar and the actions stay pinned.
+						</KText>
+						{eventFields.map((value, index) => (
+							<TextInput
+								key={`event-field-${String(index)}`}
+								placeholder={`Field ${index + 1} of ${eventFields.length}`}
+								value={value}
+								onChangeText={(next) =>
+									setEventFields((fields) =>
+										fields.map((f, i) => (i === index ? next : f)),
+									)
+								}
+								accessibilityLabel={`Event field ${index + 1}`}
+							/>
 						))}
 					</View>
 				</Sheet.Body>
