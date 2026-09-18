@@ -1,4 +1,10 @@
-import { Button, Sheet, Text as KText, TextInput } from "@kala-ui/react-native";
+import {
+	Button,
+	Text as KText,
+	Sheet,
+	Switch,
+	TextInput,
+} from "@kala-ui/react-native";
 import { useState } from "react";
 import { View } from "react-native";
 import { DemoBlock } from "../demo-block";
@@ -6,17 +12,29 @@ import { demoStyles } from "../stylesheet";
 
 type Snap = "auto" | "peek" | "half" | "full";
 
+const SHARE_ACTIONS = [
+	"Copy link",
+	"Message",
+	"Email",
+	"Save to files",
+] as const;
+
 export function SheetDemo() {
 	const [snap, setSnap] = useState<Snap>("peek");
-	const [open, setOpen] = useState(false);
-	const [pinned, setPinned] = useState(false);
-	const [search, setSearch] = useState(false);
-	const [long, setLong] = useState(false);
+	const [snapOpen, setSnapOpen] = useState(false);
+	const [filterOpen, setFilterOpen] = useState(false);
+	const [shareOpen, setShareOpen] = useState(false);
+	const [searchOpen, setSearchOpen] = useState(false);
+	const [termsOpen, setTermsOpen] = useState(false);
+	const [locked, setLocked] = useState(false);
+	const [inStock, setInStock] = useState(true);
+	const [onSale, setOnSale] = useState(false);
+	const [freeShipping, setFreeShipping] = useState(false);
 	const [query, setQuery] = useState("");
 
 	const openAt = (s: Snap) => {
 		setSnap(s);
-		setOpen(true);
+		setSnapOpen(true);
 	};
 
 	return (
@@ -36,20 +54,28 @@ export function SheetDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="Variations">
+			<DemoBlock label="Use cases">
 				<View style={demoStyles.componentRow}>
 					<Button
 						size="sm"
 						variant="outline"
-						onPress={() => setPinned(true)}
-						accessibilityLabel="Open non-dismissable sheet"
+						onPress={() => setFilterOpen(true)}
+						accessibilityLabel="Open filter sheet"
 					>
-						Non-dismissable
+						Filter
 					</Button>
 					<Button
 						size="sm"
 						variant="outline"
-						onPress={() => setSearch(true)}
+						onPress={() => setShareOpen(true)}
+						accessibilityLabel="Open share sheet"
+					>
+						Share
+					</Button>
+					<Button
+						size="sm"
+						variant="outline"
+						onPress={() => setSearchOpen(true)}
 						accessibilityLabel="Open search sheet"
 					>
 						Keyboard input
@@ -57,62 +83,155 @@ export function SheetDemo() {
 					<Button
 						size="sm"
 						variant="outline"
-						onPress={() => setLong(true)}
+						onPress={() => setTermsOpen(true)}
 						accessibilityLabel="Open long content sheet"
 					>
 						Long content
 					</Button>
 				</View>
 			</DemoBlock>
-			<Sheet open={open} onClose={() => setOpen(false)} snap={snap}>
-				<Sheet.Body>
-					<KText size="sm" color="muted">
-						Snap {snap} — press the overlay or drag down to dismiss.
-					</KText>
-				</Sheet.Body>
-			</Sheet>
-			<Sheet open={pinned} onClose={() => setPinned(false)} dismissable={false}>
-				<Sheet.Body>
-					<KText size="sm" color="muted">
-						The overlay and drag are locked; only Done closes this sheet.
-					</KText>
-					<Button fullWidth onPress={() => setPinned(false)}>
-						Done
+			<DemoBlock label="Variations">
+				<View style={demoStyles.componentRow}>
+					<Button
+						size="sm"
+						variant="outline"
+						onPress={() => setLocked(true)}
+						accessibilityLabel="Open non-dismissable sheet"
+					>
+						Non-dismissable
 					</Button>
+				</View>
+			</DemoBlock>
+
+			{/* snap tour: one sheet re-opened at each snap height */}
+			<Sheet
+				open={snapOpen}
+				onClose={() => setSnapOpen(false)}
+				snap={snap}
+				title="Snap points"
+			>
+				<Sheet.Body>
+					<KText size="sm" color="muted">
+						Snap {snap} — drag the handle or press the overlay to dismiss.
+					</KText>
 				</Sheet.Body>
 			</Sheet>
+
+			{/* filters: auto-sized toggle list — close icon or overlay ends the session */}
 			<Sheet
-				open={search}
-				onClose={() => setSearch(false)}
+				open={filterOpen}
+				onClose={() => setFilterOpen(false)}
 				snap="auto"
+				title="Filter results"
+			>
+				<Sheet.Body>
+					<Switch
+						label="In stock only"
+						value={inStock}
+						onValueChange={setInStock}
+					/>
+					<Switch label="On sale" value={onSale} onValueChange={setOnSale} />
+					<Switch
+						label="Free shipping"
+						value={freeShipping}
+						onValueChange={setFreeShipping}
+					/>
+				</Sheet.Body>
+			</Sheet>
+
+			{/* share: compact action list riding the auto snap */}
+			<Sheet
+				open={shareOpen}
+				onClose={() => setShareOpen(false)}
+				snap="auto"
+				title="Share"
+			>
+				<Sheet.Body>
+					{SHARE_ACTIONS.map((action) => (
+						<Button
+							key={action}
+							fullWidth
+							variant="ghost"
+							onPress={() => setShareOpen(false)}
+							accessibilityLabel={action}
+						>
+							{action}
+						</Button>
+					))}
+				</Sheet.Body>
+			</Sheet>
+
+			{/* search: keyboard-aware auto sheet — avoidKeyboard lifts the
+			 * input above the software keyboard on both platforms */}
+			<Sheet
+				open={searchOpen}
+				onClose={() => setSearchOpen(false)}
+				snap="auto"
+				title="Search"
 				avoidKeyboard
 			>
 				<Sheet.Body>
 					<TextInput
-						placeholder="Search"
+						placeholder="Search products"
 						value={query}
 						onChangeText={setQuery}
-						accessibilityLabel="Search"
+						accessibilityLabel="Search products"
 					/>
 					<Button
 						fullWidth
-						onPress={() => setSearch(false)}
+						onPress={() => setSearchOpen(false)}
 						accessibilityLabel="Apply search"
 					>
 						Apply
 					</Button>
 				</Sheet.Body>
 			</Sheet>
-			<Sheet open={long} onClose={() => setLong(false)} snap="half">
+
+			{/* terms: body scrolls while the sheet holds half height; Accept
+					stays pinned in the footer */}
+			<Sheet
+				open={termsOpen}
+				onClose={() => setTermsOpen(false)}
+				snap="half"
+				title="Terms of service"
+				scrollable
+				footer={
+					<Button
+						fullWidth
+						onPress={() => setTermsOpen(false)}
+						accessibilityLabel="Accept terms"
+					>
+						Accept
+					</Button>
+				}
+			>
 				<Sheet.Body>
 					<View style={{ gap: 12 }}>
 						{Array.from({ length: 16 }, (_, i) => (
-							<KText key={`row-${String(i + 1)}`} size="sm" color="muted">
-								Row {i + 1}: the body scrolls while the sheet stays at half
-								height.
+							<KText key={`clause-${String(i + 1)}`} size="sm" color="muted">
+								Clause {i + 1}: the body scrolls while the sheet stays at half
+								height and the footer stays pinned.
 							</KText>
 						))}
 					</View>
+				</Sheet.Body>
+			</Sheet>
+
+			{/* locked sheet: no overlay/drag dismissal, no close icon — the
+			 * explicit action is the only way out */}
+			<Sheet
+				open={locked}
+				onClose={() => setLocked(false)}
+				dismissable={false}
+				snap="auto"
+			>
+				<Sheet.Body>
+					<KText size="sm" color="muted">
+						The overlay and drag are locked; only Done closes this sheet.
+					</KText>
+					<Button fullWidth onPress={() => setLocked(false)}>
+						Done
+					</Button>
 				</Sheet.Body>
 			</Sheet>
 		</View>

@@ -21,6 +21,11 @@ const DEMO = join(
 	"../../../../../apps/native-playground/src/demos/components/select-demo.tsx",
 );
 
+const SHEET_DEMO = join(
+	__dirname,
+	"../../../../../apps/native-playground/src/demos/components/sheet-demo.tsx",
+);
+
 function flatStyle(node: {
 	props: { style?: unknown };
 }): Record<string, unknown> {
@@ -88,7 +93,6 @@ describe("Select demo ↔ package Sheet seam", () => {
 		expect(source).not.toContain('snap="');
 		expect(source).toContain("hasSuccess");
 	});
-
 	it("demo-shaped Select opens an auto-sized titled sheet with separators", async () => {
 		const screen: Screen = await render(
 			<Select
@@ -118,5 +122,22 @@ describe("Select demo ↔ package Sheet seam", () => {
 		).toHaveLength(0);
 		const header = flatStyle(screen.getByTestId("k-sheet-header", inclHidden));
 		expect(header.borderBottomWidth).toBe(1);
+	});
+
+	it("sheet demo exercises headers, close affordances and every snap (source census)", () => {
+		const source = readFileSync(SHEET_DEMO, "utf8");
+		// every sheet a user can dismiss carries a title → header + close icon;
+		// only the non-dismissable one relies on its own Done action
+		expect(source).toContain('dismissable={false}');
+		const sheetCount = source.match(/<Sheet[\s>]/g)?.length ?? 0;
+		const titledCount = source.match(/title="/g)?.length ?? 0;
+		expect(sheetCount).toBeGreaterThan(3);
+		expect(titledCount).toBe(sheetCount - 1);
+		// snap coverage: the snap-point variation opens all four snap values
+		for (const snap of ["auto", "peek", "half", "full"]) {
+			expect(source).toContain(`"${snap}"`);
+		}
+		// themed tokens only — no hardcoded overlay/grey literals in the demo
+		expect(source).not.toContain("rgba(");
 	});
 });

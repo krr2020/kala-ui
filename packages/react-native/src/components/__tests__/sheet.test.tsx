@@ -1,9 +1,15 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { Dimensions, Text } from "react-native";
 import * as Reanimated from "react-native-reanimated";
+import { themes } from "../../themes/definitions";
 import { motion } from "../../tokens";
 import { Sheet } from "../sheet";
-import { composeOffset, OFFSCREEN_Y, SHEET_EASE } from "../sheet/sheet.styles";
+import {
+	composeOffset,
+	OFFSCREEN_Y,
+	sheetOverlay,
+	SHEET_EASE,
+} from "../sheet/sheet.styles";
 
 // the jest.setup mock records every withTiming/withSpring call config
 const timingCalls = (
@@ -43,6 +49,46 @@ describe("composeOffset", () => {
 		expect(composeOffset(320, 0)).toBe(320);
 		expect(composeOffset(320, 40)).toBe(360);
 		expect(composeOffset(0, -12)).toBe(-12);
+	});
+});
+
+describe("sheetOverlay", () => {
+	it("composes the overlay color from the theme's overlay/overlayAlpha tokens", () => {
+		expect(sheetOverlay(themes.light)).toBe("rgba(0, 0, 0, 0.5)");
+		expect(sheetOverlay(themes.dark)).toBe("rgba(0, 0, 0, 0.6)");
+	});
+
+	it("boundary alphas: 0 fades fully out, >=1 goes opaque, fractions round to 2 decimals", () => {
+		expect(sheetOverlay({ overlay: "#000000", overlayAlpha: 0 })).toBe(
+			"rgba(0, 0, 0, 0)",
+		);
+		expect(sheetOverlay({ overlay: "#102030", overlayAlpha: 1 })).toBe(
+			"rgba(16, 32, 48, 1)",
+		);
+		expect(sheetOverlay({ overlay: "#102030", overlayAlpha: 1.4 })).toBe(
+			"rgba(16, 32, 48, 1)",
+		);
+		expect(sheetOverlay({ overlay: "#000000", overlayAlpha: 0.456 })).toBe(
+			"rgba(0, 0, 0, 0.46)",
+		);
+	});
+});
+
+// relative luminance for the visibility sweep — good enough approximation
+// of perceived lightness to separate "reads as the card" from "reads as a mark"
+function luminance(hex: string): number {
+	const n = Number.parseInt(hex.slice(1), 16);
+	const channel = (shift: number): number => ((n >> shift) & 0xff) / 255;
+	return 0.2126 * channel(16) + 0.7152 * channel(8) + 0.0722 * channel(0);
+}
+
+describe("grabber visibility across themes", () => {
+	it("mutedForeground clears the card on every generated theme while muted does not", () => {
+		for (const theme of Object.values(themes)) {
+			expect(Math.abs(luminance(theme.mutedForeground) - luminance(theme.card))).toBeGreaterThan(0.15);
+			// documents the pre-fix bug: the old muted fill sat within noise of the card
+			expect(Math.abs(luminance(theme.muted) - luminance(theme.card))).toBeLessThan(0.15);
+		}
 	});
 });
 
@@ -213,21 +259,53 @@ describe("Sheet", () => {
 		);
 		const enter = timingCalls.find((call) => call.to === 0);
 		expect(enter).toBeTruthy();
-		expect(enter?.config?.duration).toBe(motion.duration.base);
+		expect(enter?.config?.duration).toBe(motion.duration.slow);
 		expect(enter?.config?.easing).toBe(SHEET_EASE);
 		const fadeIn = timingCalls.find((call) => call.to === 1);
-		expect(fadeIn?.config?.duration).toBe(motion.duration.base);
+		expect(fadeIn?.config?.duration).toBe(motion.duration.slow);
 
+		timingCalls.length = 0;
 		await screen.rerender(
 			<Sheet open={false} onClose={() => {}}>
 				<Text>content</Text>
 			</Sheet>,
 		);
-		const fadeOut = timingCalls.find(
-			(call) => call.to === 0 && call.config?.duration === motion.duration.fast,
+		// symmetric close: slide-down and overlay fade-out both take the same
+		// slow duration as the entrance — no cut-short fade after the sheet leaves
+		const fadeOut = timingCalls.find((call) => call.to === 0);
+		expect(fadeOut?.config?.duration).toBe(motion.duration.slow);
+		expect(fadeOut?.config?.easing).toBe(SHEET_EASE);
+		const exitSlide = timingCalls.find(
+			(call) => typeof call.to === "number" && call.to >= 10000,
 		);
-		expect(fadeOut).toBeTruthy();
+		expect(exitSlide?.config?.duration).toBe(motion.duration.slow);
 		expect(springCalls).toHaveLength(0);
+	});
+
+	it("grabber handle fills with mutedForeground so it reads against the card", async () => {
+		const screen: Screen = await render(
+			<Sheet open onClose={() => {}}>
+				<Text>content</Text>
+			</Sheet>,
+		);
+		const grabber = flatStyle(
+			screen.getByTestId("k-sheet-grabber", inclHidden),
+		);
+		expect(grabber.backgroundColor).toBe(themes.light.mutedForeground);
+	});
+
+	it("overlay background composes from the theme overlay tokens, not a hardcode", async () => {
+		const screen: Screen = await render(
+			<Sheet open onClose={() => {}}>
+				<Text>content</Text>
+			</Sheet>,
+		);
+		const overlay = flatStyle(
+			screen.getByTestId("k-sheet-overlay", inclHidden),
+		);
+		expect(overlay.backgroundColor).toBe(sheetOverlay(themes.light));
+		// the static color rides a plain View style; only opacity animates
+		expect(overlay.opacity).toBe(0);
 	});
 
 	it("snap=auto hugs content height under an 85% window maxHeight; explicit maxHeight wins", async () => {

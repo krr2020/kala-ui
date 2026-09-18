@@ -27,6 +27,27 @@ export const SHEET_EASE = Easing.bezier(
 	...(motion.ease.standard as [number, number, number, number]),
 );
 
+/** Overlay backdrop color composed from the theme's overlay + overlayAlpha
+ * tokens — themes differ in overlay strength, so a shared hardcode would
+ * wash out dark mode. Pure JS: the string is resolved on the JS thread and
+ * only ever rides a static View style (the animated part is opacity). */
+export function sheetOverlay(theme: {
+	overlay: string;
+	overlayAlpha: number;
+}): string {
+	const hex = theme.overlay.replace("#", "");
+	const full =
+		hex.length === 3
+			? hex
+					.split("")
+				.map((c) => c + c)
+				.join("")
+			: hex;
+	const n = Number.parseInt(full, 16);
+	const alpha = Math.min(1, Math.max(0, theme.overlayAlpha));
+	return `rgba(${(n >> 16) & 0xff}, ${(n >> 8) & 0xff}, ${n & 0xff}, ${Math.round(alpha * 100) / 100})`;
+}
+
 export function sheetHeader(theme: { separator: string }): ViewStyle {
 	return {
 		flexDirection: "row",

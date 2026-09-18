@@ -44,6 +44,7 @@ import { applySlot } from "../slot-styles";
 import {
 	composeOffset,
 	OFFSCREEN_Y,
+	sheetOverlay,
 	SHEET_EASE,
 	sheetCloseHit,
 	sheetHeader,
@@ -60,11 +61,11 @@ const SNAP_HEIGHT: Record<Exclude<SheetSnap, "auto">, number | `${number}%`> = {
 const MAX_HEIGHT_RATIO = 0.85;
 
 const ENTER_CONFIG = {
-	duration: motion.duration.base,
+	duration: motion.duration.slow,
 	easing: SHEET_EASE,
 } as const;
 const EXIT_CONFIG = {
-	duration: motion.duration.fast,
+	duration: motion.duration.slow,
 	easing: SHEET_EASE,
 } as const;
 
@@ -208,7 +209,7 @@ export function Sheet({
 									right: 0,
 									bottom: 0,
 									left: 0,
-									backgroundColor: "rgba(0,0,0,0.5)",
+									backgroundColor: sheetOverlay(theme),
 								},
 								slotStyles?.overlay,
 							),
@@ -265,7 +266,7 @@ export function Sheet({
 											width: 36,
 											height: 4,
 											borderRadius: 2,
-											backgroundColor: theme.muted,
+											backgroundColor: theme.mutedForeground,
 										},
 										slotStyles?.grabber,
 									)}
