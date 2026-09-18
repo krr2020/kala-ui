@@ -30,6 +30,9 @@ export function Progress({
 	const pct = max === min ? 0 : ((clamped - min) / (max - min)) * 100;
 	const inner =
 		label !== undefined ? label : showValue ? `${Math.round(pct)}%` : null;
+	// text arms render the md pill at the 16dp text height — the 10dp
+	// default pill cannot fit legible digits
+	const hasText = inner !== null && size !== "sm";
 
 	return (
 		<View
@@ -40,7 +43,7 @@ export function Progress({
 			accessibilityLabel={accessibilityLabel}
 			accessibilityValue={{ min, max, now: clamped }}
 			style={[
-				trackStyle(size, theme),
+				trackStyle(size, theme, hasText),
 				applySlot(applySlot([], style), slotStyles?.root),
 			]}
 		>
