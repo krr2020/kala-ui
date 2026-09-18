@@ -453,7 +453,10 @@ export function Calendar({
 									}}
 									disabled={state.disabled}
 									onPress={() => inMonth && handleDayPress(date)}
-									style={[dayStyle(state), { width: "100%" }]}
+									style={applySlot(
+								[dayStyle(state), { width: "100%" }],
+								slotStyles?.day,
+							)}
 								>
 								<RNText
 										style={{

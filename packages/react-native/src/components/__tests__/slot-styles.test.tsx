@@ -22,6 +22,9 @@ import { Combobox } from "../combobox";
 import { ContextMenu } from "../context-menu";
 import { DatePicker, DateRangePicker } from "../date-picker";
 import { Dialog } from "../dialog";
+import { DialogBody } from "../dialog/dialog-body";
+import { DialogFooter } from "../dialog/dialog-footer";
+import { DialogHeader } from "../dialog/dialog-header";
 import { DropdownMenu } from "../dropdown-menu";
 import { Field } from "../field";
 import { Heading } from "../heading";
@@ -1079,6 +1082,192 @@ describe("accordion and collapsible slots", () => {
 			Number(
 				flatStyle(screen.getByTestId("k-collapsible-content")).borderWidth,
 			),
+		).toBe(5);
+	});
+});
+
+describe("root precedence — style sits below slotStyles.root", () => {
+	it("sheet: slotStyles.root beats the legacy style prop", async () => {
+		const screen = await render(
+			<Sheet
+				open
+				onClose={() => undefined}
+				style={{ borderWidth: 2 }}
+				slotStyles={{ root: { borderWidth: 7 } }}
+			>
+				<Sheet.Body>x</Sheet.Body>
+			</Sheet>,
+		);
+		expect(
+			Number(flatStyle(screen.getByTestId("k-sheet-root", incl)).borderWidth),
+		).toBe(7);
+	});
+
+	it("context-menu: slotStyles.root beats the legacy style prop", async () => {
+		const screen = await render(
+			<ContextMenu
+				items={[{ key: "copy", label: "Copy" }]}
+				style={{ borderWidth: 2 }}
+				slotStyles={{ root: { borderWidth: 7 } }}
+			>
+				<Text>x</Text>
+			</ContextMenu>,
+		);
+		expect(
+			Number(flatStyle(screen.getByTestId("k-context-menu", incl)).borderWidth),
+		).toBe(7);
+	});
+
+	it("indicator: slotStyles.root beats the legacy style prop", async () => {
+		const screen = await render(
+			<Indicator
+				size={10}
+				style={{ opacity: 0.2 }}
+				slotStyles={{ root: { opacity: 0.9 } }}
+			/>,
+		);
+		expect(Number(flatStyle(screen.getByTestId("k-indicator", incl)).opacity)).toBe(
+			0.9,
+		);
+	});
+});
+
+describe("loading and read-only arms keep the slot contract", () => {
+	it("date-picker isLoading keeps slotStyles.root above style", async () => {
+		const dp = await render(
+			<DatePicker
+				isLoading
+				style={{ borderWidth: 2 }}
+				slotStyles={{ root: { borderWidth: 7 } }}
+			/>,
+		);
+		expect(
+			Number(flatStyle(dp.getByTestId("k-date-picker", incl)).borderWidth),
+		).toBe(7);
+
+		const drp = await render(
+			<DateRangePicker
+				isLoading
+				style={{ borderWidth: 2 }}
+				slotStyles={{ root: { borderWidth: 7 } }}
+			/>,
+		);
+		expect(
+			Number(
+				flatStyle(
+				drp.getByTestId("k-date-picker-date-range-picker", incl),
+				).borderWidth,
+			),
+		).toBe(7);
+	});
+
+	it("slider isLoading keeps slotStyles.root above style", async () => {
+		const screen = await render(
+			<Slider
+				isLoading
+				style={{ opacity: 0.2 }}
+				slotStyles={{ root: { opacity: 0.9 } }}
+			/>,
+		);
+		expect(
+			Number(flatStyle(screen.getByTestId("k-slider", incl)).opacity),
+		).toBe(0.9);
+	});
+
+	it("time-picker isLoading keeps slotStyles.root above style", async () => {
+		const screen = await render(
+			<TimePicker
+				isLoading
+				style={{ borderWidth: 2 }}
+				slotStyles={{ root: { borderWidth: 7 } }}
+			/>,
+		);
+		expect(
+			Number(flatStyle(screen.getByTestId("k-time-picker", incl)).borderWidth),
+		).toBe(7);
+	});
+
+	it("rating readOnly applies slotStyles.star to every star", async () => {
+		const screen = await render(
+			<Rating value={3} readOnly slotStyles={{ star: { borderWidth: 3 } }} />,
+		);
+		const stars = screen.getAllByTestId("k-rating-star", incl);
+		expect(stars.length).toBeGreaterThan(1);
+		for (const node of stars) {
+			expect(Number(flatStyle(node).borderWidth)).toBe(3);
+		}
+	});
+});
+
+describe("dead slot keys come alive", () => {
+	it("calendar.day reaches the day cells", async () => {
+		const now = new Date();
+		const iso = (d: Date): string =>
+			`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+				d.getDate(),
+			).padStart(2, "0")}`;
+		// pin the visible month so a midnight rollover between capture and
+		// render can't move the target day out of the grid
+		const screen = await render(
+			<Calendar month={now} slotStyles={{ day: { borderWidth: 3 } }} />,
+		);
+		expect(
+			Number(
+				flatStyle(screen.getByTestId(`k-calendar-day-${iso(now)}`, incl))
+					.borderWidth,
+			),
+		).toBe(3);
+	});
+
+	it("radio-group.item reaches every item row", async () => {
+		const screen = await render(
+			<RadioGroup
+				accessibilityLabel="r"
+				slotStyles={{ item: { borderWidth: 3 } }}
+			>
+				<RadioGroup.Item value="a" label="a" />
+				<RadioGroup.Item value="b" label="b" />
+			</RadioGroup>,
+		);
+		for (const item of screen.getAllByTestId("k-radio-item", incl)) {
+			expect(Number(flatStyle(item).borderWidth)).toBe(3);
+		}
+	});
+
+	it("radio-group item slotStyles.root beats the group item slot", async () => {
+		const screen = await render(
+			<RadioGroup
+				accessibilityLabel="r"
+				slotStyles={{ item: { opacity: 0.7 } }}
+			>
+				<RadioGroup.Item value="a" slotStyles={{ root: { opacity: 0.9 } }} />
+			</RadioGroup>,
+		);
+		expect(
+			Number(flatStyle(screen.getByTestId("k-radio-item", incl)).opacity),
+		).toBe(0.9);
+	});
+
+	it("dialog body/header/footer apply slotStyles.root slot-last", async () => {
+		const body = await render(
+			<DialogBody slotStyles={{ root: { borderWidth: 5 } }}>x</DialogBody>,
+		);
+		expect(
+			Number(flatStyle(body.getByTestId("k-dialog-body", incl)).borderWidth),
+		).toBe(5);
+
+		const header = await render(
+			<DialogHeader slotStyles={{ root: { borderWidth: 5 } }}>t</DialogHeader>,
+		);
+		expect(
+			Number(flatStyle(header.getByTestId("k-dialog-header", incl)).borderWidth),
+		).toBe(5);
+
+		const footer = await render(
+			<DialogFooter slotStyles={{ root: { borderWidth: 5 } }}>f</DialogFooter>,
+		);
+		expect(
+			Number(flatStyle(footer.getByTestId("k-dialog-footer", incl)).borderWidth),
 		).toBe(5);
 	});
 });

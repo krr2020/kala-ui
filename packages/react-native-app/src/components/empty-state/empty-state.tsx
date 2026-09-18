@@ -39,7 +39,7 @@ export function EmptyState({
 
 	if (isLoading) {
 		return (
-			<View testID={testID} style={surface}>
+			<View testID={testID} style={applySlot(surface, slotStyles?.root)}>
 				<Skeleton
 					animated={false}
 					variant="circle"
@@ -83,10 +83,7 @@ export function EmptyState({
 			{description !== undefined && (
 				<RNText
 					testID="k-empty-state-description"
-					style={applySlot(
-						descriptionStyle(theme),
-						slotStyles?.description,
-					)}
+					style={applySlot(descriptionStyle(theme), slotStyles?.description)}
 				>
 					{description}
 				</RNText>

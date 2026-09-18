@@ -9,6 +9,7 @@
 import type { ReactElement } from "react";
 import { createContext, useContext } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
+import type { StyleProp, ViewStyle } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { useUncontrolled } from "../../lib/use-uncontrolled.utils";
 import { applySlot } from "../slot-styles";
@@ -30,6 +31,8 @@ interface RadioGroupState {
 	value?: string;
 	groupDisabled: boolean;
 	select: (value: string) => void;
+	/** per-item slot from the group's slotStyles.item */
+	itemSlot?: StyleProp<ViewStyle>;
 }
 
 const RadioGroupContext = createContext<RadioGroupState | null>(null);
@@ -53,6 +56,7 @@ export function RadioGroup({
 	const state: RadioGroupState = {
 		value: current,
 		groupDisabled: disabled,
+		itemSlot: slotStyles?.item,
 		select: (next) => {
 			// re-selecting the checked item is a no-op — radios don't unselect
 			if (next === current) return;
@@ -111,7 +115,7 @@ function RadioGroupItem({
 			}
 			accessibilityState={{ checked, disabled: isDisabled || undefined }}
 			style={applySlot(
-				applySlot(itemStyle(isDisabled), style),
+				applySlot(applySlot(itemStyle(isDisabled), style), group.itemSlot),
 				slotStyles?.root,
 			)}
 		>

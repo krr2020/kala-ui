@@ -106,7 +106,10 @@ export function DatePicker({
 		return (
 			<Skeleton
 				testID={testID}
-				style={[{ height: HEIGHT[size], width: 280 }, style]}
+				style={applySlot(
+					[{ height: HEIGHT[size], width: 280 }, style],
+					slotStyles?.root,
+				)}
 			/>
 		);
 	}
@@ -185,7 +188,10 @@ export function DateRangePicker({
 		return (
 			<Skeleton
 				testID={testID}
-				style={[{ height: HEIGHT[size], width: 300 }, style]}
+				style={applySlot(
+					[{ height: HEIGHT[size], width: 300 }, style],
+					slotStyles?.root,
+				)}
 			/>
 		);
 	}

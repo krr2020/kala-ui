@@ -69,9 +69,9 @@ export function Indicator({
 							alignSelf: inline ? "flex-start" : undefined,
 						},
 					],
-					slotStyles?.root,
+					style,
 				),
-				style,
+				slotStyles?.root,
 			)}
 		>
 			{!disabled && (

@@ -141,7 +141,7 @@ export function Rating({
 					key={i}
 					testID="k-rating-star"
 					accessibilityElementsHidden={true}
-					style={{ justifyContent: "center" }}
+					style={applySlot({ justifyContent: "center" }, slotStyles?.star)}
 				>
 					{star}
 				</View>

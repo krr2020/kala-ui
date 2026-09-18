@@ -44,10 +44,12 @@ import { applySlot } from "../slot-styles";
 import {
 	composeOffset,
 	OFFSCREEN_Y,
-	sheetOverlay,
-	SHEET_EASE,
+	sheetCloseBubble,
 	sheetCloseHit,
+	SHEET_EASE,
+	sheetFooter,
 	sheetHeader,
+	sheetOverlay,
 	sheetTitle,
 } from "./sheet.styles";
 import type { SheetBodyProps, SheetProps, SheetSnap } from "./sheet.types";
@@ -191,9 +193,9 @@ export function Sheet({
 			{/* the Modal is its own native window — gestures inside it need
 			 * their own root view or the drag-to-dismiss pan never attaches */}
 			<GestureHandlerRootView testID="k-sheet-gesture-root" style={{ flex: 1 }}>
-				<View
+                <View
 					testID="k-sheet-root"
-					style={applySlot(applySlot({ flex: 1 }, slotStyles?.root), style)}
+					style={applySlot(applySlot({ flex: 1 }, style), slotStyles?.root)}
 				>
 					<AnimatedPressable
 						testID="k-sheet-overlay"
@@ -287,7 +289,12 @@ export function Sheet({
 												onPress={onClose}
 												style={sheetCloseHit()}
 											>
-												<Icon icon={X} size="sm" color="mutedForeground" />
+												<View
+													testID="k-sheet-close-bubble"
+													style={sheetCloseBubble(theme)}
+												>
+													<Icon icon={X} size="sm" color="mutedForeground" />
+												</View>
 											</Pressable>
 										) : null}
 									</View>
@@ -304,10 +311,7 @@ export function Sheet({
 									children
 								)}
 								{footer ? (
-									<View
-										testID="k-sheet-footer"
-										style={{ borderTopWidth: 1, borderTopColor: theme.border }}
-									>
+									<View testID="k-sheet-footer" style={sheetFooter(theme)}>
 										{footer}
 									</View>
 								) : null}

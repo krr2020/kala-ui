@@ -37,8 +37,8 @@ export function ContextMenu({
 				onLongPress={() => setOpen(true)}
 				delayLongPress={300}
 				style={applySlot(
-					applySlot({ alignSelf: "stretch" }, slotStyles?.root),
-					style,
+					applySlot({ alignSelf: "stretch" }, style),
+					slotStyles?.root,
 				)}
 			>
 				<View style={{ flexDirection: "row" }} testID="k-context-menu-child">

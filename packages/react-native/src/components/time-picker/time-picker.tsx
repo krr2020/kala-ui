@@ -87,7 +87,10 @@ export function TimePicker({
 
 	if (isLoading) {
 		return (
-			<Skeleton testID={testID} style={[{ height: 44, width: 200 }, style]} />
+			<Skeleton
+				testID={testID}
+				style={applySlot([{ height: 44, width: 200 }, style], slotStyles?.root)}
+			/>
 		);
 	}
 

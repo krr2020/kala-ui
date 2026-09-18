@@ -6,6 +6,7 @@ import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import type { KalaTheme } from "../../types";
+import { applySlot } from "../slot-styles";
 import type { DialogPartProps } from "./dialog.types";
 
 const footerStyle = (theme: KalaTheme) => ({
@@ -30,12 +31,16 @@ const partTextStyle = (theme: KalaTheme) => ({
 export function DialogFooter({
 	children,
 	style,
+	slotStyles,
 	testID = "k-dialog-footer",
 }: DialogPartProps): ReactElement {
 	const { theme } = useUnistyles();
 	return (
-		<View testID={testID} style={[footerStyle(theme), style]}>
-			{typeof children === "string" || typeof children === "number" ? (
+		<View
+			testID={testID}
+			style={applySlot([footerStyle(theme), style], slotStyles?.root)}
+			>
+				{typeof children === "string" || typeof children === "number" ? (
 				<RNText style={partTextStyle(theme)}>{children}</RNText>
 			) : (
 				children

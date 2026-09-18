@@ -133,7 +133,10 @@ export function Slider({
 			<View
 				testID={testID}
 				accessibilityLabel={accessibilityLabel}
-				style={[{ width: "100%", paddingVertical: 16 }, style]}
+				style={applySlot(
+					[{ width: "100%", paddingVertical: 16 }, style],
+					slotStyles?.root,
+				)}
 			>
 				<Skeleton style={{ height: TRACK_H, borderRadius: TRACK_H / 2 }} />
 				<Skeleton
