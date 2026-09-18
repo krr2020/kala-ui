@@ -6,6 +6,7 @@ import { ChevronsUpDown, X } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { type SlotStyles, applySlot, mergeStyle } from "../../lib/slot-styles";
 import { Checkbox } from "../checkbox";
 import {
 	Command,
@@ -111,6 +112,14 @@ export interface MultiSelectProps {
 	 * @default true
 	 */
 	matchTriggerWidth?: boolean;
+	/**
+	 * Inline styles for the trigger wrapper
+	 */
+	style?: React.CSSProperties;
+	/**
+	 * Overrides for the multi-select parts
+	 */
+	slotStyles?: SlotStyles;
 }
 
 function MultiSelect({
@@ -132,6 +141,8 @@ function MultiSelect({
 	maxVisibleSelections = 3,
 	showSeparators = false,
 	matchTriggerWidth = true,
+	style,
+	slotStyles,
 }: MultiSelectProps) {
 	const [selected, setSelected] = useUncontrolled<string[]>({
 		value,
@@ -235,12 +246,20 @@ function MultiSelect({
 			onOpenChange={handleOpenChange}
 		>
 			<div
+				data-kala-component="multi-select"
 				data-slot="multi-select"
-				className={cn(
-					"relative flex min-h-10 w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input",
-					!disabled && "hover:bg-accent/50",
-					disabled && "cursor-not-allowed opacity-50",
-					className,
+				className={applySlot(
+					cn(
+						"relative flex min-h-10 w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input",
+						!disabled && "hover:bg-accent/50",
+							disabled && "cursor-not-allowed opacity-50",
+							className,
+					),
+					slotStyles?.root,
+				).className}
+				style={mergeStyle(
+					style,
+					applySlot(null, slotStyles?.root).style,
 				)}
 			>
 				<PopoverPrimitive.Trigger asChild>

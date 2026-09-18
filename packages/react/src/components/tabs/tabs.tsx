@@ -11,6 +11,7 @@ import {
 	tabsTriggerStyles,
 } from "../../config/tabs";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 const TabsContext = React.createContext<{
 	activeTab?: string | undefined;
@@ -21,18 +22,28 @@ const TabsContext = React.createContext<{
 function Tabs({
 	ref,
 	className,
+	style,
+	slotStyles,
 	value,
 	onValueChange,
 	defaultValue,
 	orientation = "horizontal",
 	...props
-}: React.ComponentProps<typeof TabsPrimitive.Root>) {
+}: React.ComponentProps<typeof TabsPrimitive.Root> & { slotStyles?: SlotStyles }) {
 	const uniqueId = React.useId();
 	const [activeTab, setActiveTab] = useUncontrolled({
 		value,
 		defaultValue,
 		onChange: onValueChange,
 	});
+	const root = applySlot(
+		cn(
+			"flex",
+			orientation === "vertical" ? "flex-row gap-6" : "flex-col",
+			className,
+		),
+		slotStyles?.root,
+	);
 
 	return (
 		<TabsContext.Provider
@@ -45,11 +56,8 @@ function Tabs({
 				onValueChange={setActiveTab}
 				orientation={orientation}
 				data-slot="tabs"
-				className={cn(
-					"flex",
-					orientation === "vertical" ? "flex-row gap-6" : "flex-col",
-					className,
-				)}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 				{...props}
 			/>
 		</TabsContext.Provider>
@@ -67,11 +75,17 @@ const TabsListContext = React.createContext<{
 function TabsList({
 	ref,
 	className,
+	style,
+	slotStyles,
 	variant = "default",
 	align,
 	...props
 }: React.ComponentProps<typeof TabsPrimitive.List> &
-	VariantProps<typeof tabsListVariants>) {
+	VariantProps<typeof tabsListVariants> & { slotStyles?: SlotStyles }) {
+	const root = applySlot(
+		cn(tabsListVariants({ variant, align }), className),
+		slotStyles?.root,
+	);
 	return (
 		<TabsListContext.Provider
 			data-kala-component="tabs-list"
@@ -80,7 +94,8 @@ function TabsList({
 			<TabsPrimitive.List
 				ref={ref}
 				data-slot="tabs-list"
-				className={cn(tabsListVariants({ variant, align }), className)}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 				{...props}
 			/>
 		</TabsListContext.Provider>
@@ -94,20 +109,27 @@ export const tabsTriggerVariants = cva(tabsTriggerStyles.base, {
 function TabsTrigger({
 	ref,
 	className,
+	style,
+	slotStyles,
 	variant,
 	children,
 	...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger> &
-	VariantProps<typeof tabsTriggerVariants>) {
+	VariantProps<typeof tabsTriggerVariants> & { slotStyles?: SlotStyles }) {
 	const { variant: listVariant } = React.useContext(TabsListContext);
 	const finalVariant = variant || listVariant || "default";
+	const root = applySlot(
+		cn(tabsTriggerVariants({ variant: finalVariant }), className),
+		slotStyles?.root,
+	);
 
 	return (
 		<TabsPrimitive.Trigger
 			data-kala-component="tabs-trigger"
 			ref={ref}
 			data-slot="tabs-trigger"
-			className={cn(tabsTriggerVariants({ variant: finalVariant }), className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		>
 			<span className="relative z-10 inline-flex items-center gap-1.5">
@@ -119,14 +141,20 @@ function TabsTrigger({
 function TabsContent({
 	ref,
 	className,
+	style,
+	slotStyles,
 	...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+}: React.ComponentProps<typeof TabsPrimitive.Content> & {
+	slotStyles?: SlotStyles;
+}) {
+	const root = applySlot(cn(tabsContentStyles.base, className), slotStyles?.root);
 	return (
 		<TabsPrimitive.Content
 			data-kala-component="tabs-content"
 			ref={ref}
 			data-slot="tabs-content"
-			className={cn(tabsContentStyles.base, className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);

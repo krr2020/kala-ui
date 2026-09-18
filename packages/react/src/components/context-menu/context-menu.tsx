@@ -6,6 +6,7 @@ import type * as React from "react";
 
 import { dropdownMenuStyles } from "../../config/dropdown-menu";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 function ContextMenu({
 	...props
@@ -45,21 +46,31 @@ function ContextMenuPortal({
 
 function ContextMenuContent({
 	className,
+	style,
+	slotStyles,
 	...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Content>) {
+}: React.ComponentProps<typeof ContextMenuPrimitive.Content> & {
+	slotStyles?: SlotStyles;
+}) {
+	const root = applySlot(
+		cn(
+			"z-30 min-w-[10rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground kala-surface-popover",
+			"data-[state=open]:animate-in data-[state=closed]:animate-out",
+			"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+			"data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+			"data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
+			"data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+				className,
+			),
+		slotStyles?.root,
+	);
 	return (
-		<ContextMenuPrimitive.Portal data-kala-component="context-menu-content">
+		<ContextMenuPrimitive.Portal>
 			<ContextMenuPrimitive.Content
+				data-kala-component="context-menu-content"
 				data-slot="context-menu-content"
-				className={cn(
-					"z-30 min-w-[10rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground kala-surface-popover",
-					"data-[state=open]:animate-in data-[state=closed]:animate-out",
-					"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-					"data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-					"data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
-					"data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-					className,
-				)}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 				{...props}
 			/>
 		</ContextMenuPrimitive.Portal>

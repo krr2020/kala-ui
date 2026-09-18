@@ -4,6 +4,7 @@ import * as React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
 
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 const DrawerContext = React.createContext<{
 	direction?: "top" | "bottom" | "left" | "right";
@@ -100,10 +101,13 @@ type DrawerContentProps = React.ComponentProps<
 	 * @default "md"
 	 */
 	size?: "sm" | "md" | "lg" | "xl" | "full";
+	slotStyles?: SlotStyles;
 };
 
 function DrawerContent({
 	className,
+	style,
+	slotStyles,
 	children,
 	size = "md",
 	...props
@@ -113,24 +117,27 @@ function DrawerContent({
 	const sizeClass = isHorizontal
 		? SIZE_WIDTH_CLASSES[size]
 		: SIZE_HEIGHT_CLASSES[size];
+	const root = applySlot(
+		cn(
+				"fixed z-30 flex h-auto flex-col bg-background kala-surface-card",
+				(!direction || direction === "bottom") &&
+					"inset-x-0 bottom-0 mt-24 rounded-t-lg border-t",
+				direction === "right" && "inset-y-0 right-0 h-screen border-l",
+				direction === "left" && "inset-y-0 left-0 h-screen border-r",
+				direction === "top" && "inset-x-0 top-0 mb-24 rounded-b-lg border-b",
+				sizeClass,
+				className,
+			),
+			slotStyles?.root,
+	);
 	return (
-		<DrawerPortal
-			data-kala-component="drawer-content"
-			data-slot="drawer-portal"
-		>
+		<DrawerPortal data-slot="drawer-portal">
 			<DrawerOverlay />
 			<DrawerPrimitive.Content
+				data-kala-component="drawer-content"
 				data-slot="drawer-content"
-				className={cn(
-					"fixed z-30 flex h-auto flex-col bg-background kala-surface-card",
-					(!direction || direction === "bottom") &&
-						"inset-x-0 bottom-0 mt-24 rounded-t-lg border-t",
-					direction === "right" && "inset-y-0 right-0 h-screen border-l",
-					direction === "left" && "inset-y-0 left-0 h-screen border-r",
-					direction === "top" && "inset-x-0 top-0 mb-24 rounded-b-lg border-b",
-					sizeClass,
-					className,
-				)}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 				{...props}
 			>
 				{(!direction || direction === "bottom") && (

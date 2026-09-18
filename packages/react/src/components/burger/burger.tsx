@@ -1,16 +1,20 @@
 import type * as React from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 export interface BurgerProps extends React.ComponentProps<"button"> {
 	/** State of the burger */
 	opened?: boolean;
 	/** Size of the burger */
 	size?: "xs" | "sm" | "md" | "lg" | "xl";
+	slotStyles?: SlotStyles;
 }
 
 export function Burger({
 	ref,
 	className,
+	style,
+	slotStyles,
 	opened,
 	size = "md",
 	...props
@@ -36,10 +40,17 @@ export function Burger({
 			data-kala-component="burger"
 			ref={ref}
 			type="button"
-			className={cn(
-				"relative flex flex-col justify-between cursor-pointer transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-				sizeClasses[size],
-				className,
+			className={applySlot(
+				cn(
+					"relative flex flex-col justify-between cursor-pointer transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+					sizeClasses[size],
+					className,
+				),
+				slotStyles?.root,
+			).className}
+			style={mergeStyle(
+				style,
+				applySlot(null, slotStyles?.root).style,
 			)}
 			aria-label={opened ? "Close navigation" : "Open navigation"}
 			aria-expanded={opened}

@@ -5,21 +5,31 @@ import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
 import type * as React from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Dialog, DialogContent, DialogTitle } from "../dialog";
 
 function Command({
 	ref,
 	className,
+	style,
+	slotStyles,
 	...props
-}: React.ComponentProps<typeof CommandPrimitive>) {
+}: React.ComponentProps<typeof CommandPrimitive> & {
+	slotStyles?: SlotStyles;
+}) {
+	const root = applySlot(
+		cn(
+			"flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
+			className,
+		),
+		slotStyles?.root,
+	);
 	return (
 		<CommandPrimitive
 			data-kala-component="command"
 			ref={ref}
-			className={cn(
-				"flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);

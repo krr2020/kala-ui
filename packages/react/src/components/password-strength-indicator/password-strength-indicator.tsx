@@ -1,4 +1,5 @@
 import type * as React from "react";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 
 const PASSWORD_MIN_LENGTH = 8;
@@ -51,20 +52,24 @@ function calculatePasswordStrength(pwd: string): number {
 export function PasswordStrengthIndicator({
 	password,
 	className,
+	style,
+	slotStyles,
 	ref,
 	...props
-}: PasswordStrengthIndicatorProps): React.ReactNode | null {
+}: PasswordStrengthIndicatorProps & { slotStyles?: SlotStyles }): React.ReactNode | null {
 	if (!password) {
 		return null;
 	}
 
 	const strength = calculatePasswordStrength(password);
+	const root = applySlot(cn("mt-3", className), slotStyles?.root);
 
 	return (
 		<div
 			data-kala-component="password-strength-indicator"
 			ref={ref}
-			className={cn("mt-3", className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			aria-live="polite"
 			{...props}
 		>

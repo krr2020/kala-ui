@@ -3,6 +3,7 @@
 import type { Easing } from "framer-motion";
 import { AnimatePresence, motion } from "framer-motion";
 import type * as React from "react";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 export interface CollapseProps {
 	ref?: React.Ref<HTMLDivElement>;
@@ -22,6 +23,7 @@ export interface CollapseProps {
 	onTransitionEnd?: () => void;
 	/** If true, opacity will be animated */
 	animateOpacity?: boolean;
+	slotStyles?: SlotStyles;
 }
 
 export function Collapse({
@@ -31,19 +33,25 @@ export function Collapse({
 	id,
 	className,
 	style,
+	slotStyles,
 	transitionDuration = 0.2,
 	transitionTimingFunction = "easeInOut",
 	onTransitionEnd,
 	animateOpacity = true,
 }: CollapseProps) {
+	const root = applySlot(className, slotStyles?.root);
 	return (
-		<AnimatePresence data-kala-component="collapse" initial={false}>
+		<AnimatePresence initial={false}>
 			{opened && (
 				<motion.div
+					data-kala-component="collapse"
 					ref={ref}
 					id={id}
-					className={className}
-					style={{ overflow: "hidden", ...style }}
+					className={root.className}
+					style={{
+						overflow: "hidden",
+						...mergeStyle(style, root.style),
+					}}
 					initial={{ height: 0, opacity: animateOpacity ? 0 : 1 }}
 					animate={{
 						height: "auto",

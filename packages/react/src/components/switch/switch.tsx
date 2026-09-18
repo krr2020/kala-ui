@@ -3,31 +3,46 @@
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 
 import { switchStyles, switchThumbStyles } from "../../config/switch";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton";
 import type { SwitchProps } from "./switch.types";
 
-function Switch({ className, isLoading = false, ref, ...props }: SwitchProps) {
+function Switch({
+	className,
+	style,
+	slotStyles,
+	isLoading = false,
+	ref,
+	...props
+}: SwitchProps & { slotStyles?: SlotStyles }) {
 	if (isLoading) {
+		const skel = applySlot(cn("h-6 w-11 rounded-full", className), slotStyles?.root);
 		return (
 			<Skeleton
 				data-kala-component="switch"
-				className={cn("h-6 w-11 rounded-full", className)}
+				className={skel.className}
+				style={mergeStyle(style, skel.style)}
 			/>
 		);
 	}
 
+	const root = applySlot(cn(switchStyles.base, className), slotStyles?.root);
+	const thumb = applySlot(switchThumbStyles.base, slotStyles?.thumb);
 	return (
 		<SwitchPrimitive.Root
 			data-kala-component="switch"
 			ref={ref}
 			data-slot="switch"
-			className={cn(switchStyles.base, className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		>
 			<SwitchPrimitive.Thumb
+				data-kala-component="switch-thumb"
 				data-slot="switch-thumb"
-				className={cn(switchThumbStyles.base)}
+				className={thumb.className}
+				style={thumb.style}
 			/>
 		</SwitchPrimitive.Root>
 	);

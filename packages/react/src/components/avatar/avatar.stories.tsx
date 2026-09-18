@@ -99,7 +99,7 @@ export const Initials: Story = {
 				<AvatarFallback>DF</AvatarFallback>
 			</Avatar>
 			<Avatar size="sm">
-				<AvatarFallback variant="primary">DF</AvatarFallback>
+				<AvatarFallback color="primary">DF</AvatarFallback>
 			</Avatar>
 			<Avatar size="lg">
 				<AvatarFallback>DF</AvatarFallback>

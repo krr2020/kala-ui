@@ -4,6 +4,7 @@ import { useUncontrolled } from "@kala-ui/react-hooks";
 import { Star } from "lucide-react";
 import * as React from "react";
 
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 
 export interface RatingProps extends React.ComponentProps<"fieldset"> {
@@ -27,6 +28,8 @@ export interface RatingProps extends React.ComponentProps<"fieldset"> {
 	className?: string;
 	/** Accessible label */
 	"aria-label"?: string;
+	/** Per-part style overrides (root wins over className/style) */
+	slotStyles?: SlotStyles;
 }
 
 const sizeMap = {
@@ -74,6 +77,8 @@ function Rating({
 	disabled = false,
 	size = "md",
 	className,
+	style,
+	slotStyles,
 	"aria-label": ariaLabel = "Rating",
 	ref,
 	...props
@@ -86,6 +91,14 @@ function Rating({
 	const [hoverValue, setHoverValue] = React.useState<number | null>(null);
 
 	const displayValue = hoverValue ?? currentValue;
+	const root = applySlot(
+		cn(
+			"inline-flex items-center gap-0.5 border-0 p-0 m-0",
+			disabled && "opacity-50",
+			className,
+		),
+		slotStyles?.root,
+	);
 
 	const getStarFill = (star: number): "full" | "half" | "empty" => {
 		if (displayValue >= star) return "full";
@@ -159,10 +172,8 @@ function Rating({
 				ref={ref}
 				role="img"
 				aria-label={`${ariaLabel}: ${currentValue} out of ${count} stars`}
-				className={cn(
-					"inline-flex items-center gap-0.5 border-0 p-0 m-0",
-					className,
-				)}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 				{...props}
 			>
 				{Array.from({ length: count }, (_, i) => (
@@ -178,11 +189,8 @@ function Rating({
 			data-slot="rating"
 			ref={ref}
 			aria-label={ariaLabel}
-			className={cn(
-				"inline-flex items-center gap-0.5 border-0 p-0 m-0",
-				disabled && "opacity-50",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			onMouseLeave={() => !disabled && setHoverValue(null)}
 			onKeyDown={handleKeyDown}
 			{...props}

@@ -10,6 +10,7 @@ import {
 	avatarStyles,
 } from "../../config/avatar";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { SkeletonCircle } from "../skeleton/skeleton-patterns";
 
 const AvatarContext = React.createContext<{
@@ -45,6 +46,7 @@ interface AvatarProps
 	 * Show skeleton loading state
 	 */
 	isLoading?: boolean;
+	slotStyles?: SlotStyles;
 }
 
 function Avatar({
@@ -53,8 +55,11 @@ function Avatar({
 	shape,
 	status,
 	isLoading,
+	style,
+	slotStyles,
 	...props
 }: AvatarProps) {
+	const root = applySlot(cn(avatarVariants({ size, shape, status }), className), slotStyles?.root);
 	// Show loading skeleton
 	if (isLoading) {
 		const skeletonSize =
@@ -62,20 +67,21 @@ function Avatar({
 		return (
 			<SkeletonCircle
 				data-kala-component="avatar"
+				data-slot="avatar"
 				size={skeletonSize}
-				className={className}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 			/>
 		);
 	}
 
 	return (
-		<AvatarContext.Provider
-			data-kala-component="avatar"
-			value={{ shape: shape || "circle" }}
-		>
+		<AvatarContext.Provider value={{ shape: shape || "circle" }}>
 			<AvatarPrimitive.Root
+				data-kala-component="avatar"
 				data-slot="avatar"
-				className={cn(avatarVariants({ size, shape, status }), className)}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 				{...props}
 			/>
 		</AvatarContext.Provider>
@@ -118,22 +124,31 @@ export const avatarFallbackVariants = cva(avatarFallbackStyles.base, {
 
 export interface AvatarFallbackProps
 	extends Omit<React.ComponentProps<typeof AvatarPrimitive.Fallback>, "color">,
-		VariantProps<typeof avatarFallbackVariants> {}
+		VariantProps<typeof avatarFallbackVariants> {
+	slotStyles?: SlotStyles;
+}
 
 function AvatarFallback({
 	className,
+	style,
+	slotStyles,
 	shape: shapeProp,
 	color,
 	...props
 }: AvatarFallbackProps) {
 	const { shape: contextShape } = React.useContext(AvatarContext);
 	const shape = shapeProp || contextShape || "circle";
+	const root = applySlot(
+		cn(avatarFallbackVariants({ shape, color }), className),
+		slotStyles?.root,
+	);
 
 	return (
 		<AvatarPrimitive.Fallback
 			data-kala-component="avatar-fallback"
 			data-slot="avatar-fallback"
-			className={cn(avatarFallbackVariants({ shape, color }), className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);

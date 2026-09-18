@@ -5,6 +5,7 @@
  * These provide consistent and composable skeleton building blocks.
  */
 
+import type * as React from "react";
 import { cn } from "../../lib/utils";
 import { Skeleton } from "./skeleton";
 
@@ -65,6 +66,10 @@ export interface SkeletonCircleProps {
 	 */
 	size?: string;
 	/**
+	 * Inline styles
+	 */
+	style?: React.CSSProperties;
+	/**
 	 * Additional className
 	 */
 	className?: string;
@@ -76,12 +81,13 @@ export interface SkeletonCircleProps {
 export function SkeletonCircle({
 	size = "3rem",
 	className,
+	style,
 }: SkeletonCircleProps) {
 	return (
 		<Skeleton
 			data-kala-component="skeleton-circle"
 			className={cn("rounded-full", className)}
-			style={{ width: size, height: size }}
+			style={{ width: size, height: size, ...style }}
 		/>
 	);
 }

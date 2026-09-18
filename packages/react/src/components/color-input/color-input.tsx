@@ -1,6 +1,7 @@
 import { useUncontrolled } from "@kala-ui/react-hooks";
 import * as React from "react";
 import { inputStyles } from "../../config/input";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
 
@@ -30,6 +31,8 @@ export interface ColorInputProps
 	 * If true, hides the color preview swatch
 	 */
 	withPreview?: boolean;
+	/** Per-part style overrides (root wins over className/style) */
+	slotStyles?: SlotStyles;
 }
 
 const PRESET_COLORS: { value: string; label: string }[] = [
@@ -44,6 +47,8 @@ const PRESET_COLORS: { value: string; label: string }[] = [
 export function ColorInput({
 	ref,
 	className,
+	style,
+	slotStyles,
 	value: valueProp,
 	defaultValue,
 	onValueChange,
@@ -68,10 +73,16 @@ export function ColorInput({
 		setInternalValue(e.target.value);
 	};
 
+	const root = applySlot(
+		cn("relative flex items-center"),
+		slotStyles?.root,
+	);
+
 	return (
 		<div
 			data-kala-component="color-input"
-			className="relative flex items-center"
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 		>
 			{withPreview && (
 				<div className="absolute left-3 top-1/2 -translate-y-1/2 z-10">

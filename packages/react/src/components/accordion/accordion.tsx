@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Box } from "../box";
 
 export const accordionVariants = cva("w-full", {
@@ -68,16 +69,31 @@ function AccordionItem({
 	);
 }
 
+interface AccordionTriggerProps
+	extends React.ComponentProps<typeof AccordionPrimitive.Trigger> {
+	slotStyles?: SlotStyles;
+}
+
 function AccordionTrigger({
 	className,
+	style,
+	slotStyles,
 	children,
 	...props
-}: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
+}: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
+	slotStyles?: SlotStyles;
+}) {
 	const { variant } = React.useContext(AccordionContext);
+	const root = applySlot("flex", slotStyles?.root);
+	const chevron = applySlot(
+		"pointer-events-none size-4 shrink-0 transition-all duration-200 opacity-80",
+		slotStyles?.chevron,
+	);
 	return (
 		<AccordionPrimitive.Header
 			data-kala-component="accordion-trigger"
-			className="flex"
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 		>
 			<AccordionPrimitive.Trigger
 				data-slot="accordion-trigger"
@@ -94,7 +110,7 @@ function AccordionTrigger({
 				{...props}
 			>
 				{children}
-				<ChevronDown className="pointer-events-none size-4 shrink-0 transition-all duration-200 opacity-80" />
+				<ChevronDown className={chevron.className} style={chevron.style} />
 			</AccordionPrimitive.Trigger>
 		</AccordionPrimitive.Header>
 	);

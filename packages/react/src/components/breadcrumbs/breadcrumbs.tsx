@@ -1,6 +1,7 @@
 import { ChevronRight } from "lucide-react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 export interface BreadcrumbItem {
 	label: string;
@@ -10,15 +11,19 @@ export interface BreadcrumbItem {
 export interface BreadcrumbsProps {
 	items: BreadcrumbItem[];
 	className?: string;
+	style?: CSSProperties;
 	separator?: ReactNode;
 	variant?: "default" | "style1" | "style2" | "style3";
+	slotStyles?: SlotStyles;
 }
 
 export function Breadcrumbs({
 	items,
 	className,
+	style,
 	separator,
 	variant = "default",
+	slotStyles,
 }: BreadcrumbsProps) {
 	if (!items.length) return null;
 
@@ -38,11 +43,14 @@ export function Breadcrumbs({
 
 	const separatorElement = getDefaultSeparator();
 
+	const root = applySlot(cn(className), slotStyles?.root);
+
 	return (
 		<nav
 			data-kala-component="breadcrumbs"
 			aria-label="breadcrumb"
-			className={className}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 		>
 			<ol
 				className={cn(

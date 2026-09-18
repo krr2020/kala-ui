@@ -6,32 +6,40 @@
  */
 
 import type * as React from "react";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 
 function InputGroup({
 	ref,
 	className,
+	style,
+	slotStyles,
 	children,
 	...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const root = applySlot(
+		cn(
+			"flex w-full items-stretch",
+			// Reset rounded corners for children - focus on direct children that are not headers/labels
+			"[&>*:not(:first-child)]:rounded-l-none",
+			"[&>*:not(:last-child)]:rounded-r-none",
+			// Handle borders to avoid double borders
+			"[&>*:not(:first-child)]:border-l-0",
+			// Ensure focus ring appears on top
+			"[&>*:focus-within]:z-10",
+			"[&>*:focus]:z-10",
+			className,
+		),
+		slotStyles?.root,
+	);
 	return (
 		// biome-ignore lint/a11y/useSemanticElements: div[role=group] is the correct generic grouping element here; fieldset is for form legend groups and brings default styles
 		<div
 			data-kala-component="input-group"
 			ref={ref}
 			role="group"
-			className={cn(
-				"flex w-full items-stretch",
-				// Reset rounded corners for children - focus on direct children that are not headers/labels
-				"[&>*:not(:first-child)]:rounded-l-none",
-				"[&>*:not(:last-child)]:rounded-r-none",
-				// Handle borders to avoid double borders
-				"[&>*:not(:first-child)]:border-l-0",
-				// Ensure focus ring appears on top
-				"[&>*:focus-within]:z-10",
-				"[&>*:focus]:z-10",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		>
 			{children}
@@ -41,16 +49,23 @@ function InputGroup({
 function InputGroupText({
 	ref,
 	className,
+	style,
+	slotStyles,
 	...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const root = applySlot(
+		cn(
+			"flex items-center justify-center whitespace-nowrap rounded-md border bg-muted px-3 text-sm text-muted-foreground kala-surface-card",
+			className,
+		),
+		slotStyles?.root,
+	);
 	return (
 		<div
 			data-kala-component="input-group-text"
 			ref={ref}
-			className={cn(
-				"flex items-center justify-center whitespace-nowrap rounded-md border bg-muted px-3 text-sm text-muted-foreground kala-surface-card",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);

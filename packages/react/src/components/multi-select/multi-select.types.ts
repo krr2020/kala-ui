@@ -1,3 +1,4 @@
+import type { SlotStyles } from "../../lib/slot-styles";
 import type * as React from "react";
 
 export interface MultiSelectOption {
@@ -53,6 +54,14 @@ export interface MultiSelectProps {
 	 * Additional CSS classes for trigger button
 	 */
 	className?: string;
+	/**
+	 * Inline styles for the trigger wrapper
+	 */
+	style?: React.CSSProperties;
+	/**
+	 * Overrides for the multi-select parts
+	 */
+	slotStyles?: SlotStyles;
 	/**
 	 * Size variant
 	 * @default "default"

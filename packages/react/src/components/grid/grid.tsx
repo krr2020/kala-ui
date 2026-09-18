@@ -1,6 +1,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 
 const gridVariants = cva("grid", {
@@ -66,11 +67,14 @@ export interface GridProps
 	extends React.ComponentProps<"div">,
 		VariantProps<typeof gridVariants> {
 	asChild?: boolean;
+	slotStyles?: SlotStyles;
 }
 
 function Grid({
 	ref,
 	className,
+	style,
+	slotStyles,
 	cols,
 	gap,
 	flow,
@@ -80,12 +84,15 @@ function Grid({
 	...props
 }: GridProps) {
 	const Comp = asChild ? Slot : "div";
+	const root = applySlot(
+		cn(gridVariants({ cols, gap, flow, align, justify, className })),
+		slotStyles?.root,
+	);
 	return (
 		<Comp
 			data-kala-component="grid"
-			className={cn(
-				gridVariants({ cols, gap, flow, align, justify, className }),
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			ref={ref}
 			{...props}
 		/>
@@ -158,11 +165,14 @@ export interface GridItemProps
 	extends React.ComponentProps<"div">,
 		VariantProps<typeof gridItemVariants> {
 	asChild?: boolean;
+	slotStyles?: SlotStyles;
 }
 
 function GridItem({
 	ref,
 	className,
+	style,
+	slotStyles,
 	colSpan,
 	rowSpan,
 	colStart,
@@ -171,12 +181,15 @@ function GridItem({
 	...props
 }: GridItemProps) {
 	const Comp = asChild ? Slot : "div";
+	const root = applySlot(
+		cn(gridItemVariants({ colSpan, rowSpan, colStart, colEnd, className })),
+		slotStyles?.root,
+	);
 	return (
 		<Comp
 			data-kala-component="grid-item"
-			className={cn(
-				gridItemVariants({ colSpan, rowSpan, colStart, colEnd, className }),
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			ref={ref}
 			{...props}
 		/>

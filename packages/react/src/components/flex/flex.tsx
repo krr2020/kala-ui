@@ -1,6 +1,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 
 const flexVariants = cva("flex", {
@@ -66,14 +67,17 @@ export type FlexProps<T extends React.ElementType = "div"> = Omit<
 	React.ComponentProps<T>,
 	"as" | "asChild"
 > &
-	VariantProps<typeof flexVariants> & {
+		VariantProps<typeof flexVariants> & {
 		as?: T;
 		asChild?: boolean;
-	};
+		slotStyles?: SlotStyles;
+		};
 
 export function Flex<T extends React.ElementType = "div">(props: FlexProps<T>) {
 	const {
 		className,
+		style,
+		slotStyles,
 		direction,
 		wrap,
 		align,
@@ -87,21 +91,26 @@ export function Flex<T extends React.ElementType = "div">(props: FlexProps<T>) {
 		...rest
 	} = props as FlexProps<"div">;
 	const Comp = (asChild ? Slot : Tag) as React.ElementType;
+	const root = applySlot(
+		cn(
+			flexVariants({
+				direction,
+				wrap,
+				align,
+				justify,
+				gap,
+				grow,
+				shrink,
+				className,
+			}),
+		),
+		slotStyles?.root,
+	);
 	return (
 		<Comp
 			data-kala-component="flex"
-			className={cn(
-				flexVariants({
-					direction,
-					wrap,
-					align,
-					justify,
-					gap,
-					grow,
-					shrink,
-					className,
-				}),
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			ref={ref}
 			{...rest}
 		/>

@@ -5,6 +5,8 @@
  * Displays month header and calendar grid.
  */
 
+import * as React from "react";
+
 import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton";
 
@@ -32,6 +34,10 @@ export interface CalendarSkeletonProps extends CalendarSkeletonConfig {
 	 */
 	className?: string;
 	/**
+	 * Inline styles for the skeleton container
+	 */
+	style?: React.CSSProperties;
+	/**
 	 * Test ID for querying the element
 	 */
 	"data-testid"?: string;
@@ -52,6 +58,7 @@ export function CalendarSkeleton({
 	showDayLabels = true,
 	weekCount = 5,
 	className,
+	style,
 	"data-testid": dataTestId,
 }: CalendarSkeletonProps) {
 	const dayCount = weekCount * 7;
@@ -61,6 +68,7 @@ export function CalendarSkeleton({
 			data-kala-component="calendar-skeleton"
 			data-testid={dataTestId || "calendar-skeleton"}
 			className={cn("p-4", className)}
+			style={style}
 			aria-label="Loading calendar"
 			aria-busy="true"
 		>

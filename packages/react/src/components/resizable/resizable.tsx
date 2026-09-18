@@ -3,49 +3,78 @@
 import type * as React from "react";
 import * as ResizablePrimitive from "react-resizable-panels";
 
+import { resizableStyles } from "../../config/resizable";
+import {
+	applySlot,
+	mergeStyle,
+	type SlotStyles,
+} from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+
+interface ResizablePanelGroupProps
+	extends React.ComponentProps<typeof ResizablePrimitive.Group> {
+	slotStyles?: SlotStyles;
+}
 
 const ResizablePanelGroup = ({
 	className,
+	style,
+	slotStyles,
 	orientation = "horizontal",
 	...props
-}: React.ComponentProps<typeof ResizablePrimitive.Group>) => (
-	<ResizablePrimitive.Group
-		data-kala-component="resizable-panel-group"
-		data-slot="resizable-panel-group"
-		data-orientation={orientation}
-		className={cn("group flex h-full w-full", className)}
-		orientation={orientation}
-		{...props}
-	/>
-);
+}: ResizablePanelGroupProps) => {
+	const root = applySlot(cn("group flex h-full w-full", className), slotStyles?.root);
+	return (
+		<ResizablePrimitive.Group
+			data-kala-component="resizable-panel-group"
+			data-slot="resizable-panel-group"
+			data-orientation={orientation}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
+			orientation={orientation}
+			{...props}
+		/>
+	);
+};
+
+interface ResizablePanelProps
+	extends React.ComponentProps<typeof ResizablePrimitive.Panel> {
+	slotStyles?: SlotStyles;
+}
 
 const ResizablePanel = ({
 	className,
+	style,
+	slotStyles,
 	...props
-}: React.ComponentProps<typeof ResizablePrimitive.Panel>) => (
-	<ResizablePrimitive.Panel
-		data-kala-component="resizable-panel"
-		data-slot="resizable-panel"
-		className={cn("relative", className)}
-		{...props}
-	/>
-);
+}: ResizablePanelProps) => {
+	const root = applySlot(cn("relative", className), slotStyles?.root);
+	return (
+		<ResizablePrimitive.Panel
+			data-kala-component="resizable-panel"
+			data-slot="resizable-panel"
+			className={root.className}
+			style={mergeStyle(style, root.style)}
+			{...props}
+		/>
+	);
+};
 
 interface ResizableHandleProps
 	extends React.ComponentProps<typeof ResizablePrimitive.Separator> {
 	withHandle?: boolean;
+	slotStyles?: SlotStyles;
 }
 
 const ResizableHandle = ({
 	withHandle,
 	className,
+	style,
+	slotStyles,
 	...props
-}: ResizableHandleProps) => (
-	<ResizablePrimitive.Separator
-		data-kala-component="resizable-handle"
-		data-slot="resizable-handle"
-		className={cn(
+}: ResizableHandleProps) => {
+	const root = applySlot(
+		cn(
 			"bg-separator relative flex items-center justify-center kala-focus-ring",
 			"after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2",
 			"group-data-[orientation=vertical]:h-px group-data-[orientation=vertical]:w-full group-data-[orientation=vertical]:after:left-0 group-data-[orientation=vertical]:after:h-1 group-data-[orientation=vertical]:after:w-full group-data-[orientation=vertical]:after:-translate-y-1/2 group-data-[orientation=vertical]:after:translate-x-0",
@@ -53,38 +82,42 @@ const ResizableHandle = ({
 			"transition-colors hover:bg-primary/50",
 			"data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 data-[disabled]:hover:bg-separator",
 			className,
-		)}
-		{...props}
-	>
-		{withHandle && (
-			<div
-				className={cn(
-					"bg-separator z-10 flex items-center justify-center rounded-sm border transition-colors",
-					"group-data-[orientation=vertical]:h-2 group-data-[orientation=vertical]:w-8 group-data-[orientation=horizontal]:h-8 group-data-[orientation=horizontal]:w-2",
-					"hover:bg-primary/50",
-				)}
-			>
-				<svg
-					className={cn(
-						"text-muted-foreground size-2.5",
-						"group-data-[orientation=vertical]:rotate-90",
-					)}
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					strokeWidth="2"
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					aria-hidden="true"
-				>
-					<title>Resize handle</title>
-					<circle cx="9" cy="12" r="1" />
-					<circle cx="15" cy="12" r="1" />
-				</svg>
-			</div>
-		)}
-	</ResizablePrimitive.Separator>
-);
+		),
+		slotStyles?.root,
+	);
+	const handle = applySlot(resizableStyles.handle, slotStyles?.handle);
+	return (
+		<ResizablePrimitive.Separator
+			data-kala-component="resizable-handle"
+			data-slot="resizable-handle"
+			className={root.className}
+			style={mergeStyle(style, root.style)}
+			{...props}
+		>
+			{withHandle && (
+				<div className={handle.className} style={handle.style}>
+					<svg
+						className={cn(
+							"text-muted-foreground size-2.5",
+							"group-data-[orientation=vertical]:rotate-90",
+						)}
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						aria-hidden="true"
+					>
+						<title>Resize handle</title>
+						<circle cx="9" cy="12" r="1" />
+						<circle cx="15" cy="12" r="1" />
+					</svg>
+				</div>
+			)}
+		</ResizablePrimitive.Separator>
+	);
+};
 
 // Re-export types from react-resizable-panels for convenience
 export type {

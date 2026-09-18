@@ -4,24 +4,33 @@ import { ChevronDownIcon } from "lucide-react";
 import type * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 function NavigationMenu({
 	className,
+	style,
+	slotStyles,
 	children,
 	viewport = true,
 	...props
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Root> & {
 	viewport?: boolean;
+	slotStyles?: SlotStyles;
 }) {
+	const root = applySlot(
+		cn(
+			"group/navigation-menu relative flex max-w-max flex-1 items-center justify-center",
+			className,
+		),
+		slotStyles?.root,
+	);
 	return (
 		<NavigationMenuPrimitive.Root
 			data-kala-component="navigation-menu"
 			data-slot="navigation-menu"
 			data-viewport={viewport}
-			className={cn(
-				"group/navigation-menu relative flex max-w-max flex-1 items-center justify-center",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		>
 			{children}

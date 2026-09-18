@@ -1,6 +1,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 
 const containerVariants = cva("mx-auto w-full px-4 md:px-6 lg:px-8", {
@@ -26,21 +27,29 @@ export interface ContainerProps
 	extends React.ComponentProps<"div">,
 		VariantProps<typeof containerVariants> {
 	asChild?: boolean;
+	slotStyles?: SlotStyles;
 }
 
 function Container({
 	ref,
 	className,
+	style,
+	slotStyles,
 	size,
 	centered,
 	asChild = false,
 	...props
 }: ContainerProps) {
 	const Comp = asChild ? Slot : "div";
+	const root = applySlot(
+		cn(containerVariants({ size, centered, className })),
+		slotStyles?.root,
+	);
 	return (
 		<Comp
 			data-kala-component="container"
-			className={cn(containerVariants({ size, centered, className }))}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			ref={ref}
 			{...props}
 		/>

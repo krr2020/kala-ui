@@ -5,6 +5,11 @@ import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
 
 import { cn } from "../../lib/utils";
+import {
+	applySlot,
+	mergeStyle,
+	type SlotStyles,
+} from "../../lib/slot-styles";
 import { Box } from "../box";
 import { buttonVariants } from "../button";
 import { Text } from "../text";
@@ -64,17 +69,27 @@ function AlertDialogOverlay({
 
 function AlertDialogContent({
 	className,
+	style,
+	slotStyles,
 	...props
-}: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
+}: React.ComponentProps<typeof AlertDialogPrimitive.Content> & {
+	slotStyles?: SlotStyles;
+}) {
+	const root = applySlot(
+		cn(
+			"bg-card data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-30 flex flex-col translate-x-[-50%] translate-y-[-50%] rounded-lg border duration-200 w-[90vw] max-w-lg kala-surface-card",
+			className,
+		),
+		slotStyles?.root,
+	);
 	return (
-		<AlertDialogPortal data-kala-component="alert-dialog-content">
+		<AlertDialogPortal>
 			<AlertDialogOverlay />
 			<AlertDialogPrimitive.Content
+				data-kala-component="alert-dialog-content"
 				data-slot="alert-dialog-content"
-				className={cn(
-					"bg-card data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-30 flex flex-col translate-x-[-50%] translate-y-[-50%] rounded-lg border duration-200 w-[90vw] max-w-lg kala-surface-card",
-					className,
-				)}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 				{...props}
 			/>
 		</AlertDialogPortal>

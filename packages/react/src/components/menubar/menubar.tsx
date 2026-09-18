@@ -5,6 +5,7 @@ import { Check, ChevronRight, Circle } from "lucide-react";
 import type * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 function MenubarMenu({
 	...props
@@ -20,16 +21,25 @@ function MenubarMenu({
 
 function Menubar({
 	className,
+	style,
+	slotStyles,
 	...props
-}: React.ComponentProps<typeof MenubarPrimitive.Root>) {
+}: React.ComponentProps<typeof MenubarPrimitive.Root> & {
+	slotStyles?: SlotStyles;
+}) {
+	const root = applySlot(
+		cn(
+			"flex h-10 items-center space-x-1 rounded-md border bg-background p-1 kala-surface-card",
+			className,
+		),
+		slotStyles?.root,
+	);
 	return (
 		<MenubarPrimitive.Root
 			data-kala-component="menubar"
 			data-slot="menubar"
-			className={cn(
-				"flex h-10 items-center space-x-1 rounded-md border bg-background p-1 kala-surface-card",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);

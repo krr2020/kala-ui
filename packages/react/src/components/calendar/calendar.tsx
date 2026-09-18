@@ -13,6 +13,7 @@ import {
 } from "react-day-picker";
 
 import { cn } from "../../lib/utils";
+import { type SlotStyles, applySlot, mergeStyle } from "../../lib/slot-styles";
 import { Button, buttonVariants } from "../button";
 import { CalendarSkeleton } from "./calendar-skeleton";
 
@@ -21,6 +22,7 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
 	isLoading?: boolean;
 	skeletonConfig?: import("./calendar-skeleton").CalendarSkeletonConfig;
 	skeleton?: React.ReactNode;
+	slotStyles?: SlotStyles;
 };
 
 function Calendar({
@@ -34,36 +36,50 @@ function Calendar({
 	isLoading = false,
 	skeletonConfig,
 	skeleton,
+	style,
+	slotStyles,
 	...props
 }: CalendarProps) {
 	if (isLoading) {
 		if (skeleton) {
+			const root = applySlot(cn("p-3", className), slotStyles?.root);
 			return (
-				<div data-kala-component="calendar" className={cn("p-3", className)}>
+				<div
+					data-kala-component="calendar"
+					className={root.className}
+					style={mergeStyle(style, root.style)}
+				>
 					{skeleton}
 				</div>
 			);
 		}
+		const root = applySlot(cn(className), slotStyles?.root);
 		return (
 			<CalendarSkeleton
 				data-kala-component="calendar"
 				{...skeletonConfig}
-				className={className}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 			/>
 		);
 	}
 	const defaultClassNames = getDefaultClassNames();
+	const root = applySlot(
+		cn(
+			"bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
+				String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
+				String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
+				className,
+		),
+		slotStyles?.root,
+	);
 
 	return (
 		<DayPicker
 			data-kala-component="calendar"
 			showOutsideDays={showOutsideDays}
-			className={cn(
-				"bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
-				String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
-				String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			captionLayout={captionLayout}
 			formatters={{
 				formatMonthDropdown: (date) =>

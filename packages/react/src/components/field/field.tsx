@@ -4,6 +4,11 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 
+import {
+	applySlot,
+	mergeStyle,
+	type SlotStyles,
+} from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Label } from "../label";
 import { Separator } from "../separator";
@@ -108,9 +113,12 @@ export const fieldVariants = cva(
 
 function Field({
 	className,
+	style,
+	slotStyles,
 	orientation = "vertical",
 	...props
-}: React.ComponentProps<"fieldset"> & VariantProps<typeof fieldVariants>) {
+}: React.ComponentProps<"fieldset"> &
+	VariantProps<typeof fieldVariants> & { slotStyles?: SlotStyles }) {
 	const descriptionId = React.useId();
 	const errorId = React.useId();
 	const controlId = React.useId();
@@ -142,12 +150,18 @@ function Field({
 		],
 	);
 
+	const root = applySlot(
+		cn(fieldVariants({ orientation }), className),
+		slotStyles?.root,
+	);
+
 	return (
 		<fieldset
 			data-kala-component="field"
 			data-slot="field"
 			data-orientation={orientation}
-			className={cn(fieldVariants({ orientation }), className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		>
 			<FieldContext.Provider value={context}>

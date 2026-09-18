@@ -2,6 +2,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 const buttonGroupVariants = cva("inline-flex isolate", {
 	variants: {
@@ -29,10 +30,13 @@ interface ButtonGroupProps
 	 * @default false
 	 */
 	separated?: boolean;
+	slotStyles?: SlotStyles;
 }
 
 function ButtonGroup({
 	className,
+	style,
+	slotStyles,
 	orientation = "horizontal",
 	separated = false,
 	children,
@@ -43,7 +47,14 @@ function ButtonGroup({
 	return (
 		<div
 			data-kala-component="button-group"
-			className={cn(buttonGroupVariants({ orientation }), className)}
+			className={applySlot(
+				cn(buttonGroupVariants({ orientation }), className),
+				slotStyles?.root,
+			).className}
+			style={mergeStyle(
+				style,
+				applySlot(null, slotStyles?.root).style,
+			)}
 			{...props}
 		>
 			{separated

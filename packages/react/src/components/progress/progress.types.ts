@@ -1,5 +1,6 @@
 import type * as ProgressPrimitive from "@radix-ui/react-progress";
 import type * as React from "react";
+import type { SlotStyles } from "../../lib/slot-styles";
 
 type ProgressColor =
 	| "primary"
@@ -55,6 +56,11 @@ export interface ProgressProps
 	 * @default false
 	 */
 	showValue?: boolean;
+	/**
+	 * Per-part overrides: `root` wins over `className`/`style`, `indicator`
+	 * targets the fill bar, `label` the value text.
+	 */
+	slotStyles?: SlotStyles;
 }
 
 export interface ProgressBarProps {

@@ -1,3 +1,4 @@
+import type { SlotStyles } from "../../lib/slot-styles";
 import type * as React from "react";
 
 export interface ComboboxOption {
@@ -32,6 +33,10 @@ export interface ComboboxProps {
 	disabled?: boolean;
 	/** Additional CSS classes for the trigger button. */
 	className?: string;
+	/** Inline styles for the trigger wrapper. */
+	style?: React.CSSProperties;
+	/** Overrides for the combobox parts. */
+	slotStyles?: SlotStyles;
 	/** Size variant. @default "md" */
 	size?: "sm" | "md";
 	/** Match dropdown width to the trigger width. When true, also wraps long

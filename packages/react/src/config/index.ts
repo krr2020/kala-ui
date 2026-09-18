@@ -55,6 +55,8 @@ export {
 	switchStyles,
 	switchThumbStyles,
 } from "./switch";
+export { scrollAreaStyles } from "./scroll-area";
+export { resizableStyles } from "./resizable";
 export {
 	tableBodyStyles,
 	tableCaptionStyles,

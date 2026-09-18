@@ -6,6 +6,7 @@ import { Check, ChevronsUpDown, X } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { type SlotStyles, applySlot, mergeStyle } from "../../lib/slot-styles";
 import { Button } from "../button";
 import {
 	Command,
@@ -38,6 +39,8 @@ function Combobox({
 	renderOption,
 	separateOptions = false,
 	"aria-label": ariaLabel,
+	style,
+	slotStyles,
 }: ComboboxProps) {
 	const [open, { set: setOpen }] = useDisclosure(false);
 	const [internalValue, setInternalValue] = useUncontrolled<string>({
@@ -70,13 +73,15 @@ function Combobox({
 		setInternalValue("");
 	};
 
+	const root = applySlot(cn("relative w-full", className), slotStyles?.root);
+
 	return (
-		<PopoverPrimitive.Root
-			data-kala-component="combobox"
-			open={open}
-			onOpenChange={handleOpenChange}
-		>
-			<div className="relative w-full">
+		<PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
+			<div
+				data-kala-component="combobox"
+				className={root.className}
+				style={mergeStyle(style, root.style)}
+			>
 				<PopoverPrimitive.Trigger asChild>
 					<Button
 						ref={ref}
