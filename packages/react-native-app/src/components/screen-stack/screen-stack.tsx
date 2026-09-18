@@ -7,6 +7,7 @@
  * the round trip. Controlled entirely by `entries`.
  */
 import { useEffect, useRef, useState } from "react";
+import type { StyleProp, ViewStyle } from "react-native";
 import {
 	AccessibilityInfo,
 	BackHandler,
@@ -15,7 +16,6 @@ import {
 	useWindowDimensions,
 	View,
 } from "react-native";
-import type { StyleProp, ViewStyle } from "react-native";
 import Animated, {
 	runOnJS,
 	useAnimatedStyle,
@@ -23,7 +23,12 @@ import Animated, {
 	withTiming,
 } from "react-native-reanimated";
 import { useUnistyles } from "react-native-unistyles";
-import { motion } from "@kala-ui/react-native/tokens";
+import {
+	CENTER_SCALE_START,
+	ENTER_CONFIG,
+	EXIT_CONFIG,
+	scrimColor,
+} from "./screen-stack.styles";
 import type {
 	ScreenStackEntry,
 	ScreenStackPresentation,
@@ -34,12 +39,6 @@ import {
 	diffStack,
 	enterOffsetFor,
 } from "./screen-stack.utils";
-import {
-	CENTER_SCALE_START,
-	ENTER_CONFIG,
-	EXIT_CONFIG,
-	scrimColor,
-} from "./screen-stack.styles";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -99,6 +98,11 @@ function ScreenLayer({
 		horizontal ? windowWidth : windowHeight,
 	);
 
+	// the parent rebuilds onExited every render; a dep on it would restart
+	// in-flight transitions, so route it through a latest-callback ref
+	const onExitedRef = useRef(onExited);
+	onExitedRef.current = onExited;
+
 	useEffect(() => {
 		if (phase === "entering") {
 			if (reduceMotion || presentation === "none") {
@@ -111,20 +115,19 @@ function ScreenLayer({
 		if (phase === "exiting") {
 			// worklet callbacks may only capture primitives: `entry` carries React
 			// children, which reanimated cannot copy across the bridge
-			const exitKey = entry.key;
+			const exitCallback = onExitedRef.current;
 			if (reduceMotion || presentation === "none") {
 				progress.value = 0;
-				onExited(exitKey);
+				exitCallback(entry.key);
 			} else {
 				progress.value = withTiming(0, EXIT_CONFIG, (finished) => {
-					if (finished) runOnJS(onExited)(exitKey);
+					if (finished) runOnJS(exitCallback)(entry.key);
 				});
 			}
 		}
-		// distance changes on rotation; re-running entry mid-flight is worse
-		// than keeping the current offset until the next transition
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [phase]);
+		// rotation resizes the window mid-flight; the enter distance is read
+		// inside the animated style, so a restart is unnecessary and jarring
+	}, [phase, presentation, reduceMotion, progress, entry.key]);
 
 	const layerStyle = useAnimatedStyle(() => {
 		if (enter === null) return {};
