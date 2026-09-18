@@ -26,7 +26,7 @@ describe("avatar demo ↔ library seam", () => {
 	});
 
 	it("exercises the status dot across the full size ladder", () => {
-		expect(demo).toMatch(/status across sizes \(online\)/);
+		expect(demo).toMatch(/Status across sizes \(online\)/);
 		expect(demo).toMatch(/size=\{size\} status="online"/);
 	});
 

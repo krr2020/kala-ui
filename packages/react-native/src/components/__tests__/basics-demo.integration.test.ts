@@ -1,6 +1,8 @@
 /**
  * Baseline demo seam: user-visible copy reads as UI text (Title Case
- * block labels, sentence-case values) and the status arms stay mounted.
+ * block labels, sentence-case values) and the progress status arms stay
+ * mounted. Steps/Timeline now live in @kala-ui/react-native-app, so the
+ * library overview pins core-only content.
  */
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -20,17 +22,13 @@ describe("basics demo ↔ library seam", () => {
 	it("user-visible strings are sentence case", () => {
 		const src = demoSource("basics-demo.tsx");
 		expect(src).toMatch(/label="Upload Progress"/);
-		expect(src).toMatch(/title: "Order placed"/);
 		expect(src).toMatch(/description="One project"/);
 		expect(src).toMatch(/placeholder="Email"/);
 		expect(src).toMatch(/<Label required>Email<\/Label>/);
-		expect(src).toMatch(/title: "Account"/);
 	});
 
-	it("status arms stay mounted (progress, steps, timeline)", () => {
+	it("status arms stay mounted (progress)", () => {
 		const src = demoSource("basics-demo.tsx");
 		expect(src).toMatch(/<Progress /);
-		expect(src).toMatch(/<Steps[\s\S]*?items=/);
-		expect(src).toMatch(/<Timeline[\s\S]*?items=/);
 	});
 });
