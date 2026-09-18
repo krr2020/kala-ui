@@ -3,7 +3,9 @@
  * Animated (not reanimated) because the loop is stateless — no shared
  * values, no gesture interplay — and reanimated's jest mock has no
  * withRepeat. The loop starts once per mount and stops in cleanup.
- * Ghost variant dims the whole wrapper to 0.6 (web's /60 alpha).
+ * Ghost variant dims the whole wrapper to 0.6 (web's /60 alpha). The
+ * root is one accessible element announcing the loading label; no
+ * synthetic role — an indeterminate spinner is not a progressbar/timer.
  */
 
 import { Loader } from "lucide-react-native";
@@ -53,6 +55,8 @@ export function Spinner({
 	return (
 		<Animated.View
 			testID={testID}
+			// one a11y element so the loading state announces
+			accessible={true}
 			accessibilityLabel={accessibilityLabel ?? label}
 			style={[
 				wrapperStyle(variant),

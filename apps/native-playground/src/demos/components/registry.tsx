@@ -35,6 +35,7 @@ import { RatingDemo } from "./rating-demo";
 import { SelectDemo } from "./select-demo";
 import { SeparatorDemo } from "./separator-demo";
 import { SliderDemo } from "./slider-demo";
+import { SpinnerDemo } from "./spinner-demo";
 import { SwitchDemo } from "./switch-demo";
 import { TagDemo } from "./tag-demo";
 import { TextDemo } from "./text-demo";
@@ -274,7 +275,11 @@ export const componentGroups: ComponentGroup[] = [
 				name: "ring-progress",
 				render: () => <RingProgressDemo />,
 			},
-			{ label: humanizeLabel("spinner"), name: "spinner" },
+			{
+				label: humanizeLabel("spinner"),
+				name: "spinner",
+				render: () => <SpinnerDemo />,
+			},
 			{ label: humanizeLabel("skeleton"), name: "skeleton" },
 			{ label: humanizeLabel("loading-overlay"), name: "loading-overlay" },
 			{ label: humanizeLabel("error-boundary"), name: "error-boundary" },

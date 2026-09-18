@@ -175,8 +175,9 @@ describe("component app seam", () => {
 		// dedicated banner demo (close counter + re-show visibility) +
 		// dedicated toast demo (basic/position/auto/manual/long arms) +
 		// dedicated progress demo (upload stepper) + dedicated
-		// ring-progress demo (sync stepper).
-		expect(demoHooks).toBe(69);
+		// ring-progress demo (sync stepper) + dedicated spinner demo
+		// (loading toggle).
+		expect(demoHooks).toBe(70);
 	});
 
 	it("landing offers exactly two package routes", () => {
@@ -662,6 +663,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="open confirm dialog"': 1,
 					'accessibilityLabel="open demo dialog"': 1,
 					'accessibilityLabel="open demo sheet"': 1,
+				'accessibilityLabel="on-primary spinner"': 1,
 					'accessibilityLabel="open native app components"': 1,
 					'accessibilityLabel="open native components"': 1,
 					'accessibilityLabel="orphan select"': 1,
@@ -693,12 +695,15 @@ describe("component app seam", () => {
 					'accessibilityLabel="sync on"': 1,
 					'accessibilityLabel="sync"': 2,
 					'accessibilityLabel="tap me row"': 1,
-					'accessibilityLabel="timer"': 1,
+					'accessibilityLabel="Toggle loading"': 1,
+				'accessibilityLabel="timer"': 1,
 					'accessibilityLabel="trip window"': 1,
 					'accessibilityLabel="valid input"': 1,
 					'accessibilityLabel="volume"': 2,
 					'accessibilityLabel="zero rating"': 1,
-					"accessibilityLabel={`${size} toggle`}": 1,
+					"accessibilityLabel={`${size} spinner`}": 1,
+				"accessibilityLabel={`${size} toggle`}": 1,
+				"accessibilityLabel={`${variant} spinner`}": 1,
 					"accessibilityLabel={`activate ${name} theme`}": 1,
 					"accessibilityLabel={`open ${entry.name} group`}": 1,
 					"accessibilityLabel={`show ${name} preview`}": 1,
@@ -750,7 +755,8 @@ describe("component app seam", () => {
 					'testID="k-demo-separator"': 1,
 					'testID="k-demo-skeletons"': 1,
 					'testID="k-demo-slider"': 2,
-					'testID="k-demo-spinners"': 1,
+					'testID="k-demo-spinner"': 1,
+				'testID="k-demo-spinners"': 1,
 					'testID="k-demo-steps"': 1,
 					'testID="k-demo-switch"': 1,
 					'testID="k-demo-tabs"': 1,
