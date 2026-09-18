@@ -13,5 +13,8 @@ export const scrimStyle = (theme: KalaTheme): ViewStyle => ({
 	left: 0,
 	alignItems: "center",
 	justifyContent: "center",
+	// "auto" (not "box-only") so the scrim absorbs touches instead of
+	// letting them fall through to the content it covers
+	pointerEvents: "auto",
 	backgroundColor: `${String(theme.foreground)}80`,
 });

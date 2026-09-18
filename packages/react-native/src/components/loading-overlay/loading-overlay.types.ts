@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
+import type { SpinnerProps } from "../spinner";
 
 export interface LoadingOverlayProps {
 	/** renders nothing when false */
@@ -8,6 +9,8 @@ export interface LoadingOverlayProps {
 	zIndex?: number;
 	/** announced to screen readers while visible */
 	accessibilityLabel?: string;
+	/** tunes the default Spinner (label/size/variant); ignored when children replace it */
+	loaderProps?: Partial<Pick<SpinnerProps, "label" | "size" | "variant">>;
 	/** replaces the default Spinner as the loader node */
 	children?: ReactNode;
 	/** Root layout/positioning; sits below `slotStyles.root`. */

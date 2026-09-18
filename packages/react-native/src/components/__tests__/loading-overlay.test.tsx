@@ -35,6 +35,10 @@ describe("LoadingOverlay", () => {
 		expect(Number(s.bottom)).toBe(0);
 		expect(screen.getByTestId("k-spinner")).toBeTruthy();
 		expect(root.props.accessibilityLabel).toBe("Loading");
+		// the spinner inherits the overlay label so SR users hear one message
+		expect(screen.getByTestId("k-spinner").props.accessibilityLabel).toBe(
+			"Loading",
+		);
 	});
 
 	it("children replace the spinner as the loader node", async () => {
@@ -59,5 +63,30 @@ describe("LoadingOverlay", () => {
 			<LoadingOverlay visible slotStyles={{ root: { zIndex: 55 } }} />,
 		);
 		expect(flatStyle(screen.getByTestId("k-loading-overlay")).zIndex).toBe(55);
+	});
+
+	it("absorbs touches: pointerEvents is auto while visible", async () => {
+		const screen: Screen = await render(<LoadingOverlay visible />);
+		expect(flatStyle(screen.getByTestId("k-loading-overlay")).pointerEvents).toBe(
+			"auto",
+		);
+	});
+
+	it("announces through a polite live region", async () => {
+		const screen: Screen = await render(
+			<LoadingOverlay visible accessibilityLabel="Fetching orders" />,
+		);
+		expect(
+			screen.getByTestId("k-loading-overlay").props.accessibilityLiveRegion,
+		).toBe("polite");
+	});
+
+	it("loaderProps tune the default spinner and its label", async () => {
+		const screen: Screen = await render(
+			<LoadingOverlay visible loaderProps={{ label: "Syncing", size: "sm" }} />,
+		);
+		expect(screen.getByTestId("k-spinner").props.accessibilityLabel).toBe(
+			"Syncing",
+		);
 	});
 });

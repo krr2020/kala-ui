@@ -16,6 +16,7 @@ export function LoadingOverlay({
 	visible = false,
 	zIndex = 400,
 	accessibilityLabel = "Loading",
+	loaderProps,
 	children,
 	style,
 	slotStyles,
@@ -28,13 +29,19 @@ export function LoadingOverlay({
 		<View
 			testID={testID}
 			accessibilityLabel={accessibilityLabel}
+			// polite live region: the label is announced when loading starts,
+			// and the scrim swallows every touch under it (pointerEvents in
+			// scrimStyle) so covered controls can't fire mid-load
+			accessibilityLiveRegion="polite"
 			style={[
 				scrimStyle(theme),
 				{ zIndex },
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
-			{children ?? <Spinner size="lg" />}
+			{children ?? (
+				<Spinner size="lg" label={accessibilityLabel} {...loaderProps} />
+			)}
 		</View>
 	);
 }
