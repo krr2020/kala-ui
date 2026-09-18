@@ -91,10 +91,9 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		// header rows sit on one vertical rhythm; the gap pads BOTH sides of
 		// the inner divider, so the inner seam is 2×gap + 1
 		gap: 10,
-		paddingTop: 10,
-		paddingBottom: 12,
-		borderBottomWidth: 1,
-		borderBottomColor: theme.border,
+		// no vertical padding and no attached hairline — the space above
+		// and below the chip tier comes from previewContent's single gap so
+		// both sides of the tier stay symmetric
 		// scrolls inside the content ScrollView — break out of its 16px
 		// gutter so the horizontal rows span full width; the ScrollView's
 		// own background covers the overscroll, no opaque fill needed here
@@ -182,10 +181,33 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		// adding scrollable space
 		paddingBottom: 72,
 	},
+	// fixed back-navigation tier above the theme row — full-width row so
+	// the whole strip is the tap target while keeping the content rail
+	pinnedBackRow: {
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 4,
+		minHeight: 44,
+		paddingHorizontal: 16,
+		backgroundColor: theme.background,
+	},
+	// scroll content for the preview screen — chips lead, so unlike
+	// routeContent there is no large inter-section gap at the top; the
+	// horizontal gutter and end-of-scroll room match routeContent
+	previewContent: {
+		gap: 20,
+		paddingHorizontal: 16,
+		paddingBottom: 72,
+	},
 	componentRow: {
 		flexDirection: "row",
 		flexWrap: "wrap",
 		alignItems: "center",
+		gap: 8,
+	},
+	// label-above-control pairing: the column stack Field gives you for free
+	fieldRow: {
+		alignSelf: "stretch",
 		gap: 8,
 	},
 	// landing + route screens — full-width stacked cards, never an inline

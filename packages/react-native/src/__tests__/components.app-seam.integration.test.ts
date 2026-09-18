@@ -343,10 +343,11 @@ describe("component app seam", () => {
 		// heads each preview.
 		expect(shell).toMatch(/\{group\.title\} · \{component\.label\}/);
 		expect(shell).not.toMatch(/Kala UI · Native/);
-		// the switcher strip is the ONLY pinned tier: on the group screen it
-		// stays before the content ScrollView, while the component chip row
-		// lives INSIDE the scrolling routeContent. The landing/list screens
-		// render before the group screen and never carry the pinned tiers.
+		// the back button and the switcher strip are the ONLY pinned tiers:
+		// on the group screen both stay before the content ScrollView, while
+		// the component chip row leads the scrolling content. The landing/
+		// list screens render before the group screen and never carry the
+		// pinned tiers.
 		const themeRowStart = shell.indexOf("demoStyles.themeRow");
 		expect(themeRowStart).toBeGreaterThan(-1);
 		expect(
@@ -354,7 +355,18 @@ describe("component app seam", () => {
 			"no pinned tier before the group screen",
 		).not.toMatch(/demoStyles\.(themeRow|chipRows)/);
 		const groupScreen = shell.slice(themeRowStart);
-		const contentScrollAt = groupScreen.indexOf("demoStyles.routeContent");
+		// the back tier is pinned ABOVE the theme row and outside the scroll
+		const backAt = shell.indexOf('renderBackButton("k-back-groups")');
+		expect(backAt).toBeGreaterThan(-1);
+		expect(backAt).toBeLessThan(themeRowStart);
+		const scrollAt = groupScreen.indexOf('testID="k-group-root"');
+		expect(scrollAt).toBeGreaterThan(-1);
+		const chipRowsAt = groupScreen.indexOf("demoStyles.chipRows");
+		expect(
+			groupScreen.slice(scrollAt, chipRowsAt),
+			"back button stays out of the scrolling content",
+		).not.toMatch(/renderBackButton/);
+		const contentScrollAt = groupScreen.indexOf("demoStyles.previewContent");
 		expect(contentScrollAt).toBeGreaterThan(-1);
 		expect(groupScreen.indexOf("demoStyles.chipRows")).toBeGreaterThan(
 			contentScrollAt,
@@ -370,8 +382,9 @@ describe("component app seam", () => {
 		expect(themeRowBlock).toMatch(/horizontal/);
 		expect(themeRowBlock).not.toMatch(/flexWrap/);
 		expect(themeRowBlock).toMatch(/\{humanizeLabel\(name\)\}/);
-		// breathing room: the theme strip pads down from the top inset, and
-		// a standalone themed hairline separates it from the chip rows
+		// breathing room: the pinned back tier above the theme strip and the
+		// themeRow's own bottom pad keep the header on one rhythm, and a
+		// standalone themed hairline separates it from the chip rows
 		// (themeRow → rowDivider → chipRows in source AND render order).
 		const themeRowStyle = stylesheet.slice(
 			stylesheet.indexOf("themeRow:"),
@@ -400,28 +413,35 @@ describe("component app seam", () => {
 			return stylesheet.slice(start, end);
 		};
 		const chipRows = block("chipRows");
-		expect(chipRows).toMatch(/paddingTop: (?:8|1[0-9]|2[0-9]|3[0-9])/);
-		// scrolling tier keeps its hairline seam but drops the opaque fill —
-		// the content ScrollView's own background covers overscroll now —
-		// and breaks out of the screen's 16px gutter so the horizontal chip
-		// rows span the full width (their own chipRowContent re-insets 16).
-		expect(chipRows).toMatch(/borderBottomWidth: 1/);
+		// the chips lead the scroll content flush under the pinned header —
+		// no vertical padding and no attached hairline; the space above and
+		// below the tier comes from previewContent's single gap so the tier
+		// stays symmetric
+		expect(chipRows).not.toMatch(/paddingTop/);
+		expect(chipRows).not.toMatch(/paddingBottom/);
+		expect(chipRows).not.toMatch(/borderBottomWidth/);
+		// full-width break-out of the screen's 16px gutter so the horizontal
+		// chip rows span the screen (their own chipRowContent re-insets 16).
 		expect(chipRows).not.toMatch(/backgroundColor/);
 		expect(chipRows).toMatch(/marginHorizontal: -16/);
-		// vertical rhythm: theme strip bottom pad + 1px divider + group-row
-		// top pad lands in a comfortable 16–40dp band.
+		// vertical rhythm: theme strip bottom pad + 1px divider + the
+		// previewContent gap above the chips lands in a comfortable 16–40dp
+		// band, and the SAME gap repeats below the chip tier — one gap key
+		// owns both sides so the tier reads symmetric.
 		const themeRow = block("themeRow");
+		const previewContent = block("previewContent");
 		const pad = (src: string, key: string): number =>
 			Number(src.match(new RegExp(`${key}: (\\d+)`))?.[1] ?? 0);
 		const gap =
-			pad(themeRow, "paddingBottom") + 1 + pad(chipRows, "paddingTop");
+			pad(themeRow, "paddingBottom") + 1 + pad(previewContent, "gap");
 		expect(gap).toBeGreaterThanOrEqual(16);
 		expect(gap).toBeLessThanOrEqual(40);
+		expect(pad(previewContent, "gap")).toBeGreaterThanOrEqual(8);
 		// uniform rhythm across ALL three rows: the group↔component seam
 		// (chipRows gap on both sides of the inner divider) must equal the
 		// theme↔group seam.
 		const innerSeam = 2 * pad(chipRows, "gap") + 1;
-		expect(innerSeam).toBe(gap);
+		expect(innerSeam).toBe(21);
 		// theme chips wear the same pill as group/filter chips — no tag look.
 		const shell = readFileSync(
 			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,

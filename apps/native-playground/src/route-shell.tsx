@@ -151,7 +151,7 @@ export function RouteShell() {
 				accessibilityRole="button"
 				accessibilityLabel={home ? "back to home" : "back to groups"}
 				onPress={goBack}
-				style={demoStyles.backButton}
+				style={home ? demoStyles.backButton : demoStyles.pinnedBackRow}
 			>
 				<ChevronLeft size={18} color={theme.foreground} />
 				<Text style={demoStyles.backLabel}>
@@ -202,9 +202,12 @@ export function RouteShell() {
 
 	const renderGroup = (): React.JSX.Element => (
 		<>
-			{/* persistent theme switcher — first pinned header tier; every
-			preview can restyle without scrolling. Stateless via the unistyles
-			runtime; App.tsx's subscription re-renders the whole tree */}
+			{/* fixed header tiers — back navigation and the theme switcher
+			never scroll away; every preview can restyle without scrolling.
+			Stateless via the unistyles runtime; App.tsx's subscription
+			re-renders the whole tree */}
+			{renderBackButton("k-back-groups")}
+			<View style={demoStyles.rowDivider} />
 			<View style={demoStyles.themeRow}>
 				<Text style={[demoStyles.sectionHeader, demoStyles.sectionHeaderText]}>
 					Theme
@@ -244,14 +247,14 @@ export function RouteShell() {
 				</ScrollView>
 			</View>
 			<View style={demoStyles.rowDivider} />
-			{/* only the theme row is pinned; the component chips scroll away
-			with the preview so long demos get the full screen */}
+			{/* the component chips lead the scroll content — the header owns
+			the fixed tiers, so the chips sit flush under it and long demos
+			get the full screen */}
 			<ScrollView
 				testID="k-group-root"
 				style={demoStyles.screen}
-				contentContainerStyle={demoStyles.routeContent}
+				contentContainerStyle={demoStyles.previewContent}
 			>
-				{renderBackButton("k-back-groups")}
 				<View style={demoStyles.chipRows}>
 					<ScrollView
 						ref={componentRow}
