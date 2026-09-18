@@ -7,6 +7,7 @@
 	"scripts": {
 		"start": "expo start",
 		"android": "expo run:android",
+		"android:watch": "adb reverse tcp:8081 tcp:8081; adb shell am force-stop com.anonymous.kalanativeplayground; ( until curl -sf -m 2 -o /dev/null http://127.0.0.1:8081/status; do sleep 1; done; adb shell am start -n com.anonymous.kalanativeplayground/.MainActivity ) & expo start",
 		"ios": "expo run:ios",
 		"web": "expo start --web",
 		"export": "expo export --platform web"

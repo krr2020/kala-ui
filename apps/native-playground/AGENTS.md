@@ -6,12 +6,20 @@ Expo app exercising `@kala-ui/react-native` and `@kala-ui/react-native-app` — 
 
 ```bash
 pnpm start        # expo start / Metro (run from apps/native-playground)
-pnpm android      # expo run:android
+pnpm android:watch # one command: adb reverse + app relaunch + Metro watch on Android
+pnpm android      # expo run:android (native-code changes)
 pnpm ios          # expo run:ios
 pnpm export       # expo export --platform web
 ```
 
 Metro watches `packages/react-native` source, so library edits hot-reload without a rebuild.
+
+Don't open the app with `expo start --android` / the `a` keypress on an emulator: the deep
+link points the app at the host LAN IP, which the emulator can't route to (splash hang),
+and `expo start --localhost` binds IPv6 `::1` only while `adb reverse` forwards to IPv4
+`127.0.0.1` (dead tunnel → "Unable to load script"). `android:watch` reverses the port,
+starts plain Metro (all interfaces), polls for readiness, then launches the app from the
+launcher so it self-connects over `localhost:8081`.
 
 ## Structure
 
