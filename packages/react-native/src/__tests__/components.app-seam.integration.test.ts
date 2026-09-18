@@ -178,7 +178,7 @@ describe("component app seam", () => {
 		// role/notify arms) + alert-dialog + sheet + metric-card
 		// (skeleton) + bar-chart (skeleton) — feedback nav overlays
 		// overviews shrank to composed stories.
-		expect(demoHooks).toBe(87);
+		expect(demoHooks).toBe(95);
 	});
 
 	it("landing offers exactly two package routes", () => {
@@ -566,6 +566,7 @@ describe("component app seam", () => {
 				Object.entries({
 					'accessibilityLabel="Advance ring"': 1,
 					'accessibilityLabel="Advance upload"': 1,
+					'accessibilityLabel="Apply search"': 1,
 					'accessibilityLabel="Archiving project"': 1,
 					'accessibilityLabel="City"': 1,
 					'accessibilityLabel="Disabled quantity"': 1,
@@ -593,10 +594,17 @@ describe("component app seam", () => {
 					'accessibilityLabel="Long textarea value"': 1,
 					'accessibilityLabel="Movie"': 1,
 					'accessibilityLabel="Offset with decimals"': 1,
+					'accessibilityLabel="Open destructive alert"': 1,
 					'accessibilityLabel="Open dialog without close button"': 1,
+					'accessibilityLabel="Open dismissable alert"': 1,
 					'accessibilityLabel="Open form dialog"': 1,
+					'accessibilityLabel="Open informational alert"': 1,
+					'accessibilityLabel="Open long content alert"': 1,
 					'accessibilityLabel="Open long content dialog"': 1,
+					'accessibilityLabel="Open long content sheet"': 1,
 					'accessibilityLabel="Open non-dismissable dialog"': 1,
+					'accessibilityLabel="Open non-dismissable sheet"': 1,
+					'accessibilityLabel="Open search sheet"': 1,
 					'accessibilityLabel="Open the notifications card"': 1,
 					'accessibilityLabel="Order notes"': 1,
 					'accessibilityLabel="Orphan city"': 1,
@@ -606,6 +614,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="Reset ring"': 1,
 					'accessibilityLabel="Reset upload"': 1,
 					'accessibilityLabel="Role"': 1,
+					'accessibilityLabel="Search"': 1,
 					'accessibilityLabel="Show Auto Toast"': 1,
 					'accessibilityLabel="Show Toast"': 1,
 					'accessibilityLabel="Silent sync"': 1,
@@ -674,8 +683,6 @@ describe("component app seam", () => {
 					'accessibilityLabel="next week only"': 1,
 					'accessibilityLabel="next"': 1,
 					'accessibilityLabel="on-primary spinner"': 1,
-					'accessibilityLabel="open confirm dialog"': 1,
-					'accessibilityLabel="open demo sheet"': 1,
 					'accessibilityLabel="open native app components"': 1,
 					'accessibilityLabel="open native components"': 1,
 					'accessibilityLabel="orphan select"': 1,
@@ -724,6 +731,7 @@ describe("component app seam", () => {
 					"accessibilityLabel={`${tone} ring`}": 1,
 					"accessibilityLabel={`${variant} skeleton`}": 2,
 					"accessibilityLabel={`${variant} spinner`}": 1,
+					"accessibilityLabel={`Open ${s} sheet`}": 1,
 					"accessibilityLabel={`activate ${name} theme`}": 1,
 					"accessibilityLabel={`open ${entry.name} group`}": 1,
 					"accessibilityLabel={`show ${name} preview`}": 1,
