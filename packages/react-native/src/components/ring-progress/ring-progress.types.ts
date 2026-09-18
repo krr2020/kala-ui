@@ -8,7 +8,8 @@ export type RingTone =
 	| "success"
 	| "warning"
 	| "info"
-	| "muted";
+	| "muted"
+	| "input";
 
 export interface RingProgressSection {
 	/** arc size 0-100; segments accumulate clockwise from 12 o'clock */
@@ -25,7 +26,8 @@ export interface RingProgressProps {
 	thickness?: number;
 	/** arc tone, resolved through the theme (defaults to primary) */
 	color?: RingTone;
-	/** track tone behind the arcs (defaults to muted) */
+	/** track tone behind the arcs (defaults to input — the off-track
+	 * contrast token; muted@fade is invisible on the light page) */
 	emptyColor?: RingTone;
 	/** content centered inside the ring */
 	label?: ReactNode;

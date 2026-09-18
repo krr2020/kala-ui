@@ -25,4 +25,8 @@ export const labelOverlayStyle: ViewStyle = {
 export const labelTextStyle = (theme: KalaTheme) => ({
 	fontSize: 14,
 	color: String(theme.foreground),
+	// Android pads Text with ascent/descent room by default — inside the
+	// ring's centered overlay that padding nudges digits off-center
+	includeFontPadding: false,
+	textAlignVertical: "center" as const,
 });

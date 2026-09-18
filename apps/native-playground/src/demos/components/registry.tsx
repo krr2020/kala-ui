@@ -30,6 +30,7 @@ import { MultiSelectDemo } from "./multi-select-demo";
 import { NumberInputDemo } from "./number-input-demo";
 import { RadioGroupDemo } from "./radio-group-demo";
 import { ProgressDemo } from "./progress-demo";
+import { RingProgressDemo } from "./ring-progress-demo";
 import { RatingDemo } from "./rating-demo";
 import { SelectDemo } from "./select-demo";
 import { SeparatorDemo } from "./separator-demo";
@@ -268,7 +269,11 @@ export const componentGroups: ComponentGroup[] = [
 				name: "progress",
 				render: () => <ProgressDemo />,
 			},
-			{ label: humanizeLabel("ring-progress"), name: "ring-progress" },
+			{
+				label: humanizeLabel("ring-progress"),
+				name: "ring-progress",
+				render: () => <RingProgressDemo />,
+			},
 			{ label: humanizeLabel("spinner"), name: "spinner" },
 			{ label: humanizeLabel("skeleton"), name: "skeleton" },
 			{ label: humanizeLabel("loading-overlay"), name: "loading-overlay" },

@@ -24,7 +24,7 @@ export function RingProgress({
 	size = 120,
 	thickness = 12,
 	color = "primary",
-	emptyColor = "muted",
+	emptyColor = "input",
 	label,
 	roundCaps = true,
 	sections,
@@ -50,6 +50,8 @@ export function RingProgress({
 	return (
 		<View
 			testID={testID}
+			// one a11y element so role=progressbar + value are announced
+			accessible={true}
 			accessibilityRole="progressbar"
 			accessibilityLabel={accessibilityLabel}
 			accessibilityValue={{
@@ -70,7 +72,6 @@ export function RingProgress({
 					fill="none"
 					stroke={String(theme[emptyColor satisfies RingTone])}
 					strokeWidth={thickness}
-					opacity={0.2}
 				/>
 				{segments.map((segment, index) => {
 					const segmentValue = Math.min(Math.max(segment.value, 0), 100);

@@ -113,6 +113,29 @@ describe("RingProgress", () => {
 		expect(track.payload).not.toBe(arc.payload);
 	});
 
+	it("default empty track resolves to the input token at full opacity", async () => {
+		// muted@0.2 vanished on the light page — the off-track token is the
+		// Slider/Switch contrast precedent, applied without an opacity fade
+		const screen: Screen = await render(<RingProgress value={40} />);
+		const track = circlesOf(screen)[0];
+		const { themes } = require("../../themes");
+		const inputPacked = (
+			circlesOf(
+				await render(<RingProgress value={0} emptyColor="input" />),
+			)[0].stroke as { payload: number }
+		).payload;
+		expect((track.stroke as { payload: number }).payload).toBe(inputPacked);
+		expect(track.opacity).toBeUndefined();
+		expect(String(themes.light.input)).toBeTruthy();
+		// the explicit muted arm still renders (tone stays valid)
+		const mutedTrack = circlesOf(
+			await render(<RingProgress value={40} emptyColor="muted" />),
+		)[0];
+		expect((mutedTrack.stroke as { payload: number }).payload).not.toBe(
+			inputPacked,
+		);
+	});
+
 	it("roundCaps toggles strokeLinecap", async () => {
 		// RNSvg maps strokeLinecap to a numeric enum; round !== butt
 		const round: Screen = await render(<RingProgress value={10} />);
@@ -154,5 +177,23 @@ describe("RingProgress", () => {
 		expect(flatStyle(screen.getByTestId("k-ring-progress")).borderWidth).toBe(
 			7,
 		);
+	});
+
+	it("root is one a11y element so Android announces role + value", async () => {
+		const screen: Screen = await render(
+			<RingProgress value={10} accessibilityLabel="sync" />,
+		);
+		expect(screen.getByTestId("k-ring-progress").props.accessible).toBe(true);
+	});
+
+	it("string label text disables Android font padding for true centering", async () => {
+		const screen: Screen = await render(
+			<RingProgress value={64} label="64%" />,
+		);
+		const text = screen.getByText("64%");
+		const s = flatStyle(text);
+		expect(s.includeFontPadding).toBe(false);
+		expect(s.textAlignVertical).toBe("center");
+		expect(String(s.color)).toBeTruthy();
 	});
 });
