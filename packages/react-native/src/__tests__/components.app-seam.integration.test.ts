@@ -172,8 +172,9 @@ describe("component app seam", () => {
 		// time) + forms overview (email/plan/tier/terms) + the three-screen
 		// shell stack (screen + source + group + component indexes) +
 		// dedicated alert demo (dismiss counter + re-show visibility) +
-		// dedicated banner demo (close counter + re-show visibility).
-		expect(demoHooks).toBe(61);
+		// dedicated banner demo (close counter + re-show visibility) +
+		// dedicated toast demo (basic/position/auto/manual/long arms).
+		expect(demoHooks).toBe(67);
 	});
 
 	it("landing offers exactly two package routes", () => {
@@ -632,6 +633,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="section break"': 1,
 					'accessibilityLabel="service"': 1,
 					'accessibilityLabel="share"': 1,
+					'accessibilityLabel="Show Auto Toast"': 1,
 					'accessibilityLabel="Show Toast"': 1,
 					'accessibilityLabel="slider at max"': 1,
 					'accessibilityLabel="slider at min"': 1,
@@ -647,12 +649,13 @@ describe("component app seam", () => {
 					'accessibilityLabel="valid input"': 1,
 					'accessibilityLabel="volume"': 2,
 					'accessibilityLabel="zero rating"': 1,
-					'accessibilityLabel={`${size} toggle`}': 1,
-					'accessibilityLabel={`activate ${name} theme`}': 1,
-					'accessibilityLabel={`open ${entry.name} group`}': 1,
-					'accessibilityLabel={`show ${name} preview`}': 1,
+					"accessibilityLabel={`${size} toggle`}": 1,
+					"accessibilityLabel={`activate ${name} theme`}": 1,
+					"accessibilityLabel={`open ${entry.name} group`}": 1,
+					"accessibilityLabel={`show ${name} preview`}": 1,
 					'testID="k-demo-accordion"': 1,
-				'testID="k-demo-alert"': 1,
+					'testID="k-demo-toast"': 1,
+					'testID="k-demo-alert"': 1,
 					'testID="k-demo-app-shell"': 1,
 					'testID="k-demo-avatar-group"': 1,
 					'testID="k-demo-avatar-group-inline"': 1,
@@ -716,9 +719,9 @@ describe("component app seam", () => {
 					'testID="k-landing-app"': 1,
 					'testID="k-landing-library"': 1,
 					'testID="k-landing-root"': 1,
-					'testID={`k-group-row-${entry.name}`}': 1,
-					'testID={`k-swatch-${token}`}': 1,
-					'testID={`k-theme-${name}`}': 1,
+					"testID={`k-group-row-${entry.name}`}": 1,
+					"testID={`k-swatch-${token}`}": 1,
+					"testID={`k-theme-${name}`}": 1,
 				}),
 			),
 		);
