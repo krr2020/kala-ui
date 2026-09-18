@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"description": "Watch-mode dev server start commands for the kala-ui workspace. All run from the repo root via pnpm workspace filters.",
+	"commands": [
+		{
+			"id": "web-playground",
+			"name": "Web Playground (Next dev)",
+			"command": "pnpm --filter @kala-ui/playground dev",
+			"cwd": ".",
+			"port": 3000,
+			"url": "http://localhost:3000",
+			"description": "Next.js playground dev server (next dev, watch mode). Run 'pnpm build' once first if @kala-ui/react / @kala-ui/react-app dist output is missing."
+		},
+		{
+			"id": "native-playground",
+			"name": "Native Playground (Expo / Metro)",
+			"command": "pnpm --filter @kala-ui/native-playground start",
+			"cwd": ".",
+			"port": 8081,
+			"description": "Expo dev server with Metro bundler in watch mode. Metro watches packages/react-native source directly, so library edits hot-reload without a rebuild. Press a for Android, i for iOS, w for web."
+		},
+		{
+			"id": "native-playground-web",
+			"name": "Native Playground (Expo web)",
+			"command": "pnpm --filter @kala-ui/native-playground web",
+			"cwd": ".",
+			"description": "expo start --web — Metro watch mode serving the native playground in a browser."
+		},
+		{
+			"id": "storybook",
+			"name": "Storybook dev server",
+			"command": "pnpm storybook",
+			"cwd": ".",
+			"port": 6006,
+			"url": "http://localhost:6006",
+			"description": "Storybook for @kala-ui/react (storybook dev -p 6006) with story hot reload."
+		},
+		{
+			"id": "react-hooks-watch",
+			"name": "react-hooks watch build",
+			"command": "pnpm --filter @kala-ui/react-hooks dev",
+			"cwd": ".",
+			"description": "tsdown --watch: rebuilds @kala-ui/react-hooks dist on change. Supporting watcher for surfaces that consume the built hooks package."
+		}
+	]
+}

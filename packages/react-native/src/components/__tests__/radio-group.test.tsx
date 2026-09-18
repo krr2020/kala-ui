@@ -1,8 +1,6 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { RadioGroup } from "../radio-group";
 
-const inclHidden = { includeHiddenElements: true } as const;
-
 type Screen = Awaited<ReturnType<typeof render>>;
 
 function flatStyle(node: {

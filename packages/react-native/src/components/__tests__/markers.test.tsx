@@ -1304,7 +1304,7 @@ describe("component markers", () => {
 					</Toast>
 				</>,
 			);
-			expect(screen.getByTestId("k-skeleton")).toBeTruthy();
+			expect(screen.getByTestId("k-skeleton", inclHidden)).toBeTruthy();
 			expect(screen.getByTestId("k-radio-group")).toBeTruthy();
 			expect(screen.getByTestId("k-radio-item")).toBeTruthy();
 			expect(screen.getByTestId("k-alert")).toBeTruthy();
@@ -1319,7 +1319,7 @@ describe("component markers", () => {
 					style={{ width: 100, height: 12 }}
 				/>,
 			);
-			const rect = flatStyle(screen.getByTestId("k-skeleton"));
+			const rect = flatStyle(screen.getByTestId("k-skeleton", inclHidden));
 			await screen.rerender(
 				<Skeleton
 					animated={false}
@@ -1327,14 +1327,14 @@ describe("component markers", () => {
 					style={{ width: 40, height: 40 }}
 				/>,
 			);
-			const circle = flatStyle(screen.getByTestId("k-skeleton"));
+			const circle = flatStyle(screen.getByTestId("k-skeleton", inclHidden));
 			expect(Number(rect.borderRadius)).toBeGreaterThan(0);
 			expect(Number(circle.borderRadius)).toBeGreaterThan(
 				Number(rect.borderRadius),
 			);
 			expect(String(rect.backgroundColor).startsWith("#")).toBe(true);
 			// animation off still renders the block, just without the loop
-			expect(flatStyle(screen.getByTestId("k-skeleton")).opacity).toBe(1);
+			expect(flatStyle(screen.getByTestId("k-skeleton", inclHidden)).opacity).toBe(1);
 		});
 
 		it("Skeleton pulse loop starts once per mount and stops when disabled", async () => {
@@ -2368,7 +2368,9 @@ describe("component markers", () => {
 				<Textarea isLoading accessibilityLabel="notes" />,
 			);
 			expect(loading.getByTestId("k-textarea")).toBeTruthy();
-			expect(loading.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
+			expect(
+				loading.getAllByTestId("k-skeleton", inclHidden).length,
+			).toBeGreaterThan(0);
 		});
 	});
 
@@ -2411,7 +2413,9 @@ describe("component markers", () => {
 				<List isLoading skeletonConfig={{ itemCount: 2 }} />,
 			);
 			expect(screen.getByTestId("k-list")).toBeTruthy();
-			expect(screen.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
+			expect(
+				screen.getAllByTestId("k-skeleton", inclHidden).length,
+			).toBeGreaterThan(0);
 			expect(screen.queryByTestId("k-list-item")).toBeNull();
 		});
 	});
@@ -2450,7 +2454,7 @@ describe("component markers", () => {
 
 		it("Select isLoading keeps the k-select marker on the skeleton", async () => {
 			const screen = await render(<Select options={[]} isLoading />);
-			expect(screen.getByTestId("k-select")).toBeTruthy();
+			expect(screen.getByTestId("k-select", inclHidden)).toBeTruthy();
 			expect(screen.queryByTestId("k-select-value")).toBeNull();
 		});
 

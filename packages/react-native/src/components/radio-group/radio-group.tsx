@@ -23,7 +23,6 @@ import {
 } from "./radio-group.styles";
 import type {
 	RadioGroupItemProps,
-	RadioGroupOrientation,
 	RadioGroupProps,
 } from "./radio-group.types";
 

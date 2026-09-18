@@ -11,7 +11,6 @@ import type { ViewStyle } from "react-native";
 import { Check, Lock } from "lucide-react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { tokens } from "../../tokens";
 import { applySlot } from "../slot-styles";
 import {
 	baseSurface,

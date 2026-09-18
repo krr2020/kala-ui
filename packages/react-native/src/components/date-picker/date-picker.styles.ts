@@ -10,8 +10,6 @@ export function triggerRow(size: "sm" | "md"): ViewStyle {
 	};
 }
 
-export function triggerLabel(
-	isPlaceholder: boolean,
-): { fontSize: number; flex: number } {
+export function triggerLabel(): { fontSize: number; flex: number } {
 	return { fontSize: 14, flex: 1 };
 }

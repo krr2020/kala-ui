@@ -355,7 +355,7 @@ export function Calendar({
 				{chunk(
 					MONTHS.map((name, m) => ({ name, m })),
 					3,
-				).map((row, i) => (
+				).map((row) => (
 					<View
 						key={row[0].name}
 						testID="k-calendar-month-row"
@@ -427,9 +427,11 @@ export function Calendar({
 			))}
 			</View>
 				<View testID="k-calendar-grid" style={{ gap: GRID_GAP }}>
-				{chunk(cells, 7).map((week, w) => (
+				{chunk(cells, 7).map((week) => (
 					<View
-						key={w}
+						// weeks are fixed 7-day windows; the first cell's ISO day
+						// identifies the row stably across month navigation
+						key={iso(week[0].date)}
 						testID="k-calendar-week"
 						style={{ flexDirection: "row", gap: GRID_GAP }}
 					>

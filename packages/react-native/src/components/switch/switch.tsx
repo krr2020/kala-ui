@@ -14,7 +14,6 @@ import {
 	thumb as thumbStyle,
 	track,
 	trackStroke,
-	THUMB,
 	THUMB_TRAVEL,
 	TRACK_H,
 	TRACK_W,

@@ -2,8 +2,6 @@ import { fireEvent, render } from "@testing-library/react-native";
 import { Switch } from "../switch";
 import { themes } from "../../themes";
 
-const inclHidden = { includeHiddenElements: true } as const;
-
 type Screen = Awaited<ReturnType<typeof render>>;
 
 function flatStyle(node: {
@@ -105,7 +103,7 @@ describe("Switch", () => {
 		// guard the exact non-white knob pair the design promises.
 		expect(themes.dark.primaryForeground).toBe("#0f172a");
 		expect(themes.dark.mutedForeground).toBe("#94a3b8");
-		for (const [name, theme] of Object.entries(themes)) {
+		for (const theme of Object.values(themes)) {
 			expect(theme.input).not.toBe(theme.mutedForeground);
 			expect(theme.primary).not.toBe(theme.primaryForeground);
 		}

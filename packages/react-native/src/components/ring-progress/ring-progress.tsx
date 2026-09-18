@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from "react";
+import type { ReactElement } from "react";
 import { Text as RNText, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { useUnistyles } from "react-native-unistyles";

@@ -2,7 +2,9 @@
  * Skeleton: themed loading block. Pulse is a core-Animated opacity loop
  * (1 → 0.5 → 1) — the loop is stateless and reanimated's jest mock has
  * no withRepeat, the same tradeoff Spinner makes. Sizing is the
- * consumer's job via `style` (width / height / flex).
+ * consumer's job via `style` (width / height / flex). A labeled block
+ * announces its loading state; unlabeled blocks stay decorative and are
+ * hidden from the a11y tree so a grid of blocks never floods it.
  */
 
 import type { ReactElement } from "react";
@@ -16,6 +18,7 @@ import type { SkeletonProps } from "./skeleton.types";
 export function Skeleton({
 	variant = "rect",
 	animated = true,
+	accessibilityLabel,
 	style,
 	slotStyles,
 	testID = "k-skeleton",
@@ -51,6 +54,14 @@ export function Skeleton({
 	return (
 		<Animated.View
 			testID={testID}
+			accessibilityLabel={accessibilityLabel}
+			accessible={accessibilityLabel !== undefined}
+			accessibilityElementsHidden={accessibilityLabel === undefined}
+			importantForAccessibility={
+				accessibilityLabel === undefined
+					? "no-hide-descendants"
+					: "auto"
+			}
 			style={[
 				{
 					backgroundColor: theme.muted,

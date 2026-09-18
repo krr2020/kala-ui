@@ -176,8 +176,8 @@ describe("component app seam", () => {
 		// dedicated toast demo (basic/position/auto/manual/long arms) +
 		// dedicated progress demo (upload stepper) + dedicated
 		// ring-progress demo (sync stepper) + dedicated spinner demo
-		// (loading toggle).
-		expect(demoHooks).toBe(70);
+		// (loading toggle) + dedicated skeleton demo (fetch toggle).
+		expect(demoHooks).toBe(71);
 	});
 
 	it("landing offers exactly two package routes", () => {
@@ -663,6 +663,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="open confirm dialog"': 1,
 					'accessibilityLabel="open demo dialog"': 1,
 					'accessibilityLabel="open demo sheet"': 1,
+				'accessibilityLabel="Loading profile"': 1,
 				'accessibilityLabel="on-primary spinner"': 1,
 					'accessibilityLabel="open native app components"': 1,
 					'accessibilityLabel="open native components"': 1,
@@ -704,6 +705,7 @@ describe("component app seam", () => {
 					"accessibilityLabel={`${size} spinner`}": 1,
 				"accessibilityLabel={`${size} toggle`}": 1,
 				"accessibilityLabel={`${variant} spinner`}": 1,
+				"accessibilityLabel={`${variant} skeleton`}": 2,
 					"accessibilityLabel={`activate ${name} theme`}": 1,
 					"accessibilityLabel={`open ${entry.name} group`}": 1,
 					"accessibilityLabel={`show ${name} preview`}": 1,
@@ -753,7 +755,8 @@ describe("component app seam", () => {
 					'testID="k-demo-segmented"': 1,
 					'testID="k-demo-select"': 1,
 					'testID="k-demo-separator"': 1,
-					'testID="k-demo-skeletons"': 1,
+					'testID="k-demo-skeleton"': 1,
+				'testID="k-demo-skeletons"': 1,
 					'testID="k-demo-slider"': 2,
 					'testID="k-demo-spinner"': 1,
 				'testID="k-demo-spinners"': 1,

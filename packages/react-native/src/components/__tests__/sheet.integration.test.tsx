@@ -9,6 +9,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fireEvent, render } from "@testing-library/react-native";
+import { View } from "react-native";
 import { Select } from "../select";
 
 const inclHidden = { includeHiddenElements: true } as const;
@@ -52,7 +53,7 @@ describe("Select demo ↔ package Sheet seam", () => {
 		const { Sheet } = require("../sheet");
 		const titled = await render(
 			<Sheet open onClose={jest.fn()} title="Options">
-				<></>
+				<View />
 			</Sheet>,
 		);
 		const header = flatStyle(titled.getByTestId("k-sheet-header", inclHidden));
@@ -63,8 +64,14 @@ describe("Select demo ↔ package Sheet seam", () => {
 	it("footer renders pinned below the body, outside the scroll view", async () => {
 		const { Sheet } = require("../sheet");
 		const screen = await render(
-			<Sheet open onClose={jest.fn()} title="Options" scrollable footer={<></>}>
-				<></>
+			<Sheet
+				open
+				onClose={jest.fn()}
+				title="Options"
+				scrollable
+				footer={<View />}
+			>
+				<View />
 			</Sheet>,
 		);
 		const footer = screen.getByTestId("k-sheet-footer", inclHidden);

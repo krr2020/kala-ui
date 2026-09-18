@@ -29,6 +29,7 @@ import { ListDemo } from "./list-demo";
 import { MultiSelectDemo } from "./multi-select-demo";
 import { NumberInputDemo } from "./number-input-demo";
 import { RadioGroupDemo } from "./radio-group-demo";
+import { SkeletonDemo } from "./skeleton-demo";
 import { ProgressDemo } from "./progress-demo";
 import { RingProgressDemo } from "./ring-progress-demo";
 import { RatingDemo } from "./rating-demo";
@@ -280,7 +281,11 @@ export const componentGroups: ComponentGroup[] = [
 				name: "spinner",
 				render: () => <SpinnerDemo />,
 			},
-			{ label: humanizeLabel("skeleton"), name: "skeleton" },
+			{
+				label: humanizeLabel("skeleton"),
+				name: "skeleton",
+				render: () => <SkeletonDemo />,
+			},
 			{ label: humanizeLabel("loading-overlay"), name: "loading-overlay" },
 			{ label: humanizeLabel("error-boundary"), name: "error-boundary" },
 			{ label: humanizeLabel("empty-state"), name: "empty-state" },

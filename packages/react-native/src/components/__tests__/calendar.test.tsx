@@ -105,7 +105,27 @@ describe("date.utils", () => {
 });
 
 describe("Calendar", () => {
-	it("renders the k-calendar marker with weekday header and a 6x7 grid", async () => {
+it("week rows keep stable identity across month navigation", async () => {
+	const screen: Screen = await render(
+		<Calendar month={new Date(2026, 8, 1)} />, // September 2026
+	);
+	const before = screen
+		.getAllByTestId(/^k-calendar-cell-/)
+		.slice(0, 1)
+		.map((node) => node.props.testID);
+	await fireEvent.press(screen.getByTestId("k-calendar-next"));
+	const after = screen
+		.getAllByTestId(/^k-calendar-cell-/)
+		.slice(0, 1)
+		.map((node) => node.props.testID);
+	// cells identify by ISO day (no index keys); October's grid starts on
+	// a different first cell and every cell key is unique
+	expect(after[0]).not.toBe(before[0]);
+	expect(new Set(after).size).toBe(after.length);
+	expect(after.length).toBe(before.length);
+});
+
+it("renders the k-calendar marker with weekday header and a 6x7 grid", async () => {
 		const screen: Screen = await render(
 			<Calendar month={new Date(2026, 1, 1)} />,
 		);

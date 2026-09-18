@@ -1,4 +1,4 @@
-import type { Component, ErrorInfo, ReactNode } from "react";
+import type { ErrorInfo, ReactNode } from "react";
 import { Component as ReactComponent } from "react";
 import { resetKeysDiffer } from "../../lib/error.utils";
 import type {
