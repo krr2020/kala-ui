@@ -232,14 +232,12 @@ describe("component app seam", () => {
 		expect(shell).toMatch(/"back to home"/);
 		expect(shell).toMatch(/"k-back-groups"/);
 		expect(shell).toMatch(/"back to groups"/);
-		expect(shell).toMatch(/BackHandler\.addEventListener\(/);
-		expect(shell).toMatch(/"hardwareBackPress"/);
-		// consuming only above the landing screen — at landing the handler
-		// returns false so the OS default (exit) still runs; the subscription
-		// is removed on unmount
-		expect(shell).toMatch(/screen === "landing"/);
-		expect(shell).toMatch(/return false/);
-		expect(shell).toMatch(/\.remove\(\)/);
+		// navigation runs through ScreenStack: pushes/pops animate, and the
+		// component owns the Android hardware-back subscription (consumed
+		// above the root, falls through to the OS at the root)
+		expect(shell).toMatch(/<ScreenStack/);
+		expect(shell).toMatch(/onRequestPop=\{goBack\}/);
+		expect(shell).toMatch(/screen === "group" \? "list" : "landing"/);
 	});
 
 	it("registry maps groups to components with dedicated demos and fallbacks", () => {

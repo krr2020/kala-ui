@@ -1,14 +1,8 @@
 import { themeNames } from "@kala-ui/react-native/themes";
+import { ScreenStack } from "@kala-ui/react-native-app";
 import { ChevronLeft, ChevronRight } from "lucide-react-native";
-import { useEffect, useRef, useState } from "react";
-import {
-	BackHandler,
-	Pressable,
-	ScrollView,
-	StatusBar,
-	Text,
-	View,
-} from "react-native";
+import { useRef, useState } from "react";
+import { Pressable, ScrollView, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { UnistylesRuntime, useUnistyles } from "react-native-unistyles";
 import type { ComponentGroup } from "./demos/components/registry";
@@ -31,8 +25,9 @@ const groupsOf = (source: Source): ComponentGroup[] =>
 
 // Three-screen stack: landing (package routes) → group list (one source) →
 // group screen (pinned theme switcher + that group's component chips +
-// preview). Android hardware back pops one level; at landing it falls
-// through to the OS. App.tsx stays stateless per the seam contract.
+// preview). ScreenStack animates every push/pop and handles Android
+// hardware back (one level per press; at landing it falls through to the
+// OS). App.tsx stays stateless per the seam contract.
 export function RouteShell() {
 	useUnistyles();
 	const [screen, setScreen] = useState<Screen>("landing");
@@ -45,20 +40,6 @@ export function RouteShell() {
 	const group = componentGroups[groupIndex] ?? componentGroups[0];
 	const component = group.components[componentIndex] ?? group.components[0];
 	const preview = component.render ?? group.overview;
-
-	// hardware back mirrors the on-screen back buttons: one level per press,
-	// and only above the landing screen does the handler consume it
-	useEffect(() => {
-		const subscription = BackHandler.addEventListener(
-			"hardwareBackPress",
-			() => {
-				if (screen === "landing") return false;
-				setScreen(screen === "group" ? "list" : "landing");
-				return true;
-			},
-		);
-		return () => subscription.remove();
-	}, [screen]);
 
 	// opening a group always lands on its first component — a componentIndex
 	// carried over from a previously visited group would render an
@@ -301,6 +282,17 @@ export function RouteShell() {
 		</>
 	);
 
+	// stack shape mirrors the screen state so ScreenStack diffs pushes/pops;
+	// covered screens stay mounted, so each group's scroll and chip selection
+	// survive the round trip
+	const stackEntries = [
+		{ key: "landing", children: renderLanding() },
+		...(screen === "list" || screen === "group"
+			? [{ key: "list", children: renderGroupList() }]
+			: []),
+		...(screen === "group" ? [{ key: "group", children: renderGroup() }] : []),
+	];
+
 	return (
 		<SafeAreaView
 			style={{ flex: 1, backgroundColor: theme.background }}
@@ -315,9 +307,7 @@ export function RouteShell() {
 						: "dark-content"
 				}
 			/>
-			{screen === "landing" && renderLanding()}
-			{screen === "list" && renderGroupList()}
-			{screen === "group" && renderGroup()}
+			<ScreenStack entries={stackEntries} onRequestPop={goBack} />
 		</SafeAreaView>
 	);
 }

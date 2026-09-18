@@ -28,14 +28,35 @@ jest.mock("react-native-reanimated", () => {
 		View: (props: unknown) => React.createElement(View, props),
 	};
 
+	// springs/timings record their configs (sheet/stack motion assertions)
+	// and fire completion callbacks synchronously — exit-unmount logic runs
+	// without the native runtime
+	const makeAnimate = () => {
+		const calls: {
+			to: unknown;
+			config?: Record<string, unknown>;
+		}[] = [];
+		const fn = (to: unknown, a?: unknown, b?: unknown) => {
+			const config =
+				typeof a === "function" ? undefined : (a as Record<string, unknown>);
+			const callback = typeof a === "function" ? a : b;
+			calls.push({ to, config });
+			if (typeof callback === "function") callback(true);
+			return to;
+		};
+		return Object.assign(fn, { mockConfigs: calls });
+	};
+	const withSpring = makeAnimate();
+	const withTiming = makeAnimate();
+
 	return {
 		__esModule: true,
 		default: Animated,
 		Animated,
 		useSharedValue: (initial: unknown) => ({ value: initial }),
 		useAnimatedStyle: (factory: () => unknown) => factory(),
-		withSpring: (to: number) => to,
-		withTiming: (to: number) => to,
+		withSpring,
+		withTiming,
 		runOnJS: (fn: (...args: unknown[]) => unknown) => fn,
 		// Easing must come from reanimated (worklet-compatible); the mock's
 		// bezier echoes the control points so config assertions compare the

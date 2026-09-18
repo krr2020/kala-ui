@@ -9,6 +9,13 @@ export type {
 } from "./components/copy-button";
 export { CopyButton } from "./components/copy-button";
 export type {
+	ScreenStackEntry,
+	ScreenStackPresentation,
+	ScreenStackProps,
+	StackTransition,
+} from "./components/screen-stack";
+export { ScreenStack } from "./components/screen-stack";
+export type {
 	EmptyStateAction,
 	EmptyStateIcon,
 	EmptyStateProps,
