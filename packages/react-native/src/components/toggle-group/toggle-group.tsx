@@ -12,6 +12,7 @@ import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
 import { TOGGLE_FONT, toggleSurface, StateGlyph } from "../toggle/toggle";
+import { hitSlopFor } from "../toggle/toggle.styles";
 import type { ToggleSize, ToggleVariant } from "../toggle/toggle.types";
 import type {
 	ToggleGroupItemProps,
@@ -159,6 +160,7 @@ export function ToggleGroupItem({
 				disabled: itemDisabled || undefined,
 			}}
 			disabled={itemDisabled}
+			hitSlop={hitSlopFor(effSize)}
 			style={applySlot(
 				applySlot(applySlot(look.style, style), group?.itemStyles),
 				slotStyles?.root,

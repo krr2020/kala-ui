@@ -7,7 +7,7 @@ export const THUMB_R = THUMB_PX / 2;
 /** thumbs are 20dp visuals — the touch floor is met with symmetric hitSlop */
 export const THUMB_HIT_SLOP = 12;
 
-export function root(disabled: boolean): ViewStyle {
+export function root(): ViewStyle {
 	// disabled is carried by part tokens (range/thumb), not a root fade:
 	// a fade makes the thumb read as translucent instead of locked
 	return {};

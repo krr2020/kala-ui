@@ -1,4 +1,4 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 import { Slider } from "../slider";
 import { themes } from "../../themes";
 import { THUMB_R } from "../slider/slider.styles";

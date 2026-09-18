@@ -161,7 +161,7 @@ export function Slider({
 		<View
 			testID={testID}
 			accessibilityLabel={accessibilityLabel}
-			style={applySlot(applySlot(sliderStyle.root(disabled), style), slotStyles?.root)}
+			style={applySlot(applySlot(sliderStyle.root(), style), slotStyles?.root)}
 		>
 			<View
 				testID="k-slider-track"

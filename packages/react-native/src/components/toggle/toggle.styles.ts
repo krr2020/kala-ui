@@ -16,10 +16,9 @@ export const TOGGLE_FONT: Record<ToggleSize, number> = {
 	lg: 16,
 };
 
-/** per-tier height over the shared 44dp touch floor (hitSlop restores it) */
+/** per-tier height over the shared 44dp touch floor */
 export function baseSurface(size: ToggleSize): ViewStyle {
 	const height = TOGGLE_HEIGHT[size];
-	const hitSlop = Math.max(0, (44 - height) / 2);
 	return {
 		minHeight: height,
 		minWidth: 44,
@@ -31,11 +30,19 @@ export function baseSurface(size: ToggleSize): ViewStyle {
 		// a long label shrinks the text instead of pushing past the parent
 		maxWidth: "100%",
 		borderRadius: tokens.radius.control,
-		hitSlop:
-			hitSlop > 0
-				? { top: hitSlop, bottom: hitSlop, left: 0, right: 0 }
-				: undefined,
 	};
+}
+
+/**
+ * Touch-slop expansion for the 44dp floor: heights below 44 grow the
+ * pressable's touch area, not its visual box. Must land on the Pressable
+ * `hitSlop` prop — RN silently ignores hitSlop inside a style object.
+ */
+export function hitSlopFor(
+	size: ToggleSize,
+): { top: number; bottom: number; left: number; right: number } | undefined {
+	const slop = Math.max(0, (44 - TOGGLE_HEIGHT[size]) / 2);
+	return slop > 0 ? { top: slop, bottom: slop, left: 0, right: 0 } : undefined;
 }
 
 export function text(size: ToggleSize, fg: string): TextStyle {

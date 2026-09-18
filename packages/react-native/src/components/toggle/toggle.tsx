@@ -14,6 +14,7 @@ import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
 import {
 	baseSurface,
+	hitSlopFor,
 	PAD_X,
 	text as textStyle,
 	TOGGLE_FONT,
@@ -134,6 +135,7 @@ export function Toggle({
 				disabled: disabled || undefined,
 			}}
 			disabled={disabled}
+			hitSlop={hitSlopFor(size)}
 			style={applySlot(applySlot(look.style, style), slotStyles?.root)}
 		>
 			<ToggleContent fg={look.fg} size={size}>

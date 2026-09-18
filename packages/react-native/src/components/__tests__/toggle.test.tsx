@@ -38,7 +38,11 @@ describe("Toggle", () => {
 			const style = flatStyle(screen.getByTestId("k-toggle"));
 			expect(style.minHeight).toBe(height);
 			expect(style.height).toBeUndefined();
-			const hitSlop = style.hitSlop as { top?: number } | undefined;
+			// hitSlop is a Pressable prop, not a style key — the touch floor
+			// only exists when it reaches the pressable itself
+			const hitSlop = screen.getByTestId("k-toggle").props.hitSlop as
+				| { top?: number }
+				| undefined;
 			expect(hitSlop ? hitSlop.top : 0).toBe(hit);
 		}
 	});

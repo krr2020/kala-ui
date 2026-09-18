@@ -148,6 +148,11 @@ describe("ToggleGroup", () => {
 		const heights = items(screen).map((item) => Number(flatStyle(item).minHeight));
 		expect(heights[0]).toBe(44);
 		expect(heights[1]).toBe(36);
+		// the 44dp touch floor rides the Pressable hitSlop prop per size
+		expect(items(screen)[0].props.hitSlop).toBeUndefined();
+		expect(
+			(items(screen)[1].props.hitSlop as { top?: number }).top,
+		).toBe(4);
 	});
 
 	it("a disabled group item keeps its surface and shows a state glyph (Check when active, Lock when not)", async () => {

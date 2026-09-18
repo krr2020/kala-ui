@@ -14,9 +14,6 @@ import {
 	thumb as thumbStyle,
 	track,
 	trackStroke,
-	THUMB_TRAVEL,
-	TRACK_H,
-	TRACK_W,
 } from "./switch.styles";
 import type { SwitchProps } from "./switch.types";
 

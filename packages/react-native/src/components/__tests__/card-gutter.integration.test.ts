@@ -40,7 +40,7 @@ describe("playground scroll gutter ↔ library card shadow seam", () => {
 	});
 
 	it("chipRows breaks out of the content gutter: -16 cancels routeContent's +16", () => {
-		const chipRows = stylesheet.match(/	chipRows: \{[\s\S]*?\},/);
+		const chipRows = stylesheet.match(/\tchipRows: \{[\s\S]*?\},/);
 		expect(chipRows?.[0]).toBeTruthy();
 		expect(chipRows?.[0]).toMatch(/marginHorizontal: -16/);
 		// the breakout is defined against the content gutter — both must

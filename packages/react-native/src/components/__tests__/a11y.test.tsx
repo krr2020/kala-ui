@@ -4,7 +4,7 @@
  * it ships. A failure here means the component breaks screen readers — fix
  * the component, not the test.
  */
-import { fireEvent, render, waitFor } from "@testing-library/react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
 import { Accordion } from "../accordion";
 import { Alert } from "../alert";
