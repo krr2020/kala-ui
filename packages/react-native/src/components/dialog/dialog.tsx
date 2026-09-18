@@ -16,28 +16,24 @@ import {
 	Modal,
 	Platform,
 	Pressable,
-	Text as RNText,
-	ScrollView,
+	StatusBar,
 	View,
 } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
+import { DialogBody } from "./dialog-body";
+import { DialogDescription } from "./dialog-description";
+import { DialogFooter } from "./dialog-footer";
+import { DialogHeader } from "./dialog-header";
+import { DialogTitle } from "./dialog-title";
 import {
 	cardStyle,
 	closeStyle,
-	descriptionStyle,
 	DRAG_DISMISS_THRESHOLD,
-	footerStyle,
-	headerStyle,
-	partTextStyle,
+	safeTopPadding,
 	scrimStyle,
-	titleStyle,
 } from "./dialog.styles";
-import type {
-	DialogPartProps,
-	DialogProps,
-	DialogTextProps,
-} from "./dialog.types";
+import type { DialogProps } from "./dialog.types";
 
 export function Dialog({
 	open,
@@ -51,6 +47,7 @@ export function Dialog({
 	children,
 }: DialogProps): ReactElement | null {
 	const { theme } = useUnistyles();
+	const isFull = size === "full";
 	const [dragDy, setDragDy] = useState(0);
 	// start Y of the active drag; null = no gesture in flight
 	const dragStart = useRef<number | null>(null);
@@ -119,7 +116,11 @@ export function Dialog({
 					left: 0,
 					alignItems: "center",
 					justifyContent: "center",
-					padding: 16,
+					// full bleeds into the wrapper's gutters; tiers keep the 16 rail
+					padding: isFull ? 0 : 16,
+					// statusBarTranslucent draws under the bar — pull content
+					// below it so the full-size card's header stays visible
+					paddingTop: (isFull ? 0 : 16) + safeTopPadding(StatusBar.currentHeight),
 				}}
 			>
 				<View
@@ -145,100 +146,6 @@ export function Dialog({
 				</View>
 			</KeyboardAvoidingView>
 		</Modal>
-	);
-}
-
-function DialogHeader({
-	children,
-	style,
-	testID = "k-dialog-header",
-}: DialogPartProps) {
-	const { theme } = useUnistyles();
-	return (
-		<View testID={testID} style={[headerStyle(theme), style]}>
-			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={partTextStyle(theme)}>{children}</RNText>
-			) : (
-				children
-			)}
-		</View>
-	);
-}
-
-function DialogFooter({
-	children,
-	style,
-	testID = "k-dialog-footer",
-}: DialogPartProps) {
-	const { theme } = useUnistyles();
-	return (
-		<View testID={testID} style={[footerStyle(theme), style]}>
-			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={partTextStyle(theme)}>{children}</RNText>
-			) : (
-				children
-			)}
-		</View>
-	);
-}
-
-function DialogTitle({
-	children,
-	style,
-	slotStyles,
-	testID = "k-dialog-title",
-}: DialogTextProps) {
-	const { theme } = useUnistyles();
-	return (
-		<RNText
-			testID={testID}
-			accessibilityRole="header"
-			style={applySlot([titleStyle(theme), style], slotStyles?.root)}
-		>
-			{children}
-		</RNText>
-	);
-}
-
-function DialogDescription({
-	children,
-	style,
-	slotStyles,
-	testID = "k-dialog-description",
-}: DialogTextProps) {
-	const { theme } = useUnistyles();
-	return (
-		<RNText
-			testID={testID}
-			style={applySlot([descriptionStyle(theme), style], slotStyles?.root)}
-		>
-			{children}
-		</RNText>
-	);
-}
-
-function DialogBody({
-	children,
-	style,
-	testID = "k-dialog-body",
-}: DialogPartProps) {
-	const { theme } = useUnistyles();
-	// ScrollView: long content scrolls; taps survive an open keyboard
-	// ("handled") so pressing Submit doesn't dismiss the keyboard first
-	// and swallow the press
-	return (
-		<ScrollView
-			testID={testID}
-			keyboardShouldPersistTaps="handled"
-			contentContainerStyle={{ paddingHorizontal: 24, paddingVertical: 16 }}
-			style={style}
-		>
-			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={partTextStyle(theme)}>{children}</RNText>
-			) : (
-				children
-			)}
-		</ScrollView>
 	);
 }
 

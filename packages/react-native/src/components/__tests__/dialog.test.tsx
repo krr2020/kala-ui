@@ -5,6 +5,7 @@
  * lock that poisons later renders in the same jest file.
  */
 import { act, render } from "@testing-library/react-native";
+import { readFileSync } from "node:fs";
 import { AlertDialog } from "../alert-dialog";
 import { Button } from "../button";
 import { Dialog } from "../dialog";
@@ -110,27 +111,134 @@ describe("dialog gesture + keyboard hardening", () => {
 		);
 	});
 
-	it("size tiers map clamped widths; full opts out with no radius", async () => {
-		const sizes: ["sm" | "md" | "lg" | "full", number | undefined][] = [
-			["sm", 384],
-			["md", 512],
-			["lg", 672],
-			["full", undefined],
-		];
-		for (const [size, maxWidth] of sizes) {
+		it("size tiers map distinct widths and caps; full opts out with no radius", async () => {
+			const sizes: [
+				"sm" | "md" | "lg" | "full",
+				string,
+				number | undefined,
+			][] = [
+				["sm", "80%", 384],
+				["md", "90%", 512],
+				["lg", "100%", 672],
+				["full", "100%", undefined],
+			];
+			const seenMax = new Set<number>();
+			for (const [size, width, maxWidth] of sizes) {
+				const screen = await render(
+					<Dialog open size={size} onOpenChange={() => undefined}>
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+				);
+				const s = flatStyle(screen.getByTestId("k-dialog", incl));
+				// per-tier percentage of the padded wrapper: distinct on any phone
+				// screen, with the px cap binding on tablets
+				expect(String(s.width)).toBe(width);
+				expect(s.maxWidth).toBe(maxWidth);
+				expect(s.borderRadius).toBe(
+					size === "full" ? 0 : tokens.radius.card,
+				);
+				// full is flush: no outer border, no height cap; tiers keep both
+				expect(s.borderWidth).toBe(size === "full" ? 0 : 1);
+				if (size === "full") {
+					expect(s.maxHeight).toBeUndefined();
+					const wrap = flatStyle(
+						screen.getByTestId("k-dialog-keyboard-view", incl),
+					);
+					expect(Number(wrap.padding)).toBe(0);
+					// uncapped full still leans on the keyboard wrapper so the
+					// footer stays reachable with the keyboard open
+					const kav = screen.getByTestId("k-dialog-keyboard-view", incl);
+					expect(["padding", undefined]).toContain(kav.props.behavior);
+				}
+				if (maxWidth !== undefined) {
+					seenMax.add(Number(maxWidth));
+					// long content scrolls inside a capped card instead of clipping
+					expect(String(s.maxHeight)).toBe("90%");
+				}
+			}
+			expect(seenMax.size).toBe(3);
+		});
+
+		it("keyboard + scroll mechanics: iOS pads, Android defers, body yields and scrolls", async () => {
 			const screen = await render(
-				<Dialog open size={size} onOpenChange={() => undefined}>
+				<Dialog open onOpenChange={() => undefined}>
+					<Dialog.Header>
+						<Dialog.Title>t</Dialog.Title>
+					</Dialog.Header>
 					<Dialog.Body>body</Dialog.Body>
 				</Dialog>,
 			);
-			const s = flatStyle(screen.getByTestId("k-dialog", incl));
-			expect(s.maxWidth).toBe(maxWidth);
-			expect(s.borderRadius).toBe(
-				size === "full" ? 0 : tokens.radius.card,
+			// the mock host platform decides the runtime value (padding on iOS,
+			// undefined on Android where adjustResize drives) — the source pin
+			// below maps the platform split exactly
+			const kav = screen.getByTestId("k-dialog-keyboard-view", incl);
+			expect(["padding", undefined]).toContain(kav.props.behavior);
+			const source = readFileSync(
+				`${__dirname}/../dialog/dialog.tsx`,
+				"utf8",
 			);
-			if (size === "full") expect(s.width).toBe("100%");
-		}
+			expect(source).toMatch(
+				/behavior=\{Platform\.OS === "ios" \? "padding" : undefined\}/,
+			);
+			// the body yields to siblings (flexShrink) so the ScrollView scrolls
+			// instead of being clipped by the card's maxHeight
+			const body = flatStyle(screen.getByTestId("k-dialog-body", incl));
+			expect(Number(body.flexShrink)).toBe(1);
+		});
+
+		it("chrome stays fixed: column card, body is the only scroller, one border per boundary", async () => {
+		const screen = await render(
+			<Dialog open onOpenChange={() => undefined}>
+				<Dialog.Header>
+					<Dialog.Title>t</Dialog.Title>
+				</Dialog.Header>
+				<Dialog.Body>body</Dialog.Body>
+				<Dialog.Footer>done</Dialog.Footer>
+			</Dialog>,
+		);
+		const card = flatStyle(screen.getByTestId("k-dialog", incl));
+		expect(card.flexDirection).toBe("column");
+		const body = flatStyle(screen.getByTestId("k-dialog-body", incl));
+		expect(Number(body.flexGrow)).toBe(1);
+		const header = flatStyle(screen.getByTestId("k-dialog-header", incl));
+		const footer = flatStyle(screen.getByTestId("k-dialog-footer", incl));
+		expect(Number(header.flexShrink)).toBe(0);
+		expect(Number(footer.flexShrink)).toBe(0);
+		// exactly one separation line at each chrome boundary — never two
+		expect(Number(header.borderBottomWidth)).toBe(1);
+		expect(Number(footer.borderTopWidth)).toBe(1);
+		expect(Number(card.borderWidth)).toBe(1);
+		expect(Number(body.borderTopWidth || 0)).toBe(0);
+		expect(Number(body.borderBottomWidth || 0)).toBe(0);
 	});
+
+	it("the wrapper clears the status bar: paddingTop resolves above zero", async () => {
+			const screen = await render(
+				<Dialog open onOpenChange={() => undefined}>
+					<Dialog.Body>body</Dialog.Body>
+				</Dialog>,
+			);
+			const kav = flatStyle(screen.getByTestId("k-dialog-keyboard-view", incl));
+			expect(Number(kav.paddingTop)).toBeGreaterThan(0);
+		});
+
+		it("compound parts keep their markers after the file split", async () => {
+			const screen = await render(
+				<Dialog open onOpenChange={() => undefined}>
+					<Dialog.Header>
+						<Dialog.Title>t</Dialog.Title>
+						<Dialog.Description>d</Dialog.Description>
+					</Dialog.Header>
+					<Dialog.Body>body</Dialog.Body>
+					<Dialog.Footer>done</Dialog.Footer>
+				</Dialog>,
+			);
+			expect(screen.getByTestId("k-dialog-header", incl)).toBeTruthy();
+			expect(screen.getByTestId("k-dialog-title", incl)).toBeTruthy();
+			expect(screen.getByTestId("k-dialog-description", incl)).toBeTruthy();
+			expect(screen.getByTestId("k-dialog-body", incl)).toBeTruthy();
+			expect(screen.getByTestId("k-dialog-footer", incl)).toBeTruthy();
+		});
 
 	it("card wires the raw responder protocol", async () => {
 		const screen = await render(

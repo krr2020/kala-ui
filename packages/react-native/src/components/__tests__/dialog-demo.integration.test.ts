@@ -32,6 +32,18 @@ describe("playground dialog demo ↔ library Dialog seam", () => {
 		expect(DEMO).toMatch(/showCloseButton=\{false\}/);
 	});
 
+	it("renders the form-input and long-content variations", () => {
+		expect(DEMO).toMatch(/<TextInput/);
+		expect(DEMO).toMatch(/keyboardType="email-address"/);
+		// five input kinds for focus traversal: 2 text + checkbox + select + switch
+		expect(DEMO.match(/<TextInput/g)?.length).toBe(2);
+		expect(DEMO).toMatch(/<Checkbox/);
+		expect(DEMO).toMatch(/<Select/);
+		expect(DEMO).toMatch(/<Switch/);
+		expect(DEMO).toMatch(/Release notes/);
+		expect(DEMO.match(/Array\.from\(\{ length: 16 \}/)).toBeTruthy();
+	});
+
 	it("keeps the composed header/title/description/body/footer vocabulary", () => {
 		for (const part of [
 			"Dialog.Header",

@@ -1,4 +1,12 @@
-import { Button, Dialog, Text as KText } from "@kala-ui/react-native";
+import {
+	Button,
+	Checkbox,
+	Dialog,
+	Text as KText,
+	Select,
+	Switch,
+	TextInput,
+} from "@kala-ui/react-native";
 import { useState } from "react";
 import { View } from "react-native";
 import { DemoBlock } from "../demo-block";
@@ -6,11 +14,22 @@ import { demoStyles } from "../stylesheet";
 
 type DialogSize = "sm" | "md" | "lg" | "full";
 
+const ROLES = [
+	{ value: "admin", label: "Admin" },
+	{ value: "editor", label: "Editor" },
+	{ value: "viewer", label: "Viewer" },
+];
+
 export function DialogDemo() {
 	const [open, setOpen] = useState(false);
 	const [size, setSize] = useState<DialogSize>("md");
 	const [pinned, setPinned] = useState(false);
 	const [bare, setBare] = useState(false);
+	const [form, setForm] = useState(false);
+	const [long, setLong] = useState(false);
+	const [terms, setTerms] = useState(false);
+	const [role, setRole] = useState("");
+	const [notify, setNotify] = useState(true);
 
 	return (
 		<View style={demoStyles.routeContent} testID="k-demo-dialog">
@@ -37,23 +56,54 @@ export function DialogDemo() {
 						size="sm"
 						variant="outline"
 						onPress={() => setPinned(true)}
-						accessibilityLabel="open non-dismissable dialog"
+						accessibilityLabel="Open non-dismissable dialog"
 					>
-						non-dismissable
+						Non-dismissable
 					</Button>
 					<Button
 						size="sm"
 						variant="outline"
 						onPress={() => setBare(true)}
-						accessibilityLabel="open dialog without close button"
+						accessibilityLabel="Open dialog without close button"
 					>
-						no close button
+						No close button
+					</Button>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="Form inputs">
+				<View style={demoStyles.componentRow}>
+					<KText size="sm" color="muted">
+						The card lifts above the keyboard and taps still land while it is
+						open.
+					</KText>
+					<Button
+						size="sm"
+						variant="outline"
+						onPress={() => setForm(true)}
+						accessibilityLabel="Open form dialog"
+					>
+						Open form
+					</Button>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="Long content">
+				<View style={demoStyles.componentRow}>
+					<KText size="sm" color="muted">
+						The body scrolls inside the capped card instead of clipping.
+					</KText>
+					<Button
+						size="sm"
+						variant="outline"
+						onPress={() => setLong(true)}
+						accessibilityLabel="Open long content dialog"
+					>
+						Open long content
 					</Button>
 				</View>
 			</DemoBlock>
 			<Dialog open={open} onOpenChange={setOpen} size={size}>
 				<Dialog.Header>
-					<Dialog.Title>session settings</Dialog.Title>
+					<Dialog.Title>Session settings</Dialog.Title>
 					<Dialog.Description>
 						Adjust preferences for this device.
 					</Dialog.Description>
@@ -66,16 +116,16 @@ export function DialogDemo() {
 				</Dialog.Body>
 				<Dialog.Footer>
 					<Button variant="ghost" size="sm" onPress={() => setOpen(false)}>
-						cancel
+						Cancel
 					</Button>
 					<Button size="sm" onPress={() => setOpen(false)}>
-						save
+						Save
 					</Button>
 				</Dialog.Footer>
 			</Dialog>
 			<Dialog open={pinned} onOpenChange={setPinned} dismissable={false}>
 				<Dialog.Header>
-					<Dialog.Title>confirm deletion</Dialog.Title>
+					<Dialog.Title>Confirm deletion</Dialog.Title>
 				</Dialog.Header>
 				<Dialog.Body>
 					<KText size="sm" color="muted">
@@ -85,14 +135,14 @@ export function DialogDemo() {
 				</Dialog.Body>
 				<Dialog.Footer>
 					<Button variant="ghost" size="sm" onPress={() => setPinned(false)}>
-						keep
+						Keep
 					</Button>
 					<Button
 						color="destructive"
 						size="sm"
 						onPress={() => setPinned(false)}
 					>
-						delete
+						Delete
 					</Button>
 				</Dialog.Footer>
 			</Dialog>
@@ -100,10 +150,10 @@ export function DialogDemo() {
 				open={bare}
 				onOpenChange={setBare}
 				showCloseButton={false}
-				accessibilityLabel="silent sync"
+				accessibilityLabel="Silent sync"
 			>
 				<Dialog.Header>
-					<Dialog.Title>syncing</Dialog.Title>
+					<Dialog.Title>Syncing</Dialog.Title>
 					<Dialog.Description>
 						This dialog hides the close affordance; the action below is the only
 						way out.
@@ -111,7 +161,85 @@ export function DialogDemo() {
 				</Dialog.Header>
 				<Dialog.Footer>
 					<Button size="sm" onPress={() => setBare(false)}>
-						done
+						Done
+					</Button>
+				</Dialog.Footer>
+			</Dialog>
+			<Dialog
+				open={form}
+				onOpenChange={setForm}
+				accessibilityLabel="Invite teammates"
+			>
+				<Dialog.Header>
+					<Dialog.Title>Invite teammates</Dialog.Title>
+					<Dialog.Description>
+						The card stays above the keyboard; taps still land while typing.
+					</Dialog.Description>
+				</Dialog.Header>
+				<Dialog.Body>
+					<View style={{ gap: 12 }}>
+						<TextInput placeholder="Full name" accessibilityLabel="Full name" />
+						<TextInput
+							placeholder="Email"
+							keyboardType="email-address"
+							accessibilityLabel="Email"
+						/>
+						<View
+							style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+						>
+							<Checkbox
+								value={terms}
+								onValueChange={setTerms}
+								label="Accept terms"
+							/>
+						</View>
+						<Select
+							value={role}
+							onValueChange={setRole}
+							options={ROLES}
+							placeholder="Role"
+							accessibilityLabel="Role"
+						/>
+						<View
+							style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+						>
+							<Switch
+								value={notify}
+								onValueChange={setNotify}
+								label="Send notifications"
+							/>
+						</View>
+					</View>
+				</Dialog.Body>
+				<Dialog.Footer>
+					<Button variant="ghost" size="sm" onPress={() => setForm(false)}>
+						Cancel
+					</Button>
+					<Button size="sm" onPress={() => setForm(false)}>
+						Send invite
+					</Button>
+				</Dialog.Footer>
+			</Dialog>
+			<Dialog open={long} onOpenChange={setLong} size="lg">
+				<Dialog.Header>
+					<Dialog.Title>Release notes</Dialog.Title>
+					<Dialog.Description>
+						Scrolls inside the capped card.
+					</Dialog.Description>
+				</Dialog.Header>
+				<Dialog.Body>
+					<View style={{ gap: 12 }}>
+						{Array.from({ length: 16 }, (_, i) => (
+							<KText key={`section-${String(i + 1)}`} size="sm" color="muted">
+								Section {i + 1}: dialogs lift above the keyboard, bodies scroll
+								instead of clipping, and every size tier stays reachable.
+							</KText>
+						))}
+					</View>
+				</Dialog.Body>
+				<Dialog.Footer>
+					<Button size="sm" onPress={() => setLong(false)}>
+						Close
 					</Button>
 				</Dialog.Footer>
 			</Dialog>

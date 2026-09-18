@@ -1,8 +1,9 @@
 /**
- * Non-component wiring for Dialog: size clamps, drag-to-dismiss
- * geometry, and themed surfaces for the scrim, card, and compound parts.
+ * Non-component wiring for the Dialog shell: size clamps, drag-to-dismiss
+ * geometry, and themed scrim/card/close surfaces. Compound part styles
+ * live in their own part files.
  */
-import type { TextStyle, ViewStyle } from "react-native";
+import { Platform, type ViewStyle } from "react-native";
 import { tokens } from "../../tokens";
 import type { KalaTheme } from "../../types";
 import type { DialogSize } from "./dialog.types";
@@ -11,6 +12,14 @@ export const MAX_WIDTH: Record<Exclude<DialogSize, "full">, number> = {
 	sm: 384,
 	md: 512,
 	lg: 672,
+};
+
+/** Per-tier width as a share of the padded wrapper — distinct on phones. */
+export const WIDTH_PCT: Record<DialogSize, "80%" | "90%" | "100%"> = {
+	sm: "80%",
+	md: "90%",
+	lg: "100%",
+	full: "100%",
 };
 
 export const DRAG_DISMISS_THRESHOLD = 96;
@@ -45,56 +54,26 @@ export function cardStyle(
 ): ViewStyle {
 	const isFull = size === "full";
 	return {
-		width: isFull ? "100%" : "90%",
+		// tier share of the padded wrapper; the px cap binds first on tablets
+		width: WIDTH_PCT[size],
 		height: isFull ? "100%" : undefined,
 		maxWidth: isFull ? undefined : MAX_WIDTH[size],
 		maxHeight: isFull ? undefined : "90%",
+		// full bleeds edge to edge: no radius, no outer border, no caps;
+		// keyboard safety comes from the wrapper's KeyboardAvoidingView
 		borderRadius: isFull ? 0 : tokens.radius.card,
+		borderWidth: isFull ? 0 : 1,
 		backgroundColor: theme.card,
-		borderWidth: 1,
 		borderColor: theme.border,
 		overflow: "hidden",
+		// fixed chrome: header and footer pin top/bottom, the body column
+		// child between them is the only scroll region
+		flexDirection: "column",
 		opacity: dragOpacityFor(dragDy),
 		// the card follows the finger while dragging; upward drags clamp at 0
 		transform: [{ translateY: Math.max(0, dragDy) }],
 	};
 }
-
-export const headerStyle = (theme: KalaTheme): ViewStyle => ({
-	paddingHorizontal: 24,
-	paddingVertical: 16,
-	borderBottomWidth: 1,
-	borderColor: theme.border,
-	gap: 6,
-});
-
-export const footerStyle = (theme: KalaTheme): ViewStyle => ({
-	flexDirection: "row",
-	justifyContent: "flex-end",
-	flexWrap: "wrap",
-	gap: 8,
-	paddingHorizontal: 24,
-	paddingVertical: 16,
-	borderTopWidth: 1,
-	borderColor: theme.border,
-	backgroundColor: theme.muted,
-});
-
-export const titleStyle = (theme: KalaTheme): TextStyle => ({
-	color: theme.foreground,
-	fontSize: 18,
-	fontWeight: "600",
-});
-
-export const descriptionStyle = (theme: KalaTheme): TextStyle => ({
-	color: theme.mutedForeground,
-	fontSize: 14,
-});
-
-export const partTextStyle = (theme: KalaTheme): TextStyle => ({
-	color: theme.foreground,
-	fontSize: 14,
-});
 
 export const closeStyle = (): ViewStyle => ({
 	position: "absolute",
@@ -103,3 +82,12 @@ export const closeStyle = (): ViewStyle => ({
 	padding: 6,
 	borderRadius: tokens.radius.control,
 });
+
+/**
+ * Status-bar clearance for the dialog wrapper. `full` renders edge to
+ * edge under a translucent status bar, so the wrapper pads down by the
+ * platform's bar height (expo's RN mock reports currentHeight; the 24
+ * fallback covers environments where it is undefined).
+ */
+export const safeTopPadding = (currentHeight: number | undefined): number =>
+	Platform.select({ ios: 47, default: currentHeight ?? 24 }) ?? 24;
