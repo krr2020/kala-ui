@@ -20,7 +20,7 @@ export function BadgeDemo() {
 	const { theme } = useUnistyles();
 	return (
 		<View testID="k-demo-badges" style={demoStyles.routeContent}>
-			<DemoBlock label="variants">
+			<DemoBlock label="Variants">
 				<View style={demoStyles.componentRow}>
 					{VARIANTS.map((variant) => (
 						<Badge key={variant} variant={variant}>
@@ -29,7 +29,7 @@ export function BadgeDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="colors (subtle)">
+			<DemoBlock label="Colors (subtle)">
 				<View style={demoStyles.componentRow}>
 					{COLORS.map((color) => (
 						<Badge key={color} variant="subtle" color={color}>
@@ -38,7 +38,7 @@ export function BadgeDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="shapes (outline)">
+			<DemoBlock label="Shapes (outline)">
 				<View style={demoStyles.componentRow}>
 					{SHAPES.map((shape) => (
 						<Badge key={shape} variant="outline" color="info" shape={shape}>
@@ -47,14 +47,14 @@ export function BadgeDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="counts">
+			<DemoBlock label="Counts">
 				<View style={demoStyles.componentRow}>
 					<Badge color="destructive">1</Badge>
 					<Badge color="destructive">12</Badge>
 					<Badge color="destructive">99+</Badge>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="slot overrides">
+			<DemoBlock label="Slot overrides">
 				<View style={demoStyles.componentRow}>
 					<Badge variant="outline">default</Badge>
 					<Badge

@@ -1,26 +1,20 @@
 import {
-	EmptyState,
-	Icon,
-	Indicator,
-	Text as KText,
 	Rating,
-	SegmentedControl,
 	Slider,
-	Tabs,
 	Tag,
+	Text as KText,
 	Toggle,
 	ToggleGroup,
 	ToggleGroupItem,
 } from "@kala-ui/react-native";
-import { Sun } from "lucide-react-native";
 import { useState } from "react";
 import { View } from "react-native";
 import { DemoBlock } from "./demo-block";
 import { demoStyles } from "./stylesheet";
 
+// Group overview: the controls that ride along navigation surfaces —
+// dedicated per-component screens live in ./components.
 export function NavigationDemo() {
-	const [range, setRange] = useState("week");
-	const [tab, setTab] = useState("one");
 	const [rating, setRating] = useState(3);
 	const [volume, setVolume] = useState(70);
 	const [bold, setBold] = useState(false);
@@ -28,40 +22,7 @@ export function NavigationDemo() {
 	const [formats, setFormats] = useState<string[]>(["italic"]);
 	return (
 		<>
-			<DemoBlock label="tabs">
-				<View testID="k-demo-tabs">
-					<Tabs
-						items={[
-							{ value: "one", label: "One" },
-							{ value: "two", label: "Two" },
-						]}
-						value={tab}
-						onValueChange={setTab}
-					>
-						<KText size="sm">
-							{tab === "one" ? "first tab panel" : "second tab panel"}
-						</KText>
-					</Tabs>
-				</View>
-			</DemoBlock>
-			<DemoBlock label="segmented control">
-				<View style={demoStyles.componentRow} testID="k-demo-segmented">
-					<SegmentedControl
-						data={["day", "week", "month"]}
-						value={range}
-						onValueChange={setRange}
-						accessibilityLabel="range"
-					/>
-				</View>
-			</DemoBlock>
-			<DemoBlock label="empty state">
-				<EmptyState
-					title="No projects yet"
-					description="Create your first project to get started."
-					action={{ label: "New project", onPress: () => undefined }}
-				/>
-			</DemoBlock>
-			<DemoBlock label="tags">
+			<DemoBlock label="Tags">
 				<View style={demoStyles.componentRow} testID="k-demo-tags">
 					<Tag>beta</Tag>
 					<Tag variant="solid" color="primary">
@@ -72,13 +33,13 @@ export function NavigationDemo() {
 					</Tag>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="rating">
+			<DemoBlock label="Rating">
 				<View style={demoStyles.componentRow} testID="k-demo-rating">
 					<Rating value={rating} onValueChange={setRating} />
 					<Rating value={3.5} allowHalf readOnly />
 				</View>
 			</DemoBlock>
-			<DemoBlock label="slider">
+			<DemoBlock label="Slider">
 				<View testID="k-demo-slider">
 					<Slider
 						value={[volume]}
@@ -88,7 +49,7 @@ export function NavigationDemo() {
 					<KText size="sm">volume {volume}</KText>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="toggles">
+			<DemoBlock label="Toggles">
 				<View style={demoStyles.componentRow} testID="k-demo-toggles">
 					<Toggle
 						pressed={bold}
@@ -115,19 +76,6 @@ export function NavigationDemo() {
 						<ToggleGroupItem value="bold">bold</ToggleGroupItem>
 						<ToggleGroupItem value="italic">italic</ToggleGroupItem>
 					</ToggleGroup>
-				</View>
-			</DemoBlock>
-			<DemoBlock label="indicator">
-				<View style={demoStyles.componentRow} testID="k-demo-indicator">
-					<Indicator size={12} label="3">
-						<Icon icon={Sun} size="md" />
-					</Indicator>
-					<Indicator color="success">
-						<KText size="sm">online</KText>
-					</Indicator>
-					<Indicator color="destructive" processing size={12}>
-						<KText size="sm">live</KText>
-					</Indicator>
 				</View>
 			</DemoBlock>
 		</>

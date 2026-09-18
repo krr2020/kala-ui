@@ -17,21 +17,21 @@ const COLORS = [
 export function IconDemo() {
 	return (
 		<View testID="k-demo-icons" style={demoStyles.routeContent}>
-			<DemoBlock label="sizes">
+			<DemoBlock label="Sizes">
 				<View style={demoStyles.componentRow}>
 					{SIZES.map((size) => (
 						<Icon key={size} icon={Sun} size={size} />
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="colors">
+			<DemoBlock label="Colors">
 				<View style={demoStyles.componentRow}>
 					{COLORS.map((color) => (
 						<Icon key={color} icon={Check} color={color} size="lg" />
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="any lucide icon">
+			<DemoBlock label="Any Lucide Icon">
 				<View style={demoStyles.componentRow}>
 					<Icon icon={Bell} size="lg" label="notifications" />
 					<Icon icon={Moon} size="lg" />

@@ -9,7 +9,7 @@ const WEIGHTS = ["default", "medium", "semibold", "extrabold"] as const;
 export function HeadingDemo() {
 	return (
 		<View testID="k-demo-heading" style={demoStyles.routeContent}>
-			<DemoBlock label="sizes">
+			<DemoBlock label="Sizes">
 				<View style={demoStyles.block}>
 					{SIZES.map((size) => (
 						<Heading key={size} size={size}>
@@ -18,7 +18,7 @@ export function HeadingDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="weights (h4)">
+			<DemoBlock label="Weights (h4)">
 				<View style={demoStyles.block}>
 					{WEIGHTS.map((weight) => (
 						<Heading key={weight} size="h4" weight={weight}>
@@ -27,7 +27,7 @@ export function HeadingDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="align">
+			<DemoBlock label="Align">
 				<View style={demoStyles.block}>
 					<Heading size="h5" align="left">
 						align left

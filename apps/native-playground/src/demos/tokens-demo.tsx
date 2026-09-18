@@ -9,26 +9,28 @@ export function TokensDemo() {
 	const { theme } = useUnistyles();
 	return (
 		<>
-			<DemoBlock label="palette">
-				<View style={demoStyles.grid}>
-					{SWATCH_TOKENS.map((token) => (
-						<View
-							key={token}
-							testID={`k-swatch-${token}`}
-							style={[
-								demoStyles.swatch,
-								// dynamic token lookup — the parity tests pin that every
-								// swatch token resolves to a hex in all themes
-								{
-									backgroundColor: String(theme[token]),
-								},
-							]}
-						>
-							<Text style={demoStyles.swatchLabel}>{token}</Text>
-						</View>
-					))}
-				</View>
-			</DemoBlock>
+			<View testID="k-demo-theming">
+				<DemoBlock label="Palette">
+					<View style={demoStyles.grid}>
+						{SWATCH_TOKENS.map((token) => (
+							<View
+								key={token}
+								testID={`k-swatch-${token}`}
+								style={[
+									demoStyles.swatch,
+									// dynamic token lookup — the parity tests pin that every
+									// swatch token resolves to a hex in all themes
+									{
+										backgroundColor: String(theme[token]),
+									},
+								]}
+							>
+								<Text style={demoStyles.swatchLabel}>{token}</Text>
+							</View>
+						))}
+					</View>
+				</DemoBlock>
+			</View>
 		</>
 	);
 }

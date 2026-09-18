@@ -1,34 +1,18 @@
 import {
-	Accordion,
-	AlertDialog,
-	Button,
 	Calendar,
-	Collapsible,
-	ContextMenu,
-	DatePicker,
 	DateRangePicker,
-	Dialog,
-	DropdownMenu,
-	Icon,
-	Text as KText,
-	Sheet,
+	DatePicker,
 	TimePicker,
 	type TimeValue,
 } from "@kala-ui/react-native";
-import { Check } from "lucide-react-native";
 import { useState } from "react";
 import { View } from "react-native";
 import { DemoBlock } from "./demo-block";
 import { demoStyles } from "./stylesheet";
 
+// Group overview: the sheet-backed pickers that anchor overlay flows —
+// dialogs, menus and sheets each have a dedicated screen in ./components.
 export function OverlaysDemo() {
-	const [sheetOpen, setSheetOpen] = useState(false);
-	const [dialogOpen, setDialogOpen] = useState(false);
-	const [confirmOpen, setConfirmOpen] = useState(false);
-	const [faqOpen, setFaqOpen] = useState<string[]>(["shipping"]);
-	const [showAdvanced, setShowAdvanced] = useState(false);
-	const [autoSync, setAutoSync] = useState(true);
-	const [lastAction, setLastAction] = useState("none");
 	const [stayDate, setStayDate] = useState<Date | undefined>(
 		new Date(2026, 1, 10),
 	);
@@ -38,119 +22,13 @@ export function OverlaysDemo() {
 	});
 	return (
 		<>
-			<DemoBlock label="accordion">
-				<View testID="k-demo-accordion">
-					<Accordion
-						type="multiple"
-						value={faqOpen}
-						onValueChange={setFaqOpen}
-						variant="bordered"
-					>
-						<Accordion.Item value="shipping">
-							<Accordion.Trigger>shipping</Accordion.Trigger>
-							<Accordion.Content>
-								<KText size="sm" color="muted">
-									free over $50, arrives in 3-5 days
-								</KText>
-							</Accordion.Content>
-						</Accordion.Item>
-						<Accordion.Item value="returns">
-							<Accordion.Trigger>returns</Accordion.Trigger>
-							<Accordion.Content>
-								<KText size="sm" color="muted">
-									30-day window, no questions asked
-								</KText>
-							</Accordion.Content>
-						</Accordion.Item>
-					</Accordion>
-				</View>
-			</DemoBlock>
-			<DemoBlock label="collapsible">
-				<View style={demoStyles.componentRow} testID="k-demo-collapsible">
-					<Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
-						<Collapsible.Trigger>advanced filters</Collapsible.Trigger>
-						<Collapsible.Content>
-							<KText size="sm" color="muted">
-								only show verified sellers
-							</KText>
-						</Collapsible.Content>
-					</Collapsible>
-				</View>
-			</DemoBlock>
-			<DemoBlock label="dialogs">
-				<View style={demoStyles.componentRow} testID="k-demo-dialog">
-					<Button
-						onPress={() => setDialogOpen(true)}
-						accessibilityLabel="open demo dialog"
-					>
-						open dialog
-					</Button>
-					<Button
-						variant="outline"
-						color="destructive"
-						onPress={() => setConfirmOpen(true)}
-						accessibilityLabel="open confirm dialog"
-					>
-						delete account
-					</Button>
-					<Button
-						onPress={() => setSheetOpen(true)}
-						accessibilityLabel="open demo sheet"
-					>
-						<Icon icon={Check} size="xs" color="primaryForeground" />
-						open sheet
-					</Button>
-				</View>
-			</DemoBlock>
-			<DemoBlock label="dropdown menu">
-				<View style={demoStyles.componentRow} testID="k-demo-dropdown-menu">
-					<DropdownMenu
-						triggerLabel="actions"
-						items={[
-							{ type: "label", key: "l", label: "Row actions" },
-							{
-								type: "checkbox",
-								key: "sync",
-								label: "Auto-sync",
-								checked: autoSync,
-								onCheckedChange: setAutoSync,
-							},
-							{ key: "archive", label: "Archive" },
-							{ key: "delete", label: "Delete", destructive: true },
-						]}
-					/>
-				</View>
-			</DemoBlock>
-			<DemoBlock label="context menu">
-				<View style={demoStyles.componentRow} testID="k-demo-context-menu">
-					<ContextMenu
-						items={[
-							{
-								key: "copy",
-								label: "Copy",
-								onSelect: () => setLastAction("copy"),
-							},
-							{
-								key: "remove",
-								label: "Remove",
-								destructive: true,
-								onSelect: () => setLastAction("remove"),
-							},
-						]}
-					>
-						<KText size="sm" color="muted">
-							long-press me — last action: {lastAction}
-						</KText>
-					</ContextMenu>
-				</View>
-			</DemoBlock>
-			<DemoBlock label="calendar">
+			<DemoBlock label="Calendar">
 				<View style={demoStyles.componentRow} testID="k-demo-calendar">
 					<Calendar />
 					<DateRangePicker placeholder="pick a range" />
 				</View>
 			</DemoBlock>
-			<DemoBlock label="date picker">
+			<DemoBlock label="Date Picker">
 				<View style={demoStyles.componentRow} testID="k-demo-date-picker">
 					<DatePicker
 						value={stayDate}
@@ -159,7 +37,7 @@ export function OverlaysDemo() {
 					/>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="time picker">
+			<DemoBlock label="Time Picker">
 				<View style={demoStyles.componentRow} testID="k-demo-time-picker">
 					<TimePicker
 						value={remindAt}
@@ -168,57 +46,6 @@ export function OverlaysDemo() {
 					/>
 				</View>
 			</DemoBlock>
-			<Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}>
-				<Sheet.Body>
-					<KText size="sm" color="muted">
-						Bottom sheet — press the overlay or drag to dismiss.
-					</KText>
-					<Button fullWidth onPress={() => setSheetOpen(false)}>
-						done
-					</Button>
-				</Sheet.Body>
-			</Sheet>
-			<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-				<Dialog.Header>
-					<Dialog.Title>session settings</Dialog.Title>
-					<Dialog.Description>
-						Adjust preferences for this device.
-					</Dialog.Description>
-				</Dialog.Header>
-				<Dialog.Body>
-					<KText size="sm" color="muted">
-						Press the overlay or the close button to dismiss.
-					</KText>
-				</Dialog.Body>
-				<Dialog.Footer>
-					<Button
-						variant="ghost"
-						size="sm"
-						onPress={() => setDialogOpen(false)}
-					>
-						cancel
-					</Button>
-					<Button size="sm" onPress={() => setDialogOpen(false)}>
-						save
-					</Button>
-				</Dialog.Footer>
-			</Dialog>
-			<AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
-				<AlertDialog.Header>
-					<AlertDialog.Title>delete account?</AlertDialog.Title>
-					<AlertDialog.Description>
-						This permanently removes your data and cannot be undone.
-					</AlertDialog.Description>
-				</AlertDialog.Header>
-				<AlertDialog.Footer>
-					<AlertDialog.Cancel onPress={() => undefined}>
-						cancel
-					</AlertDialog.Cancel>
-					<AlertDialog.Action color="destructive" onPress={() => undefined}>
-						delete
-					</AlertDialog.Action>
-				</AlertDialog.Footer>
-			</AlertDialog>
 		</>
 	);
 }

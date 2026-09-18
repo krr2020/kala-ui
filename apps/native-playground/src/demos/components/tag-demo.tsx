@@ -20,7 +20,7 @@ export function TagDemo() {
 	const { theme } = useUnistyles();
 	return (
 		<View testID="k-demo-tag" style={demoStyles.routeContent}>
-			<DemoBlock label="variants">
+			<DemoBlock label="Variants">
 				<View style={demoStyles.componentRow}>
 					{VARIANTS.map((variant) => (
 						<Tag key={variant} variant={variant}>
@@ -29,7 +29,7 @@ export function TagDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="colors (subtle)">
+			<DemoBlock label="Colors (subtle)">
 				<View style={demoStyles.componentRow}>
 					{COLORS.map((color) => (
 						<Tag key={color} variant="subtle" color={color}>
@@ -38,7 +38,7 @@ export function TagDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="sizes">
+			<DemoBlock label="Sizes">
 				<View style={demoStyles.componentRow}>
 					{SIZES.map((size) => (
 						<Tag key={size} size={size}>
@@ -47,7 +47,7 @@ export function TagDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="removable & icon">
+			<DemoBlock label="Removable & icon">
 				<View style={demoStyles.componentRow}>
 					<Tag onRemove={() => undefined}>removable</Tag>
 					<Tag variant="outline" icon={Sun} onRemove={() => undefined}>
@@ -58,7 +58,7 @@ export function TagDemo() {
 					</Tag>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="slot overrides">
+			<DemoBlock label="Slot overrides">
 				<View style={demoStyles.componentRow}>
 					<Tag>default</Tag>
 					<Tag

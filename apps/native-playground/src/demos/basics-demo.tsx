@@ -8,10 +8,8 @@ import {
 	RingProgress,
 	Skeleton,
 	Spinner,
-	Steps,
 	Switch,
 	TextInput,
-	Timeline,
 } from "@kala-ui/react-native";
 import { useState } from "react";
 import { View } from "react-native";
@@ -129,38 +127,6 @@ export function BasicsDemo() {
 						sections={[
 							{ value: 30, color: "success" },
 							{ value: 20, color: "warning" },
-						]}
-					/>
-				</View>
-			</DemoBlock>
-			<DemoBlock label="Steps">
-				<View style={demoStyles.componentRow} testID="k-demo-steps">
-					<Steps
-						items={[
-							{ title: "Account", description: "Email + password" },
-							{ title: "Profile", description: "Name + avatar" },
-							{ title: "Confirm" },
-						]}
-						defaultValue={2}
-						onStepChange={() => undefined}
-					/>
-				</View>
-			</DemoBlock>
-			<DemoBlock label="Timeline">
-				<View style={demoStyles.componentRow} testID="k-demo-timeline">
-					<Timeline
-						items={[
-							{
-								title: "Order placed",
-								description: "Cart locked",
-								timestamp: "09:00",
-							},
-							{ title: "Shipped", timestamp: "12:30", status: "success" },
-							{
-								title: "Delivered",
-								description: "Signed at the door",
-								status: "warning",
-							},
 						]}
 					/>
 				</View>

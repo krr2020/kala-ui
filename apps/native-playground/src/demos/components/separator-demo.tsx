@@ -6,7 +6,7 @@ import { demoStyles } from "../stylesheet";
 export function SeparatorDemo() {
 	return (
 		<View testID="k-demo-separator" style={demoStyles.routeContent}>
-			<DemoBlock label="horizontal">
+			<DemoBlock label="Horizontal">
 				<View style={demoStyles.block}>
 					<KText size="sm" color="muted">
 						above
@@ -17,7 +17,7 @@ export function SeparatorDemo() {
 					</KText>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="vertical">
+			<DemoBlock label="Vertical">
 				<View style={demoStyles.componentRow}>
 					<KText size="sm" color="muted">
 						left
@@ -28,7 +28,7 @@ export function SeparatorDemo() {
 					</KText>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="labelled (decorative=false)">
+			<DemoBlock label="Labelled (decorative=false)">
 				<Separator decorative={false} accessibilityLabel="section break" />
 			</DemoBlock>
 		</View>

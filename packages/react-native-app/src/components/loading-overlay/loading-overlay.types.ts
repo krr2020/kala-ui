@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
-import type { SpinnerProps } from "../spinner";
+import type { SpinnerProps } from "@kala-ui/react-native";
 
 export interface LoadingOverlayProps {
 	/** renders nothing when false */

@@ -12,35 +12,35 @@ export function AvatarDemo() {
 	const { theme } = useUnistyles();
 	return (
 		<View testID="k-demo-avatars" style={demoStyles.routeContent}>
-			<DemoBlock label="sizes (initials fallback)">
+			<DemoBlock label="Sizes (initials fallback)">
 				<View style={demoStyles.componentRow}>
 					{SIZES.map((size) => (
 						<Avatar key={size} name="Ada Lovelace" size={size} />
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="shapes (lg)">
+			<DemoBlock label="Shapes (lg)">
 				<View style={demoStyles.componentRow}>
 					{SHAPES.map((shape) => (
 						<Avatar key={shape} name="Grace Hopper" size="lg" shape={shape} />
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="status (lg)">
+			<DemoBlock label="Status (lg)">
 				<View style={demoStyles.componentRow}>
 					{STATUSES.map((status) => (
 						<Avatar key={status} name="Alan Turing" size="lg" status={status} />
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="status across sizes (online)">
+			<DemoBlock label="Status across sizes (online)">
 				<View style={demoStyles.componentRow}>
 					{SIZES.map((size) => (
 						<Avatar key={size} name="Alan Turing" size={size} status="online" />
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="image with fallback">
+			<DemoBlock label="Image with fallback">
 				<View style={demoStyles.componentRow}>
 					<Avatar
 						name="Katherine Johnson"
@@ -49,7 +49,7 @@ export function AvatarDemo() {
 					/>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="slotStyles">
+			<DemoBlock label="SlotStyles">
 				<View style={demoStyles.componentRow}>
 					<Avatar name="Ada Lovelace" size="lg" status="online" />
 					<Avatar

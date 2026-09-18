@@ -1,0 +1,15 @@
+{
+  "commands": [
+    {
+      "name": "metro server",
+      "command": "cd apps/native-playground && pnpm",
+      "args": [
+        "android:watch"
+      ],
+      "cwd": ".",
+      "env": {},
+      "autoStart": false,
+      "id": "cb6ecc0d302c"
+    }
+  ]
+}

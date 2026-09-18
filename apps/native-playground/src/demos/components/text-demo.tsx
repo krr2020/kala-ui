@@ -28,7 +28,7 @@ export function TextDemo() {
 	const { theme } = useUnistyles();
 	return (
 		<View testID="k-demo-text" style={demoStyles.routeContent}>
-			<DemoBlock label="sizes">
+			<DemoBlock label="Sizes">
 				<View style={demoStyles.block}>
 					{SIZES.map((size) => (
 						<KText key={size} size={size}>
@@ -37,7 +37,7 @@ export function TextDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="weights">
+			<DemoBlock label="Weights">
 				<View style={demoStyles.block}>
 					{WEIGHTS.map((weight) => (
 						<KText key={weight} weight={weight}>
@@ -46,7 +46,7 @@ export function TextDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="colors">
+			<DemoBlock label="Colors">
 				<View style={demoStyles.componentRow}>
 					{COLORS.map((color) => (
 						<View
@@ -66,7 +66,7 @@ export function TextDemo() {
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="align & truncate">
+			<DemoBlock label="Align & truncate">
 				<View style={demoStyles.block}>
 					<KText align="left" color="muted">
 						align left
