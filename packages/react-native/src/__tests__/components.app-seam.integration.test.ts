@@ -173,8 +173,9 @@ describe("component app seam", () => {
 		// shell stack (screen + source + group + component indexes) +
 		// dedicated alert demo (dismiss counter + re-show visibility) +
 		// dedicated banner demo (close counter + re-show visibility) +
-		// dedicated toast demo (basic/position/auto/manual/long arms).
-		expect(demoHooks).toBe(67);
+		// dedicated toast demo (basic/position/auto/manual/long arms) +
+		// dedicated progress demo (upload stepper).
+		expect(demoHooks).toBe(68);
 	});
 
 	it("landing offers exactly two package routes", () => {
@@ -596,6 +597,19 @@ describe("component app seam", () => {
 					'accessibilityLabel="bold"': 1,
 					'accessibilityLabel="bounded date"': 1,
 					'accessibilityLabel="check-in"': 1,
+				'accessibilityLabel="Advance upload"': 1,
+				'accessibilityLabel="basic progress"': 1,
+				"accessibilityLabel={`${color} progress`}": 1,
+				'accessibilityLabel="custom range progress"': 1,
+				'accessibilityLabel="empty progress"': 1,
+				'accessibilityLabel="full progress"': 1,
+				'accessibilityLabel="large progress"': 1,
+				'accessibilityLabel="medium progress"': 1,
+				'accessibilityLabel="over-clamped progress"': 1,
+				'accessibilityLabel="Reset upload"': 1,
+				'accessibilityLabel="small progress"': 1,
+				'accessibilityLabel="under-clamped progress"': 1,
+				'accessibilityLabel="upload"': 1,
 					'accessibilityLabel="clamped at max"': 1,
 					'accessibilityLabel="clamped at min"': 1,
 					'accessibilityLabel="collapsed range"': 1,
@@ -711,7 +725,7 @@ describe("component app seam", () => {
 					'testID="k-demo-multi-select"': 1,
 					'testID="k-demo-number-input"': 1,
 					'testID="k-demo-password-strength"': 1,
-					'testID="k-demo-progress"': 1,
+					'testID="k-demo-progress"': 2,
 					'testID="k-demo-radio-group"': 1,
 					'testID="k-demo-radios"': 1,
 					'testID="k-demo-rating"': 2,
