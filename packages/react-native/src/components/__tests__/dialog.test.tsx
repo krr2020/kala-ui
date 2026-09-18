@@ -4,13 +4,14 @@
  * props inside act() — fireEvent's responder polyfill leaves a grant
  * lock that poisons later renders in the same jest file.
  */
-import { act, render } from "@testing-library/react-native";
+
 import { readFileSync } from "node:fs";
+import { act, render } from "@testing-library/react-native";
+import { themes } from "../../themes";
+import { tokens } from "../../tokens";
 import { AlertDialog } from "../alert-dialog";
 import { Button } from "../button";
 import { Dialog } from "../dialog";
-import { tokens } from "../../tokens";
-import { themes } from "../../themes";
 
 const incl = { includeHiddenElements: true } as const;
 
@@ -51,12 +52,8 @@ describe("dialog gesture + keyboard hardening", () => {
 		const transform = flatStyle(card).transform as unknown as
 			| { translateY?: number }[]
 			| undefined;
-		return (
-			transform?.find((t) => t.translateY !== undefined)?.translateY ?? 0
-		);
+		return transform?.find((t) => t.translateY !== undefined)?.translateY ?? 0;
 	};
-
-
 
 	it("card follows the drag finger and settles back on release", async () => {
 		const onOpenChange = jest.fn();
@@ -111,82 +108,73 @@ describe("dialog gesture + keyboard hardening", () => {
 		);
 	});
 
-		it("size tiers map distinct widths and caps; full opts out with no radius", async () => {
-			const sizes: [
-				"sm" | "md" | "lg" | "full",
-				string,
-				number | undefined,
-			][] = [
-				["sm", "80%", 384],
-				["md", "90%", 512],
-				["lg", "100%", 672],
-				["full", "100%", undefined],
-			];
-			const seenMax = new Set<number>();
-			for (const [size, width, maxWidth] of sizes) {
-				const screen = await render(
-					<Dialog open size={size} onOpenChange={() => undefined}>
-					<Dialog.Body>body</Dialog.Body>
-				</Dialog>,
-				);
-				const s = flatStyle(screen.getByTestId("k-dialog", incl));
-				// per-tier percentage of the padded wrapper: distinct on any phone
-				// screen, with the px cap binding on tablets
-				expect(String(s.width)).toBe(width);
-				expect(s.maxWidth).toBe(maxWidth);
-				expect(s.borderRadius).toBe(
-					size === "full" ? 0 : tokens.radius.card,
-				);
-				// full is flush: no outer border, no height cap; tiers keep both
-				expect(s.borderWidth).toBe(size === "full" ? 0 : 1);
-				if (size === "full") {
-					expect(s.maxHeight).toBeUndefined();
-					const wrap = flatStyle(
-						screen.getByTestId("k-dialog-keyboard-view", incl),
-					);
-					expect(Number(wrap.padding)).toBe(0);
-					// uncapped full still leans on the keyboard wrapper so the
-					// footer stays reachable with the keyboard open
-					const kav = screen.getByTestId("k-dialog-keyboard-view", incl);
-					expect(["padding", undefined]).toContain(kav.props.behavior);
-				}
-				if (maxWidth !== undefined) {
-					seenMax.add(Number(maxWidth));
-					// long content scrolls inside a capped card instead of clipping
-					expect(String(s.maxHeight)).toBe("90%");
-				}
-			}
-			expect(seenMax.size).toBe(3);
-		});
-
-		it("keyboard + scroll mechanics: iOS pads, Android defers, body yields and scrolls", async () => {
+	it("size tiers map distinct widths and caps; full opts out with no radius", async () => {
+		const sizes: ["sm" | "md" | "lg" | "full", string, number | undefined][] = [
+			["sm", "80%", 384],
+			["md", "90%", 512],
+			["lg", "100%", 672],
+			["full", "100%", undefined],
+		];
+		const seenMax = new Set<number>();
+		for (const [size, width, maxWidth] of sizes) {
 			const screen = await render(
-				<Dialog open onOpenChange={() => undefined}>
-					<Dialog.Header>
-						<Dialog.Title>t</Dialog.Title>
-					</Dialog.Header>
+				<Dialog open size={size} onOpenChange={() => undefined}>
 					<Dialog.Body>body</Dialog.Body>
 				</Dialog>,
 			);
-			// the mock host platform decides the runtime value (padding on iOS,
-			// undefined on Android where adjustResize drives) — the source pin
-			// below maps the platform split exactly
-			const kav = screen.getByTestId("k-dialog-keyboard-view", incl);
-			expect(["padding", undefined]).toContain(kav.props.behavior);
-			const source = readFileSync(
-				`${__dirname}/../dialog/dialog.tsx`,
-				"utf8",
-			);
-			expect(source).toMatch(
-				/behavior=\{Platform\.OS === "ios" \? "padding" : undefined\}/,
-			);
-			// the body yields to siblings (flexShrink) so the ScrollView scrolls
-			// instead of being clipped by the card's maxHeight
-			const body = flatStyle(screen.getByTestId("k-dialog-body", incl));
-			expect(Number(body.flexShrink)).toBe(1);
-		});
+			const s = flatStyle(screen.getByTestId("k-dialog", incl));
+			// per-tier percentage of the padded wrapper: distinct on any phone
+			// screen, with the px cap binding on tablets
+			expect(String(s.width)).toBe(width);
+			expect(s.maxWidth).toBe(maxWidth);
+			expect(s.borderRadius).toBe(size === "full" ? 0 : tokens.radius.card);
+			// full is flush: no outer border, no height cap; tiers keep both
+			expect(s.borderWidth).toBe(size === "full" ? 0 : 1);
+			if (size === "full") {
+				expect(s.maxHeight).toBeUndefined();
+				const wrap = flatStyle(
+					screen.getByTestId("k-dialog-keyboard-view", incl),
+				);
+				expect(Number(wrap.padding)).toBe(0);
+				// uncapped full still leans on the keyboard wrapper so the
+				// footer stays reachable with the keyboard open
+				const kav = screen.getByTestId("k-dialog-keyboard-view", incl);
+				expect(["padding", undefined]).toContain(kav.props.behavior);
+			}
+			if (maxWidth !== undefined) {
+				seenMax.add(Number(maxWidth));
+				// long content scrolls inside a capped card instead of clipping
+				expect(String(s.maxHeight)).toBe("90%");
+			}
+		}
+		expect(seenMax.size).toBe(3);
+	});
 
-		it("chrome stays fixed: column card, body is the only scroller, one border per boundary", async () => {
+	it("keyboard + scroll mechanics: iOS pads, Android defers, body yields and scrolls", async () => {
+		const screen = await render(
+			<Dialog open onOpenChange={() => undefined}>
+				<Dialog.Header>
+					<Dialog.Title>t</Dialog.Title>
+				</Dialog.Header>
+				<Dialog.Body>body</Dialog.Body>
+			</Dialog>,
+		);
+		// the mock host platform decides the runtime value (padding on iOS,
+		// undefined on Android where adjustResize drives) — the source pin
+		// below maps the platform split exactly
+		const kav = screen.getByTestId("k-dialog-keyboard-view", incl);
+		expect(["padding", undefined]).toContain(kav.props.behavior);
+		const source = readFileSync(`${__dirname}/../dialog/dialog.tsx`, "utf8");
+		expect(source).toMatch(
+			/behavior=\{Platform\.OS === "ios" \? "padding" : undefined\}/,
+		);
+		// the body yields to siblings (flexShrink) so the ScrollView scrolls
+		// instead of being clipped by the card's maxHeight
+		const body = flatStyle(screen.getByTestId("k-dialog-body", incl));
+		expect(Number(body.flexShrink)).toBe(1);
+	});
+
+	it("chrome stays fixed: column card, body is the only scroller, one border per boundary", async () => {
 		const screen = await render(
 			<Dialog open onOpenChange={() => undefined}>
 				<Dialog.Header>
@@ -213,32 +201,115 @@ describe("dialog gesture + keyboard hardening", () => {
 	});
 
 	it("the wrapper clears the status bar: paddingTop resolves above zero", async () => {
-			const screen = await render(
-				<Dialog open onOpenChange={() => undefined}>
-					<Dialog.Body>body</Dialog.Body>
-				</Dialog>,
-			);
-			const kav = flatStyle(screen.getByTestId("k-dialog-keyboard-view", incl));
-			expect(Number(kav.paddingTop)).toBeGreaterThan(0);
-		});
+		const screen = await render(
+			<Dialog open onOpenChange={() => undefined}>
+				<Dialog.Body>body</Dialog.Body>
+			</Dialog>,
+		);
+		const kav = flatStyle(screen.getByTestId("k-dialog-keyboard-view", incl));
+		expect(Number(kav.paddingTop)).toBeGreaterThan(0);
+	});
 
-		it("compound parts keep their markers after the file split", async () => {
-			const screen = await render(
-				<Dialog open onOpenChange={() => undefined}>
-					<Dialog.Header>
-						<Dialog.Title>t</Dialog.Title>
-						<Dialog.Description>d</Dialog.Description>
-					</Dialog.Header>
-					<Dialog.Body>body</Dialog.Body>
-					<Dialog.Footer>done</Dialog.Footer>
-				</Dialog>,
-			);
-			expect(screen.getByTestId("k-dialog-header", incl)).toBeTruthy();
-			expect(screen.getByTestId("k-dialog-title", incl)).toBeTruthy();
-			expect(screen.getByTestId("k-dialog-description", incl)).toBeTruthy();
-			expect(screen.getByTestId("k-dialog-body", incl)).toBeTruthy();
-			expect(screen.getByTestId("k-dialog-footer", incl)).toBeTruthy();
+	it("compound parts keep their markers after the file split", async () => {
+		const screen = await render(
+			<Dialog open onOpenChange={() => undefined}>
+				<Dialog.Header>
+					<Dialog.Title>t</Dialog.Title>
+					<Dialog.Description>d</Dialog.Description>
+				</Dialog.Header>
+				<Dialog.Body>body</Dialog.Body>
+				<Dialog.Footer>done</Dialog.Footer>
+			</Dialog>,
+		);
+		expect(screen.getByTestId("k-dialog-header", incl)).toBeTruthy();
+		expect(screen.getByTestId("k-dialog-title", incl)).toBeTruthy();
+		expect(screen.getByTestId("k-dialog-description", incl)).toBeTruthy();
+		expect(screen.getByTestId("k-dialog-body", incl)).toBeTruthy();
+		expect(screen.getByTestId("k-dialog-footer", incl)).toBeTruthy();
+	});
+
+	it("composed AlertDialog: themed scrim, sm width, fixed chrome, alert semantics", async () => {
+		const screen = await render(
+			<AlertDialog open onOpenChange={() => undefined}>
+				<AlertDialog.Header>
+					<AlertDialog.Title>t</AlertDialog.Title>
+				</AlertDialog.Header>
+				<AlertDialog.Body>body</AlertDialog.Body>
+				<AlertDialog.Footer>
+					<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+				</AlertDialog.Footer>
+			</AlertDialog>,
+		);
+		// themed scrim inherited from the Dialog shell
+		const overlay = screen.getByTestId("k-alert-dialog-overlay", incl);
+		expect(flatStyle(overlay).backgroundColor).toBe(
+			`${themes.light.foreground}80`,
+		);
+		const card = flatStyle(screen.getByTestId("k-alert-dialog", incl));
+		// an alert is a focused interruption — the narrow sm tier
+		expect(card.maxWidth).toBe(384);
+		expect(card.flexDirection).toBe("column");
+		expect(
+			Number(
+				flatStyle(screen.getByTestId("k-alert-dialog-header", incl)).flexShrink,
+			),
+		).toBe(0);
+		expect(
+			Number(
+				flatStyle(screen.getByTestId("k-alert-dialog-footer", incl)).flexShrink,
+			),
+		).toBe(0);
+		expect(
+			Number(
+				flatStyle(screen.getByTestId("k-alert-dialog-body", incl)).flexGrow,
+			),
+		).toBe(1);
+		// alert semantics survive composition onto the Dialog card
+		const node = screen.getByTestId("k-alert-dialog", incl);
+		expect(node.props.accessibilityRole).toBe("alert");
+		expect(node.props.accessibilityViewIsModal).toBe(true);
+	});
+
+	it("default AlertDialog never closes from the scrim", async () => {
+		const onOpenChange = jest.fn();
+		const screen = await render(
+			<AlertDialog open onOpenChange={onOpenChange}>
+				<AlertDialog.Body>body</AlertDialog.Body>
+			</AlertDialog>,
+		);
+		const overlay = screen.getByTestId("k-alert-dialog-overlay", incl);
+		expect(overlay.props.onPress).toBeUndefined();
+		await act(async () => {
+			(overlay.props.onPress as unknown as (() => void) | undefined)?.();
 		});
+		expect(onOpenChange).not.toHaveBeenCalled();
+	});
+
+	it("dismissable AlertDialog inherits the drag finger-follow and reset", async () => {
+		const onOpenChange = jest.fn();
+		const screen = await render(
+			<AlertDialog open onOpenChange={onOpenChange} dismissable>
+				<AlertDialog.Body>body</AlertDialog.Body>
+			</AlertDialog>,
+		);
+		const card = screen.getByTestId("k-alert-dialog", incl);
+		expect(card.props.onStartShouldSetResponder()).toBe(true);
+		await grant(card);
+		await move(card, 200);
+		const transform = flatStyle(card).transform as unknown as
+			| { translateY?: number }[]
+			| undefined;
+		expect(transform?.find((t) => t.translateY !== undefined)?.translateY).toBe(
+			200,
+		);
+		await release(card, 40);
+		expect(onOpenChange).not.toHaveBeenCalled();
+		expect(
+			(flatStyle(card).transform as unknown as { translateY?: number }[])?.find(
+				(t) => t.translateY !== undefined,
+			)?.translateY,
+		).toBe(0);
+	});
 
 	it("card wires the raw responder protocol", async () => {
 		const screen = await render(

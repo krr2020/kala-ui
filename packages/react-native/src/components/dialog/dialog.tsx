@@ -42,6 +42,7 @@ export function Dialog({
 	showCloseButton = true,
 	size = "md",
 	accessibilityLabel,
+	accessibilityRole,
 	slotStyles,
 	testID = "k-dialog",
 	children,
@@ -95,7 +96,7 @@ export function Dialog({
 			}}
 		>
 			<Pressable
-				testID="k-dialog-overlay"
+				testID={`${testID}-overlay`}
 				accessibilityRole="button"
 				accessibilityLabel="Close dialog"
 				onPress={dismissable ? close : undefined}
@@ -104,7 +105,7 @@ export function Dialog({
 			{/* box-none: the wrapper only positions the card; taps outside it
 			    fall through to the overlay Pressable beneath */}
 			<KeyboardAvoidingView
-				testID="k-dialog-keyboard-view"
+				testID={`${testID}-keyboard-view`}
 				behavior={Platform.OS === "ios" ? "padding" : undefined}
 				keyboardVerticalOffset={0}
 				pointerEvents="box-none"
@@ -125,7 +126,9 @@ export function Dialog({
 			>
 				<View
 					testID={testID}
+					accessible={accessibilityRole !== undefined}
 					accessibilityViewIsModal
+					accessibilityRole={accessibilityRole}
 					accessibilityLabel={accessibilityLabel}
 					{...responders}
 					style={applySlot(cardStyle(theme, size, dragDy), slotStyles?.root)}

@@ -1,28 +1,24 @@
 /**
- * AlertDialog: destructive-confirmation modal sharing Dialog's layout
- * vocabulary and mobile hardening (drag-to-dismiss gated by
- * `dismissable`, keyboard avoidance, scrollable body). Defaults to NOT
- * dismissable — no overlay press, no hardware back, no drag — dismissal
- * only happens through the explicit Action/Cancel affordances, mirroring
- * web radix alert semantics. The container surfaces as a single
- * accessibility alert element.
+ * AlertDialog: destructive-confirmation modal composed ON Dialog's
+ * hardened shell (themed scrim, status-bar-safe wrapper, fixed-chrome
+ * column, drag finger-follow) at the narrow sm tier — an alert is a
+ * focused interruption, not a content panel. Defaults to NOT
+ * dismissable: no overlay press, no hardware back, no drag —
+ * dismissal only happens through the explicit Action/Cancel
+ * affordances, mirroring web radix alert semantics. The container
+ * surfaces as a single accessibility alert element.
  */
 
 import type { ReactElement } from "react";
-import { createContext, useContext, useRef, useState } from "react";
-import {
-	KeyboardAvoidingView,
-	Modal,
-	Platform,
-	Text as RNText,
-	ScrollView,
-	View,
-} from "react-native";
-import { useUnistyles } from "react-native-unistyles";
-import { tokens } from "../../tokens";
+import { createContext, useContext } from "react";
 import type { ButtonProps } from "../button";
 import { Button } from "../button";
-import { applySlot } from "../slot-styles";
+import { Dialog } from "../dialog";
+import { DialogBody } from "../dialog/dialog-body";
+import { DialogDescription } from "../dialog/dialog-description";
+import { DialogFooter } from "../dialog/dialog-footer";
+import { DialogHeader } from "../dialog/dialog-header";
+import { DialogTitle } from "../dialog/dialog-title";
 import type {
 	AlertDialogPartProps,
 	AlertDialogProps,
@@ -35,9 +31,6 @@ interface AlertDialogContextValue {
 
 const AlertDialogContext = createContext<AlertDialogContextValue | null>(null);
 
-const DRAG_DISMISS_THRESHOLD = 96;
-const MIN_DRAG_OPACITY = 0.5;
-
 export function AlertDialog({
 	open,
 	onOpenChange,
@@ -47,238 +40,24 @@ export function AlertDialog({
 	testID = "k-alert-dialog",
 	children,
 }: AlertDialogProps): ReactElement | null {
-	const { theme } = useUnistyles();
-	const [dragDy, setDragDy] = useState(0);
-	// start Y of the active drag; null = no gesture in flight
-	const dragStart = useRef<number | null>(null);
-	const onOpenChangeRef = useRef(onOpenChange);
-	onOpenChangeRef.current = onOpenChange;
-
-	const dragOpacity =
-		1 -
-		(Math.min(dragDy, DRAG_DISMISS_THRESHOLD) * (1 - MIN_DRAG_OPACITY)) /
-			DRAG_DISMISS_THRESHOLD;
-
-	const responders = dismissable
-		? {
-				onStartShouldSetResponder: () => true,
-				onResponderGrant: (e: { nativeEvent: { pageY: number } }) => {
-					dragStart.current = e.nativeEvent.pageY;
-					setDragDy(0);
-				},
-				onResponderMove: (e: { nativeEvent: { pageY: number } }) => {
-					if (dragStart.current === null) return;
-					setDragDy(Math.max(0, e.nativeEvent.pageY - dragStart.current));
-				},
-				onResponderRelease: (e: { nativeEvent: { pageY: number } }) => {
-					if (dragStart.current !== null) {
-						const dy = Math.max(0, e.nativeEvent.pageY - dragStart.current);
-						dragStart.current = null;
-						setDragDy(0);
-						if (dy >= DRAG_DISMISS_THRESHOLD) onOpenChangeRef.current(false);
-					}
-				},
-				onResponderTerminate: () => {
-					dragStart.current = null;
-					setDragDy(0);
-				},
-			}
-		: {};
-
+	const close = () => onOpenChange(false);
 	return (
-		<Modal
-			visible={open}
-			transparent
-			statusBarTranslucent
-			animationType="fade"
-			onRequestClose={() => {
-				if (dismissable) onOpenChangeRef.current(false);
-			}}
-		>
-			<View
-				style={applySlot(
-					{
-						position: "absolute",
-						top: 0,
-						right: 0,
-						bottom: 0,
-						left: 0,
-						backgroundColor: "rgba(0,0,0,0.5)",
-					},
-					slotStyles?.overlay,
-				)}
-			/>
-			<KeyboardAvoidingView
-				testID="k-alert-dialog-keyboard-view"
-				behavior={Platform.OS === "ios" ? "padding" : undefined}
-				keyboardVerticalOffset={0}
-				pointerEvents="box-none"
-				style={{
-					position: "absolute",
-					top: 0,
-					right: 0,
-					bottom: 0,
-					left: 0,
-					alignItems: "center",
-					justifyContent: "center",
-					padding: 16,
-				}}
-			>
-				<View
-					testID={testID}
-					// one a11y element for the whole alert (same idiom as Alert/Toast)
-					accessible
-					accessibilityRole="alert"
-					accessibilityLabel={accessibilityLabel}
-					{...responders}
-					style={applySlot(
-						{
-							width: "90%",
-							maxWidth: 512,
-							borderRadius: tokens.radius.card,
-							backgroundColor: theme.card,
-							borderWidth: 1,
-							borderColor: theme.border,
-							overflow: "hidden",
-							opacity: dragOpacity,
-						},
-						slotStyles?.root,
-					)}
-				>
-					<AlertDialogContext.Provider
-						value={{ close: () => onOpenChangeRef.current(false) }}
-					>
-						{children}
-					</AlertDialogContext.Provider>
-				</View>
-			</KeyboardAvoidingView>
-		</Modal>
-	);
-}
-
-function AlertDialogHeader({
-	children,
-	style,
-	testID = "k-alert-dialog-header",
-}: AlertDialogPartProps) {
-	const { theme } = useUnistyles();
-	return (
-		<View
+		<Dialog
+			open={open}
+			onOpenChange={onOpenChange}
+			dismissable={dismissable}
+			size="sm"
+			accessibilityLabel={accessibilityLabel}
+			slotStyles={slotStyles}
 			testID={testID}
-			style={[
-				{
-					paddingHorizontal: 24,
-					paddingVertical: 16,
-					borderBottomWidth: 1,
-					borderColor: theme.border,
-					gap: 6,
-				},
-				style,
-			]}
+			// one a11y element for the whole alert (same idiom as Alert/Toast);
+			// Dialog's card already sets accessibilityViewIsModal
+			accessibilityRole="alert"
 		>
-			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={{ color: theme.foreground, fontSize: 14 }}>
-					{children}
-				</RNText>
-			) : (
-				children
-			)}
-		</View>
-	);
-}
-
-function AlertDialogFooter({
-	children,
-	style,
-	testID = "k-alert-dialog-footer",
-}: AlertDialogPartProps) {
-	const { theme } = useUnistyles();
-	return (
-		<View
-			testID={testID}
-			style={[
-				{
-					flexDirection: "row",
-					justifyContent: "flex-end",
-					flexWrap: "wrap",
-					gap: 8,
-					paddingHorizontal: 24,
-					paddingVertical: 16,
-					borderTopWidth: 1,
-					borderColor: theme.border,
-					backgroundColor: theme.muted,
-				},
-				style,
-			]}
-		>
-			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={{ color: theme.foreground, fontSize: 14 }}>
-					{children}
-				</RNText>
-			) : (
-				children
-			)}
-		</View>
-	);
-}
-
-function AlertDialogTitle({
-	children,
-	style,
-	testID = "k-alert-dialog-title",
-}: AlertDialogTextProps) {
-	const { theme } = useUnistyles();
-	return (
-		<RNText
-			testID={testID}
-			accessibilityRole="header"
-			style={[
-				{ color: theme.foreground, fontSize: 18, fontWeight: "600" },
-				style,
-			]}
-		>
-			{children}
-		</RNText>
-	);
-}
-
-function AlertDialogDescription({
-	children,
-	style,
-	testID = "k-alert-dialog-description",
-}: AlertDialogTextProps) {
-	const { theme } = useUnistyles();
-	return (
-		<RNText
-			testID={testID}
-			style={[{ color: theme.mutedForeground, fontSize: 14 }, style]}
-		>
-			{children}
-		</RNText>
-	);
-}
-
-function AlertDialogBody({
-	children,
-	style,
-	testID = "k-alert-dialog-body",
-}: AlertDialogPartProps) {
-	const { theme } = useUnistyles();
-	return (
-		<ScrollView
-			testID={testID}
-			keyboardShouldPersistTaps="handled"
-			contentContainerStyle={{ paddingHorizontal: 24, paddingVertical: 16 }}
-			style={style}
-		>
-			{typeof children === "string" || typeof children === "number" ? (
-				<RNText style={{ color: theme.foreground, fontSize: 14 }}>
-					{children}
-				</RNText>
-			) : (
-				children
-			)}
-		</ScrollView>
+			<AlertDialogContext.Provider value={{ close }}>
+				{children}
+			</AlertDialogContext.Provider>
+		</Dialog>
 	);
 }
 
@@ -326,10 +105,15 @@ function AlertDialogCancel({
 	);
 }
 
-AlertDialog.Header = AlertDialogHeader;
-AlertDialog.Footer = AlertDialogFooter;
-AlertDialog.Title = AlertDialogTitle;
-AlertDialog.Description = AlertDialogDescription;
-AlertDialog.Body = AlertDialogBody;
+const prefixed =
+	<T extends { testID?: string }>(Part: (props: T) => ReactElement, part: string) =>
+	(props: T) =>
+		<Part {...props} testID={`k-alert-dialog-${part}`} />;
+
+AlertDialog.Header = prefixed(DialogHeader, "header");
+AlertDialog.Footer = prefixed(DialogFooter, "footer");
+AlertDialog.Title = prefixed(DialogTitle, "title");
+AlertDialog.Description = prefixed(DialogDescription, "description");
+AlertDialog.Body = prefixed(DialogBody, "body");
 AlertDialog.Action = AlertDialogAction;
 AlertDialog.Cancel = AlertDialogCancel;

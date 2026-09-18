@@ -12,6 +12,8 @@ export interface DialogProps {
 	showCloseButton?: boolean;
 	size?: DialogSize;
 	accessibilityLabel?: string;
+	/** accessibility role for the dialog card (Dialog: none, AlertDialog: alert). */
+	accessibilityRole?: "alert";
 	/** slotStyles: root wins over the library surface. */
 	slotStyles?: {
 		root?: StyleProp<ViewStyle>;
