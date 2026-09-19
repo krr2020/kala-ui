@@ -10,38 +10,19 @@ import { useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
+import {
+	SEGMENT_FONT,
+	SEGMENT_HEIGHT,
+	SEGMENT_RADIUS,
+	SEGMENT_TRACK_PADDING,
+	segmentHitSlop,
+	segmentIndicatorRadius,
+} from "./segmented-control.styles";
 import type {
 	SegmentedControlData,
 	SegmentedControlItem,
 	SegmentedControlProps,
-	SegmentedControlRadius,
-	SegmentedControlSize,
 } from "./segmented-control.types";
-
-const FONT: Record<SegmentedControlSize, number> = {
-	xs: 11,
-	sm: 13,
-	md: 14,
-	lg: 16,
-	xl: 18,
-};
-
-const HEIGHT: Record<SegmentedControlSize, number> = {
-	xs: 32,
-	sm: 36,
-	md: 40,
-	lg: 48,
-	xl: 56,
-};
-
-const RADIUS: Record<SegmentedControlRadius, number> = {
-	xs: 4,
-	sm: 6,
-	md: 8,
-	lg: 12,
-	xl: 16,
-	full: 999,
-};
 
 const resolveItem = (data: SegmentedControlData): SegmentedControlItem =>
 	typeof data === "string" ? { value: data, label: data } : data;
@@ -61,7 +42,8 @@ export function SegmentedControl({
 }: SegmentedControlProps): ReactElement {
 	const { theme } = useUnistyles();
 	const items = data.map(resolveItem);
-	// controlled lock: a provided value prop always wins over internal state
+	// controlled lock: a provided value prop always wins over internal state,
+	// even when it matches no data item (no implicit fallback to data[0])
 	const controlled = value !== undefined;
 	const [internal, setInternal] = useState<string>(
 		() => defaultValue ?? items[0]?.value ?? "",
@@ -72,7 +54,8 @@ export function SegmentedControl({
 		onValueChange?.(next);
 	};
 
-	const height = Math.max(HEIGHT[size], 44);
+	const height = SEGMENT_HEIGHT[size];
+	const hitSlop = segmentHitSlop(height);
 
 	return (
 		<View
@@ -86,8 +69,8 @@ export function SegmentedControl({
 					flexDirection: "row",
 					alignSelf: fullWidth ? "stretch" : "flex-start",
 					backgroundColor: theme.muted,
-					padding: 4,
-					borderRadius: RADIUS[radius],
+					padding: SEGMENT_TRACK_PADDING,
+					borderRadius: SEGMENT_RADIUS[radius],
 					opacity: disabled ? 0.6 : 1,
 				},
 				slotStyles?.root,
@@ -105,16 +88,16 @@ export function SegmentedControl({
 						accessibilityState={{ checked: isActive, disabled: itemDisabled }}
 						disabled={itemDisabled}
 						onPress={() => select(item.value)}
+						hitSlop={hitSlop}
 						style={applySlot(
 							{
-								minHeight: 44,
 								height,
 								minWidth: 70,
 								flex: fullWidth ? 1 : undefined,
 								alignItems: "center",
 								justifyContent: "center",
 								paddingHorizontal: 12,
-								borderRadius: RADIUS[radius],
+								borderRadius: SEGMENT_RADIUS[radius],
 							},
 							slotStyles?.segment,
 						)}
@@ -130,7 +113,7 @@ export function SegmentedControl({
 										left: 0,
 										right: 0,
 										backgroundColor: theme.background,
-										borderRadius: RADIUS[radius],
+										borderRadius: segmentIndicatorRadius(radius),
 									},
 									slotStyles?.indicator,
 								)}
@@ -139,8 +122,8 @@ export function SegmentedControl({
 						<RNText
 							style={{
 								color: isActive ? theme.foreground : theme.mutedForeground,
-								fontSize: FONT[size],
-								fontWeight: "500",
+								fontSize: SEGMENT_FONT[size],
+								fontWeight: isActive ? "600" : "500",
 							}}
 						>
 							{item.label}

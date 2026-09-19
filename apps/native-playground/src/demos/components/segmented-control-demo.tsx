@@ -1,12 +1,33 @@
 import { SegmentedControl, Text as KText } from "@kala-ui/react-native";
+import type { SegmentedControlSize } from "@kala-ui/react-native";
 import { useState } from "react";
 import { View } from "react-native";
+import type { ReactElement } from "react";
 import { DemoBlock } from "../demo-block";
 import { demoStyles } from "../stylesheet";
+
+function SizeRow({ size }: { size: SegmentedControlSize }): ReactElement {
+	const [pick, setPick] = useState("day");
+	return (
+		<View style={demoStyles.componentRow}>
+			<SegmentedControl
+				data={["day", "week", "month"]}
+				size={size}
+				value={pick}
+				onValueChange={setPick}
+				accessibilityLabel={`size ${size}`}
+			/>
+			<KText size="sm" color="muted">
+				{size}: {pick}
+			</KText>
+		</View>
+	);
+}
 
 export function SegmentedControlDemo() {
 	const [range, setRange] = useState("week");
 	const [density, setDensity] = useState("comfortable");
+	const [unit, setUnit] = useState("metric");
 	return (
 		<View style={demoStyles.routeContent} testID="k-demo-segmented-control">
 			<DemoBlock label="Range Filter — controlled">
@@ -22,28 +43,10 @@ export function SegmentedControlDemo() {
 					showing the {range} window
 				</KText>
 			</DemoBlock>
-			<DemoBlock label="Sizes">
-				<SegmentedControl
-					data={["sm", "md", "lg"]}
-					size="sm"
-					value="sm"
-					onValueChange={() => undefined}
-					accessibilityLabel="small"
-				/>
-				<SegmentedControl
-					data={["sm", "md", "lg"]}
-					size="md"
-					value="md"
-					onValueChange={() => undefined}
-					accessibilityLabel="medium"
-				/>
-				<SegmentedControl
-					data={["sm", "md", "lg"]}
-					size="lg"
-					value="lg"
-					onValueChange={() => undefined}
-					accessibilityLabel="large"
-				/>
+			<DemoBlock label="Sizes — tap to compare">
+				{(["xs", "sm", "md", "lg", "xl"] as const).map((size) => (
+					<SizeRow key={size} size={size} />
+				))}
 			</DemoBlock>
 			<DemoBlock label="Pill Radius + Full Width">
 				<SegmentedControl
@@ -59,14 +62,22 @@ export function SegmentedControlDemo() {
 				</KText>
 			</DemoBlock>
 			<DemoBlock label="Disabled">
+				<View style={demoStyles.componentRow}>
+					<SegmentedControl
+						data={["on", "hold", "off"]}
+						value="hold"
+						disabled
+						accessibilityLabel="state all"
+					/>
+				</View>
 				<SegmentedControl
 					data={[
-						{ value: "on", label: "On" },
-						{ value: "hold", label: "Hold", disabled: true },
-						{ value: "off", label: "Off" },
+						{ value: "metric", label: "Metric" },
+						{ value: "imperial", label: "Imperial", disabled: true },
 					]}
-					defaultValue="on"
-					accessibilityLabel="state"
+					value={unit}
+					onValueChange={setUnit}
+					accessibilityLabel="unit"
 				/>
 			</DemoBlock>
 		</View>
