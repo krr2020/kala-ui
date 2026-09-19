@@ -18,6 +18,8 @@ export interface BadgeProps {
 	variant?: BadgeVariant;
 	color?: BadgeColor;
 	shape?: BadgeShape;
+	/** text-line clamp — applies to string/number children only */
+	numberOfLines?: number;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */

@@ -1,15 +1,19 @@
 import type { TextStyle, ViewStyle } from "react-native";
 import { tokens } from "../../tokens";
 import type { KalaTheme } from "../../types";
+import type { BadgeColor, BadgeVariant } from "../badge/badge.types";
+import type { IndicatorColor } from "../indicator/indicator.types";
+import type { IconColor } from "../icon/icon.types";
 import type { TabsVariant } from "./tabs.types";
 
 /**
  * Style tables for the two Tabs looks. `line` (default): a bare track split
  * by a 1px themed divider, the active tab carrying a muted fill plus a 2px
- * primary underline/rail on the divider edge. `pill`: a fully-rounded bare
- * track with the active trigger filled primary. Both stay distinct from
- * SegmentedControl, whose identity is an always-filled muted track with a
- * sliding background thumb.
+ * primary underline/rail on the divider edge. `pill`: a fully-rounded muted
+ * wrapper with the active trigger filled primary (SegmentedControl instead
+ * slides a background-colored thumb inside its muted track). Count chips and
+ * status dots are the Badge and Indicator components — the helpers below
+ * only map tab context onto their variant/color props.
  */
 
 export type TabsLook = "line" | "pill";
@@ -41,6 +45,7 @@ export const tabsTrackStyle = ({
 				alignSelf: "flex-start",
 				padding: 4,
 				borderRadius: RADIUS_FULL,
+				backgroundColor: theme.muted,
 			}
 		: {
 				flexDirection: vertical ? "column" : "row",
@@ -126,51 +131,30 @@ export const tabsTabTextStyle = ({
 	fontWeight: selected ? "600" : "500",
 });
 
-// Count chip beside the label: muted on plain surfaces, card-backed on the
-// primary-filled active pill so both chip and text keep contrast.
-export const tabsBadgeStyle = ({
-	onActivePill,
-	theme,
-}: {
-	onActivePill: boolean;
-	theme: KalaTheme;
-}): ViewStyle => ({
-	borderRadius: RADIUS_FULL,
-	paddingHorizontal: 6,
-	minHeight: 18,
-	justifyContent: "center",
-	alignItems: "center",
-	maxWidth: 72,
-	alignSelf: "center",
-	backgroundColor: onActivePill ? theme.card : theme.muted,
-});
+// Count chip beside the label: subtle-muted on plain tab surfaces; solid
+// secondary keeps the chip readable on the primary-filled active pill.
+export const tabsBadgeVariant = (
+	onActivePill: boolean,
+): BadgeVariant => (onActivePill ? "solid" : "subtle");
 
-export const tabsBadgeTextStyle = ({
-	onActivePill,
-	theme,
-}: {
-	onActivePill: boolean;
-	theme: KalaTheme;
-}): TextStyle => ({
-	color: onActivePill ? theme.primary : theme.mutedForeground,
-	fontSize: 11,
-	fontWeight: "600",
-});
+export const tabsBadgeColor = (
+	onActivePill: boolean,
+): BadgeColor => (onActivePill ? "secondary" : "muted");
 
-// Notification dot pinned to the tab's trailing top corner; card-colored on
-// an active pill so it never disappears into the primary fill.
-export const tabsDotStyle = ({
-	onActivePill,
-	theme,
+// Notification dot color: primary on plain surfaces, secondary on the
+// active pill so it never disappears into the primary fill.
+export const tabsDotColor = (onActivePill: boolean): IndicatorColor =>
+	onActivePill ? "secondary" : "primary";
+
+export const tabsIconColor = ({
+	look,
+	selected,
 }: {
-	onActivePill: boolean;
-	theme: KalaTheme;
-}): ViewStyle => ({
-	position: "absolute",
-	top: 7,
-	right: 7,
-	width: 8,
-	height: 8,
-	borderRadius: 4,
-	backgroundColor: onActivePill ? theme.card : theme.primary,
-});
+	look: TabsLook;
+	selected: boolean;
+}): IconColor =>
+	look === "pill" && selected
+		? "primaryForeground"
+		: selected
+			? "foreground"
+			: "mutedForeground";

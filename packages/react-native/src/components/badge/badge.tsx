@@ -21,6 +21,7 @@ export function Badge({
 	variant = "solid",
 	color = "primary",
 	shape = "rounded",
+	numberOfLines,
 	style,
 	slotStyles,
 	testID = "k-badge",
@@ -48,6 +49,7 @@ export function Badge({
 		>
 			{isTextual(children) ? (
 				<RNText
+					numberOfLines={numberOfLines}
 					style={{
 						color: fg,
 						fontSize: 12,

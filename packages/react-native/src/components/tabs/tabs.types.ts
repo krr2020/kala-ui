@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
+import type { IconComponent } from "../icon/icon.types";
 
 /**
  * Native Tabs collapses the web compound parts (Tabs.List / Tabs.Trigger /
@@ -20,6 +21,8 @@ export interface TabsItem {
 	badge?: string | number;
 	/** notification dot pinned to the tab's trailing top corner */
 	indicator?: boolean;
+	/** icon-library glyph (lucide etc.) rendered before the label */
+	icon?: IconComponent;
 }
 
 export interface TabsProps {

@@ -1,4 +1,5 @@
 import { Tabs, Text as KText } from "@kala-ui/react-native";
+import { Calendar, Home, Search, Settings } from "lucide-react-native";
 import { useState } from "react";
 import { View } from "react-native";
 import { DemoBlock } from "../demo-block";
@@ -40,8 +41,58 @@ export function TabsDemo() {
 					]}
 				>
 					<KText size="sm" color="muted">
-						variant="pill" fills the active trigger primary; the badge flips to
-						a card chip so it stays visible
+						the pill group sits inside a rounded muted wrapper; the active
+						trigger fills primary
+					</KText>
+				</Tabs>
+			</DemoBlock>
+			<DemoBlock label="Icons — lucide glyphs per tab">
+				<Tabs
+					defaultValue="home"
+					items={[
+						{ value: "home", label: "Home", icon: Home },
+						{ value: "search", label: "Search", icon: Search },
+						{ value: "events", label: "Events", icon: Calendar },
+						{ value: "prefs", label: "Prefs", icon: Settings, disabled: true },
+					]}
+				>
+					<KText size="sm" color="muted">
+						icons tint with selection: foreground when active, muted when idle
+					</KText>
+				</Tabs>
+			</DemoBlock>
+			<DemoBlock label="Long label — bounded to two lines">
+				<Tabs
+					items={[
+						{
+							value: "territory",
+							label: "Territory management for the western region sales pod",
+						},
+						{ value: "short", label: "Short" },
+					]}
+				>
+					<KText size="sm" color="muted">
+						labels wrap at most two lines and ellipsize, so one long tab never
+						stretches the row unboundedly
+					</KText>
+				</Tabs>
+			</DemoBlock>
+			<DemoBlock label="Custom slotStyles — override list, tab, indicator">
+				<Tabs
+					defaultValue="one"
+					items={[
+						{ value: "one", label: "One" },
+						{ value: "two", label: "Two" },
+					]}
+					slotStyles={{
+						list: { borderBottomColor: "#7c3aed", paddingHorizontal: 8 },
+						tab: { paddingVertical: 10 },
+						indicator: { borderBottomColor: "#7c3aed", borderBottomWidth: 4 },
+					}}
+				>
+					<KText size="sm" color="muted">
+						slotStyles land last: a violet divider + 4px underline, roomier tab
+						padding
 					</KText>
 				</Tabs>
 			</DemoBlock>

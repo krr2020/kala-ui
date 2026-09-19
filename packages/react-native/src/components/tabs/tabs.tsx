@@ -1,13 +1,18 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
+import type { ViewStyle } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { Badge } from "../badge";
+import { Icon } from "../icon";
+import { Indicator } from "../indicator";
 import { applySlot } from "../slot-styles";
 import {
 	resolveTabsVariant,
-	tabsBadgeStyle,
-	tabsBadgeTextStyle,
-	tabsDotStyle,
+	tabsBadgeColor,
+	tabsBadgeVariant,
+	tabsDotColor,
+	tabsIconColor,
 	tabsTabStyle,
 	tabsTabTextStyle,
 	tabsTrackStyle,
@@ -63,17 +68,26 @@ export function Tabs({
 					slotStyles?.list,
 				)}
 			>
-				{items.map((item: TabsItem) => {
-					const selected = item.value === active;
-					const disabled = item.disabled === true;
-					const onActivePill = look === "pill" && selected;
-					// badge count rides the a11y name so screen-reader users hear the
-					// pending-work signal too
-					const a11yName =
-						item.badge !== undefined
-							? `${item.label} ${item.badge}`
-							: item.label;
-					return (
+			{items.map((item: TabsItem) => {
+				const selected = item.value === active;
+				const disabled = item.disabled === true;
+				const onActivePill = look === "pill" && selected;
+				// badge count rides the a11y name so screen-reader users hear the
+				// pending-work signal too
+				const a11yName =
+					item.badge !== undefined
+						? `${item.label} ${item.badge}`
+						: item.label;
+				// Indicator owns the corner dot; its wrapper carries the tab's
+				// content row so the dot anchors to the tab's top-right corner
+				const rowStyle: ViewStyle = {
+					alignSelf: "stretch",
+					flexDirection: "row",
+					alignItems: "center",
+					justifyContent: "center",
+					gap: 6,
+				};
+				return (
 						<Pressable
 							key={item.value}
 							testID="k-tab"
@@ -96,28 +110,40 @@ export function Tabs({
 									)}
 								/>
 								)}
-							{item.indicator === true && (
-								<View
-									testID="k-tab-dot"
-									style={tabsDotStyle({ onActivePill, theme })}
-								/>
-							)}
-							<RNText style={tabsTabTextStyle({ look, selected, theme })}>
-								{item.label}
-							</RNText>
-							{item.badge !== undefined && (
-								<View
-									testID="k-tab-badge"
-									style={tabsBadgeStyle({ onActivePill, theme })}
+							<Indicator
+								size={8}
+								offset={4}
+								color={tabsDotColor(onActivePill)}
+								disabled={item.indicator !== true}
+								style={rowStyle}
+							>
+								{item.icon !== undefined && (
+									<Icon
+										icon={item.icon}
+											size="sm"
+											color={tabsIconColor({ look, selected })}
+										/>
+								)}
+								<RNText
+									numberOfLines={2}
+									ellipsizeMode="tail"
+									style={tabsTabTextStyle({ look, selected, theme })}
 								>
-									<RNText
+									{item.label}
+								</RNText>
+								{item.badge !== undefined && (
+									<Badge
+										testID="k-tab-badge"
+										variant={tabsBadgeVariant(onActivePill)}
+										color={tabsBadgeColor(onActivePill)}
+										shape="pill"
 										numberOfLines={1}
-										style={tabsBadgeTextStyle({ onActivePill, theme })}
+										style={{ maxWidth: 72 }}
 									>
 										{String(item.badge)}
-									</RNText>
-								</View>
-							)}
+									</Badge>
+								)}
+							</Indicator>
 						</Pressable>
 					);
 				})}

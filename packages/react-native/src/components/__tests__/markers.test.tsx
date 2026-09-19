@@ -6,6 +6,7 @@
  */
 import { act, fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
+import { View } from "react-native";
 import { motion, tokens } from "../../tokens";
 import { themes } from "../../themes";
 import { Accordion } from "../accordion";
@@ -1115,7 +1116,7 @@ describe("component markers", () => {
 		const track = flatStyle(screen.getByTestId("k-tab-list"));
 		expect(Number(track.borderRadius)).toBe(999);
 		expect(Number(track.padding)).toBe(4);
-		expect(track.backgroundColor).toBeUndefined();
+		expect(track.backgroundColor).toBe(themes.light.muted);
 		const [one, two] = screen.getAllByTestId("k-tab");
 		expect(flatStyle(one).backgroundColor).toBe(themes.light.primary);
 		expect(Number(flatStyle(one).borderRadius)).toBe(999);
@@ -1200,42 +1201,45 @@ describe("component markers", () => {
 			).toBe(1);
 			});
 
-		it("Tabs badges and indicator dots render with adapted contrast", async () => {
-			const items = [
-				{ value: "one", label: "One", badge: 3, indicator: true },
-				{ value: "x", label: "Off", disabled: true, indicator: true },
-			];
-			const screen = await render(
-				<Tabs value="one" items={items}>
-					one body
-				</Tabs>,
-			);
-			const badge = screen.getByTestId("k-tab-badge");
-			expect(screen.getByText("3")).toBeTruthy();
-			const bs = flatStyle(badge);
-			expect(bs.backgroundColor).toBe(themes.light.muted);
-			expect(
+			it("Tabs badges and indicator dots render through Badge and Indicator", async () => {
+				const items = [
+					{ value: "one", label: "One", badge: 3, indicator: true },
+					{ value: "x", label: "Off", disabled: true, indicator: true },
+				];
+				const screen = await render(
+					<Tabs value="one" items={items}>
+						one body
+					</Tabs>,
+				);
+				const badge = screen.getByTestId("k-tab-badge");
+				expect(screen.getByText("3")).toBeTruthy();
+				// subtle + muted Badge look on a plain tab surface
+				const bs = flatStyle(badge);
+				expect(bs.backgroundColor).toBe(themes.light.muted);
+				expect(
 					Number(flatStyle(screen.getAllByTestId("k-tab")[0]).minHeight),
-			).toBe(44);
-			// badge count rides the tab's a11y name
-			expect(screen.getByRole("tab", { name: "One 3" })).toBeTruthy();
+				).toBe(44);
+				// badge count rides the tab's a11y name
+				expect(screen.getByRole("tab", { name: "One 3" })).toBeTruthy();
 
-			const dots = screen.getAllByTestId("k-tab-dot", inclHidden);
-			expect(dots.length).toBe(2);
-			expect(flatStyle(dots[0]).backgroundColor).toBe(themes.light.primary);
+				// Indicator owns the dot: its k-indicator-dot marker + theme color
+				const dots = screen.getAllByTestId("k-indicator-dot", inclHidden);
+				expect(dots.length).toBe(2);
+				expect(flatStyle(dots[0]).backgroundColor).toBe(themes.light.primary);
 
-			const pillScreen = await render(
-				<Tabs variant="pill" value="one" items={items}>
-					one body
-				</Tabs>,
-			);
-			const pillBadge = flatStyle(pillScreen.getByTestId("k-tab-badge"));
-			expect(pillBadge.backgroundColor).toBe(themes.light.card);
-			expect(
-				flatStyle(pillScreen.getAllByTestId("k-tab-dot", inclHidden)[0])
-					.backgroundColor,
-			).toBe(themes.light.card);
-		});
+				const pillScreen = await render(
+					<Tabs variant="pill" value="one" items={items}>
+						one body
+					</Tabs>,
+				);
+				// solid + secondary Badge look + secondary dot read on the primary fill
+				const pillBadge = flatStyle(pillScreen.getByTestId("k-tab-badge"));
+				expect(pillBadge.backgroundColor).toBe(themes.light.secondary);
+				expect(
+					flatStyle(pillScreen.getAllByTestId("k-indicator-dot", inclHidden)[0])
+						.backgroundColor,
+				).toBe(themes.light.secondary);
+			});
 
 		it("Tabs long badge ellipsizes without breaking the 44dp floor", async () => {
 			const screen = await render(
@@ -1254,9 +1258,108 @@ describe("component markers", () => {
 				props: { numberOfLines?: number };
 			};
 			expect(badgeText.props.numberOfLines).toBe(1);
-			expect(
+				expect(
 					Number(flatStyle(screen.getAllByTestId("k-tab")[0]).minHeight),
-			).toBeGreaterThanOrEqual(44);
+				).toBeGreaterThanOrEqual(44);
+
+				// numberOfLines is textual-only: a non-text Badge child passes through
+				// untouched (the prop is never injected into arbitrary ReactNodes)
+				const plain = await render(
+					<Badge numberOfLines={1} testID="k-badge-nl">
+						<View testID="k-badge-nl-child" />
+					</Badge>,
+				);
+				const plainChild = plain.getByTestId("k-badge-nl").children[0] as {
+					props: { numberOfLines?: number };
+				};
+				expect(plainChild.props.numberOfLines).toBeUndefined();
+			});
+
+			it("Tabs icons render through Icon with selection-aware colors", async () => {
+				const items = [
+					{ value: "one", label: "One", icon: Sun },
+					{ value: "two", label: "Two", icon: Sun },
+				];
+				const screen = await render(
+					<Tabs value="one" items={items}>
+						one body
+					</Tabs>,
+				);
+				const icons = screen.getAllByTestId("k-icon", inclHidden);
+				expect(icons.length).toBe(2);
+				// lucide carries the tint on its svg stroke — collect strokes from
+				// the JSON tree (component instances don't survive toJSON)
+				const svgColors: string[] = [];
+				const walk = (node: unknown): void => {
+					if (Array.isArray(node)) {
+						node.forEach(walk);
+						return;
+					}
+					if (node && typeof node === "object") {
+						const props = (node as { props?: Record<string, unknown> }).props;
+						if (
+							props &&
+							typeof props.stroke === "string" &&
+							props.stroke.startsWith("#")
+						) {
+							svgColors.push(props.stroke);
+						}
+						const children = (node as { children?: unknown[] }).children;
+						if (children) walk(children);
+					}
+				};
+				walk(screen.toJSON());
+				expect(svgColors[0]).toBe(themes.light.foreground);
+				expect(svgColors[1]).toBe(themes.light.mutedForeground);
+
+				const pillScreen = await render(
+					<Tabs variant="pill" value="one" items={items}>
+						one body
+					</Tabs>,
+				);
+				const pillColors: string[] = [];
+				const walkPill = (node: unknown): void => {
+					if (Array.isArray(node)) {
+						node.forEach(walkPill);
+						return;
+					}
+					if (node && typeof node === "object") {
+						const props = (node as { props?: Record<string, unknown> }).props;
+						if (
+							props &&
+							typeof props.stroke === "string" &&
+							props.stroke.startsWith("#")
+						) {
+							pillColors.push(props.stroke);
+						}
+						const children = (node as { children?: unknown[] }).children;
+						if (children) walkPill(children);
+					}
+				};
+				walkPill(pillScreen.toJSON());
+				expect(pillColors[0]).toBe(themes.light.primaryForeground);
+			});
+
+			it("Tabs long labels wrap at most two lines and keep the 44dp floor", async () => {
+				const LONG = "Territory management for the western region sales pod";
+				const screen = await render(
+					<Tabs
+						items={[
+							{ value: "one", label: LONG },
+							{ value: "two", label: "Two" },
+						]}
+					>
+						one body
+					</Tabs>,
+				);
+				const label = screen.getByText(LONG) as unknown as {
+					props: { numberOfLines?: number; ellipsizeMode?: string };
+				};
+				expect(label.props.numberOfLines).toBe(2);
+				expect(label.props.ellipsizeMode).toBe("tail");
+				expect(
+					Number(flatStyle(screen.getAllByTestId("k-tab")[0]).minHeight),
+				).toBe(44);
 			});
 
 		it("Tabs slotStyles.tab wins in both variants (slot-last precedence)", async () => {
