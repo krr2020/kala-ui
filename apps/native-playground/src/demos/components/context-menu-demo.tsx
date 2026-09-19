@@ -6,6 +6,7 @@ import { demoStyles } from "../stylesheet";
 
 export function ContextMenuDemo() {
 	const [lastAction, setLastAction] = useState("none");
+	const [linkAction, setLinkAction] = useState("none");
 	return (
 		<View style={demoStyles.routeContent} testID="k-demo-context-menu">
 			<DemoBlock label="Long Press Target">
@@ -18,6 +19,11 @@ export function ContextMenuDemo() {
 								onSelect: () => setLastAction("copy"),
 							},
 							{
+								key: "duplicate",
+								label: "Duplicate",
+								onSelect: () => setLastAction("duplicate"),
+							},
+							{
 								key: "remove",
 								label: "Remove",
 								destructive: true,
@@ -27,6 +33,35 @@ export function ContextMenuDemo() {
 					>
 						<KText size="sm" color="muted">
 							long-press me — last action: {lastAction}
+						</KText>
+					</ContextMenu>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="With Separator">
+				<View style={demoStyles.componentRow}>
+					<ContextMenu
+						items={[
+							{
+								key: "open",
+								label: "Open",
+								onSelect: () => setLinkAction("open"),
+							},
+							{
+								key: "share",
+								label: "Share",
+								onSelect: () => setLinkAction("share"),
+							},
+							{ type: "separator", key: "sep" },
+							{
+								key: "unlink",
+								label: "Remove link",
+								destructive: true,
+								onSelect: () => setLinkAction("unlink"),
+							},
+						]}
+					>
+						<KText size="sm" color="muted">
+							a link row — last action: {linkAction}
 						</KText>
 					</ContextMenu>
 				</View>

@@ -7,6 +7,7 @@
 import { act, fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
 import { motion, tokens } from "../../tokens";
+import { themes } from "../../themes";
 import { Accordion } from "../accordion";
 import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
@@ -1040,8 +1041,10 @@ describe("component markers", () => {
 			const tabs = screen.getAllByTestId("k-tab");
 			expect(tabs[0].props.accessibilityState?.selected).toBe(false);
 			expect(tabs[1].props.accessibilityState?.selected).toBe(true);
-			// the selected trigger resolves a themed surface, the idle one none
-			expect(flatStyle(tabs[1]).backgroundColor).toBeDefined();
+			// line variant: selection reads as the primary underline, not a fill
+			expect(
+				screen.getAllByTestId("k-tab-indicator", inclHidden).length,
+			).toBe(1);
 		});
 
 		it("Tabs controlled lock: value beats defaultValue and presses never override it", async () => {
@@ -1078,6 +1081,211 @@ describe("component markers", () => {
 			await fireEvent.press(off);
 			expect(onValueChange).not.toHaveBeenCalled();
 			expect(off.props.accessibilityState?.disabled).toBe(true);
+		});
+
+		it("Tabs line variant: divider under the track, muted fill + primary underline on the selected tab", async () => {
+			const screen = await render(
+				<Tabs defaultValue="one" items={TAB_ITEMS}>
+					one body
+				</Tabs>,
+			);
+			const track = flatStyle(screen.getByTestId("k-tab-list"));
+			expect(Number(track.borderBottomWidth)).toBe(1);
+			expect(track.borderBottomColor).toBe(themes.light.border);
+			expect(track.alignSelf).toBe("stretch");
+			const [one, two] = screen.getAllByTestId("k-tab");
+			expect(flatStyle(one).backgroundColor).toBe(themes.light.muted);
+			expect(flatStyle(two).backgroundColor).toBeUndefined();
+			const indicators = screen.getAllByTestId("k-tab-indicator", inclHidden);
+			expect(indicators.length).toBe(1);
+			const s = flatStyle(indicators[0]);
+			expect(Number(s.borderBottomWidth)).toBe(2);
+			expect(s.borderBottomColor).toBe(themes.light.primary);
+			});
+
+	it("Tabs pill variant: rounded track, primary-filled selected trigger", async () => {
+		const screen = await render(
+			<Tabs variant="pill" defaultValue="one" items={TAB_ITEMS}>
+				one body
+			</Tabs>,
+		);
+		expect(
+			screen.queryAllByTestId("k-tab-indicator", inclHidden).length,
+		).toBe(0);
+		const track = flatStyle(screen.getByTestId("k-tab-list"));
+		expect(Number(track.borderRadius)).toBe(999);
+		expect(Number(track.padding)).toBe(4);
+		expect(track.backgroundColor).toBeUndefined();
+		const [one, two] = screen.getAllByTestId("k-tab");
+		expect(flatStyle(one).backgroundColor).toBe(themes.light.primary);
+		expect(Number(flatStyle(one).borderRadius)).toBe(999);
+		expect(flatStyle(two).backgroundColor).toBeUndefined();
+		});
+
+		it("Tabs divider stays a border rail while SegmentedControl keeps its muted fill", async () => {
+			const screen = await render(
+				<>
+					<Tabs defaultValue="one" items={TAB_ITEMS}>
+						one body
+					</Tabs>
+					<SegmentedControl data={["day", "week"]} />
+				</>,
+			);
+			const track = flatStyle(screen.getByTestId("k-tab-list"));
+			expect(track.backgroundColor).toBeUndefined();
+			expect(track.padding).toBeUndefined();
+			const segRoot = flatStyle(screen.getByTestId("k-segmented"));
+			expect(segRoot.backgroundColor).toBe(themes.light.muted);
+			expect(Number(segRoot.padding)).toBe(4);
+		});
+
+		it("Tabs vertical line variant: leading divider rail, muted fill, primary indicator", async () => {
+			const screen = await render(
+				<Tabs orientation="vertical" defaultValue="one" items={TAB_ITEMS}>
+					one body
+				</Tabs>,
+			);
+			const track = flatStyle(screen.getByTestId("k-tab-list"));
+			expect(Number(track.borderLeftWidth)).toBe(1);
+			expect(track.borderLeftColor).toBe(themes.light.border);
+			const [one] = screen.getAllByTestId("k-tab");
+			expect(flatStyle(one).backgroundColor).toBe(themes.light.muted);
+			const s = flatStyle(screen.getAllByTestId("k-tab-indicator", inclHidden)[0]);
+			expect(Number(s.borderLeftWidth)).toBe(2);
+			expect(s.borderLeftColor).toBe(themes.light.primary);
+			expect(s.borderBottomWidth).toBeUndefined();
+			});
+
+		it("Tabs disabled styling: idle disabled dims; a locked selection keeps its indicator", async () => {
+			const items = [...TAB_ITEMS, { value: "x", label: "Off", disabled: true }];
+			const screen = await render(
+				<Tabs value="one" items={items}>
+					one body
+				</Tabs>,
+			);
+			const [one, two, off] = screen.getAllByTestId("k-tab");
+			expect(Number(flatStyle(off).opacity)).toBe(0.5);
+			expect(flatStyle(one).opacity).toBeUndefined();
+			expect(flatStyle(two).opacity).toBeUndefined();
+			expect(
+				screen.getAllByTestId("k-tab-indicator", inclHidden).length,
+			).toBe(1);
+
+			const locked = await render(
+				<Tabs value="x" items={items}>
+					x body
+				</Tabs>,
+			);
+			// selected-but-disabled: the panel pairing is the caller's state, the
+			// indicator still marks which panel is showing
+			expect(
+				locked.getAllByTestId("k-tab-indicator", inclHidden).length,
+			).toBe(1);
+		});
+
+		it("Tabs unknown variant falls back to the pure line output — no hybrid", async () => {
+			const screen = await render(
+				<Tabs
+					variant={"nope" as "line"}
+					defaultValue="one"
+					items={TAB_ITEMS}
+				>
+					one body
+				</Tabs>,
+			);
+			const [one] = screen.getAllByTestId("k-tab");
+			expect(flatStyle(one).backgroundColor).toBe(themes.light.muted);
+			expect(
+				screen.getAllByTestId("k-tab-indicator", inclHidden).length,
+			).toBe(1);
+			});
+
+		it("Tabs badges and indicator dots render with adapted contrast", async () => {
+			const items = [
+				{ value: "one", label: "One", badge: 3, indicator: true },
+				{ value: "x", label: "Off", disabled: true, indicator: true },
+			];
+			const screen = await render(
+				<Tabs value="one" items={items}>
+					one body
+				</Tabs>,
+			);
+			const badge = screen.getByTestId("k-tab-badge");
+			expect(screen.getByText("3")).toBeTruthy();
+			const bs = flatStyle(badge);
+			expect(bs.backgroundColor).toBe(themes.light.muted);
+			expect(
+					Number(flatStyle(screen.getAllByTestId("k-tab")[0]).minHeight),
+			).toBe(44);
+			// badge count rides the tab's a11y name
+			expect(screen.getByRole("tab", { name: "One 3" })).toBeTruthy();
+
+			const dots = screen.getAllByTestId("k-tab-dot", inclHidden);
+			expect(dots.length).toBe(2);
+			expect(flatStyle(dots[0]).backgroundColor).toBe(themes.light.primary);
+
+			const pillScreen = await render(
+				<Tabs variant="pill" value="one" items={items}>
+					one body
+				</Tabs>,
+			);
+			const pillBadge = flatStyle(pillScreen.getByTestId("k-tab-badge"));
+			expect(pillBadge.backgroundColor).toBe(themes.light.card);
+			expect(
+				flatStyle(pillScreen.getAllByTestId("k-tab-dot", inclHidden)[0])
+					.backgroundColor,
+			).toBe(themes.light.card);
+		});
+
+		it("Tabs long badge ellipsizes without breaking the 44dp floor", async () => {
+			const screen = await render(
+				<Tabs
+					value="one"
+					items={[
+						{ value: "one", label: "One", badge: "999+ unread messages waiting" },
+					]}
+				>
+					one body
+				</Tabs>,
+			);
+			const badge = screen.getByTestId("k-tab-badge");
+			expect(Number(flatStyle(badge).maxWidth)).toBe(72);
+			const badgeText = badge.children[0] as {
+				props: { numberOfLines?: number };
+			};
+			expect(badgeText.props.numberOfLines).toBe(1);
+			expect(
+					Number(flatStyle(screen.getAllByTestId("k-tab")[0]).minHeight),
+			).toBeGreaterThanOrEqual(44);
+			});
+
+		it("Tabs slotStyles.tab wins in both variants (slot-last precedence)", async () => {
+			const lineScreen = await render(
+				<Tabs
+					defaultValue="one"
+					items={TAB_ITEMS}
+					slotStyles={{ tab: { paddingHorizontal: 99 } }}
+				>
+					one body
+				</Tabs>,
+			);
+			expect(
+				Number(flatStyle(lineScreen.getAllByTestId("k-tab")[0]).paddingHorizontal),
+			).toBe(99);
+
+			const pillScreen = await render(
+				<Tabs
+					variant="pill"
+					defaultValue="one"
+					items={TAB_ITEMS}
+					slotStyles={{ tab: { backgroundColor: "rgb(255, 0, 0)" } }}
+				>
+					one body
+				</Tabs>,
+			);
+			expect(
+				flatStyle(pillScreen.getAllByTestId("k-tab")[0]).backgroundColor,
+			).toBe("rgb(255, 0, 0)");
 		});
 
 		it("SegmentedControl: exclusive selection, press fires, 44dp floor", async () => {

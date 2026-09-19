@@ -4,39 +4,59 @@ import { View } from "react-native";
 import { DemoBlock } from "../demo-block";
 import { demoStyles } from "../stylesheet";
 
+const PANELS: Record<string, string> = {
+	overview: "everything at a glance — counts, health, recent activity",
+	activity: "the audit trail: who changed what, newest first",
+	settings: "workspace defaults, members and billing",
+};
+
 export function TabsDemo() {
-	const [tab, setTab] = useState("one");
+	const [tab, setTab] = useState("overview");
 	return (
 		<View style={demoStyles.routeContent} testID="k-demo-tabs">
-			<DemoBlock label="Controlled">
+			<DemoBlock label="Line — divider + active fill">
 				<Tabs
 					items={[
-						{ value: "one", label: "One" },
-						{ value: "two", label: "Two" },
-						{ value: "three", label: "Three" },
+						{ value: "overview", label: "Overview" },
+						{ value: "activity", label: "Activity", badge: 3 },
+						{ value: "settings", label: "Settings", indicator: true },
 					]}
 					value={tab}
 					onValueChange={setTab}
 				>
-					<KText size="sm">
-						{tab === "one"
-							? "first tab panel"
-							: tab === "two"
-								? "second tab panel"
-								: "third tab panel"}
+					<KText size="sm" color="muted">
+						{PANELS[tab]}
 					</KText>
 				</Tabs>
 			</DemoBlock>
-			<DemoBlock label="Uncontrolled">
+			<DemoBlock label="Pill — rounded, primary fill">
 				<Tabs
+					variant="pill"
+					defaultValue="grid"
 					items={[
-						{ value: "a", label: "Overview" },
-						{ value: "b", label: "Activity" },
+						{ value: "grid", label: "Grid" },
+						{ value: "list", label: "List", badge: 12 },
+						{ value: "lock", label: "Locked", disabled: true },
 					]}
-					defaultValue="a"
 				>
 					<KText size="sm" color="muted">
-						defaultValue opens the first panel without local state
+						variant="pill" fills the active trigger primary; the badge flips to
+						a card chip so it stays visible
+					</KText>
+				</Tabs>
+			</DemoBlock>
+			<DemoBlock label="Vertical — leading rail + dot">
+				<Tabs
+					orientation="vertical"
+					defaultValue="account"
+					items={[
+						{ value: "account", label: "Account" },
+						{ value: "privacy", label: "Privacy", indicator: true },
+						{ value: "notifications", label: "Alerts", badge: "99+" },
+					]}
+				>
+					<KText size="sm" color="muted">
+						stacked tabs move the selection rail to the leading edge
 					</KText>
 				</Tabs>
 			</DemoBlock>

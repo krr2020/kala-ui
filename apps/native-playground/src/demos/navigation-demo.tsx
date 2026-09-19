@@ -1,9 +1,9 @@
 import {
-	Rating,
-	Slider,
-	Tag,
+	Accordion,
+	Collapsible,
+	SegmentedControl,
+	Tabs,
 	Text as KText,
-	Toggle,
 	ToggleGroup,
 	ToggleGroupItem,
 } from "@kala-ui/react-native";
@@ -12,52 +12,48 @@ import { View } from "react-native";
 import { DemoBlock } from "./demo-block";
 import { demoStyles } from "./stylesheet";
 
-// Group overview: the controls that ride along navigation surfaces —
-// dedicated per-component screens live in ./components.
+// Group overview: the navigation & controls family side by side — dedicated
+// per-component screens live in ./components.
 export function NavigationDemo() {
-	const [rating, setRating] = useState(3);
-	const [volume, setVolume] = useState(70);
-	const [bold, setBold] = useState(false);
-	const [align, setAlign] = useState("");
-	const [formats, setFormats] = useState<string[]>(["italic"]);
+	const [tab, setTab] = useState("one");
+	const [range, setRange] = useState("week");
+	const [align, setAlign] = useState("left");
 	return (
 		<>
-			<DemoBlock label="Tags">
-				<View style={demoStyles.componentRow} testID="k-demo-tags">
-					<Tag>beta</Tag>
-					<Tag variant="solid" color="primary">
-						v2.0
-					</Tag>
-					<Tag variant="outline" color="success" onRemove={() => undefined}>
-						clearance
-					</Tag>
-				</View>
+			<DemoBlock label="Tabs — divider + active fill">
+				<Tabs
+					items={[
+						{ value: "one", label: "One" },
+						{ value: "two", label: "Two", badge: 5 },
+						{ value: "three", label: "Three", indicator: true },
+					]}
+					value={tab}
+					onValueChange={setTab}
+				>
+					<KText size="sm" color="muted">
+						{tab === "one"
+							? "first tab panel"
+							: tab === "two"
+								? "second tab panel"
+								: "third tab panel"}
+					</KText>
+				</Tabs>
 			</DemoBlock>
-			<DemoBlock label="Rating">
-				<View style={demoStyles.componentRow} testID="k-demo-rating">
-					<Rating value={rating} onValueChange={setRating} />
-					<Rating value={3.5} allowHalf readOnly />
-				</View>
-			</DemoBlock>
-			<DemoBlock label="Slider">
-				<View testID="k-demo-slider">
-					<Slider
-						value={[volume]}
-						onValueChange={(v) => setVolume(v[0])}
-						accessibilityLabel="volume"
+			<DemoBlock label="SegmentedControl — filled track">
+				<View style={demoStyles.componentRow}>
+					<SegmentedControl
+						data={["day", "week", "month"]}
+						value={range}
+						onValueChange={setRange}
+						accessibilityLabel="range"
 					/>
-					<KText size="sm">volume {volume}</KText>
 				</View>
+				<KText size="sm" color="muted">
+					range filter over the {range} window
+				</KText>
 			</DemoBlock>
-			<DemoBlock label="Toggles">
-				<View style={demoStyles.componentRow} testID="k-demo-toggles">
-					<Toggle
-						pressed={bold}
-						onPressedChange={setBold}
-						accessibilityLabel="bold"
-					>
-						<KText size="sm">B</KText>
-					</Toggle>
+			<DemoBlock label="ToggleGroup">
+				<View style={demoStyles.componentRow}>
 					<ToggleGroup
 						type="single"
 						value={align}
@@ -68,15 +64,29 @@ export function NavigationDemo() {
 						<ToggleGroupItem value="center">Center</ToggleGroupItem>
 						<ToggleGroupItem value="right">Right</ToggleGroupItem>
 					</ToggleGroup>
-					<ToggleGroup
-						type="multiple"
-						value={formats}
-						onValueChange={(v) => setFormats(v as string[])}
-					>
-						<ToggleGroupItem value="bold">bold</ToggleGroupItem>
-						<ToggleGroupItem value="italic">italic</ToggleGroupItem>
-					</ToggleGroup>
 				</View>
+			</DemoBlock>
+			<DemoBlock label="Accordion">
+				<Accordion type="single" defaultValue="shipping" variant="bordered">
+					<Accordion.Item value="shipping">
+						<Accordion.Trigger>shipping</Accordion.Trigger>
+						<Accordion.Content>
+							<KText size="sm" color="muted">
+								free over $50, arrives in 3-5 days
+							</KText>
+						</Accordion.Content>
+					</Accordion.Item>
+				</Accordion>
+			</DemoBlock>
+			<DemoBlock label="Collapsible">
+				<Collapsible>
+					<Collapsible.Trigger>more filters</Collapsible.Trigger>
+					<Collapsible.Content>
+						<KText size="sm" color="muted">
+							expand inline details without leaving the screen
+						</KText>
+					</Collapsible.Content>
+				</Collapsible>
 			</DemoBlock>
 		</>
 	);

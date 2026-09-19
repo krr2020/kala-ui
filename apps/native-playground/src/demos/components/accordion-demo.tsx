@@ -8,7 +8,7 @@ export function AccordionDemo() {
 	const [open, setOpen] = useState<string[]>(["shipping"]);
 	return (
 		<View style={demoStyles.routeContent} testID="k-demo-accordion">
-			<DemoBlock label="Multiple Open">
+			<DemoBlock label="Bordered — multiple open">
 				<Accordion
 					type="multiple"
 					value={open}
@@ -33,7 +33,7 @@ export function AccordionDemo() {
 					</Accordion.Item>
 				</Accordion>
 			</DemoBlock>
-			<DemoBlock label="Single Open">
+			<DemoBlock label="Default — single open">
 				<Accordion type="single" defaultValue="billing">
 					<Accordion.Item value="billing">
 						<Accordion.Trigger>billing</Accordion.Trigger>
@@ -48,6 +48,26 @@ export function AccordionDemo() {
 						<Accordion.Content>
 							<KText size="sm" color="muted">
 								change email or password any time
+							</KText>
+						</Accordion.Content>
+					</Accordion.Item>
+				</Accordion>
+			</DemoBlock>
+			<DemoBlock label="Filled — with a locked item">
+				<Accordion type="single" defaultValue="faq" variant="filled">
+					<Accordion.Item value="faq">
+						<Accordion.Trigger>faq</Accordion.Trigger>
+						<Accordion.Content>
+							<KText size="sm" color="muted">
+								answers to the questions support gets most
+							</KText>
+						</Accordion.Content>
+					</Accordion.Item>
+					<Accordion.Item value="legacy" disabled>
+						<Accordion.Trigger>legacy settings</Accordion.Trigger>
+						<Accordion.Content>
+							<KText size="sm" color="muted">
+								migrated accounts only
 							</KText>
 						</Accordion.Content>
 					</Accordion.Item>

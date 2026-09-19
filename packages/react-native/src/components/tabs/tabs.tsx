@@ -2,8 +2,17 @@ import type { ReactElement } from "react";
 import { useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { tokens } from "../../tokens";
 import { applySlot } from "../slot-styles";
+import {
+	resolveTabsVariant,
+	tabsBadgeStyle,
+	tabsBadgeTextStyle,
+	tabsDotStyle,
+	tabsTabStyle,
+	tabsTabTextStyle,
+	tabsTrackStyle,
+	tabsUnderlineStyle,
+} from "./tabs.styles";
 import type { TabsItem, TabsProps } from "./tabs.types";
 
 export function Tabs({
@@ -12,6 +21,7 @@ export function Tabs({
 	defaultValue,
 	onValueChange,
 	orientation = "horizontal",
+	variant,
 	children,
 	accessibilityLabel,
 	slotStyles,
@@ -30,6 +40,7 @@ export function Tabs({
 	};
 
 	const vertical = orientation === "vertical";
+	const look = resolveTabsVariant(variant);
 
 	return (
 		<View
@@ -48,47 +59,65 @@ export function Tabs({
 				accessible={true}
 				accessibilityRole="tablist"
 				style={applySlot(
-					{
-						flexDirection: vertical ? "column" : "row",
-						gap: 4,
-					},
+					tabsTrackStyle({ look, vertical, theme }),
 					slotStyles?.list,
 				)}
 			>
 				{items.map((item: TabsItem) => {
 					const selected = item.value === active;
 					const disabled = item.disabled === true;
+					const onActivePill = look === "pill" && selected;
+					// badge count rides the a11y name so screen-reader users hear the
+					// pending-work signal too
+					const a11yName =
+						item.badge !== undefined
+							? `${item.label} ${item.badge}`
+							: item.label;
 					return (
 						<Pressable
 							key={item.value}
 							testID="k-tab"
 							accessibilityRole="tab"
-							accessibilityLabel={item.label}
+							accessibilityLabel={a11yName}
 							accessibilityState={{ selected, disabled }}
 							disabled={disabled}
 							onPress={() => select(item.value)}
 							style={applySlot(
-								{
-									minHeight: 44,
-									paddingHorizontal: 14,
-									justifyContent: "center",
-									borderRadius: tokens.radius.control,
-									backgroundColor: selected ? theme.accent : "transparent",
-								},
+								tabsTabStyle({ look, selected, disabled, theme }),
 								slotStyles?.tab,
 							)}
 						>
-							<RNText
-								style={{
-									color: selected
-										? theme.accentForeground
-										: theme.mutedForeground,
-									fontSize: 14,
-									fontWeight: selected ? "600" : "500",
-								}}
-							>
+							{look === "line" && selected && (
+								<View
+									testID="k-tab-indicator"
+									style={applySlot(
+										tabsUnderlineStyle({ theme, vertical }),
+										slotStyles?.indicator,
+									)}
+								/>
+								)}
+							{item.indicator === true && (
+								<View
+									testID="k-tab-dot"
+									style={tabsDotStyle({ onActivePill, theme })}
+								/>
+							)}
+							<RNText style={tabsTabTextStyle({ look, selected, theme })}>
 								{item.label}
 							</RNText>
+							{item.badge !== undefined && (
+								<View
+									testID="k-tab-badge"
+									style={tabsBadgeStyle({ onActivePill, theme })}
+								>
+									<RNText
+										numberOfLines={1}
+										style={tabsBadgeTextStyle({ onActivePill, theme })}
+									>
+										{String(item.badge)}
+									</RNText>
+								</View>
+							)}
 						</Pressable>
 					);
 				})}

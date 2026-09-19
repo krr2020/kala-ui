@@ -6,9 +6,10 @@ import { demoStyles } from "../stylesheet";
 
 export function SegmentedControlDemo() {
 	const [range, setRange] = useState("week");
+	const [density, setDensity] = useState("comfortable");
 	return (
 		<View style={demoStyles.routeContent} testID="k-demo-segmented-control">
-			<DemoBlock label="Range Filter">
+			<DemoBlock label="Range Filter — controlled">
 				<View style={demoStyles.componentRow}>
 					<SegmentedControl
 						data={["day", "week", "month"]}
@@ -21,13 +22,52 @@ export function SegmentedControlDemo() {
 					showing the {range} window
 				</KText>
 			</DemoBlock>
-			<DemoBlock label="Uncontrolled">
-				<View style={demoStyles.componentRow}>
-					<SegmentedControl
-						data={["compact", "comfortable"]}
-						defaultValue="comfortable"
-					/>
-				</View>
+			<DemoBlock label="Sizes">
+				<SegmentedControl
+					data={["sm", "md", "lg"]}
+					size="sm"
+					value="sm"
+					onValueChange={() => undefined}
+					accessibilityLabel="small"
+				/>
+				<SegmentedControl
+					data={["sm", "md", "lg"]}
+					size="md"
+					value="md"
+					onValueChange={() => undefined}
+					accessibilityLabel="medium"
+				/>
+				<SegmentedControl
+					data={["sm", "md", "lg"]}
+					size="lg"
+					value="lg"
+					onValueChange={() => undefined}
+					accessibilityLabel="large"
+				/>
+			</DemoBlock>
+			<DemoBlock label="Pill Radius + Full Width">
+				<SegmentedControl
+					data={["compact", "cozy", "roomy"]}
+					radius="full"
+					fullWidth
+					value={density}
+					onValueChange={setDensity}
+					accessibilityLabel="density"
+				/>
+				<KText size="sm" color="muted">
+					density: {density}
+				</KText>
+			</DemoBlock>
+			<DemoBlock label="Disabled">
+				<SegmentedControl
+					data={[
+						{ value: "on", label: "On" },
+						{ value: "hold", label: "Hold", disabled: true },
+						{ value: "off", label: "Off" },
+					]}
+					defaultValue="on"
+					accessibilityLabel="state"
+				/>
 			</DemoBlock>
 		</View>
 	);

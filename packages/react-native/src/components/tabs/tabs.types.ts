@@ -10,10 +10,16 @@ import type { StyleProp, ViewStyle } from "react-native";
  * no keyboard on touch; selection is a press, mirroring the RadioGroup
  * precedent.
  */
+export type TabsVariant = "line" | "pill";
+
 export interface TabsItem {
 	value: string;
 	label: string;
 	disabled?: boolean;
+	/** count chip rendered beside the label; also appended to the a11y name */
+	badge?: string | number;
+	/** notification dot pinned to the tab's trailing top corner */
+	indicator?: boolean;
 }
 
 export interface TabsProps {
@@ -23,6 +29,8 @@ export interface TabsProps {
 	defaultValue?: string;
 	onValueChange?: (value: string) => void;
 	orientation?: "horizontal" | "vertical";
+	/** Look: "line" (default — bare track + primary underline) or "pill" (filled active trigger). */
+	variant?: TabsVariant;
 	children?: ReactNode;
 	accessibilityLabel?: string;
 	/** slotStyles: root wins over the library surface. */
@@ -30,6 +38,8 @@ export interface TabsProps {
 		root?: StyleProp<ViewStyle>;
 		list?: StyleProp<ViewStyle>;
 		tab?: StyleProp<ViewStyle>;
+		/** line variant only — the underline/rail of the selected tab. */
+		indicator?: StyleProp<ViewStyle>;
 	};
 	testID?: string;
 }
