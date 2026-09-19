@@ -9,12 +9,19 @@
 
 import { ChevronDown } from "lucide-react-native";
 import type { ReactElement, ReactNode } from "react";
-import { createContext, useContext, useState } from "react";
+import { Children, createContext, isValidElement, useContext, useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Icon } from "../icon";
 import { applySlot } from "../slot-styles";
+import {
+	contentSurface,
+	itemSurface,
+	openTint,
+	toValues,
+	triggerSurface,
+} from "./accordion.styles";
 import type {
 	AccordionContentProps,
 	AccordionItemProps,
@@ -43,8 +50,8 @@ interface ItemState {
 const AccordionContext = createContext<GroupState | null>(null);
 const ItemContext = createContext<ItemState | null>(null);
 
-const toValues = (value: string | string[] | undefined): string[] =>
-	Array.isArray(value) ? value : value === undefined ? [] : [value];
+/** Slot for the item's position in the stack; recomputed every render. */
+const ItemLastContext = createContext(true);
 
 function Root(props: AccordionProps): ReactElement {
 	const {
@@ -84,6 +91,20 @@ function Root(props: AccordionProps): ReactElement {
 		notify?.(type === "single" ? (next[0] ?? "") : next);
 	};
 
+	// slot derivation: last = no later valid element follows; recomputed
+	// every render so dynamic lists never keep stale dividers/margins
+	const total = Children.toArray(children).filter(isValidElement).length;
+	let seen = 0;
+	const indexed = Children.map(children, (child) => {
+		if (!isValidElement(child)) return child;
+		seen += 1;
+		return (
+			<ItemLastContext.Provider value={seen === total}>
+				{child}
+			</ItemLastContext.Provider>
+		);
+	});
+
 	return (
 		<AccordionContext.Provider
 			value={{
@@ -102,7 +123,7 @@ function Root(props: AccordionProps): ReactElement {
 				accessibilityLabel={accessibilityLabel}
 				style={applySlot({}, slotStyles?.root)}
 			>
-				{children}
+				{indexed}
 			</View>
 		</AccordionContext.Provider>
 	);
@@ -116,23 +137,11 @@ function Item({
 	testID = "k-accordion-item",
 }: AccordionItemProps): ReactElement {
 	const group = useContext(AccordionContext);
+	const last = useContext(ItemLastContext);
 	const { theme } = useUnistyles();
 	const variant = group?.variant ?? "default";
 
-	const base: ViewStyle = {
-		backgroundColor: theme.card,
-		borderColor: theme.border,
-		// web's `last:border-b-0` has no RN selector — every default row
-		// keeps its divider; boxed variants round and separate instead
-		...(variant === "default"
-			? { borderBottomWidth: 1 }
-			: {
-					borderWidth: 1,
-					borderRadius: 8,
-					marginBottom: 8,
-					overflow: "hidden",
-				}),
-	};
+	const base = itemSurface(variant, last, theme);
 
 	return (
 		<ItemContext.Provider value={{ value, disabled }}>
@@ -180,22 +189,9 @@ function Trigger({
 	const variant = group?.variant ?? "default";
 	const disabled = item?.disabled === true || group?.disabled === true;
 
-	const base: ViewStyle = {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
-		gap: 12,
-		minHeight: 44,
-		paddingVertical: variant === "default" ? 16 : 14,
-		...(variant !== "default" ? { paddingHorizontal: 16 } : {}),
-	};
+	const base = triggerSurface(variant);
 	// open tint per variant: none / accent / primary (web accordion arms)
-	const openTint: ViewStyle =
-		variant === "bordered"
-			? { backgroundColor: theme.accent }
-			: variant === "filled"
-				? { backgroundColor: theme.primary }
-				: {};
+	const tint = openTint(variant, theme.accent, theme.primary);
 	// literal unions differ per token — widen to string for the variant swap
 	let fg: string = theme.foreground;
 	if (open && variant === "bordered") fg = theme.primary;
@@ -215,10 +211,7 @@ function Trigger({
 			style={applySlot(
 				applySlot(
 					applySlot(
-						applySlot(
-							applySlot(base, openTint),
-							disabled ? { opacity: 0.5 } : {},
-						),
+						applySlot(applySlot(base, tint), disabled ? { opacity: 0.5 } : {}),
 						style,
 					),
 					group?.triggerStyles,
@@ -251,13 +244,7 @@ function Content({
 	if (!group || !item || !group.values.includes(item.value)) return null;
 	const variant = group.variant;
 
-	const base: ViewStyle = {
-		overflow: "hidden",
-		paddingBottom: 16,
-		paddingTop: variant === "default" ? 4 : 8,
-		...(variant !== "default" ? { paddingHorizontal: 16 } : {}),
-		...(variant === "filled" ? { backgroundColor: theme.muted } : {}),
-	};
+	const base = contentSurface(variant);
 
 	return (
 		<View

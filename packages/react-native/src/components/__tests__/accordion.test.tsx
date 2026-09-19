@@ -6,6 +6,7 @@
  */
 import { fireEvent, render } from "@testing-library/react-native";
 import { Accordion } from "../accordion";
+import { toValues } from "../accordion/accordion.styles";
 
 const incl = { includeHiddenElements: true } as const;
 
@@ -34,7 +35,137 @@ const twoItems = (
 	</Accordion>
 );
 
-describe("Accordion", () => {
+	describe("Accordion", () => {
+	it("default variant: only non-last items draw the bottom divider", async () => {
+		const screen = await render(
+			<Accordion type="single">
+				<Accordion.Item value="a">
+					<Accordion.Trigger>Alpha</Accordion.Trigger>
+				</Accordion.Item>
+				<Accordion.Item value="b">
+					<Accordion.Trigger>Beta</Accordion.Trigger>
+				</Accordion.Item>
+				<Accordion.Item value="c">
+					<Accordion.Trigger>Gamma</Accordion.Trigger>
+				</Accordion.Item>
+			</Accordion>,
+		);
+		const rows = screen.getAllByTestId("k-accordion-item", incl).map(flatStyle);
+		expect(Number(rows[0].borderBottomWidth)).toBe(1);
+		expect(Number(rows[1].borderBottomWidth)).toBe(1);
+		// web's last:border-b-0 — the final row carries no divider
+		expect(rows[2].borderBottomWidth ?? 0).toBe(0);
+	});
+
+	it("single-item default accordion has no divider (first=last)", async () => {
+		const screen = await render(
+			<Accordion type="single">
+				<Accordion.Item value="a">
+					<Accordion.Trigger>Alpha</Accordion.Trigger>
+				</Accordion.Item>
+			</Accordion>,
+		);
+		const row = flatStyle(screen.getByTestId("k-accordion-item", incl));
+		expect(row.borderBottomWidth ?? 0).toBe(0);
+	});
+
+	it("boxed variants space items between-only: no trailing margin after the last", async () => {
+		for (const variant of ["bordered", "filled"] as const) {
+			const screen = await render(
+				<Accordion type="single" variant={variant}>
+					<Accordion.Item value="a">
+						<Accordion.Trigger>Alpha</Accordion.Trigger>
+					</Accordion.Item>
+					<Accordion.Item value="b">
+						<Accordion.Trigger>Beta</Accordion.Trigger>
+					</Accordion.Item>
+				</Accordion>,
+			);
+			const rows = screen.getAllByTestId("k-accordion-item", incl).map(flatStyle);
+			expect(Number(rows[0].marginBottom)).toBe(8);
+			expect(Number(rows[0].borderWidth)).toBe(1);
+			expect(Number(rows[0].borderRadius)).toBe(8);
+			expect(rows[1].marginBottom ?? 0).toBe(0);
+		}
+	});
+
+	it("rerender re-derives slots: removing the last drops its divider/margin", async () => {
+		const three = (
+			<Accordion type="single">
+				<Accordion.Item value="a">
+					<Accordion.Trigger>Alpha</Accordion.Trigger>
+				</Accordion.Item>
+				<Accordion.Item value="b">
+					<Accordion.Trigger>Beta</Accordion.Trigger>
+				</Accordion.Item>
+				<Accordion.Item value="c">
+					<Accordion.Trigger>Gamma</Accordion.Trigger>
+				</Accordion.Item>
+		</Accordion>);
+		const screen = await render(three);
+		await screen.rerender(
+			<Accordion type="single">
+				<Accordion.Item value="a">
+					<Accordion.Trigger>Alpha</Accordion.Trigger>
+				</Accordion.Item>
+				<Accordion.Item value="b">
+					<Accordion.Trigger>Beta</Accordion.Trigger>
+				</Accordion.Item>
+			</Accordion>,
+		);
+		const rows = screen.getAllByTestId("k-accordion-item", incl).map(flatStyle);
+		expect(Number(rows[0].borderBottomWidth)).toBe(1);
+		expect(rows[1].borderBottomWidth ?? 0).toBe(0);
+		// and growing back re-adds the divider
+		await screen.rerender(three);
+		expect(
+			Number(flatStyle(screen.getAllByTestId("k-accordion-item", incl)[1]).borderBottomWidth),
+		).toBe(1);
+	});
+
+	it("non-element children between items do not shift slot derivation", async () => {
+		const screen = await render(
+			<Accordion type="single">
+				{null}
+				{false}
+				<Accordion.Item value="a">
+					<Accordion.Trigger>Alpha</Accordion.Trigger>
+				</Accordion.Item>
+				{null}
+				<Accordion.Item value="b">
+					<Accordion.Trigger>Beta</Accordion.Trigger>
+				</Accordion.Item>
+				{null}
+			</Accordion>,
+		);
+		const rows = screen.getAllByTestId("k-accordion-item", incl).map(flatStyle);
+		expect(Number(rows[0].borderBottomWidth)).toBe(1);
+		expect(rows[1].borderBottomWidth ?? 0).toBe(0);
+	});
+
+	it("toValues: '' and undefined normalize to empty; strings and arrays pass through", () => {
+		expect(toValues("")).toEqual([]);
+		expect(toValues(undefined)).toEqual([]);
+		expect(toValues("a")).toEqual(["a"]);
+		expect(toValues(["a", "b"])).toEqual(["a", "b"]);
+	});
+
+	it("controlled single value='' opens nothing while presses still report", async () => {
+		const onValueChange = jest.fn();
+		const screen = await render(
+			<Accordion type="single" value="" onValueChange={onValueChange}>
+				<Accordion.Item value="a">
+					<Accordion.Trigger>Alpha</Accordion.Trigger>
+					<Accordion.Content>alpha body</Accordion.Content>
+				</Accordion.Item>
+			</Accordion>,
+		);
+		expect(screen.queryAllByTestId("k-accordion-content")).toHaveLength(0);
+		await fireEvent.press(screen.getByTestId("k-accordion-trigger", incl));
+		expect(onValueChange).toHaveBeenCalledWith("a");
+		expect(screen.queryAllByTestId("k-accordion-content")).toHaveLength(0);
+	});
+
 	it("renders root, item, trigger and content markers when open; closed content unmounts", async () => {
 		const screen = await render(
 			<Accordion type="single" defaultValue="a">
