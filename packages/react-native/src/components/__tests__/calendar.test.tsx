@@ -308,7 +308,9 @@ it("renders the k-calendar marker with weekday header and a 6x7 grid", async () 
 
 	it("CalendarSkeleton renders a bounded grid", async () => {
 		const screen: Screen = await render(<CalendarSkeleton cellCount={35} />);
-		expect(screen.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
+		expect(
+			screen.getAllByTestId("k-skeleton", inclHidden).length,
+		).toBeGreaterThan(0);
 	});
 
 	describe("month/year picker", () => {

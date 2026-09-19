@@ -11,6 +11,10 @@ import { CopyButton } from "@kala-ui/react-native-app";
 const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 describe("CopyButton", () => {
+	it("renders the core Button primitive under this package's jest harness", async () => {
+		const screen = await render(<CopyButton value="hello" />);
+		expect(screen.getByTestId("k-copy-button")).toBeTruthy();
+	});
 	it("copies the value via the injected writer and announces the copied state", async () => {
 		const writeClipboard = jest.fn().mockResolvedValue(undefined);
 		const screen = await render(

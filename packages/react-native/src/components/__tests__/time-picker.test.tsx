@@ -2,6 +2,9 @@ import { fireEvent, render } from "@testing-library/react-native";
 import type { TimeValue } from "../time-picker";
 import { TimePicker } from "../time-picker";
 
+// the skeleton surface is a11y-hidden by design — queries must opt in
+const inclHidden = { includeHiddenElements: true } as const;
+
 type Screen = Awaited<ReturnType<typeof render>>;
 
 function flatStyle(node: {
@@ -146,7 +149,7 @@ describe("TimePicker", () => {
 
 	it("isLoading keeps the k-time-picker marker on the skeleton", async () => {
 		const screen: Screen = await render(<TimePicker isLoading />);
-		expect(screen.getByTestId("k-time-picker")).toBeTruthy();
+		expect(screen.getByTestId("k-time-picker", inclHidden)).toBeTruthy();
 		expect(screen.queryByTestId("k-time-picker-hour")).toBeNull();
 	});
 });

@@ -60,9 +60,7 @@
 		--kala-control-h: 2.5rem; /* default control height */
 		--kala-control-px: 1rem; /* default control horizontal padding */
 		--kala-card-pad: 1.5rem; /* card header/body/footer padding */
-		--kala-radius-input: var(
-			--kala-radius-control
-		); /* inputs, selects — falls back to the control radius when unset */
+		--kala-radius-input: var(--kala-radius-control); /* inputs, selects — falls back to the control radius when unset */
 		/* Motion — every `transition-*` utility consumes these via the
 	   Tailwind default-transition chain, so one override retunes the whole library. */
 		--kala-duration-fast: 120ms;

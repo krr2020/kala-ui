@@ -44,7 +44,7 @@ describe("Forms rewrite contract", () => {
 		);
 		const control = screen.getByTestId("k-text-input");
 		expect(control.props.accessibilityLabel).toBe(
-			"Email, we never share it, invalid",
+			"Email, we never share it, enter a valid email",
 		);
 		expect(
 			screen.getByTestId("k-field-error").props.accessibilityLiveRegion,
@@ -66,7 +66,7 @@ describe("Forms rewrite contract", () => {
 		const loading = await render(
 			<Checkbox isLoading accessibilityLabel="agree" />,
 		);
-		expect(loading.getByTestId("k-checkbox")).toBeTruthy();
+		expect(loading.getByTestId("k-checkbox", inclHidden)).toBeTruthy();
 	});
 
 	it("RadioGroup: defaultValue uncontrolled, description announced, checked re-press is a no-op", async () => {

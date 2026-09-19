@@ -66,8 +66,8 @@ export function thumb(
 	// dark), the off-knob mutedForeground (soft slate in dark, visible on
 	// the input pill yet never stark white)
 		backgroundColor: value ? theme.primaryForeground : theme.mutedForeground,
-		elevation: disabled ? 0 : 2,
-		shadowColor: "#000000",
+	elevation: disabled ? 0 : 2,
+	shadowColor: theme.shadowColor,
 		shadowOpacity: disabled ? 0 : 0.15,
 		shadowRadius: 2,
 		shadowOffset: { width: 0, height: 1 },

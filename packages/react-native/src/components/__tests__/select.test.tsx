@@ -62,7 +62,7 @@ describe("Select trigger", () => {
 
 	it("isLoading keeps the k-select marker on the skeleton surface", async () => {
 		const screen: Screen = await render(<Select options={OPTIONS} isLoading />);
-		expect(screen.getByTestId("k-select")).toBeTruthy();
+		expect(screen.getByTestId("k-select", inclHidden)).toBeTruthy();
 		expect(screen.queryByTestId("k-select-value")).toBeNull();
 	});
 

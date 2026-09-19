@@ -17,8 +17,8 @@ export function track(theme: KalaTheme): ViewStyle {
 	return {
 		height: TRACK_H,
 		borderRadius: TRACK_H / 2,
-		// input, not muted: on the light page muted (#f1f5f9) is nearly
-		// invisible — input (#e2e8f0) is the Switch off-track contrast token
+		// input, not muted: on the light page muted is nearly
+		// invisible — input is the Switch off-track contrast token
 		backgroundColor: theme.input,
 		justifyContent: "center",
 	};

@@ -108,7 +108,7 @@ describe("DatePicker", () => {
 
 	it("isLoading keeps the k-date-picker marker on the skeleton surface", async () => {
 		const screen: Screen = await render(<DatePicker isLoading />);
-		expect(screen.getByTestId("k-date-picker")).toBeTruthy();
+		expect(screen.getByTestId("k-date-picker", inclHidden)).toBeTruthy();
 		expect(screen.queryByTestId("k-sheet-content")).toBeNull();
 	});
 
@@ -257,7 +257,9 @@ describe("DateRangePicker", () => {
 
 	it("isLoading keeps the range marker on the skeleton surface", async () => {
 		const screen: Screen = await render(<DateRangePicker isLoading />);
-		expect(screen.getByTestId("k-date-picker-date-range-picker")).toBeTruthy();
+		expect(
+			screen.getByTestId("k-date-picker-date-range-picker", inclHidden),
+		).toBeTruthy();
 	});
 
 	it("explicit accessibilityLabel merges with the picked range for TalkBack", async () => {

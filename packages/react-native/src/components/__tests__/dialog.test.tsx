@@ -7,7 +7,7 @@
 
 import { readFileSync } from "node:fs";
 import { act, render } from "@testing-library/react-native";
-import { Platform, Text } from "react-native";
+import { Platform } from "react-native";
 import { themes } from "../../themes";
 import { tokens } from "../../tokens";
 import { AlertDialog } from "../alert-dialog";

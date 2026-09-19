@@ -5,7 +5,7 @@
  * Displays month header and calendar grid.
  */
 
-import * as React from "react";
+import type * as React from "react";
 
 import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton";

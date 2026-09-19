@@ -3,17 +3,10 @@
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 import type * as React from "react";
 import { progressStyles } from "../../config/progress";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import type { ProgressBarProps, ProgressProps } from "./progress.types";
 
-type ProgressColor =
-	| "primary"
-	| "secondary"
-	| "destructive"
-	| "success"
-	| "warning"
-	| "info";
 type ProgressSize = "sm" | "md" | "lg";
 
 const sizeClasses = progressStyles.sizes;
@@ -160,11 +153,7 @@ function ProgressGroup({
 			data-kala-component="progress-group"
 			ref={ref}
 			role="presentation"
-			className={cn(
-				progressStyles.group,
-				sizeClasses[size],
-				className,
-			)}
+			className={cn(progressStyles.group, sizeClasses[size], className)}
 			{...props}
 		>
 			{children}

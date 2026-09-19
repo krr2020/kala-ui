@@ -4,9 +4,8 @@ import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { cva, type VariantProps } from "class-variance-authority";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
-
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
 import { Box } from "../box";
 
 export const accordionVariants = cva("w-full", {
@@ -67,11 +66,6 @@ function AccordionItem({
 			{...props}
 		/>
 	);
-}
-
-interface AccordionTriggerProps
-	extends React.ComponentProps<typeof AccordionPrimitive.Trigger> {
-	slotStyles?: SlotStyles;
 }
 
 function AccordionTrigger({

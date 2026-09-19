@@ -113,6 +113,26 @@ jest.mock("react-native-gesture-handler", () => {
 			const { View } = require("react-native");
 			return React.createElement(View, props);
 		},
+		// the core-source Button renders RNGH's Pressable (its press completes
+		// as a native gesture, firing on the first tap that also dismisses the
+		// software keyboard); pass it through to RN's real Pressable, resolving
+		// style/children callback forms so style assertions never walk
+		// unresolved functions — mirrors the core package's harness
+		Pressable: (props: Record<string, unknown>) => {
+			const { Pressable } = require("react-native");
+			const resolve = (value: unknown): unknown =>
+				typeof value === "function" && value.prototype === undefined
+					? value({ pressed: false })
+					: value;
+			const next: Record<string, unknown> = {
+				...props,
+				style: resolve(props.style),
+			};
+			if (typeof props.children === "function") {
+				next.children = resolve(props.children);
+			}
+			return React.createElement(Pressable, next);
+		},
 	};
 });
 

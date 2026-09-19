@@ -108,7 +108,7 @@ describe("Collapsible", () => {
 	it("trigger layout arms: string label flexes, chevron rides row end in both arms", async () => {
 		const walk = (node: unknown, found: string[]): string[] => {
 			if (Array.isArray(node)) {
-				node.forEach((c) => walk(c, found));
+				for (const child of node) walk(child, found);
 				return found;
 			}
 			if (node && typeof node === "object") {

@@ -161,7 +161,7 @@ describe("Checkbox", () => {
 
 	it("isLoading renders the skeleton keeping the marker, no box", async () => {
 		const screen: Screen = await render(<Checkbox isLoading />);
-		expect(screen.getByTestId("k-checkbox")).toBeTruthy();
+		expect(screen.getByTestId("k-checkbox", inclHidden)).toBeTruthy();
 		expect(screen.queryByTestId("k-checkbox-box", inclHidden)).toBeNull();
 	});
 

@@ -1476,7 +1476,16 @@ describe("component markers", () => {
 			);
 			let segs = screen.getAllByTestId("k-segment");
 			expect(segs[0].props.accessibilityState?.checked).toBe(true);
-			expect(Number(flatStyle(segs[0]).minHeight)).toBeGreaterThanOrEqual(44);
+			// 44dp floor = visual height + vertical-only hitSlop (never
+			// sideways, so adjacent segments cannot steal each other's taps)
+			const hit = segs[0].props.hitSlop as
+				| { top?: number; bottom?: number }
+				| undefined;
+			expect(
+				Number(flatStyle(segs[0]).height) +
+					Number(hit?.top ?? 0) +
+					Number(hit?.bottom ?? 0),
+			).toBeGreaterThanOrEqual(44);
 			expect(
 				screen.getAllByTestId("k-segment-indicator", inclHidden).length,
 			).toBe(1);

@@ -4,9 +4,8 @@ import { useDisclosure, useUncontrolled } from "@kala-ui/react-hooks";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { Check, ChevronsUpDown, X } from "lucide-react";
 import * as React from "react";
-
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { type SlotStyles, applySlot, mergeStyle } from "../../lib/slot-styles";
 import { Button } from "../button";
 import {
 	Command,

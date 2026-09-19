@@ -6,6 +6,9 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { Textarea } from "../textarea";
 
+// the skeleton surface is a11y-hidden by design — queries must opt in
+const inclHidden = { includeHiddenElements: true } as const;
+
 const flatStyle = (node: {
 	props: { style?: unknown };
 }): Record<string, number | string> =>
@@ -89,9 +92,11 @@ describe("Textarea", () => {
 	it("isLoading swaps to the Skeleton surface while keeping the marker", async () => {
 		const screen = await render(<Textarea isLoading accessibilityLabel="b" />);
 		// marker survives for E2E; the skeleton block is the visible body
-		expect(screen.getByTestId("k-textarea")).toBeTruthy();
-		expect(screen.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
-		const s = flatStyle(screen.getByTestId("k-textarea"));
+		expect(screen.getByTestId("k-textarea", inclHidden)).toBeTruthy();
+		expect(screen.getAllByTestId("k-skeleton", inclHidden).length).toBeGreaterThan(
+			0,
+		);
+		const s = flatStyle(screen.getByTestId("k-textarea", inclHidden));
 		expect(Number(s.minHeight)).toBeGreaterThanOrEqual(80);
 	});
 
@@ -99,9 +104,9 @@ describe("Textarea", () => {
 		const screen = await render(<Textarea isLoading rows={5} />);
 		const idle = await render(<Textarea isLoading />);
 		expect(
-			Number(flatStyle(screen.getByTestId("k-textarea")).minHeight),
+			Number(flatStyle(screen.getByTestId("k-textarea", inclHidden)).minHeight),
 		).toBeGreaterThan(
-			Number(flatStyle(idle.getByTestId("k-textarea")).minHeight),
+			Number(flatStyle(idle.getByTestId("k-textarea", inclHidden)).minHeight),
 		);
 	});
 

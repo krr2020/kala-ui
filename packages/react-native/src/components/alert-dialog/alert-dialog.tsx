@@ -19,11 +19,7 @@ import { DialogDescription } from "../dialog/dialog-description";
 import { DialogFooter } from "../dialog/dialog-footer";
 import { DialogHeader } from "../dialog/dialog-header";
 import { DialogTitle } from "../dialog/dialog-title";
-import type {
-	AlertDialogPartProps,
-	AlertDialogProps,
-	AlertDialogTextProps,
-} from "./alert-dialog.types";
+import type { AlertDialogProps } from "./alert-dialog.types";
 
 interface AlertDialogContextValue {
 	close: () => void;

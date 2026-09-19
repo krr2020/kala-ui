@@ -4,7 +4,7 @@ import { Minus, Plus } from "lucide-react";
 import * as React from "react";
 
 import { numberInputStyles } from "../../config/number-input";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton/skeleton";
 import type { NumberInputProps } from "./number-input.types";
@@ -154,7 +154,11 @@ function NumberInput({
 		return (
 			<Skeleton
 				data-kala-component="number-input"
-				className={cn("w-full rounded-md", size === "sm" ? "h-8" : "h-10", root.className)}
+				className={cn(
+					"w-full rounded-md",
+					size === "sm" ? "h-8" : "h-10",
+					root.className,
+				)}
 				style={rootStyle}
 			/>
 		);
@@ -196,7 +200,7 @@ function NumberInput({
 				disabled={disabled || isAtMin}
 				className={decrementSlot.className}
 				style={decrementSlot.style}
-		>
+			>
 				<Minus
 					aria-hidden="true"
 					className={cn("stroke-2", size === "sm" ? "h-3 w-3" : "h-4 w-4")}

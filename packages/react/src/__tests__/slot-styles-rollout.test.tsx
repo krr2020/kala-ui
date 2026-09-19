@@ -9,30 +9,49 @@
  * provider), error-boundary (class wrapper), design-system (docs helper).
  */
 import fs from "node:fs";
-import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { Accordion, AccordionItem, AccordionTrigger } from "../components/accordion";
-import { AlertDialog, AlertDialogContent, AlertDialogTrigger } from "../components/alert-dialog";
+import {
+	Accordion,
+	AccordionItem,
+	AccordionTrigger,
+} from "../components/accordion";
+import {
+	AlertDialog,
+	AlertDialogContent,
+	AlertDialogTrigger,
+} from "../components/alert-dialog";
 import { AspectRatio } from "../components/aspect-ratio";
 import { Avatar, AvatarFallback } from "../components/avatar";
 import { Box } from "../components/box";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { Burger } from "../components/burger";
 import { ButtonGroup } from "../components/button-group";
-import { Calendar } from "../components/calendar";
 import { Center } from "../components/center";
 import { Checkbox } from "../components/checkbox";
 import { Code } from "../components/code";
 import { Collapse } from "../components/collapse";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../components/collapsible";
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "../components/collapsible";
 import { ColorInput } from "../components/color-input";
 import { Combobox } from "../components/combobox";
-import { Command, CommandInput, CommandItem, CommandList } from "../components/command";
+import {
+	Command,
+	CommandInput,
+	CommandItem,
+	CommandList,
+} from "../components/command";
 import { Container } from "../components/container";
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "../components/context-menu";
+import {
+	ContextMenu,
+	ContextMenuContent,
+	ContextMenuTrigger,
+} from "../components/context-menu";
 import { CopyButton } from "../components/copy-button";
 import { Drawer, DrawerContent, DrawerTrigger } from "../components/drawer";
 import { Field, FieldLabel } from "../components/field";
@@ -40,7 +59,11 @@ import { Flex } from "../components/flex";
 import { Grid, GridItem } from "../components/grid";
 import { Group } from "../components/group";
 import { Heading } from "../components/heading";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../components/hover-card";
+import {
+	HoverCard,
+	HoverCardContent,
+	HoverCardTrigger,
+} from "../components/hover-card";
 import { Indicator } from "../components/indicator";
 import { InputGroup, InputGroupText } from "../components/input-group";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../components/input-otp";
@@ -70,27 +93,33 @@ import { Paper } from "../components/paper";
 import { PasswordStrengthIndicator } from "../components/password-strength-indicator";
 import { RadioGroup, RadioGroupItem } from "../components/radio-group";
 import { Rating } from "../components/rating";
-import { ResizablePanelGroup, ResizablePanel } from "../components/resizable";
-import { RingProgress } from "../components/ring-progress";
+import { ResizablePanel, ResizablePanelGroup } from "../components/resizable";
 import { ScrollArea } from "../components/scroll-area";
 import { SegmentedControl } from "../components/segmented-control";
 import { Separator } from "../components/separator";
 import { Skeleton } from "../components/skeleton";
 import { SkipToContent } from "../components/skip-to-content";
 import { Slider } from "../components/slider";
-import { Spoiler } from "../components/spoiler";
 import { Spinner } from "../components/spinner";
+import { Spoiler } from "../components/spoiler";
 import { Stack } from "../components/stack";
 import { Steps } from "../components/steps";
 import { Switch } from "../components/switch";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/table";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "../components/table";
 import { Text } from "../components/text";
 import { Textarea } from "../components/textarea";
 import { Timeline, TimelineItem } from "../components/timeline";
+import { Toast } from "../components/toast";
 import { Toggle } from "../components/toggle";
 import { ToggleGroup, ToggleGroupItem } from "../components/toggle-group";
 import { Toolbar } from "../components/toolbar";
-import { Toast } from "../components/toast";
 import { TreeView } from "../components/tree-view";
 import type { SlotStyles } from "../lib/slot-styles";
 
@@ -98,10 +127,29 @@ afterEach(cleanup);
 
 /** Already-wired families (src/__tests__/slot-styles.test.tsx covers them). */
 const WIRED = [
-	"alert", "avatar-group", "badge", "banner", "button", "calendar", "card",
-	"date-picker", "dialog", "dropdown-menu", "empty-state", "file-upload",
-	"input", "number-input", "popover", "progress", "ring-progress", "select",
-	"tabs", "tag", "tag-input", "time-picker", "tooltip",
+	"alert",
+	"avatar-group",
+	"badge",
+	"banner",
+	"button",
+	"calendar",
+	"card",
+	"date-picker",
+	"dialog",
+	"dropdown-menu",
+	"empty-state",
+	"file-upload",
+	"input",
+	"number-input",
+	"popover",
+	"progress",
+	"ring-progress",
+	"select",
+	"tabs",
+	"tag",
+	"tag-input",
+	"time-picker",
+	"tooltip",
 ] as const;
 
 /** Families with no styled DOM root of their own. */
@@ -140,7 +188,8 @@ const byMarker = (root: Element | null, marker: string) =>
  * third-party owns the node. Asserted present so each omission is audited.
  */
 const DELEGATIONS: Record<string, string> = {
-	toast: "sonner owns the toast chrome and renders nothing until a toast fires; slotStyles accepted, no observable marker node",
+	toast:
+		"sonner owns the toast chrome and renders nothing until a toast fires; slotStyles accepted, no observable marker node",
 	command: "cmdk owns list rendering internals; wrapper-rendered nodes only",
 	resizable: "react-resizable-panels owns handles; wrapper-rendered nodes only",
 };
@@ -160,11 +209,23 @@ const rows: Row[] = [
 		),
 	},
 	{ family: "stack", marker: "stack", render: (p) => <Stack {...p}>x</Stack> },
-	{ family: "center", marker: "center", render: (p) => <Center {...p}>x</Center> },
-	{ family: "container", marker: "container", render: (p) => <Container {...p}>x</Container> },
+	{
+		family: "center",
+		marker: "center",
+		render: (p) => <Center {...p}>x</Center>,
+	},
+	{
+		family: "container",
+		marker: "container",
+		render: (p) => <Container {...p}>x</Container>,
+	},
 	{ family: "paper", marker: "paper", render: (p) => <Paper {...p}>x</Paper> },
 	{ family: "group", marker: "group", render: (p) => <Group {...p}>x</Group> },
-	{ family: "separator", marker: "separator", render: (p) => <Separator {...p} /> },
+	{
+		family: "separator",
+		marker: "separator",
+		render: (p) => <Separator {...p} />,
+	},
 	{
 		family: "aspect-ratio",
 		marker: "aspect-ratio",
@@ -174,7 +235,11 @@ const rows: Row[] = [
 			</AspectRatio>
 		),
 	},
-	{ family: "scroll-area", marker: "scroll-area", render: (p) => <ScrollArea {...p}>x</ScrollArea> },
+	{
+		family: "scroll-area",
+		marker: "scroll-area",
+		render: (p) => <ScrollArea {...p}>x</ScrollArea>,
+	},
 	{
 		family: "resizable",
 		marker: "resizable-panel-group",
@@ -186,7 +251,11 @@ const rows: Row[] = [
 	},
 
 	// Form
-	{ family: "textarea", marker: "textarea", render: (p) => <Textarea {...p} /> },
+	{
+		family: "textarea",
+		marker: "textarea",
+		render: (p) => <Textarea {...p} />,
+	},
 	{
 		family: "checkbox",
 		marker: "checkbox",
@@ -194,7 +263,8 @@ const rows: Row[] = [
 		parts: [
 			{
 				slot: "indicator",
-				find: (r) => r?.querySelector("[data-slot='checkbox-indicator']") ?? null,
+				find: (r) =>
+					r?.querySelector("[data-slot='checkbox-indicator']") ?? null,
 			},
 		],
 	},
@@ -279,7 +349,11 @@ const rows: Row[] = [
 			</InputOTP>
 		),
 	},
-	{ family: "color-input", marker: "color-input", render: (p) => <ColorInput {...p} /> },
+	{
+		family: "color-input",
+		marker: "color-input",
+		render: (p) => <ColorInput {...p} />,
+	},
 	{
 		family: "password-strength-indicator",
 		marker: "password-strength-indicator",
@@ -293,7 +367,9 @@ const rows: Row[] = [
 	{
 		family: "multi-select",
 		marker: "multi-select",
-		render: (p) => <MultiSelect options={[{ value: "a", label: "A" }]} {...p} />,
+		render: (p) => (
+			<MultiSelect options={[{ value: "a", label: "A" }]} {...p} />
+		),
 	},
 
 	// Overlays/menus
@@ -412,7 +488,11 @@ const rows: Row[] = [
 			</LoadingOverlay>
 		),
 	},
-	{ family: "skeleton", marker: "skeleton", render: (p) => <Skeleton {...p} /> },
+	{
+		family: "skeleton",
+		marker: "skeleton",
+		render: (p) => <Skeleton {...p} />,
+	},
 	{
 		family: "table",
 		marker: "table",
@@ -500,8 +580,16 @@ const rows: Row[] = [
 		marker: "tree-view",
 		render: (p) => <TreeView {...p} data={[{ id: "a", label: "A" }]} />,
 	},
-	{ family: "page-transition", marker: "page-transition", render: (p) => <PageTransition {...p}>x</PageTransition> },
-	{ family: "skip-to-content", marker: "skip-to-content", render: (p) => <SkipToContent {...p}>S</SkipToContent> },
+	{
+		family: "page-transition",
+		marker: "page-transition",
+		render: (p) => <PageTransition {...p}>x</PageTransition>,
+	},
+	{
+		family: "skip-to-content",
+		marker: "skip-to-content",
+		render: (p) => <SkipToContent {...p}>S</SkipToContent>,
+	},
 	{
 		family: "list",
 		marker: "list",
@@ -555,7 +643,11 @@ const rows: Row[] = [
 			</Avatar>
 		),
 	},
-	{ family: "heading", marker: "heading", render: (p) => <Heading {...p}>H</Heading> },
+	{
+		family: "heading",
+		marker: "heading",
+		render: (p) => <Heading {...p}>H</Heading>,
+	},
 	{ family: "text", marker: "text", render: (p) => <Text {...p}>x</Text> },
 	{ family: "code", marker: "code", render: (p) => <Code {...p}>x</Code> },
 	{ family: "kbd", marker: "kbd", render: (p) => <Kbd {...p}>⌘</Kbd> },
@@ -583,7 +675,11 @@ const rows: Row[] = [
 			</Indicator>
 		),
 	},
-	{ family: "toggle", marker: "toggle", render: (p) => <Toggle {...p}>x</Toggle> },
+	{
+		family: "toggle",
+		marker: "toggle",
+		render: (p) => <Toggle {...p}>x</Toggle>,
+	},
 	{
 		family: "toggle-group",
 		marker: "toggle-group",
@@ -613,17 +709,12 @@ describe("inventory guard", () => {
 	it("classifies every component dir as wired, rolled out, or excluded", () => {
 		const dirs = fs
 			// vitest may run from the package dir or the monorepo root, and
-		// import.meta.url is unreliable under jsdom transforms, so probe
-		// both layouts instead of pinning to one cwd.
+			// import.meta.url is unreliable under jsdom transforms, so probe
+			// both layouts instead of pinning to one cwd.
 			.readdirSync(
-				(
-					[
-						"src/components",
-						"packages/react/src/components",
-					]
-						.map((p) => resolve(process.cwd(), p))
-						.find((p) => fs.existsSync(p)) ?? ""
-				),
+				["src/components", "packages/react/src/components"]
+					.map((p) => resolve(process.cwd(), p))
+					.find((p) => fs.existsSync(p)) ?? "",
 				{
 					withFileTypes: true,
 				},
@@ -827,7 +918,8 @@ const BASELINES: Record<string, string> = {
 		"overflow-hidden data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up",
 	"copy-button":
 		"cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--kala-radius-control)] text-sm font-medium disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed kala-focus-ring kala-touch h-10 w-10 hover:bg-accent hover:text-accent-foreground transition-all",
-	heading: "font-heading tracking-tight text-foreground text-3xl lg:text-4xl text-left font-bold",
+	heading:
+		"font-heading tracking-tight text-foreground text-3xl lg:text-4xl text-left font-bold",
 	indicator: "relative block",
 	kbd: "inline-flex items-center justify-center font-mono font-medium rounded border border-b-2 bg-muted text-muted-foreground shadow-sm select-none text-xs px-1.5 py-0.5 min-w-[1.5rem] h-6",
 	list: "flex flex-col bg-card rounded-lg border overflow-hidden [&>li:not(:last-child)]:border-b gap-0",
@@ -845,8 +937,10 @@ const BASELINES: Record<string, string> = {
 	steps: "flex w-full flex-row items-start",
 	timeline: "flex flex-col",
 	"toggle-group": "flex items-center justify-center gap-1",
-	toggle: "cursor-pointer inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-muted hover:text-muted-foreground disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-transparent h-9 px-2 min-w-9",
-	toolbar: "flex h-10 items-center gap-1 rounded-md border bg-card p-1 kala-surface-input",
+	toggle:
+		"cursor-pointer inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-muted hover:text-muted-foreground disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-transparent h-9 px-2 min-w-9",
+	toolbar:
+		"flex h-10 items-center gap-1 rounded-md border bg-card p-1 kala-surface-input",
 	"tree-view": "space-y-0.5 p-1",
 };
 
@@ -944,17 +1038,20 @@ describe("absent slotStyles baselines", () => {
 		unmount();
 	});
 
-	it.each(Object.entries(BASELINES))("%s renders the pre-rollout class string", (marker, expected) => {
-		const row = rows.find((r) => r.marker === marker);
-		if (!row) throw new Error(`missing row for ${marker}`);
-		const { unmount } = render(row.render({}));
-		const el = findEl(marker);
-		expect(el).not.toBeNull();
-		if (expected === "") {
-			expect(el?.className).toBe("");
-		} else {
-			expect(` ${el?.className} `).toContain(` ${expected} `);
-		}
-		unmount();
-	});
+	it.each(Object.entries(BASELINES))(
+		"%s renders the pre-rollout class string",
+		(marker, expected) => {
+			const row = rows.find((r) => r.marker === marker);
+			if (!row) throw new Error(`missing row for ${marker}`);
+			const { unmount } = render(row.render({}));
+			const el = findEl(marker);
+			expect(el).not.toBeNull();
+			if (expected === "") {
+				expect(el?.className).toBe("");
+			} else {
+				expect(` ${el?.className} `).toContain(` ${expected} `);
+			}
+			unmount();
+		},
+	);
 });

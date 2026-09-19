@@ -7,6 +7,9 @@ import { fireEvent, render } from "@testing-library/react-native";
 import { Text } from "react-native";
 import { Banner } from "../banner";
 
+// skeleton surfaces are a11y-hidden by design — queries must opt in
+const inclHidden = { includeHiddenElements: true } as const;
+
 const flatStyle = (node: {
 	props: { style?: unknown };
 }): Record<string, number | string> =>
@@ -128,7 +131,7 @@ describe("Banner announcements", () => {
 describe("Banner loading state", () => {
 	it("isLoading renders the skeleton row inside the toned surface", async () => {
 		const screen = await render(<Banner isLoading>m</Banner>);
-		expect(screen.getAllByTestId("k-skeleton").length).toBeGreaterThan(0);
+		expect(screen.getAllByTestId("k-skeleton", inclHidden).length).toBeGreaterThan(0);
 		// tone surface survives the loading swap
 		expect(flatStyle(screen.getByTestId("k-banner")).backgroundColor).toBe(
 			theme().info,
@@ -144,7 +147,7 @@ describe("Banner loading state", () => {
 				m
 			</Banner>,
 		);
-		expect(screen.getAllByTestId("k-skeleton").length).toBe(1);
+		expect(screen.getAllByTestId("k-skeleton", inclHidden).length).toBe(1);
 	});
 
 	it("a custom skeleton node renders instead, inside the toned surface", async () => {
@@ -201,7 +204,7 @@ describe("Banner resolved style tables", () => {
 		expect(rowStyle.flexDirection).toBe("row");
 		expect(rowStyle.alignItems).toBe("center");
 		expect(rowStyle.gap).toBe(12);
-		const blocks = screen.getAllByTestId("k-skeleton");
+		const blocks = screen.getAllByTestId("k-skeleton", inclHidden);
 		expect(blocks).toHaveLength(3);
 		const icon = flatStyle(blocks[0]);
 		expect(icon.width).toBe(16);
