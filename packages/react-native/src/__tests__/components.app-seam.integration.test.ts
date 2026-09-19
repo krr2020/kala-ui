@@ -179,8 +179,11 @@ describe("component app seam", () => {
 		// (skeleton) + bar-chart (skeleton) — feedback nav overlays
 		// overviews shrank to composed stories. The sheet's form/share/filter
 		// + long-form stress variations add ten more (open flags + field
-		// arrays + typed values).
-		expect(demoHooks).toBe(107);
+		// arrays + typed values). The navigation group rebuild swaps the old
+		// overview arms (tag/rating/volume/bold) for tab/range/align and adds
+		// the segmented density arm, dropdown sort+action counters and the
+		// context menu's second target — net +2.
+		expect(demoHooks).toBe(109);
 	});
 
 	it("landing offers exactly two package routes", () => {
@@ -649,7 +652,6 @@ describe("component app seam", () => {
 					'accessibilityLabel="background sync"': 1,
 					'accessibilityLabel="basic progress"': 1,
 					'accessibilityLabel="basic ring"': 1,
-					'accessibilityLabel="bold"': 1,
 					'accessibilityLabel="bounded date"': 1,
 					'accessibilityLabel="butt cap ring"': 1,
 					'accessibilityLabel="check-in"': 1,
@@ -658,6 +660,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="collapsed range"': 1,
 					'accessibilityLabel="custom range progress"': 1,
 					'accessibilityLabel="default toggle"': 1,
+					'accessibilityLabel="density"': 1,
 					'accessibilityLabel="dinner"': 1,
 					'accessibilityLabel="disabled input"': 1,
 					'accessibilityLabel="email field"': 1,
@@ -671,6 +674,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="error input"': 1,
 					'accessibilityLabel="full progress"': 1,
 					'accessibilityLabel="full ring"': 1,
+					'accessibilityLabel="large"': 1,
 					'accessibilityLabel="large progress"': 1,
 					'accessibilityLabel="large ring"': 1,
 					'accessibilityLabel="loading calendar"': 1,
@@ -689,6 +693,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="long toggle"': 1,
 					'accessibilityLabel="long value"': 1,
 					'accessibilityLabel="max rating"': 1,
+					'accessibilityLabel="medium"': 1,
 					'accessibilityLabel="medium date"': 1,
 					'accessibilityLabel="medium progress"': 1,
 					'accessibilityLabel="medium ring"': 1,
@@ -710,7 +715,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="preselected stay"': 1,
 					'accessibilityLabel="press me"': 1,
 					'accessibilityLabel="price range"': 1,
-					'accessibilityLabel="range"': 1,
+					'accessibilityLabel="range"': 2,
 					'accessibilityLabel="reminder time"': 1,
 					'accessibilityLabel="report window"': 1,
 					'accessibilityLabel="save"': 1,
@@ -722,10 +727,12 @@ describe("component app seam", () => {
 					'accessibilityLabel="share"': 1,
 					'accessibilityLabel="slider at max"': 1,
 					'accessibilityLabel="slider at min"': 1,
+					'accessibilityLabel="small"': 1,
 					'accessibilityLabel="small date"': 1,
 					'accessibilityLabel="small progress"': 1,
 					'accessibilityLabel="small ring"': 1,
 					'accessibilityLabel="stacked sections ring"': 1,
+					'accessibilityLabel="state"': 1,
 					'accessibilityLabel="stay dates"': 1,
 					'accessibilityLabel="stepped slider"': 1,
 					'accessibilityLabel="sun button"': 1,
@@ -738,7 +745,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="under-clamped progress"': 1,
 					'accessibilityLabel="upload"': 1,
 					'accessibilityLabel="valid input"': 1,
-					'accessibilityLabel="volume"': 2,
+					'accessibilityLabel="volume"': 1,
 					'accessibilityLabel="zero rating"': 1,
 					"accessibilityLabel={`${color} progress`}": 1,
 					"accessibilityLabel={`${size} spinner`}": 1,
@@ -798,7 +805,7 @@ describe("component app seam", () => {
 					'testID="k-demo-progress"': 2,
 					'testID="k-demo-radio-group"': 1,
 					'testID="k-demo-radios"': 1,
-					'testID="k-demo-rating"': 2,
+					'testID="k-demo-rating"': 1,
 					'testID="k-demo-ring-progress"': 2,
 					'testID="k-demo-segmented-control"': 1,
 					'testID="k-demo-select"': 1,
@@ -806,7 +813,7 @@ describe("component app seam", () => {
 					'testID="k-demo-sheet"': 1,
 					'testID="k-demo-skeleton"': 1,
 					'testID="k-demo-skeletons"': 1,
-					'testID="k-demo-slider"': 2,
+					'testID="k-demo-slider"': 1,
 					'testID="k-demo-sparkline"': 1,
 					'testID="k-demo-spinner"': 1,
 					'testID="k-demo-spinners"': 1,
@@ -814,7 +821,6 @@ describe("component app seam", () => {
 					'testID="k-demo-switch"': 1,
 					'testID="k-demo-tabs"': 1,
 					'testID="k-demo-tag"': 1,
-					'testID="k-demo-tags"': 1,
 					'testID="k-demo-text"': 1,
 					'testID="k-demo-text-input"': 1,
 					'testID="k-demo-textarea"': 1,
@@ -824,7 +830,6 @@ describe("component app seam", () => {
 					'testID="k-demo-toast"': 1,
 					'testID="k-demo-toggle"': 1,
 					'testID="k-demo-toggle-group"': 1,
-					'testID="k-demo-toggles"': 1,
 					'testID="k-group-list-root"': 1,
 					'testID="k-group-root"': 1,
 					'testID="k-landing-app"': 1,
