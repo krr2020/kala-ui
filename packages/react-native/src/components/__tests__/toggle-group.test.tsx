@@ -78,6 +78,18 @@ describe("ToggleGroup", () => {
 		);
 		});
 
+	it("a disabled outline group keeps its strip border", async () => {
+		const screen = await render(
+			<ToggleGroup type="single" variant="outline" disabled>
+				<ToggleGroupItem value="a">A</ToggleGroupItem>
+				<ToggleGroupItem value="b">B</ToggleGroupItem>
+			</ToggleGroup>,
+		);
+		const track = flatStyle(screen.getByTestId("k-toggle-group"));
+		expect(Number(track.borderWidth)).toBe(1);
+		expect(track.borderColor).toBe(themes.light.border);
+		});
+
 	it("toValues: '' and undefined normalize to empty; strings and arrays pass through", () => {
 		expect(toValues("")).toEqual([]);
 		expect(toValues(undefined)).toEqual([]);

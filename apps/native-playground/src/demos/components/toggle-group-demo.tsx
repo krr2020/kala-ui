@@ -59,10 +59,11 @@ export function ToggleGroupDemo() {
 					active: {formats.join(", ") || "none"}
 				</KText>
 			</DemoBlock>
-			<DemoBlock label="Multiple — default variant, disabled item">
+			<DemoBlock label="Multiple — with disabled item">
 				<View style={demoStyles.componentRow}>
 					<ToggleGroup
 						type="multiple"
+						variant="outline"
 						value={formatSizes}
 						onValueChange={(v) => setFormatSizes(v as string[])}
 					>
@@ -81,7 +82,12 @@ export function ToggleGroupDemo() {
 			{(["sm", "md", "lg"] as const).map((size) => (
 				<DemoBlock key={size} label={`Group size — ${size}`}>
 					<View style={demoStyles.componentRow}>
-						<ToggleGroup type="single" size={size} defaultValue="a">
+						<ToggleGroup
+							type="single"
+							size={size}
+							variant="outline"
+							defaultValue="a"
+						>
 							<ToggleGroupItem value="a">A</ToggleGroupItem>
 							<ToggleGroupItem value="b">B</ToggleGroupItem>
 							<ToggleGroupItem value="c">C</ToggleGroupItem>
@@ -91,7 +97,12 @@ export function ToggleGroupDemo() {
 			))}
 			<DemoBlock label="Whole group disabled">
 				<View style={demoStyles.componentRow}>
-					<ToggleGroup type="single" defaultValue="a" disabled>
+					<ToggleGroup
+						type="single"
+						variant="outline"
+						defaultValue="a"
+						disabled
+					>
 						<ToggleGroupItem value="a">A</ToggleGroupItem>
 						<ToggleGroupItem value="b">B</ToggleGroupItem>
 					</ToggleGroup>

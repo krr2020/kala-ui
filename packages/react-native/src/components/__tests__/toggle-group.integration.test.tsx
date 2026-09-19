@@ -44,11 +44,12 @@ describe("ToggleGroup ↔ playground demo contract", () => {
 		expect(onValueChange).toHaveBeenCalledWith("center");
 	});
 
-	it("multiple default block: muted track with accent fills and a disabled item", async () => {
+	it("multiple block: bordered outline strip with a disabled item", async () => {
 		const onValueChange = jest.fn();
 		const screen = await render(
 			<ToggleGroup
 				type="multiple"
+				variant="outline"
 				defaultValue={["italic"]}
 				onValueChange={onValueChange}
 			>
@@ -59,9 +60,9 @@ describe("ToggleGroup ↔ playground demo contract", () => {
 				</ToggleGroupItem>
 			</ToggleGroup>,
 		);
-		expect(flat(screen.getByTestId("k-toggle-group")).backgroundColor).toBe(
-			themes.light.muted,
-		);
+		const track = flat(screen.getByTestId("k-toggle-group"));
+		expect(Number(track.borderWidth)).toBe(1);
+		expect(track.borderColor).toBe(themes.light.border);
 		expect(flat(items(screen)[1]).backgroundColor).toBe(themes.light.accent);
 		await fireEvent.press(items(screen)[2]);
 		expect(onValueChange).not.toHaveBeenCalled();
@@ -71,11 +72,14 @@ describe("ToggleGroup ↔ playground demo contract", () => {
 		const heights: number[] = [];
 		for (const size of ["sm", "md", "lg"] as const) {
 			const screen = await render(
-				<ToggleGroup type="single" size={size}>
+				<ToggleGroup type="single" size={size} variant="outline">
 					<ToggleGroupItem value="a">A</ToggleGroupItem>
 				</ToggleGroup>,
 			);
 			heights.push(Number(flat(items(screen)[0]).minHeight));
+			expect(
+				Number(flat(screen.getByTestId("k-toggle-group")).borderWidth),
+			).toBe(1);
 		}
 		expect(heights).toEqual([36, 40, 44]);
 	});
@@ -98,14 +102,23 @@ describe("ToggleGroup ↔ playground demo contract", () => {
 		expect(items(screen)[0].props.accessibilityState.checked).toBe(true);
 	});
 
-	it("disabled block: whole-group disabled gates every item", async () => {
+	it("disabled block: whole-group disabled keeps its outline border", async () => {
 		const onValueChange = jest.fn();
 		const screen = await render(
-			<ToggleGroup type="single" defaultValue="a" disabled onValueChange={onValueChange}>
+			<ToggleGroup
+				type="single"
+				variant="outline"
+				defaultValue="a"
+				disabled
+				onValueChange={onValueChange}
+			>
 				<ToggleGroupItem value="a">A</ToggleGroupItem>
 				<ToggleGroupItem value="b">B</ToggleGroupItem>
 			</ToggleGroup>,
 		);
+		const track = flat(screen.getByTestId("k-toggle-group"));
+		expect(Number(track.borderWidth)).toBe(1);
+		expect(track.borderColor).toBe(themes.light.border);
 		await fireEvent.press(items(screen)[1]);
 		expect(onValueChange).not.toHaveBeenCalled();
 		expect(items(screen)[1].props.accessibilityState.disabled).toBe(true);
