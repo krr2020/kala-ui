@@ -147,11 +147,20 @@ export function Sheet({
 				? { show: "keyboardWillShow", hide: "keyboardWillHide" }
 				: { show: "keyboardDidShow", hide: "keyboardDidHide" };
 		const apply = (height: number): void => {
+			// RN's Android keyboard height stops at the app-visible window
+			// edge; with a translucent navigation bar the IME additionally
+			// covers the nav inset, so it must be cleared on top of the
+			// reported height or the footer rides under the real keyboard
+			// top. iOS already reports the full keyboard height.
+			const effective =
+				height > 0 && Platform.OS === "android"
+					? height + insets.bottom
+					: height;
 			const sheetHeight =
 				contentHeight.current ||
 				(baseHeight ?? Math.round(windowHeight * MAX_HEIGHT_RATIO));
 			kb.value = keyboardLift({
-				kbHeight: height,
+				kbHeight: effective,
 				windowHeight,
 				topInset: insets.top,
 				sheetHeight,
@@ -159,13 +168,13 @@ export function Sheet({
 			// shed only the height that would poke above the top inset once lifted
 			setKbShrink(
 				keyboardShrink({
-					kbHeight: height,
+					kbHeight: effective,
 					windowHeight,
 					topInset: insets.top,
 					sheetHeight,
 				}),
 			);
-			setKbUp(height > 0);
+			setKbUp(effective > 0);
 		};
 		const show = Keyboard.addListener(events.show, (e) => {
 			apply(e.endCoordinates.height);
@@ -178,7 +187,7 @@ export function Sheet({
 			show.remove();
 			hide.remove();
 		};
-	}, [avoidKeyboard, kb, windowHeight, insets.top, baseHeight]);
+	}, [avoidKeyboard, kb, windowHeight, insets.top, insets.bottom, baseHeight]);
 
 	useEffect(() => {
 		if (open) {
@@ -213,6 +222,10 @@ export function Sheet({
 	);
 
 	const pan = Gesture.Pan()
+		// downward-only activation: an upward drag fails the pan and reaches
+		// the body ScrollView instead of being swallowed by the dismiss pan
+		.activeOffsetY(12)
+		.failOffsetY(-12)
 		.onUpdate((event) => {
 			ty.value = Math.max(0, event.translationY);
 		})

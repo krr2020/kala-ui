@@ -185,13 +185,23 @@ export function SheetDemo() {
 			</Sheet>
 
 			{/* search: keyboard-aware auto sheet — avoidKeyboard lifts the
-			 * input above the software keyboard on both platforms */}
+			 * input above the software keyboard; Apply rides the pinned footer
+			 * so it stays visible next to the focused field */}
 			<Sheet
 				open={searchOpen}
 				onClose={() => setSearchOpen(false)}
 				snap="auto"
 				title="Search"
 				avoidKeyboard
+				footer={
+					<Button
+						fullWidth
+						onPress={() => setSearchOpen(false)}
+						accessibilityLabel="Apply search"
+					>
+						Apply
+					</Button>
+				}
 			>
 				<Sheet.Body>
 					<TextInput
@@ -200,13 +210,6 @@ export function SheetDemo() {
 						onChangeText={setQuery}
 						accessibilityLabel="Search products"
 					/>
-					<Button
-						fullWidth
-						onPress={() => setSearchOpen(false)}
-						accessibilityLabel="Apply search"
-					>
-						Apply
-					</Button>
 				</Sheet.Body>
 			</Sheet>
 

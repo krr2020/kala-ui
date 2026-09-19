@@ -59,7 +59,16 @@ jest.mock('react-native-reanimated', () => {
 		default: Animated,
 		Animated,
 		Easing,
-		useSharedValue: (initial: unknown) => ({ value: initial }),
+		useSharedValue: (initial: unknown) => {
+			// identity-stable across renders like the real runtime — a fresh
+			// object per render would reset every animation offset and break
+			// post-interaction style assertions
+			const ref = (
+				React as typeof import('react')
+			).useRef<{ value: unknown } | undefined>(undefined);
+			if (!ref.current) ref.current = { value: initial };
+			return ref.current;
+		},
 		useAnimatedStyle: (factory: () => unknown) => factory(),
 		withSpring,
 		withTiming,
@@ -120,19 +129,34 @@ jest.mock(
 jest.mock('react-native-gesture-handler', () => {
 	const React = require('react');
 
+	// the most recent pan gesture is exported so suites can pin activation
+	// windows (direction gating) — the mock never drives a native runtime
+	let lastPan: Record<string, unknown> | undefined;
 	const pan = () => {
-		const gesture = {
+		const gesture: Record<string, unknown> = {
 			onUpdate: () => gesture,
 			onEnd: () => gesture,
 			enabled: () => gesture,
 			runOnJS: () => gesture,
+			activeOffsetY: (value: unknown) => {
+				gesture.activeOffsetY = value;
+				return gesture;
+			},
+			failOffsetY: (value: unknown) => {
+				gesture.failOffsetY = value;
+				return gesture;
+			},
 		};
+		lastPan = gesture;
 		return gesture;
 	};
 
 	return {
 		__esModule: true,
 		Gesture: { Pan: pan },
+		get __lastPan() {
+			return lastPan;
+		},
 		GestureDetector: ({ children }: { children: React.ReactNode }) =>
 			React.createElement(React.Fragment, null, children),
 		GestureHandlerRootView: (props: unknown) => {

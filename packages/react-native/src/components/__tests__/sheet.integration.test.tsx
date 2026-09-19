@@ -202,4 +202,24 @@ describe("Select demo ↔ package Sheet seam", () => {
 		expect(source.indexOf('avoidKeyboard', longForm)).toBeGreaterThan(longForm);
 		expect(source).toContain('snap="full"');
 	});
+
+	it("keyboard-target sheets pin their primary action in the sheet footer (source census)", () => {
+		const source = readFileSync(SHEET_DEMO, "utf8");
+		// the auto-snap search sheet pairs avoidKeyboard with a pinned footer
+		// so Apply rides above the software keyboard with the input
+		const search = source.indexOf('title="Search"');
+		expect(search).toBeGreaterThan(-1);
+		const searchBlock = source.slice(search, source.indexOf("</Sheet>", search));
+		expect(searchBlock).toContain("avoidKeyboard");
+		expect(searchBlock.indexOf("footer=")).toBeGreaterThan(-1);
+		expect(
+			searchBlock.indexOf('accessibilityLabel="Apply search"'),
+		).toBeGreaterThan(searchBlock.indexOf("footer="));
+		// the Apply action must not also linger in the scrolling body
+		const body = searchBlock.slice(
+			searchBlock.indexOf("<Sheet.Body>"),
+			searchBlock.indexOf("</Sheet.Body>"),
+		);
+		expect(body).not.toContain("Apply search");
+	});
 });

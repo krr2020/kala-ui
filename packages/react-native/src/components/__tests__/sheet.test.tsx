@@ -606,8 +606,9 @@ describe("Sheet", () => {
 			);
 			expect(content.paddingBottom).toBe(KEYBOARD_BOTTOM_GAP);
 			// full snap (1201 of the 1334 mock window) sheds the height that
-			// would poke above the inset-free window once lifted by 264
-			expect(content.height).toBe(1070);
+			// would poke above the inset-free window once lifted by kb+inset
+			// (Android: 264 kb + 48 nav inset on top of the RN-reported height)
+			expect(content.height).toBe(1022);
 
 			await act(async () => {
 				hide?.(undefined as never);
@@ -624,6 +625,192 @@ describe("Sheet", () => {
 				});
 				setInsets(0, 0);
 			}
+		});
+
+		// RN's Android keyboard height excludes the translucent gesture-nav
+		// inset, so the sheet must clear the inset on top of the reported
+		// height or the footer rides under the real keyboard top
+		describe("Android keyboard height includes the bottom nav inset", () => {
+			const asAndroid = (): (() => void) => {
+				const original = Platform.OS;
+				Object.defineProperty(Platform, "OS", {
+					value: "android",
+					configurable: true,
+				});
+				return () => {
+					Object.defineProperty(Platform, "OS", {
+						value: original,
+						configurable: true,
+					});
+				};
+			};
+			const fire = async (
+				spy: jest.SpyInstance,
+				event: string,
+				height: number,
+			): Promise<void> => {
+				// last registration wins — earlier sheets in the same test may
+				// still have captured callbacks in the spy log
+				const listener = [...spy.mock.calls]
+					.reverse()
+					.find((c) => c[0] === event)?.[1];
+				await act(async () => {
+					listener?.({ endCoordinates: { height } } as never);
+				});
+			};
+
+			it("shrinking full sheet sheds kb + inset so the footer clears the real keyboard top", async () => {
+				setInsets(0, 68);
+				const restore = asAndroid();
+				const spy = jest.spyOn(Keyboard, "addListener");
+				try {
+					const screen: Screen = await render(
+						<Sheet open onClose={() => {}} snap="full" avoidKeyboard>
+							<Text>content</Text>
+						</Sheet>,
+					);
+					await fire(spy, "keyboardDidShow", 264);
+					const content = flatStyle(
+						screen.getByTestId("k-sheet-content", inclHidden),
+					);
+					// 1334 window − (264 kb + 68 inset) leaves the sheet bottom at
+					// the real keyboard top
+					expect(content.height).toBe(1334 - 264 - 68);
+					expect(content.paddingBottom).toBe(KEYBOARD_BOTTOM_GAP);
+				} finally {
+					spy.mockRestore();
+					restore();
+					setInsets(0, 0);
+				}
+			});
+
+			it("lifting peek sheet rises by kb + inset so its bottom rides the keyboard top", async () => {
+				setInsets(0, 68);
+				const restore = asAndroid();
+				const spy = jest.spyOn(Keyboard, "addListener");
+				try {
+					const screen: Screen = await render(
+						<Sheet open onClose={() => {}} snap="peek" avoidKeyboard>
+							<Text>content</Text>
+						</Sheet>,
+					);
+					await fireEvent(
+						screen.getByTestId("k-sheet-content", inclHidden),
+						"layout",
+						{
+							nativeEvent: { layout: { height: 320, width: 1080, x: 0, y: 0 } },
+						},
+					);
+					await fire(spy, "keyboardDidShow", 264);
+					// peek lifts without changing any state (shrink stays 0), so the
+					// mock animated style needs a render pass to reflect kb.value
+					await screen.rerender(
+						<Sheet open onClose={() => {}} snap="peek" avoidKeyboard>
+							<Text>content</Text>
+						</Sheet>,
+					);
+					const content = flatStyle(
+						screen.getByTestId("k-sheet-content", inclHidden),
+					);
+					expect(content.height).toBe(120);
+					expect(content.transform).toEqual([{ translateY: -(264 + 68) }]);
+				} finally {
+					spy.mockRestore();
+					restore();
+					setInsets(0, 0);
+				}
+			});
+
+			it("iOS never adds the inset — RN there reports the full keyboard height", async () => {
+				setInsets(0, 68);
+				const original = Platform.OS;
+				Object.defineProperty(Platform, "OS", {
+					value: "ios",
+					configurable: true,
+				});
+				const spy = jest.spyOn(Keyboard, "addListener");
+				try {
+					const lift: Screen = await render(
+						<Sheet open onClose={() => {}} snap="peek" avoidKeyboard>
+							<Text>content</Text>
+						</Sheet>,
+					);
+					await fireEvent(
+						lift.getByTestId("k-sheet-content", inclHidden),
+						"layout",
+						{
+							nativeEvent: { layout: { height: 320, width: 1080, x: 0, y: 0 } },
+						},
+					);
+					await fire(spy, "keyboardWillShow", 264);
+					await lift.rerender(
+						<Sheet open onClose={() => {}} snap="peek" avoidKeyboard>
+							<Text>content</Text>
+						</Sheet>,
+					);
+					expect(
+						flatStyle(lift.getByTestId("k-sheet-content", inclHidden))
+							.transform,
+				).toEqual([{ translateY: -264 }]);
+				// the peek lift proves iOS adds no inset; the full-snap shrink
+				// math stays covered by the pure keyboardShrink suite above
+				} finally {
+					spy.mockRestore();
+					Object.defineProperty(Platform, "OS", {
+						value: original,
+						configurable: true,
+						});
+					setInsets(0, 0);
+					}
+			});
+
+			it("zero bottom inset on Android keeps today's height (boundary)", async () => {
+				setInsets(0, 0);
+				const restore = asAndroid();
+				const spy = jest.spyOn(Keyboard, "addListener");
+				try {
+					const screen: Screen = await render(
+						<Sheet open onClose={() => {}} snap="full" avoidKeyboard>
+							<Text>content</Text>
+						</Sheet>,
+					);
+					await fire(spy, "keyboardDidShow", 264);
+					expect(
+						flatStyle(screen.getByTestId("k-sheet-content", inclHidden)).height,
+					).toBe(1070);
+					await fire(spy, "keyboardDidHide", 0);
+					expect(
+						flatStyle(screen.getByTestId("k-sheet-content", inclHidden)).height,
+					).toBe(1201);
+				} finally {
+					spy.mockRestore();
+					restore();
+				}
+			});
+
+			it("mounting with the keyboard already open applies the inset-extended height", async () => {
+				setInsets(0, 68);
+				const restore = asAndroid();
+				const metrics = jest
+					.spyOn(Keyboard, "metrics")
+					.mockReturnValue({ height: 300 } as never);
+				try {
+					const screen: Screen = await render(
+						<Sheet open onClose={() => {}} snap="full" avoidKeyboard>
+							<Text>content</Text>
+						</Sheet>,
+					);
+					const content = flatStyle(
+						screen.getByTestId("k-sheet-content", inclHidden),
+					);
+					expect(content.height).toBe(1334 - 300 - 68);
+					expect(content.paddingBottom).toBe(KEYBOARD_BOTTOM_GAP);
+				} finally {
+					metrics.mockRestore();
+					restore();
+					setInsets(0, 0);
+					}
+				});
 		});
 
 		it("avoidKeyboard=false registers no listeners and never changes layout", async () => {
@@ -706,6 +893,15 @@ describe("Sheet", () => {
 				metrics.mockRestore();
 			}
 		});
+	});
+
+	it("drag pan activates only on downward movement — upward drags reach the body scroll", () => {
+		const gesture = require("react-native-gesture-handler").__lastPan as {
+			activeOffsetY?: number;
+			failOffsetY?: number;
+		};
+		expect(gesture.activeOffsetY).toBe(12);
+		expect(gesture.failOffsetY).toBe(-12);
 	});
 
 	it("slotStyles overlay/content/grabber overrides still apply inside the Modal", async () => {
