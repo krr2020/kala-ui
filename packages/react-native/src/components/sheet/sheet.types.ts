@@ -1,11 +1,14 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
+import type { OverlayTriggerRef } from "../../lib/use-overlay-focus.utils";
 
 export type SheetSnap = "auto" | "peek" | "half" | "full";
 
 export interface SheetProps {
 	open: boolean;
 	onClose: () => void;
+	/** screen-reader focus returns to this node after the sheet exits */
+	triggerRef?: OverlayTriggerRef;
 	snap?: SheetSnap;
 	/** caps snap="auto" content height (px); defaults to 85% of the window */
 	maxHeight?: number;

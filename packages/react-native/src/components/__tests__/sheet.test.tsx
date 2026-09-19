@@ -902,9 +902,13 @@ describe("Sheet", () => {
 					);
 					await fire(spy, "keyboardDidShow", 264);
 					await fire(spy, "keyboardDidHide", 0);
-					screen.unmount();
+					// bare unmount() interleaves with the pending settle timer and
+					// trips React's overlapping-act guard, breaking later renders
+					await act(async () => {
+						screen.unmount();
+					});
 					// the teardown must clear the timer: firing it on an unmounted
-					sheet would setState after unmount
+					// sheet would setState after unmount
 					await act(async () => {
 						await new Promise((r) => setTimeout(r, KB_HIDE_SETTLE_MS + 30));
 					});
@@ -1006,7 +1010,9 @@ describe("Sheet", () => {
 				expect(events).toContain("keyboardWillShow");
 				expect(events).toContain("keyboardWillHide");
 				expect(events).not.toContain("keyboardDidShow");
-				screen.unmount();
+				await act(async () => {
+					screen.unmount();
+				});
 			} finally {
 				spy.mockRestore();
 				Object.defineProperty(Platform, "OS", {

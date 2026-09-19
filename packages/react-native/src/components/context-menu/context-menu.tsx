@@ -4,8 +4,8 @@
  * Sheet engine with DropdownMenu's row renderer, so both menus behave
  * identically once open.
  */
-import type { ReactElement } from "react";
-import { useState } from "react";
+import type { ComponentRef, ReactElement } from "react";
+import { useRef, useState } from "react";
 import { Pressable, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { renderMenuItem } from "../dropdown-menu/dropdown-menu";
@@ -25,6 +25,7 @@ export function ContextMenu({
 }: ContextMenuProps): ReactElement {
 	const { theme } = useUnistyles();
 	const [open, setOpen] = useState(false);
+	const triggerRef = useRef<ComponentRef<typeof Pressable> | null>(null);
 	const close = () => {
 		setOpen(false);
 		onClose?.();
@@ -34,6 +35,7 @@ export function ContextMenu({
 		<>
 			<Pressable
 				testID={testID}
+				ref={triggerRef}
 				onLongPress={() => setOpen(true)}
 				delayLongPress={300}
 				style={applySlot(
@@ -45,7 +47,13 @@ export function ContextMenu({
 					{children}
 				</View>
 			</Pressable>
-			<Sheet open={open} onClose={close} snap={snap} dismissable={dismissable}>
+			<Sheet
+				open={open}
+				onClose={close}
+				triggerRef={triggerRef}
+				snap={snap}
+				dismissable={dismissable}
+			>
 				<View
 					testID="k-context-menu-content"
 					style={applySlot({ gap: 2 }, slotStyles?.content)}

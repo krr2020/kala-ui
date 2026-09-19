@@ -5,8 +5,8 @@
  * none). Committing closes the sheet.
  */
 import { ChevronDown, X } from "lucide-react-native";
-import type { ReactElement } from "react";
-import { useState } from "react";
+import type { ComponentRef, ReactElement } from "react";
+import { useRef, useState } from "react";
 import {
 	Pressable,
 	Text as RNText,
@@ -53,6 +53,7 @@ export function Combobox({
 	const [internal, setInternal] = useState(defaultValue ?? "");
 	const [open, setOpen] = useState(false);
 	const [search, setSearch] = useState("");
+	const triggerRef = useRef<ComponentRef<typeof Pressable> | null>(null);
 
 	const isControlled = value !== undefined;
 	const current = isControlled ? value : internal;
@@ -100,6 +101,7 @@ export function Combobox({
 		<>
 			<Pressable
 				testID={testID}
+				ref={triggerRef}
 				accessibilityRole="button"
 				accessibilityLabel={accessibilityLabel ?? displayLabel}
 				accessibilityState={{ expanded: open, disabled }}
@@ -152,6 +154,7 @@ export function Combobox({
 			<Sheet
 				open={open}
 				onClose={close}
+				triggerRef={triggerRef}
 				snap="auto"
 				title={label ?? placeholder}
 				avoidKeyboard

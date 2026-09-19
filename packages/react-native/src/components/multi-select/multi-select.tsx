@@ -5,8 +5,8 @@
  * enabled values only and collapses to [] when complete.
  */
 import { Check, ChevronDown, X } from "lucide-react-native";
-import type { ReactElement, ReactNode } from "react";
-import { useState } from "react";
+import type { ComponentRef, ReactElement, ReactNode } from "react";
+import { useRef, useState } from "react";
 import {
 	Pressable,
 	Text as RNText,
@@ -57,6 +57,7 @@ export function MultiSelect({
 	const [internal, setInternal] = useState<string[]>(defaultValue ?? []);
 	const [open, setOpen] = useState(false);
 	const [search, setSearch] = useState("");
+	const triggerRef = useRef<ComponentRef<typeof Pressable> | null>(null);
 
 	const isControlled = value !== undefined;
 	const selected = isControlled ? value : internal;
@@ -228,6 +229,7 @@ export function MultiSelect({
 		<>
 			<Pressable
 				testID={testID}
+				ref={triggerRef}
 				accessibilityRole="button"
 				accessibilityLabel={triggerLabel}
 				accessibilityState={{ expanded: open, disabled }}
@@ -305,6 +307,7 @@ export function MultiSelect({
 			<Sheet
 				open={open}
 				onClose={close}
+				triggerRef={triggerRef}
 				snap="auto"
 				title={label ?? placeholder}
 				avoidKeyboard

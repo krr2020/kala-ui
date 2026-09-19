@@ -5,8 +5,8 @@
  * checkbox/radio rows toggle in place (multi-select menus stay open).
  */
 import { Check } from "lucide-react-native";
-import type { ReactElement } from "react";
-import { Fragment, useState } from "react";
+import type { ComponentRef, ReactElement } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Sheet } from "../sheet";
@@ -177,6 +177,7 @@ export function DropdownMenu({
 }: DropdownMenuProps): ReactElement {
 	const { theme } = useUnistyles();
 	const [open, setOpen] = useState(false);
+	const triggerRef = useRef<ComponentRef<typeof Pressable> | null>(null);
 	const close = () => setOpen(false);
 	const itemStyles = applySlot({}, slotStyles?.item);
 
@@ -184,6 +185,7 @@ export function DropdownMenu({
 		<Fragment>
 			<Pressable
 				testID={testID}
+				ref={triggerRef}
 				accessibilityRole="button"
 				accessibilityLabel={triggerLabel}
 				accessibilityState={{ expanded: open }}
@@ -216,7 +218,13 @@ export function DropdownMenu({
 					▾
 				</RNText>
 			</Pressable>
-			<Sheet open={open} onClose={close} snap={snap} dismissable={dismissable}>
+			<Sheet
+				open={open}
+				onClose={close}
+				triggerRef={triggerRef}
+				snap={snap}
+				dismissable={dismissable}
+			>
 				<View
 					testID="k-dropdown-menu-content"
 					style={applySlot({ gap: 2 }, slotStyles?.content)}

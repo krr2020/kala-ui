@@ -1,6 +1,6 @@
 import { ChevronDown } from "lucide-react-native";
-import type { ReactElement, ReactNode } from "react";
-import { useState } from "react";
+import type { ComponentRef, ReactElement, ReactNode } from "react";
+import { useRef, useState } from "react";
 import { Pressable, Text as RNText, ScrollView, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { useUncontrolled } from "../../lib/use-uncontrolled.utils";
@@ -49,6 +49,7 @@ export function Select({
 		defaultValue,
 	);
 	const [open, setOpen] = useState(false);
+	const triggerRef = useRef<ComponentRef<typeof Pressable> | null>(null);
 
 	const selected = options.find((option) => option.value === current);
 
@@ -139,6 +140,7 @@ export function Select({
 		<>
 			<Pressable
 				testID={testID}
+				ref={triggerRef}
 				accessibilityRole="button"
 				accessibilityLabel={announced}
 				accessibilityState={{ disabled, expanded: open }}
@@ -174,6 +176,7 @@ export function Select({
 			<Sheet
 				open={open}
 				onClose={() => setOpen(false)}
+				triggerRef={triggerRef}
 				snap="auto"
 				title={label ?? placeholder}
 			>

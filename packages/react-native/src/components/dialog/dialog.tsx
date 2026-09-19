@@ -20,12 +20,8 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useUnistyles } from "react-native-unistyles";
+import { useOverlayFocus } from "../../lib/use-overlay-focus.utils";
 import { applySlot } from "../slot-styles";
-import { DialogBody } from "./dialog-body";
-import { DialogDescription } from "./dialog-description";
-import { DialogFooter } from "./dialog-footer";
-import { DialogHeader } from "./dialog-header";
-import { DialogTitle } from "./dialog-title";
 import {
 	cardStyle,
 	closeStyle,
@@ -34,10 +30,16 @@ import {
 	scrimStyle,
 } from "./dialog.styles";
 import type { DialogProps } from "./dialog.types";
+import { DialogBody } from "./dialog-body";
+import { DialogDescription } from "./dialog-description";
+import { DialogFooter } from "./dialog-footer";
+import { DialogHeader } from "./dialog-header";
+import { DialogTitle } from "./dialog-title";
 
 export function Dialog({
 	open,
 	onOpenChange,
+	triggerRef,
 	dismissable = true,
 	showCloseButton = true,
 	size = "md",
@@ -58,6 +60,10 @@ export function Dialog({
 	onOpenChangeRef.current = onOpenChange;
 
 	const close = () => onOpenChangeRef.current(false);
+	const cardRef = useRef<View | null>(null);
+	// RN Modal tears its content down the moment visible flips false, so
+	// the exited edge is simply !open here
+	useOverlayFocus(cardRef, open, !open, triggerRef);
 
 	const responders = dismissable
 		? {
@@ -132,10 +138,13 @@ export function Dialog({
 			>
 				<View
 					testID={testID}
-					accessible={accessibilityRole !== undefined}
+					ref={cardRef}
+					// always one a11y container for the card — the screen reader
+					// lands here on open instead of re-scanning loose children
+					accessible
 					accessibilityViewIsModal
+					accessibilityLabel={accessibilityLabel ?? "Dialog"}
 					accessibilityRole={accessibilityRole}
-					accessibilityLabel={accessibilityLabel}
 					{...responders}
 					style={applySlot(cardStyle(theme, size, dragDy), slotStyles?.root)}
 				>

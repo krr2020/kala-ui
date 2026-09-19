@@ -1,11 +1,14 @@
 import type { ReactNode } from "react";
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
+import type { OverlayTriggerRef } from "../../lib/use-overlay-focus.utils";
 
 export type DialogSize = "sm" | "md" | "lg" | "full";
 
 export interface DialogProps {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
+	/** screen-reader focus returns to this node when the dialog closes */
+	triggerRef?: OverlayTriggerRef;
 	/** When true (default), overlay press and hardware back close the dialog. */
 	dismissable?: boolean;
 	/** When true (default), renders the top-right close affordance. */

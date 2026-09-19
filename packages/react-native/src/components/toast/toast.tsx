@@ -9,9 +9,14 @@
  * blocks the screen behind it.
  */
 
-import type { ReactElement } from "react";
-import { useEffect, useRef, useState } from "react";
-import { Keyboard, Text as RNText, View } from "react-native";
+import type { ReactElement, ReactNode } from "react";
+import { isValidElement, useEffect, useRef, useState } from "react";
+import {
+	AccessibilityInfo,
+	Keyboard,
+	Text as RNText,
+	View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
@@ -26,6 +31,25 @@ import type {
 	ToastProps,
 	ToastTitleProps,
 } from "./toast.types";
+
+/** joins the text of Title/Description children; icons and other
+ * non-text nodes contribute nothing (no empty announcement ever fires) */
+function collectAnnouncementText(node: ReactNode): string {
+	if (node == null || typeof node === "boolean") return "";
+	if (typeof node === "string" || typeof node === "number") return String(node);
+	if (Array.isArray(node)) {
+		return node
+			.map(collectAnnouncementText)
+			.filter((part) => part.length > 0)
+			.join(", ");
+	}
+	if (isValidElement(node)) {
+		return collectAnnouncementText(
+			(node.props as { children?: ReactNode }).children,
+		);
+	}
+	return "";
+}
 
 export function Toast({
 	open,
@@ -68,6 +92,15 @@ export function Toast({
 		return () => clearTimeout(timer);
 	}, [open, duration]);
 
+	// role=alert only retints the node for screen readers already focused
+	// nearby; an explicit announcement is what actually interrupts
+	useEffect(() => {
+		if (!open) return;
+		const text =
+			accessibilityLabel?.trim() || collectAnnouncementText(children).trim();
+		if (text) AccessibilityInfo.announceForAccessibility(text);
+	}, [open, accessibilityLabel, children]);
+
 	if (!open) return null;
 
 	return (
@@ -88,7 +121,10 @@ export function Toast({
 				accessible={true}
 				accessibilityRole="alert"
 				accessibilityLabel={accessibilityLabel}
-				style={[rootStyle(theme), applySlot(applySlot({}, style), slotStyles?.root)]}
+				style={[
+					rootStyle(theme),
+					applySlot(applySlot({}, style), slotStyles?.root),
+				]}
 			>
 				{children}
 			</View>
@@ -106,10 +142,7 @@ function ToastTitle({
 	return (
 		<RNText
 			testID={testID}
-			style={applySlot(
-				[titleStyle(theme), style],
-				slotStyles?.root,
-			)}
+			style={applySlot([titleStyle(theme), style], slotStyles?.root)}
 		>
 			{children}
 		</RNText>
@@ -126,10 +159,7 @@ function ToastDescription({
 	return (
 		<RNText
 			testID={testID}
-			style={applySlot(
-				[descriptionStyle(theme), style],
-				slotStyles?.root,
-			)}
+			style={applySlot([descriptionStyle(theme), style], slotStyles?.root)}
 		>
 			{children}
 		</RNText>

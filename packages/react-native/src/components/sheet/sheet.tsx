@@ -16,6 +16,7 @@
 import { X } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { KeyboardEventName } from "react-native";
 import {
 	Keyboard,
 	Modal,
@@ -25,7 +26,6 @@ import {
 	useWindowDimensions,
 	View,
 } from "react-native";
-import type { KeyboardEventName } from "react-native";
 import {
 	Gesture,
 	GestureDetector,
@@ -43,19 +43,20 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useUnistyles } from "react-native-unistyles";
+import { useOverlayFocus } from "../../lib/use-overlay-focus.utils";
 import { motion, tokens } from "../../tokens";
 import { Icon } from "../icon";
 import { applySlot } from "../slot-styles";
 import {
 	composeOffset,
-	keyboardLift,
-	keyboardShrink,
 	KB_HIDE_SETTLE_MS,
 	KEYBOARD_BOTTOM_GAP,
+	keyboardLift,
+	keyboardShrink,
 	OFFSCREEN_Y,
+	SHEET_EASE,
 	sheetCloseBubble,
 	sheetCloseHit,
-	SHEET_EASE,
 	sheetFooter,
 	sheetHeader,
 	sheetOverlay,
@@ -99,6 +100,7 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 export function Sheet({
 	open,
 	onClose,
+	triggerRef,
 	snap = "peek",
 	maxHeight,
 	title,
@@ -113,6 +115,10 @@ export function Sheet({
 }: SheetProps): ReactElement | null {
 	const { theme } = useUnistyles();
 	const [mounted, setMounted] = useState(open);
+	const contentRef = useRef<View | null>(null);
+	// restore is gated on !mounted so focus returns only after the exit
+	// animation has fully torn the modal window down
+	useOverlayFocus(contentRef, open, !mounted, triggerRef);
 	const { height: windowHeight } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
 	// measured content height drives the status-bar-safe keyboard lift
@@ -232,9 +238,7 @@ export function Sheet({
 	}, [open, mounted, entry, overlay]);
 
 	const onContentLayout = useCallback(
-		(event: {
-			nativeEvent: { layout: { height: number } };
-		}) => {
+		(event: { nativeEvent: { layout: { height: number } } }) => {
 			contentHeight.current = event.nativeEvent.layout.height;
 			if (entry.value === OFFSCREEN_Y && open) {
 				entry.value = event.nativeEvent.layout.height;
@@ -262,7 +266,7 @@ export function Sheet({
 		});
 
 	const sheetStyle = useAnimatedStyle(() => ({
-			transform: [{ translateY: composeOffset(entry.value, ty.value, kb.value) }],
+		transform: [{ translateY: composeOffset(entry.value, ty.value, kb.value) }],
 	}));
 
 	const overlayStyle = useAnimatedStyle(() => ({ opacity: overlay.value }));
@@ -280,158 +284,159 @@ export function Sheet({
 			// Android hardware back; a locked sheet stays open
 			onRequestClose={dismissable ? onClose : () => {}}
 		>
-				{/* the Modal is its own native window — gestures inside it need
-				 * their own root view or the drag-to-dismiss pan never attaches */}
-					<GestureHandlerRootView testID="k-sheet-gesture-root" style={{ flex: 1 }}>
-						<AnimatedPressable
-							testID="k-sheet-overlay"
-							accessibilityRole="button"
-							accessibilityLabel="Close sheet"
-							onPress={dismissable ? onClose : undefined}
+			{/* the Modal is its own native window — gestures inside it need
+			 * their own root view or the drag-to-dismiss pan never attaches */}
+			<GestureHandlerRootView testID="k-sheet-gesture-root" style={{ flex: 1 }}>
+				<AnimatedPressable
+					testID="k-sheet-overlay"
+					accessibilityRole="button"
+					accessibilityLabel="Close sheet"
+					onPress={dismissable ? onClose : undefined}
+					style={[
+						overlayStyle,
+						applySlot(
+							{
+								position: "absolute",
+								top: 0,
+								right: 0,
+								bottom: 0,
+								left: 0,
+								backgroundColor: sheetOverlay(theme),
+							},
+							slotStyles?.overlay,
+						),
+					]}
+				/>
+				{/* box-none: taps outside the sheet fall through to the overlay */}
+				{/* scroll disabled — this ScrollView exists only so taps on the
+				 * overlay/footer/header deliver while the software keyboard is up:
+				 * RN's Android modal window otherwise eats the first tap as a
+				 * keyboard-dismiss (Cancel/Save needed two presses) */}
+				<ScrollView
+					testID="k-sheet-root"
+					scrollEnabled={false}
+					keyboardShouldPersistTaps="always"
+					showsVerticalScrollIndicator={false}
+					style={applySlot(applySlot({ flex: 1 }, style), slotStyles?.root)}
+					contentContainerStyle={{ flex: 1 }}
+				>
+					<GestureDetector gesture={pan}>
+						<Animated.View
+							testID="k-sheet-content"
+							ref={contentRef}
+							accessibilityViewIsModal
+							onLayout={onContentLayout}
 							style={[
-								overlayStyle,
+								sheetStyle,
 								applySlot(
 									{
 										position: "absolute",
-										top: 0,
+										left: 0,
 										right: 0,
 										bottom: 0,
-										left: 0,
-										backgroundColor: sheetOverlay(theme),
+										// auto hugs content under maxHeight; fixed snaps get
+										// their pixel height, shrunk while a keyboard covers
+										// the lower reach so the footer stays above it; full
+										// snap stops below a translucent status bar
+										...(snap === "auto"
+											? {
+													maxHeight:
+														(maxHeight ??
+															Math.round(windowHeight * MAX_HEIGHT_RATIO)) -
+														kbShrink,
+												}
+											: {
+													height: Math.max(
+														0,
+														(baseHeight ?? windowHeight) - kbShrink,
+													),
+												}),
+										backgroundColor: theme.card,
+										borderTopLeftRadius: tokens.radius.card,
+										borderTopRightRadius: tokens.radius.card,
+										borderTopWidth: 1,
+										borderColor: theme.border,
+										paddingTop: 6,
+										// nav-bar clearance with the keyboard hidden; a small gap
+										// once the keyboard replaces the nav bar as the bottom surface
+										paddingBottom: kbUp
+											? KEYBOARD_BOTTOM_GAP
+											: tokens.space.cardPad + insets.bottom,
+										paddingHorizontal: tokens.space.gutter,
+										// tight tier rhythm: grabber reads as part of the header, not
+										// its own band
+										gap: 8,
 									},
-									slotStyles?.overlay,
+									slotStyles?.content,
 								),
 							]}
-						/>
-						{/* box-none: taps outside the sheet fall through to the overlay */}
-					{/* scroll disabled — this ScrollView exists only so taps on the
-					 * overlay/footer/header deliver while the software keyboard is up:
-					 * RN's Android modal window otherwise eats the first tap as a
-					 * keyboard-dismiss (Cancel/Save needed two presses) */}
-					<ScrollView
-						testID="k-sheet-root"
-						scrollEnabled={false}
-						keyboardShouldPersistTaps="always"
-						showsVerticalScrollIndicator={false}
-						style={applySlot(applySlot({ flex: 1 }, style), slotStyles?.root)}
-						contentContainerStyle={{ flex: 1 }}
-					>
-						<GestureDetector gesture={pan}>
-							<Animated.View
-								testID="k-sheet-content"
-								accessibilityViewIsModal
-								onLayout={onContentLayout}
-								style={[
-									sheetStyle,
-									applySlot(
-										{
-											position: "absolute",
-											left: 0,
-											right: 0,
-											bottom: 0,
-											// auto hugs content under maxHeight; fixed snaps get
-											// their pixel height, shrunk while a keyboard covers
-											// the lower reach so the footer stays above it; full
-											// snap stops below a translucent status bar
-											...(snap === "auto"
-												? {
-														maxHeight:
-															(maxHeight ??
-																Math.round(windowHeight * MAX_HEIGHT_RATIO)) -
-															kbShrink,
-													}
-												: {
-														height: Math.max(
-															0,
-															(baseHeight ?? windowHeight) - kbShrink,
-														),
-													}),
-											backgroundColor: theme.card,
-											borderTopLeftRadius: tokens.radius.card,
-											borderTopRightRadius: tokens.radius.card,
-											borderTopWidth: 1,
-											borderColor: theme.border,
-											paddingTop: 6,
-											// nav-bar clearance with the keyboard hidden; a small gap
-											// once the keyboard replaces the nav bar as the bottom surface
-											paddingBottom: kbUp
-												? KEYBOARD_BOTTOM_GAP
-												: tokens.space.cardPad + insets.bottom,
-											paddingHorizontal: tokens.space.gutter,
-											// tight tier rhythm: grabber reads as part of the header, not
-											// its own band
-											gap: 8,
-										},
-										slotStyles?.content,
-									),
-								]}
-							>
-								<View
-									testID="k-sheet-grabber"
-									accessibilityLabel="Drag to dismiss"
-									style={applySlot(
-										{
-											alignSelf: "center",
-											width: 36,
-											height: 4,
-											borderRadius: 2,
-											backgroundColor: theme.mutedForeground,
-										},
-										slotStyles?.grabber,
-									)}
-								/>
-								{title ? (
-									<View
-										testID="k-sheet-header"
-										style={applySlot(sheetHeader(theme), slotStyles?.header)}
-									>
-										<Text
-											testID="k-sheet-title"
-											style={applySlot(sheetTitle(theme), slotStyles?.title)}
-										>
-											{title}
-										</Text>
-										{showClose && dismissable ? (
-											<Pressable
-												testID="k-sheet-close"
-												accessibilityRole="button"
-												accessibilityLabel="Close"
-												onPress={onClose}
-												style={sheetCloseHit()}
-											>
-												<View
-													testID="k-sheet-close-bubble"
-													style={sheetCloseBubble(theme)}
-												>
-													<Icon icon={X} size="sm" color="mutedForeground" />
-												</View>
-											</Pressable>
-										) : null}
-									</View>
-								) : null}
-								{scrollable ? (
-									<ScrollView
-										testID="k-sheet-scroll"
-										showsVerticalScrollIndicator={false}
-										contentContainerStyle={{ gap: 4, paddingBottom: 8 }}
-										// the first tap while the keyboard is up must reach in-body
-										// buttons rather than being eaten as a keyboard-dismiss
-										keyboardShouldPersistTaps="handled"
-									>
-										{children}
-									</ScrollView>
-								) : (
-									children
+						>
+							<View
+								testID="k-sheet-grabber"
+								accessibilityLabel="Drag to dismiss"
+								style={applySlot(
+									{
+										alignSelf: "center",
+										width: 36,
+										height: 4,
+										borderRadius: 2,
+										backgroundColor: theme.mutedForeground,
+									},
+									slotStyles?.grabber,
 								)}
-								{footer ? (
-									<View testID="k-sheet-footer" style={sheetFooter(theme)}>
-										{footer}
-									</View>
-								) : null}
-							</Animated.View>
-						</GestureDetector>
-					</ScrollView>
-				</GestureHandlerRootView>
+							/>
+							{title ? (
+								<View
+									testID="k-sheet-header"
+									style={applySlot(sheetHeader(theme), slotStyles?.header)}
+								>
+									<Text
+										testID="k-sheet-title"
+										style={applySlot(sheetTitle(theme), slotStyles?.title)}
+									>
+										{title}
+									</Text>
+									{showClose && dismissable ? (
+										<Pressable
+											testID="k-sheet-close"
+											accessibilityRole="button"
+											accessibilityLabel="Close"
+											onPress={onClose}
+											style={sheetCloseHit()}
+										>
+											<View
+												testID="k-sheet-close-bubble"
+												style={sheetCloseBubble(theme)}
+											>
+												<Icon icon={X} size="sm" color="mutedForeground" />
+											</View>
+										</Pressable>
+									) : null}
+								</View>
+							) : null}
+							{scrollable ? (
+								<ScrollView
+									testID="k-sheet-scroll"
+									showsVerticalScrollIndicator={false}
+									contentContainerStyle={{ gap: 4, paddingBottom: 8 }}
+									// the first tap while the keyboard is up must reach in-body
+									// buttons rather than being eaten as a keyboard-dismiss
+									keyboardShouldPersistTaps="handled"
+								>
+									{children}
+								</ScrollView>
+							) : (
+								children
+							)}
+							{footer ? (
+								<View testID="k-sheet-footer" style={sheetFooter(theme)}>
+									{footer}
+								</View>
+							) : null}
+						</Animated.View>
+					</GestureDetector>
+				</ScrollView>
+			</GestureHandlerRootView>
 		</Modal>
 	);
 }
