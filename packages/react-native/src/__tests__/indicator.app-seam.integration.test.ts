@@ -110,15 +110,31 @@ describe("indicator app seam", () => {
 		expect(icons).toContain('label="99+"');
 	});
 
-	it("icon badges keep corner-centered anchors but gain the ring", () => {
+	it("icon badges sit on touch-target corners, not on the glyph box", () => {
 		const icons = section(demo, 'DemoBlock label="On Icons"', "</DemoBlock>");
 		for (const block of indicatorBlocks(icons)) {
+			// a 24dp glyph box is smaller than the badge — anchoring on it
+			// covers the glyph; the badge rides the 48dp touch target
+			expect(block).toContain("demoStyles.iconTarget");
+			expect(block).toMatch(/<Icon[\s>]/);
 			// the disabled arm renders nothing — ring or not — so only the
-			// visible badges must carry the ring
+			// visible badges must carry the ring and the smaller size
 			if (block.includes("disabled")) continue;
 			expect(block).toContain("withBorder");
+			expect(block).toContain("size={14}");
 			expect(block).not.toContain('position="bottom-right"');
 		}
+	});
+
+	it("iconTarget is a transparent centered touch target", () => {
+		const target = styleBlock(stylesheet, "iconTarget");
+		expect(target).toContain("width: 48");
+		expect(target).toContain("height: 48");
+		expect(target).toContain('alignItems: "center"');
+		expect(target).toContain('justifyContent: "center"');
+		// transparent: no fill or stroke — a toolbar icon button surface
+		expect(target).not.toContain("backgroundColor");
+		expect(target).not.toContain("borderWidth");
 	});
 
 	it("anchors position targets on the muted square with captions outside", () => {
@@ -181,9 +197,11 @@ describe("indicator app seam", () => {
 		expect(stylesheet).not.toContain("indicatorTargetMuted");
 	});
 
-	it("figure caption column centers under the 48-wide anchor rail", () => {
+	it("figure caption column centers under the anchor rail", () => {
 		const figure = styleBlock(stylesheet, "indicatorFigure");
 		expect(figure).toContain('alignItems: "center"');
-		expect(figure).toContain("width: 48");
+		// 72 fits the longest xs caption ("bottom-right", ~61dp of
+		// glyphs) on one line — at 48/64 it wrapped into two lines
+		expect(figure).toContain("width: 72");
 	});
 });

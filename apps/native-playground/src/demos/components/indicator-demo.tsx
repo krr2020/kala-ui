@@ -57,17 +57,25 @@ export function IndicatorDemo() {
 			</DemoBlock>
 			<DemoBlock label="On Icons">
 				<View style={demoStyles.componentRow}>
-					<Indicator label={9} size={16} withBorder>
-						<Icon icon={Bell} size="lg" />
+					<Indicator label={9} size={14} withBorder>
+						<View style={demoStyles.iconTarget}>
+							<Icon icon={Bell} size="lg" />
+						</View>
 					</Indicator>
-					<Indicator label="99+" size={16} color="warning" withBorder>
-						<Icon icon={Mail} size="lg" />
+					<Indicator label="99+" size={14} color="warning" withBorder>
+						<View style={demoStyles.iconTarget}>
+							<Icon icon={Mail} size="lg" />
+						</View>
 					</Indicator>
-					<Indicator label={1} size={16} color="destructive" withBorder>
-						<Icon icon={MessageCircle} size="lg" />
+					<Indicator label={1} size={14} color="destructive" withBorder>
+						<View style={demoStyles.iconTarget}>
+							<Icon icon={MessageCircle} size="lg" />
+						</View>
 					</Indicator>
 					<Indicator disabled label={0}>
-						<Icon icon={Bell} size="lg" />
+						<View style={demoStyles.iconTarget}>
+							<Icon icon={Bell} size="lg" />
+						</View>
 					</Indicator>
 				</View>
 			</DemoBlock>

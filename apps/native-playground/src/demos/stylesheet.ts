@@ -215,10 +215,20 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		borderRadius: 10,
 		backgroundColor: theme.muted,
 	},
-	// caption column under an anchored target: 48-wide rail so long
-	// labels wrap as captions, never as text inside the target box
-	indicatorFigure: {
+	// transparent 48dp touch target for icon badges: anchoring on the
+	// 24dp glyph box puts the badge over the glyph — real toolbars badge
+	// the button corner, not the drawing
+	iconTarget: {
 		width: 48,
+		height: 48,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	// caption column under an anchored target: 72-wide so the longest xs
+	// caption ("bottom-right", ~61dp of glyphs) stays on one line; wraps
+	// as a caption, never as text inside the target box
+	indicatorFigure: {
+		width: 72,
 		alignItems: "center",
 		gap: 4,
 	},
