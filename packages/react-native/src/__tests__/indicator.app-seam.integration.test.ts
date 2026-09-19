@@ -66,12 +66,47 @@ describe("indicator app seam", () => {
 		);
 	});
 
-	it("defines the target box with fixed size and theme tokens", () => {
+	it("anchors every demo dot file-wide to a themed target box", () => {
+		// whole-file sweep, not just the Positions block: any Indicator
+		// left wrapping bare text/icon glyphs puts its dot on the words
+		const indicatorCount = (demo.match(/<Indicator[\s>]/g) ?? []).length;
+		expect(indicatorCount).toBeGreaterThanOrEqual(7);
+		const targetCount =
+			(demo.match(/demoStyles\.indicatorTarget\b/g) ?? []).length +
+			(demo.match(/demoStyles\.indicatorTargetMuted/g) ?? []).length;
+		expect(targetCount).toBe(indicatorCount);
+	});
+
+	it("hidden-dot and bordered rows keep boxes; bordered uses the muted fill", () => {
+		const hidden = section(
+			demo,
+			'DemoBlock label="Hidden And Bordered"',
+			"</DemoBlock>",
+		);
+		// disabled branch: no dot renders, but the target box must — so
+		// sibling layout stays put when the dot disappears
+		expect(hidden).toContain("<Indicator disabled");
+		expect(hidden).toMatch(/demoStyles\.indicatorTarget\b/);
+		// the border ring paints in theme.background — visible only over
+		// the muted fill twin
+		expect(hidden).toContain("demoStyles.indicatorTargetMuted");
+		expect(hidden).toContain("withBorder");
+	});
+
+	it("defines the target boxes with identical geometry, theme-token fills", () => {
 		const target = styleBlock(stylesheet, "indicatorTarget");
-		expect(target).toContain("width: 48");
-		expect(target).toContain("height: 48");
-		expect(target).toContain("borderColor: theme.border");
+		for (const block of [target, styleBlock(stylesheet, "indicatorTargetMuted")]) {
+			expect(block).toContain("width: 48");
+			expect(block).toContain("height: 48");
+			expect(block).toContain("borderRadius: 10");
+			expect(block).toContain("borderColor: theme.border");
+		}
 		expect(target).toContain("backgroundColor: theme.card");
+		// identical geometry except the fill — pixel sampling gets stable
+		// corner coordinates in either variant
+		expect(styleBlock(stylesheet, "indicatorTargetMuted")).toContain(
+			"backgroundColor: theme.muted",
+		);
 	});
 
 	it("keeps the inline-vs-stretched contrast in a stretching column", () => {

@@ -217,6 +217,18 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		alignItems: "center",
 		justifyContent: "center",
 	},
+	// muted-fill twin of the target box: the withBorder ring paints in
+	// theme.background, which reads only against a non-background fill
+	indicatorTargetMuted: {
+		width: 48,
+		height: 48,
+		borderRadius: 10,
+		borderWidth: 1,
+		borderColor: theme.border,
+		backgroundColor: theme.muted,
+		alignItems: "center",
+		justifyContent: "center",
+	},
 	// column so the inline (hugging) vs default (stretch) wrapper widths
 	// are visibly different; children stretch cross-axis by default
 	inlineColumn: {

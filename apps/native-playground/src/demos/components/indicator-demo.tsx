@@ -12,13 +12,19 @@ export function IndicatorDemo() {
 			<DemoBlock label="Badge Dots">
 				<View style={demoStyles.componentRow}>
 					<Indicator size={12} label="3">
-						<Icon icon={Sun} size="md" />
+						<View style={demoStyles.indicatorTarget}>
+							<Icon icon={Sun} size="md" />
+						</View>
 					</Indicator>
 					<Indicator color="success">
-						<KText size="sm">online</KText>
+						<View style={demoStyles.indicatorTarget}>
+							<KText size="sm">online</KText>
+						</View>
 					</Indicator>
 					<Indicator color="destructive" processing size={12}>
-						<KText size="sm">live</KText>
+						<View style={demoStyles.indicatorTarget}>
+							<KText size="sm">live</KText>
+						</View>
 					</Indicator>
 				</View>
 			</DemoBlock>
@@ -30,7 +36,9 @@ export function IndicatorDemo() {
 							color={color}
 							label={color === "primary" ? 7 : undefined}
 						>
-							<KText size="sm">{color}</KText>
+							<View style={demoStyles.indicatorTarget}>
+								<KText size="sm">{color}</KText>
+							</View>
 						</Indicator>
 					))}
 				</View>
@@ -38,10 +46,14 @@ export function IndicatorDemo() {
 			<DemoBlock label="Hidden And Bordered">
 				<View style={demoStyles.componentRow}>
 					<Indicator disabled label="0">
-						<KText size="sm">disabled</KText>
+						<View style={demoStyles.indicatorTarget}>
+							<KText size="sm">disabled</KText>
+						</View>
 					</Indicator>
-					<Indicator withBorder color="destructive" label="!">
-						<KText size="sm">bordered</KText>
+					<Indicator withBorder color="destructive" label="!" size={16}>
+						<View style={demoStyles.indicatorTargetMuted}>
+							<KText size="sm">bordered</KText>
+						</View>
 					</Indicator>
 				</View>
 			</DemoBlock>
