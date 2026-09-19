@@ -116,7 +116,7 @@ export function Tabs({
 							offset={4}
 							color={tabsDotColor(onActivePill)}
 							disabled={item.indicator !== true}
-							style={overlayStyle}
+							slotStyles={{ root: overlayStyle }}
 						/>
 							<View
 								testID="k-tab-row"

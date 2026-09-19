@@ -205,6 +205,24 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		alignItems: "center",
 		gap: 8,
 	},
+	// fixed-size anchor target for Indicator position demos — gives the
+	// absolutely-anchored dot a corner to sit on instead of the glyphs
+	indicatorTarget: {
+		width: 48,
+		height: 48,
+		borderRadius: 10,
+		borderWidth: 1,
+		borderColor: theme.border,
+		backgroundColor: theme.card,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	// column so the inline (hugging) vs default (stretch) wrapper widths
+	// are visibly different; children stretch cross-axis by default
+	inlineColumn: {
+		alignSelf: "stretch",
+		gap: 12,
+	},
 	// label-above-control pairing: the column stack Field gives you for free
 	fieldRow: {
 		alignSelf: "stretch",

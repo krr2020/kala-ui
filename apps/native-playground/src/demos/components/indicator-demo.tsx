@@ -45,6 +45,40 @@ export function IndicatorDemo() {
 					</Indicator>
 				</View>
 			</DemoBlock>
+			<DemoBlock label="Positions, Offset, Inline">
+				<View style={demoStyles.componentRow}>
+					{(
+						[
+							["top-right", 0],
+							["bottom-right", 4],
+							["middle-left", 0],
+						] as const
+					).map(([position, offset]) => (
+						<Indicator
+							key={position}
+							position={position}
+							offset={offset}
+							color="info"
+						>
+							<View style={demoStyles.indicatorTarget}>
+								<KText size="sm">{position}</KText>
+							</View>
+						</Indicator>
+					))}
+				</View>
+				<View style={demoStyles.inlineColumn}>
+					<Indicator inline color="success" size={8}>
+						<View style={demoStyles.indicatorTarget}>
+							<KText size="sm">inline</KText>
+						</View>
+					</Indicator>
+					<Indicator color="success" size={8}>
+						<View style={demoStyles.indicatorTarget}>
+							<KText size="sm">stretched</KText>
+						</View>
+					</Indicator>
+				</View>
+			</DemoBlock>
 		</View>
 	);
 }

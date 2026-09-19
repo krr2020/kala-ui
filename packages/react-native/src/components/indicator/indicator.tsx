@@ -34,7 +34,9 @@ export function Indicator({
 	const pulse = useRef(new Animated.Value(1)).current;
 
 	useEffect(() => {
-		if (!processing) return;
+		// disabled renders no dot — running the pulse anyway would leak a
+		// looping animation with no surface to drive
+		if (!processing || disabled) return;
 		const loop = Animated.loop(
 			Animated.sequence([
 				Animated.timing(pulse, {
@@ -54,7 +56,7 @@ export function Indicator({
 			loop.stop();
 			pulse.setValue(1);
 		};
-	}, [processing, pulse]);
+	}, [processing, disabled, pulse]);
 
 	const hasLabel = label !== undefined && label !== null && label !== "";
 
@@ -62,16 +64,8 @@ export function Indicator({
 		<View
 			testID={testID}
 			style={applySlot(
-				applySlot(
-					[
-						{
-							position: "relative",
-							alignSelf: inline ? "flex-start" : undefined,
-						},
-					],
-					style,
-				),
-				slotStyles?.root,
+				[{ position: "relative" }],
+				[inline ? { alignSelf: "flex-start" } : null, slotStyles?.root],
 			)}
 		>
 			{!disabled && (
@@ -90,17 +84,15 @@ export function Indicator({
 								zIndex: 50,
 								overflow: "hidden",
 							},
-							hasLabel
-								? {
-										paddingHorizontal: size / 3,
-										fontSize: size * 0.7,
-										color: theme[`${color}Foreground`],
-									}
-								: { width: size },
+							hasLabel ? { paddingHorizontal: size / 3 } : { width: size },
 							withBorder
 								? { borderWidth: 2, borderColor: theme.background }
 								: { borderWidth: 0 },
 							anchorStyle(position, offset, size / 2),
+							// legacy style targets the DOT at web parity (web spreads
+							// it onto the dot div, not the wrapper); the pulse rides
+							// after it so the animation beats user opacity like CSS
+							style,
 							processing ? { opacity: pulse } : null,
 						],
 						slotStyles?.dot,
