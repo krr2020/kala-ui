@@ -16,9 +16,7 @@ export function StepsDemo() {
 	return (
 		<View style={demoStyles.routeContent} testID="k-demo-steps">
 			<DemoBlock label="Pressable Horizontal">
-				<View style={demoStyles.componentRow}>
-					<Steps items={CHECKOUT} value={step} onStepChange={setStep} />
-				</View>
+				<Steps items={CHECKOUT} value={step} onStepChange={setStep} />
 				<View style={demoStyles.componentRow}>
 					<Button
 						size="sm"

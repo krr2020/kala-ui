@@ -11,8 +11,7 @@ export function MetricCardDemo() {
 	return (
 		<View style={demoStyles.routeContent} testID="k-demo-metric-card">
 			<DemoBlock label="Tones">
-				<View style={demoStyles.componentRow}>
-					<MetricCard
+				<MetricCard
 						title="weekly active"
 						value={12345}
 						change={5}
@@ -32,8 +31,7 @@ export function MetricCardDemo() {
 						subtitle="of 100 target"
 						tone="muted"
 						icon={<Icon icon={TrendingUp} size="sm" />}
-					/>
-				</View>
+				/>
 			</DemoBlock>
 			<DemoBlock label="Skeleton State">
 				<Button size="sm" onPress={() => setLoading((l) => !l)}>

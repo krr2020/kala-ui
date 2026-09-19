@@ -9,18 +9,16 @@ export function CollapsibleDemo() {
 	return (
 		<View style={demoStyles.routeContent} testID="k-demo-collapsible">
 			<DemoBlock label="Controlled">
-				<View style={demoStyles.componentRow}>
-					<Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
-						<Collapsible.Trigger accessibilityLabel="Advanced Filters">
-							Advanced Filters
-						</Collapsible.Trigger>
-						<Collapsible.Content>
-							<KText size="sm" color="muted">
-								only show verified sellers · min rating 4 · ships in 2 days
-							</KText>
-						</Collapsible.Content>
-					</Collapsible>
-				</View>
+				<Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
+					<Collapsible.Trigger accessibilityLabel="Advanced Filters">
+						Advanced Filters
+					</Collapsible.Trigger>
+					<Collapsible.Content>
+						<KText size="sm" color="muted">
+							only show verified sellers · min rating 4 · ships in 2 days
+						</KText>
+					</Collapsible.Content>
+				</Collapsible>
 				<KText size="sm" color="muted">
 					state: {showAdvanced ? "open" : "closed"}
 				</KText>
@@ -38,32 +36,28 @@ export function CollapsibleDemo() {
 				</Collapsible>
 			</DemoBlock>
 			<DemoBlock label="Inside a card-like row">
-				<View style={demoStyles.componentRow}>
-					<Collapsible>
-						<Collapsible.Trigger accessibilityLabel="Show more">
-							Show more
-						</Collapsible.Trigger>
-						<Collapsible.Content>
-							<KText size="sm" color="muted">
-								a bare collapsible defaults to closed and manages itself
-							</KText>
-						</Collapsible.Content>
-					</Collapsible>
-				</View>
+				<Collapsible>
+					<Collapsible.Trigger accessibilityLabel="Show more">
+						Show more
+					</Collapsible.Trigger>
+					<Collapsible.Content>
+						<KText size="sm" color="muted">
+							a bare collapsible defaults to closed and manages itself
+						</KText>
+					</Collapsible.Content>
+				</Collapsible>
 			</DemoBlock>
 			<DemoBlock label="Disabled">
-				<View style={demoStyles.componentRow}>
-					<Collapsible disabled>
-						<Collapsible.Trigger accessibilityLabel="Locked section">
-							Locked section
-						</Collapsible.Trigger>
-						<Collapsible.Content>
-							<KText size="sm" color="muted">
-								never reachable while disabled
-							</KText>
-						</Collapsible.Content>
-					</Collapsible>
-				</View>
+				<Collapsible disabled>
+					<Collapsible.Trigger accessibilityLabel="Locked section">
+						Locked section
+					</Collapsible.Trigger>
+					<Collapsible.Content>
+						<KText size="sm" color="muted">
+							never reachable while disabled
+						</KText>
+					</Collapsible.Content>
+				</Collapsible>
 			</DemoBlock>
 		</View>
 	);
