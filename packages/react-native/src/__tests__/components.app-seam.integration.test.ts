@@ -182,8 +182,10 @@ describe("component app seam", () => {
 		// arrays + typed values). The navigation group rebuild swaps the old
 		// overview arms (tag/rating/volume/bold) for tab/range/align and adds
 		// the segmented density arm, dropdown sort+action counters and the
-		// context menu's second target — net +2.
-		expect(demoHooks).toBe(109);
+		// context menu's second target — net +2. The sheet footer keyboard-fix
+		// unit then gave the sheet demo its pinned-footer + keyboard-awareness
+		// arms (open flag, footer press, keyboard toggles) — net +4 to 113.
+		expect(demoHooks).toBe(113);
 	});
 
 	it("landing offers exactly two package routes", () => {
@@ -445,8 +447,7 @@ describe("component app seam", () => {
 		const previewContent = block("previewContent");
 		const pad = (src: string, key: string): number =>
 			Number(src.match(new RegExp(`${key}: (\\d+)`))?.[1] ?? 0);
-		const gap =
-			pad(themeRow, "paddingBottom") + 1 + pad(previewContent, "gap");
+		const gap = pad(themeRow, "paddingBottom") + 1 + pad(previewContent, "gap");
 		expect(gap).toBeGreaterThanOrEqual(16);
 		expect(gap).toBeLessThanOrEqual(40);
 		expect(pad(previewContent, "gap")).toBeGreaterThanOrEqual(8);
@@ -568,11 +569,14 @@ describe("component app seam", () => {
 			new Map(
 				Object.entries({
 					'accessibilityLabel="Accept terms"': 1,
+					'accessibilityLabel="Account"': 1,
 					'accessibilityLabel="Advance ring"': 1,
 					'accessibilityLabel="Advance step"': 1,
 					'accessibilityLabel="Advance upload"': 1,
+					'accessibilityLabel="Advanced Filters"': 1,
 					'accessibilityLabel="Apply search"': 1,
 					'accessibilityLabel="Archiving project"': 1,
+					'accessibilityLabel="Billing"': 1,
 					'accessibilityLabel="City"': 1,
 					'accessibilityLabel="Disabled quantity"': 1,
 					'accessibilityLabel="Disabled textarea"': 1,
@@ -584,6 +588,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="Error quantity"': 1,
 					'accessibilityLabel="Error select"': 1,
 					'accessibilityLabel="Error textarea"': 1,
+					'accessibilityLabel="FAQ"': 1,
 					'accessibilityLabel="Feedback"': 1,
 					'accessibilityLabel="Fetching orders"': 1,
 					'accessibilityLabel="Fruit"': 1,
@@ -593,13 +598,16 @@ describe("component app seam", () => {
 					'accessibilityLabel="Home city"': 1,
 					'accessibilityLabel="Invite Code"': 1,
 					'accessibilityLabel="Invite teammates"': 1,
+					'accessibilityLabel="Legacy settings"': 1,
 					'accessibilityLabel="Loading profile"': 1,
 					'accessibilityLabel="Locked outline"': 1,
+					'accessibilityLabel="Locked section"': 1,
 					'accessibilityLabel="Locked select"': 1,
 					'accessibilityLabel="Long list city"': 1,
 					'accessibilityLabel="Long list toppings"': 1,
 					'accessibilityLabel="Long textarea value"': 1,
 					'accessibilityLabel="Movie"': 1,
+					'accessibilityLabel="Notifications"': 1,
 					'accessibilityLabel="Offset with decimals"': 1,
 					'accessibilityLabel="Open destructive alert"': 1,
 					'accessibilityLabel="Open dialog without close button"': 1,
@@ -620,19 +628,25 @@ describe("component app seam", () => {
 					'accessibilityLabel="Order notes"': 1,
 					'accessibilityLabel="Orphan city"': 1,
 					'accessibilityLabel="Orphan toppings"': 1,
+					'accessibilityLabel="Privacy"': 1,
 					'accessibilityLabel="Quantity"': 1,
 					'accessibilityLabel="Recent orders"': 1,
 					'accessibilityLabel="Referral"': 1,
 					'accessibilityLabel="Reset ring"': 1,
 					'accessibilityLabel="Reset upload"': 1,
+					'accessibilityLabel="Returns"': 1,
 					'accessibilityLabel="Role"': 1,
 					'accessibilityLabel="Save event"': 1,
 					'accessibilityLabel="Save task"': 1,
 					'accessibilityLabel="Saving changes"': 1,
 					'accessibilityLabel="Search products"': 1,
+					'accessibilityLabel="Security"': 1,
+					'accessibilityLabel="Session details"': 1,
+					'accessibilityLabel="Shipping"': 1,
 					'accessibilityLabel="Show Auto Toast"': 1,
 					'accessibilityLabel="Show Toast"': 1,
 					'accessibilityLabel="Show loading overlay"': 1,
+					'accessibilityLabel="Show more"': 1,
 					'accessibilityLabel="Silent sync"': 1,
 					'accessibilityLabel="Task notes"': 1,
 					'accessibilityLabel="Task title"': 1,
@@ -674,7 +688,6 @@ describe("component app seam", () => {
 					'accessibilityLabel="error input"': 1,
 					'accessibilityLabel="full progress"': 1,
 					'accessibilityLabel="full ring"': 1,
-					'accessibilityLabel="large"': 1,
 					'accessibilityLabel="large progress"': 1,
 					'accessibilityLabel="large ring"': 1,
 					'accessibilityLabel="loading calendar"': 1,
@@ -693,7 +706,6 @@ describe("component app seam", () => {
 					'accessibilityLabel="long toggle"': 1,
 					'accessibilityLabel="long value"': 1,
 					'accessibilityLabel="max rating"': 1,
-					'accessibilityLabel="medium"': 1,
 					'accessibilityLabel="medium date"': 1,
 					'accessibilityLabel="medium progress"': 1,
 					'accessibilityLabel="medium ring"': 1,
@@ -727,12 +739,11 @@ describe("component app seam", () => {
 					'accessibilityLabel="share"': 1,
 					'accessibilityLabel="slider at max"': 1,
 					'accessibilityLabel="slider at min"': 1,
-					'accessibilityLabel="small"': 1,
 					'accessibilityLabel="small date"': 1,
 					'accessibilityLabel="small progress"': 1,
 					'accessibilityLabel="small ring"': 1,
 					'accessibilityLabel="stacked sections ring"': 1,
-					'accessibilityLabel="state"': 1,
+					'accessibilityLabel="state all"': 1,
 					'accessibilityLabel="stay dates"': 1,
 					'accessibilityLabel="stepped slider"': 1,
 					'accessibilityLabel="sun button"': 1,
@@ -743,6 +754,7 @@ describe("component app seam", () => {
 					'accessibilityLabel="timer"': 1,
 					'accessibilityLabel="trip window"': 1,
 					'accessibilityLabel="under-clamped progress"': 1,
+					'accessibilityLabel="unit"': 1,
 					'accessibilityLabel="upload"': 1,
 					'accessibilityLabel="valid input"': 1,
 					'accessibilityLabel="volume"': 1,
@@ -758,6 +770,7 @@ describe("component app seam", () => {
 					"accessibilityLabel={`activate ${name} theme`}": 1,
 					"accessibilityLabel={`open ${entry.name} group`}": 1,
 					"accessibilityLabel={`show ${name} preview`}": 1,
+					"accessibilityLabel={`size ${size}`}": 1,
 					'testID="k-demo-accordion"': 1,
 					'testID="k-demo-alert"': 1,
 					'testID="k-demo-alert-dialog"': 1,
