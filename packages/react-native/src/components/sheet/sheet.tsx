@@ -319,14 +319,16 @@ export function Sheet({
 											borderTopRightRadius: tokens.radius.card,
 											borderTopWidth: 1,
 											borderColor: theme.border,
-											paddingTop: 8,
+											paddingTop: 6,
 											// nav-bar clearance with the keyboard hidden; a small gap
 											// once the keyboard replaces the nav bar as the bottom surface
 											paddingBottom: kbUp
 												? KEYBOARD_BOTTOM_GAP
 												: tokens.space.cardPad + insets.bottom,
 											paddingHorizontal: tokens.space.gutter,
-											gap: 12,
+											// tight tier rhythm: grabber reads as part of the header, not
+											// its own band
+											gap: 8,
 										},
 										slotStyles?.content,
 									),
