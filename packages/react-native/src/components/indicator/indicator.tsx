@@ -1,10 +1,10 @@
 /**
- * Indicator: status dot anchored over its target's corners/edges. The
- * nine web translate-(-50%, -50%) anchors become negative half-size
- * offsets (percentage + negative margin for centered axes). Processing
- * pulses opacity on a core-Animated loop that stops in cleanup; there
- * is no gradient arm — solid theme-ramp fills only, matching the
- * deferred-gradient precedent in Progress.
+ * Indicator: badge anchored to its target's corners (MUI anchorOrigin
+ * + overlap model). rectangular centers the badge on the corner via
+ * negative half-size offsets; circular insets it fully inside. Counts
+ * cap at max (99+), zeros hide unless showZero, and dot renders a
+ * contentless status dot. Processing pulses opacity on a core-Animated
+ * loop that stops in cleanup; solid theme-ramp fills only.
  */
 
 import type { ReactElement } from "react";
@@ -17,14 +17,18 @@ import type { IndicatorProps } from "./indicator.types";
 
 export function Indicator({
 	children,
-	position = "top-right",
+	badgeContent,
+	max = 99,
+	showZero = false,
+	dot = false,
+	anchorOrigin = { vertical: "top", horizontal: "right" },
+	overlap = "rectangular",
+	offset = [0, 0],
 	color = "primary",
-	offset = 0,
-	size = 10,
+	size,
 	withBorder = false,
-	disabled = false,
+	invisible = false,
 	processing = false,
-	label,
 	inline = false,
 	style,
 	slotStyles,
@@ -33,10 +37,21 @@ export function Indicator({
 	const { theme } = useUnistyles();
 	const pulse = useRef(new Animated.Value(1)).current;
 
+	const resolvedSize = size ?? (dot ? 10 : 16);
+	const isDot = dot || badgeContent === undefined;
+	// MUI model: no badgeContent means no badge — unless dot opts in;
+	// numeric zero hides unless showZero (Ant model)
+	const hideBadge =
+		invisible ||
+		(!dot &&
+			(badgeContent === undefined ||
+				(typeof badgeContent === "number" &&
+					badgeContent === 0 &&
+					!showZero)));
+
 	useEffect(() => {
-		// disabled renders no dot — running the pulse anyway would leak a
-		// looping animation with no surface to drive
-		if (!processing || disabled) return;
+		// no badge, no pulse — a looping animation with no surface leaks
+		if (!processing || hideBadge) return;
 		const loop = Animated.loop(
 			Animated.sequence([
 				Animated.timing(pulse, {
@@ -56,9 +71,12 @@ export function Indicator({
 			loop.stop();
 			pulse.setValue(1);
 		};
-	}, [processing, disabled, pulse]);
+	}, [processing, hideBadge, pulse]);
 
-	const hasLabel = label !== undefined && label !== null && label !== "";
+	const text =
+		!dot && typeof badgeContent === "number" && badgeContent > max
+			? `${max}+`
+			: badgeContent;
 
 	return (
 		<View
@@ -68,45 +86,48 @@ export function Indicator({
 				[inline ? { alignSelf: "flex-start" } : null, slotStyles?.root],
 			)}
 		>
-			{!disabled && (
+			{!hideBadge && (
 				<Animated.View
 					testID="k-indicator-dot"
 					style={applySlot(
 						[
 							{
 								position: "absolute",
-								height: size,
-								minWidth: size,
-								borderRadius: size / 2,
+								height: resolvedSize,
+								borderRadius: resolvedSize / 2,
 								backgroundColor: theme[color],
 								alignItems: "center",
 								justifyContent: "center",
 								zIndex: 50,
 								overflow: "hidden",
 							},
-							hasLabel ? { paddingHorizontal: size / 3 } : { width: size },
+							isDot
+								? { width: resolvedSize }
+								: { minWidth: resolvedSize },
+							!isDot ? { paddingHorizontal: resolvedSize / 3 } : null,
 							withBorder
 								? { borderWidth: 2, borderColor: theme.background }
 								: { borderWidth: 0 },
-							anchorStyle(position, offset, size / 2),
-							// legacy style targets the DOT at web parity (web spreads
-							// it onto the dot div, not the wrapper); the pulse rides
-							// after it so the animation beats user opacity like CSS
+							anchorStyle(anchorOrigin, overlap, offset, resolvedSize),
+							// legacy style targets the badge at web parity (web
+							// spreads it onto the badge node, not the wrapper); the
+							// pulse rides after it so the animation beats user
+							// opacity like CSS
 							style,
 							processing ? { opacity: pulse } : null,
 						],
-						slotStyles?.dot,
+						slotStyles?.badge,
 					)}
 				>
-					{hasLabel ? (
+					{!isDot ? (
 						<RNText
 							style={{
 								color: theme[`${color}Foreground`],
-								fontSize: size * 0.7,
+								fontSize: resolvedSize * 0.7,
 								fontWeight: "700",
 							}}
 						>
-							{label}
+							{text}
 						</RNText>
 					) : null}
 				</Animated.View>

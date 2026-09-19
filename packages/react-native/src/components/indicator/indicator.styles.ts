@@ -1,43 +1,47 @@
 /**
- * Non-component wiring for Indicator: the nine anchor positions and the
- * style builder that centers the dot on each one.
+ * Non-component wiring for Indicator: the four anchor corners and the
+ * style builder that places the badge for each overlap mode.
  */
-import type { IndicatorPosition } from "./indicator.types";
+import type {
+	IndicatorAnchorOrigin,
+	IndicatorOverlap,
+} from "./indicator.types";
 
-type Axis = "start" | "center" | "end";
-
-export const ANCHORS: Record<
-	IndicatorPosition,
-	{ vertical: Axis; horizontal: Axis }
+const CORNERS: Record<
+	`${IndicatorAnchorOrigin["vertical"]}-${IndicatorAnchorOrigin["horizontal"]}`,
+	{ top?: boolean; left?: boolean }
 > = {
-	"top-left": { vertical: "start", horizontal: "start" },
-	"top-center": { vertical: "start", horizontal: "center" },
-	"top-right": { vertical: "start", horizontal: "end" },
-	"middle-left": { vertical: "center", horizontal: "start" },
-	"middle-center": { vertical: "center", horizontal: "center" },
-	"middle-right": { vertical: "center", horizontal: "end" },
-	"bottom-left": { vertical: "end", horizontal: "start" },
-	"bottom-center": { vertical: "end", horizontal: "center" },
-	"bottom-right": { vertical: "end", horizontal: "end" },
+	"top-left": { top: true, left: true },
+	"top-right": { top: true },
+	"bottom-left": { left: true },
+	"bottom-right": {}
 };
 
-/** Centers the dot on the anchor point; offset insets the anchored edges. */
+/**
+ * Places the badge for the corner + overlap pair; offset [x, y] nudges
+ * after (positive x right, positive y down, Ant model).
+ *
+ * rectangular: the badge centers on the corner (-size/2 on the anchored
+ * edges), matching the web translate(-50%, -50%) anchors.
+ * circular: the centered anchor plus a size/2+2 pull-in, leaving a 2px
+ * gap from each anchored edge so the withBorder ring reads against a
+ * circular target (avatar status-dot convention).
+ */
 export function anchorStyle(
-	position: IndicatorPosition,
-	offset: number,
-	half: number,
+	anchorOrigin: IndicatorAnchorOrigin,
+	overlap: IndicatorOverlap,
+	offset: [number, number],
+	size: number,
 ) {
-	const { vertical, horizontal } = ANCHORS[position];
-	const style: Record<string, number | string> = {};
-	if (vertical === "start") style.top = -half + offset;
-	else if (vertical === "center") {
-		style.top = "50%";
-		style.marginTop = -half;
-	} else style.bottom = -half + offset;
-	if (horizontal === "start") style.left = -half + offset;
-	else if (horizontal === "center") {
-		style.left = "50%";
-		style.marginLeft = -half;
-	} else style.right = -half + offset;
+	const half = size / 2;
+	const inset = overlap === "circular" ? half + 2 : 0;
+	const corner =
+		CORNERS[`${anchorOrigin.vertical}-${anchorOrigin.horizontal}`];
+	const [dx, dy] = offset;
+	const style: Record<string, number> = {};
+	if (corner.top) style.top = -half + inset + dy;
+	else style.bottom = -half + inset - dy;
+	if (corner.left) style.left = -half + inset + dx;
+	else style.right = -half + inset - dx;
 	return style;
 }

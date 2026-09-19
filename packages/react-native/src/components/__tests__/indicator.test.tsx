@@ -1,8 +1,8 @@
 /**
- * Indicator contracts: nine corner/edge anchor positions, offset insets,
- * theme color ramp fills, the border ring, label typography at web parity
- * (fontSize 0.7×size, size/3 side padding), and the processing pulse
- * loop lifecycle.
+ * Indicator contracts: the badge API (anchorOrigin corners, overlap
+ * rectangular/circular, badgeContent count capping, dot/invisible arms),
+ * theme color ramp fills, the border ring, label typography, and the
+ * processing pulse loop lifecycle.
  */
 import { render } from "@testing-library/react-native";
 import { Indicator } from "../indicator";
@@ -18,31 +18,15 @@ const flatStyle = (node: {
 }): Record<string, number | string> =>
 	require("react-native").StyleSheet.flatten(node.props.style) ?? {};
 
-const dot = (screen: Awaited<ReturnType<typeof render>>) =>
+const badge = (screen: Awaited<ReturnType<typeof render>>) =>
 	screen.getByTestId("k-indicator-dot", incl);
 
-const POSITION_KEYS = [
-	"top",
-	"right",
-	"bottom",
-	"left",
-	"marginTop",
-	"marginLeft",
-] as const;
-
-const positionSignature = (
-	screen: Awaited<ReturnType<typeof render>>,
-): string => {
-	const s = flatStyle(dot(screen));
-	return JSON.stringify(
-		POSITION_KEYS.map((key) => (s[key] === undefined ? null : s[key])),
-	);
-};
+const BOTTOM_RIGHT = { vertical: "bottom", horizontal: "right" } as const;
 
 describe("Indicator", () => {
-	it("renders wrapper and dot markers; disabled hides only the dot", async () => {
+	it("renders wrapper and badge markers; invisible hides only the badge", async () => {
 		const screen = await render(
-			<Indicator>
+			<Indicator dot>
 				<RNText>target</RNText>
 			</Indicator>,
 		);
@@ -50,10 +34,10 @@ describe("Indicator", () => {
 		expect(flatStyle(screen.getByTestId("k-indicator")).position).toBe(
 			"relative",
 		);
-		expect(dot(screen)).toBeTruthy();
+		expect(badge(screen)).toBeTruthy();
 
 		await screen.rerender(
-			<Indicator disabled>
+			<Indicator dot invisible>
 				<RNText>target</RNText>
 			</Indicator>,
 		);
@@ -61,73 +45,181 @@ describe("Indicator", () => {
 		expect(screen.queryByTestId("k-indicator-dot", incl)).toBeNull();
 	});
 
-	it("anchors all nine positions with distinct edge signatures", async () => {
-		const positions = [
-			"top-left",
-			"top-center",
-			"top-right",
-			"middle-left",
-			"middle-center",
-			"middle-right",
-			"bottom-left",
-			"bottom-center",
-			"bottom-right",
+	it("anchors the four corners with distinct edge signatures", async () => {
+		const origins = [
+			{ vertical: "top", horizontal: "left" },
+			{ vertical: "top", horizontal: "right" },
+			{ vertical: "bottom", horizontal: "left" },
+			BOTTOM_RIGHT,
 		] as const;
 		const screen = await render(
-			<Indicator position="top-left">
+			<Indicator dot size={10} anchorOrigin={origins[0]}>
 				<RNText>t</RNText>
 			</Indicator>,
 		);
 		const seen = new Set<string>();
-		for (const position of positions) {
+		for (const anchorOrigin of origins) {
 			await screen.rerender(
-				<Indicator position={position}>
+				<Indicator dot size={10} anchorOrigin={anchorOrigin}>
 					<RNText>t</RNText>
 				</Indicator>,
 			);
-			const signature = positionSignature(screen);
-			expect(seen.has(signature)).toBe(false);
-			seen.add(signature);
+			const s = flatStyle(badge(screen));
+			seen.add(
+				JSON.stringify([s.top, s.left, s.bottom, s.right].map(String)),
+			);
 		}
-		expect(seen.size).toBe(positions.length);
+		expect(seen.size).toBe(origins.length);
 	});
 
-	it("corners sit centered on the corner: negative half-size offsets", async () => {
+	it("rectangular centers the badge on the corner; circular insets inside", async () => {
 		const screen = await render(
-			<Indicator position="top-right" size={10}>
+			<Indicator dot size={10} anchorOrigin={BOTTOM_RIGHT}>
 				<RNText>t</RNText>
 			</Indicator>,
 		);
-		const s = flatStyle(dot(screen));
-		expect(Number(s.top)).toBe(-5);
+		let s = flatStyle(badge(screen));
+		expect(Number(s.bottom)).toBe(-5);
 		expect(Number(s.right)).toBe(-5);
-		expect(s.left).toBeUndefined();
-		expect(s.bottom).toBeUndefined();
-	});
 
-	it("offset insets the anchored edges only", async () => {
-		const screen = await render(
-			<Indicator position="top-right" size={10} offset={6}>
-				<RNText>t</RNText>
-			</Indicator>,
-		);
-		const s = flatStyle(dot(screen));
-		expect(Number(s.top)).toBe(1);
-		expect(Number(s.right)).toBe(1);
-
-		// a centered axis is anchored by percentage + margin and stays put
 		await screen.rerender(
-			<Indicator position="top-center" size={10} offset={4}>
+			<Indicator dot size={10} anchorOrigin={BOTTOM_RIGHT} overlap="circular">
 				<RNText>t</RNText>
 			</Indicator>,
 		);
-		const c = flatStyle(dot(screen));
-		expect(Number(c.top)).toBe(-1);
-		expect(c.left).toBe("50%");
-		expect(Number(c.marginLeft)).toBe(-5);
+		s = flatStyle(badge(screen));
+		// centered anchor + (size/2 + 2) pull-in leaves a 2px gap
+		expect(Number(s.bottom)).toBe(2);
+		expect(Number(s.right)).toBe(2);
 	});
 
-	it("color arms map to distinct theme ramp backgrounds; fg pairs on the Text node", async () => {
+	it("offset [x, y] nudges after the overlap math; extremes stay numeric", async () => {
+		const screen = await render(
+			<Indicator dot size={10} offset={[3, -4]}>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		let s = flatStyle(badge(screen));
+		// default top-right: x moves right (right shrinks), y moves down
+		expect(Number(s.top)).toBe(-9);
+		expect(Number(s.right)).toBe(-8);
+
+		await screen.rerender(
+			<Indicator dot size={10} offset={[-40, 500]}>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		s = flatStyle(badge(screen));
+		expect(Number(s.top)).toBe(495);
+		expect(Number.isNaN(Number(s.right))).toBe(false);
+	});
+
+	it("caps counts at max, hides zeros, passes strings through", async () => {
+		const screen = await render(
+			<Indicator badgeContent={120}>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		expect(screen.getByText("99+")).toBeTruthy();
+
+		await screen.rerender(
+			<Indicator badgeContent={99}>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		expect(screen.getByText("99")).toBeTruthy();
+
+		await screen.rerender(
+			<Indicator badgeContent={300} max={999}>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		expect(screen.getByText("300")).toBeTruthy();
+
+		await screen.rerender(
+			<Indicator badgeContent={0}>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		expect(screen.queryByTestId("k-indicator-dot", incl)).toBeNull();
+
+		await screen.rerender(
+			<Indicator badgeContent={0} showZero>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		expect(screen.getByText("0")).toBeTruthy();
+
+		await screen.rerender(
+			<Indicator badgeContent="!">
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		expect(screen.getByText("!")).toBeTruthy();
+	});
+
+	it("no badge without badgeContent or dot; badge arrives on rerender", async () => {
+		const screen = await render(
+			<Indicator>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		expect(screen.queryByTestId("k-indicator-dot", incl)).toBeNull();
+		expect(screen.getByTestId("k-indicator")).toBeTruthy();
+
+		await screen.rerender(
+			<Indicator badgeContent={7}>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		expect(screen.getByText("7")).toBeTruthy();
+	});
+
+	it("dot ignores content; badge text is 0.7x size with size/3 padding", async () => {
+		const screen = await render(
+			<Indicator dot badgeContent={5} size={10}>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		let s = flatStyle(badge(screen));
+		expect(screen.queryByText("5")).toBeNull();
+		expect(Number(s.width)).toBe(10);
+		expect(s.paddingHorizontal).toBeUndefined();
+
+		await screen.rerender(
+			<Indicator badgeContent="9+" size={10}>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		s = flatStyle(badge(screen));
+		expect(Number(s.height)).toBe(10);
+		expect(Number(s.minWidth)).toBe(10);
+		expect(s.width).toBeUndefined();
+		expect(Number(s.paddingHorizontal)).toBeCloseTo(10 / 3, 10);
+		const labelStyle = require("react-native").StyleSheet.flatten(
+			screen.getByText("9+").props.style,
+		);
+		expect(Number(labelStyle.fontSize)).toBeCloseTo(7, 10);
+		expect(labelStyle.fontWeight).toBe("700");
+	});
+
+	it("defaults sizes: dot 10, badge 16", async () => {
+		const screen = await render(
+			<Indicator dot>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		expect(Number(flatStyle(badge(screen)).height)).toBe(10);
+
+		await screen.rerender(
+			<Indicator badgeContent={1}>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		expect(Number(flatStyle(badge(screen)).height)).toBe(16);
+	});
+
+	it("color arms map to theme ramp fills with fg pairs on the Text node", async () => {
 		const { themes } = require("../../themes");
 		const arms = [
 			"primary",
@@ -138,22 +230,19 @@ describe("Indicator", () => {
 			"info",
 		] as const;
 		const screen = await render(
-			<Indicator color="primary" label="9">
+			<Indicator color="primary" badgeContent={9}>
 				<RNText>t</RNText>
 			</Indicator>,
 		);
 		const seen = new Set<string>();
 		for (const arm of arms) {
 			await screen.rerender(
-				<Indicator color={arm} label="9">
+				<Indicator color={arm} badgeContent={9}>
 					<RNText>t</RNText>
 				</Indicator>,
 			);
-			const s = flatStyle(dot(screen));
+			const s = flatStyle(badge(screen));
 			expect(s.backgroundColor).toBe(themes.light[arm]);
-			// the View carries no text styling — the label Text owns the fg pair
-			expect(s.fontSize).toBeUndefined();
-			expect(s.color).toBeUndefined();
 			const labelStyle = require("react-native").StyleSheet.flatten(
 				screen.getByText("9").props.style,
 			);
@@ -166,129 +255,93 @@ describe("Indicator", () => {
 	it("withBorder adds a 2px ring in the surface color; default has none", async () => {
 		const { themes } = require("../../themes");
 		const screen = await render(
-			<Indicator size={10}>
+			<Indicator dot size={10}>
 				<RNText>t</RNText>
 			</Indicator>,
 		);
-		const plain = flatStyle(dot(screen));
-		expect(Number(plain.borderWidth)).toBe(0);
+		expect(Number(flatStyle(badge(screen)).borderWidth)).toBe(0);
 
 		await screen.rerender(
-			<Indicator size={10} withBorder>
+			<Indicator dot size={10} withBorder>
 				<RNText>t</RNText>
 			</Indicator>,
 		);
-		const ring = flatStyle(dot(screen));
+		const ring = flatStyle(badge(screen));
 		expect(Number(ring.borderWidth)).toBe(2);
 		expect(ring.borderColor).toBe(themes.light.background);
 	});
 
-	it("label text is 0.7×size with size/3 side padding; dotless width", async () => {
+	it("degenerate size=0 stays deterministic", async () => {
 		const screen = await render(
-			<Indicator size={10} label="9+">
+			<Indicator badgeContent="0" size={0}>
 				<RNText>t</RNText>
 			</Indicator>,
 		);
-		expect(screen.getByText("9+")).toBeTruthy();
-		const s = flatStyle(dot(screen));
-		expect(Number(s.paddingHorizontal)).toBeCloseTo(10 / 3, 10);
-		expect(Number(s.height)).toBe(10);
-		expect(Number(s.minWidth)).toBe(10);
-		expect(s.width).toBeUndefined();
-		expect(Number(s.borderRadius)).toBe(5);
-		// typography lives on the label Text, not the View
-		const labelStyle = require("react-native").StyleSheet.flatten(
-			screen.getByText("9+").props.style,
-		);
-		expect(Number(labelStyle.fontSize)).toBeCloseTo(7, 10);
-		expect(labelStyle.fontWeight).toBe("700");
-		// labels track the OS font-size setting (RN default scaling) —
-		// the component never pins allowFontScaling
-		expect(screen.getByText("9+").props.allowFontScaling).toBeUndefined();
-		expect(labelStyle.allowFontScaling).toBeUndefined();
-
-		await screen.rerender(
-			<Indicator size={10}>
-				<RNText>t</RNText>
-			</Indicator>,
-		);
-		const bare = flatStyle(dot(screen));
-		expect(Number(bare.width)).toBe(10);
-		expect(bare.fontSize).toBeUndefined();
-	});
-
-	it("boundary offsets and size=0 stay numeric and deterministic", async () => {
-		const screen = await render(
-			<Indicator position="top-right" size={10} offset={-8}>
-				<RNText>t</RNText>
-			</Indicator>,
-		);
-		// anchor math is offset - size/2: negative pulls fully past the
-		// corner, oversized pushes well inside — no clamping, no NaN
-		let s = flatStyle(dot(screen));
-		expect(Number(s.top)).toBe(-13);
-		expect(Number(s.right)).toBe(-13);
-
-		await screen.rerender(
-			<Indicator position="top-right" size={10} offset={40}>
-				<RNText>t</RNText>
-			</Indicator>,
-		);
-		s = flatStyle(dot(screen));
-		expect(Number(s.top)).toBe(35);
-		expect(Number(s.right)).toBe(35);
-
-		await screen.rerender(
-			<Indicator size={0} label="0">
-				<RNText>t</RNText>
-			</Indicator>,
-		);
-		s = flatStyle(dot(screen));
+		const s = flatStyle(badge(screen));
 		expect(Number(s.height)).toBe(0);
 		expect(Number(s.minWidth)).toBe(0);
 		expect(Number(s.borderRadius)).toBe(0);
-		expect(Number(s.paddingHorizontal)).toBe(0);
-		const labelStyle = require("react-native").StyleSheet.flatten(
-			screen.getByText("0").props.style,
-		);
-		expect(Number(labelStyle.fontSize)).toBe(0);
 	});
 
-	it("static indicator starts no animation", async () => {
+	it("static indicator starts no animation; invisible+processing neither", async () => {
 		const AnimatedRN = require("react-native").Animated;
 		const origLoop = AnimatedRN.loop;
 		const loop = jest.fn(origLoop);
 		AnimatedRN.loop = loop as typeof AnimatedRN.loop;
 		try {
-			await render(
-				<Indicator size={10}>
+			const screen = await render(
+				<Indicator dot processing>
 					<RNText>t</RNText>
 				</Indicator>,
 			);
-			expect(loop).not.toHaveBeenCalled();
+			expect(loop).toHaveBeenCalledTimes(1);
+			await screen.rerender(
+				<Indicator dot processing invisible>
+					<RNText>t</RNText>
+				</Indicator>,
+			);
+			expect(loop).toHaveBeenCalledTimes(1);
 		} finally {
 			AnimatedRN.loop = origLoop;
 		}
 	});
 
-	it("legacy style lands on the dot at web parity, never the wrapper", async () => {
+	it("legacy style lands on the badge, never the wrapper or Text", async () => {
 		const screen = await render(
-			<Indicator style={{ backgroundColor: "rgb(1, 2, 3)" }}>
+			<Indicator dot style={{ backgroundColor: "rgb(1, 2, 3)" }}>
 				<RNText>t</RNText>
 			</Indicator>,
 		);
-		expect(flatStyle(dot(screen)).backgroundColor).toBe("rgb(1, 2, 3)");
+		expect(flatStyle(badge(screen)).backgroundColor).toBe("rgb(1, 2, 3)");
 		expect(flatStyle(screen.getByTestId("k-indicator")).backgroundColor).toBe(
 			undefined,
 		);
+	});
+
+	it("slotStyles.badge wins over style; slotStyles.root stays on the root", async () => {
+		const screen = await render(
+			<Indicator
+				dot
+				style={{ backgroundColor: "rgb(1, 2, 3)" }}
+				slotStyles={{
+					badge: { backgroundColor: "rgb(9, 9, 9)" },
+					root: { borderWidth: 4 },
+				}}
+			>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		expect(flatStyle(badge(screen)).backgroundColor).toBe("rgb(9, 9, 9)");
+		expect(flatStyle(screen.getByTestId("k-indicator")).borderWidth).toBe(4);
 	});
 
 	it("style with inline/offset/slot arms combined clobbers nothing", async () => {
 		const screen = await render(
 			<Indicator
 				inline
-			offset={4}
+				dot
 				size={10}
+				offset={[4, 4]}
 				style={{ backgroundColor: "rgb(1, 2, 3)" }}
 				slotStyles={{ root: { borderWidth: 4 } }}
 			>
@@ -299,102 +352,29 @@ describe("Indicator", () => {
 		expect(root.alignSelf).toBe("flex-start");
 		expect(root.borderWidth).toBe(4);
 		expect(root.backgroundColor).toBeUndefined();
-		expect(root.position).toBe("relative");
-		const s = flatStyle(dot(screen));
+		const s = flatStyle(badge(screen));
 		expect(s.backgroundColor).toBe("rgb(1, 2, 3)");
 		// anchor math rides after the user style and stays intact
 		expect(Number(s.top)).toBe(-1);
-		expect(Number(s.right)).toBe(-1);
-	});
-
-	it("slotStyles.dot wins over legacy style; slotStyles.root stays on the root", async () => {
-		const screen = await render(
-			<Indicator
-				style={{ backgroundColor: "rgb(1, 2, 3)" }}
-				slotStyles={{
-					dot: { backgroundColor: "rgb(9, 9, 9)" },
-					root: { borderWidth: 4 },
-				}}
-			>
-				<RNText>t</RNText>
-			</Indicator>,
-		);
-		expect(flatStyle(dot(screen)).backgroundColor).toBe("rgb(9, 9, 9)");
-		expect(flatStyle(screen.getByTestId("k-indicator")).borderWidth).toBe(4);
+		expect(Number(s.right)).toBe(-9);
 	});
 
 	it("processing pulse still beats a user-supplied style", async () => {
 		const screen = await render(
-			<Indicator processing size={10} style={{ opacity: 0.9 }}>
+			<Indicator dot processing size={10} style={{ opacity: 0.9 }}>
 				<RNText>t</RNText>
 			</Indicator>,
 		);
-		const s = flatStyle(dot(screen));
-		// the animated opacity entry rides after the user style (web CSS
-		// animation parity: animation beats inline style)
-		expect(s.opacity).not.toBe(0.9);
-	});
-
-	it("inline shrink-wraps the wrapper; default stretches", async () => {
-		const inline = await render(
-			<Indicator inline>
-				<RNText>t</RNText>
-			</Indicator>,
-		);
-		expect(flatStyle(inline.getByTestId("k-indicator")).alignSelf).toBe(
-			"flex-start",
-		);
-		const block = await render(
-			<Indicator>
-				<RNText>t</RNText>
-			</Indicator>,
-		);
-		expect(
-			flatStyle(block.getByTestId("k-indicator")).alignSelf,
-		).toBeUndefined();
-	});
-
-	it("degenerate style/slotStyles objects stay inert", async () => {
-		const screen = await render(
-			<Indicator style={{}} slotStyles={{}}>
-				<RNText>t</RNText>
-			</Indicator>,
-		);
-		const s = flatStyle(dot(screen));
-		expect(Number(s.top)).toBe(-5);
-		expect(Number(s.right)).toBe(-5);
-		expect(s.backgroundColor).toBe(
-			require("../../themes").themes.light.primary,
-		);
-	});
-
-	it("disabled with style+processing keeps arms stable", async () => {
-		const AnimatedRN = require("react-native").Animated;
-		const origLoop = AnimatedRN.loop;
-		const loop = jest.fn(origLoop);
-		AnimatedRN.loop = loop as typeof AnimatedRN.loop;
-		try {
-			const screen = await render(
-				<Indicator disabled processing style={{ opacity: 0.9 }}>
-					<RNText>t</RNText>
-				</Indicator>,
-			);
-			expect(screen.queryByTestId("k-indicator-dot", incl)).toBeNull();
-			expect(loop).not.toHaveBeenCalled();
-			const root = flatStyle(screen.getByTestId("k-indicator"));
-			expect(root.opacity).toBeUndefined();
-			expect(root.backgroundColor).toBeUndefined();
-		} finally {
-			AnimatedRN.loop = origLoop;
-		}
+		expect(flatStyle(badge(screen)).opacity).not.toBe(0.9);
 	});
 });
 
 // Animation-lifecycle suite stays LAST: its Animated.loop patch drives a
 // real mock loop to completion inside act, and jest-expo's Animated mock
-// leaves later mounts in this file rendering empty trees — every
-// tree-querying test must run before it.
-it("processing starts a pulse loop that stops on unmount", async () => {
+// leaves later loop-patching mounts in this file without a live effect —
+// every tree-querying test must run before it, and the flip-off/unmount
+// assertions live here together.
+it("processing pulse loop lifecycle: stops on flip-off and unmount", async () => {
 	const { act } = require("react");
 	const AnimatedRN = require("react-native").Animated;
 	const origLoop = AnimatedRN.loop;
@@ -411,15 +391,29 @@ it("processing starts a pulse loop that stops on unmount", async () => {
 	}) as typeof AnimatedRN.loop;
 	try {
 		const screen = await render(
-			<Indicator processing size={10}>
+			<Indicator dot processing size={10}>
 				<RNText>t</RNText>
 			</Indicator>,
 		);
 		expect(stops.length).toBe(1);
+		// flipping processing off: effect cleanup stops the loop and
+		// resets the pulse value, so a later processing mount starts fresh
+		await screen.rerender(
+			<Indicator dot size={10}>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		expect(stops[0]).toHaveBeenCalled();
+		await screen.rerender(
+			<Indicator dot processing size={10}>
+				<RNText>t</RNText>
+			</Indicator>,
+		);
+		expect(stops.length).toBe(2);
 		act(() => {
 			screen.unmount();
 		});
-		expect(stops[0]).toHaveBeenCalled();
+		expect(stops[1]).toHaveBeenCalled();
 	} finally {
 		AnimatedRN.loop = origLoop;
 	}

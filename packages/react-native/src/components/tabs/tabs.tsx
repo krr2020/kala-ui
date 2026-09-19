@@ -112,10 +112,11 @@ export function Tabs({
 								/>
 								)}
 						<Indicator
+							dot
 							size={8}
-							offset={4}
+							offset={[0, 0]}
 							color={tabsDotColor(onActivePill)}
-							disabled={item.indicator !== true}
+							invisible={item.indicator !== true}
 							slotStyles={{ root: overlayStyle }}
 						/>
 							<View

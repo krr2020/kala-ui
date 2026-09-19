@@ -4,11 +4,11 @@ import { View } from "react-native";
 import { DemoBlock } from "../demo-block";
 import { demoStyles } from "../stylesheet";
 
-const POSITIONS = [
-	["top-left", 0],
-	["top-right", 0],
-	["bottom-right", 4],
-	["middle-left", 0],
+const CORNERS = [
+	{ vertical: "top", horizontal: "left", label: "top-left" },
+	{ vertical: "top", horizontal: "right", label: "top-right" },
+	{ vertical: "bottom", horizontal: "left", label: "bottom-left" },
+	{ vertical: "bottom", horizontal: "right", label: "bottom-right" },
 ] as const;
 
 export function IndicatorDemo() {
@@ -17,106 +17,101 @@ export function IndicatorDemo() {
 			<DemoBlock label="On Avatar">
 				<View style={demoStyles.componentRow}>
 					<Indicator
+						dot
 						color="success"
 						size={12}
-						offset={8}
-						position="bottom-right"
+						overlap="circular"
+						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 						withBorder
 					>
 						<Avatar name="Grace Hopper" size="lg" />
 					</Indicator>
 					<Indicator
+						dot
 						color="destructive"
 						processing
 						size={12}
-						offset={8}
-						position="bottom-right"
+						overlap="circular"
+						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 						withBorder
 					>
 						<Avatar name="Alan Turing" size="lg" />
 					</Indicator>
 					<Indicator
-						label={3}
-						size={16}
-						offset={10}
-						position="top-right"
+						badgeContent={3}
+						overlap="circular"
+						anchorOrigin={{ vertical: "top", horizontal: "right" }}
 						withBorder
 					>
 						<Avatar name="Ada Lovelace" size="lg" />
 					</Indicator>
-					<Indicator
-						disabled
-						size={12}
-						offset={8}
-						position="bottom-right"
-						withBorder
-					>
+					<Indicator dot invisible>
 						<Avatar name="Katherine Johnson" size="lg" />
 					</Indicator>
 				</View>
 			</DemoBlock>
 			<DemoBlock label="On Icons">
 				<View style={demoStyles.componentRow}>
-					<Indicator label={9} size={14} withBorder>
+					<Indicator badgeContent={9} withBorder>
 						<View style={demoStyles.iconTarget}>
 							<Icon icon={Bell} size="lg" />
 						</View>
 					</Indicator>
-					<Indicator label="99+" size={14} color="warning" withBorder>
+					<Indicator badgeContent={120} color="warning" withBorder>
 						<View style={demoStyles.iconTarget}>
 							<Icon icon={Mail} size="lg" />
 						</View>
 					</Indicator>
-					<Indicator label={1} size={14} color="destructive" withBorder>
+					<Indicator badgeContent={1} color="destructive" withBorder>
 						<View style={demoStyles.iconTarget}>
 							<Icon icon={MessageCircle} size="lg" />
 						</View>
 					</Indicator>
-					<Indicator disabled label={0}>
+					{/* zero hides by default — a cleared inbox reads as no badge */}
+					<Indicator badgeContent={0} color="info">
+						<View style={demoStyles.iconTarget}>
+							<Icon icon={Bell} size="lg" />
+						</View>
+					</Indicator>
+					<Indicator dot>
 						<View style={demoStyles.iconTarget}>
 							<Icon icon={Bell} size="lg" />
 						</View>
 					</Indicator>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="Positions">
+			<DemoBlock label="Anchor Corners">
 				<View style={demoStyles.componentRow}>
-					{POSITIONS.map(([position, offset]) => (
-						<View key={position} style={demoStyles.indicatorFigure}>
-							<Indicator position={position} offset={offset} color="info">
+					{CORNERS.map(({ label, ...anchorOrigin }) => (
+						<View key={label} style={demoStyles.indicatorFigure}>
+							<Indicator dot size={12} anchorOrigin={anchorOrigin} withBorder>
 								<View style={demoStyles.indicatorTarget} />
 							</Indicator>
-							<KText size="xs">{position}</KText>
+							<KText size="xs">{label}</KText>
 						</View>
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="Bordered And Hidden">
+			<DemoBlock label="Counts And Pulse">
 				<View style={demoStyles.componentRow}>
-					<View style={demoStyles.indicatorFigure}>
-						<Indicator disabled label="0">
-							<View style={demoStyles.indicatorTarget} />
-						</Indicator>
-						<KText size="xs">disabled</KText>
-					</View>
-					<View style={demoStyles.indicatorFigure}>
-						<Indicator withBorder color="destructive" label="!" size={16}>
-							<View style={demoStyles.indicatorTarget} />
-						</Indicator>
-						<KText size="xs">bordered</KText>
-					</View>
+					<Indicator dot color="success" processing size={12} withBorder>
+						<View style={demoStyles.indicatorTarget} />
+					</Indicator>
+					<Indicator badgeContent={0} showZero withBorder>
+						<View style={demoStyles.indicatorTarget} />
+					</Indicator>
+					<Indicator badgeContent="!" color="warning" withBorder>
+						<View style={demoStyles.indicatorTarget} />
+					</Indicator>
+					<Indicator dot invisible size={12}>
+						<View style={demoStyles.indicatorTarget} />
+					</Indicator>
 				</View>
 			</DemoBlock>
 			<DemoBlock label="Inline">
 				<View style={demoStyles.componentRow}>
-					<Indicator
-						inline
-						color="success"
-						size={8}
-						position="middle-right"
-						offset={4}
-					>
-						<KText size="sm">New messages</KText>
+					<Indicator inline dot color="success">
+						<KText>New messages</KText>
 					</Indicator>
 				</View>
 			</DemoBlock>

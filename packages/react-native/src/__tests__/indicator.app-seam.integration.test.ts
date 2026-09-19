@@ -5,13 +5,11 @@ import { describe, expect, it } from "vitest";
 /**
  * Indicator seam between the library and the playground app: the tab-dot
  * overlay must reach the Indicator through its root slot (style props
- * target the dot, so an overlay passed via style would be dropped), and
- * the demo must anchor dots to real targets — avatars, icons, plain
- * muted squares — never to bare text glyphs (a text child hugs its
- * glyphs, landing the corner-anchored dot on the words). Captions for
- * position targets live outside the Indicator, in a figure column, so
- * long labels wrap as captions instead of inside a 48dp box. Static
- * parse on purpose, same technique as the component seam.
+ * target the badge, so an overlay passed via style would be dropped), and
+ * the demo must exercise the badge API on real targets — avatars with
+ * circular overlap, icon touch targets, corner grid with outside
+ * captions — never to bare text glyphs. Static parse on purpose, same
+ * technique as the component seam.
  */
 const DEMO_PATH = resolve(
 	__dirname,
@@ -47,7 +45,7 @@ describe("indicator app seam", () => {
 	const tabs = readFileSync(TABS_PATH, "utf8");
 
 	it("routes the tab-dot overlay through the Indicator root slot", () => {
-		// style lands on the dot, not the wrapper — an absolute overlay
+		// style lands on the badge, not the wrapper — an absolute overlay
 		// must ride slotStyles.root or it never reaches the layout
 		expect(tabs).toContain("slotStyles={{ root: overlayStyle }}");
 		const overlay = section(tabs, "const overlayStyle: ViewStyle = {", "};");
@@ -56,9 +54,13 @@ describe("indicator app seam", () => {
 		// stray style={overlayStyle}) fails the count instead of silently
 		// double-merging the overlay
 		expect(tabs.match(/overlayStyle/g)?.length).toBe(2);
+		// the tab dot is a contentless dot hidden per-item, never disabled
+		expect(tabs).toMatch(/<Indicator[\s\S]*?\bdot\b[\s\S]*?\binvisible=/);
+		const tabDot = section(tabs, "<Indicator", "/>");
+		expect(tabDot).not.toContain("disabled");
 	});
 
-	it("anchors the avatar and icon rows on real targets, no inner text", () => {
+	it("anchors the avatar row on real targets with circular overlap", () => {
 		const avatar = section(demo, 'DemoBlock label="On Avatar"', "</DemoBlock>");
 		const avatarCount = (avatar.match(/<Indicator[\s>]/g) ?? []).length;
 		expect(avatarCount).toBeGreaterThanOrEqual(3);
@@ -66,142 +68,118 @@ describe("indicator app seam", () => {
 		for (const block of indicatorBlocks(avatar)) {
 			expect(block).not.toContain("<KText");
 		}
+		// presence dots: circular overlap, bottom-right, ringed — no
+		// hand-tuned offsets; the component owns the inset math
+		const presence = indicatorBlocks(avatar).filter(
+			(block) =>
+				!block.includes("badgeContent") && !block.includes("invisible"),
+		);
+		expect(presence.length).toBe(2);
+		for (const block of presence) {
+			expect(block).toContain('overlap="circular"');
+			expect(block).toContain(
+				'anchorOrigin={{ vertical: "bottom", horizontal: "right" }}',
+			);
+			expect(block).toContain("withBorder");
+			expect(block).not.toContain("offset=");
+		}
+		// the count badge rides the top-right corner, also circular
+		const badge = indicatorBlocks(avatar).find((block) =>
+			block.includes("badgeContent"),
+		);
+		expect(badge).toContain('overlap="circular"');
+		expect(badge).toContain(
+			'anchorOrigin={{ vertical: "top", horizontal: "right" }}',
+		);
+		expect(badge).not.toContain("offset=");
+		// one arm keeps the target with the badge hidden
+		expect(avatar).toContain("<Indicator dot invisible>");
+	});
 
+	it("badges icon touch targets with capped counts", () => {
 		const icons = section(demo, 'DemoBlock label="On Icons"', "</DemoBlock>");
 		const iconCount = (icons.match(/<Indicator[\s>]/g) ?? []).length;
-		expect(iconCount).toBeGreaterThanOrEqual(3);
-		expect(icons.match(/<Icon[\s>]/g)?.length).toBe(iconCount);
+		expect(iconCount).toBeGreaterThanOrEqual(4);
 		for (const block of indicatorBlocks(icons)) {
-			expect(block).not.toContain("<KText");
-		}
-	});
-
-	it("presence dots sit inside the avatar corner like Avatar's own status dot", () => {
-		const avatar = section(demo, 'DemoBlock label="On Avatar"', "</DemoBlock>");
-		// presence arms (no label): bottom-right, ringed, offset = size/2 + 2
-		// pulls the dot fully inside — the placement Avatar's status prop
-		// uses (right/bottom 0 + background ring)
-		const presence = indicatorBlocks(avatar).filter(
-			(block) => !block.includes("label="),
-		);
-		expect(presence.length).toBe(3);
-		for (const block of presence) {
-			expect(block).toContain('position="bottom-right"');
-			expect(block).toContain("withBorder");
-			expect(block).toContain("size={12}");
-			expect(block).toContain("offset={8}");
-		}
-	});
-
-	it("count badge hugs the inside of the avatar's top-right corner", () => {
-		const avatar = section(demo, 'DemoBlock label="On Avatar"', "</DemoBlock>");
-		const badge = indicatorBlocks(avatar).find((block) =>
-			block.includes("label="),
-		);
-		expect(badge).toBeDefined();
-		// size-16 badge: offset = 16/2 + 2 keeps it inside the corner; the
-		// label grows minWidth leftward, never toward the anchor
-		expect(badge).toContain('position="top-right"');
-		expect(badge).toContain("withBorder");
-		expect(badge).toContain("size={16}");
-		expect(badge).toContain("offset={10}");
-		// multi-digit width growth is exercised on the icon badge
-		const icons = section(demo, 'DemoBlock label="On Icons"', "</DemoBlock>");
-		expect(icons).toContain('label="99+"');
-	});
-
-	it("icon badges sit on touch-target corners, not on the glyph box", () => {
-		const icons = section(demo, 'DemoBlock label="On Icons"', "</DemoBlock>");
-		for (const block of indicatorBlocks(icons)) {
-			// a 24dp glyph box is smaller than the badge — anchoring on it
-			// covers the glyph; the badge rides the 48dp touch target
+			// badges ride the 48dp touch target, never the glyph box
 			expect(block).toContain("demoStyles.iconTarget");
 			expect(block).toMatch(/<Icon[\s>]/);
-			// the disabled arm renders nothing — ring or not — so only the
-			// visible badges must carry the ring and the smaller size
-			if (block.includes("disabled")) continue;
-			expect(block).toContain("withBorder");
-			expect(block).toContain("size={14}");
-			expect(block).not.toContain('position="bottom-right"');
+			expect(block).not.toContain("<KText");
 		}
+		// 120 caps to "99+" through the default max; 0 hides without
+		// showZero — a cleared inbox renders no badge at all
+		expect(icons).toContain("badgeContent={120}");
+		expect(icons).toContain("badgeContent={0}");
+		const zeroArm = indicatorBlocks(icons).find((block) =>
+			block.includes("badgeContent={0}"),
+		);
+		expect(zeroArm).not.toContain("showZero");
+		expect(icons).not.toContain('badgeContent="99+"');
+		expect(icons).not.toContain("offset=");
 	});
 
-	it("iconTarget is a transparent centered touch target", () => {
-		const target = styleBlock(stylesheet, "iconTarget");
-		expect(target).toContain("width: 48");
-		expect(target).toContain("height: 48");
-		expect(target).toContain('alignItems: "center"');
-		expect(target).toContain('justifyContent: "center"');
-		// transparent: no fill or stroke — a toolbar icon button surface
-		expect(target).not.toContain("backgroundColor");
-		expect(target).not.toContain("borderWidth");
-	});
-
-	it("anchors position targets on the muted square with captions outside", () => {
-		const positions = section(
+	it("anchor-corner grid uses anchorOrigin with captions outside", () => {
+		const corners = section(
 			demo,
-			'DemoBlock label="Positions"',
+			'DemoBlock label="Anchor Corners"',
 			"</DemoBlock>",
 		);
-		const blocks = indicatorBlocks(positions);
-		// the .map() renders one anchor per POSITIONS entry from a single
+		// the .map() renders one anchor per CORNERS entry from a single
 		// source occurrence — parse the source literal, not instances
-		expect(blocks.length).toBeGreaterThanOrEqual(1);
-		expect(positions).toContain("POSITIONS.map");
-		expect(demo.match(/"(top|middle|bottom)-/g)?.length).toBeGreaterThanOrEqual(
-			4,
-		);
-		for (const block of blocks) {
-			// the anchor is the box; the position label is a figure caption
-			// rendered outside the Indicator, never wrapped text inside it
+		expect(corners).toContain("CORNERS.map");
+		expect(
+			demo.match(/"(top|bottom)-(left|right)"/g)?.length,
+		).toBeGreaterThanOrEqual(4);
+		for (const block of indicatorBlocks(corners)) {
+			expect(block).toContain("anchorOrigin={anchorOrigin}");
 			expect(block).toContain("demoStyles.indicatorTarget");
 			expect(block).not.toContain("<KText");
+			expect(block).not.toContain("offset=");
 		}
-		expect(positions).toContain("demoStyles.indicatorFigure");
-		expect(positions).toContain("<KText");
+		// the caption renders outside the Indicator, in the figure column
+		expect(corners).toContain("demoStyles.indicatorFigure");
+		expect(corners).toContain("<KText");
 	});
 
-	it("keeps exactly one inline arm over text, anchored mid-right", () => {
-		const inline = section(demo, 'DemoBlock label="Inline"', "</DemoBlock>");
-		expect((inline.match(/<Indicator[^>]*\binline\b/g) ?? []).length).toBe(1);
-		expect(inline).toContain('position="middle-right"');
-		expect(inline).toContain("<KText");
-	});
-
-	it("bordered ring sits on the muted fill; hidden branch keeps the box", () => {
-		const bordered = section(
+	it("counts-and-pulse block pins showZero, string content, invisible", () => {
+		const counts = section(
 			demo,
-			'DemoBlock label="Bordered And Hidden"',
+			'DemoBlock label="Counts And Pulse"',
 			"</DemoBlock>",
 		);
-		expect(bordered).toContain("withBorder");
-		expect(bordered).toContain("<Indicator disabled");
-		expect(
-			(bordered.match(/demoStyles\.indicatorTarget\b/g) ?? []).length,
-		).toBe(2);
-		for (const block of indicatorBlocks(bordered)) {
-			expect(block).not.toContain("<KText");
-		}
+		expect(counts).toContain("processing");
+		expect(counts).toContain("showZero");
+		expect(counts).toContain('badgeContent="!"');
+		expect(counts).toContain("<Indicator dot invisible");
+		expect((counts.match(/demoStyles\.indicatorTarget\b/g) ?? []).length).toBe(
+			4,
+		);
 	});
 
-	it("target box is a borderless muted fill with no dead muted twin", () => {
+	it("keeps exactly one inline arm over text, no hand-tuned offset", () => {
+		const inline = section(demo, 'DemoBlock label="Inline"', "</DemoBlock>");
+		expect((inline.match(/<Indicator[^>]*\binline\b/g) ?? []).length).toBe(1);
+		expect(inline).toContain("<KText");
+		expect(inline).not.toContain("offset=");
+	});
+
+	it("target styles: borderless muted tile, transparent icon target, 72dp figure", () => {
 		const target = styleBlock(stylesheet, "indicatorTarget");
 		expect(target).toContain("width: 48");
 		expect(target).toContain("height: 48");
-		expect(target).toContain("borderRadius: 10");
 		expect(target).toContain("backgroundColor: theme.muted");
-		// no decorative stroke around anchored content
 		expect(target).not.toContain("borderWidth");
-		expect(target).not.toContain("borderColor");
-		expect(demo).not.toContain("indicatorTargetMuted");
-		expect(stylesheet).not.toContain("indicatorTargetMuted");
-	});
 
-	it("figure caption column centers under the anchor rail", () => {
+		const iconTarget = styleBlock(stylesheet, "iconTarget");
+		expect(iconTarget).toContain("width: 48");
+		expect(iconTarget).toContain("height: 48");
+		expect(iconTarget).toContain('alignItems: "center"');
+		expect(iconTarget).toContain('justifyContent: "center"');
+		expect(iconTarget).not.toContain("backgroundColor");
+
+		// 72 fits the longest xs caption ("bottom-right") on one line
 		const figure = styleBlock(stylesheet, "indicatorFigure");
-		expect(figure).toContain('alignItems: "center"');
-		// 72 fits the longest xs caption ("bottom-right", ~61dp of
-		// glyphs) on one line — at 48/64 it wrapped into two lines
 		expect(figure).toContain("width: 72");
+		expect(figure).toContain('alignItems: "center"');
 	});
 });

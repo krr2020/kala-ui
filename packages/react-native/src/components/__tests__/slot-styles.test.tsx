@@ -606,9 +606,9 @@ describe("multi-part slots", () => {
 		).toBe(3);
 	});
 
-	it("indicator.dot overrides the dot", async () => {
+	it("indicator.badge overrides the badge", async () => {
 		const screen = await render(
-			<Indicator size={10} slotStyles={{ dot: { borderWidth: 3 } }} />,
+			<Indicator dot size={10} slotStyles={{ badge: { borderWidth: 3 } }} />,
 		);
 		expect(
 			Number(

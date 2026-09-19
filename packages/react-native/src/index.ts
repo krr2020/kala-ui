@@ -138,8 +138,9 @@ export { Heading } from "./components/heading";
 export type { IconComponent, IconProps } from "./components/icon";
 export { Icon } from "./components/icon";
 export type {
+	IndicatorAnchorOrigin,
 	IndicatorColor,
-	IndicatorPosition,
+	IndicatorOverlap,
 	IndicatorProps,
 } from "./components/indicator";
 export { Indicator } from "./components/indicator";
@@ -205,14 +206,14 @@ export type {
 export { Skeleton } from "./components/skeleton";
 export type { SliderProps } from "./components/slider";
 export { Slider } from "./components/slider";
+export type { SlotStyle, SlotStyles } from "./components/slot-styles";
+export { applySlot } from "./components/slot-styles";
 export type {
 	SpinnerProps,
 	SpinnerSize,
 	SpinnerVariant,
 } from "./components/spinner";
 export { Spinner } from "./components/spinner";
-export type { SlotStyles, SlotStyle } from "./components/slot-styles";
-export { applySlot } from "./components/slot-styles";
 export type { SwitchProps } from "./components/switch";
 export { Switch } from "./components/switch";
 export type { TabsItem, TabsProps } from "./components/tabs";

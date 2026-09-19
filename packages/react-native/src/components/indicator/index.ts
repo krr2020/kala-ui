@@ -1,6 +1,7 @@
 export { Indicator } from "./indicator";
 export type {
+	IndicatorAnchorOrigin,
 	IndicatorColor,
-	IndicatorPosition,
+	IndicatorOverlap,
 	IndicatorProps,
 } from "./indicator.types";

@@ -2472,7 +2472,7 @@ describe("component markers", () => {
 					<ToggleGroup type="single">
 						<ToggleGroupItem value="left">Left</ToggleGroupItem>
 					</ToggleGroup>
-					<Indicator>
+					<Indicator dot>
 						<Text>bell</Text>
 					</Indicator>
 				</>,
