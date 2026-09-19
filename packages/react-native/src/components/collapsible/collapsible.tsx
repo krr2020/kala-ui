@@ -2,15 +2,24 @@
  * Collapsible: the raw disclosure pair — one trigger toggles one content
  * panel. Content unmounts when closed (Radix forceMount=false
  * semantics): no hidden panels in the a11y tree and nothing to animate
- * until motion tokens land.
+ * until motion tokens land. The trigger carries a rotating chevron so
+ * the open state reads visually, not just from the expanded state.
  */
 
+import { ChevronDown } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { createContext, useContext, useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { Icon } from "../icon";
 import { applySlot } from "../slot-styles";
+import {
+	contentSurface,
+	contentText,
+	triggerLabel,
+	triggerSurface,
+} from "./collapsible.styles";
 import type {
 	CollapsibleContentProps,
 	CollapsibleProps,
@@ -43,6 +52,7 @@ function Root({
 	const isOpen = controlled ? open : internal;
 
 	const toggle = () => {
+		if (disabled) return;
 		if (!controlled) setInternal(!isOpen);
 		onOpenChange?.(!isOpen);
 	};
@@ -91,34 +101,28 @@ function Trigger({
 				expanded: open,
 				disabled: disabled || undefined,
 			}}
-			style={applySlot(
-				applySlot(
+				style={applySlot(
 					applySlot(
-						{
-							flexDirection: "row",
-							alignItems: "center",
-							minHeight: 44,
-							minWidth: 44,
-						},
-						style,
+						applySlot(triggerSurface(), style),
+						group?.triggerStyles,
 					),
-					group?.triggerStyles,
-				),
-				slotStyles?.root,
-			)}
-		>
-			{typeof children === "string" || typeof children === "number" ? (
-				<RNText
-					style={{ color: theme.foreground, fontSize: 15, fontWeight: "600" }}
+					slotStyles?.root,
+				)}
+			>
+				{typeof children === "string" || typeof children === "number" ? (
+					<RNText style={triggerLabel(theme.foreground)}>{children}</RNText>
+				) : (
+					<View style={{ flex: 1 }}>{children}</View>
+				)}
+				<View
+					testID="k-collapsible-chevron"
+					style={{ transform: [{ rotate: open ? "180deg" : "0deg" }] }}
 				>
-					{children}
-				</RNText>
-			) : (
-				<View style={{ flex: 1 }}>{children}</View>
-			)}
-		</Pressable>
-	);
-}
+					<Icon icon={ChevronDown} size="sm" />
+				</View>
+			</Pressable>
+		);
+	}
 
 function Content({
 	children,
@@ -133,17 +137,13 @@ function Content({
 		<View
 			testID={testID}
 			style={applySlot(
-				applySlot({ overflow: "hidden", paddingTop: 4 }, group.contentStyles),
+				applySlot(contentSurface(), group.contentStyles),
 				slotStyles?.root,
 			)}
 		>
 			{/* bare strings must land on a Text host on RN — same wrap as Card */}
 			{typeof children === "string" || typeof children === "number" ? (
-				<RNText
-					style={{ color: theme.foreground, fontSize: 14, lineHeight: 20 }}
-				>
-					{children}
-				</RNText>
+				<RNText style={contentText(theme.foreground)}>{children}</RNText>
 			) : (
 				children
 			)}

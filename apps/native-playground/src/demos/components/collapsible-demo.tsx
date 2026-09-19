@@ -11,8 +11,8 @@ export function CollapsibleDemo() {
 			<DemoBlock label="Controlled">
 				<View style={demoStyles.componentRow}>
 					<Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
-						<Collapsible.Trigger>
-							advanced filters {showAdvanced ? "(open)" : "(closed)"}
+						<Collapsible.Trigger accessibilityLabel="Advanced Filters">
+							Advanced Filters
 						</Collapsible.Trigger>
 						<Collapsible.Content>
 							<KText size="sm" color="muted">
@@ -21,10 +21,15 @@ export function CollapsibleDemo() {
 						</Collapsible.Content>
 					</Collapsible>
 				</View>
+				<KText size="sm" color="muted">
+					state: {showAdvanced ? "open" : "closed"}
+				</KText>
 			</DemoBlock>
 			<DemoBlock label="Uncontrolled — starts open">
 				<Collapsible defaultOpen>
-					<Collapsible.Trigger>session details</Collapsible.Trigger>
+					<Collapsible.Trigger accessibilityLabel="Session details">
+						Session details
+					</Collapsible.Trigger>
 					<Collapsible.Content>
 						<KText size="sm" color="muted">
 							starts open without local state; the trigger toggles it
@@ -35,10 +40,26 @@ export function CollapsibleDemo() {
 			<DemoBlock label="Inside a card-like row">
 				<View style={demoStyles.componentRow}>
 					<Collapsible>
-						<Collapsible.Trigger>show more</Collapsible.Trigger>
+						<Collapsible.Trigger accessibilityLabel="Show more">
+							Show more
+						</Collapsible.Trigger>
 						<Collapsible.Content>
 							<KText size="sm" color="muted">
 								a bare collapsible defaults to closed and manages itself
+							</KText>
+						</Collapsible.Content>
+					</Collapsible>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="Disabled">
+				<View style={demoStyles.componentRow}>
+					<Collapsible disabled>
+						<Collapsible.Trigger accessibilityLabel="Locked section">
+							Locked section
+						</Collapsible.Trigger>
+						<Collapsible.Content>
+							<KText size="sm" color="muted">
+								never reachable while disabled
 							</KText>
 						</Collapsible.Content>
 					</Collapsible>
