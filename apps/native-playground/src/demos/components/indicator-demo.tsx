@@ -1,93 +1,89 @@
-import { Icon, Indicator, Text as KText } from "@kala-ui/react-native";
-import { Sun } from "lucide-react-native";
+import { Avatar, Icon, Indicator, Text as KText } from "@kala-ui/react-native";
+import { Bell, Mail, MessageCircle } from "lucide-react-native";
 import { View } from "react-native";
 import { DemoBlock } from "../demo-block";
 import { demoStyles } from "../stylesheet";
 
-const COLORS = ["primary", "success", "destructive"] as const;
+const POSITIONS = [
+	["top-left", 0],
+	["top-right", 0],
+	["bottom-right", 4],
+	["middle-left", 0],
+] as const;
 
 export function IndicatorDemo() {
 	return (
 		<View style={demoStyles.routeContent} testID="k-demo-indicator">
-			<DemoBlock label="Badge Dots">
+			<DemoBlock label="On Avatar">
 				<View style={demoStyles.componentRow}>
-					<Indicator size={12} label="3">
-						<View style={demoStyles.indicatorTarget}>
-							<Icon icon={Sun} size="md" />
-						</View>
-					</Indicator>
-					<Indicator color="success">
-						<View style={demoStyles.indicatorTarget}>
-							<KText size="sm">online</KText>
-						</View>
+					<Indicator color="success" size={12}>
+						<Avatar name="Grace Hopper" size="lg" />
 					</Indicator>
 					<Indicator color="destructive" processing size={12}>
-						<View style={demoStyles.indicatorTarget}>
-							<KText size="sm">live</KText>
-						</View>
+						<Avatar name="Alan Turing" size="lg" />
+					</Indicator>
+					<Indicator label={3} size={16}>
+						<Avatar name="Ada Lovelace" size="lg" />
+					</Indicator>
+					<Indicator disabled>
+						<Avatar name="Katherine Johnson" size="lg" />
 					</Indicator>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="Colors">
+			<DemoBlock label="On Icons">
 				<View style={demoStyles.componentRow}>
-					{COLORS.map((color) => (
-						<Indicator
-							key={color}
-							color={color}
-							label={color === "primary" ? 7 : undefined}
-						>
-							<View style={demoStyles.indicatorTarget}>
-								<KText size="sm">{color}</KText>
-							</View>
-						</Indicator>
+					<Indicator label={9} size={16}>
+						<Icon icon={Bell} size="lg" />
+					</Indicator>
+					<Indicator label="99+" size={16} color="warning">
+						<Icon icon={Mail} size="lg" />
+					</Indicator>
+					<Indicator label={1} size={16} color="destructive">
+						<Icon icon={MessageCircle} size="lg" />
+					</Indicator>
+					<Indicator disabled label={0}>
+						<Icon icon={Bell} size="lg" />
+					</Indicator>
+				</View>
+			</DemoBlock>
+			<DemoBlock label="Positions">
+				<View style={demoStyles.componentRow}>
+					{POSITIONS.map(([position, offset]) => (
+						<View key={position} style={demoStyles.indicatorFigure}>
+							<Indicator position={position} offset={offset} color="info">
+								<View style={demoStyles.indicatorTarget} />
+							</Indicator>
+							<KText size="xs">{position}</KText>
+						</View>
 					))}
 				</View>
 			</DemoBlock>
-			<DemoBlock label="Hidden And Bordered">
+			<DemoBlock label="Bordered And Hidden">
 				<View style={demoStyles.componentRow}>
-					<Indicator disabled label="0">
-						<View style={demoStyles.indicatorTarget}>
-							<KText size="sm">disabled</KText>
-						</View>
-					</Indicator>
-					<Indicator withBorder color="destructive" label="!" size={16}>
-						<View style={demoStyles.indicatorTargetMuted}>
-							<KText size="sm">bordered</KText>
-						</View>
-					</Indicator>
+					<View style={demoStyles.indicatorFigure}>
+						<Indicator disabled label="0">
+							<View style={demoStyles.indicatorTarget} />
+						</Indicator>
+						<KText size="xs">disabled</KText>
+					</View>
+					<View style={demoStyles.indicatorFigure}>
+						<Indicator withBorder color="destructive" label="!" size={16}>
+							<View style={demoStyles.indicatorTarget} />
+						</Indicator>
+						<KText size="xs">bordered</KText>
+					</View>
 				</View>
 			</DemoBlock>
-			<DemoBlock label="Positions, Offset, Inline">
+			<DemoBlock label="Inline">
 				<View style={demoStyles.componentRow}>
-					{(
-						[
-							["top-right", 0],
-							["bottom-right", 4],
-							["middle-left", 0],
-						] as const
-					).map(([position, offset]) => (
-						<Indicator
-							key={position}
-							position={position}
-							offset={offset}
-							color="info"
-						>
-							<View style={demoStyles.indicatorTarget}>
-								<KText size="sm">{position}</KText>
-							</View>
-						</Indicator>
-					))}
-				</View>
-				<View style={demoStyles.inlineColumn}>
-					<Indicator inline color="success" size={8}>
-						<View style={demoStyles.indicatorTarget}>
-							<KText size="sm">inline</KText>
-						</View>
-					</Indicator>
-					<Indicator color="success" size={8}>
-						<View style={demoStyles.indicatorTarget}>
-							<KText size="sm">stretched</KText>
-						</View>
+					<Indicator
+						inline
+						color="success"
+						size={8}
+						position="middle-right"
+						offset={4}
+					>
+						<KText size="sm">New messages</KText>
 					</Indicator>
 				</View>
 			</DemoBlock>

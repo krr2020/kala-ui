@@ -205,35 +205,22 @@ export const demoStyles = StyleSheet.create((theme) => ({
 		alignItems: "center",
 		gap: 8,
 	},
-	// fixed-size anchor target for Indicator position demos — gives the
-	// absolutely-anchored dot a corner to sit on instead of the glyphs
+	// fixed-size anchor target for Indicator demos — gives the
+	// absolutely-anchored dot a corner to sit on; the muted fill (no
+	// stroke) keeps the withBorder ring, which paints in theme.background,
+	// readable
 	indicatorTarget: {
 		width: 48,
 		height: 48,
 		borderRadius: 10,
-		borderWidth: 1,
-		borderColor: theme.border,
-		backgroundColor: theme.card,
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	// muted-fill twin of the target box: the withBorder ring paints in
-	// theme.background, which reads only against a non-background fill
-	indicatorTargetMuted: {
-		width: 48,
-		height: 48,
-		borderRadius: 10,
-		borderWidth: 1,
-		borderColor: theme.border,
 		backgroundColor: theme.muted,
-		alignItems: "center",
-		justifyContent: "center",
 	},
-	// column so the inline (hugging) vs default (stretch) wrapper widths
-	// are visibly different; children stretch cross-axis by default
-	inlineColumn: {
-		alignSelf: "stretch",
-		gap: 12,
+	// caption column under an anchored target: 48-wide rail so long
+	// labels wrap as captions, never as text inside the target box
+	indicatorFigure: {
+		width: 48,
+		alignItems: "center",
+		gap: 4,
 	},
 	// label-above-control pairing: the column stack Field gives you for free
 	fieldRow: {
