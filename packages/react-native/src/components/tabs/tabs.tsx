@@ -78,17 +78,16 @@ export function Tabs({
 					item.badge !== undefined
 						? `${item.label} ${item.badge}`
 						: item.label;
-				// Indicator owns the corner dot; its wrapper carries the tab's
-				// content row and fills the tab's content box (flex:1) so the dot
-				// anchors at the tab's true top-right corner
-				const rowStyle: ViewStyle = {
-					flex: 1,
-					alignSelf: "stretch",
-					flexDirection: "row",
-					alignItems: "center",
-					justifyContent: "center",
-					gap: 6,
-				};
+			// the dot is an absolute-positioned zero-size overlay pinned to the
+			// tab's top-right corner; a flex wrapper would zero the row's
+			// intrinsic width and collapse the label
+			const overlayStyle: ViewStyle = {
+				position: "absolute",
+				top: 6,
+				right: 6,
+				width: 0,
+				height: 0,
+			};
 				return (
 						<Pressable
 							key={item.value}
@@ -112,40 +111,50 @@ export function Tabs({
 									)}
 								/>
 								)}
-							<Indicator
-								size={8}
-								offset={4}
-								color={tabsDotColor(onActivePill)}
-								disabled={item.indicator !== true}
-								style={rowStyle}
+						<Indicator
+							size={8}
+							offset={4}
+							color={tabsDotColor(onActivePill)}
+							disabled={item.indicator !== true}
+							style={overlayStyle}
+						/>
+							<View
+								testID="k-tab-row"
+								style={{
+									alignSelf: "stretch",
+									flexDirection: "row",
+									alignItems: "center",
+									justifyContent: "center",
+									gap: 6,
+								}}
 							>
-								{item.icon !== undefined && (
-									<Icon
-										icon={item.icon}
-											size="sm"
-											color={tabsIconColor({ look, selected })}
-										/>
-								)}
-								<RNText
-									numberOfLines={2}
-									ellipsizeMode="tail"
-									style={tabsTabTextStyle({ look, selected, theme })}
-								>
-									{item.label}
-								</RNText>
-								{item.badge !== undefined && (
-									<Badge
-										testID="k-tab-badge"
+							{item.icon !== undefined && (
+								<Icon
+									icon={item.icon}
+										size="sm"
+										color={tabsIconColor({ look, selected })}
+									/>
+							)}
+							<RNText
+								numberOfLines={2}
+								ellipsizeMode="tail"
+								style={tabsTabTextStyle({ look, selected, theme })}
+							>
+								{item.label}
+							</RNText>
+							{item.badge !== undefined && (
+								<Badge
+									testID="k-tab-badge"
 										variant={tabsBadgeVariant(onActivePill)}
 										color={tabsBadgeColor(onActivePill)}
-										shape="pill"
-										numberOfLines={1}
-										style={{ maxWidth: 72, alignSelf: "center" }}
-									>
-										{String(item.badge)}
-									</Badge>
-								)}
-							</Indicator>
+									shape="pill"
+									numberOfLines={1}
+									style={{ maxWidth: 72, alignSelf: "center" }}
+								>
+									{String(item.badge)}
+								</Badge>
+							)}
+						</View>
 						</Pressable>
 					);
 				})}

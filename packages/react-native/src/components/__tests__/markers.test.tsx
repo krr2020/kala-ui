@@ -1226,11 +1226,32 @@ describe("component markers", () => {
 				expect(bs.alignSelf).toBe("center");
 				expect(Number(bs.maxWidth)).toBe(72);
 
-				// the Indicator wrapper fills the tab's content box so the dot
-				// anchors at the tab's top-right corner, not the content row's edge
+				// the dot is an absolute overlay pinned to the tab's top-right
+				// corner — a flex wrapper would zero the row's intrinsic width
 				const wrap = flatStyle(screen.getAllByTestId("k-indicator", inclHidden)[0]);
-				expect(Number(wrap.flex)).toBe(1);
-				expect(wrap.alignSelf).toBe("stretch");
+				expect(wrap.position).toBe("absolute");
+				expect(Number(wrap.top)).toBe(6);
+				expect(Number(wrap.right)).toBe(6);
+				expect(Number(wrap.width)).toBe(0);
+				expect(Number(wrap.height)).toBe(0);
+				// the content row carries no flex key
+				const row = flatStyle(screen.getAllByTestId("k-tab-row", inclHidden)[0]);
+				expect(row.flex).toBeUndefined();
+				// overlay must not swallow presses
+				const onValueChange = jest.fn();
+				const pressScreen = await render(
+					<Tabs
+						items={[
+							{ value: "a", label: "A", indicator: true },
+							{ value: "b", label: "B" },
+						]}
+						onValueChange={onValueChange}
+				>
+						x
+					</Tabs>,
+				);
+				await fireEvent.press(pressScreen.getAllByTestId("k-tab")[0]);
+				expect(onValueChange).toHaveBeenCalledWith("a");
 
 				// Indicator owns the dot: its k-indicator-dot marker + theme color
 				const dots = screen.getAllByTestId("k-indicator-dot", inclHidden);
@@ -1366,8 +1387,9 @@ describe("component markers", () => {
 				expect(mixedBadge.alignSelf).toBe("center");
 				expect(Number(mixedBadge.maxWidth)).toBe(72);
 				const mixedWrap = flatStyle(mixed.getAllByTestId("k-indicator", inclHidden)[0]);
-				expect(Number(mixedWrap.flex)).toBe(1);
-				expect(mixedWrap.alignSelf).toBe("stretch");
+				expect(mixedWrap.position).toBe("absolute");
+				expect(Number(mixedWrap.top)).toBe(6);
+				expect(Number(mixedWrap.right)).toBe(6);
 			});
 
 			it("Tabs long labels wrap at most two lines and keep the 44dp floor", async () => {
@@ -1390,7 +1412,29 @@ describe("component markers", () => {
 				expect(
 					Number(flatStyle(screen.getAllByTestId("k-tab")[0]).minHeight),
 				).toBe(44);
-			});
+
+				// dot-vs-label geometry on a dot-carrying 2-line tab: the overlay
+				// spans top 6..14 (6 + 8dp dot); the row centers its content, so
+				// glyphs live at/below the row's vertical center — half the 44dp
+				// floor (22) — keeping the dot clear of the second text line
+				const dotScreen = await render(
+					<Tabs
+						items={[
+							{ value: "one", label: LONG, indicator: true },
+							{ value: "two", label: "Two" },
+						]}
+					>
+						one body
+					</Tabs>,
+				);
+				const overlay = flatStyle(
+					dotScreen.getAllByTestId("k-indicator", inclHidden)[0],
+				);
+				expect(Number(overlay.top)).toBe(6);
+				expect(Number(overlay.width)).toBe(0);
+				expect(Number(overlay.height)).toBe(0);
+				expect(Number(overlay.top) + 8).toBeLessThan(44 / 2);
+				});
 
 		it("Tabs slotStyles.tab wins in both variants (slot-last precedence)", async () => {
 			const lineScreen = await render(
