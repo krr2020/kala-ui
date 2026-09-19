@@ -1221,6 +1221,16 @@ describe("component markers", () => {
 				).toBe(44);
 				// badge count rides the tab's a11y name
 				expect(screen.getByRole("tab", { name: "One 3" })).toBeTruthy();
+				// the chip sits right of the label, vertically centered — the
+				// alignSelf override is what neutralizes Badge's flex-start default
+				expect(bs.alignSelf).toBe("center");
+				expect(Number(bs.maxWidth)).toBe(72);
+
+				// the Indicator wrapper fills the tab's content box so the dot
+				// anchors at the tab's top-right corner, not the content row's edge
+				const wrap = flatStyle(screen.getAllByTestId("k-indicator", inclHidden)[0]);
+				expect(Number(wrap.flex)).toBe(1);
+				expect(wrap.alignSelf).toBe("stretch");
 
 				// Indicator owns the dot: its k-indicator-dot marker + theme color
 				const dots = screen.getAllByTestId("k-indicator-dot", inclHidden);
@@ -1235,6 +1245,7 @@ describe("component markers", () => {
 				// solid + secondary Badge look + secondary dot read on the primary fill
 				const pillBadge = flatStyle(pillScreen.getByTestId("k-tab-badge"));
 				expect(pillBadge.backgroundColor).toBe(themes.light.secondary);
+				expect(pillBadge.alignSelf).toBe("center");
 				expect(
 					flatStyle(pillScreen.getAllByTestId("k-indicator-dot", inclHidden)[0])
 						.backgroundColor,
@@ -1338,6 +1349,25 @@ describe("component markers", () => {
 				};
 				walkPill(pillScreen.toJSON());
 				expect(pillColors[0]).toBe(themes.light.primaryForeground);
+
+				// asymmetric arms: icon+label+badge keeps the chip centered and the
+				// wrapper still fills the tab when the row carries an icon
+				const mixed = await render(
+					<Tabs
+						value="one"
+						items={[
+							{ value: "one", label: "One", icon: Sun, badge: 7, indicator: true },
+						]}
+					>
+						one body
+					</Tabs>,
+				);
+				const mixedBadge = flatStyle(mixed.getByTestId("k-tab-badge"));
+				expect(mixedBadge.alignSelf).toBe("center");
+				expect(Number(mixedBadge.maxWidth)).toBe(72);
+				const mixedWrap = flatStyle(mixed.getAllByTestId("k-indicator", inclHidden)[0]);
+				expect(Number(mixedWrap.flex)).toBe(1);
+				expect(mixedWrap.alignSelf).toBe("stretch");
 			});
 
 			it("Tabs long labels wrap at most two lines and keep the 44dp floor", async () => {

@@ -79,8 +79,10 @@ export function Tabs({
 						? `${item.label} ${item.badge}`
 						: item.label;
 				// Indicator owns the corner dot; its wrapper carries the tab's
-				// content row so the dot anchors to the tab's top-right corner
+				// content row and fills the tab's content box (flex:1) so the dot
+				// anchors at the tab's true top-right corner
 				const rowStyle: ViewStyle = {
+					flex: 1,
 					alignSelf: "stretch",
 					flexDirection: "row",
 					alignItems: "center",
@@ -138,7 +140,7 @@ export function Tabs({
 										color={tabsBadgeColor(onActivePill)}
 										shape="pill"
 										numberOfLines={1}
-										style={{ maxWidth: 72 }}
+										style={{ maxWidth: 72, alignSelf: "center" }}
 									>
 										{String(item.badge)}
 									</Badge>
