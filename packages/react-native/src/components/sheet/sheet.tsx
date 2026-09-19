@@ -20,7 +20,6 @@ import {
 	Keyboard,
 	Modal,
 	Platform,
-	Pressable,
 	ScrollView,
 	Text,
 	useWindowDimensions,
@@ -31,6 +30,9 @@ import {
 	Gesture,
 	GestureDetector,
 	GestureHandlerRootView,
+	// native-gesture press: survives the IME-hide window resize that
+	// cancels RN's JS-thread responder inside an Android Modal
+	Pressable,
 } from "react-native-gesture-handler";
 import Animated, {
 	runOnJS,
@@ -48,6 +50,7 @@ import {
 	composeOffset,
 	keyboardLift,
 	keyboardShrink,
+	KB_HIDE_SETTLE_MS,
 	KEYBOARD_BOTTOM_GAP,
 	OFFSCREEN_Y,
 	sheetCloseBubble,
@@ -142,6 +145,7 @@ export function Sheet({
 	// fires the Will pair; Android only has the Did pair.
 	useEffect(() => {
 		if (!avoidKeyboard) return;
+		let hideTimer: ReturnType<typeof setTimeout> | undefined;
 		const events: { show: KeyboardEventName; hide: KeyboardEventName } =
 			Platform.OS === "ios"
 				? { show: "keyboardWillShow", hide: "keyboardWillHide" }
@@ -177,15 +181,35 @@ export function Sheet({
 			setKbUp(effective > 0);
 		};
 		const show = Keyboard.addListener(events.show, (e) => {
+			// a quick hide→show (next field focus) must not leave a stale reset
+			// pending behind the fresh keyboard geometry
+			if (hideTimer !== undefined) {
+				clearTimeout(hideTimer);
+				hideTimer = undefined;
+			}
 			apply(e.endCoordinates.height);
 		});
-		const hide = Keyboard.addListener(events.hide, () => apply(0));
+		const hide = Keyboard.addListener(events.hide, () => {
+			// Android reports DidHide as soon as the dismissing tap lands;
+			// resetting geometry that instant re-lays-out the card under the
+			// finger and cancels the in-flight press (footer Cancel/Save needs
+			// two taps). Hold the keyboard geometry through the tap, then reset.
+			if (Platform.OS === "android") {
+				hideTimer = setTimeout(() => {
+					hideTimer = undefined;
+					apply(0);
+				}, KB_HIDE_SETTLE_MS);
+			} else {
+				apply(0);
+			}
+		});
 		// a sheet can mount while a field's keyboard is already open
 		const openKb = Keyboard.metrics();
 		if (openKb) apply(openKb.height);
 		return () => {
 			show.remove();
 			hide.remove();
+			if (hideTimer !== undefined) clearTimeout(hideTimer);
 		};
 	}, [avoidKeyboard, kb, windowHeight, insets.top, insets.bottom, baseHeight]);
 
@@ -258,11 +282,7 @@ export function Sheet({
 		>
 				{/* the Modal is its own native window — gestures inside it need
 				 * their own root view or the drag-to-dismiss pan never attaches */}
-				<GestureHandlerRootView testID="k-sheet-gesture-root" style={{ flex: 1 }}>
-					<View
-						testID="k-sheet-root"
-						style={applySlot(applySlot({ flex: 1 }, style), slotStyles?.root)}
-				>
+					<GestureHandlerRootView testID="k-sheet-gesture-root" style={{ flex: 1 }}>
 						<AnimatedPressable
 							testID="k-sheet-overlay"
 							accessibilityRole="button"
@@ -284,6 +304,18 @@ export function Sheet({
 							]}
 						/>
 						{/* box-none: taps outside the sheet fall through to the overlay */}
+					{/* scroll disabled — this ScrollView exists only so taps on the
+					 * overlay/footer/header deliver while the software keyboard is up:
+					 * RN's Android modal window otherwise eats the first tap as a
+					 * keyboard-dismiss (Cancel/Save needed two presses) */}
+					<ScrollView
+						testID="k-sheet-root"
+						scrollEnabled={false}
+						keyboardShouldPersistTaps="always"
+						showsVerticalScrollIndicator={false}
+						style={applySlot(applySlot({ flex: 1 }, style), slotStyles?.root)}
+						contentContainerStyle={{ flex: 1 }}
+					>
 						<GestureDetector gesture={pan}>
 							<Animated.View
 								testID="k-sheet-content"
@@ -382,6 +414,9 @@ export function Sheet({
 										testID="k-sheet-scroll"
 										showsVerticalScrollIndicator={false}
 										contentContainerStyle={{ gap: 4, paddingBottom: 8 }}
+										// the first tap while the keyboard is up must reach in-body
+										// buttons rather than being eaten as a keyboard-dismiss
+										keyboardShouldPersistTaps="handled"
 									>
 										{children}
 									</ScrollView>
@@ -395,8 +430,8 @@ export function Sheet({
 								) : null}
 							</Animated.View>
 						</GestureDetector>
-					</View>
-			</GestureHandlerRootView>
+					</ScrollView>
+				</GestureHandlerRootView>
 		</Modal>
 	);
 }

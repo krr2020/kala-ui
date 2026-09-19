@@ -163,6 +163,25 @@ jest.mock('react-native-gesture-handler', () => {
 			const { View } = require('react-native');
 			return React.createElement(View, props);
 		},
+		// Pressable renders as the RN one in tests — the native gesture
+		// runtime does not exist under jest. RN's Pressable resolves
+		// style/children callback forms, so the mock must too or style
+		// assertions walk unresolved functions
+		Pressable: (props: Record<string, unknown>) => {
+			const { Pressable } = require('react-native');
+			const resolve = (value: unknown): unknown =>
+				typeof value === 'function' && value.prototype === undefined
+					? value({ pressed: false })
+					: value;
+			const next: Record<string, unknown> = {
+					...props,
+				style: resolve(props.style),
+			};
+			if (typeof props.children === 'function') {
+				next.children = resolve(props.children);
+			}
+			return React.createElement(Pressable, next);
+		},
 	};
 });
 

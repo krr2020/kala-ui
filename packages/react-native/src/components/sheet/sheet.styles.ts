@@ -31,6 +31,13 @@ export const SHEET_EASE = Easing.bezier(
  * the nav bar as the surface to clear, so the card pad collapses to this */
 export const KEYBOARD_BOTTOM_GAP = 8;
 
+/** ms the sheet holds its keyboard geometry after the keyboard hides.
+ * Android fires DidHide the instant the tap that dismisses the keyboard
+ * lands; resetting geometry at that moment re-lays-out the card under the
+ * finger and Android cancels the in-flight press, so the reset waits out
+ * the tap. iOS runs the reset immediately. */
+export const KB_HIDE_SETTLE_MS = 200;
+
 /** Keyboard geometry for a bottom-anchored sheet: the sheet lifts by the
  * FULL keyboard height (its bottom rides the keyboard top) and sheds only
  * the height that would poke above the top inset. Pure math on plain

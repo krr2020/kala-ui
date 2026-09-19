@@ -2,7 +2,11 @@
  * Non-component wiring for Button: size tiers, variant color mapping,
  * the base style builder, and the animated pressable wrapper.
  */
-import { Pressable } from "react-native";
+// gesture-handler's Pressable: its press completes as a native gesture,
+// so a Button still fires on the first tap that also dismisses the
+// software keyboard inside an Android Modal (the JS-thread responder
+// is cancelled by the IME-hide window resize before onPress lands)
+import { Pressable } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import { motion, tokens } from "../../tokens";
 import type { KalaTheme, RampBase } from "../../types";

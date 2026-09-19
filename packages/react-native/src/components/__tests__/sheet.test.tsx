@@ -1,5 +1,5 @@
 import { act, fireEvent, render } from "@testing-library/react-native";
-import { Dimensions, Keyboard, Platform, Text } from "react-native";
+import { Dimensions, Keyboard, Platform, Pressable, Text, TextInput } from "react-native";
 import * as Reanimated from "react-native-reanimated";
 import { themes } from "../../themes/definitions";
 import { motion, tokens } from "../../tokens";
@@ -8,6 +8,7 @@ import {
 	composeOffset,
 	keyboardLift,
 	keyboardShrink,
+	KB_HIDE_SETTLE_MS,
 	KEYBOARD_BOTTOM_GAP,
 	OFFSCREEN_Y,
 	sheetOverlay,
@@ -351,6 +352,11 @@ describe("Sheet", () => {
 		expect(root.flex).toBe(1);
 		expect(root.position).toBeUndefined();
 		expect("inset" in root).toBe(false);
+		// the modal root is a keyboard-persisting ScrollView so taps on the
+	// overlay/footer/header survive the software keyboard being up
+		const rootNode = screen.getByTestId("k-sheet-root", inclHidden);
+		expect(rootNode.props.keyboardShouldPersistTaps).toBe("always");
+		expect(rootNode.props.scrollEnabled).toBe(false);
 	});
 
 	it("Android hardware back: onRequestClose fires onClose when dismissable", async () => {
@@ -535,6 +541,13 @@ describe("Sheet", () => {
 			</Sheet>,
 		);
 		expect(scrollable.getByTestId("k-sheet-scroll", inclHidden)).toBeTruthy();
+		// with the keyboard up the first tap must reach in-body buttons
+		// instead of being eaten as a keyboard-dismiss — same contract as
+		// DialogBody
+		expect(
+			scrollable.getByTestId("k-sheet-scroll", inclHidden).props
+				.keyboardShouldPersistTaps,
+		).toBe("handled");
 		expect(scrollable.getByText("content", inclHidden)).toBeTruthy();
 
 		const plain: Screen = await render(
@@ -613,9 +626,20 @@ describe("Sheet", () => {
 			await act(async () => {
 				hide?.(undefined as never);
 			});
-				content = flatStyle(screen.getByTestId("k-sheet-content", inclHidden));
+			// Android holds the keyboard geometry briefly so the tap that
+			// dismissed the keyboard completes before the card re-geometries
+				content = flatStyle(
+					screen.getByTestId("k-sheet-content", inclHidden),
+				);
+				expect(content.paddingBottom).toBe(KEYBOARD_BOTTOM_GAP);
+				await act(async () => {
+					await new Promise((r) => setTimeout(r, KB_HIDE_SETTLE_MS + 30));
+				});
+				content = flatStyle(
+					screen.getByTestId("k-sheet-content", inclHidden),
+				);
 				expect(content.paddingBottom).toBe(tokens.space.cardPad + 48);
-				// snap height restored with the keyboard gone
+				// snap height restored once the settle elapses
 				expect(content.height).toBe(1201);
 			} finally {
 				spy.mockRestore();
@@ -764,6 +788,136 @@ describe("Sheet", () => {
 					}
 			});
 
+			it("footer button fires in the same tap that closes the keyboard", async () => {
+				setInsets(0, 68);
+				const restore = asAndroid();
+				const spy = jest.spyOn(Keyboard, "addListener");
+				const onClose = jest.fn();
+				try {
+					const screen: Screen = await render(
+						<Sheet
+							open
+							onClose={onClose}
+							snap="auto"
+							avoidKeyboard
+							footer={
+								<Pressable testID="demo-cancel" onPress={onClose}>
+									<Text>Cancel</Text>
+								</Pressable>
+							}
+						>
+							<TextInput testID="demo-field" />
+						</Sheet>,
+					);
+					await fire(spy, "keyboardDidShow", 264);
+					// keyboard-open geometry is live (footer pinned above the kb)
+					expect(
+						flatStyle(screen.getByTestId("k-sheet-content", inclHidden))
+							.paddingBottom,
+					).toBe(KEYBOARD_BOTTOM_GAP);
+					await act(async () => {
+						fireEvent.press(
+								screen.getByTestId("demo-cancel", inclHidden),
+						);
+					});
+					expect(onClose).toHaveBeenCalledTimes(1);
+				} finally {
+					spy.mockRestore();
+					restore();
+					setInsets(0, 0);
+				}
+			});
+
+			it("iOS keeps the immediate reset on keyboard hide", async () => {
+				setInsets(0, 48);
+				const original = Platform.OS;
+				Object.defineProperty(Platform, "OS", {
+					value: "ios",
+					configurable: true,
+				});
+				const spy = jest.spyOn(Keyboard, "addListener");
+				try {
+					const screen: Screen = await render(
+						<Sheet open onClose={() => {}} snap="full" avoidKeyboard>
+							<Text>content</Text>
+						</Sheet>,
+					);
+					await fire(spy, "keyboardWillShow", 264);
+					await fire(spy, "keyboardWillHide", 0);
+					const content = flatStyle(
+						screen.getByTestId("k-sheet-content", inclHidden),
+					);
+					expect(content.paddingBottom).toBe(tokens.space.cardPad + 48);
+					expect(content.height).toBe(1201);
+				} finally {
+					spy.mockRestore();
+					Object.defineProperty(Platform, "OS", {
+						value: original,
+						configurable: true,
+					});
+					setInsets(0, 0);
+				}
+			});
+
+			it("hide→show inside the settle window cancels the stale reset", async () => {
+				setInsets(0, 68);
+				const restore = asAndroid();
+				const spy = jest.spyOn(Keyboard, "addListener");
+				try {
+					const screen: Screen = await render(
+						<Sheet open onClose={() => {}} snap="full" avoidKeyboard>
+							<Text>content</Text>
+						</Sheet>,
+					);
+					await fire(spy, "keyboardDidShow", 264);
+					await fire(spy, "keyboardDidHide", 0);
+					// refocus inside the settle window — a new keyboard comes up
+					await fire(spy, "keyboardDidShow", 300);
+					await act(async () => {
+						await new Promise((r) => setTimeout(r, KB_HIDE_SETTLE_MS + 30));
+					});
+					// the pending apply(0) was cancelled: geometry still tracks the
+					// SECOND keyboard (1334 − 300 − 68)
+					const content = flatStyle(
+						screen.getByTestId("k-sheet-content", inclHidden),
+					);
+					expect(content.height).toBe(1334 - 300 - 68);
+					expect(content.paddingBottom).toBe(KEYBOARD_BOTTOM_GAP);
+				} finally {
+					spy.mockRestore();
+					restore();
+					setInsets(0, 0);
+				}
+			});
+
+			it("unmount during the settle window cancels the pending reset", async () => {
+				setInsets(0, 68);
+				const restore = asAndroid();
+				const spy = jest.spyOn(Keyboard, "addListener");
+				try {
+					const screen: Screen = await render(
+						<Sheet open onClose={() => {}} snap="full" avoidKeyboard>
+							<Text>content</Text>
+						</Sheet>,
+					);
+					await fire(spy, "keyboardDidShow", 264);
+					await fire(spy, "keyboardDidHide", 0);
+					screen.unmount();
+					// the teardown must clear the timer: firing it on an unmounted
+					sheet would setState after unmount
+					await act(async () => {
+						await new Promise((r) => setTimeout(r, KB_HIDE_SETTLE_MS + 30));
+					});
+					expect(
+						screen.queryByTestId("k-sheet-content", inclHidden),
+					).toBeNull();
+				} finally {
+					spy.mockRestore();
+					restore();
+					setInsets(0, 0);
+				}
+			});
+
 			it("zero bottom inset on Android keeps today's height (boundary)", async () => {
 				setInsets(0, 0);
 				const restore = asAndroid();
@@ -779,6 +933,14 @@ describe("Sheet", () => {
 						flatStyle(screen.getByTestId("k-sheet-content", inclHidden)).height,
 					).toBe(1070);
 					await fire(spy, "keyboardDidHide", 0);
+					// geometry holds through the settle window…
+					expect(
+						flatStyle(screen.getByTestId("k-sheet-content", inclHidden)).height,
+					).toBe(1070);
+					await act(async () => {
+						await new Promise((r) => setTimeout(r, KB_HIDE_SETTLE_MS + 30));
+					});
+					// …then the snap height is restored
 					expect(
 						flatStyle(screen.getByTestId("k-sheet-content", inclHidden)).height,
 					).toBe(1201);
