@@ -11,6 +11,7 @@ import {
 	tableRowStyles,
 } from "../../config/table";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Box } from "../box";
 import { Skeleton } from "../skeleton";
 import type { TableSkeletonConfig } from "./table.types";
@@ -132,6 +133,8 @@ export interface TableProps extends React.ComponentProps<"table"> {
 
 function Table({
 	className,
+	style,
+	slotStyles,
 	isLoading,
 	loadingRows = 5,
 	loadingColumns = 4,
@@ -140,7 +143,7 @@ function Table({
 	skeletonConfig,
 	skeleton,
 	...props
-}: TableProps) {
+}: TableProps & { slotStyles?: SlotStyles }) {
 	// Render skeleton state directly
 	if (isLoading) {
 		// Use custom skeleton if provided
@@ -159,11 +162,18 @@ function Table({
 		return <TableSkeleton data-kala-component="table" {...config} />;
 	}
 
+	// The root slot channel lives on the scroll container (the marker element);
+	// legacy className keeps targeting the inner <table> for column sizing.
+	const root = applySlot(
+		"relative w-full overflow-x-auto border rounded-lg bg-card kala-surface-card",
+		slotStyles?.root,
+	);
 	return (
 		<Box
 			data-kala-component="table"
 			data-slot="table-container"
-			className="relative w-full overflow-x-auto border rounded-lg bg-card kala-surface-card"
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 		>
 			<table
 				data-slot="table"

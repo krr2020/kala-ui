@@ -1,8 +1,11 @@
 import type * as React from "react";
 import { Toaster as Sonner } from "sonner";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { type ResolvedTheme, useOptionalTheme } from "../theme-provider";
 
-type ToastProps = React.ComponentProps<typeof Sonner>;
+type ToastProps = React.ComponentProps<typeof Sonner> & {
+	slotStyles?: SlotStyles;
+};
 
 const DARK_THEMES: readonly ResolvedTheme[] = ["dark", "high-contrast-dark"];
 
@@ -13,7 +16,7 @@ function useOptionalResolvedTheme(): ResolvedTheme | null {
 	return useOptionalTheme()?.resolvedTheme ?? null;
 }
 
-const Toast = ({ theme, ...props }: ToastProps) => {
+const Toast = ({ theme, slotStyles, ...props }: ToastProps) => {
 	// Sonner paints its own light/dark surfaces from data-sonner-theme, so it
 	// must be told which kala-ui theme is active or toasts stay light while the
 	// app goes dark. resolvedTheme is concrete from the provider's first render
@@ -24,10 +27,15 @@ const Toast = ({ theme, ...props }: ToastProps) => {
 		theme ??
 		(resolvedTheme && DARK_THEMES.includes(resolvedTheme) ? "dark" : "light");
 
+	// Sonner owns the toast chrome (see DELEGATIONS in the rollout suite), so
+	// slots apply to the wrapper-rendered <section> root only; the per-toast
+	// classNames below stay the library's own channel.
+	const root = applySlot("toaster group", slotStyles?.root);
 	return (
 		<Sonner
 			data-kala-component="toast"
-			className="toaster group"
+			className={root.className}
+			style={mergeStyle(props.style, root.style)}
 			theme={sonnerTheme}
 			closeButton
 			toastOptions={{

@@ -161,7 +161,7 @@ export const FullFlow = () => {
 
 	return (
 		<Box className="w-[600px] max-w-full">
-			<Steps currentStep={currentStep} items={flowItems} className="mb-8" />
+			<Steps value={currentStep} items={flowItems} className="mb-8" />
 
 			<Card>
 				<CardHeader>
@@ -336,7 +336,7 @@ export const VerticalFullFlow = () => {
 		<Flex className="w-[800px] max-w-full" gap={8}>
 			<Box className="w-64 shrink-0">
 				<Steps
-					currentStep={currentStep}
+					value={currentStep}
 					items={flowItems}
 					orientation="vertical"
 				/>
