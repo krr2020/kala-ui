@@ -15,7 +15,8 @@ const DEMOS_DIR = resolve(
 	"../../../../../apps/native-playground/src/demos",
 );
 const COMPONENTS_DIR = resolve(DEMOS_DIR, "components");
-const registry = readFileSync(resolve(COMPONENTS_DIR, "registry.tsx"), "utf8");
+const registryFile = readFileSync(resolve(COMPONENTS_DIR, "registry.tsx"), "utf8");
+const registry = registryFile;
 
 interface GroupBlock {
 	name: string;
@@ -129,11 +130,51 @@ describe("playground registry ↔ dedicated demo seam", () => {
 	});
 
 	it("the migration covers every group — dedicated demos exist for all registered components", () => {
-		// 9 groups × their full component lists; the count is the full
+		// 10 groups × their full component lists; the count is the full
 		// registry, so a new fallback entry fails the count OR the
 		// fallback assertions above
-		expect(groups).toHaveLength(9);
+		expect(groups).toHaveLength(10);
 		expect(components.length).toBe(61);
+	});
+
+	it("app-backed composites live in the app components group, not library groups", () => {
+		const appGroup = groups.find((g) => g.name === "app components");
+		expect(appGroup, "app components group exists").toBeDefined();
+		expect(appGroup?.source).toBe("app");
+		const moved = [
+			"list",
+			"loading-overlay",
+			"error-boundary",
+			"empty-state",
+			"copy-button",
+			"password-strength",
+			"steps",
+			"timeline",
+		];
+		const inAppGroup = components
+			.filter((c) => c.group === "app components")
+			.map((c) => c.name);
+		for (const name of moved) {
+			expect(inAppGroup, `${name} lives in app components`).toContain(name);
+		}
+		expect(inAppGroup).toHaveLength(moved.length);
+		// library groups carry zero app-backed entries after the move;
+		// whole-app groups (data/charts/app chrome) keep their app source
+		const libraryGroups = groups
+			.filter((g) => g.source === "library")
+			.map((g) => g.name);
+		for (const c of components) {
+			if (libraryGroups.includes(c.group)) {
+				expect(c.source, `${c.name} pollutes library group ${c.group}`).toBe(
+					"library",
+				);
+			}
+		}
+		// ordering: app components clusters with the app-backed groups —
+		// directly after data, directly before charts
+		const names = groups.map((g) => g.name);
+		expect(names.indexOf("app components") - names.indexOf("data")).toBe(1);
+		expect(names.indexOf("charts") - names.indexOf("app components")).toBe(1);
 	});
 
 	it("every registered component's demo carries its k-demo root marker", () => {

@@ -180,7 +180,7 @@ describe("component app seam", () => {
 		// overviews shrank to composed stories. The sheet's form/share/filter
 		// + long-form stress variations add ten more (open flags + field
 		// arrays + typed values).
-		expect(demoHooks).toBe(105);
+		expect(demoHooks).toBe(107);
 	});
 
 	it("landing offers exactly two package routes", () => {
@@ -306,14 +306,14 @@ describe("component app seam", () => {
 			(registry.match(/title: "/g) ?? []).length,
 		);
 		// exactly the react-native-app-backed groups are app-sourced.
-		for (const name of ["data", "charts", "app chrome"]) {
+		for (const name of ["data", "app components", "charts", "app chrome"]) {
 			expect(registry).toMatch(
 				new RegExp(`name: "${name}",[\\s\\S]*?source: "app"`),
 			);
 		}
 		expect(
 			registry.match(/source: "app",\s*\n\s*overview:/g) ?? [],
-		).toHaveLength(3);
+		).toHaveLength(4);
 		// landing segregates by package: two entry cards filter groups by
 		// their source — the app card carries the app tint, both captions
 		// reuse the uppercase section header style
@@ -566,14 +566,15 @@ describe("component app seam", () => {
 				Object.entries({
 					'accessibilityLabel="Accept terms"': 1,
 					'accessibilityLabel="Advance ring"': 1,
+					'accessibilityLabel="Advance step"': 1,
 					'accessibilityLabel="Advance upload"': 1,
 					'accessibilityLabel="Apply search"': 1,
 					'accessibilityLabel="Archiving project"': 1,
 					'accessibilityLabel="City"': 1,
 					'accessibilityLabel="Disabled quantity"': 1,
+					'accessibilityLabel="Disabled textarea"': 1,
 					'accessibilityLabel="Discard event"': 1,
 					'accessibilityLabel="Discard form"': 1,
-					'accessibilityLabel="Disabled textarea"': 1,
 					'accessibilityLabel="Email"': 1,
 					'accessibilityLabel="Error combobox"': 1,
 					'accessibilityLabel="Error multi select"': 1,
@@ -617,15 +618,18 @@ describe("component app seam", () => {
 					'accessibilityLabel="Orphan city"': 1,
 					'accessibilityLabel="Orphan toppings"': 1,
 					'accessibilityLabel="Quantity"': 1,
+					'accessibilityLabel="Recent orders"': 1,
 					'accessibilityLabel="Referral"': 1,
 					'accessibilityLabel="Reset ring"': 1,
 					'accessibilityLabel="Reset upload"': 1,
 					'accessibilityLabel="Role"': 1,
 					'accessibilityLabel="Save event"': 1,
 					'accessibilityLabel="Save task"': 1,
+					'accessibilityLabel="Saving changes"': 1,
 					'accessibilityLabel="Search products"': 1,
 					'accessibilityLabel="Show Auto Toast"': 1,
 					'accessibilityLabel="Show Toast"': 1,
+					'accessibilityLabel="Show loading overlay"': 1,
 					'accessibilityLabel="Silent sync"': 1,
 					'accessibilityLabel="Task notes"': 1,
 					'accessibilityLabel="Task title"': 1,
@@ -750,6 +754,7 @@ describe("component app seam", () => {
 					'testID="k-demo-accordion"': 1,
 					'testID="k-demo-alert"': 1,
 					'testID="k-demo-alert-dialog"': 1,
+					'testID="k-demo-app-components"': 1,
 					'testID="k-demo-app-shell"': 1,
 					'testID="k-demo-avatar-group"': 1,
 					'testID="k-demo-avatar-group-inline"': 1,

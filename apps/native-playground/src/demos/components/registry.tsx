@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 import { AppChromeDemo } from "../app-chrome-demo";
+import { AppComponentsDemo } from "../app-components-demo";
 import { BasicsDemo } from "../basics-demo";
 import { ChartsDemo } from "../charts-demo";
 import { DataTableDemo } from "../data-table-demo";
@@ -135,12 +136,6 @@ export const componentGroups: ComponentGroup[] = [
 				label: humanizeLabel("heading"),
 				name: "heading",
 				render: () => <HeadingDemo />,
-			},
-			{
-				label: humanizeLabel("list"),
-				name: "list",
-				source: "app",
-				render: () => <ListDemo />,
 			},
 			{
 				label: humanizeLabel("avatar"),
@@ -316,39 +311,9 @@ export const componentGroups: ComponentGroup[] = [
 				render: () => <SkeletonDemo />,
 			},
 			{
-				label: humanizeLabel("loading-overlay"),
-				name: "loading-overlay",
-				source: "app",
-				render: () => <LoadingOverlayDemo />,
-			},
-			{
-				label: humanizeLabel("error-boundary"),
-				name: "error-boundary",
-				source: "app",
-				render: () => <ErrorBoundaryDemo />,
-			},
-			{
-				label: humanizeLabel("empty-state"),
-				name: "empty-state",
-				source: "app",
-				render: () => <EmptyStateDemo />,
-			},
-			{
 				label: humanizeLabel("indicator"),
 				name: "indicator",
 				render: () => <IndicatorDemo />,
-			},
-			{
-				label: humanizeLabel("copy-button"),
-				name: "copy-button",
-				source: "app",
-				render: () => <CopyButtonDemo />,
-			},
-			{
-				label: humanizeLabel("password-strength"),
-				name: "password-strength",
-				source: "app",
-				render: () => <PasswordStrengthDemo />,
 			},
 		],
 	},
@@ -364,12 +329,7 @@ export const componentGroups: ComponentGroup[] = [
 				name: "tabs",
 				render: () => <TabsDemo />,
 			},
-			{
-				label: humanizeLabel("steps"),
-				name: "steps",
-				source: "app",
-				render: () => <StepsDemo />,
-			},
+
 			{
 				label: humanizeLabel("segmented-control"),
 				name: "segmented-control",
@@ -380,12 +340,7 @@ export const componentGroups: ComponentGroup[] = [
 				name: "toggle-group",
 				render: () => <ToggleGroupDemo />,
 			},
-			{
-				label: humanizeLabel("timeline"),
-				name: "timeline",
-				source: "app",
-				render: () => <TimelineDemo />,
-			},
+
 			{
 				label: humanizeLabel("accordion"),
 				name: "accordion",
@@ -443,6 +398,55 @@ export const componentGroups: ComponentGroup[] = [
 				label: humanizeLabel("data-table"),
 				name: "data-table",
 				render: () => <DataTableDemo />,
+			},
+		],
+	},
+	{
+		name: "app components",
+		label: humanizeLabel("app components"),
+		title: "App Components",
+		source: "app",
+		overview: () => <AppComponentsDemo />,
+		components: [
+			{
+				label: humanizeLabel("list"),
+				name: "list",
+				render: () => <ListDemo />,
+			},
+			{
+				label: humanizeLabel("loading-overlay"),
+				name: "loading-overlay",
+				render: () => <LoadingOverlayDemo />,
+			},
+			{
+				label: humanizeLabel("error-boundary"),
+				name: "error-boundary",
+				render: () => <ErrorBoundaryDemo />,
+			},
+			{
+				label: humanizeLabel("empty-state"),
+				name: "empty-state",
+				render: () => <EmptyStateDemo />,
+			},
+			{
+				label: humanizeLabel("copy-button"),
+				name: "copy-button",
+				render: () => <CopyButtonDemo />,
+			},
+			{
+				label: humanizeLabel("password-strength"),
+				name: "password-strength",
+				render: () => <PasswordStrengthDemo />,
+			},
+			{
+				label: humanizeLabel("steps"),
+				name: "steps",
+				render: () => <StepsDemo />,
+			},
+			{
+				label: humanizeLabel("timeline"),
+				name: "timeline",
+				render: () => <TimelineDemo />,
 			},
 		],
 	},
