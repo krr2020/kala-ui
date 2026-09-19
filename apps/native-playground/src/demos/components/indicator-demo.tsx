@@ -16,29 +16,54 @@ export function IndicatorDemo() {
 		<View style={demoStyles.routeContent} testID="k-demo-indicator">
 			<DemoBlock label="On Avatar">
 				<View style={demoStyles.componentRow}>
-					<Indicator color="success" size={12}>
+					<Indicator
+						color="success"
+						size={12}
+						offset={8}
+						position="bottom-right"
+						withBorder
+					>
 						<Avatar name="Grace Hopper" size="lg" />
 					</Indicator>
-					<Indicator color="destructive" processing size={12}>
+					<Indicator
+						color="destructive"
+						processing
+						size={12}
+						offset={8}
+						position="bottom-right"
+						withBorder
+					>
 						<Avatar name="Alan Turing" size="lg" />
 					</Indicator>
-					<Indicator label={3} size={16}>
+					<Indicator
+						label={3}
+						size={16}
+						offset={10}
+						position="top-right"
+						withBorder
+					>
 						<Avatar name="Ada Lovelace" size="lg" />
 					</Indicator>
-					<Indicator disabled>
+					<Indicator
+						disabled
+						size={12}
+						offset={8}
+						position="bottom-right"
+						withBorder
+					>
 						<Avatar name="Katherine Johnson" size="lg" />
 					</Indicator>
 				</View>
 			</DemoBlock>
 			<DemoBlock label="On Icons">
 				<View style={demoStyles.componentRow}>
-					<Indicator label={9} size={16}>
+					<Indicator label={9} size={16} withBorder>
 						<Icon icon={Bell} size="lg" />
 					</Indicator>
-					<Indicator label="99+" size={16} color="warning">
+					<Indicator label="99+" size={16} color="warning" withBorder>
 						<Icon icon={Mail} size="lg" />
 					</Indicator>
-					<Indicator label={1} size={16} color="destructive">
+					<Indicator label={1} size={16} color="destructive" withBorder>
 						<Icon icon={MessageCircle} size="lg" />
 					</Indicator>
 					<Indicator disabled label={0}>

@@ -76,6 +76,51 @@ describe("indicator app seam", () => {
 		}
 	});
 
+	it("presence dots sit inside the avatar corner like Avatar's own status dot", () => {
+		const avatar = section(demo, 'DemoBlock label="On Avatar"', "</DemoBlock>");
+		// presence arms (no label): bottom-right, ringed, offset = size/2 + 2
+		// pulls the dot fully inside — the placement Avatar's status prop
+		// uses (right/bottom 0 + background ring)
+		const presence = indicatorBlocks(avatar).filter(
+			(block) => !block.includes("label="),
+		);
+		expect(presence.length).toBe(3);
+		for (const block of presence) {
+			expect(block).toContain('position="bottom-right"');
+			expect(block).toContain("withBorder");
+			expect(block).toContain("size={12}");
+			expect(block).toContain("offset={8}");
+		}
+	});
+
+	it("count badge hugs the inside of the avatar's top-right corner", () => {
+		const avatar = section(demo, 'DemoBlock label="On Avatar"', "</DemoBlock>");
+		const badge = indicatorBlocks(avatar).find((block) =>
+			block.includes("label="),
+		);
+		expect(badge).toBeDefined();
+		// size-16 badge: offset = 16/2 + 2 keeps it inside the corner; the
+		// label grows minWidth leftward, never toward the anchor
+		expect(badge).toContain('position="top-right"');
+		expect(badge).toContain("withBorder");
+		expect(badge).toContain("size={16}");
+		expect(badge).toContain("offset={10}");
+		// multi-digit width growth is exercised on the icon badge
+		const icons = section(demo, 'DemoBlock label="On Icons"', "</DemoBlock>");
+		expect(icons).toContain('label="99+"');
+	});
+
+	it("icon badges keep corner-centered anchors but gain the ring", () => {
+		const icons = section(demo, 'DemoBlock label="On Icons"', "</DemoBlock>");
+		for (const block of indicatorBlocks(icons)) {
+			// the disabled arm renders nothing — ring or not — so only the
+			// visible badges must carry the ring
+			if (block.includes("disabled")) continue;
+			expect(block).toContain("withBorder");
+			expect(block).not.toContain('position="bottom-right"');
+		}
+	});
+
 	it("anchors position targets on the muted square with captions outside", () => {
 		const positions = section(
 			demo,
