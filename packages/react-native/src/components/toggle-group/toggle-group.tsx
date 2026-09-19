@@ -6,7 +6,13 @@
  */
 
 import type { ReactElement, ReactNode } from "react";
-import { createContext, useContext, useState } from "react";
+import {
+	Children,
+	createContext,
+	isValidElement,
+	useContext,
+	useState,
+} from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
@@ -14,6 +20,11 @@ import { applySlot } from "../slot-styles";
 import { TOGGLE_FONT, toggleSurface, StateGlyph } from "../toggle/toggle";
 import { hitSlopFor } from "../toggle/toggle.styles";
 import type { ToggleSize, ToggleVariant } from "../toggle/toggle.types";
+import {
+	groupedItemSurface,
+	groupSurface,
+	toValues,
+} from "./toggle-group.styles";
 import type {
 	ToggleGroupItemProps,
 	ToggleGroupProps,
@@ -32,8 +43,8 @@ interface GroupState {
 
 const ToggleGroupContext = createContext<GroupState | null>(null);
 
-const toValues = (value: string | string[] | undefined): string[] =>
-	Array.isArray(value) ? value : value === undefined ? [] : [value];
+/** Recomputed every render, so conditional children never keep stale slots. */
+const ItemFirstContext = createContext(true);
 
 export function ToggleGroup({
 	children,
@@ -48,6 +59,7 @@ export function ToggleGroup({
 	slotStyles,
 	testID = "k-toggle-group",
 }: ToggleGroupProps): ReactElement {
+	const { theme } = useUnistyles();
 	// controlled lock: a provided value prop always wins over internal state
 	const controlled = value !== undefined;
 	const [internal, setInternal] = useState<string[]>(() =>
@@ -68,6 +80,14 @@ export function ToggleGroup({
 		onValueChange?.(type === "single" ? (next[0] ?? "") : next);
 	};
 
+	const indexed = Children.map(children, (child, index) =>
+		isValidElement(child) ? (
+			<ItemFirstContext.Provider value={index === 0}>{child}</ItemFirstContext.Provider>
+		) : (
+			child
+		),
+	);
+
 	return (
 		<ToggleGroupContext.Provider
 			value={{
@@ -86,16 +106,11 @@ export function ToggleGroup({
 				accessibilityLabel={accessibilityLabel}
 				accessibilityState={disabled ? { disabled: true } : undefined}
 				style={applySlot(
-					{
-						flexDirection: "row",
-						flexWrap: "wrap",
-						alignItems: "center",
-						gap: 4,
-					},
+					groupSurface(variant ?? "default", theme),
 					slotStyles?.root,
 				)}
 			>
-				{children}
+				{indexed}
 			</View>
 		</ToggleGroupContext.Provider>
 	);
@@ -135,6 +150,7 @@ export function ToggleGroupItem({
 	testID = "k-toggle-group-item",
 }: ToggleGroupItemProps): ReactElement {
 	const group = useContext(ToggleGroupContext);
+	const first = useContext(ItemFirstContext);
 	const { theme } = useUnistyles();
 
 	const active = group?.values.includes(value) ?? false;
@@ -148,6 +164,9 @@ export function ToggleGroupItem({
 		disabled: itemDisabled,
 		theme,
 	});
+	const surface = group
+		? groupedItemSurface(look.style, first, theme.border)
+		: look.style;
 
 	return (
 		<Pressable
@@ -162,7 +181,7 @@ export function ToggleGroupItem({
 			disabled={itemDisabled}
 			hitSlop={hitSlopFor(effSize)}
 			style={applySlot(
-				applySlot(applySlot(look.style, style), group?.itemStyles),
+				applySlot(applySlot(surface, style), group?.itemStyles),
 				slotStyles?.root,
 			)}
 		>
