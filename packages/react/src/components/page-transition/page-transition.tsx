@@ -9,6 +9,7 @@
 
 import * as React from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 export interface PageTransitionProps extends React.ComponentProps<"div"> {
 	/**
@@ -28,6 +29,7 @@ export interface PageTransitionProps extends React.ComponentProps<"div"> {
 	 * When this changes, the transition will re-trigger
 	 */
 	pageKey?: string;
+	slotStyles?: SlotStyles;
 }
 
 /**
@@ -44,6 +46,8 @@ export interface PageTransitionProps extends React.ComponentProps<"div"> {
 export function PageTransition({
 	children,
 	className,
+	style,
+	slotStyles,
 	duration = 300,
 	pageKey,
 	ref,
@@ -66,12 +70,18 @@ export function PageTransition({
 			data-kala-component="page-transition"
 			data-slot="page-transition"
 			ref={ref}
-			className={cn(
-				"transition-opacity ease-in-out",
-				isVisible ? "opacity-100" : "opacity-0",
-				className,
-			)}
-			style={{ transitionDuration: `${duration}ms` }}
+			className={applySlot(
+				cn(
+					"transition-opacity ease-in-out",
+					isVisible ? "opacity-100" : "opacity-0",
+					className,
+				),
+				slotStyles?.root,
+			).className}
+			style={{
+				transitionDuration: `${duration}ms`,
+				...mergeStyle(style, applySlot("", slotStyles?.root).style),
+			}}
 			{...props}
 		>
 			{children}

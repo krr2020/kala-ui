@@ -5,6 +5,7 @@ import { Check, Copy } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { applySlot, type SlotStyles } from "../../lib/slot-styles";
 import { Button } from "../button/button";
 import type { ButtonProps } from "../button/button.types";
 
@@ -20,6 +21,7 @@ export interface CopyButtonProps
 	checkIcon?: React.ReactNode;
 	/** Accessible label */
 	"aria-label"?: string;
+	slotStyles?: SlotStyles;
 }
 
 function CopyButton({
@@ -30,6 +32,7 @@ function CopyButton({
 	className,
 	size = "icon",
 	variant = "ghost",
+	slotStyles,
 	"aria-label": ariaLabel = "Copy to clipboard",
 	...props
 }: CopyButtonProps) {
@@ -38,6 +41,9 @@ function CopyButton({
 	const handleCopy = React.useCallback(() => {
 		copy(value);
 	}, [copy, value]);
+
+	// Default glyphs honor the icon slot; custom icons stay untouched.
+	const icon = applySlot("h-4 w-4", slotStyles?.icon);
 
 	return (
 		<Button
@@ -50,11 +56,24 @@ function CopyButton({
 			aria-live="polite"
 			onClick={handleCopy}
 			className={cn("transition-all", className)}
+			slotStyles={slotStyles}
 			{...props}
 		>
 			{copied
-				? (checkIcon ?? <Check className="h-4 w-4" aria-hidden="true" />)
-				: (copyIcon ?? <Copy className="h-4 w-4" aria-hidden="true" />)}
+				? (checkIcon ?? (
+						<Check
+							className={icon.className}
+							style={icon.style}
+							aria-hidden="true"
+						/>
+					))
+				: (copyIcon ?? (
+						<Copy
+							className={icon.className}
+							style={icon.style}
+							aria-hidden="true"
+						/>
+					))}
 		</Button>
 	);
 }

@@ -3,6 +3,7 @@ import { Loader2 } from "lucide-react";
 import type * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 const spinnerVariants = cva("animate-spin", {
 	variants: {
@@ -27,23 +28,31 @@ const spinnerVariants = cva("animate-spin", {
 });
 
 export interface SpinnerProps
-	extends React.ComponentProps<"svg">,
+		extends React.ComponentProps<"svg">,
 		VariantProps<typeof spinnerVariants> {
-	label?: string;
-}
+		label?: string;
+		slotStyles?: SlotStyles;
+	}
 
 function Spinner({
 	ref,
 	className,
+	style,
+	slotStyles,
 	size,
 	variant,
 	label = "Loading...",
 	...props
 }: SpinnerProps) {
+	const root = applySlot(
+		cn("inline-flex items-center justify-center", className),
+		slotStyles?.root,
+	);
 	return (
 		<output
 			data-kala-component="spinner"
-			className={cn("inline-flex items-center justify-center", className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 		>
 			<Loader2
 				ref={ref}

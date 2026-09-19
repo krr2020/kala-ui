@@ -48,6 +48,7 @@ function ContextMenuContent({
 	className,
 	style,
 	slotStyles,
+	forceMount,
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Content> & {
 	slotStyles?: SlotStyles;
@@ -65,8 +66,9 @@ function ContextMenuContent({
 		slotStyles?.root,
 	);
 	return (
-		<ContextMenuPrimitive.Portal>
+		<ContextMenuPrimitive.Portal forceMount={forceMount}>
 			<ContextMenuPrimitive.Content
+				forceMount={forceMount}
 				data-kala-component="context-menu-content"
 				data-slot="context-menu-content"
 				className={root.className}

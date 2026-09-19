@@ -4,20 +4,30 @@ import * as ToolbarPrimitive from "@radix-ui/react-toolbar";
 import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { toggleVariants } from "../toggle/toggle";
 
 function Toolbar({
 	className,
+	style,
+	slotStyles,
 	...props
-}: React.ComponentProps<typeof ToolbarPrimitive.Root>) {
+}: React.ComponentProps<typeof ToolbarPrimitive.Root> & {
+	slotStyles?: SlotStyles;
+}) {
+	const root = applySlot(
+		cn(
+			"flex h-10 items-center gap-1 rounded-md border bg-card p-1 kala-surface-input",
+			className,
+		),
+		slotStyles?.root,
+	);
 	return (
 		<ToolbarPrimitive.Root
 			data-kala-component="toolbar"
 			data-slot="toolbar"
-			className={cn(
-				"flex h-10 items-center gap-1 rounded-md border bg-card p-1 kala-surface-input",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);

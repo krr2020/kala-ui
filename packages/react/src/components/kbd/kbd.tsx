@@ -2,6 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 export const kbdVariants = cva(
 	"inline-flex items-center justify-center font-mono font-medium rounded border border-b-2 bg-muted text-muted-foreground shadow-sm select-none",
@@ -47,17 +48,28 @@ export interface KbdProps
 		VariantProps<typeof kbdVariants> {
 	/** Key or array of keys to display as a chord */
 	keys?: string | string[];
+	slotStyles?: SlotStyles;
 }
 
-function Kbd({ className, size, keys, children, ...props }: KbdProps) {
+function Kbd({
+	className,
+	style,
+	slotStyles,
+	size,
+	keys,
+	children,
+	...props
+}: KbdProps) {
 	if (keys) {
 		const keyArray = Array.isArray(keys) ? keys : [keys];
 
 		if (keyArray.length > 1) {
+			const root = applySlot("inline-flex items-center gap-0.5", slotStyles?.root);
 			return (
 				<span
 					data-kala-component="kbd"
-					className="inline-flex items-center gap-0.5"
+					className={root.className}
+					style={mergeStyle(style, root.style)}
 				>
 					{keyArray.map((k, i) => (
 						<kbd
@@ -74,11 +86,13 @@ function Kbd({ className, size, keys, children, ...props }: KbdProps) {
 		}
 
 		const key = keyArray[0];
+		const root = applySlot(cn(kbdVariants({ size }), className), slotStyles?.root);
 		return (
 			<kbd
 				data-kala-component="kbd"
 				data-slot="kbd"
-				className={cn(kbdVariants({ size }), className)}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 				{...props}
 			>
 				{KEY_SYMBOLS[key.toLowerCase()] ?? key}
@@ -86,11 +100,13 @@ function Kbd({ className, size, keys, children, ...props }: KbdProps) {
 		);
 	}
 
+	const root = applySlot(cn(kbdVariants({ size }), className), slotStyles?.root);
 	return (
 		<kbd
 			data-kala-component="kbd"
 			data-slot="kbd"
-			className={cn(kbdVariants({ size }), className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		>
 			{children}

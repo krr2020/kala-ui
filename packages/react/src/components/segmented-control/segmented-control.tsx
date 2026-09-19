@@ -2,6 +2,7 @@ import { useUncontrolled } from "@kala-ui/react-hooks";
 import { motion } from "framer-motion";
 import * as React from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 export interface SegmentedControlItem {
 	value: string;
@@ -22,11 +23,14 @@ export interface SegmentedControlProps
 	fullWidth?: boolean;
 	size?: "xs" | "sm" | "md" | "lg" | "xl";
 	radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+	slotStyles?: SlotStyles;
 }
 
 export function SegmentedControl({
 	ref,
 	className,
+	style,
+	slotStyles,
 	data,
 	value: valueProp,
 	defaultValue,
@@ -126,18 +130,24 @@ export function SegmentedControl({
 		full: "rounded-full",
 	};
 
+	const root = applySlot(
+		cn(
+			"relative flex bg-muted p-1",
+			radiusClasses[radius],
+			fullWidth ? "w-full" : "w-fit",
+			disabled && "cursor-not-allowed opacity-60",
+			className,
+		),
+		slotStyles?.root,
+	);
+
 	return (
 		<div
 			data-kala-component="segmented-control"
 			ref={ref}
 			role="radiogroup"
-			className={cn(
-				"relative flex bg-muted p-1",
-				radiusClasses[radius],
-				fullWidth ? "w-full" : "w-fit",
-				disabled && "cursor-not-allowed opacity-60",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		>
 			{items.map((item, index) => {

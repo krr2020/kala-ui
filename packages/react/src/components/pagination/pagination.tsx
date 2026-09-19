@@ -12,6 +12,7 @@ import type {
 	PaginationPreviousProps,
 	PaginationProps,
 } from "./pagination.types";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 // ============================================================================
 // Pagination Root
@@ -19,6 +20,8 @@ import type {
 
 function Pagination({
 	className,
+	style,
+	slotStyles,
 	"aria-label": ariaLabel = "Pagination",
 	total,
 	page,
@@ -28,7 +31,7 @@ function Pagination({
 	onPageChange,
 	children,
 	...props
-}: PaginationProps) {
+}: PaginationProps & { slotStyles?: SlotStyles }) {
 	const pagination = usePagination({
 		total: total || 0,
 		page,
@@ -39,17 +42,14 @@ function Pagination({
 	});
 
 	return (
-		<PaginationContext.Provider
-			data-kala-component="pagination"
-			value={pagination}
-		>
+		<PaginationContext.Provider value={pagination}>
 			<Box
 				as="nav"
+				data-kala-component="pagination"
 				aria-label={ariaLabel}
-				className={cn(
-					"mx-auto flex w-full flex-wrap justify-center",
-					className,
-				)}
+				slotStyles={slotStyles}
+				className={cn("mx-auto flex w-full flex-wrap justify-center", className)}
+				style={style}
 				{...props}
 			>
 				{children}
@@ -79,22 +79,24 @@ function usePaginationContext() {
 
 function PaginationContent({
 	className,
+	style,
+	slotStyles,
 	variant = "default",
 	spaced = false,
 	...props
-}: PaginationContentProps) {
+}: PaginationContentProps & { slotStyles?: SlotStyles }) {
 	return (
-		<PaginationVariantContext.Provider
-			data-kala-component="pagination-content"
-			value={variant}
-		>
+		<PaginationVariantContext.Provider value={variant}>
 			<Flex
 				as="ul"
+				data-kala-component="pagination-content"
 				align="center"
 				justify="center"
 				wrap="wrap"
 				gap={spaced ? 2 : 1}
 				className={className}
+				style={style}
+				slotStyles={slotStyles}
 				data-variant={variant}
 				{...props}
 			/>
@@ -106,14 +108,21 @@ function PaginationContent({
 // Pagination Item (List Item Container)
 // ============================================================================
 
-function PaginationItem({ className, ...props }: React.ComponentProps<"li">) {
+function PaginationItem({
+	className,
+	style,
+	slotStyles,
+	...props
+}: React.ComponentProps<"li"> & { slotStyles?: SlotStyles }) {
 	return (
 		<Box
-			data-kala-component="pagination-item"
-			as="li"
-			className={cn("", className)}
-			{...props}
-		/>
+				data-kala-component="pagination-item"
+				as="li"
+				slotStyles={slotStyles}
+				className={className}
+				style={style}
+				{...props}
+			/>
 	);
 }
 
@@ -123,6 +132,8 @@ function PaginationItem({ className, ...props }: React.ComponentProps<"li">) {
 
 function PaginationLink({
 	className,
+	style,
+	slotStyles,
 	isActive,
 	size = "md",
 	isIconButton = false,
@@ -132,7 +143,7 @@ function PaginationLink({
 	disabled,
 	onClick,
 	...props
-}: PaginationLinkProps) {
+}: PaginationLinkProps & { slotStyles?: SlotStyles }) {
 	const parentVariant = React.useContext(PaginationVariantContext) || "default";
 	const pagination = usePaginationContext();
 
@@ -184,6 +195,16 @@ function PaginationLink({
 		onClick?.(e);
 	};
 
+	const root = applySlot(
+		cn(
+			baseClasses,
+			variantClasses[parentVariant],
+			disabled && "pointer-events-none opacity-50",
+			className,
+		),
+		slotStyles?.root,
+	);
+
 	if (href) {
 		return (
 			<Box
@@ -192,12 +213,8 @@ function PaginationLink({
 				href={href}
 				aria-current={isActive ? "page" : undefined}
 				aria-disabled={disabled || undefined}
-				className={cn(
-					baseClasses,
-					variantClasses[parentVariant],
-					disabled && "pointer-events-none opacity-50",
-					className,
-				)}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 				{...props}
 			>
 				{children}
@@ -212,7 +229,8 @@ function PaginationLink({
 			type="button"
 			disabled={disabled}
 			aria-current={isActive ? "page" : undefined}
-			className={cn(baseClasses, variantClasses[parentVariant], className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			onClick={handleClick}
 			// anchor-typed rest props are a superset of what a button renders
 			{...(props as unknown as React.ComponentProps<"button">)}
@@ -228,11 +246,12 @@ function PaginationLink({
 
 function PaginationPrevious({
 	className,
+	slotStyles,
 	showLabel = true,
 	children,
 	onClick,
 	...props
-}: PaginationPreviousProps) {
+}: PaginationPreviousProps & { slotStyles?: SlotStyles }) {
 	const pagination = usePaginationContext();
 
 	const handleClick = (e: React.MouseEvent) => {
@@ -246,6 +265,7 @@ function PaginationPrevious({
 			aria-label="Go to previous page"
 			isIconButton={!showLabel}
 			className={cn("gap-1", className)}
+			slotStyles={slotStyles}
 			onClick={handleClick}
 			disabled={pagination?.active === 1}
 			{...props}
@@ -262,11 +282,12 @@ function PaginationPrevious({
 
 function PaginationNext({
 	className,
+	slotStyles,
 	showLabel = true,
 	children,
 	onClick,
 	...props
-}: PaginationNextProps) {
+}: PaginationNextProps & { slotStyles?: SlotStyles }) {
 	const pagination = usePaginationContext();
 
 	const handleClick = (e: React.MouseEvent) => {
@@ -280,6 +301,7 @@ function PaginationNext({
 			aria-label="Go to next page"
 			isIconButton={!showLabel}
 			className={cn("gap-1", className)}
+			slotStyles={slotStyles}
 			onClick={handleClick}
 			disabled={pagination ? pagination.active >= pagination.total : undefined}
 			{...props}

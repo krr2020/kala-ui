@@ -5,6 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 const toggleVariants = cva(
 	`cursor-pointer inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-muted hover:text-muted-foreground disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0`,
@@ -31,16 +32,25 @@ const toggleVariants = cva(
 function Toggle({
 	ref,
 	className,
+	style,
+	slotStyles,
 	variant,
 	size,
 	...props
 }: React.ComponentProps<typeof TogglePrimitive.Root> &
-	VariantProps<typeof toggleVariants>) {
+	VariantProps<typeof toggleVariants> & {
+		slotStyles?: SlotStyles;
+	}) {
+	const root = applySlot(
+		cn(toggleVariants({ variant, size, className })),
+		slotStyles?.root,
+	);
 	return (
 		<TogglePrimitive.Root
 			data-kala-component="toggle"
 			ref={ref}
-			className={cn(toggleVariants({ variant, size, className }))}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);

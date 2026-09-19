@@ -1,5 +1,6 @@
 import type * as React from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 export interface SkeletonProps extends React.ComponentProps<"div"> {
 	/**
@@ -14,6 +15,7 @@ export interface SkeletonProps extends React.ComponentProps<"div"> {
 	 * Test ID for querying the element
 	 */
 	"data-testid"?: string;
+	slotStyles?: SlotStyles;
 }
 
 /**
@@ -21,32 +23,38 @@ export interface SkeletonProps extends React.ComponentProps<"div"> {
  *
  * Supports both pulse and fade modes for different loading states.
  */
-function Skeleton({
-	ref,
-	className,
-	fade = false,
-	fadeDuration = 300,
-	style,
-	"data-testid": dataTestId,
-	...props
-}: SkeletonProps) {
-	return (
-		<div
-			data-kala-component="skeleton"
-			ref={ref}
-			data-slot="skeleton"
-			data-testid={dataTestId}
-			className={cn(
+	function Skeleton({
+		ref,
+		className,
+		fade = false,
+		fadeDuration = 300,
+		style,
+		slotStyles,
+		"data-testid": dataTestId,
+		...props
+	}: SkeletonProps) {
+		const root = applySlot(
+			cn(
 				"bg-muted dark:bg-muted/70 rounded-md",
 				fade ? "animate-fade-in" : "animate-pulse",
 				className,
-			)}
-			style={{
-				...style,
-				transitionDuration: fade
+			),
+			slotStyles?.root,
+		);
+		const mergedStyle = mergeStyle(style, root.style);
+		return (
+			<div
+				data-kala-component="skeleton"
+				ref={ref}
+				data-slot="skeleton"
+				data-testid={dataTestId}
+				className={root.className}
+				style={{
+					...mergedStyle,
+					transitionDuration: fade
 					? `${fadeDuration}ms`
-					: style?.transitionDuration,
-			}}
+					: mergedStyle?.transitionDuration,
+				}}
 			{...props}
 		/>
 	);

@@ -2,6 +2,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 const headingVariants = cva(
 	"font-heading font-bold tracking-tight text-foreground",
@@ -41,6 +42,7 @@ export interface HeadingProps
 		VariantProps<typeof headingVariants> {
 	asChild?: boolean;
 	as?: React.ElementType;
+	slotStyles?: SlotStyles;
 	// biome-ignore lint/suspicious/noExplicitAny: Support polymorphic props
 	[key: string]: any;
 }
@@ -48,6 +50,8 @@ export interface HeadingProps
 function Heading({
 	ref,
 	className,
+	style,
+	slotStyles,
 	size,
 	align,
 	weight,
@@ -57,11 +61,16 @@ function Heading({
 }: HeadingProps) {
 	const defaultTag = (size as React.ElementType) || "h2";
 	const Tag = asChild ? Slot : as || defaultTag;
+	const root = applySlot(
+		cn(headingVariants({ size, align, weight, className })),
+		slotStyles?.root,
+	);
 
 	return (
 		<Tag
 			data-kala-component="heading"
-			className={cn(headingVariants({ size, align, weight, className }))}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			ref={ref}
 			{...props}
 		/>

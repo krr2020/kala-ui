@@ -2,6 +2,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 const textVariants = cva("text-foreground", {
 	variants: {
@@ -65,11 +66,14 @@ export interface TextProps
 		React.RefAttributes<HTMLElement> {
 	asChild?: boolean;
 	as?: React.ElementType;
+	slotStyles?: SlotStyles;
 }
 
 function Text({
 	ref,
 	className,
+	style,
+	slotStyles,
 	size,
 	weight,
 	align,
@@ -80,12 +84,15 @@ function Text({
 	...props
 }: TextProps) {
 	const Comp = asChild ? Slot : Tag;
+	const root = applySlot(
+		cn(textVariants({ size, weight, align, color, truncate, className })),
+		slotStyles?.root,
+	);
 	return (
 		<Comp
 			data-kala-component="text"
-			className={cn(
-				textVariants({ size, weight, align, color, truncate, className }),
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			ref={ref}
 			{...props}
 		/>

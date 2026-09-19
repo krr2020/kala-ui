@@ -3,6 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Check } from "lucide-react";
 import type * as React from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Box } from "../box";
 import { Text } from "../text";
 
@@ -38,11 +39,14 @@ export interface StepsProps
 	 * @default true
 	 */
 	showLine?: boolean;
+	slotStyles?: SlotStyles;
 }
 
 function Steps({
 	ref,
 	className,
+	style,
+	slotStyles,
 	orientation,
 	value: valueProp,
 	defaultValue,
@@ -61,7 +65,8 @@ function Steps({
 		<ol
 			data-kala-component="steps"
 			ref={ref}
-			className={cn(stepsVariants({ orientation }), className)}
+			className={applySlot(cn(stepsVariants({ orientation }), className), slotStyles?.root).className}
+			style={mergeStyle(style, applySlot("", slotStyles?.root).style)}
 			{...props}
 		>
 			{items.map((step, index) => {

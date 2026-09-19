@@ -1,5 +1,6 @@
 import type * as React from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Spinner } from "../spinner";
 
 export interface SectionLoaderProps {
@@ -16,6 +17,8 @@ export interface SectionLoaderProps {
 	 * Minimum height for the loading container
 	 */
 	minHeight?: string;
+	style?: React.CSSProperties;
+	slotStyles?: SlotStyles;
 }
 
 /**
@@ -28,18 +31,21 @@ function SectionLoader({
 	ref,
 	message = "Loading...",
 	className,
+	style,
+	slotStyles,
 	minHeight = "200px",
 }: SectionLoaderProps) {
+	const root = applySlot(
+		cn("flex flex-col items-center justify-center gap-3 py-8", className),
+		slotStyles?.root,
+	);
 	return (
 		<div
 			data-kala-component="loading-section-loader"
 			ref={ref}
 			data-slot="section-loader"
-			className={cn(
-				"flex flex-col items-center justify-center gap-3 py-8",
-				className,
-			)}
-			style={{ minHeight }}
+			className={root.className}
+			style={{ minHeight, ...mergeStyle(style, root.style) }}
 			role="status"
 			aria-live="polite"
 			aria-busy="true"

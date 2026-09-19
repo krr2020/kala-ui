@@ -10,6 +10,7 @@
  */
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -97,10 +98,10 @@ afterEach(cleanup);
 
 /** Already-wired families (src/__tests__/slot-styles.test.tsx covers them). */
 const WIRED = [
-	"alert", "avatar-group", "badge", "banner", "button", "card", "date-picker",
-	"dialog", "dropdown-menu", "empty-state", "file-upload", "input",
-	"number-input", "popover", "progress", "select", "tabs", "tag", "tag-input",
-	"time-picker", "tooltip",
+	"alert", "avatar-group", "badge", "banner", "button", "calendar", "card",
+	"date-picker", "dialog", "dropdown-menu", "empty-state", "file-upload",
+	"input", "number-input", "popover", "progress", "ring-progress", "select",
+	"tabs", "tag", "tag-input", "time-picker", "tooltip",
 ] as const;
 
 /** Families with no styled DOM root of their own. */
@@ -126,6 +127,9 @@ type Row = {
 	/** Style keys probed by the object-slot test; override when the component
 	 *  animates a key (e.g. framer-motion owns collapse's opacity). */
 	objectStyleKeys?: [string, string];
+	/** Third-party owns the node (see DELEGATIONS): no marker in DOM, channels
+	 *  are asserted only on wrapper-rendered nodes elsewhere. */
+	delegated?: boolean;
 };
 
 const byMarker = (root: Element | null, marker: string) =>
@@ -136,10 +140,9 @@ const byMarker = (root: Element | null, marker: string) =>
  * third-party owns the node. Asserted present so each omission is audited.
  */
 const DELEGATIONS: Record<string, string> = {
-	toast: "sonner owns the toast chrome; slots limited to wrapper-rendered nodes",
+	toast: "sonner owns the toast chrome and renders nothing until a toast fires; slotStyles accepted, no observable marker node",
 	command: "cmdk owns list rendering internals; wrapper-rendered nodes only",
 	resizable: "react-resizable-panels owns handles; wrapper-rendered nodes only",
-	calendar: "react-day-picker owns day cells; wrapper-level slots only",
 };
 
 const rows: Row[] = [
@@ -384,8 +387,11 @@ const rows: Row[] = [
 	{
 		family: "toast",
 		marker: "toast",
+		delegated: true,
 		render: (p) => <Toast {...p} />,
 	},
+	// calendar moved to WIRED (Rule b): its day cells delegate to
+	// react-day-picker but the wrapper renders our own slotted root.
 	{ family: "spinner", marker: "spinner", render: (p) => <Spinner {...p} /> },
 	{
 		family: "loading",
@@ -440,9 +446,6 @@ const rows: Row[] = [
 				</PaginationContent>
 			</Pagination>
 		),
-		parts: [
-			{ slot: "ellipsis", find: (r) => byMarker(r, "pagination-ellipsis") },
-		],
 	},
 	{
 		family: "accordion",
@@ -609,9 +612,21 @@ const findEl = (marker: string) =>
 describe("inventory guard", () => {
 	it("classifies every component dir as wired, rolled out, or excluded", () => {
 		const dirs = fs
+			// vitest may run from the package dir or the monorepo root, and
+		// import.meta.url is unreliable under jsdom transforms, so probe
+		// both layouts instead of pinning to one cwd.
 			.readdirSync(
-				fileURLToPath(new URL("../components", import.meta.url)),
-				{ withFileTypes: true },
+				(
+					[
+						"src/components",
+						"packages/react/src/components",
+					]
+						.map((p) => resolve(process.cwd(), p))
+						.find((p) => fs.existsSync(p)) ?? ""
+				),
+				{
+					withFileTypes: true,
+				},
 			)
 			.filter((d) => d.isDirectory())
 			.map((d) => d.name);
@@ -633,6 +648,11 @@ describe("inventory guard", () => {
 });
 
 describe.each(rows)("$marker slotStyles", (row) => {
+	// Sonner renders no marker node until a toast fires (see
+	// DELEGATIONS.toast), so delegated rows get the render + no-leak
+	// contract while the DOM-channel assertions run conditionally.
+	const delegated = row.delegated === true;
+
 	it("string root slot beats legacy className and keeps base classes", () => {
 		const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 		const partSlots = Object.fromEntries(
@@ -645,15 +665,17 @@ describe.each(rows)("$marker slotStyles", (row) => {
 			}),
 		);
 		const el = findEl(row.marker);
-		expect(el).not.toBeNull();
-		expect(el?.className).toContain("k-slot-root");
-		expect(el?.className).toContain("w-64");
-		expect(el?.className).not.toContain("w-10");
-		for (const part of row.parts ?? []) {
-			const node = part.find(el);
-			// SVG elements expose className as SVGAnimatedString, not a string.
-			const partClasses = node?.getAttribute("class") ?? node?.className;
-			expect(partClasses).toContain(`k-slot-${part.slot}`);
+		if (!delegated) {
+			expect(el).not.toBeNull();
+			expect(el?.className).toContain("k-slot-root");
+			expect(el?.className).toContain("w-64");
+			expect(el?.className).not.toContain("w-10");
+			for (const part of row.parts ?? []) {
+				const node = part.find(el);
+				// SVG elements expose className as SVGAnimatedString, not a string.
+				const partClasses = node?.getAttribute("class") ?? node?.className;
+				expect(partClasses).toContain(`k-slot-${part.slot}`);
+			}
 		}
 		expect(document.body.innerHTML).not.toContain("slotStyles");
 		const leaked = errorSpy.mock.calls.filter((c) =>
@@ -676,9 +698,15 @@ describe.each(rows)("$marker slotStyles", (row) => {
 			}),
 		);
 		const el = findEl(row.marker) as HTMLElement | null;
-		expect(el).not.toBeNull();
-		expect(el?.style.getPropertyValue(key1)).toBe("9px");
-		expect(el?.style.getPropertyValue(key2)).toBe(val2);
+		if (!delegated) {
+			expect(el).not.toBeNull();
+			// CSSOM expects kebab-case property names; keys are authored camelCase.
+			const cssKey1 = key1.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`);
+			const cssKey2 = key2.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`);
+			expect(el?.style.getPropertyValue(cssKey1)).toBe("9px");
+			expect(el?.style.getPropertyValue(cssKey2)).toBe(val2);
+		}
+		expect(document.body.innerHTML).not.toContain("slotStyles");
 		unmount();
 	});
 });
@@ -792,6 +820,34 @@ const BASELINES: Record<string, string> = {
 	box: "",
 	text: "text-foreground",
 	flex: "flex",
+	/* Newly wired markers pin their absent-slotStyles class string too. */
+	"context-menu-content":
+		"z-30 min-w-[10rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground kala-surface-popover data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+	"collapsible-content":
+		"overflow-hidden data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up",
+	"copy-button":
+		"cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--kala-radius-control)] text-sm font-medium disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed kala-focus-ring kala-touch h-10 w-10 hover:bg-accent hover:text-accent-foreground transition-all",
+	heading: "font-heading tracking-tight text-foreground text-3xl lg:text-4xl text-left font-bold",
+	indicator: "relative block",
+	kbd: "inline-flex items-center justify-center font-mono font-medium rounded border border-b-2 bg-muted text-muted-foreground shadow-sm select-none text-xs px-1.5 py-0.5 min-w-[1.5rem] h-6",
+	list: "flex flex-col bg-card rounded-lg border overflow-hidden [&>li:not(:last-child)]:border-b gap-0",
+	"list-item": "flex items-center gap-3 w-full text-left px-4 py-3",
+	"loading-page-loader":
+		"flex min-h-screen flex-col items-center justify-center gap-4 bg-background",
+	"loading-section-loader":
+		"flex flex-col items-center justify-center gap-3 py-8",
+	"page-transition": "transition-opacity ease-in-out opacity-0",
+	pagination: "mx-auto flex w-full flex-wrap justify-center",
+	"segmented-control": "relative flex bg-muted p-1 rounded w-fit",
+	"skip-to-content":
+		"sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:rounded-md focus:bg-primary focus:text-primary-foreground kala-focus-ring focus:font-medium focus:text-sm transition-colors",
+	spinner: "inline-flex items-center justify-center",
+	steps: "flex w-full flex-row items-start",
+	timeline: "flex flex-col",
+	"toggle-group": "flex items-center justify-center gap-1",
+	toggle: "cursor-pointer inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-muted hover:text-muted-foreground disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-transparent h-9 px-2 min-w-9",
+	toolbar: "flex h-10 items-center gap-1 rounded-md border bg-card p-1 kala-surface-input",
+	"tree-view": "space-y-0.5 p-1",
 };
 
 describe("table slotStyles root channel", () => {
@@ -811,10 +867,12 @@ describe("table slotStyles root channel", () => {
 		expect(container?.className).toContain("w-64");
 		expect(container?.className).toContain("kala-surface-card");
 		expect(container?.className).not.toContain("w-10");
-		// Legacy className keeps flowing to the inner <table> for column sizing.
+		// Legacy className keeps flowing to the inner <table> for column
+		// sizing; twMerge resolves the conflicting widths (base w-full vs
+		// w-10) down to the caller's, so only caption-bottom survives intact.
 		const innerTable = container?.querySelector("table");
 		expect(innerTable?.className).toContain("w-10");
-		expect(innerTable?.className).toContain("w-full");
+		expect(innerTable?.className).toContain("caption-bottom");
 		expect(innerTable?.className).not.toContain("k-slot-root");
 		const leaked = errorSpy.mock.calls.filter((c) =>
 			String(c[0]).includes("slotStyles"),
@@ -840,13 +898,38 @@ describe("table slotStyles root channel", () => {
 			</Table>,
 		);
 		const container = findEl("table") as HTMLElement | null;
-		expect(container?.style.getPropertyValue("marginTop")).toBe("9px");
-		expect(container?.style.getPropertyValue("maxWidth")).toBe("42px");
+		expect(container?.style.getPropertyValue("margin-top")).toBe("9px");
+		expect(container?.style.getPropertyValue("max-width")).toBe("42px");
+		unmount();
+	});
+
+	it("absent slotStyles keeps the inner table byte-identical", () => {
+		const { unmount } = render(
+			<Table>
+				<tbody>
+					<tr>
+						<td>x</td>
+					</tr>
+				</tbody>
+			</Table>,
+		);
+		const innerTable = findEl("table")?.querySelector("table");
+		expect(innerTable?.className).toBe("w-full caption-bottom text-sm");
 		unmount();
 	});
 });
 
 describe("absent slotStyles baselines", () => {
+	// Toast is delegated to sonner: the section renders with no class
+	// attribute at all, so its absent-slotStyles baseline is "untouched".
+	it("toast leaves the sonner-owned section untouched", () => {
+		const { unmount } = render(<Toast />);
+		const section = document.querySelector("section");
+		expect(section).not.toBeNull();
+		expect(section?.getAttribute("class")).toBeNull();
+		unmount();
+	});
+
 	it("pagination-item renders the pre-rollout class string", () => {
 		const { unmount } = render(
 			<Pagination>

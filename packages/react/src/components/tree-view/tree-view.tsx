@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 export interface TreeItem {
 	id: string;
@@ -25,6 +26,7 @@ export interface TreeViewProps
 	onSelect?: (id: string) => void;
 	/** Multi-select mode */
 	multiSelect?: boolean;
+	slotStyles?: SlotStyles;
 }
 
 interface TreeViewContextValue {
@@ -178,6 +180,8 @@ function TreeView({
 	onSelect,
 	multiSelect = false,
 	className,
+	style,
+	slotStyles,
 	ref,
 	...props
 }: TreeViewProps) {
@@ -359,15 +363,14 @@ function TreeView({
 	);
 
 	return (
-		<TreeViewContext.Provider
-			data-kala-component="tree-view"
-			value={contextValue}
-		>
+		<TreeViewContext.Provider value={contextValue}>
 			<ul
 				role="tree"
+				data-kala-component="tree-view"
 				data-slot="tree-view"
 				aria-multiselectable={multiSelect}
-				className={cn("space-y-0.5 p-1", className)}
+				className={applySlot(cn("space-y-0.5 p-1", className), slotStyles?.root).className}
+				style={mergeStyle(style, applySlot("", slotStyles?.root).style)}
 				{...props}
 			>
 				{data.map((item) => (

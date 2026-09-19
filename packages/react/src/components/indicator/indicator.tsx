@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, type SlotStyles } from "../../lib/slot-styles";
 import { Box } from "../box";
 
 const indicatorVariants = cva(
@@ -72,6 +73,7 @@ export interface IndicatorProps
 	label?: React.ReactNode;
 	/** Target element */
 	children?: React.ReactNode;
+	slotStyles?: SlotStyles;
 }
 
 function Indicator({
@@ -88,6 +90,7 @@ function Indicator({
 	label,
 	children,
 	style,
+	slotStyles,
 	...props
 }: IndicatorProps) {
 	const getPositionStyles = () => {
@@ -129,11 +132,17 @@ function Indicator({
 		return styles;
 	};
 
+	const root = applySlot(
+		cn("relative", inline ? "inline-block" : "block"),
+		slotStyles?.root,
+	);
+
 	return (
 		<Box
 			data-kala-component="indicator"
 			ref={ref}
-			className={cn("relative", inline ? "inline-block" : "block")}
+			className={root.className}
+			style={root.style}
 		>
 			{!disabled && (
 				<div

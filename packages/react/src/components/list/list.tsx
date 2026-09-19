@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../../lib/utils";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Badge } from "../badge";
 import type { ListSkeletonConfig } from "../skeleton/skeleton.types";
 import { ListSkeleton } from "./list-skeleton";
@@ -25,55 +26,67 @@ export interface ListProps extends React.HTMLAttributes<HTMLUListElement> {
 }
 
 function List({
-	className,
-	divided = true,
-	dense = false,
-	isLoading = false,
-	skeletonConfig,
-	skeleton,
-	children,
-	...props
-}: ListProps) {
-	if (isLoading) {
-		if (skeleton) {
-			return (
-				<ul
-					data-kala-component="list"
-					className={cn(
-						"flex flex-col bg-card rounded-lg border overflow-hidden",
-						className,
-					)}
-					{...props}
-				>
-					{skeleton}
-				</ul>
-			);
-		}
+className,
+style,
+slotStyles,
+divided = true,
+dense = false,
+isLoading = false,
+skeletonConfig,
+skeleton,
+children,
+...props
+}: ListProps & { slotStyles?: SlotStyles }) {
+if (isLoading) {
+	if (skeleton) {
+		const root = applySlot(
+			cn("flex flex-col bg-card rounded-lg border overflow-hidden", className),
+			slotStyles?.root,
+		);
 		return (
-			<ListSkeleton
+			<ul
 				data-kala-component="list"
-				className={className}
-				showDividers={divided}
-				dense={dense}
-				{...skeletonConfig}
-			/>
+				className={root.className}
+				style={mergeStyle(style, root.style)}
+				{...props}
+			>
+				{skeleton}
+			</ul>
 		);
 	}
-
+	// The skeleton arm renders ListSkeleton's own <ul>, so the slot rides
+	// along as className; ListSkeleton takes no style prop.
+	const loading = applySlot(className, slotStyles?.root);
 	return (
-		<ul
+		<ListSkeleton
 			data-kala-component="list"
-			className={cn(
-				"flex flex-col bg-card rounded-lg border overflow-hidden",
-				divided && "[&>li:not(:last-child)]:border-b",
-				dense ? "gap-0" : "gap-0",
-				className,
-			)}
-			{...props}
-		>
-			{children}
-		</ul>
+			className={loading.className}
+			showDividers={divided}
+			dense={dense}
+			{...skeletonConfig}
+		/>
 	);
+}
+
+const root = applySlot(
+	cn(
+		"flex flex-col bg-card rounded-lg border overflow-hidden",
+		divided && "[&>li:not(:last-child)]:border-b",
+		dense ? "gap-0" : "gap-0",
+		className,
+	),
+	slotStyles?.root,
+);
+return (
+	<ul
+		data-kala-component="list"
+		className={root.className}
+		style={mergeStyle(style, root.style)}
+		{...props}
+	>
+		{children}
+	</ul>
+);
 }
 
 // ===========================
@@ -81,6 +94,7 @@ function List({
 // ===========================
 
 export interface ListItemProps extends React.HTMLAttributes<HTMLLIElement> {
+	slotStyles?: SlotStyles;
 	/**
 	 * Make the item interactive (clickable)
 	 * @default false
@@ -109,6 +123,8 @@ export interface ListItemProps extends React.HTMLAttributes<HTMLLIElement> {
 
 function ListItem({
 	className,
+	style,
+	slotStyles,
 	interactive = false,
 	href,
 	active = false,
@@ -132,12 +148,20 @@ function ListItem({
 	const stateProps = {
 		"aria-current": active ? ("page" as const) : undefined,
 	};
+	// The marker <li> is the slot root; interactive rows forward their legacy
+	// style to the control filling the row.
+	const root = applySlot(undefined, slotStyles?.root);
 
 	if (href) {
 		return (
-			<li data-kala-component="list-item">
+			<li
+				data-kala-component="list-item"
+				className={root.className}
+				style={root.style}
+			>
 				<a
 					href={href}
+					style={style}
 					aria-disabled={disabled || undefined}
 					onClick={
 						onClick as React.MouseEventHandler<HTMLAnchorElement> | undefined
@@ -156,9 +180,14 @@ function ListItem({
 
 	if (interactive) {
 		return (
-			<li data-kala-component="list-item">
+			<li
+				data-kala-component="list-item"
+				className={root.className}
+				style={root.style}
+			>
 				<button
 					type="button"
+					style={style}
 					disabled={disabled}
 					onClick={
 						onClick as React.MouseEventHandler<HTMLButtonElement> | undefined
@@ -181,7 +210,8 @@ function ListItem({
 	return (
 		<li
 			data-kala-component="list-item"
-			className={rowClassName}
+			className={applySlot(rowClassName, slotStyles?.root).className}
+			style={mergeStyle(style, root.style)}
 			aria-disabled={disabled || undefined}
 			{...stateProps}
 			{...props}
