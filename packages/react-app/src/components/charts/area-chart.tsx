@@ -41,6 +41,7 @@ export function AreaChart({
 	dataLabels = false,
 	yAxisLabel,
 	referenceLines = [],
+	slotStyles,
 	isLoading,
 	emptyMessage,
 	options: customOptions,
@@ -204,6 +205,7 @@ export function AreaChart({
 		<Chart
 			data-kala-component="charts-area-chart"
 			className={cn("w-full", className)}
+			slotStyles={slotStyles}
 			options={chartOptions}
 			series={series}
 			type="area"

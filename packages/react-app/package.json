@@ -84,10 +84,6 @@
 			"types": "./dist/components/social-login-button/index.d.ts",
 			"default": "./dist/components/social-login-button/index.js"
 		},
-		"./social-login-buttons": {
-			"types": "./dist/components/social-login-buttons/index.d.ts",
-			"default": "./dist/components/social-login-buttons/index.js"
-		},
 		"./sparkline-chart": {
 			"types": "./dist/components/sparkline-chart/index.d.ts",
 			"default": "./dist/components/sparkline-chart/index.js"

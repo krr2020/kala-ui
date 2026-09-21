@@ -40,6 +40,7 @@ export function LineChart({
 	strokeWidth = 2,
 	markers = true,
 	yAxisLabel,
+	slotStyles,
 	isLoading,
 	emptyMessage,
 	options: customOptions,
@@ -189,6 +190,7 @@ export function LineChart({
 		<Chart
 			data-kala-component="charts-line-chart"
 			className={cn("w-full", className)}
+			slotStyles={slotStyles}
 			options={chartOptions}
 			series={series}
 			type="line"

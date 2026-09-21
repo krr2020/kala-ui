@@ -27,6 +27,7 @@ export function DonutChart({
 	donutSize = 65,
 	dataLabels = true,
 	legend = true,
+	slotStyles,
 	isLoading,
 	emptyMessage,
 	options: customOptions,
@@ -169,6 +170,7 @@ export function DonutChart({
 		<Chart
 			data-kala-component="charts-donut-chart"
 			className={cn("w-full", className)}
+			slotStyles={slotStyles}
 			options={chartOptions}
 			series={series}
 			type={donut ? "donut" : "pie"}

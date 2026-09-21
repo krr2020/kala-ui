@@ -5,7 +5,7 @@
 	"sideEffects": [
 		"**/*.css"
 	],
-	"description": "~90 accessible standard UI components built with Radix UI and Tailwind CSS \u2014 primitives, form controls, overlays and menus. App-level composites (AppShell, DataTable, charts) live in @kala-ui/react-app.",
+	"description": "~90 accessible standard UI components built with Radix UI and Tailwind CSS — primitives, form controls, overlays and menus. App-level composites (AppShell, DataTable, charts) live in @kala-ui/react-app.",
 	"keywords": [
 		"react",
 		"ui",
@@ -417,6 +417,10 @@
 		"./lib/utils": {
 			"types": "./dist/lib/utils.d.ts",
 			"default": "./dist/lib/utils.js"
+		},
+		"./lib/slot-styles": {
+			"types": "./dist/lib/slot-styles.d.ts",
+			"default": "./dist/lib/slot-styles.js"
 		}
 	},
 	"scripts": {

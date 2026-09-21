@@ -25,6 +25,7 @@ export function RadialBarChart({
 	animations = true,
 	dataLabels = true,
 	hollowSize = "50%",
+	slotStyles,
 	isLoading,
 	emptyMessage,
 	options: customOptions,
@@ -140,6 +141,7 @@ export function RadialBarChart({
 		<Chart
 			data-kala-component="charts-radial-bar-chart"
 			className={cn("w-full", className)}
+			slotStyles={slotStyles}
 			options={chartOptions}
 			series={series}
 			type="radialBar"

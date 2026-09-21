@@ -40,6 +40,7 @@ export function BarChart({
 	stacked = false,
 	dataLabels = false,
 	barWidth = 70,
+	slotStyles,
 	isLoading,
 	emptyMessage,
 	options: customOptions,
@@ -184,6 +185,7 @@ export function BarChart({
 		<Chart
 			data-kala-component="charts-bar-chart"
 			className={cn("w-full", className)}
+			slotStyles={slotStyles}
 			options={chartOptions}
 			series={series}
 			type="bar"
