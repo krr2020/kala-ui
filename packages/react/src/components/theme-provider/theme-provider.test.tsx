@@ -1,6 +1,8 @@
 import { act, render, renderHook, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { THEMES, ThemeProvider, useTheme } from "./theme-provider";
+import { createThemeScript } from "./index";
+import type { ThemeRegistration } from "./index";
 
 const ALL_THEME_CLASSES = [
 	"dark",
@@ -267,5 +269,281 @@ describe("ThemeProvider", () => {
 		expect(
 			document.documentElement.classList.contains("high-contrast-light"),
 		).toBe(true);
+	});
+});
+
+describe("theme registration", () => {
+	beforeEach(() => {
+		window.localStorage.clear();
+		document.documentElement.className = "";
+		document.documentElement.style.colorScheme = "";
+		document.documentElement.removeAttribute("data-theme");
+	});
+
+	afterEach(() => {
+		vi.unstubAllGlobals();
+		document.documentElement.className = "";
+		document.documentElement.style.colorScheme = "";
+		document.documentElement.removeAttribute("data-theme");
+	});
+
+	const corp: ThemeRegistration = {
+		name: "corp",
+		className: "corp-theme",
+		colorScheme: "dark",
+	};
+
+	it("applies a registered class theme with its color-scheme", () => {
+		render(
+			<ThemeProvider defaultTheme="corp" themes={[corp]}>
+				<Probe />
+			</ThemeProvider>,
+		);
+
+		expect(screen.getByTestId("resolved").textContent).toBe("corp");
+		expect(document.documentElement.classList.contains("corp-theme")).toBe(
+			true,
+		);
+		expect(document.documentElement.style.colorScheme).toBe("dark");
+	});
+
+	it("sets registered token maps inline while active and clears them on switch", () => {
+		function Switcher() {
+			const { setTheme } = useTheme();
+			return (
+				<button type="button" onClick={() => setTheme("light")}>
+					switch
+				</button>
+			);
+		}
+		render(
+			<ThemeProvider
+				defaultTheme="brand"
+				themes={[
+					{
+						name: "brand",
+						tokens: {
+							"--primary": "#7c3aed",
+							"--kala-radius-control": "9999px",
+						},
+					},
+				]}
+			>
+				<Switcher />
+			</ThemeProvider>,
+		);
+		expect(document.documentElement.style.getPropertyValue("--primary")).toBe(
+			"#7c3aed",
+		);
+		expect(
+			document.documentElement.style.getPropertyValue("--kala-radius-control"),
+		).toBe("9999px");
+
+		act(() => {
+			screen.getByRole("button", { name: "switch" }).click();
+		});
+
+		expect(document.documentElement.style.getPropertyValue("--primary")).toBe(
+			"",
+		);
+		expect(
+			document.documentElement.style.getPropertyValue("--kala-radius-control"),
+		).toBe("");
+	});
+
+	it("lets a registered className override a built-in name", () => {
+		render(
+			<ThemeProvider
+				defaultTheme="dark"
+				themes={[{ name: "dark", className: "midnight" }]}
+			>
+				<Probe />
+			</ThemeProvider>,
+		);
+
+		expect(document.documentElement.classList.contains("midnight")).toBe(true);
+		expect(document.documentElement.classList.contains("dark")).toBe(false);
+	});
+
+	it("applies a registered token-only override of a built-in name without the built-in class", () => {
+		render(
+			<ThemeProvider
+				defaultTheme="dark"
+				themes={[{ name: "dark", tokens: { "--primary": "red" } }]}
+			>
+				<Probe />
+			</ThemeProvider>,
+		);
+
+		expect(document.documentElement.style.getPropertyValue("--primary")).toBe(
+			"red",
+		);
+		expect(document.documentElement.classList.contains("dark")).toBe(false);
+	});
+
+	it("setTheme accepts registered names; unknown names fall back to defaultTheme", () => {
+		function Switcher({ target }: { target: string }) {
+			const { setTheme } = useTheme();
+			return (
+				<button type="button" onClick={() => setTheme(target as never)}>
+					switch
+				</button>
+			);
+		}
+		const { rerender } = render(
+			<ThemeProvider defaultTheme="light" themes={[corp]}>
+				<Probe />
+				<Switcher target="corp" />
+			</ThemeProvider>,
+		);
+
+		act(() => {
+			screen.getByRole("button", { name: "switch" }).click();
+		});
+		expect(document.documentElement.classList.contains("corp-theme")).toBe(
+			true,
+		);
+		expect(window.localStorage.getItem("kala-ui-theme")).toBe("corp");
+
+		rerender(
+			<ThemeProvider defaultTheme="light" themes={[corp]}>
+				<Probe />
+				<Switcher target="nope" />
+			</ThemeProvider>,
+		);
+		act(() => {
+			screen.getByRole("button", { name: "switch" }).click();
+		});
+		expect(screen.getByTestId("resolved").textContent).toBe("light");
+		expect(document.documentElement.classList.contains("corp-theme")).toBe(
+			false,
+		);
+	});
+
+	it("exposes built-ins plus registered names in registration order", () => {
+		const { result } = renderHook(() => useTheme(), {
+			wrapper: ({ children }) => (
+				<ThemeProvider themes={[corp, { name: "brand" }]}>
+					{children}
+				</ThemeProvider>
+			),
+		});
+
+		expect([...result.current.themes]).toEqual([...THEMES, "corp", "brand"]);
+	});
+
+	it("does not crash when localStorage is unavailable", () => {
+		vi.stubGlobal("localStorage", {
+			getItem: () => {
+				throw new Error("blocked");
+			},
+			setItem: () => {},
+		});
+		render(
+			<ThemeProvider defaultTheme="dark">
+				<Probe />
+			</ThemeProvider>,
+		);
+
+		expect(screen.getByTestId("resolved").textContent).toBe("dark");
+	});
+});
+
+describe("attribute mode", () => {
+	beforeEach(() => {
+		window.localStorage.clear();
+		document.documentElement.className = "";
+		document.documentElement.style.colorScheme = "";
+		document.documentElement.removeAttribute("data-theme");
+	});
+
+	afterEach(() => {
+		document.documentElement.className = "";
+		document.documentElement.removeAttribute("data-theme");
+	});
+
+	it("writes the resolved theme to data-theme instead of a class", () => {
+		render(
+			<ThemeProvider defaultTheme="dark" attribute="data-theme">
+				<Probe />
+			</ThemeProvider>,
+		);
+
+		expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+		expect(document.documentElement.classList.contains("dark")).toBe(false);
+		expect(document.documentElement.style.colorScheme).toBe("dark");
+	});
+
+	it("writes registered theme names to data-theme and applies their tokens", () => {
+		render(
+			<ThemeProvider
+				defaultTheme="corp"
+				attribute="data-theme"
+				themes={[{ name: "corp", tokens: { "--primary": "red" } }]}
+			>
+				<Probe />
+			</ThemeProvider>,
+		);
+
+		expect(document.documentElement.getAttribute("data-theme")).toBe("corp");
+		expect(document.documentElement.style.getPropertyValue("--primary")).toBe(
+			"red",
+		);
+	});
+});
+
+describe("createThemeScript", () => {
+	beforeEach(() => {
+		window.localStorage.clear();
+		document.documentElement.className = "";
+		document.documentElement.style.colorScheme = "";
+		document.documentElement.removeAttribute("data-theme");
+	});
+
+	afterEach(() => {
+		vi.unstubAllGlobals();
+		document.documentElement.className = "";
+		document.documentElement.style.colorScheme = "";
+		document.documentElement.removeAttribute("data-theme");
+	});
+
+	it("applies a stored built-in theme synchronously", () => {
+		window.localStorage.setItem("kala-ui-theme", "dark");
+		new Function(createThemeScript())();
+
+		expect(document.documentElement.classList.contains("dark")).toBe(true);
+		expect(document.documentElement.style.colorScheme).toBe("dark");
+	});
+
+	it("resolves system through matchMedia when nothing is stored", () => {
+		stubMatchMedia(true);
+		new Function(createThemeScript())();
+
+		expect(document.documentElement.classList.contains("dark")).toBe(true);
+	});
+
+	it("falls back to defaultTheme for an invalid stored value", () => {
+		window.localStorage.setItem("kala-ui-theme", "neutral");
+		new Function(createThemeScript({ defaultTheme: "high-contrast-dark" }))();
+
+		expect(
+			document.documentElement.classList.contains("high-contrast-dark"),
+		).toBe(true);
+	});
+
+	it("falls back to defaultTheme when matchMedia is unavailable", () => {
+		new Function(createThemeScript({ defaultTheme: "high-contrast-dark" }))();
+
+		expect(
+			document.documentElement.classList.contains("high-contrast-dark"),
+		).toBe(true);
+	});
+
+	it("supports attribute mode", () => {
+		window.localStorage.setItem("kala-ui-theme", "dark");
+		new Function(createThemeScript({ attribute: "data-theme" }))();
+
+		expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+		expect(document.documentElement.classList.contains("dark")).toBe(false);
 	});
 });

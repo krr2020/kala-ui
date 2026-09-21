@@ -48,14 +48,16 @@ function ThemeToggle() {
 }
 ```
 
-`ThemeProvider` applies the active theme as a class on `<html>`, persists the
+`ThemeProvider` applies the active theme to `<html>` (as a class, or as a
+`data-theme` attribute via `attribute="data-theme"`), persists the
 choice to `localStorage` (key `kala-ui-theme`, configurable via `storageKey`),
 resolves `"system"` through `prefers-color-scheme` (live), and syncs the CSS
-`color-scheme` property (disable with `enableColorScheme={false}`). Themes:
-`light` (default) · `neutral` · `accent` · `dark` · `high-contrast-light` ·
-`high-contrast-dark`. You can also toggle the classes yourself — everything
-(including charts) observes `<html>` class changes, with or without the
-provider.
+`color-scheme` property (disable with `enableColorScheme={false}`). Built-in
+themes: `light` (default) · `dark` · `high-contrast-light` ·
+`high-contrast-dark`. Register additional themes (or override built-ins) with
+the `themes` prop — see [Custom themes](#custom-themes). You can also toggle
+the classes yourself — everything (including charts) observes `<html>` class
+changes, with or without the provider.
 
 ## Customizing the palette
 
@@ -114,13 +116,13 @@ Notes:
 
 ## Built-in themes
 
-`:root` defaults to the light theme. Other themes are classes on `<html>`
-(or any wrapper): `neutral`, `accent`, `dark`, `dark accent`,
-`high-contrast-light`, `high-contrast-dark`.
+`:root` defaults to the light theme. The other built-in themes are classes on
+`<html>` (or any wrapper): `dark`, `high-contrast-light`, `high-contrast-dark`.
 
 ## Custom themes
 
-Add your own class and redefine whatever the theme changes:
+Define the theme's look — a class in your CSS redefining whatever the theme
+changes:
 
 ```css
 .my-brand {
@@ -129,9 +131,50 @@ Add your own class and redefine whatever the theme changes:
   --kala-radius-control: 9999px; /* pill controls */
 }
 ```
+
+then register it with `ThemeProvider` so `setTheme`/`defaultTheme` accept it
+and `useTheme().themes` lists it. A registration reusing a built-in name
+overrides that built-in:
+
 ```tsx
-document.documentElement.classList.add("my-brand");
+<ThemeProvider
+  defaultTheme="brand"
+  themes={[
+    { name: "brand", className: "my-brand", colorScheme: "light" },
+    { name: "midnight", tokens: { "--primary": "oklch(0.3 0.05 260)" } },
+  ]}
+>
+  <App />
+</ThemeProvider>
 ```
+
+`className` themes point at your CSS class; `tokens` themes set their custom
+properties inline on `<html>` while active (and clear them on switch). Prefer
+`className` — inline tokens cannot drive Tailwind's `@theme` derivation.
+
+You can still toggle classes yourself (`document.documentElement.classList.add("my-brand")`)
+for cases the provider does not own.
+
+### SSR without a theme flash
+
+Server-rendered apps apply the theme after hydration, which flashes the wrong
+theme on first paint. Inline `createThemeScript()` in `<head>` — it reads the
+same storage key and applies the theme synchronously, before paint:
+
+```tsx
+import { createThemeScript } from "@kala-ui/react";
+
+// in your document shell (Next.js app router example):
+<head>
+  <script
+    dangerouslySetInnerHTML={{ __html: createThemeScript() }}
+  />
+</head>
+```
+
+Pass the same `storageKey`/`defaultTheme`/`attribute` values as your
+`ThemeProvider`; the script resolves `"system"` through `matchMedia` and
+ignores invalid stored values.
 
 ### Signature shapes & motion without forking components
 

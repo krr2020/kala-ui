@@ -6,7 +6,12 @@ export type {
 export {
 	THEMES,
 	ThemeProvider,
+	createThemeScript,
 	useOptionalTheme,
 	useTheme,
 } from "./theme-provider";
-export type { ThemeProviderProps } from "./theme-provider.types";
+export type {
+	CreateThemeScriptOptions,
+	ThemeProviderProps,
+	ThemeRegistration,
+} from "./theme-provider.types";
