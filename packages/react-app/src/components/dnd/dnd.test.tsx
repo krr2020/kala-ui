@@ -158,7 +158,7 @@ describe("DragDropContext", () => {
 		const mockDndContext = vi.mocked(DndContext);
 		mockDndContext.mockClear();
 
-		const customSensors = [{ id: "custom-sensor" }];
+		const customSensors = [{ id: "custom-sensor" }] as any;
 		render(
 			<DragDropContext sensors={customSensors} onDragEnd={vi.fn()}>
 				<div>Test</div>
@@ -436,7 +436,7 @@ describe("SortableContext", () => {
 		mockKit.mockClear();
 
 		render(
-			<SortableContext items={["a", { id: "b" }, 3]}>
+			<SortableContext items={["a", { id: "b" }, 3] as any}>
 				<div>Test</div>
 			</SortableContext>,
 		);

@@ -400,10 +400,10 @@ function SortableItem({
 
 	return (
 		<SortableHandleContext.Provider
-			data-kala-component="dnd-sortable-item"
 			value={{ attributes, listeners, setActivatorNodeRef }}
 		>
 			<div
+				data-kala-component="dnd-sortable-item"
 				ref={useMergedRef(ref, setNodeRef)}
 				style={style}
 				className={itemRoot.className}
