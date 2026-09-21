@@ -54,26 +54,39 @@ export function SessionCardSkeleton({
 			{...(markerProps as Record<string, string>)}
 		>
 			<CardHeader className={sessionCardStyles.header}>
-				<div className="flex items-start justify-between gap-4">
-					<div className="flex items-start gap-3 flex-1">
-						<SkeletonCircle size="1.5rem" className="rounded-md" />
-						<div className="flex-1 min-w-0">
-							<Skeleton className="h-4 w-32 mb-1" />
-							<Skeleton className="h-3 w-48" />
+				<div className={sessionCardSkeletonStyles.headerRow}>
+					<div className={sessionCardSkeletonStyles.headerMain}>
+						<SkeletonCircle
+							size="1.5rem"
+							className={sessionCardSkeletonStyles.deviceIcon}
+						/>
+						<div className={sessionCardSkeletonStyles.titleBlock}>
+							<Skeleton
+								className={sessionCardSkeletonStyles.titleSkeleton}
+							/>
+							<Skeleton
+								className={sessionCardSkeletonStyles.subtitleSkeleton}
+							/>
 						</div>
 					</div>
 					{showBadge ? (
-						<Skeleton className="h-5 w-24 rounded-md" />
+						<Skeleton
+							className={sessionCardSkeletonStyles.badgeSkeleton}
+						/>
 					) : (
-						showRevokeButton && <Skeleton className="h-8 w-16 rounded-md" />
+						showRevokeButton && (
+							<Skeleton
+								className={sessionCardSkeletonStyles.revokeSkeleton}
+							/>
+						)
 					)}
 				</div>
 			</CardHeader>
-			<CardContent className="pt-0">
-				<div className="space-y-1.5">
-					<Skeleton className="h-4 w-48" />
-					<Skeleton className="h-4 w-40" />
-					<Skeleton className="h-4 w-56" />
+			<CardContent className={sessionCardStyles.content}>
+				<div className={sessionCardSkeletonStyles.detailList}>
+					<Skeleton className={sessionCardSkeletonStyles.detailRowMedium} />
+					<Skeleton className={sessionCardSkeletonStyles.detailRowNarrow} />
+					<Skeleton className={sessionCardSkeletonStyles.detailRowWide} />
 				</div>
 			</CardContent>
 		</Card>

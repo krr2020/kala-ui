@@ -20,4 +20,16 @@ export const sessionCardStyles = {
 
 export const sessionCardSkeletonStyles = {
 	root: "relative",
+	headerRow: "flex items-start justify-between gap-4",
+	headerMain: "flex items-start gap-3 flex-1",
+	deviceIcon: "rounded-md",
+	titleBlock: "flex-1 min-w-0",
+	titleSkeleton: "h-4 w-32 mb-1",
+	subtitleSkeleton: "h-3 w-48",
+	badgeSkeleton: "h-5 w-24 rounded-md",
+	revokeSkeleton: "h-8 w-16 rounded-md",
+	detailList: "space-y-1.5",
+	detailRowMedium: "h-4 w-48",
+	detailRowNarrow: "h-4 w-40",
+	detailRowWide: "h-4 w-56",
 };

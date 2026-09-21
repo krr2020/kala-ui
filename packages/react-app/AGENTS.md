@@ -26,7 +26,7 @@ Every composite family is being ported onto the core customization contract:
 - `src/config/<family>.ts` holds the per-part base classes (re-exported from `src/config/index.ts`); component `.tsx` files carry JSX/logic only.
 - Every component accepts `slotStyles={{ root, <part> }}`, resolved via `useSlotStyles("<family>", slotStyles)` from `@kala-ui/react/kala-provider` — KalaProvider context defaults flow across the package boundary.
 - Roots carry `data-kala-component="<kebab-name>"`; families ship `<family>.types.ts` re-exported from their barrel.
-- Guards live in `src/__tests__/contract.integration.test.ts` (inline-Tailwind scan, 400-line cap, config+types presence) scoped to `PORTED`; `PORT_QUEUE` is shrink-only.
+- Guards live in `src/__tests__/contract.integration.test.ts` and are fail-closed: the inline-Tailwind scan (any string literal, tokens anchored end-to-end) and 400-line cap cover every components/ family NOT in `PORT_QUEUE`, plus src/config; `PORT_QUEUE` is shrink-only and a family-set test pins components/ to exactly PORTED ∪ PORT_QUEUE.
 
 **Ported:** social-login-button (incl. merged SocialLoginButtons), footer, metric-card, session-card, user-menu-dropdown, app-shell, charts (Chart core + line/area/bar/donut/radial wrappers), dnd (SortableItem).
 
