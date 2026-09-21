@@ -14,6 +14,10 @@
   "agent": {
     "defaultMode": "build",
     "approvalPosture": "full_access",
+    "fastPath": {
+      "enabled": true,
+      "maxFiles": 2
+    },
     "guardian": {
       "enabled": true,
       "timeoutMs": 30000,
@@ -92,14 +96,10 @@
     "approvalTimeoutMinutes": 120,
     "reviewResumeTimeoutMinutes": 15,
     "autoAdoptGates": [],
+    "autoAccept": "recommended",
     "workingHours": null,
     "prioritizeBugfixes": true,
     "laneCap": 1,
-    "budget": {
-      "warnTokens": 1500000,
-      "hardStopTokens": 300000000,
-      "scope": "run"
-    },
     "planReviewGate": false,
     "outageRetryLimit": 2,
     "outageRetryBackoffSeconds": 30,
