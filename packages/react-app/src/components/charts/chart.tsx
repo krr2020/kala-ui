@@ -3,7 +3,10 @@
  * React component for ApexCharts with built-in loading and empty states
  */
 
+import { useSlotStyles } from "@kala-ui/react/kala-provider";
+import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
+import { chartStyles } from "../../config/charts";
 import { lazy, Suspense } from "react";
 import type { Props } from "react-apexcharts";
 import type { ChartSkeletonConfig } from "./chart.types";
@@ -22,6 +25,8 @@ export interface ChartProps extends Props {
 	emptyMessage?: string;
 	skeletonConfig?: ChartSkeletonConfig;
 	skeleton?: React.ReactNode;
+	/** Per-part overrides: root, empty, emptyIcon, emptyText. */
+	slotStyles?: import("@kala-ui/react/lib/slot-styles").SlotStyles;
 }
 
 /**
@@ -43,8 +48,11 @@ export function Chart({
 	emptyMessage = "No data available",
 	skeletonConfig,
 	skeleton,
+	slotStyles: slotStylesRaw,
 	...props
 }: ChartProps) {
+	const slotStyles = useSlotStyles("charts", slotStylesRaw);
+
 	// Render skeleton if loading
 	if (isLoading) {
 		if (skeleton) {
@@ -59,6 +67,10 @@ export function Chart({
 		);
 	}
 
+	const emptyPart = applySlot(chartStyles.empty, slotStyles?.empty);
+	const emptyIcon = applySlot(chartStyles.emptyIcon, slotStyles?.emptyIcon);
+	const emptyText = applySlot(chartStyles.emptyText, slotStyles?.emptyText);
+
 	// Render empty state when no data
 	if (isEmpty) {
 		// Height may arrive as a number (px) or a CSS length string ("20rem",
@@ -71,14 +83,11 @@ export function Chart({
 		return (
 			<div
 				data-kala-component="charts-chart"
-				className={cn(
-					"w-full flex flex-col items-center justify-center text-center rounded-lg border bg-card text-muted-foreground",
-					className,
-				)}
-				style={{ height }}
+				className={cn(emptyPart.className, className)}
+				style={{ height, ...emptyPart.style }}
 			>
 				<svg
-					className="mb-3 h-10 w-10 opacity-40"
+					className={emptyIcon.className}
 					fill="none"
 					role="img"
 					aria-label="Chart empty state"
@@ -93,13 +102,19 @@ export function Chart({
 						d="M3 13h2v8H3zM9 9h2v12H9zM15 5h2v16h-2zM21 1h2v20h-2z"
 					/>
 				</svg>
-				<p className="text-sm">{emptyMessage}</p>
+				<p className={emptyText.className}>{emptyMessage}</p>
 			</div>
 		);
 	}
 
+	const root = applySlot(cn(chartStyles.root, className), slotStyles?.root);
+
 	return (
-		<div data-kala-component="charts-chart" className={cn("w-full", className)}>
+		<div
+			data-kala-component="charts-chart"
+			className={root.className}
+			style={root.style}
+		>
 			<Suspense
 				fallback={
 					skeleton ?? (

@@ -1,37 +1,26 @@
 import { Box } from "@kala-ui/react/box";
+import { useSlotStyles } from "@kala-ui/react/kala-provider";
+import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
+import { appShellStyles } from "../../config/app-shell";
 import * as React from "react";
+import type {
+	AppShellAsideProps,
+	AppShellFooterProps,
+	AppShellHeaderProps,
+	AppShellMainProps,
+	AppShellNavbarProps,
+	AppShellProps,
+} from "./app-shell.types";
 
-// Context to share configuration if needed, or just rely on CSS variables/classes
-// For simplicity and flexibility, we'll use a CSS-variable based approach for layout sizing
-
-export interface AppShellProps extends React.ComponentProps<"div"> {
-	/** Header configuration */
-	header?: { height: number | string };
-	/**
-	 * Navbar configuration. The navbar sits off-canvas below `breakpoint`
-	 * and reserves Main's left padding from it upward.
-	 */
-	navbar?: {
-		width: number | string;
-		breakpoint?: "sm" | "md" | "lg" | "xl";
-	};
-	/** Aside configuration. Mirrors the navbar on the right edge. */
-	aside?: {
-		width: number | string;
-		breakpoint?: "sm" | "md" | "lg" | "xl";
-	};
-	/** Footer configuration */
-	footer?: { height: number | string };
-	/** Padding for the main content */
-	padding?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
-}
-
-const AppShellContext = React.createContext<AppShellProps>({});
+type ShellConfig = AppShellProps;
+const AppShellContext = React.createContext<ShellConfig>({});
 
 function AppShellBase({
 	children,
 	className,
+	style,
+	slotStyles: slotStylesRaw,
 	header,
 	navbar,
 	aside,
@@ -40,15 +29,7 @@ function AppShellBase({
 	ref,
 	...props
 }: AppShellProps) {
-	// Convert padding to Tailwind class or CSS value
-	const _paddingClasses = {
-		none: "p-0",
-		xs: "p-2",
-		sm: "p-3",
-		md: "p-4",
-		lg: "p-6",
-		xl: "p-8",
-	};
+	const slotStyles = useSlotStyles("app-shell", slotStylesRaw);
 
 	const cssVars = {
 		"--app-shell-header-height":
@@ -69,23 +50,200 @@ function AppShellBase({
 				: (aside?.width ?? "0px"),
 	} as React.CSSProperties;
 
+	const root = applySlot(cn(appShellStyles.base, className), slotStyles?.root);
+
 	return (
 		<AppShellContext.Provider
 			data-kala-component="app-shell-base"
 			value={{ header, navbar, aside, footer, padding }}
 		>
 			<Box
+				data-kala-component="app-shell"
 				ref={ref}
-				className={cn(
-					"flex min-h-screen flex-col bg-background text-foreground",
-					className,
-				)}
-				style={cssVars}
+				className={root.className}
+				style={{ ...cssVars, ...root.style }}
 				{...props}
 			>
 				{children}
 			</Box>
 		</AppShellContext.Provider>
+	);
+}
+
+// --- Subcomponents ---
+
+function AppShellHeader({
+	ref,
+	className,
+	withBorder = true,
+	slotStyles: slotStylesRaw,
+	...props
+}: AppShellHeaderProps) {
+	const { header } = React.useContext(AppShellContext);
+	const slotStyles = useSlotStyles("app-shell", slotStylesRaw);
+	if (!header) return null;
+
+	const part = applySlot(
+		cn(appShellStyles.header, withBorder && appShellStyles.headerBorder, className),
+		slotStyles?.header,
+	);
+
+	return (
+		<Box
+			data-kala-component="app-shell-header"
+			as="header"
+			ref={ref}
+			className={part.className}
+			style={{ height: "var(--app-shell-header-height)", ...part.style }}
+			{...props}
+		/>
+	);
+}
+
+function AppShellNavbar({
+	ref,
+	className,
+	withBorder = true,
+	slotStyles: slotStylesRaw,
+	...props
+}: AppShellNavbarProps) {
+	const { navbar } = React.useContext(AppShellContext);
+	const slotStyles = useSlotStyles("app-shell", slotStylesRaw);
+	if (!navbar) return null;
+
+	const variant = `${navbar.breakpoint ?? "md"}:`;
+	const part = applySlot(
+		cn(
+			appShellStyles.navbar,
+			withBorder && appShellStyles.navbarBorder,
+			"-translate-x-full",
+			`${variant}translate-x-0`,
+			className,
+		),
+		slotStyles?.navbar,
+	);
+
+	return (
+		<Box
+			data-kala-component="app-shell-navbar"
+			as="nav"
+			ref={ref}
+			className={part.className}
+			style={{
+				width: "var(--app-shell-navbar-width)",
+				top: "var(--app-shell-header-height)",
+				height: "calc(100vh - var(--app-shell-header-height))",
+				...part.style,
+			}}
+			{...props}
+		/>
+	);
+}
+
+function AppShellAside({
+	ref,
+	className,
+	withBorder = true,
+	slotStyles: slotStylesRaw,
+	...props
+}: AppShellAsideProps) {
+	const { aside } = React.useContext(AppShellContext);
+	const slotStyles = useSlotStyles("app-shell", slotStylesRaw);
+	if (!aside) return null;
+
+	const variant = `${aside.breakpoint ?? "md"}:`;
+	const part = applySlot(
+		cn(
+			appShellStyles.aside,
+			withBorder && appShellStyles.asideBorder,
+			"translate-x-full",
+			`${variant}translate-x-0`,
+			className,
+		),
+		slotStyles?.aside,
+	);
+
+	return (
+		<Box
+			data-kala-component="app-shell-aside"
+			as="aside"
+			ref={ref}
+			className={part.className}
+			style={{
+				width: "var(--app-shell-aside-width)",
+				top: "var(--app-shell-header-height)",
+				height: "calc(100vh - var(--app-shell-header-height))",
+				...part.style,
+			}}
+			{...props}
+		/>
+	);
+}
+
+function AppShellMain({
+	ref,
+	className,
+	slotStyles: slotStylesRaw,
+	...props
+}: AppShellMainProps) {
+	const { header, navbar, aside, footer, padding } =
+		React.useContext(AppShellContext);
+	const slotStyles = useSlotStyles("app-shell", slotStylesRaw);
+
+	const part = applySlot(
+		cn(
+			appShellStyles.main,
+			padding && appShellStyles.padding[padding],
+			header && "pt-[var(--app-shell-header-height)]",
+			footer && "pb-[var(--app-shell-footer-height)]",
+			// Side offsets only reserve space while the fixed panels are
+			// actually docked (breakpoint and up).
+			navbar &&
+				`${navbar.breakpoint ?? "md"}:pl-[var(--app-shell-navbar-width)]`,
+			aside &&
+				`${aside.breakpoint ?? "md"}:pr-[var(--app-shell-aside-width)]`,
+			className,
+		),
+		slotStyles?.main,
+	);
+
+	return (
+		<Box
+			data-kala-component="app-shell-main"
+			as="main"
+			ref={ref}
+			className={part.className}
+			style={part.style}
+			{...props}
+		/>
+	);
+}
+
+function AppShellFooter({
+	ref,
+	className,
+	withBorder = true,
+	slotStyles: slotStylesRaw,
+	...props
+}: AppShellFooterProps) {
+	const { footer } = React.useContext(AppShellContext);
+	const slotStyles = useSlotStyles("app-shell", slotStylesRaw);
+	if (!footer) return null;
+
+	const part = applySlot(
+		cn(appShellStyles.footer, withBorder && appShellStyles.footerBorder, className),
+		slotStyles?.footer,
+	);
+
+	return (
+		<Box
+			data-kala-component="app-shell-footer"
+			as="footer"
+			ref={ref}
+			className={part.className}
+			style={{ height: "var(--app-shell-footer-height)", ...part.style }}
+			{...props}
+		/>
 	);
 }
 
@@ -97,182 +255,11 @@ export const AppShell = Object.assign(AppShellBase, {
 	Footer: AppShellFooter,
 });
 
-// --- Subcomponents ---
-
-export interface AppShellHeaderProps
-	extends React.HTMLAttributes<HTMLElement>,
-		React.RefAttributes<HTMLElement> {
-	withBorder?: boolean;
-}
-
-function AppShellHeader({
-	ref,
-	className,
-	withBorder = true,
-	...props
-}: AppShellHeaderProps) {
-	const { header } = React.useContext(AppShellContext);
-	if (!header) return null;
-
-	return (
-		<Box
-			data-kala-component="app-shell-header"
-			as="header"
-			ref={ref}
-			className={cn(
-				"fixed top-0 left-0 right-0 z-50 flex items-center bg-background px-4",
-				withBorder && "border-b",
-				className,
-			)}
-			style={{ height: "var(--app-shell-header-height)" }}
-			{...props}
-		/>
-	);
-}
-export interface AppShellNavbarProps
-	extends React.HTMLAttributes<HTMLElement>,
-		React.RefAttributes<HTMLElement> {
-	withBorder?: boolean;
-}
-
-function AppShellNavbar({
-	ref,
-	className,
-	withBorder = true,
-	...props
-}: AppShellNavbarProps) {
-	const { navbar } = React.useContext(AppShellContext);
-	if (!navbar) return null;
-
-	// Off-canvas below the configured breakpoint, docked from it upward.
-	const variant = `${navbar.breakpoint ?? "md"}:`;
-
-	return (
-		<Box
-			data-kala-component="app-shell-navbar"
-			as="nav"
-			ref={ref}
-			className={cn(
-				"fixed left-0 z-40 flex flex-col bg-background transition-transform duration-300 ease-in-out",
-				withBorder && "border-r",
-				"-translate-x-full",
-				`${variant}translate-x-0`,
-				className,
-			)}
-			style={{
-				width: "var(--app-shell-navbar-width)",
-				top: "var(--app-shell-header-height)",
-				height: "calc(100vh - var(--app-shell-header-height))",
-			}}
-			{...props}
-		/>
-	);
-}
-export interface AppShellAsideProps
-	extends React.HTMLAttributes<HTMLElement>,
-		React.RefAttributes<HTMLElement> {
-	withBorder?: boolean;
-}
-
-function AppShellAside({
-	ref,
-	className,
-	withBorder = true,
-	...props
-}: AppShellAsideProps) {
-	const { aside } = React.useContext(AppShellContext);
-	if (!aside) return null;
-
-	const variant = `${aside.breakpoint ?? "md"}:`;
-
-	return (
-		<Box
-			data-kala-component="app-shell-aside"
-			as="aside"
-			ref={ref}
-			className={cn(
-				"fixed right-0 z-40 flex flex-col bg-background transition-transform duration-300 ease-in-out",
-				withBorder && "border-l",
-				"translate-x-full",
-				`${variant}translate-x-0`,
-				className,
-			)}
-			style={{
-				width: "var(--app-shell-aside-width)",
-				top: "var(--app-shell-header-height)",
-				height: "calc(100vh - var(--app-shell-header-height))",
-			}}
-			{...props}
-		/>
-	);
-}
-export interface AppShellMainProps
-	extends React.HTMLAttributes<HTMLElement>,
-		React.RefAttributes<HTMLElement> {}
-
-function AppShellMain({ ref, className, ...props }: AppShellMainProps) {
-	const { header, navbar, aside, footer, padding } =
-		React.useContext(AppShellContext);
-
-	const paddingClasses = {
-		none: "p-0",
-		xs: "p-2",
-		sm: "p-3",
-		md: "p-4",
-		lg: "p-6",
-		xl: "p-8",
-	};
-
-	return (
-		<Box
-			data-kala-component="app-shell-main"
-			as="main"
-			ref={ref}
-			className={cn(
-				"flex-1 transition-all duration-300 ease-in-out",
-				padding && paddingClasses[padding],
-				header && "pt-[var(--app-shell-header-height)]",
-				footer && "pb-[var(--app-shell-footer-height)]",
-				// Side offsets only reserve space while the fixed panels are
-				// actually docked (breakpoint and up).
-				navbar &&
-					`${navbar.breakpoint ?? "md"}:pl-[var(--app-shell-navbar-width)]`,
-				aside &&
-					`${aside.breakpoint ?? "md"}:pr-[var(--app-shell-aside-width)]`,
-				className,
-			)}
-			{...props}
-		/>
-	);
-}
-export interface AppShellFooterProps
-	extends React.HTMLAttributes<HTMLElement>,
-		React.RefAttributes<HTMLElement> {
-	withBorder?: boolean;
-}
-
-function AppShellFooter({
-	ref,
-	className,
-	withBorder = true,
-	...props
-}: AppShellFooterProps) {
-	const { footer } = React.useContext(AppShellContext);
-	if (!footer) return null;
-
-	return (
-		<Box
-			data-kala-component="app-shell-footer"
-			as="footer"
-			ref={ref}
-			className={cn(
-				"fixed bottom-0 left-0 right-0 z-50 flex items-center bg-background px-4",
-				withBorder && "border-t",
-				className,
-			)}
-			style={{ height: "var(--app-shell-footer-height)" }}
-			{...props}
-		/>
-	);
-}
-// Attach subcomponents
+export type {
+	AppShellAsideProps,
+	AppShellFooterProps,
+	AppShellHeaderProps,
+	AppShellMainProps,
+	AppShellNavbarProps,
+	AppShellProps,
+} from "./app-shell.types";

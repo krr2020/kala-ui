@@ -4,6 +4,7 @@
  */
 
 import type { ApexOptions } from "apexcharts";
+import type { SlotStyles } from "@kala-ui/react/lib/slot-styles";
 
 /**
  * Base chart props shared across all chart types
@@ -29,6 +30,8 @@ export interface BaseChartProps {
 	isLoading?: boolean;
 	/** Message shown when data is empty (default: "No data available") */
 	emptyMessage?: string;
+	/** Per-part overrides: root, empty, emptyIcon, emptyText, titleBlock, title, subtitle. */
+	slotStyles?: SlotStyles;
 }
 
 /**
