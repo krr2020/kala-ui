@@ -2,41 +2,7 @@ import { cn } from "@kala-ui/react/lib/utils";
 import { useUncontrolled } from "@kala-ui/react-hooks";
 import { ChevronRight } from "lucide-react";
 import type * as React from "react";
-
-export interface NavLinkProps
-	extends Omit<React.ComponentProps<"button">, "onChange" | "ref"> {
-	/** Link label */
-	label: React.ReactNode;
-	/** Link description */
-	description?: React.ReactNode;
-	/** Left icon */
-	icon?: React.ReactNode;
-	/** Right section (e.g. badge, icon) */
-	rightSection?: React.ReactNode;
-	/** Active state */
-	active?: boolean;
-	/**
-	 * Renders the NavLink as a real anchor (<a href>) instead of a button.
-	 * Use for top-level navigation targets: the href keeps middle-click,
-	 * clone-tab and keyboard semantics native. A plain left-click is
-	 * preventDefaulted so SPA routers can route client-side; modifier clicks
-	 * are left to the browser. Nested-collapse behavior (children chevron
-	 * toggle) only applies in button mode.
-	 */
-	href?: string;
-	/** Collapsed/Expanded state for nested items */
-	defaultOpen?: boolean;
-	/** Controlled opened state */
-	open?: boolean;
-	/** Callback for opened state change */
-	onOpenChange?: (open: boolean) => void;
-	/** Nested links */
-	children?: React.ReactNode;
-	/** Disable right section rotation when opened */
-	disableRightSectionRotation?: boolean;
-	/** Indentation for nested items */
-	indent?: boolean;
-}
+import type { NavLinkProps } from "./nav-link.types";
 
 /** Click handler type broad enough for both the button and anchor arms —
  *  the DOM event target differences are irrelevant to callers. */

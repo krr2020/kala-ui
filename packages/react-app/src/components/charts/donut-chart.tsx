@@ -12,7 +12,7 @@ import { chartStyles } from "../../config/charts";
 import { Chart, getTooltipTheme } from "./chart";
 import type { DonutChartProps } from "./chart.types";
 import { useThemeAwareChart } from "./use-theme-aware-chart";
-import { getDefaultChartOptions } from "./utils";
+import { getDefaultChartOptions } from "./chart-utils";
 
 export function DonutChart({
 	series,

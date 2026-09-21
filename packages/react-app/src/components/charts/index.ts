@@ -12,4 +12,4 @@ export { LineChart } from "./line-chart";
 export { RadialBarChart } from "./radial-bar-chart";
 export * from "./theme-utils";
 export { useThemeAwareChart } from "./use-theme-aware-chart";
-export * from "./utils";
+export * from "./chart-utils";

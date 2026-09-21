@@ -1,13 +1,11 @@
-export {
-	DragDropContext,
-	type DragDropContextProps,
-	Draggable,
-	type DraggableAttributes,
-	type DraggableProps,
-	type DragStart,
-	type DragUpdate,
-	Droppable,
-	type DroppableProps,
-	type DropResult,
-	type UniqueIdentifier,
-} from "./dnd";
+export { DragDropContext, Draggable, Droppable } from "./dnd";
+export type {
+	DragDropContextProps,
+	DraggableAttributes,
+	DraggableProps,
+	DragStart,
+	DragUpdate,
+	DroppableProps,
+	DropResult,
+	UniqueIdentifier,
+} from "./dnd.types";

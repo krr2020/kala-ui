@@ -11,7 +11,7 @@ pnpm --filter @kala-ui/react-native-app test     # vitest run && jest
 
 ## Structure
 
-`src/components/`: `app-shell/`, `header/`, `tab-bar/` (mobile-native nav pattern with no web equivalent), `charts/`, `data-table/`, `metric-card/`, and the composite widget families `copy-button/`, `empty-state/`, `error-boundary/`, `list/`, `loading-overlay/`, `password-strength-indicator/`, `steps/`, `timeline/` (combinations of core primitives, not unit components) + `src/lib/`, barrel at `src/index.ts`. Tests in `src/__tests__/`.
+`src/components/`: `app-shell/`, `header/`, `tab-bar/` (mobile-native nav pattern with no web equivalent), `charts/`, `data-table/`, `metric-card/`, `screen-stack/`, and the composite widget families `copy-button/`, `empty-state/`, `error-boundary/`, `list/`, `loading-overlay/`, `password-strength-indicator/`, `steps/`, `timeline/` (combinations of core primitives, not unit components) + `src/lib/`, barrel at `src/index.ts`. Tests in `src/components/__tests__/`.
 
 ## Rules
 

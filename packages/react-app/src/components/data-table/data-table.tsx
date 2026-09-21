@@ -54,7 +54,7 @@ import { DataTableHeaderRow } from "./data-table-header-row";
 import { DataTableSkeleton } from "./data-table-skeleton";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { PaginationNav } from "./pagination-nav";
-import { useTableState } from "./useTableState";
+import { useTableState } from "./use-table-state";
 
 /**
  * DataTable Component

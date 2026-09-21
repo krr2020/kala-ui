@@ -242,6 +242,12 @@ describe("Sidebar", () => {
 		expect(screen.getByText("Link 1")).toBeInTheDocument();
 	});
 
+	it("should render without nav sections", () => {
+		const { container } = render(<Sidebar />);
+
+		expect(container.querySelector("nav")).toBeInTheDocument();
+	});
+
 	it("should not make non-collapsible sections clickable", () => {
 		const nonCollapsibleSection: SidebarSection[] = [
 			{

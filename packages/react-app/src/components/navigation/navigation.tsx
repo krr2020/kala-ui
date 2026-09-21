@@ -4,34 +4,7 @@ import { cn } from "@kala-ui/react/lib/utils";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
 import { isActivePath } from "../../lib/active-path";
-
-export interface NavigationLink {
-	label: string;
-	href: string;
-}
-
-export interface NavigationProps
-	extends React.HTMLAttributes<HTMLElement>,
-		React.RefAttributes<HTMLElement> {
-	/**
-	 * Array of navigation links
-	 */
-	links: NavigationLink[];
-	/**
-	 * Orientation of the navigation
-	 * @default 'horizontal'
-	 */
-	orientation?: "horizontal" | "vertical";
-	/**
-	 * Mobile layout style
-	 * @default 'dropdown'
-	 */
-	mobileLayout?: "dropdown" | "vertical";
-	/**
-	 * Current pathname for active link detection
-	 */
-	pathname?: string;
-}
+import type { NavigationLink, NavigationProps } from "./navigation.types";
 
 export function Navigation({
 	ref,

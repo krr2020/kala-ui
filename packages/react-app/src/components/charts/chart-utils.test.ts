@@ -7,7 +7,7 @@ import {
 	formatPercentage,
 	getDefaultChartOptions,
 	getResponsiveOptions,
-} from "./utils";
+} from "./chart-utils";
 
 // Mock theme-utils since it relies on DOM for theme detection
 vi.mock("./theme-utils", () => ({
@@ -35,7 +35,7 @@ vi.mock("./theme-utils", () => ({
 	}),
 }));
 
-describe("charts/utils", () => {
+describe("charts/chart-utils", () => {
 	describe("getDefaultChartOptions", () => {
 		it("returns options with default theme", () => {
 			const options = getDefaultChartOptions();

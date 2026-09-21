@@ -20,4 +20,4 @@ export type {
 	SortDirection,
 	TableState,
 } from "./data-table.types";
-export { useTableState } from "./useTableState";
+export { useTableState } from "./use-table-state";

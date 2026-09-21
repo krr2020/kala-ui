@@ -6,20 +6,17 @@
 "use client";
 
 import type {
-	Active,
-	Collision,
-	CollisionDetection,
-	DndContextProps as DndKitContextProps,
-	DragEndEvent,
+	DragDropContextProps,
+	DragOverlayComponentProps,
 	DraggableAttributes,
-	DraggableSyntheticListeners,
-	DragOverEvent,
-	DragStartEvent,
-	Modifier,
-	Over,
-	PointerActivationConstraint,
-	UniqueIdentifier,
-} from "@dnd-kit/core";
+	DraggableProps,
+	DroppableProps,
+	SortableContextProps,
+	SortableHandleProps,
+	SortableItemProps,
+	SyntheticListenerMap,
+	UseDragDropSensorsOptions,
+} from "./dnd.types";
 import {
 	closestCenter,
 	closestCorners,
@@ -47,29 +44,16 @@ import {
 	rectSortingStrategy,
 	rectSwappingStrategy,
 	SortableContext as SortableContextKit,
-	type SortingStrategy,
 	sortableKeyboardCoordinates,
 	useSortable,
 	verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import type { Transform } from "@dnd-kit/utilities";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@kala-ui/react/lib/utils";
 import { useSlotStyles } from "@kala-ui/react/kala-provider";
-import { applySlot, type SlotStyles } from "@kala-ui/react/lib/slot-styles";
+import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { useMergedRef } from "@kala-ui/react-hooks";
 import * as React from "react";
-
-type SyntheticListenerMap = DraggableSyntheticListeners;
-
-// ============================================================================
-// Types
-// ============================================================================
-
-export type DragDropModifier = Modifier;
-export type DragDropCollisionDetection = CollisionDetection;
-export type DragDropSortingStrategy = SortingStrategy;
-export type DragDropPointerConstraint = PointerActivationConstraint;
 
 // ============================================================================
 // Collision Detection Algorithms
@@ -109,11 +93,6 @@ export const sortingStrategies = {
 // Sensors Hook
 // ============================================================================
 
-export interface UseDragDropSensorsOptions {
-	activationConstraint?: PointerActivationConstraint;
-	keyboardCoordinateGetter?: typeof sortableKeyboardCoordinates;
-}
-
 function createDragDropSensors(options: UseDragDropSensorsOptions = {}) {
 	const {
 		activationConstraint,
@@ -139,13 +118,6 @@ function createDragDropSensors(options: UseDragDropSensorsOptions = {}) {
 // DndContext
 // ============================================================================
 
-export interface DragDropContextProps
-	extends Omit<DndKitContextProps, "sensors"> {
-	children: React.ReactNode;
-	sensors?: ReturnType<typeof createDragDropSensors>;
-	useSensors?: UseDragDropSensorsOptions;
-}
-
 function DragDropContext({
 	children,
 	sensors: sensorsProp,
@@ -169,19 +141,6 @@ function DragDropContext({
 // ============================================================================
 // Droppable
 // ============================================================================
-
-export interface DroppableProps {
-	ref?: React.Ref<HTMLDivElement>;
-	id: UniqueIdentifier;
-	children:
-		| React.ReactNode
-		| ((args: {
-				isOver: boolean;
-				setNodeRef: (node: HTMLElement | null) => void;
-		  }) => React.ReactNode);
-	className?: string;
-	disabled?: boolean;
-}
 
 function Droppable({
 	ref,
@@ -216,27 +175,6 @@ function Droppable({
 // ============================================================================
 // Draggable
 // ============================================================================
-
-export interface DraggableProps {
-	ref?: React.Ref<HTMLDivElement>;
-	id: UniqueIdentifier;
-	children:
-		| React.ReactNode
-		| ((args: {
-				attributes: DraggableAttributes;
-				listeners: SyntheticListenerMap | undefined;
-				setNodeRef: (node: HTMLElement | null) => void;
-				transform: {
-					x: number;
-					y: number;
-					scaleX: number;
-					scaleY: number;
-				} | null;
-				isDragging: boolean;
-		  }) => React.ReactNode);
-	className?: string;
-	disabled?: boolean;
-}
 
 function Draggable({
 	ref,
@@ -282,13 +220,6 @@ function Draggable({
 // Sortable Context
 // ============================================================================
 
-export interface SortableContextProps {
-	id?: UniqueIdentifier;
-	items: UniqueIdentifier[] | { id: UniqueIdentifier }[];
-	strategy?: SortingStrategy;
-	children: React.ReactNode;
-}
-
 function SortableContext({
 	children,
 	items,
@@ -316,27 +247,6 @@ function SortableContext({
 // ============================================================================
 // Sortable Item
 // ============================================================================
-
-export interface SortableItemProps {
-	ref?: React.Ref<HTMLDivElement>;
-	id: UniqueIdentifier;
-	children:
-		| React.ReactNode
-		| ((args: {
-				attributes: DraggableAttributes;
-				listeners: SyntheticListenerMap | undefined;
-				setNodeRef: (node: HTMLElement | null) => void;
-				transform: Transform | null;
-				transition: string | undefined;
-				isDragging: boolean;
-				isSorting: boolean;
-				isOver: boolean;
-		  }) => React.ReactNode);
-	className?: string;
-	disabled?: boolean;
-	handle?: boolean;
-	slotStyles?: SlotStyles;
-}
 
 // SortableHandle receives its parent SortableItem's dnd-kit wiring through
 // this context — a handle must never register its own sortable (the old
@@ -421,14 +331,6 @@ function SortableItem({
 // Sortable Handle
 // ============================================================================
 
-export interface SortableHandleProps {
-	ref?: React.Ref<HTMLDivElement>;
-	children:
-		| React.ReactNode
-		| ((listeners: SyntheticListenerMap | undefined) => React.ReactNode);
-	className?: string;
-}
-
 function SortableHandle({
 	ref,
 	children,
@@ -464,15 +366,6 @@ function SortableHandle({
 // Drag Overlay Component
 // ============================================================================
 
-export interface DragOverlayComponentProps {
-	children: React.ReactNode;
-	className?: string;
-	dropAnimation?: {
-		duration?: number;
-		easing?: string;
-	} | null;
-}
-
 function DragOverlayComponent({
 	children,
 	className,
@@ -494,25 +387,6 @@ function DragOverlayComponent({
 // Exports
 // ============================================================================
 
-export type {
-	Active,
-	Collision,
-	// Context types
-	DragEndEvent as DropResult,
-	// Droppable types
-	// Draggable types
-	DraggableAttributes,
-	DraggableSyntheticListeners,
-	DragOverEvent as DragUpdate,
-	DragOverEvent,
-	DragStartEvent as DragStart,
-	Over,
-	// Sorting
-	SortingStrategy,
-	// Transform
-	Transform,
-	UniqueIdentifier,
-};
 export {
 	createDragDropSensors as useDragDropSensors,
 	DragDropContext,

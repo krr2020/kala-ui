@@ -37,18 +37,16 @@ File/folder-structure compliance of every component family in `packages/react`, 
 
 ## 2. `packages/react-app`
 
-### Violations
+### Violations — resolved 2026-09-21 (structure normalization pass)
 
-| Path | Deviation |
+| Path | Resolution |
 | --- | --- |
-| `src/components/metric-card/__tests__/metric-card.test.tsx` | Duplicate test placement: the same-family colocated `metric-card.test.tsx` already exists at the family root. The `__tests__/` subdirectory pattern appears nowhere else in this package. |
-| `src/components/sidebar/__tests__/sidebar.test.tsx` | Same duplicate pattern — colocated `sidebar.test.tsx` also exists. |
-| `src/components/user-menu-dropdown/__tests__/user-menu-dropdown.test.tsx` | Same duplicate pattern — colocated `user-menu-dropdown.test.tsx` also exists. |
-| `src/components/navigation/` | No `navigation.types.ts` — all other chrome families (app-shell, header, footer, sidebar, nav-link's peers) ship one. |
-| `src/components/nav-link/` | No `nav-link.types.ts`. |
-| `src/components/dnd/` | No `dnd.types.ts`; PORT_QUEUE says "dnd (remaining subcomponents)" yet the folder holds only `dnd.tsx`. |
-| `src/components/charts/` | `utils.ts` / `utils.test.ts` use a generic name in a package that otherwise qualifies (`theme-utils.ts`); `line-chart.integration.test.tsx` breaks the `<name>.test.tsx` naming; `chart-skeleton.tsx` (the loading arm) lives here while `sparkline-chart/` is a separate family whose skeleton would belong to it. |
-| `src/components/data-table/useTableState.ts` | camelCase filename in an otherwise kebab-case tree (`pagination-nav.tsx`, `column-filters.tsx`, …). |
+| `metric-card/`, `sidebar/`, `user-menu-dropdown/` stray `__tests__/` dirs | Merged into the colocated `*.test.tsx` files (unique cases kept: metric-card aria-hidden + numeric edge cases, sidebar no-sections render, user-menu avatar-surface); dirs deleted. |
+| `navigation/`, `nav-link/`, `dnd/` missing `<family>.types.ts` | Types extracted to `<family>.types.ts`; barrels re-export from them; public export set unchanged. |
+| `charts/utils.ts` generic name | Renamed `chart-utils.ts` (+ test, + importers). |
+| `data-table/useTableState.ts` camelCase | Renamed `use-table-state.ts` (+ test, + importers). |
+
+The `.integration.test.tsx` suffix originally flagged under `charts/` is a sanctioned repo-wide pattern (28 such files in `packages/react-native`) — finding withdrawn. Open item: `chart-skeleton.tsx` lives in `charts/` while `sparkline-chart/` is a separate family — decide its home with the PORT_QUEUE port.
 
 ### Docs drift
 
@@ -101,23 +99,23 @@ Only `empty-state`, `error-boundary`, `list`, `loading-overlay`, `password-stren
 
 | Path | Deviation |
 | --- | --- |
-| `src/components/__tests__/` | AGENTS.md states "Tests in `src/__tests__/`" but every test lives in `src/components/__tests__/`. Either the doc or the tree is wrong. |
+| `src/components/__tests__/` | AGENTS.md previously stated "Tests in `src/__tests__/`" — corrected 2026-09-21 to the real home. |
 | `src/components/steps/`, `tab-bar/`, `timeline/`, `copy-button/`, `data-table/` | No skeleton arm despite web counterparts shipping one and the package docs listing these as parallel families (loading-state parity gap). |
 
 ### Docs drift
 
-- `screen-stack/` is missing from the AGENTS.md structure list entirely (it has full test + utils coverage in the tree).
+- `screen-stack/` was missing from the AGENTS.md structure list — added 2026-09-21.
 
 ---
 
 ## Prioritized remediation
 
-1. **Decide the test-home rule** (react-native-app + the three react-app duplicate dirs): pick colocated vs `__tests__/`, delete duplicates, update both AGENTS.md files. Cheapest, removes active inconsistency.
+1. ✅ Done 2026-09-21: react-app duplicates merged into colocated tests; react-native-app AGENTS.md corrected to the real test home (`src/components/__tests__/`).
 2. **react-native: add the five missing `.styles.ts` tables** (alert-dialog, combobox, context-menu, dropdown-menu, separator) — mechanical extraction of inline styles.
 3. **react-native-app: decide the styles-file rule** — either port the nine families or amend AGENTS.md to scope `<name>.styles.ts` to families with non-trivial style surface.
 4. **react: fix `loading/`** — split into `page-loader/` + `section-loader/` families (or document the shared-family pattern), each with its own types file.
 5. **react: relocate `design-system/`** into proper per-component folders with barrels + types, or move it out of `components/` (it is a showcase, not a primitive).
 6. **react: `native-select` → its own folder** with `native-select.types.ts`; rename `skeleton-wrapper`/`skeleton-patterns` to fit the naming or document them.
-7. **Docs sweep**: add missing families to both web AGENTS.md inventories (card, kala-provider, …), add `screen-stack` to react-native-app, state the react config-table coverage rule (port queue or exemption), document `useTableState.ts`/`utils.ts` naming exceptions or rename them.
+7. **Docs sweep** (partial, 2026-09-21): `screen-stack` added to react-native-app's inventory; `useTableState.ts`/`utils.ts` renamed rather than documented. Remaining: add missing families to both web AGENTS.md inventories (card, kala-provider, …) and state the react config-table coverage rule (port queue or exemption).
 
 Items 1–2 are quick, self-contained follow-up units; 3–5 need a maintainers' decision on intended convention before code moves.

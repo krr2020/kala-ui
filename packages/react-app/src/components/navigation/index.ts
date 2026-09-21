@@ -1,4 +1,4 @@
-export type { NavigationLink, NavigationProps } from "./navigation";
+export type { NavigationLink, NavigationProps } from "./navigation.types";
 export { Navigation } from "./navigation";
 export type {
 	NavigationSkeletonConfig,

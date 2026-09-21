@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { createRef } from "react";
 import { describe, expect, it } from "vitest";
 import { MetricCard } from "./metric-card";
 
@@ -156,10 +157,10 @@ describe("MetricCard", () => {
 	});
 
 	it("should forward ref", () => {
-		const ref = { current: null } as unknown as React.RefObject<HTMLDivElement>;
+		const ref = createRef<HTMLDivElement>();
 		render(<MetricCard ref={ref} title="Users" value={100} />);
 
-		expect(ref.current).toBeTruthy();
+		expect(ref.current).toBeInstanceOf(HTMLDivElement);
 	});
 
 	it("should forward additional props", () => {
@@ -229,5 +230,45 @@ describe("MetricCard", () => {
 		render(<MetricCard title="Balance" value={-500} />);
 
 		expect(screen.getByText("-500")).toBeInTheDocument();
+	});
+
+	it("should mark icon as decorative with aria-hidden", () => {
+		render(
+			<MetricCard
+				title="Sales"
+				value={100}
+				icon={<span data-testid="metric-icon">$</span>}
+			/>,
+		);
+
+		const iconContainer = screen.getByTestId("metric-icon").parentElement;
+		expect(iconContainer).toHaveAttribute("aria-hidden", "true");
+	});
+
+	it("should mark change icon as decorative with aria-hidden", () => {
+		render(<MetricCard title="Growth" value={100} change={10} />);
+
+		expect(screen.getByText("↑")).toHaveAttribute("aria-hidden", "true");
+	});
+
+	it("should not render change or subtitle when neither provided", () => {
+		const { container } = render(<MetricCard title="Users" value={100} />);
+
+		expect(container.querySelector(".text-sm")).not.toBeInTheDocument();
+	});
+
+	it("should handle very large numbers", () => {
+		render(<MetricCard title="Big Number" value={999999999} />);
+
+		const elements = screen.getAllByText(
+			/9[,.]?9[,.]?9[,.]?9[,.]?9[,.]?9[,.]?9[,.]?9[,.]?9/,
+		);
+		expect(elements.length).toBeGreaterThan(0);
+	});
+
+	it("should handle decimal numbers in change", () => {
+		render(<MetricCard title="Growth" value={100} change={0.5} />);
+
+		expect(screen.getByText("0.5% than last week")).toBeInTheDocument();
 	});
 });

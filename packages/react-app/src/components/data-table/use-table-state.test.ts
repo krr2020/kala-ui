@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import type { ColumnDef, FilterConfig, SortConfig } from "./data-table.types";
-import { useTableState } from "./useTableState";
+import { useTableState } from "./use-table-state";
 
 interface TestRow {
 	id: string;
