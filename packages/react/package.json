@@ -43,6 +43,9 @@
 		"./tailwind": {
 			"default": "./dist/styles/theme.css"
 		},
+		"./styles/tokens": {
+			"default": "./dist/styles/tokens.css"
+		},
 		"./config": {
 			"types": "./dist/config/index.d.ts",
 			"default": "./dist/config/index.js"
@@ -417,7 +420,7 @@
 		}
 	},
 	"scripts": {
-		"build": "tsc && node ../../scripts/add-js-extensions.mjs . && pnpm exec postcss src/styles/globals.css -o dist/styles/globals.css && cp src/styles/helpers.css src/styles/theme.css dist/styles/",
+		"build": "tsc && node ../../scripts/add-js-extensions.mjs . && pnpm exec postcss src/styles/globals.css -o dist/styles/globals.css && cp src/styles/helpers.css src/styles/theme.css src/styles/tokens.css dist/styles/",
 		"type-check": "tsc --noEmit",
 		"lint": "biome lint .",
 		"lint:fix": "biome lint . --write",

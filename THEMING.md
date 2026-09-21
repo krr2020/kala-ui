@@ -247,9 +247,9 @@ all ship once via `@kala-ui/react/styles`, which must be imported first.
 @source "../node_modules/@kala-ui/react/dist";
 /* @source "../node_modules/@kala-ui/react-app/dist";  app package */
 @import "@kala-ui/react/styles/helpers";
+@import "@kala-ui/react/styles/tokens"; /* all token values: :root/.dark/high-contrast */
 
-/* tokens — start from the :root block of @kala-ui/react/styles
-   and customize: */
+/* tokens — customize AFTER the import; your values win: */
 :root {
   --primary: #7c3aed;
   --primary-foreground: #ffffff;
@@ -264,9 +264,10 @@ all ship once via `@kala-ui/react/styles`, which must be imported first.
   against — importing it keeps your utilities identical to the precompiled
   ones (the `@custom-variant` line becomes optional but harmless).
 - `helpers.css` carries the `kala-*` component classes (already layered).
-- Token definitions are NOT included in this mode — copy the default `:root`
-  and `.dark` blocks from `@kala-ui/react/styles` once, then customize;
-  otherwise components fall back to inherited/initial values for colors.
+- `@kala-ui/react/styles/tokens` ships every token value (`:root`, `.dark`,
+  the high-contrast pair, and the derived alpha mixes) — import it instead
+  of hand-copying token blocks, then override the tokens you want after the
+  import. Upgrades keep your defaults in sync automatically.
 
 ## Charts
 

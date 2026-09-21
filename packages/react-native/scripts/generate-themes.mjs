@@ -2,7 +2,7 @@
 
 /**
  * Emits packages/react-native/src/themes.ts from the web token source of
- * truth (packages/react/src/styles/globals.css). Re-run after editing the
+ * truth (packages/react/src/styles/tokens.css). Re-run after editing the
  * CSS; the parity test fails until the transcription is regenerated.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -10,7 +10,7 @@ import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '../../..');
 const css = readFileSync(
-	resolve(root, 'packages/react/src/styles/globals.css'),
+	resolve(root, 'packages/react/src/styles/tokens.css'),
 	'utf-8',
 ).replace(/\/\*[\s\S]*?\*\//g, '');
 
@@ -32,6 +32,10 @@ while ((match = blockRe.exec(css))) {
 }
 
 const NON_THEMED = /^--(?:kala|default-transition)/;
+// Web-only tokens the native themes deliberately do not transcribe:
+// background-alpha has no native consumer, and online/offline presence
+// dots have their own native palette. Everything else must convert.
+const WEB_ONLY = /^--(?:background-alpha|online|offline)$/;
 
 function resolveVars(decls) {
 	const out = new Map();
@@ -79,8 +83,13 @@ function hslToHex(value) {
 
 const tokenToKey = (token) =>
 	token.replace(/^--/, '').replace(/-([a-z])/g, (_m, c) => c.toUpperCase());
-const toValue = (value) =>
-	value.startsWith('hsl(') ? hslToHex(value) : Number(value.replace(/px$/, ''));
+const toValue = (value) => {
+	if (value.startsWith('hsl(')) return hslToHex(value);
+	const numeric = Number(value.replace(/px$/, ''));
+	if (Number.isNaN(numeric))
+		throw new Error(`token value is neither hsl() nor numeric: ${value}`);
+	return numeric;
+};
 
 const SOURCES = {
 	light: [':root'],
@@ -110,7 +119,8 @@ for (const [themeName, selectors] of Object.entries(SOURCES)) {
 		const block = blocks.get(selector);
 		if (!block) throw new Error(`missing CSS block ${selector}`);
 		for (const [token, value] of resolveVars(block)) {
-			if (!NON_THEMED.test(token)) merged.set(token, value);
+			if (!NON_THEMED.test(token) && !WEB_ONLY.test(token))
+				merged.set(token, value);
 		}
 	}
 	const entries = [...merged].map(([token, value]) => {

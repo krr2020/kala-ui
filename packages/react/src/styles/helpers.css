@@ -25,36 +25,18 @@
 	 */
 	.kala-surface-card {
 		background-color: var(--card);
-		border-color: color-mix(
-			in oklab,
-			var(--border),
-			transparent
-				calc((1 - var(--card-border-alpha, var(--border-alpha, 1))) * 100%)
-		);
-		box-shadow: 0 0 var(--shadow-spread)
-			color-mix(
-				in oklab,
-				var(--shadow-color),
-				transparent calc((1 - var(--shadow-alpha, 0)) * 100%)
-			);
+		border-color: var(--kala-mix-card-border);
+		box-shadow: 0 0 var(--shadow-spread) var(--kala-mix-shadow);
 	}
 
 	.kala-surface-input {
 		background-color: var(--card);
-		border-color: color-mix(
-			in oklab,
-			var(--border),
-			transparent calc((1 - var(--border-alpha, 1)) * 100%)
-		);
+		border-color: var(--kala-mix-border);
 	}
 
 	.kala-surface-popover {
 		background-color: var(--popover);
-		border-color: color-mix(
-			in oklab,
-			var(--border),
-			transparent calc((1 - var(--border-alpha, 1)) * 100%)
-		);
+		border-color: var(--kala-mix-border);
 	}
 
 	/* Persistent rings — always shown, not only while focused. */

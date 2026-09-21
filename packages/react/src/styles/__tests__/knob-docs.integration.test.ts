@@ -5,6 +5,7 @@ const read = (path: string) =>
 	readFileSync(new URL(path, import.meta.url), "utf8");
 
 const globalsCss = read("../globals.css");
+const tokensCss = read("../tokens.css");
 const themingMd = read("../../../../../THEMING.md");
 const tokenSpecMd = read("../../../TOKEN_SPEC.md");
 
@@ -28,9 +29,9 @@ const KNOBS = [
 ] as const;
 
 const rootBlock = (() => {
-	const start = globalsCss.indexOf(":root");
-	const end = globalsCss.indexOf("}", start);
-	return globalsCss.slice(start, end);
+	const start = tokensCss.indexOf(":root");
+	const end = tokensCss.indexOf("}", start);
+	return tokensCss.slice(start, end);
 })();
 
 describe("shape/density knob docs parity", () => {

@@ -6,11 +6,48 @@ const read = (path: string) =>
 
 const themeCss = read("./theme.css");
 const globalsCss = read("./globals.css");
+const helpersCss = read("./helpers.css");
+let tokensCss: string | null = null;
+try {
+	tokensCss = read("./tokens.css");
+} catch {
+	tokensCss = null;
+}
+const tokensBlockCss = tokensCss ?? globalsCss;
 const avatarConfig = read("../config/avatar.ts");
 const inputConfig = read("../config/input.ts");
 const selectConfig = read("../config/select.ts");
 const buttonConfig = read("../config/button.ts");
 const tabsConfig = read("../config/tabs.ts");
+
+describe("tokens.css extraction (item 13)", () => {
+	it.skipIf(tokensCss === null)(
+		"ships a tokens.css with the theme blocks; globals no longer inlines them",
+		() => {
+			const tokens = tokensCss as string;
+			for (const selector of [":root", ".neutral", ".accent", ".dark", ".dark.accent", ".high-contrast-light", ".high-contrast-dark"]) {
+				expect(tokens, selector).toMatch(new RegExp(`${selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*\\{`));
+			}
+			expect(globalsCss).not.toMatch(/:root\s*\{/);
+			expect(globalsCss).toContain('@import "./tokens.css";');
+		},
+	);
+
+	it.skipIf(tokensCss === null)(
+		"color-mix alpha formulas live only in tokens.css",
+		() => {
+			const FORMULA = /color-mix\(\s*in oklab[\s\S]*?--(?:border|shadow|overlay|background)-alpha/;
+			expect((tokensCss as string)).toMatch(FORMULA);
+			for (const [name, css] of [
+				["globals.css", globalsCss],
+				["helpers.css", helpersCss],
+				["theme.css", themeCss],
+			] as const) {
+				expect(css.match(FORMULA) ?? [], name).toEqual([]);
+			}
+		},
+	);
+});
 
 describe("Design-extension tokens (src)", () => {
 	it("defines --font-heading in @theme with the sans stack as default", () => {
@@ -18,21 +55,21 @@ describe("Design-extension tokens (src)", () => {
 	});
 
 	it("defines motion tokens and wires the Tailwind default transition chain", () => {
-		expect(globalsCss).toMatch(/--kala-duration-fast:\s*120ms/);
-		expect(globalsCss).toMatch(/--kala-duration-base:\s*150ms/);
-		expect(globalsCss).toMatch(/--kala-duration-slow:\s*200ms/);
-		expect(globalsCss).toMatch(/--kala-ease:\s*cubic-bezier/);
-		expect(globalsCss).toMatch(
+		expect(tokensBlockCss).toMatch(/--kala-duration-fast:\s*120ms/);
+		expect(tokensBlockCss).toMatch(/--kala-duration-base:\s*150ms/);
+		expect(tokensBlockCss).toMatch(/--kala-duration-slow:\s*200ms/);
+		expect(tokensBlockCss).toMatch(/--kala-ease:\s*cubic-bezier/);
+		expect(tokensBlockCss).toMatch(
 			/--default-transition-duration:\s*var\(--kala-duration-base\)/,
 		);
-		expect(globalsCss).toMatch(
+		expect(tokensBlockCss).toMatch(
 			/--default-transition-timing-function:\s*var\(--kala-ease\)/,
 		);
 	});
 
 	it("defines --kala-radius-input on a single declaration line falling back to the control radius", () => {
 		// Single-line form: tooling greps the raw declaration, so var( must not wrap.
-		expect(globalsCss).toMatch(
+		expect(tokensBlockCss).toMatch(
 			/--kala-radius-input:\s*var\(--kala-radius-control\)/,
 		);
 	});
@@ -52,7 +89,7 @@ describe("Design-extension tokens (src)", () => {
 
 /** Extract flat `--token: value;` declarations from one CSS selector block. */
 const blockTokens = (selector: string): Map<string, string> => {
-	const css = globalsCss.replace(/\/\*[\s\S]*?\*\//g, "");
+	const css = tokensBlockCss.replace(/\/\*[\s\S]*?\*\//g, "");
 	const match = css.match(
 		new RegExp(`([^{]*${selector.replace(".", "\\.")}[^{}]*)\\{([^{}]*)\\}`),
 	);
@@ -98,7 +135,7 @@ describe("presence tokens (--online / --offline)", () => {
 
 /** All `--token` names declared inside one exact CSS selector block. */
 const tokenNames = (selector: string): Set<string> => {
-	const css = globalsCss.replace(/\/\*[\s\S]*?\*\//g, "");
+	const css = tokensBlockCss.replace(/\/\*[\s\S]*?\*\//g, "");
 	const names = new Set<string>();
 	for (const match of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
 		if (match[1].trim() !== selector) continue;
@@ -158,7 +195,7 @@ describe("size-ladder knobs (item 7)", () => {
 
 	it("derives every ladder step from the base density knobs at :root", () => {
 		for (const [name, pattern] of ladder)
-			expect(globalsCss, name).toMatch(pattern);
+			expect(tokensBlockCss, name).toMatch(pattern);
 	});
 
 	it("keeps ladder knobs theme-invariant — never redefined per theme", () => {
@@ -257,6 +294,29 @@ const distGlobalsCss = (() => {
 		return null;
 	}
 })();
+
+const distTokensCss = (() => {
+	try {
+		return read("../../dist/styles/tokens.css");
+	} catch {
+		return null;
+	}
+})();
+
+describe.skipIf(distTokensCss === null)("tokens.css (dist)", () => {
+	const css = distTokensCss as string;
+
+	it("ships the :root and .dark token blocks", () => {
+		expect(css).toMatch(/:root\s*\{/);
+		expect(css).toMatch(/\.dark\s*\{/);
+		expect(css).toMatch(/--primary:/);
+	});
+
+	it("ships the single-sourced derived mixes", () => {
+		expect(css).toMatch(/--kala-mix-border:/);
+		expect(css).toMatch(/--kala-mix-shadow:/);
+	});
+});
 
 describe.skipIf(distGlobalsCss === null)(
 	"Design-extension tokens (dist)",

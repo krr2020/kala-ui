@@ -45,24 +45,12 @@
 	--color-info-foreground: var(--info-foreground);
 	--color-online: var(--online);
 	--color-offline: var(--offline);
-	--color-border: color-mix(
-		in oklab,
-		var(--border),
-		transparent calc((1 - var(--border-alpha, 1)) * 100%)
-	);
+	--color-border: var(--kala-mix-border);
 	--color-border-strong: var(--border-strong);
 	--color-input: var(--input);
 	--color-ring: var(--ring);
-	--color-separator: color-mix(
-		in oklab,
-		var(--separator, var(--border)),
-		transparent calc((1 - var(--border-alpha, 1)) * 100%)
-	);
-	--color-overlay: color-mix(
-		in oklab,
-		var(--overlay),
-		transparent calc((1 - var(--overlay-alpha, 0.5)) * 100%)
-	);
+	--color-separator: var(--kala-mix-separator);
+	--color-overlay: var(--kala-mix-overlay);
 
 	/* Primitive palette scales (fixed values, not theme-reactive) */
 	--color-primary-50: #eff6ff;
@@ -203,12 +191,7 @@
 		0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 	--shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 	--shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
-	--shadow-themed: 0 0 var(--shadow-spread)
-		color-mix(
-			in oklab,
-			var(--shadow-color),
-			transparent calc((1 - var(--shadow-alpha, 0)) * 100%)
-		);
+	--shadow-themed: 0 0 var(--shadow-spread) var(--kala-mix-shadow);
 
 	/* Breakpoints + container widths */
 	--breakpoint-xs: 320px;

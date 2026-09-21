@@ -1,0 +1,286 @@
+/*
+ * tokens.css — token VALUES only: the seven theme blocks plus the
+ * derived alpha mixes. globals.css @imports this file; Tailwind-mode
+ * consumers import @kala-ui/react/styles/tokens instead of copy-pasting
+ * the :root/.dark blocks.
+ */
+
+	/* Light Theme (default) */
+	:root {
+		--background: hsl(0 0% 100%);
+		--background-alpha: 1;
+		--foreground: hsl(220 100% 11%);
+		--card: hsl(0 0% 100%);
+		--card-foreground: hsl(222.2 84% 4.9%);
+		--popover: hsl(0 0% 100%);
+		--popover-foreground: hsl(222.2 84% 4.9%);
+		--primary: hsl(221.2 83.2% 53.3%);
+		--primary-foreground: hsl(210 40% 98%);
+		--secondary: hsl(219 18% 55%);
+		--secondary-foreground: hsl(0 0% 100%);
+		--muted: hsl(210 40% 96.1%);
+		--muted-foreground: hsl(215.4 16.3% 46.9%);
+		--accent: hsl(210 40% 96.1%);
+		--accent-foreground: hsl(222.2 47.4% 11.2%);
+		--destructive: hsl(0 84.2% 60.2%);
+		--destructive-foreground: hsl(210 40% 98%);
+		--border: hsl(211 27% 81%);
+		--border-strong: hsl(211 27% 60%);
+		--border-alpha: 1;
+		--card-border-alpha: var(--border-alpha, 1);
+		--input: hsl(214.3 31.8% 91.4%);
+		--ring: hsl(221.2 83.2% 53.3%);
+		--ring-offset-color: hsl(0 0% 100%);
+		--overlay: hsl(0 0% 0%);
+		--overlay-alpha: 0.5;
+
+		/* Shape & density — override these to set the shape language
+		   (control radius, card radius, control height, padding) in one place. */
+		--kala-radius-control: 0.375rem; /* buttons, inputs, tabs triggers */
+		--kala-radius-card: 0.5rem; /* cards, alerts, popovers, dialogs */
+		--kala-radius-sm: 0.25rem; /* inner hit targets: menu items, dismiss/close buttons */
+		--kala-control-h: 2.5rem; /* default control height */
+		--kala-control-h-xs: calc(var(--kala-control-h) - 0.75rem); /* size-ladder step (28px at default) */
+		--kala-control-h-sm: calc(var(--kala-control-h) - 0.25rem); /* size-ladder step (36px at default) */
+		--kala-control-h-lg: calc(var(--kala-control-h) + 0.25rem); /* size-ladder step (44px at default) */
+		--kala-control-px: 1rem; /* default control horizontal padding */
+		--kala-control-px-xs: calc(var(--kala-control-px) - 0.5rem); /* size-ladder step (8px at default) */
+		--kala-control-px-sm: calc(var(--kala-control-px) - 0.25rem); /* size-ladder step (12px at default) */
+		--kala-control-px-lg: calc(var(--kala-control-px) + 1rem); /* size-ladder step (32px at default) */
+		--kala-card-pad: 1.5rem; /* card header/body/footer padding */
+		--kala-radius-input: var(--kala-radius-control); /* inputs, selects — falls back to the control radius when unset */
+		/* Motion — every `transition-*` utility consumes these via the
+	   Tailwind default-transition chain, so one override retunes the whole library. */
+		--kala-duration-fast: 120ms;
+		--kala-duration-base: 150ms; /* matches Tailwind's default */
+		--kala-duration-slow: 200ms;
+		--kala-ease: cubic-bezier(0.4, 0, 0.2, 1); /* matches Tailwind's default */
+		--default-transition-duration: var(--kala-duration-base);
+		--default-transition-timing-function: var(--kala-ease);
+		--shadow-color: hsl(0 0% 0%);
+		--shadow-alpha: 0;
+		--shadow-spread: 0px;
+		--separator: hsl(211 27% 81%);
+		--success: hsl(142 76% 36%);
+		--success-foreground: hsl(355.7 100% 97.3%);
+		--warning: hsl(38 92% 50%);
+		--warning-foreground: hsl(355.7 100% 97.3%);
+		--error: hsl(0 72% 51%);
+		--error-foreground: hsl(355.7 100% 97.3%);
+		--info: hsl(190 90% 45%);
+		--info-foreground: hsl(355.7 100% 97.3%);
+		/* Presence — avatar status dots; dark-family themes brighten both. */
+		--online: #22c55e;
+		--offline: #64748b;
+
+		/* Derived alpha mixes — single source for every border/shadow/overlay/
+		   background color-mix consumer (globals body, @theme colors, kala-*
+		   surface classes). Lazy var() substitution keeps them theme-reactive. */
+		--kala-mix-background: color-mix(in oklab, var(--background), transparent calc((1 - var(--background-alpha, 1)) * 100%));
+		--kala-mix-border: color-mix(in oklab, var(--border), transparent calc((1 - var(--border-alpha, 1)) * 100%));
+		--kala-mix-card-border: color-mix(in oklab, var(--border), transparent calc((1 - var(--card-border-alpha, var(--border-alpha, 1))) * 100%));
+		--kala-mix-separator: color-mix(in oklab, var(--separator, var(--border)), transparent calc((1 - var(--border-alpha, 1)) * 100%));
+		--kala-mix-overlay: color-mix(in oklab, var(--overlay), transparent calc((1 - var(--overlay-alpha, 0.5)) * 100%));
+		--kala-mix-shadow: color-mix(in oklab, var(--shadow-color), transparent calc((1 - var(--shadow-alpha, 0)) * 100%));
+	}
+
+	/* Brand-variant example blocks — NOT shipped ThemeProvider themes.
+     They show how a consumer overrides tokens for a custom look; mobile
+     deliberately does not transcribe them (see generate-themes.mjs). */
+	.neutral {
+		--background: hsl(0 0% 100%);
+		--foreground: hsl(220 100% 11%);
+		--card: hsl(0 0% 100%);
+		--card-foreground: hsl(0 0% 9%);
+		--popover: hsl(0 0% 100%);
+		--popover-foreground: hsl(0 0% 9%);
+		--primary: hsl(0 0% 9%);
+		--primary-foreground: hsl(0 0% 98%);
+		--secondary: hsl(215 20.2% 65.1%);
+		--secondary-foreground: hsl(0 0% 98%);
+		--muted: hsl(215 25% 91%);
+		--muted-foreground: hsl(0 0% 45.1%);
+		--accent: hsl(0 0% 96.1%);
+		--accent-foreground: hsl(0 0% 9%);
+		--destructive: hsl(0 84.2% 60.2%);
+		--destructive-foreground: hsl(210 40% 98%);
+		--border: hsl(221 32% 43%);
+		--border-strong: hsl(221 15% 60%);
+		--border-alpha: 0.16;
+		--card-border-alpha: var(--border-alpha, 1);
+		--input: hsl(0 0% 89.8%);
+		--ring: hsl(0 0% 9%);
+		--ring-offset-color: hsl(0 0% 100%);
+		--shadow-color: hsl(221 38% 15%);
+		--shadow-alpha: 0.05;
+		--shadow-spread: 10px;
+		--separator: hsl(221 32% 43%);
+		--success: hsl(142 71% 45%);
+		--success-foreground: hsl(0 0% 98%);
+		--warning: hsl(48 96% 53%);
+		--warning-foreground: hsl(0 0% 98%);
+		--error: hsl(0 84.2% 60.2%);
+		--error-foreground: hsl(0 0% 98%);
+		--info: hsl(180 90% 45%);
+		--info-foreground: hsl(0 0% 98%);
+	}
+
+	.accent {
+		--background: hsl(0 0% 100%);
+		--card: hsl(0 0% 100%);
+		--popover: hsl(0 0% 100%);
+		--muted: hsl(215 25% 91%);
+		--muted-foreground: hsl(220 9% 46%);
+		--accent: hsl(220 14% 96%);
+		--accent-foreground: hsl(224 71% 4%);
+		--card-border-alpha: 0;
+		--ring-offset-color: hsl(0 0% 100%);
+		--shadow-color: hsl(219 81% 49%);
+		--shadow-alpha: 0.1;
+		--shadow-spread: 25px;
+	}
+
+	/* Dark Theme */
+	.dark {
+		--background: hsl(219 33% 12%);
+		--background-alpha: 1;
+		--foreground: hsl(215 18% 66%);
+		--card: hsl(219 31% 17%);
+		--card-foreground: hsl(210 40% 98%);
+		--popover: hsl(219 31% 17%);
+		--popover-foreground: hsl(210 40% 98%);
+		--primary: hsl(217.2 91.2% 59.8%);
+		--primary-foreground: hsl(222.2 47.4% 11.2%);
+		--secondary: hsl(215 20.2% 65.1%);
+		--secondary-foreground: hsl(222.2 47.4% 11.2%);
+		--muted: hsl(217.2 32.6% 17.5%);
+		--muted-foreground: hsl(215 20.2% 65.1%);
+		--accent: hsl(217.2 32.6% 17.5%);
+		--accent-foreground: hsl(210 40% 98%);
+		--destructive: hsl(0 62.8% 30.6%);
+		--destructive-foreground: hsl(210 40% 98%);
+		--border: hsl(221 32% 43%);
+		--border-strong: hsl(221 15% 60%);
+		--border-alpha: 0.16;
+		--card-border-alpha: var(--border-alpha, 1);
+		--input: hsl(217.2 32.6% 17.5%);
+		--ring: hsl(224.3 76.3% 48%);
+		--ring-offset-color: hsl(219 33% 12%);
+		--shadow-color: hsl(221 38% 15%);
+		--shadow-alpha: 0;
+		--shadow-spread: 0px;
+		--separator: hsl(221 32% 43%);
+		--overlay: hsl(0 0% 0%);
+		--overlay-alpha: 0.6;
+		--success: hsl(142 71% 45%);
+		--success-foreground: hsl(144 80% 8%);
+		--warning: hsl(48 96% 53%);
+		--warning-foreground: hsl(30 85% 10%);
+		--error: hsl(0 91% 71%);
+		--error-foreground: hsl(0 72% 10%);
+		--info: hsl(190 80% 60%);
+		--info-foreground: hsl(221 83% 10%);
+		--online: #4ade80;
+		--offline: #94a3b8;
+	}
+
+	.dark.accent {
+		--background: hsl(224 76% 48%);
+		--background-alpha: 0.05;
+		--card: hsl(219 31% 17%);
+		--popover: hsl(219 31% 17%);
+		--card-border-alpha: 0;
+		--ring-offset-color: hsl(219 33% 12%);
+		--shadow-color: hsl(224 76% 48%);
+		--shadow-alpha: 0.2;
+		--shadow-spread: 25px;
+	}
+
+	.high-contrast-light {
+		--background: hsl(0 0% 100%);
+		--background-alpha: 1;
+		--foreground: hsl(222.2 84% 4.9%);
+		--card: hsl(0 0% 100%);
+		--card-foreground: hsl(222.2 84% 4.9%);
+		--popover: hsl(0 0% 100%);
+		--popover-foreground: hsl(222.2 84% 4.9%);
+		--primary: hsl(221.2 83.2% 53.3%);
+		--primary-foreground: hsl(210 40% 98%);
+		--secondary: hsl(219 18% 55%);
+		--secondary-foreground: hsl(0 0% 100%);
+		--muted: hsl(210 40% 96.1%);
+		--muted-foreground: hsl(215.4 16.3% 46.9%);
+		--accent: hsl(210 40% 96.1%);
+		--accent-foreground: hsl(222.2 47.4% 11.2%);
+		--destructive: hsl(0 84.2% 60.2%);
+		--destructive-foreground: hsl(210 40% 98%);
+		--border: hsl(0 0% 0%);
+		--border-strong: hsl(0 0% 0%);
+		--border-alpha: 1;
+		--card-border-alpha: var(--border-alpha, 1);
+		--input: hsl(214.3 31.8% 91.4%);
+		--ring: hsl(221.2 83.2% 53.3%);
+		--ring-offset-color: hsl(0 0% 100%);
+		--shadow-color: hsl(0 0% 0%);
+		--shadow-alpha: 0;
+		--shadow-spread: 0px;
+		--separator: hsl(0 0% 0%);
+		--overlay: hsl(0 0% 0%);
+		--overlay-alpha: 0.6;
+		--success: hsl(142 76% 36%);
+		--success-foreground: hsl(355.7 100% 97.3%);
+		--warning: hsl(38 92% 50%);
+		--warning-foreground: hsl(355.7 100% 97.3%);
+		--error: hsl(0 72% 51%);
+		--error-foreground: hsl(355.7 100% 97.3%);
+		--info: hsl(190 90% 45%);
+		--info-foreground: hsl(355.7 100% 97.3%);
+		/* Presence — avatar status dots; dark-family themes brighten both. */
+		--online: #22c55e;
+		--offline: #64748b;
+	}
+
+	.high-contrast-dark {
+		--background: hsl(222.2 84% 4.9%);
+		--background-alpha: 1;
+		--foreground: hsl(210 40% 98%);
+		--card: hsl(222.2 84% 4.9%);
+		--card-foreground: hsl(210 40% 98%);
+		--popover: hsl(222.2 84% 4.9%);
+		--popover-foreground: hsl(210 40% 98%);
+		--primary: hsl(217.2 91.2% 59.8%);
+		--primary-foreground: hsl(222.2 47.4% 11.2%);
+		--secondary: hsl(215 20.2% 65.1%);
+		--secondary-foreground: hsl(222.2 47.4% 11.2%);
+		--muted: hsl(217.2 32.6% 17.5%);
+		--muted-foreground: hsl(215 20.2% 65.1%);
+		--accent: hsl(217.2 32.6% 17.5%);
+		--accent-foreground: hsl(210 40% 98%);
+		--destructive: hsl(0 62.8% 30.6%);
+		--destructive-foreground: hsl(210 40% 98%);
+		--border: hsl(0 0% 100%);
+		--border-strong: hsl(0 0% 100%);
+		--border-alpha: 1;
+		--card-border-alpha: var(--border-alpha, 1);
+		--input: hsl(217.2 32.6% 17.5%);
+		--ring: hsl(224.3 76.3% 48%);
+		--ring-offset-color: hsl(222.2 84% 4.9%);
+		--shadow-color: hsl(0 0% 0%);
+		--shadow-alpha: 0;
+		--shadow-spread: 0px;
+		--separator: hsl(0 0% 100%);
+		--overlay: hsl(0 0% 0%);
+		--overlay-alpha: 0.7;
+		--success: hsl(142 71% 45%);
+		--success-foreground: hsl(144 80% 8%);
+		--warning: hsl(48 96% 53%);
+		--warning-foreground: hsl(30 85% 10%);
+		--error: hsl(0 91% 71%);
+		--error-foreground: hsl(0 72% 10%);
+		--info: hsl(190 80% 60%);
+		--info-foreground: hsl(221 83% 10%);
+		--online: #4ade80;
+		--offline: #94a3b8;
+	}
+
+	/*
