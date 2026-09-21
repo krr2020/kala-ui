@@ -9,6 +9,8 @@ export interface AlertProps
 		VariantProps<typeof alertVariants> {
 	dismissible?: boolean;
 	onDismiss?: () => void;
+	/** Accessible name for the dismiss button; defaults to "Dismiss alert". */
+	dismissLabel?: string;
 	showIcon?: boolean;
 	isLoading?: boolean;
 	/** Render the consumer's element instead of the default div */

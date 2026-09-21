@@ -470,4 +470,35 @@ describe("Alert", () => {
 		expect(screen.getByRole("alert")).toBeInTheDocument();
 		expect(screen.getByText("Second message")).toBeInTheDocument();
 	});
+
+	it("should use dismissLabel for the dismiss button aria-label", () => {
+		const { rerender } = render(
+			<Alert dismissible dismissLabel="Cerrar aviso">
+				<AlertTitle>Mensaje</AlertTitle>
+			</Alert>,
+		);
+		expect(
+			screen.getByRole("button", { name: "Cerrar aviso" }),
+		).toBeInTheDocument();
+
+		rerender(
+			<Alert dismissible>
+				<AlertTitle>Mensaje</AlertTitle>
+			</Alert>,
+		);
+		expect(
+			screen.getByRole("button", { name: "Dismiss alert" }),
+		).toBeInTheDocument();
+	});
+
+	it("keeps the dismiss button addressable in the asChild arm", () => {
+		render(
+			<Alert asChild dismissible dismissLabel="Cerrar aviso">
+				<div data-testid="host">Mensaje</div>
+			</Alert>,
+		);
+		expect(
+			screen.getByRole("button", { name: "Cerrar aviso" }),
+		).toBeInTheDocument();
+	});
 });

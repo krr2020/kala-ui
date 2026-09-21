@@ -108,3 +108,37 @@ describe("semantic vocabulary (item 8)", () => {
 		);
 	});
 });
+
+describe("injected-content overrides (item 9)", () => {
+	it("dismiss/close buttons expose i18n label props", () => {
+		const alertTypes = read("../components/alert/alert.types.ts");
+		expect(alertTypes).toContain("dismissLabel?: string");
+		expect(read("../components/banner/banner.tsx")).toContain(
+			"dismissLabel?: string",
+		);
+		expect(read("../components/tag/tag.tsx")).toContain(
+			"dismissLabel?: string",
+		);
+		expect(read("../components/dialog/dialog.tsx")).toContain(
+			"closeLabel?: string",
+		);
+	});
+
+	it("input exposes toggleAriaLabels and icons overrides", () => {
+		const inputTypes = read("../components/input/input.types.ts");
+		expect(inputTypes).toContain("toggleAriaLabels?:");
+		expect(inputTypes).toContain("icons?:");
+		expect(read("../components/input/input.tsx")).toContain(
+			"toggleAriaLabels",
+		);
+	});
+
+	it("toast barrel exports the per-part type surface", () => {
+		expect(read("../components/toast/toast.tsx")).toContain(
+			"export type { ToastProps }",
+		);
+		expect(read("../components/toast/index.ts")).toContain(
+			"type ToastProps",
+		);
+	});
+});

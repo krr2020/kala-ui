@@ -8,6 +8,8 @@ type ToastProps = React.ComponentProps<typeof Sonner> & {
 	slotStyles?: SlotStyles;
 };
 
+export type { ToastProps };
+
 const DARK_THEMES: readonly ResolvedTheme[] = ["dark", "high-contrast-dark"];
 
 /**

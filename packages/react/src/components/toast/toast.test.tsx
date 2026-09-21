@@ -25,7 +25,7 @@ vi.mock("sonner", async () => {
 import { toast } from "sonner";
 import { Button } from "../button";
 import { ThemeProvider, useTheme } from "../theme-provider";
-import { Toast } from "./toast";
+import { buildToastClassNames, Toast, type ToastProps } from "./toast";
 
 // Sonner's toast store lives outside React, so toasts created in one test
 // re-render when the next test mounts a fresh <Toaster>; clear it between tests.
@@ -53,6 +53,16 @@ describe("Toast", () => {
 		it("accepts custom props", () => {
 			const { container } = render(<Toast position="top-right" />);
 			expect(container).toBeTruthy();
+		});
+	});
+
+	describe("Exported surface", () => {
+		it("exports the per-part type and the classNames builder", () => {
+			const props: ToastProps = { slotStyles: { toast: "bg-primary" } };
+			expect(props.slotStyles?.toast).toBe("bg-primary");
+			expect(buildToastClassNames(props.slotStyles).toast).toContain(
+				"bg-primary",
+			);
 		});
 	});
 

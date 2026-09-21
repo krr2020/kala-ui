@@ -194,4 +194,20 @@ describe("Banner", () => {
 		expect(link).toHaveAttribute("data-kala-component", "banner");
 		expect(link).toHaveClass("bg-info");
 	});
+
+	it("should use dismissLabel for the close button aria-label", () => {
+		const { rerender } = render(
+			<Banner onClose={vi.fn()} dismissLabel="Cerrar aviso">
+				Closable banner
+			</Banner>,
+		);
+		expect(
+			screen.getByRole("button", { name: "Cerrar aviso" }),
+		).toBeInTheDocument();
+
+		rerender(<Banner onClose={vi.fn()}>Closable banner</Banner>);
+		expect(
+			screen.getByRole("button", { name: "Close banner" }),
+		).toBeInTheDocument();
+	});
 });

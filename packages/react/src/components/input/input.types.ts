@@ -6,6 +6,10 @@ export interface InputProps extends React.ComponentProps<"input"> {
 	slotStyles?: SlotStyles;
 	/** Show password visibility toggle button (only for type="password") */
 	showPasswordToggle?: boolean;
+	/** Accessible labels for the password toggle; each field falls back to its stock English string. */
+	toggleAriaLabels?: { show?: string; hide?: string };
+	/** Glyph overrides for the password toggle; each field falls back to the stock Eye/EyeOff icon. */
+	icons?: { showPassword?: React.ReactNode; hidePassword?: React.ReactNode };
 	/** Prefix icon element */
 	prefixIcon?: React.ReactNode;
 	/** Suffix icon element */
@@ -14,8 +18,6 @@ export interface InputProps extends React.ComponentProps<"input"> {
 	hasError?: boolean;
 	/** Success state styling */
 	hasSuccess?: boolean;
-	/** Disable wrapper div (use when inside InputGroup) */
-	unstyled?: boolean;
 	/** Show loading skeleton */
 	isLoading?: boolean;
 }

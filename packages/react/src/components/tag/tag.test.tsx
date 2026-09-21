@@ -19,6 +19,18 @@ describe("Tag", () => {
 		expect(screen.getByLabelText("Remove")).toBeInTheDocument();
 	});
 
+	it("should use dismissLabel for the remove button aria-label", () => {
+		const { rerender } = render(
+			<Tag onRemove={vi.fn()} dismissLabel="Quitar">
+				React
+			</Tag>,
+		);
+		expect(screen.getByLabelText("Quitar")).toBeInTheDocument();
+
+		rerender(<Tag onRemove={vi.fn()}>React</Tag>);
+		expect(screen.getByLabelText("Remove")).toBeInTheDocument();
+	});
+
 	it("should call onRemove when remove button is clicked", async () => {
 		const user = userEvent.setup();
 		const handleRemove = vi.fn();

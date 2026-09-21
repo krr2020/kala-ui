@@ -20,6 +20,8 @@ export interface TagProps
 		VariantProps<typeof tagClasses> {
 	/** Show remove button */
 	onRemove?: () => void;
+	/** Accessible name for the remove button; defaults to "Remove". */
+	dismissLabel?: string;
 	/** Icon to show before label */
 	icon?: React.ReactNode;
 	/** Render the consumer's element instead of the default span */
@@ -38,6 +40,7 @@ function Tag({
 	shape,
 	asChild = false,
 	onRemove,
+	dismissLabel = "Remove",
 	icon,
 	children,
 	...props
@@ -71,7 +74,7 @@ function Tag({
 				<button
 					type="button"
 					onClick={onRemove}
-					aria-label="Remove"
+					aria-label={dismissLabel}
 					className={remove.className}
 					style={remove.style}
 				>

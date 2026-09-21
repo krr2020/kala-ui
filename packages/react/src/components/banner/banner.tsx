@@ -29,6 +29,8 @@ export interface BannerProps
 	extends Omit<React.ComponentProps<"div">, "color">,
 		VariantProps<typeof bannerClasses> {
 	onClose?: () => void;
+	/** Accessible name for the close button; defaults to "Close banner". */
+	dismissLabel?: string;
 	/**
 	 * ARIA role for the banner
 	 * @default 'status' - announces politely; use 'alert' for urgent messages
@@ -49,81 +51,82 @@ export interface BannerProps
 }
 
 export function Banner({
-className,
-style,
-slotStyles,
-variant,
-color,
-position,
-onClose,
-children,
-role = "status",
-isLoading = false,
-skeletonConfig,
-skeleton,
-asChild = false,
-...props
+	className,
+	style,
+	slotStyles,
+	variant,
+	color,
+	position,
+	onClose,
+	dismissLabel = "Close banner",
+	children,
+	role = "status",
+	isLoading = false,
+	skeletonConfig,
+	skeleton,
+	asChild = false,
+	...props
 }: BannerProps) {
-const root = applySlot(
-	cn(bannerClasses({ variant, color, position }), className),
-	slotStyles?.root,
-);
-const Comp = asChild ? Slot : "div";
-const rootStyle = mergeStyle(style, root.style);
-if (isLoading) {
-	if (skeleton) {
+	const root = applySlot(
+		cn(bannerClasses({ variant, color, position }), className),
+		slotStyles?.root,
+	);
+	const Comp = asChild ? Slot : "div";
+	const rootStyle = mergeStyle(style, root.style);
+	if (isLoading) {
+		if (skeleton) {
+			return (
+				<div
+					data-kala-component="banner"
+					className={root.className}
+					style={rootStyle}
+					role={role}
+					{...props}
+				>
+					{skeleton}
+				</div>
+			);
+		}
 		return (
-			<div
+			<BannerSkeleton
 				data-kala-component="banner"
 				className={root.className}
 				style={rootStyle}
-				role={role}
-				{...props}
-			>
-				{skeleton}
-			</div>
+				{...skeletonConfig}
+			/>
 		);
 	}
+
+	const actions = applySlot(bannerStyles.actions, slotStyles?.actions);
+	const close = applySlot(bannerStyles.close, slotStyles?.close);
+	const icon = applySlot(bannerStyles.icon, slotStyles?.icon);
+
 	return (
-		<BannerSkeleton
+		<Comp
 			data-kala-component="banner"
 			className={root.className}
 			style={rootStyle}
-			{...skeletonConfig}
-		/>
+			role={role}
+			{...props}
+		>
+			{asChild ? (
+				<Slottable>{children}</Slottable>
+			) : (
+				<div className={actions.className} style={actions.style}>
+					{children}
+				</div>
+			)}
+			{onClose && (
+				<button
+					type="button"
+					onClick={onClose}
+					className={close.className}
+					style={close.style}
+					aria-label={dismissLabel}
+				>
+					<X className={icon.className} style={icon.style} aria-hidden="true" />
+				</button>
+			)}
+		</Comp>
 	);
-}
-
-const actions = applySlot(bannerStyles.actions, slotStyles?.actions);
-const close = applySlot(bannerStyles.close, slotStyles?.close);
-const icon = applySlot(bannerStyles.icon, slotStyles?.icon);
-
-return (
-	<Comp
-		data-kala-component="banner"
-		className={root.className}
-		style={rootStyle}
-		role={role}
-		{...props}
-	>
-		{asChild ? (
-			<Slottable>{children}</Slottable>
-		) : (
-			<div className={actions.className} style={actions.style}>
-				{children}
-			</div>
-		)}
-		{onClose && (
-			<button
-				type="button"
-				onClick={onClose}
-				className={close.className}
-				style={close.style}
-				aria-label="Close banner"
-			>
-				<X className={icon.className} style={icon.style} aria-hidden="true" />
-			</button>
-		)}
-	</Comp>
-);
 }

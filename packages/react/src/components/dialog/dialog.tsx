@@ -78,10 +78,13 @@ function DialogContent({
 	children,
 	showCloseButton = true,
 	size = "md",
+	closeLabel = "Close",
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
 	showCloseButton?: boolean;
 	size?: "sm" | "md" | "lg" | "xl" | "full";
+	/** Accessible name for the close button; defaults to "Close". */
+	closeLabel?: string;
 	/** Per-part overrides: `root` wins over `className`/`style`; `overlay` targets the backdrop, `close` the close button, `closeIcon` its glyph. */
 	slotStyles?: SlotStyles;
 }) {
@@ -118,7 +121,7 @@ function DialogContent({
 							aria-hidden="true"
 						/>
 						<Text as="span" className="sr-only">
-							Close
+							{closeLabel}
 						</Text>
 					</DialogPrimitive.Close>
 				)}

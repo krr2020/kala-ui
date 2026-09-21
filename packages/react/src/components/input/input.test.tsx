@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Mail, Search } from "lucide-react";
+import { Eye, EyeOff, Mail, Search } from "lucide-react";
+import { inputStyles } from "../../config/input";
 import { describe, expect, it, vi } from "vitest";
 import { Button } from "../button";
 import { Input } from "./input";
@@ -138,15 +139,12 @@ describe("Input", () => {
 			const toggleButton = screen.getByLabelText("Show password");
 			const passwordInput = container.querySelector("input");
 
-			// Initially password type
 			expect(passwordInput).toHaveAttribute("type", "password");
 
-			// Click to show
 			await user.click(toggleButton);
 			expect(passwordInput).toHaveAttribute("type", "text");
 			expect(screen.getByLabelText("Hide password")).toBeInTheDocument();
 
-			// Click to hide again
 			await user.click(screen.getByLabelText("Hide password"));
 			expect(passwordInput).toHaveAttribute("type", "password");
 			expect(screen.getByLabelText("Show password")).toBeInTheDocument();
@@ -167,6 +165,96 @@ describe("Input", () => {
 			await user.click(toggleButton);
 
 			expect(handleSubmit).not.toHaveBeenCalled();
+		});
+
+		it("uses custom aria-labels from toggleAriaLabels", async () => {
+			const user = userEvent.setup();
+			render(
+				<Input
+					type="password"
+					showPasswordToggle
+					toggleAriaLabels={{
+						show: "Passwort zeigen",
+						hide: "Passwort verbergen",
+					}}
+				/>,
+			);
+
+			expect(screen.getByLabelText("Passwort zeigen")).toBeInTheDocument();
+
+			await user.click(screen.getByLabelText("Passwort zeigen"));
+			expect(screen.getByLabelText("Passwort verbergen")).toBeInTheDocument();
+		});
+
+		it("falls back per key when only show is customized", async () => {
+			const user = userEvent.setup();
+			render(
+				<Input
+					type="password"
+					showPasswordToggle
+					toggleAriaLabels={{ show: "Passwort zeigen" }}
+				/>,
+			);
+
+			expect(screen.getByLabelText("Passwort zeigen")).toBeInTheDocument();
+
+			await user.click(screen.getByLabelText("Passwort zeigen"));
+			expect(screen.getByLabelText("Hide password")).toBeInTheDocument();
+		});
+
+		it("falls back per key when only hide is customized", async () => {
+			const user = userEvent.setup();
+			render(
+				<Input
+					type="password"
+					showPasswordToggle
+					toggleAriaLabels={{ hide: "Passwort verbergen" }}
+				/>,
+			);
+
+			expect(screen.getByLabelText("Show password")).toBeInTheDocument();
+
+			await user.click(screen.getByLabelText("Show password"));
+			expect(screen.getByLabelText("Passwort verbergen")).toBeInTheDocument();
+		});
+
+		it("falls back per key when only the hide glyph is customized", async () => {
+			const user = userEvent.setup();
+			render(
+				<Input
+					type="password"
+					showPasswordToggle
+					icons={{ hidePassword: <EyeOff data-testid="custom-hide" /> }}
+					toggleAriaLabels={{ show: "show", hide: "hide" }}
+				/>,
+			);
+
+			const toggle = screen.getByRole("button", { name: "show" });
+			expect(toggle.querySelector("svg")).toBeInTheDocument();
+			expect(toggle.querySelector("[data-testid='custom-hide']")).toBeNull();
+
+			await user.click(toggle);
+			expect(screen.getByTestId("custom-hide")).toBeInTheDocument();
+		});
+
+		it("renders custom icons from the icons prop and swaps them on click", async () => {
+			const user = userEvent.setup();
+			render(
+				<Input
+					type="password"
+					showPasswordToggle
+					icons={{
+						showPassword: <EyeOff data-testid="custom-show" />,
+						hidePassword: <Eye data-testid="custom-hide" />,
+					}}
+					toggleAriaLabels={{ show: "show", hide: "hide" }}
+				/>,
+			);
+
+			expect(screen.getByTestId("custom-show")).toBeInTheDocument();
+
+			await user.click(screen.getByLabelText("show"));
+			expect(screen.getByTestId("custom-hide")).toBeInTheDocument();
 		});
 	});
 
@@ -212,6 +300,59 @@ describe("Input", () => {
 			);
 			expect(screen.getByTestId("mail-icon")).toBeInTheDocument();
 			expect(screen.getByLabelText("Show password")).toBeInTheDocument();
+		});
+	});
+
+	describe("Adornment wrapper semantics", () => {
+		it("exposes the part addresses in the style table for slot overrides", () => {
+			const parts = [
+				inputStyles.wrapper,
+				inputStyles.prefix,
+				inputStyles.suffix,
+				inputStyles.toggle,
+			];
+			for (const part of parts) expect(part, String(part)).toBeTruthy();
+		});
+		it("always houses a prefix icon in the wrapper", () => {
+			const { container } = render(
+				<Input prefixIcon={<Search data-testid="search-icon" />} />,
+			);
+
+			expect(
+				container.querySelector('div[data-kala-component="input"]'),
+			).toBeInTheDocument();
+			expect(screen.getByTestId("search-icon")).toBeInTheDocument();
+		});
+
+		it("always houses a suffix icon in the wrapper", () => {
+			const { container } = render(
+				<Input suffixIcon={<Mail data-testid="mail-icon" />} />,
+			);
+
+			expect(
+				container.querySelector('div[data-kala-component="input"]'),
+			).toBeInTheDocument();
+			expect(screen.getByTestId("mail-icon")).toBeInTheDocument();
+		});
+
+		it("always houses the password toggle in the wrapper", () => {
+			const { container } = render(
+				<Input type="password" showPasswordToggle />,
+			);
+
+			expect(
+				container.querySelector('div[data-kala-component="input"]'),
+			).toBeInTheDocument();
+			expect(screen.getByLabelText("Show password")).toBeInTheDocument();
+		});
+
+		it("renders the bare input with no adornments and no wrapper", () => {
+			const { container } = render(<Input />);
+
+			expect(
+				container.querySelector('div[data-kala-component="input"]'),
+			).not.toBeInTheDocument();
+			expect(screen.getByRole("textbox").tagName).toBe("INPUT");
 		});
 	});
 

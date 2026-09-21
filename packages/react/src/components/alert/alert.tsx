@@ -41,6 +41,7 @@ function Alert({
 	color = "primary",
 	dismissible = false,
 	onDismiss,
+	dismissLabel = "Dismiss alert",
 	showIcon = true,
 	asChild = false,
 	children,
@@ -150,14 +151,14 @@ function Alert({
 					onClick={handleDismiss}
 					className={dismiss.className}
 					style={dismiss.style}
-					aria-label="Dismiss alert"
+					aria-label={dismissLabel}
 				>
 					<X className="h-4 w-4" />
 				</Box>
 			)}
-			</Comp>
-		);
-	}
+		</Comp>
+	);
+}
 
 function AlertTitle({
 	className,
@@ -183,7 +184,10 @@ function AlertDescription({
 	slotStyles,
 	...props
 }: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
-	const root = applySlot(cn(alertStyles.description, className), slotStyles?.root);
+	const root = applySlot(
+		cn(alertStyles.description, className),
+		slotStyles?.root,
+	);
 	return (
 		<Box
 			data-kala-component="alert-description"

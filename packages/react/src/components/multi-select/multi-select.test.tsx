@@ -1,6 +1,7 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { multiSelectStyles } from "../../config/multi-select";
 import { MultiSelect, type MultiSelectOption } from "./multi-select";
 
 const mockOptions: MultiSelectOption[] = [
@@ -37,6 +38,17 @@ it("sizes the root from the control-height knob", () => {
 	expect(container.querySelector('[data-slot="multi-select"]')).toHaveClass(
 		"min-h-[var(--kala-control-h)]",
 	);
+});
+
+it("exposes chip part addresses in the style table for slot overrides", () => {
+	const chipParts = [
+		multiSelectStyles.chip,
+		multiSelectStyles.chipIcon,
+		multiSelectStyles.chipRemove,
+		multiSelectStyles.chipRemoveIcon,
+		multiSelectStyles.overflowChip,
+	];
+	for (const part of chipParts) expect(part, String(part)).toBeTruthy();
 });
 
 describe("MultiSelect", () => {

@@ -154,4 +154,28 @@ describe("Dialog", () => {
 		const content = document.body.querySelector('[data-slot="dialog-content"]');
 		expect(content).toHaveClass("sm:rounded-[var(--kala-radius-card)]");
 	});
+
+	it("should use closeLabel for the close button's accessible name", () => {
+		const { rerender } = render(
+			<Dialog open>
+				<DialogContent closeLabel="Cerrar">
+					<DialogHeader>
+						<DialogTitle>Diálogo</DialogTitle>
+					</DialogHeader>
+				</DialogContent>
+			</Dialog>,
+		);
+		expect(screen.getByRole("button", { name: "Cerrar" })).toBeInTheDocument();
+
+		rerender(
+			<Dialog open>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Diálogo</DialogTitle>
+					</DialogHeader>
+				</DialogContent>
+			</Dialog>,
+		);
+		expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+	});
 });

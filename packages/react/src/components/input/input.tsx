@@ -25,11 +25,12 @@ export function Input({
 	slotStyles,
 	type: typeProp = "text",
 	showPasswordToggle = false,
+	toggleAriaLabels,
+	icons,
 	prefixIcon,
 	suffixIcon,
 	hasError = false,
 	hasSuccess = false,
-	unstyled = false,
 	isLoading = false,
 	...props
 }: InputProps) {
@@ -76,8 +77,10 @@ export function Input({
 		);
 	}
 
-	// Simple input without wrapper (for InputGroup compatibility)
-	if (unstyled || (!hasPrefix && !hasSuffix)) {
+	// Simple input without wrapper (for InputGroup compatibility): the
+	// wrapper is an adornment host, so it only earns its existence when an
+	// adornment actually needs housing.
+	if (!hasPrefix && !hasSuffix) {
 		return (
 			<input
 				data-kala-component="input"
@@ -124,13 +127,15 @@ export function Input({
 							onClick={() => setShowPassword(!showPassword)}
 							className={toggle.className}
 							style={toggle.style}
-							aria-label={showPassword ? "Hide password" : "Show password"}
+							aria-label={
+								showPassword
+									? (toggleAriaLabels?.hide ?? "Hide password")
+									: (toggleAriaLabels?.show ?? "Show password")
+							}
 						>
-							{showPassword ? (
-								<EyeOff className="h-5 w-5" />
-							) : (
-								<Eye className="h-5 w-5" />
-							)}
+							{showPassword
+								? (icons?.hidePassword ?? <EyeOff className="h-5 w-5" />)
+								: (icons?.showPassword ?? <Eye className="h-5 w-5" />)}
 						</button>
 					)}
 
