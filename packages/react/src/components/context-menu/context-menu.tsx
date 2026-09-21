@@ -35,13 +35,7 @@ function ContextMenuTrigger({
 function ContextMenuPortal({
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Portal>) {
-	return (
-		<ContextMenuPrimitive.Portal
-			data-kala-component="context-menu-portal"
-			data-slot="context-menu-portal"
-			{...props}
-		/>
-	);
+	return <ContextMenuPrimitive.Portal {...props} />;
 }
 
 function ContextMenuContent({

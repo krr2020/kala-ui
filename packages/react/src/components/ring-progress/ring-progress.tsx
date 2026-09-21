@@ -1,4 +1,5 @@
 import type * as React from "react";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 
 export interface RingProgressProps extends React.ComponentProps<"div"> {
@@ -18,11 +19,14 @@ export interface RingProgressProps extends React.ComponentProps<"div"> {
 	roundCaps?: boolean;
 	/** Sections for multiple segments [{ value: 20, color: 'text-red-500' }] */
 	sections?: { value: number; color: string; tooltip?: React.ReactNode }[];
+	/** Per-part overrides: `root` wins over `className`/`style`; `label` targets the centered label wrapper. */
+	slotStyles?: SlotStyles;
 }
 
 export function RingProgress({
 	ref,
 	className,
+	style,
 	value,
 	size = 120,
 	thickness = 12,
@@ -31,10 +35,20 @@ export function RingProgress({
 	label,
 	roundCaps = true,
 	sections,
+	slotStyles,
 	...props
 }: RingProgressProps) {
 	const radius = (size - thickness) / 2;
 	const circumference = radius * 2 * Math.PI;
+
+	const root = applySlot(
+		cn("relative flex items-center justify-center", className),
+		slotStyles?.root,
+	);
+	const labelSlot = applySlot(
+		"absolute inset-0 flex items-center justify-center",
+		slotStyles?.label,
+	);
 
 	const segments = sections || (value !== undefined ? [{ value, color }] : []);
 
@@ -73,8 +87,8 @@ export function RingProgress({
 			aria-valuenow={Math.min(100, Math.round(accumulatedValue))}
 			aria-valuemin={0}
 			aria-valuemax={100}
-			className={cn("relative flex items-center justify-center", className)}
-			style={{ width: size, height: size }}
+			className={root.className}
+			style={mergeStyle({ ...style, width: size, height: size }, root.style)}
 			{...props}
 		>
 			<svg width={size} height={size} className="transform" aria-hidden="true">
@@ -93,7 +107,7 @@ export function RingProgress({
 			</svg>
 
 			{label && (
-				<div className="absolute inset-0 flex items-center justify-center">
+				<div className={labelSlot.className} style={labelSlot.style}>
 					{label}
 				</div>
 			)}

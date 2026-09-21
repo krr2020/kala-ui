@@ -28,6 +28,7 @@
 	/* Light Theme (default) */
 	:root {
 		--background: hsl(0 0% 100%);
+		--background-alpha: 1;
 		--foreground: hsl(220 100% 11%);
 		--card: hsl(0 0% 100%);
 		--card-foreground: hsl(222.2 84% 4.9%);
@@ -81,6 +82,9 @@
 		--error-foreground: hsl(355.7 100% 97.3%);
 		--info: hsl(190 90% 45%);
 		--info-foreground: hsl(355.7 100% 97.3%);
+		/* Presence — avatar status dots; dark-family themes brighten both. */
+		--online: #22c55e;
+		--offline: #64748b;
 	}
 
 	/* Brand-variant example blocks — NOT shipped ThemeProvider themes.
@@ -142,6 +146,7 @@
 	/* Dark Theme */
 	.dark {
 		--background: hsl(219 33% 12%);
+		--background-alpha: 1;
 		--foreground: hsl(215 18% 66%);
 		--card: hsl(219 31% 17%);
 		--card-foreground: hsl(210 40% 98%);
@@ -178,6 +183,8 @@
 		--error-foreground: hsl(0 72% 10%);
 		--info: hsl(190 80% 60%);
 		--info-foreground: hsl(221 83% 10%);
+		--online: #4ade80;
+		--offline: #94a3b8;
 	}
 
 	.dark.accent {
@@ -194,6 +201,7 @@
 
 	.high-contrast-light {
 		--background: hsl(0 0% 100%);
+		--background-alpha: 1;
 		--foreground: hsl(222.2 84% 4.9%);
 		--card: hsl(0 0% 100%);
 		--card-foreground: hsl(222.2 84% 4.9%);
@@ -230,10 +238,14 @@
 		--error-foreground: hsl(355.7 100% 97.3%);
 		--info: hsl(190 90% 45%);
 		--info-foreground: hsl(355.7 100% 97.3%);
+		/* Presence — avatar status dots; dark-family themes brighten both. */
+		--online: #22c55e;
+		--offline: #64748b;
 	}
 
 	.high-contrast-dark {
 		--background: hsl(222.2 84% 4.9%);
+		--background-alpha: 1;
 		--foreground: hsl(210 40% 98%);
 		--card: hsl(222.2 84% 4.9%);
 		--card-foreground: hsl(210 40% 98%);
@@ -270,6 +282,8 @@
 		--error-foreground: hsl(0 72% 10%);
 		--info: hsl(190 80% 60%);
 		--info-foreground: hsl(221 83% 10%);
+		--online: #4ade80;
+		--offline: #94a3b8;
 	}
 
 	/*

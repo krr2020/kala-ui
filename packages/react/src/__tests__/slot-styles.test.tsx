@@ -7,7 +7,7 @@
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { Alert } from "../components/alert";
 import { Badge } from "../components/badge";
@@ -41,6 +41,7 @@ import { Banner } from "../components/banner";
 import { AvatarGroup } from "../components/avatar-group";
 import { Progress } from "../components/progress";
 import { EmptyState } from "../components/empty-state";
+import { RingProgress } from "../components/ring-progress";
 import { applySlot, mergeStyle } from "../lib/slot-styles";
 
 describe("applySlot / mergeStyle units", () => {
@@ -448,9 +449,73 @@ describe("DatePicker slotStyles", () => {
 		);
 		expect(
 			container.querySelector(
-				'[data-kala-component="date-picker-date-range-picker"]',
+				'[data-kala-component="date-range-picker"]',
 			),
 		).toHaveClass("w-64");
+	});
+});
+
+describe("RingProgress slotStyles", () => {
+	it("string root slot beats legacy className and keeps base classes", () => {
+		const { container } = render(
+			<RingProgress
+				value={50}
+				className="w-10"
+				slotStyles={{ root: "k-slot-root w-64" }}
+			/>,
+		);
+		const el = container.querySelector('[data-kala-component="ring-progress"]');
+		expect(el?.className).toContain("k-slot-root");
+		expect(el?.className).toContain("w-64");
+		expect(el?.className).not.toContain("w-10");
+		expect(el?.className).toContain("relative");
+	});
+
+	it("object root slot wins per key over the style prop and keeps the size style", () => {
+		const { container } = render(
+			<RingProgress
+				value={50}
+				style={{ marginTop: "1px" }}
+				slotStyles={{ root: { marginTop: "9px", maxWidth: "42px" } }}
+			/>,
+		);
+		const el = container.querySelector<HTMLDivElement>(
+				'[data-kala-component="ring-progress"]',
+		);
+		expect(el?.style.marginTop).toBe("9px");
+		expect(el?.style.maxWidth).toBe("42px");
+		expect(el?.style.width).toBe("120px");
+	});
+
+	it("label slot reaches the centered label wrapper", () => {
+		const { container } = render(
+			<RingProgress value={50} label="half" slotStyles={{ label: "my-lbl" }} />,
+		);
+		const wrapper = container.querySelector(
+			'[data-kala-component="ring-progress"] > div',
+		);
+		expect(wrapper).toHaveClass("my-lbl");
+		expect(wrapper?.className).toContain("absolute");
+	});
+
+	it("never leaks slotStyles to the DOM", () => {
+		const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+		const { container } = render(
+			<RingProgress value={50} label="x" slotStyles={{ root: "p-1", label: "p-2" }} />,
+		);
+		expect(container.innerHTML).not.toContain("slotStyles");
+		const leaked = errorSpy.mock.calls.filter((c) =>
+			String(c[0]).includes("slotStyles"),
+		);
+		expect(leaked).toEqual([]);
+		errorSpy.mockRestore();
+	});
+
+	it("absent slotStyles renders the pre-change root class string", () => {
+		const { container } = render(<RingProgress value={50} />);
+		expect(
+			container.querySelector('[data-kala-component="ring-progress"]')?.className,
+		).toBe("relative flex items-center justify-center");
 	});
 });
 

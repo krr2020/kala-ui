@@ -35,6 +35,7 @@ Define all of these in `:root` and the dark block (values differ, names same).
 | `--warning` / `--warning-foreground` | warning semantic |
 | `--error` / `--error-foreground` | error semantic |
 | `--info` / `--info-foreground` | info semantic |
+| `--online` / `--offline` | presence — avatar status dots |
 | `--border` | default 1px hairline |
 | `--border-strong` | stronger hairline (table headers/separators) |
 | `--input` | input border |

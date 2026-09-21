@@ -41,13 +41,7 @@ function AlertDialogTrigger({
 function AlertDialogPortal({
 	...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Portal>) {
-	return (
-		<AlertDialogPrimitive.Portal
-			data-kala-component="alert-dialog-portal"
-			data-slot="alert-dialog-portal"
-			{...props}
-		/>
-	);
+	return <AlertDialogPrimitive.Portal {...props} />;
 }
 
 function AlertDialogOverlay({

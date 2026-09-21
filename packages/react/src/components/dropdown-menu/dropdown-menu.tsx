@@ -23,13 +23,7 @@ function DropdownMenu({
 function DropdownMenuPortal({
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Portal>) {
-	return (
-		<DropdownMenuPrimitive.Portal
-			data-kala-component="dropdown-menu-portal"
-			data-slot="dropdown-menu-portal"
-			{...props}
-		/>
-	);
+	return <DropdownMenuPrimitive.Portal {...props} />;
 }
 
 function DropdownMenuTrigger({
@@ -56,8 +50,9 @@ function DropdownMenuContent({
 }) {
 	const root = applySlot(dropdownMenuStyles.content, slotStyles?.root);
 	return (
-		<DropdownMenuPrimitive.Portal data-kala-component="dropdown-menu-content">
+		<DropdownMenuPrimitive.Portal>
 			<DropdownMenuPrimitive.Content
+				data-kala-component="dropdown-menu-content"
 				data-slot="dropdown-menu-content"
 				sideOffset={sideOffset}
 				className={cn(root.className, className)}

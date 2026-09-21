@@ -41,9 +41,7 @@ function DrawerTrigger({
 function DrawerPortal({
 	...props
 }: React.ComponentProps<typeof DrawerPrimitive.Portal>) {
-	return (
-		<DrawerPrimitive.Portal data-kala-component="drawer-portal" {...props} />
-	);
+	return <DrawerPrimitive.Portal {...props} />;
 }
 
 function DrawerClose({

@@ -11,26 +11,18 @@ function TooltipProvider({
 	delayDuration = 0,
 	...props
 }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
+	// Provider renders no DOM node, so it carries no marker — the visible
+	// parts (trigger, content) are the addressable surfaces.
 	return (
-		<TooltipPrimitive.Provider
-			data-kala-component="tooltip-provider"
-			data-slot="tooltip-provider"
-			delayDuration={delayDuration}
-			{...props}
-		/>
+		<TooltipPrimitive.Provider delayDuration={delayDuration} {...props} />
 	);
 }
 
 function Tooltip({
 	...props
 }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
-	return (
-		<TooltipPrimitive.Root
-			data-kala-component="tooltip"
-			data-slot="tooltip"
-			{...props}
-		/>
-	);
+	// Root is context-only (no DOM); marker lives on trigger + content.
+	return <TooltipPrimitive.Root {...props} />;
 }
 
 function TooltipTrigger({
@@ -59,8 +51,9 @@ function TooltipContent({
 	const root = applySlot(tooltipStyles.content, slotStyles?.root ?? null);
 	const arrow = applySlot(tooltipStyles.arrow, slotStyles?.arrow);
 	return (
-		<TooltipPrimitive.Portal data-kala-component="tooltip-content">
+		<TooltipPrimitive.Portal>
 			<TooltipPrimitive.Content
+				data-kala-component="tooltip-content"
 				data-slot="tooltip-content"
 				sideOffset={sideOffset}
 				className={cn(root.className, className)}

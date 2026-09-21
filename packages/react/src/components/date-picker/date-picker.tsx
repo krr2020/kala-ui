@@ -80,11 +80,10 @@ export function DatePicker({
 
 	return (
 		<Popover
-			data-kala-component="date-picker"
 			open={open}
 			onOpenChange={setOpen}
 		>
-			<PopoverTrigger asChild>
+			<PopoverTrigger asChild data-kala-component="date-picker">
 				<Button
 					variant="outline"
 					className={trigger.className}
@@ -180,7 +179,7 @@ export function DateRangePicker({
 		);
 		return (
 			<Skeleton
-				data-kala-component="date-picker-date-range-picker"
+				data-kala-component="date-range-picker"
 				className={skeletonRoot.className}
 			/>
 		);
@@ -198,11 +197,10 @@ export function DateRangePicker({
 
 	return (
 		<Popover
-			data-kala-component="date-picker-date-range-picker"
 			open={open}
 			onOpenChange={handleOpenChange}
 		>
-			<PopoverTrigger asChild>
+			<PopoverTrigger asChild data-kala-component="date-range-picker">
 				<Button
 					variant="outline"
 					className={trigger.className}

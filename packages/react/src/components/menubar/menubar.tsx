@@ -127,8 +127,9 @@ function MenubarContent({
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.Content>) {
 	return (
-		<MenubarPrimitive.Portal data-kala-component="menubar-content">
+		<MenubarPrimitive.Portal>
 			<MenubarPrimitive.Content
+				data-kala-component="menubar-content"
 				data-slot="menubar-content"
 				align={align}
 				alignOffset={alignOffset}
@@ -327,13 +328,7 @@ function MenubarGroup({
 function MenubarPortal({
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.Portal>) {
-	return (
-		<MenubarPrimitive.Portal
-			data-kala-component="menubar-portal"
-			data-slot="menubar-portal"
-			{...props}
-		/>
-	);
+	return <MenubarPrimitive.Portal {...props} />;
 }
 
 export {

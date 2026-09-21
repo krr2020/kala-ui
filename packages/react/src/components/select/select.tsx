@@ -173,9 +173,10 @@ function SelectContent({
 		slotStyles?.root,
 	);
 	return (
-		<SelectPrimitive.Portal data-kala-component="select-content">
+		<SelectPrimitive.Portal>
 			<SelectPrimitive.Content
 				ref={ref}
+				data-kala-component="select-content"
 				data-slot="select-content"
 				className={root.className}
 				style={mergeStyle(style, root.style)}

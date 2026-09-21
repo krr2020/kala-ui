@@ -9,12 +9,6 @@ export interface ButtonProps
 	asChild?: boolean;
 	/** Per-part style overrides: `root` wins over the legacy `className`/`style`; `spinner` targets the loading icon. */
 	slotStyles?: SlotStyles;
-	/** Optional translation key for button text */
-	translationKey?: string;
-	/** Optional translation key for loading state text */
-	loadingTextKey?: string;
-	/** Optional translation key for disabled state text */
-	disabledTextKey?: string;
 	/** Whether button is in loading state */
 	isLoading?: boolean;
 }

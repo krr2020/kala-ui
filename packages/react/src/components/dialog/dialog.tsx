@@ -36,13 +36,7 @@ function DialogTrigger({
 function DialogPortal({
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Portal>) {
-	return (
-		<DialogPrimitive.Portal
-			data-kala-component="dialog-portal"
-			data-slot="dialog-portal"
-			{...props}
-		/>
-	);
+	return <DialogPrimitive.Portal {...props} />;
 }
 
 function DialogClose({
@@ -102,12 +96,10 @@ function DialogContent({
 	const closeIcon = applySlot(dialogStyles.closeIcon, slotStyles?.closeIcon);
 
 	return (
-		<DialogPortal
-			data-kala-component="dialog-content"
-			data-slot="dialog-portal"
-		>
+		<DialogPortal>
 			<DialogOverlay slotStyles={{ root: slotStyles?.overlay }} />
 			<DialogPrimitive.Content
+				data-kala-component="dialog-content"
 				data-slot="dialog-content"
 				className={root.className}
 				style={mergeStyle(style, root.style)}
