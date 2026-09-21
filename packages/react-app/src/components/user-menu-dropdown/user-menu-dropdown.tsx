@@ -10,40 +10,12 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@kala-ui/react/dropdown-menu";
+import { useSlotStyles } from "@kala-ui/react/kala-provider";
+import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
+import { userMenuDropdownStyles } from "../../config/user-menu-dropdown";
 import { LogOut, Settings, User } from "lucide-react";
-
-export interface UserMenuDropdownProps
-	extends Omit<React.ComponentProps<"button">, "color"> {
-	/**
-	 * User information to display
-	 */
-	user: {
-		name?: string;
-		email?: string;
-		avatar?: string;
-	};
-	/**
-	 * Whether the dropdown is currently open
-	 */
-	isOpen?: boolean;
-	/**
-	 * Callback when dropdown open state changes
-	 */
-	onOpenChange?: (open: boolean) => void;
-	/**
-	 * Callback when logout is clicked
-	 */
-	onLogout?: () => void;
-	/**
-	 * Base URL for navigation links (default: '/admin')
-	 */
-	baseUrl?: string;
-	/**
-	 * Additional CSS classes for the trigger button
-	 */
-	className?: string;
-}
+import type { UserMenuDropdownProps } from "./user-menu-dropdown.types";
 
 export function UserMenuDropdown({
 	user,
@@ -52,9 +24,12 @@ export function UserMenuDropdown({
 	onLogout,
 	baseUrl = "/admin",
 	className,
+	style,
+	slotStyles: slotStylesRaw,
 	ref,
 	...props
 }: UserMenuDropdownProps) {
+	const slotStyles = useSlotStyles("user-menu-dropdown", slotStylesRaw);
 	const initials = user.name
 		? user.name
 				.split(" ")
@@ -76,6 +51,27 @@ export function UserMenuDropdown({
 		onLogout?.();
 	};
 
+	const trigger = applySlot(
+		cn(userMenuDropdownStyles.trigger, className),
+		slotStyles?.trigger,
+	);
+	const avatar = applySlot(userMenuDropdownStyles.avatar, slotStyles?.avatar);
+	const avatarFallback = applySlot(
+		userMenuDropdownStyles.avatarFallback,
+		slotStyles?.avatarFallback,
+	);
+	const content = applySlot(
+		userMenuDropdownStyles.content,
+		slotStyles?.content,
+	);
+	const label = applySlot(userMenuDropdownStyles.label, slotStyles?.label);
+	const name = applySlot(userMenuDropdownStyles.name, slotStyles?.name);
+	const email = applySlot(userMenuDropdownStyles.email, slotStyles?.email);
+	const itemIcon = applySlot(
+		userMenuDropdownStyles.itemIcon,
+		slotStyles?.itemIcon,
+	);
+
 	return (
 		<DropdownMenu
 			data-kala-component="user-menu-dropdown"
@@ -86,28 +82,38 @@ export function UserMenuDropdown({
 				<Button
 					variant="ghost"
 					ref={ref}
-					className={cn("h-auto p-1 rounded-full hover:bg-accent", className)}
+					className={trigger.className}
+					style={trigger.style}
 					aria-label="User menu"
 					{...props}
 				>
-					<Avatar className="size-8">
+					<Avatar className={avatar.className} style={avatar.style}>
 						{user.avatar && (
 							<AvatarImage src={user.avatar} alt={user.name ?? "User"} />
 						)}
-						<AvatarFallback className="bg-primary text-primary-foreground text-sm font-medium">
+						<AvatarFallback
+							className={avatarFallback.className}
+							style={avatarFallback.style}
+						>
 							{initials}
 						</AvatarFallback>
 					</Avatar>
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align="end" className="w-56">
+			<DropdownMenuContent
+				align="end"
+				className={content.className}
+				style={content.style}
+			>
 				<DropdownMenuLabel>
-					<div className="flex flex-col space-y-1">
+					<div className={label.className} style={label.style}>
 						{user.name && (
-							<p className="text-sm font-medium leading-none">{user.name}</p>
+							<p className={name.className} style={name.style}>
+								{user.name}
+							</p>
 						)}
 						{user.email && (
-							<p className="text-xs text-muted-foreground leading-none">
+							<p className={email.className} style={email.style}>
 								{user.email}
 							</p>
 						)}
@@ -115,16 +121,16 @@ export function UserMenuDropdown({
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem onClick={handleProfileClick}>
-					<User className="mr-2 size-4" />
+					<User className={itemIcon.className} />
 					Profile
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={handleSettingsClick}>
-					<Settings className="mr-2 size-4" />
+					<Settings className={itemIcon.className} />
 					Settings
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem onClick={handleLogoutClick} color="destructive">
-					<LogOut className="mr-2 size-4" />
+					<LogOut className={itemIcon.className} />
 					Logout
 				</DropdownMenuItem>
 			</DropdownMenuContent>

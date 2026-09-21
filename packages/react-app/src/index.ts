@@ -13,7 +13,6 @@ export * from "./components/navigation";
 export * from "./components/session-card";
 export * from "./components/sidebar";
 export * from "./components/social-login-button";
-export * from "./components/social-login-buttons";
 export * from "./components/sparkline-chart";
 export * from "./components/user-menu-dropdown";
 export { isActivePath } from "./lib/active-path";

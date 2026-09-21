@@ -1,3 +1,4 @@
+import type { SlotStyles } from "@kala-ui/react/lib/slot-styles";
 import type { MetricCardSkeletonConfig } from "@kala-ui/react/skeleton";
 import type * as React from "react";
 
@@ -20,4 +21,6 @@ export interface MetricCardProps
 	isLoading?: boolean;
 	skeletonConfig?: MetricCardSkeletonConfig;
 	skeleton?: React.ReactNode;
+	/** Per-part overrides: root, body, head, title, icon, value, meta, change, subtitle. */
+	slotStyles?: SlotStyles;
 }

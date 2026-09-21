@@ -1,12 +1,10 @@
-/**
- * Session Card Component
- * Displays information about an active session with device, browser, location, and last activity
- */
-
 import { Button } from "@kala-ui/react/button";
 import { Card, CardContent, CardHeader } from "@kala-ui/react/card";
+import { useSlotStyles } from "@kala-ui/react/kala-provider";
+import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
-import type { SessionCardSkeletonConfig } from "@kala-ui/react/skeleton";
+import { sessionCardStyles } from "../../config/session-card";
+import type * as React from "react";
 import {
 	Clock,
 	HelpCircle,
@@ -16,30 +14,8 @@ import {
 	Tablet,
 	Wifi,
 } from "lucide-react";
-import type * as React from "react";
 import { SessionCardSkeleton } from "./session-card-skeleton";
-
-export interface SessionData {
-	id: string;
-	device: string;
-	browser: string;
-	os: string;
-	location?: string;
-	ip: string;
-	lastActiveAt: string;
-	createdAt: string;
-	isCurrent: boolean;
-}
-
-export interface SessionCardProps extends React.ComponentProps<"div"> {
-	session: SessionData;
-	onRevoke?: (sessionId: string) => void | Promise<void>;
-	isRevoking?: boolean;
-	className?: string;
-	isLoading?: boolean;
-	skeletonConfig?: SessionCardSkeletonConfig;
-	skeleton?: React.ReactNode;
-}
+import type { SessionCardProps, SessionData } from "./session-card.types";
 
 function getDeviceIcon(device: string) {
 	const deviceLower = device.toLowerCase();
@@ -88,19 +64,25 @@ export function SessionCard({
 	onRevoke,
 	isRevoking,
 	className,
+	style,
+	slotStyles: slotStylesRaw,
 	isLoading = false,
 	skeletonConfig,
 	skeleton,
 	ref,
 	...props
 }: SessionCardProps) {
+	const slotStyles = useSlotStyles("session-card", slotStylesRaw);
+	const root = applySlot(cn(sessionCardStyles.root, className), slotStyles?.root);
+
 	if (isLoading) {
 		if (skeleton) {
 			return (
 				<Card
 					data-kala-component="session-card"
 					ref={ref}
-					className={cn("relative", className)}
+					className={root.className}
+					style={root.style}
 					{...props}
 				>
 					{skeleton}
@@ -125,31 +107,80 @@ export function SessionCard({
 		}
 	};
 
+	const header = applySlot(sessionCardStyles.header, slotStyles?.header);
+	const headerRow = applySlot(
+		sessionCardStyles.headerRow,
+		slotStyles?.headerRow,
+	);
+	const headerMain = applySlot(
+		sessionCardStyles.headerMain,
+		slotStyles?.headerMain,
+	);
+	const deviceIcon = applySlot(
+		sessionCardStyles.deviceIcon,
+		slotStyles?.deviceIcon,
+	);
+	const titleBlock = applySlot(
+		sessionCardStyles.titleBlock,
+		slotStyles?.titleBlock,
+	);
+	const titleRow = applySlot(sessionCardStyles.titleRow, slotStyles?.titleRow);
+	const title = applySlot(sessionCardStyles.title, slotStyles?.title);
+	const subtitle = applySlot(sessionCardStyles.subtitle, slotStyles?.subtitle);
+	const currentBadge = applySlot(
+		sessionCardStyles.currentBadge,
+		slotStyles?.currentBadge,
+	);
+	const revokeButton = applySlot(
+		sessionCardStyles.revokeButton,
+		slotStyles?.revokeButton,
+	);
+	const content = applySlot(sessionCardStyles.content, slotStyles?.content);
+	const detailList = applySlot(
+		sessionCardStyles.detailList,
+		slotStyles?.detailList,
+	);
+	const detailRow = applySlot(
+		sessionCardStyles.detailRow,
+		slotStyles?.detailRow,
+	);
+	const detailIcon = applySlot(
+		sessionCardStyles.detailIcon,
+		slotStyles?.detailIcon,
+	);
+
 	return (
 		<Card
 			data-kala-component="session-card"
 			ref={ref}
-			className={cn("relative", className)}
+			className={root.className}
+			style={root.style}
 			{...props}
 		>
-			<CardHeader className="pb-3">
-				<div className="flex items-start justify-between gap-4">
-					<div className="flex items-start gap-3 flex-1">
+			<CardHeader className={header.className} style={header.style}>
+				<div className={headerRow.className} style={headerRow.style}>
+					<div className={headerMain.className} style={headerMain.style}>
 						<DeviceIcon
-							className="size-6 text-muted-foreground mt-0.5"
+							className={deviceIcon.className}
+							style={deviceIcon.style}
 							aria-hidden="true"
 						/>
-						<div className="flex-1 min-w-0">
-							<div className="flex items-center gap-2 flex-wrap">
-								<h4 className="font-semibold text-sm">{session.browser}</h4>
+						<div className={titleBlock.className} style={titleBlock.style}>
+							<div className={titleRow.className} style={titleRow.style}>
+								<h4 className={title.className} style={title.style}>
+									{session.browser}
+								</h4>
 							</div>
-							<p className="text-xs text-muted-foreground mt-0.5">
+							<p className={subtitle.className} style={subtitle.style}>
 								{session.os} • {session.device}
 							</p>
 						</div>
 					</div>
 					{session.isCurrent ? (
-						<div className="inline-flex items-center rounded-md bg-success/10 px-2 py-1 text-xs font-medium text-success border border-success/20">
+						<div
+							className={currentBadge.className}
+							style={currentBadge.style}
+						>
 							Current Session
 						</div>
 					) : (
@@ -159,7 +190,8 @@ export function SessionCard({
 								size="sm"
 								onClick={handleRevoke}
 								disabled={isRevoking}
-								className="text-destructive hover:text-destructive hover:bg-destructive/10"
+								className={revokeButton.className}
+								style={revokeButton.style}
 								aria-label="Revoke session"
 							>
 								{isRevoking ? "Revoking..." : "Revoke"}
@@ -168,20 +200,20 @@ export function SessionCard({
 					)}
 				</div>
 			</CardHeader>
-			<CardContent className="pt-0">
-				<div className="space-y-1.5 text-xs text-muted-foreground">
+			<CardContent className={content.className} style={content.style}>
+				<div className={detailList.className} style={detailList.style}>
 					{session.location && (
-						<div className="flex items-center gap-1.5">
-							<MapPin className="size-3.5" aria-hidden="true" />
+						<div className={detailRow.className} style={detailRow.style}>
+							<MapPin className={detailIcon.className} aria-hidden="true" />
 							<span>{session.location}</span>
 						</div>
 					)}
-					<div className="flex items-center gap-1.5">
-						<Wifi className="size-3.5" aria-hidden="true" />
+					<div className={detailRow.className} style={detailRow.style}>
+						<Wifi className={detailIcon.className} aria-hidden="true" />
 						<span>{session.ip}</span>
 					</div>
-					<div className="flex items-center gap-1.5">
-						<Clock className="size-3.5" aria-hidden="true" />
+					<div className={detailRow.className} style={detailRow.style}>
+						<Clock className={detailIcon.className} aria-hidden="true" />
 						<span>Last active {lastActive}</span>
 					</div>
 				</div>
@@ -189,3 +221,5 @@ export function SessionCard({
 		</Card>
 	);
 }
+
+export type { SessionData } from "./session-card.types";

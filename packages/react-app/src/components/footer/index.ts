@@ -3,5 +3,5 @@ export type {
 	FooterLinkSection,
 	FooterProps,
 	SocialLink,
-} from "./footer";
+} from "./footer.types";
 export { Footer } from "./footer";

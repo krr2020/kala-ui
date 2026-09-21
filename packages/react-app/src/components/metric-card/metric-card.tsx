@@ -1,29 +1,30 @@
-import { Card } from "@kala-ui/react/card";
+import { useSlotStyles } from "@kala-ui/react/kala-provider";
+import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
-import type { MetricCardSkeletonConfig } from "@kala-ui/react/skeleton";
+import { metricCardStyles } from "../../config/metric-card";
 import type * as React from "react";
+import type { MetricCardSkeletonConfig } from "@kala-ui/react/skeleton";
+import { Card } from "@kala-ui/react/card";
 import { MetricCardSkeleton } from "./metric-card-skeleton";
+import type { MetricCardProps } from "./metric-card.types";
 
-export interface MetricCardProps
-	extends Omit<React.ComponentProps<"div">, "title"> {
-	title: string;
-	value: number | string;
-	icon?: React.ReactNode;
-	change?: number;
-	changeLabel?: string;
-	subtitle?: string;
-	color?:
-		| "primary"
-		| "secondary"
-		| "destructive"
-		| "success"
-		| "warning"
-		| "info"
-		| "muted";
-	isLoading?: boolean;
-	skeletonConfig?: MetricCardSkeletonConfig;
-	skeleton?: React.ReactNode;
-}
+const colorStyles: Record<string, string> = {
+	primary: "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground",
+	secondary:
+		"bg-gradient-to-br from-secondary to-secondary/90 text-secondary-foreground",
+	destructive:
+		"bg-gradient-to-br from-destructive to-destructive/90 text-destructive-foreground",
+	success: "bg-gradient-to-br from-success to-success/90 text-success-foreground",
+	warning: "bg-gradient-to-br from-warning to-warning/90 text-warning-foreground",
+	info: "bg-gradient-to-br from-info to-info/90 text-info-foreground",
+	muted: "bg-card border text-card-foreground",
+};
+
+const changeColors = {
+	up: "text-success",
+	down: "text-destructive",
+	flat: "text-muted-foreground",
+} as const;
 
 function MetricCard({
 	ref,
@@ -34,19 +35,25 @@ function MetricCard({
 	changeLabel,
 	subtitle,
 	className,
+	style,
+	slotStyles: slotStylesRaw,
 	color = "muted",
 	isLoading = false,
 	skeletonConfig,
 	skeleton,
 	...props
 }: MetricCardProps) {
+	const slotStyles = useSlotStyles("metric-card", slotStylesRaw);
+
 	if (isLoading) {
 		if (skeleton) {
+			const loadingRoot = applySlot(cn(className), slotStyles?.root);
 			return (
 				<Card
 					data-kala-component="metric-card"
 					ref={ref}
-					className={cn(className)}
+					className={loadingRoot.className}
+					style={loadingRoot.style}
 					{...props}
 				>
 					{skeleton}
@@ -62,11 +69,12 @@ function MetricCard({
 		);
 	}
 
-	const getChangeColor = (changeValue: number) => {
-		if (changeValue > 0) return "text-success";
-		if (changeValue < 0) return "text-destructive";
-		return "text-muted-foreground";
-	};
+	const getChangeColor = (changeValue: number) =>
+		changeValue > 0
+			? changeColors.up
+			: changeValue < 0
+				? changeColors.down
+				: changeColors.flat;
 
 	const getChangeIcon = (changeValue: number) => {
 		if (changeValue > 0) return "↑";
@@ -83,39 +91,37 @@ function MetricCard({
 		return changeLabel || defaultLabel;
 	};
 
-	const getColorStyles = () => {
-		switch (color) {
-			case "primary":
-				return "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground";
-			case "secondary":
-				return "bg-gradient-to-br from-secondary to-secondary/90 text-secondary-foreground";
-			case "destructive":
-				return "bg-gradient-to-br from-destructive to-destructive/90 text-destructive-foreground";
-			case "success":
-				return "bg-gradient-to-br from-success to-success/90 text-success-foreground";
-			case "warning":
-				return "bg-gradient-to-br from-warning to-warning/90 text-warning-foreground";
-			case "info":
-				return "bg-gradient-to-br from-info to-info/90 text-info-foreground";
-			default:
-				return "bg-card border text-card-foreground";
-		}
-	};
-
 	const isColorful = color !== "muted" || className?.includes("bg-");
+
+	const root = applySlot(
+		cn(colorStyles[color], className),
+		slotStyles?.root,
+	);
+	const body = applySlot(metricCardStyles.body, slotStyles?.body);
+	const head = applySlot(metricCardStyles.head, slotStyles?.head);
+	const titleLabel = applySlot(metricCardStyles.title, slotStyles?.title);
+	const iconSlot = applySlot(metricCardStyles.icon, slotStyles?.icon);
+	const valueSlot = applySlot(metricCardStyles.value, slotStyles?.value);
+	const meta = applySlot(metricCardStyles.meta, slotStyles?.meta);
+	const changeSlot = applySlot(metricCardStyles.change, slotStyles?.change);
+	const subtitleSlot = applySlot(
+		metricCardStyles.subtitle,
+		slotStyles?.subtitle,
+	);
 
 	return (
 		<Card
 			data-kala-component="metric-card"
 			ref={ref}
-			className={cn(getColorStyles(), className)}
+			className={root.className}
+			style={root.style}
 			{...props}
 		>
-			<div className="p-6">
-				<div className="flex items-center justify-between mb-4">
+			<div className={body.className}>
+				<div className={head.className}>
 					<h6
 						className={cn(
-							"text-xs font-semibold uppercase tracking-wide",
+							titleLabel.className,
 							isColorful ? "opacity-90" : "text-muted-foreground",
 						)}
 					>
@@ -123,7 +129,10 @@ function MetricCard({
 					</h6>
 					{icon && (
 						<div
-							className={isColorful ? "opacity-70" : "text-muted-foreground"}
+							className={cn(
+								iconSlot.className,
+								isColorful ? "opacity-70" : "text-muted-foreground",
+							)}
 							aria-hidden="true"
 						>
 							{icon}
@@ -134,7 +143,7 @@ function MetricCard({
 				<div className="mb-3">
 					<div
 						className={cn(
-							"text-4xl font-bold leading-none",
+							valueSlot.className,
 							isColorful ? "" : "text-card-foreground",
 						)}
 					>
@@ -147,11 +156,11 @@ function MetricCard({
 				</div>
 
 				{(change !== undefined || subtitle) && (
-					<div className="text-sm">
+					<div className={meta.className}>
 						{change !== undefined ? (
 							<div
 								className={cn(
-									"flex items-center gap-1",
+									changeSlot.className,
 									isColorful ? "opacity-90" : getChangeColor(change),
 								)}
 							>
@@ -164,6 +173,7 @@ function MetricCard({
 						) : subtitle ? (
 							<div
 								className={cn(
+									subtitleSlot.className,
 									isColorful ? "opacity-80" : "text-muted-foreground",
 								)}
 							>

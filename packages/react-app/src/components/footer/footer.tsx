@@ -1,52 +1,16 @@
 "use client";
 
+import { useSlotStyles } from "@kala-ui/react/kala-provider";
+import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
-import type * as React from "react";
-
-export interface FooterLink {
-	label: string;
-	href: string;
-}
-
-export interface FooterLinkSection {
-	title: string;
-	links: FooterLink[];
-}
-
-export interface SocialLink {
-	name: string;
-	href: string;
-	icon: React.ReactNode;
-}
-
-export interface FooterProps
-	extends React.HTMLAttributes<HTMLElement>,
-		React.RefAttributes<HTMLElement> {
-	/**
-	 * Sections of links to display in columns
-	 */
-	linkSections?: FooterLinkSection[];
-	/**
-	 * Social media links with icons
-	 */
-	socialLinks?: SocialLink[];
-	/**
-	 * Copyright text
-	 */
-	copyright?: string;
-	/**
-	 * Additional content to display in footer (e.g., newsletter signup)
-	 */
-	children?: React.ReactNode;
-	/**
-	 * Center align all content
-	 */
-	centered?: boolean;
-}
+import { footerStyles } from "../../config/footer";
+import type { FooterProps } from "./footer.types";
 
 export function Footer({
 	ref,
 	className,
+	style,
+	slotStyles: slotStylesRaw,
 	linkSections = [],
 	socialLinks = [],
 	copyright,
@@ -54,42 +18,65 @@ export function Footer({
 	centered = false,
 	...props
 }: FooterProps) {
+	const slotStyles = useSlotStyles("footer", slotStylesRaw);
 	const currentYear = new Date().getFullYear();
 	const copyrightText = copyright || `© ${currentYear} All rights reserved.`;
+
+	const root = applySlot(cn(footerStyles.root, className), slotStyles?.root);
+	const inner = applySlot(footerStyles.inner, slotStyles?.inner);
+	const centeredContent = applySlot(
+		footerStyles.centeredContent,
+		slotStyles?.centeredContent,
+	);
+	const grid = applySlot(footerStyles.grid, slotStyles?.grid);
+	const sectionTitle = applySlot(
+		footerStyles.sectionTitle,
+		slotStyles?.sectionTitle,
+	);
+	const sectionList = applySlot(
+		footerStyles.sectionList,
+		slotStyles?.sectionList,
+	);
+	const sectionLink = applySlot(
+		footerStyles.sectionLink,
+		slotStyles?.sectionLink,
+	);
+	const customContent = applySlot(
+		footerStyles.customContent,
+		slotStyles?.customContent,
+	);
+	const bottomRow = applySlot(footerStyles.bottomRow, slotStyles?.bottomRow);
+	const copyrightPart = applySlot(
+		footerStyles.copyright,
+		slotStyles?.copyright,
+	);
+	const socialList = applySlot(footerStyles.socialList, slotStyles?.socialList);
+	const socialLink = applySlot(
+		footerStyles.socialLink,
+		slotStyles?.socialLink,
+	);
 
 	return (
 		<footer
 			data-kala-component="footer"
 			ref={ref}
-			className={cn(
-				"w-full bg-muted text-muted-foreground border-t",
-				className,
-			)}
+			className={root.className}
+			style={root.style}
 			{...props}
 		>
-			<div className="container mx-auto px-4 py-8 md:py-12">
-				{/* Centered Content (Top) */}
+			<div className={inner.className}>
 				{centered && children && (
-					<div className="mb-12 flex flex-col items-center text-center">
-						{children}
-					</div>
+					<div className={centeredContent.className}>{children}</div>
 				)}
 
-				{/* Main Footer Content */}
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-					{/* Link Sections */}
+				<div className={grid.className}>
 					{linkSections.map((section) => (
 						<nav key={section.title} aria-label={`${section.title} links`}>
-							<h3 className="text-foreground font-semibold text-sm uppercase tracking-wider mb-4">
-								{section.title}
-							</h3>
-							<ul className="space-y-2">
+							<h3 className={sectionTitle.className}>{section.title}</h3>
+							<ul className={sectionList.className}>
 								{section.links.map((link) => (
 									<li key={`${link.href}-${link.label}`}>
-										<a
-											href={link.href}
-											className="text-muted-foreground hover:text-primary transition-colors text-sm"
-										>
+										<a href={link.href} className={sectionLink.className}>
 											{link.label}
 										</a>
 									</li>
@@ -98,35 +85,29 @@ export function Footer({
 						</nav>
 					))}
 
-					{/* Custom Content (In-grid for non-centered) */}
 					{!centered && children && (
-						<div className="md:col-span-2 lg:col-span-1">{children}</div>
+						<div className={customContent.className}>{children}</div>
 					)}
 				</div>
 
-				{/* Bottom Section */}
 				<div
 					className={cn(
-						"border-t pt-8 flex flex-col gap-4",
-						!centered && "md:flex-row md:justify-between md:items-center",
-						centered && "items-center",
+						bottomRow.className,
+						!centered && footerStyles.bottomRowSide,
+						centered && footerStyles.bottomRowCentered,
 					)}
 				>
-					{/* Copyright */}
-					<div className="text-sm text-muted-foreground order-2 md:order-1">
-						{copyrightText}
-					</div>
+					<div className={copyrightPart.className}>{copyrightText}</div>
 
-					{/* Social Links */}
 					{socialLinks.length > 0 && (
-						<div className="flex items-center gap-4 order-1 md:order-2">
+						<div className={socialList.className}>
 							{socialLinks.map((social) => (
 								<a
 									key={social.href}
 									href={social.href}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="text-muted-foreground hover:text-primary transition-colors"
+									className={socialLink.className}
 									aria-label={social.name}
 								>
 									{social.icon}
