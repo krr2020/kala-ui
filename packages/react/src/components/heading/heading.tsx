@@ -1,8 +1,9 @@
 import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import type * as React from "react";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import type { HeadingProps } from "./heading.types";
 
 const headingVariants = cva(
 	"font-heading font-bold tracking-tight text-foreground",
@@ -35,17 +36,6 @@ const headingVariants = cva(
 		},
 	},
 );
-
-export interface HeadingProps
-	extends React.HTMLAttributes<HTMLElement>,
-		React.RefAttributes<HTMLElement>,
-		VariantProps<typeof headingVariants> {
-	asChild?: boolean;
-	as?: React.ElementType;
-	slotStyles?: SlotStyles;
-	// biome-ignore lint/suspicious/noExplicitAny: Support polymorphic props
-	[key: string]: any;
-}
 
 function Heading({
 	ref,

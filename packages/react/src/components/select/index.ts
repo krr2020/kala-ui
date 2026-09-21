@@ -23,3 +23,11 @@ export {
 	SelectTrigger,
 	SelectValue,
 } from "./select";
+export type {
+	NativeSelectOptGroupProps,
+	NativeSelectOptionProps,
+	NativeSelectProps,
+	SelectContentProps,
+	SelectItemProps,
+	SelectTriggerProps,
+} from "./select.types";

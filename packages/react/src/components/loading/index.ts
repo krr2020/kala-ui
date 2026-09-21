@@ -1,4 +1,3 @@
-export type { PageLoaderProps } from "./page-loader";
+export type { PageLoaderProps, SectionLoaderProps } from "./loading.types";
 export { PageLoader } from "./page-loader";
-export type { SectionLoaderProps } from "./section-loader";
 export { SectionLoader } from "./section-loader";

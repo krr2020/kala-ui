@@ -6,6 +6,10 @@ export {
 	accordionVariants,
 } from "./accordion";
 export type {
+	AccordionProps,
+	AccordionTriggerProps,
+} from "./accordion.types";
+export type {
 	AccordionSkeletonConfig,
 	AccordionSkeletonProps,
 } from "./accordion-skeleton";

@@ -12,3 +12,8 @@ export {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "./alert-dialog";
+export type {
+	AlertDialogActionProps,
+	AlertDialogContentProps,
+	AlertDialogProps,
+} from "./alert-dialog.types";

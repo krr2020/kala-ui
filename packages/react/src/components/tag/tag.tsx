@@ -1,34 +1,18 @@
 "use client";
 
 import { Slot, Slottable } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import { X } from "lucide-react";
-import type * as React from "react";
-
-import { cn } from "../../lib/utils";
 import { tagStyles } from "../../config/tag";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
+import type { TagProps } from "./tag.types";
 
-const tagClasses = cva(tagStyles.base, {
+export const tagClasses = cva(tagStyles.base, {
 	variants: tagStyles.variants,
 	compoundVariants: tagStyles.compoundVariants as never,
 	defaultVariants: tagStyles.defaultVariants,
 });
-
-export interface TagProps
-	extends Omit<React.ComponentProps<"span">, "color">,
-		VariantProps<typeof tagClasses> {
-	/** Show remove button */
-	onRemove?: () => void;
-	/** Accessible name for the remove button; defaults to "Remove". */
-	dismissLabel?: string;
-	/** Icon to show before label */
-	icon?: React.ReactNode;
-	/** Render the consumer's element instead of the default span */
-	asChild?: boolean;
-	/** Per-part overrides: `root` wins over `className`/`style`, `icon` targets the icon wrapper, `remove` the remove button. */
-	slotStyles?: SlotStyles;
-}
 
 function Tag({
 	className,

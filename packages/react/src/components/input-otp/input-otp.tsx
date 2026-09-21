@@ -3,12 +3,9 @@
 import { OTPInput, OTPInputContext } from "input-otp";
 import * as React from "react";
 
-import {
-	applySlot,
-	mergeStyle,
-	type SlotStyles,
-} from "../../lib/slot-styles";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import type { InputOTPProps } from "./input-otp.types";
 
 function InputOTP({
 	ref,
@@ -17,10 +14,7 @@ function InputOTP({
 	slotStyles,
 	containerClassName,
 	...props
-}: Omit<React.ComponentProps<typeof OTPInput>, "children"> & {
-	children?: React.ReactNode;
-	slotStyles?: SlotStyles;
-}) {
+}: InputOTPProps) {
 	// input-otp overwrites the hidden input's `style` internally, so the root
 	// slot channel lives on a wrapper element we control; `className` moves
 	// with it because the input itself is visually hidden.
@@ -40,7 +34,7 @@ function InputOTP({
 				)}
 				// Biome lint dislikes `any` here; OTPInput's props typing is strict under exactOptionalPropertyTypes.
 				{...(props as unknown as React.ComponentProps<typeof OTPInput>)}
-		/>
+			/>
 		</div>
 	);
 }

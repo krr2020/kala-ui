@@ -3,8 +3,9 @@ import { cva } from "class-variance-authority";
 import { ChevronDownIcon } from "lucide-react";
 import type * as React from "react";
 
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import type { NavigationMenuProps } from "./navigation-menu.types";
 
 function NavigationMenu({
 	className,
@@ -13,10 +14,7 @@ function NavigationMenu({
 	children,
 	viewport = true,
 	...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.Root> & {
-	viewport?: boolean;
-	slotStyles?: SlotStyles;
-}) {
+}: NavigationMenuProps) {
 	const root = applySlot(
 		cn(
 			"group/navigation-menu relative flex max-w-max flex-1 items-center justify-center",

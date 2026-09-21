@@ -10,3 +10,4 @@ export {
 	NavigationMenuViewport,
 	navigationMenuTriggerStyle,
 } from "./navigation-menu";
+export type { NavigationMenuProps } from "./navigation-menu.types";

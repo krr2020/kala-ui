@@ -1,8 +1,9 @@
 import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import type * as React from "react";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import type { FlexProps } from "./flex.types";
 
 const flexVariants = cva("flex", {
 	variants: {
@@ -62,16 +63,6 @@ const flexVariants = cva("flex", {
 		gap: 0,
 	},
 });
-
-export type FlexProps<T extends React.ElementType = "div"> = Omit<
-	React.ComponentProps<T>,
-	"as" | "asChild"
-> &
-		VariantProps<typeof flexVariants> & {
-		as?: T;
-		asChild?: boolean;
-		slotStyles?: SlotStyles;
-		};
 
 export function Flex<T extends React.ElementType = "div">(props: FlexProps<T>) {
 	const {

@@ -1,20 +1,15 @@
 "use client";
 
-import type * as React from "react";
 import * as ResizablePrimitive from "react-resizable-panels";
 
 import { resizableStyles } from "../../config/resizable";
-import {
-	applySlot,
-	mergeStyle,
-	type SlotStyles,
-} from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-
-interface ResizablePanelGroupProps
-	extends React.ComponentProps<typeof ResizablePrimitive.Group> {
-	slotStyles?: SlotStyles;
-}
+import type {
+	ResizableHandleProps,
+	ResizablePanelGroupProps,
+	ResizablePanelProps,
+} from "./resizable.types";
 
 const ResizablePanelGroup = ({
 	className,
@@ -23,7 +18,10 @@ const ResizablePanelGroup = ({
 	orientation = "horizontal",
 	...props
 }: ResizablePanelGroupProps) => {
-	const root = applySlot(cn("group flex h-full w-full", className), slotStyles?.root);
+	const root = applySlot(
+		cn("group flex h-full w-full", className),
+		slotStyles?.root,
+	);
 	return (
 		<ResizablePrimitive.Group
 			data-kala-component="resizable-panel-group"
@@ -36,11 +34,6 @@ const ResizablePanelGroup = ({
 		/>
 	);
 };
-
-interface ResizablePanelProps
-	extends React.ComponentProps<typeof ResizablePrimitive.Panel> {
-	slotStyles?: SlotStyles;
-}
 
 const ResizablePanel = ({
 	className,
@@ -59,12 +52,6 @@ const ResizablePanel = ({
 		/>
 	);
 };
-
-interface ResizableHandleProps
-	extends React.ComponentProps<typeof ResizablePrimitive.Separator> {
-	withHandle?: boolean;
-	slotStyles?: SlotStyles;
-}
 
 const ResizableHandle = ({
 	withHandle,
@@ -127,5 +114,4 @@ export type {
 	PanelProps,
 	SeparatorProps,
 } from "react-resizable-panels";
-export type { ResizableHandleProps };
 export { ResizableHandle, ResizablePanel, ResizablePanelGroup };

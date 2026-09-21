@@ -1,12 +1,12 @@
 "use client";
 
-import type { DialogProps } from "@radix-ui/react-dialog";
 import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
 import type * as React from "react";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Dialog, DialogContent, DialogTitle } from "../dialog";
+import type { CommandDialogProps, CommandProps } from "./command.types";
 
 function Command({
 	ref,
@@ -14,9 +14,7 @@ function Command({
 	style,
 	slotStyles,
 	...props
-}: React.ComponentProps<typeof CommandPrimitive> & {
-	slotStyles?: SlotStyles;
-}) {
+}: CommandProps) {
 	const root = applySlot(
 		cn(
 			"flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
@@ -34,7 +32,6 @@ function Command({
 		/>
 	);
 }
-interface CommandDialogProps extends DialogProps {}
 
 const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
 	return (

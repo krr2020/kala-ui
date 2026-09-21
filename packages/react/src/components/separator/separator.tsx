@@ -1,19 +1,10 @@
 "use client";
 
 import * as SeparatorPrimitive from "@radix-ui/react-separator";
-import type * as React from "react";
 
-import {
-	applySlot,
-	mergeStyle,
-	type SlotStyles,
-} from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-
-interface SeparatorProps
-	extends React.ComponentProps<typeof SeparatorPrimitive.Root> {
-	slotStyles?: SlotStyles;
-}
+import type { SeparatorProps } from "./separator.types";
 
 function Separator({
 	className,

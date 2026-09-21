@@ -1,11 +1,10 @@
 "use client";
 
 import * as TogglePrimitive from "@radix-ui/react-toggle";
-import { cva, type VariantProps } from "class-variance-authority";
-import type * as React from "react";
-
+import { cva } from "class-variance-authority";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import type { ToggleProps } from "./toggle.types";
 
 const toggleVariants = cva(
 	`cursor-pointer inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-muted hover:text-muted-foreground disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0`,
@@ -37,10 +36,7 @@ function Toggle({
 	variant,
 	size,
 	...props
-}: React.ComponentProps<typeof TogglePrimitive.Root> &
-	VariantProps<typeof toggleVariants> & {
-		slotStyles?: SlotStyles;
-	}) {
+}: ToggleProps) {
 	const root = applySlot(
 		cn(toggleVariants({ variant, size, className })),
 		slotStyles?.root,

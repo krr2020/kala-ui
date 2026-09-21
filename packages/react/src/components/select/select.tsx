@@ -14,9 +14,14 @@ import {
 	selectSeparatorStyles,
 	selectTriggerStyles,
 } from "../../config/select";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton";
+import type {
+	SelectContentProps,
+	SelectItemProps,
+	SelectTriggerProps,
+} from "./select.types";
 
 function Select(props: React.ComponentProps<typeof SelectPrimitive.Root>) {
 	return <SelectPrimitive.Root data-kala-component="select" {...props} />;
@@ -63,12 +68,7 @@ function SelectTrigger({
 	isLoading = false,
 	children,
 	...props
-}: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
-	size?: "sm" | "md";
-	isLoading?: boolean;
-	/** Per-part overrides: `root` wins over `className`/`style` in every arm, `chevron` targets the dropdown glyph. */
-	slotStyles?: SlotStyles;
-}) {
+}: SelectTriggerProps) {
 	const root = applySlot(
 		cn(selectTriggerClasses({ size }), className),
 		slotStyles?.root ?? null,
@@ -152,17 +152,11 @@ function SelectContent({
 	align = "center",
 	matchTriggerWidth = false,
 	...props
-}: React.ComponentProps<typeof SelectPrimitive.Content> & {
-	matchTriggerWidth?: boolean;
-	/** Per-part overrides: `root` wins over `className`/`style` on the portal-rendered surface. */
-	slotStyles?: SlotStyles;
-}) {
+}: SelectContentProps) {
 	const root = applySlot(
 		cn(
 			selectContentStyles.base,
-			matchTriggerWidth
-				? "w-(--radix-select-trigger-width)"
-				: "min-w-[8rem]",
+			matchTriggerWidth ? "w-(--radix-select-trigger-width)" : "min-w-[8rem]",
 			position === "popper" && selectContentStyles.popper,
 			className,
 		),
@@ -217,11 +211,11 @@ function SelectItem({
 	slotStyles,
 	children,
 	...props
-}: React.ComponentProps<typeof SelectPrimitive.Item> & {
-	/** Per-part overrides: `root` wins over `className`/`style`, `itemIndicator` targets the check glyph. */
-	slotStyles?: SlotStyles;
-}) {
-	const root = applySlot(cn(selectItemStyles.base, className), slotStyles?.root);
+}: SelectItemProps) {
+	const root = applySlot(
+		cn(selectItemStyles.base, className),
+		slotStyles?.root,
+	);
 	const itemIndicator = applySlot(
 		selectItemIndicatorStyles.base,
 		slotStyles?.itemIndicator,

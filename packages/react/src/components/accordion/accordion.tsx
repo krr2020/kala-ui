@@ -4,9 +4,10 @@ import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { cva, type VariantProps } from "class-variance-authority";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
+import type { AccordionProps, AccordionTriggerProps } from "./accordion.types";
 
 export const accordionVariants = cva("w-full", {
 	variants: {
@@ -27,12 +28,7 @@ const AccordionContext = React.createContext<
 	variant: "default",
 });
 
-function Accordion({
-	className,
-	variant,
-	...props
-}: React.ComponentProps<typeof AccordionPrimitive.Root> &
-	VariantProps<typeof accordionVariants>) {
+function Accordion({ className, variant, ...props }: AccordionProps) {
 	return (
 		<AccordionContext.Provider
 			data-kala-component="accordion"
@@ -74,9 +70,7 @@ function AccordionTrigger({
 	slotStyles,
 	children,
 	...props
-}: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
-	slotStyles?: SlotStyles;
-}) {
+}: AccordionTriggerProps) {
 	const { variant } = React.useContext(AccordionContext);
 	const root = applySlot("flex", slotStyles?.root);
 	const chevron = applySlot(

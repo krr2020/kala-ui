@@ -7,7 +7,7 @@ export type {
 	AvatarFallbackProps,
 	AvatarImageProps,
 	AvatarProps,
-} from "./avatar";
+} from "./avatar.types";
 export {
 	Avatar,
 	AvatarFallback,

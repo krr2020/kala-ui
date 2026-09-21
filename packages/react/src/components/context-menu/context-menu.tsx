@@ -5,12 +5,14 @@ import { Check, ChevronRight, Circle } from "lucide-react";
 import type * as React from "react";
 
 import { dropdownMenuStyles } from "../../config/dropdown-menu";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import type {
+	ContextMenuContentProps,
+	ContextMenuProps,
+} from "./context-menu.types";
 
-function ContextMenu({
-	...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Root>) {
+function ContextMenu({ ...props }: ContextMenuProps) {
 	return (
 		<ContextMenuPrimitive.Root
 			data-kala-component="context-menu"
@@ -44,9 +46,7 @@ function ContextMenuContent({
 	slotStyles,
 	forceMount,
 	...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Content> & {
-	slotStyles?: SlotStyles;
-}) {
+}: ContextMenuContentProps) {
 	const root = applySlot(
 		cn(
 			"z-30 min-w-[10rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground kala-surface-popover",
@@ -55,8 +55,8 @@ function ContextMenuContent({
 			"data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
 			"data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
 			"data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-				className,
-			),
+			className,
+		),
 		slotStyles?.root,
 	);
 	return (

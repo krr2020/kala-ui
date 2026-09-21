@@ -6,33 +6,16 @@ import { CalendarIcon } from "lucide-react";
 import * as React from "react";
 import type { DateRange } from "react-day-picker";
 import { datePickerStyles } from "../../config/date-picker";
-import { applySlot, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
 import { Calendar } from "../calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
 import { Skeleton } from "../skeleton";
-
-export interface DatePickerProps
-	extends Omit<
-		React.ComponentProps<typeof Calendar>,
-		"mode" | "selected" | "onSelect" | "className" | "required" | "disabled"
-	> {
-	/** Selected date (controlled) */
-	value?: Date;
-	/** Initially selected date (uncontrolled) */
-	defaultValue?: Date;
-	onValueChange?: (date: Date | undefined) => void;
-	placeholder?: string;
-	disabled?: React.ComponentProps<typeof Calendar>["disabled"];
-	buttonDisabled?: boolean;
-	className?: string;
-	buttonClassName?: string;
-	formatStr?: string;
-	isLoading?: boolean;
-	/** Per-part overrides: `root` wins over `buttonClassName` on the trigger and the loading skeleton, `icon` targets the calendar glyph. */
-	slotStyles?: SlotStyles;
-}
+import type {
+	DatePickerProps,
+	DateRangePickerProps,
+} from "./date-picker.types";
 
 export function DatePicker({
 	value: valueProp,
@@ -79,10 +62,7 @@ export function DatePicker({
 	const icon = applySlot(datePickerStyles.icon, slotStyles?.icon);
 
 	return (
-		<Popover
-			open={open}
-			onOpenChange={setOpen}
-		>
+		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild data-kala-component="date-picker">
 				<Button
 					variant="outline"
@@ -112,34 +92,6 @@ export function DatePicker({
 			</PopoverContent>
 		</Popover>
 	);
-}
-
-export interface DateRangePickerProps
-	extends Omit<
-		React.ComponentProps<typeof Calendar>,
-		| "mode"
-		| "selected"
-		| "onSelect"
-		| "className"
-		| "defaultMonth"
-		| "numberOfMonths"
-		| "required"
-		| "disabled"
-	> {
-	/** Selected range (controlled) */
-	value?: DateRange;
-	/** Initially selected range (uncontrolled) */
-	defaultValue?: DateRange;
-	onValueChange?: (range: DateRange | undefined) => void;
-	placeholder?: string;
-	disabled?: React.ComponentProps<typeof Calendar>["disabled"];
-	buttonDisabled?: boolean;
-	className?: string;
-	buttonClassName?: string;
-	formatStr?: string;
-	isLoading?: boolean;
-	/** Per-part overrides: `root` wins over `buttonClassName` on the trigger and the loading skeleton, `icon` targets the calendar glyph. */
-	slotStyles?: SlotStyles;
 }
 
 export function DateRangePicker({
@@ -196,10 +148,7 @@ export function DateRangePicker({
 	const icon = applySlot(datePickerStyles.icon, slotStyles?.icon);
 
 	return (
-		<Popover
-			open={open}
-			onOpenChange={handleOpenChange}
-		>
+		<Popover open={open} onOpenChange={handleOpenChange}>
 			<PopoverTrigger asChild data-kala-component="date-range-picker">
 				<Button
 					variant="outline"

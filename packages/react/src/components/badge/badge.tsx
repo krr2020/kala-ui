@@ -1,11 +1,11 @@
 import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
-import type * as React from "react";
+import { cva } from "class-variance-authority";
 
 import { badgeStyles } from "../../config/badge";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Skeleton } from "../skeleton";
+import type { BadgeProps } from "./badge.types";
 
 const badgeVariants = cva(badgeStyles.base, {
 	variants: badgeStyles.variants,
@@ -24,13 +24,7 @@ function Badge({
 	asChild = false,
 	isLoading = false,
 	...props
-}: React.ComponentProps<"span"> &
-	VariantProps<typeof badgeVariants> & {
-		asChild?: boolean;
-		isLoading?: boolean;
-		/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
-		slotStyles?: SlotStyles;
-	}) {
+}: BadgeProps) {
 	const root = applySlot(className, slotStyles?.root);
 	if (isLoading) {
 		return (

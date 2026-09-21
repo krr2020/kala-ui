@@ -2,7 +2,6 @@ export type {
 	ResolvedTheme,
 	Theme,
 	ThemeContextValue,
-	ThemeProviderProps,
 } from "./theme-provider";
 export {
 	THEMES,
@@ -10,3 +9,4 @@ export {
 	useOptionalTheme,
 	useTheme,
 } from "./theme-provider";
+export type { ThemeProviderProps } from "./theme-provider.types";

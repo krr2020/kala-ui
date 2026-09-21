@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { type StepItem, Steps } from "./steps";
+import { Steps } from "./steps";
+import type { StepItem } from "./steps.types";
 
 const mockSteps: StepItem[] = [
 	{ title: "Step 1", description: "First step description" },

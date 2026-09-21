@@ -1,125 +1,94 @@
 import * as React from "react";
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
 import { Badge } from "../badge";
-import type { ListSkeletonConfig } from "../skeleton/skeleton.types";
+import type {
+	ListItemActionProps,
+	ListItemAvatarProps,
+	ListItemBadgeProps,
+	ListItemContentProps,
+	ListItemIconProps,
+	ListItemProps,
+	ListItemTextProps,
+	ListItemTitleProps,
+	ListProps,
+} from "./list.types";
 import { ListSkeleton } from "./list-skeleton";
 
 // ===========================
 // List Container
 // ===========================
 
-export interface ListProps extends React.HTMLAttributes<HTMLUListElement> {
-	/**
-	 * Show dividers between list items
-	 * @default true
-	 */
-	divided?: boolean;
-	/**
-	 * Reduce spacing between items
-	 * @default false
-	 */
-	dense?: boolean;
-	isLoading?: boolean;
-	skeletonConfig?: ListSkeletonConfig;
-	skeleton?: React.ReactNode;
-}
-
 function List({
-className,
-style,
-slotStyles,
-divided = true,
-dense = false,
-isLoading = false,
-skeletonConfig,
-skeleton,
-children,
-...props
+	className,
+	style,
+	slotStyles,
+	divided = true,
+	dense = false,
+	isLoading = false,
+	skeletonConfig,
+	skeleton,
+	children,
+	...props
 }: ListProps & { slotStyles?: SlotStyles }) {
-if (isLoading) {
-	if (skeleton) {
-		const root = applySlot(
-			cn("flex flex-col bg-card rounded-lg border overflow-hidden", className),
-			slotStyles?.root,
-		);
+	if (isLoading) {
+		if (skeleton) {
+			const root = applySlot(
+				cn(
+					"flex flex-col bg-card rounded-lg border overflow-hidden",
+					className,
+				),
+				slotStyles?.root,
+			);
+			return (
+				<ul
+					data-kala-component="list"
+					className={root.className}
+					style={mergeStyle(style, root.style)}
+					{...props}
+				>
+					{skeleton}
+				</ul>
+			);
+		}
+		// The skeleton arm renders ListSkeleton's own <ul>, so the slot rides
+		// along as className; ListSkeleton takes no style prop.
+		const loading = applySlot(className, slotStyles?.root);
 		return (
-			<ul
+			<ListSkeleton
 				data-kala-component="list"
-				className={root.className}
-				style={mergeStyle(style, root.style)}
-				{...props}
-			>
-				{skeleton}
-			</ul>
+				className={loading.className}
+				showDividers={divided}
+				dense={dense}
+				{...skeletonConfig}
+			/>
 		);
 	}
-	// The skeleton arm renders ListSkeleton's own <ul>, so the slot rides
-	// along as className; ListSkeleton takes no style prop.
-	const loading = applySlot(className, slotStyles?.root);
-	return (
-		<ListSkeleton
-			data-kala-component="list"
-			className={loading.className}
-			showDividers={divided}
-			dense={dense}
-			{...skeletonConfig}
-		/>
-	);
-}
 
-const root = applySlot(
-	cn(
-		"flex flex-col bg-card rounded-lg border overflow-hidden",
-		divided && "[&>li:not(:last-child)]:border-b",
-		dense ? "gap-0" : "gap-0",
-		className,
-	),
-	slotStyles?.root,
-);
-return (
-	<ul
-		data-kala-component="list"
-		className={root.className}
-		style={mergeStyle(style, root.style)}
-		{...props}
-	>
-		{children}
-	</ul>
-);
+	const root = applySlot(
+		cn(
+			"flex flex-col bg-card rounded-lg border overflow-hidden",
+			divided && "[&>li:not(:last-child)]:border-b",
+			dense ? "gap-0" : "gap-0",
+			className,
+		),
+		slotStyles?.root,
+	);
+	return (
+		<ul
+			data-kala-component="list"
+			className={root.className}
+			style={mergeStyle(style, root.style)}
+			{...props}
+		>
+			{children}
+		</ul>
+	);
 }
 
 // ===========================
 // List Item
 // ===========================
-
-export interface ListItemProps extends React.HTMLAttributes<HTMLLIElement> {
-	slotStyles?: SlotStyles;
-	/**
-	 * Make the item interactive (clickable)
-	 * @default false
-	 */
-	interactive?: boolean;
-	/**
-	 * Render the row as a link
-	 */
-	href?: string;
-	/**
-	 * Active/selected state
-	 * @default false
-	 */
-	active?: boolean;
-	/**
-	 * Disabled state
-	 * @default false
-	 */
-	disabled?: boolean;
-	/**
-	 * Dense spacing
-	 * @default false
-	 */
-	dense?: boolean;
-}
 
 function ListItem({
 	className,
@@ -225,14 +194,6 @@ function ListItem({
 // List Item Icon
 // ===========================
 
-export interface ListItemIconProps extends React.ComponentProps<"div"> {
-	/**
-	 * Icon size variant
-	 * @default 'default'
-	 */
-	size?: "sm" | "md" | "lg";
-}
-
 function ListItemIcon({
 	className,
 	size = "md",
@@ -260,26 +221,6 @@ function ListItemIcon({
 // ===========================
 // List Item Avatar
 // ===========================
-
-export interface ListItemAvatarProps extends React.ComponentProps<"div"> {
-	/**
-	 * Avatar image source
-	 */
-	src?: string;
-	/**
-	 * Alt text for the avatar
-	 */
-	alt?: string;
-	/**
-	 * Fallback content (initials, icon, etc.)
-	 */
-	fallback?: React.ReactNode;
-	/**
-	 * Avatar size
-	 * @default 'default'
-	 */
-	size?: "sm" | "md" | "lg";
-}
 
 function ListItemAvatar({
 	className,
@@ -321,14 +262,6 @@ function ListItemAvatar({
 // List Item Content
 // ===========================
 
-export interface ListItemContentProps extends React.ComponentProps<"div"> {
-	/**
-	 * Truncate text with ellipsis
-	 * @default false
-	 */
-	truncate?: boolean;
-}
-
 function ListItemContent({
 	className,
 	truncate = false,
@@ -346,20 +279,6 @@ function ListItemContent({
 // ===========================
 // List Item Title
 // ===========================
-
-export interface ListItemTitleProps
-	extends React.HTMLAttributes<HTMLHeadingElement> {
-	/**
-	 * Truncate text with ellipsis
-	 * @default false
-	 */
-	truncate?: boolean;
-	/**
-	 * Heading level for semantic HTML
-	 * @default 'div'
-	 */
-	as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "div" | "span";
-}
 
 function ListItemTitle({
 	className,
@@ -383,19 +302,6 @@ function ListItemTitle({
 // ===========================
 // List Item Text
 // ===========================
-
-export interface ListItemTextProps
-	extends React.HTMLAttributes<HTMLParagraphElement> {
-	/**
-	 * Truncate text with ellipsis
-	 * @default false
-	 */
-	truncate?: boolean;
-	/**
-	 * Number of lines to show before truncating
-	 */
-	lines?: number;
-}
 
 // Tailwind only compiles classes it can see in source — a composed
 // `line-clamp-${lines}` would silently no-op. Static map keeps every
@@ -441,8 +347,6 @@ function ListItemText({
 // List Item Action
 // ===========================
 
-export interface ListItemActionProps extends React.ComponentProps<"div"> {}
-
 function ListItemAction({ className, ...props }: ListItemActionProps) {
 	return (
 		<div
@@ -456,22 +360,6 @@ function ListItemAction({ className, ...props }: ListItemActionProps) {
 // ===========================
 // List Item Badge
 // ===========================
-
-export interface ListItemBadgeProps
-	extends React.HTMLAttributes<HTMLSpanElement> {
-	/**
-	 * Badge semantic color
-	 * @default 'muted'
-	 */
-	color?:
-		| "primary"
-		| "secondary"
-		| "destructive"
-		| "success"
-		| "warning"
-		| "info"
-		| "muted";
-}
 
 function ListItemBadge({
 	className,

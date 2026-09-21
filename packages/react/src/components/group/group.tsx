@@ -1,9 +1,6 @@
 import { cn } from "../../lib/utils";
-import { Flex, type FlexProps } from "../flex";
-
-export interface GroupProps extends Omit<FlexProps, "direction"> {
-	direction?: "row" | "rowReverse";
-}
+import { Flex } from "../flex";
+import type { GroupProps } from "./group.types";
 
 function Group({
 	ref,

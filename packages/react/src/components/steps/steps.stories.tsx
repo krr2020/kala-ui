@@ -335,11 +335,7 @@ export const VerticalFullFlow = () => {
 	return (
 		<Flex className="w-[800px] max-w-full" gap={8}>
 			<Box className="w-64 shrink-0">
-				<Steps
-					value={currentStep}
-					items={flowItems}
-					orientation="vertical"
-				/>
+				<Steps value={currentStep} items={flowItems} orientation="vertical" />
 			</Box>
 
 			<Card className="flex-1">

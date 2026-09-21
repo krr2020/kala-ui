@@ -1,7 +1,6 @@
 export type { DateRange } from "react-day-picker";
-export {
-	DatePicker,
-	type DatePickerProps,
-	DateRangePicker,
-	type DateRangePickerProps,
-} from "./date-picker";
+export { DatePicker, DateRangePicker } from "./date-picker";
+export type {
+	DatePickerProps,
+	DateRangePickerProps,
+} from "./date-picker.types";

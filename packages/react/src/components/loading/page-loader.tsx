@@ -1,21 +1,7 @@
-import type * as React from "react";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Spinner } from "../spinner";
-
-export interface PageLoaderProps {
-	ref?: React.Ref<HTMLDivElement>;
-	/**
-	 * Loading message to display
-	 */
-	message?: string;
-	/**
-	 * Additional CSS classes
-	 */
-	className?: string;
-	style?: React.CSSProperties;
-	slotStyles?: SlotStyles;
-}
+import type { PageLoaderProps } from "./loading.types";
 
 /**
  * Full-page loading state component
@@ -31,7 +17,10 @@ function PageLoader({
 	slotStyles,
 }: PageLoaderProps) {
 	const root = applySlot(
-		cn("flex min-h-screen flex-col items-center justify-center gap-4 bg-background", className),
+		cn(
+			"flex min-h-screen flex-col items-center justify-center gap-4 bg-background",
+			className,
+		),
 		slotStyles?.root,
 	);
 	return (

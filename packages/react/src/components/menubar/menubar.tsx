@@ -4,8 +4,9 @@ import * as MenubarPrimitive from "@radix-ui/react-menubar";
 import { Check, ChevronRight, Circle } from "lucide-react";
 import type * as React from "react";
 
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import type { MenubarProps } from "./menubar.types";
 
 function MenubarMenu({
 	...props
@@ -19,14 +20,7 @@ function MenubarMenu({
 	);
 }
 
-function Menubar({
-	className,
-	style,
-	slotStyles,
-	...props
-}: React.ComponentProps<typeof MenubarPrimitive.Root> & {
-	slotStyles?: SlotStyles;
-}) {
+function Menubar({ className, style, slotStyles, ...props }: MenubarProps) {
 	const root = applySlot(
 		cn(
 			"flex h-10 items-center space-x-1 rounded-md border bg-background p-1 kala-surface-card",

@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import type { TimelineProps } from "./timeline.types";
 
 type TimelineStatus = "default" | "success" | "error" | "warning" | "pending";
 
@@ -83,11 +83,6 @@ function TimelineItem({
 			</div>
 		</div>
 	);
-}
-
-interface TimelineProps extends React.ComponentProps<"div"> {
-	slotStyles?: SlotStyles;
-	children: React.ReactNode;
 }
 
 function Timeline({

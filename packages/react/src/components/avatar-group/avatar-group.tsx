@@ -3,39 +3,14 @@
 import { avatarGroupStyles } from "../../config/avatar-group";
 import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
-	type AvatarProps,
-} from "../avatar/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../avatar/avatar";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
 } from "../tooltip/tooltip";
-
-export interface AvatarItem {
-	src?: string;
-	alt?: string;
-	fallback: string;
-}
-
-export interface AvatarGroupProps extends React.ComponentProps<"div"> {
-	/** List of avatars to display */
-	avatars: AvatarItem[];
-	/** Maximum number of avatars to show before overflow */
-	max?: number;
-	/** Avatar size variant */
-	size?: AvatarProps["size"];
-	/** Show tooltip with all names on hover */
-	showTooltip?: boolean;
-	/** Additional className */
-	className?: string;
-	/** Per-part overrides: `root` wins over `className`/`style`, `ring` targets each avatar's ring, `overflow` the "+N" chip. */
-	slotStyles?: SlotStyles;
-}
+import type { AvatarGroupProps, AvatarItem } from "./avatar-group.types";
 
 function AvatarGroup({
 	avatars,
@@ -52,7 +27,10 @@ function AvatarGroup({
 	const overflow = avatars.length - max;
 
 	const ring = applySlot(avatarGroupStyles.ring, slotStyles?.ring);
-	const overflowChip = applySlot(avatarGroupStyles.overflow, slotStyles?.overflow);
+	const overflowChip = applySlot(
+		avatarGroupStyles.overflow,
+		slotStyles?.overflow,
+	);
 	const root = applySlot(
 		cn(avatarGroupStyles.root, className),
 		slotStyles?.root,
@@ -92,7 +70,7 @@ function AvatarGroup({
 					),
 				)}
 
-					{overflow > 0 && (
+				{overflow > 0 && (
 					<Avatar
 						size={size}
 						className={overflowChip.className}

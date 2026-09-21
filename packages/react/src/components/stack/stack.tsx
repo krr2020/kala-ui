@@ -1,9 +1,6 @@
 import { cn } from "../../lib/utils";
-import { Flex, type FlexProps } from "../flex";
-
-export interface StackProps extends Omit<FlexProps, "direction"> {
-	direction?: "column" | "columnReverse";
-}
+import { Flex } from "../flex";
+import type { StackProps } from "./stack.types";
 
 function Stack({
 	ref,

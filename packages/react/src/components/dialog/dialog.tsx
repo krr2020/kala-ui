@@ -4,10 +4,11 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import type * as React from "react";
 import { dialogStyles } from "../../config/dialog";
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
 import { Box } from "../box";
 import { Text } from "../text";
+import type { DialogContentProps } from "./dialog.types";
 
 function Dialog({
 	...props
@@ -80,14 +81,7 @@ function DialogContent({
 	size = "md",
 	closeLabel = "Close",
 	...props
-}: React.ComponentProps<typeof DialogPrimitive.Content> & {
-	showCloseButton?: boolean;
-	size?: "sm" | "md" | "lg" | "xl" | "full";
-	/** Accessible name for the close button; defaults to "Close". */
-	closeLabel?: string;
-	/** Per-part overrides: `root` wins over `className`/`style`; `overlay` targets the backdrop, `close` the close button, `closeIcon` its glyph. */
-	slotStyles?: SlotStyles;
-}) {
+}: DialogContentProps) {
 	const root = applySlot(
 		cn(dialogStyles.content, dialogStyles.sizes[size], className),
 		slotStyles?.root,
@@ -143,11 +137,7 @@ function DialogHeader({
 	slotStyles?: SlotStyles;
 }) {
 	const root = applySlot(
-		cn(
-			dialogStyles.header,
-			fixed && "shrink-0",
-			className,
-		),
+		cn(dialogStyles.header, fixed && "shrink-0", className),
 		slotStyles?.root,
 	);
 	return (
@@ -174,11 +164,7 @@ function DialogFooter({
 	slotStyles?: SlotStyles;
 }) {
 	const root = applySlot(
-		cn(
-			dialogStyles.footer,
-			fixed && "shrink-0",
-			className,
-		),
+		cn(dialogStyles.footer, fixed && "shrink-0", className),
 		slotStyles?.root,
 	);
 	return (
@@ -204,10 +190,7 @@ function DialogTitle({
 	/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
 	slotStyles?: SlotStyles;
 }) {
-	const root = applySlot(
-		cn(dialogStyles.title, className),
-		slotStyles?.root,
-	);
+	const root = applySlot(cn(dialogStyles.title, className), slotStyles?.root);
 	return (
 		<DialogPrimitive.Title
 			data-kala-component="dialog-title"
@@ -251,10 +234,7 @@ function DialogBody({
 	slotStyles,
 	...props
 }: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
-	const root = applySlot(
-		cn(dialogStyles.body, className),
-		slotStyles?.root,
-	);
+	const root = applySlot(cn(dialogStyles.body, className), slotStyles?.root);
 	return (
 		<Box
 			data-kala-component="dialog-body"

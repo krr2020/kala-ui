@@ -16,3 +16,4 @@ export {
 	MenubarSubTrigger,
 	MenubarTrigger,
 } from "./menubar";
+export type { MenubarProps } from "./menubar.types";

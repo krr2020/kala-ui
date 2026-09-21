@@ -1,39 +1,10 @@
 import { useUncontrolled } from "@kala-ui/react-hooks";
 import * as React from "react";
 import { inputStyles } from "../../config/input";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
-
-export interface ColorInputProps
-	extends Omit<React.ComponentProps<"input">, "onChange"> {
-	/**
-	 * Value for controlled component
-	 */
-	value?: string;
-	/**
-	 * Default value for uncontrolled component
-	 */
-	defaultValue?: string;
-	/**
-	 * Callback fired when value changes
-	 */
-	onValueChange?: (value: string) => void;
-	/**
-	 * If true, renders with error styles
-	 */
-	error?: boolean;
-	/**
-	 * If true, renders with success styles
-	 */
-	success?: boolean;
-	/**
-	 * If true, hides the color preview swatch
-	 */
-	withPreview?: boolean;
-	/** Per-part style overrides (root wins over className/style) */
-	slotStyles?: SlotStyles;
-}
+import type { ColorInputProps } from "./color-input.types";
 
 const PRESET_COLORS: { value: string; label: string }[] = [
 	{ value: "#000000", label: "Black" },
@@ -73,10 +44,7 @@ export function ColorInput({
 		setInternalValue(e.target.value);
 	};
 
-	const root = applySlot(
-		cn("relative flex items-center"),
-		slotStyles?.root,
-	);
+	const root = applySlot(cn("relative flex items-center"), slotStyles?.root);
 
 	return (
 		<div

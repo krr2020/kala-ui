@@ -1,6 +1,7 @@
 import type * as React from "react";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import type { PasswordStrengthIndicatorProps } from "./password-strength-indicator.types";
 
 const PASSWORD_MIN_LENGTH = 8;
 const PASSWORD_STRONG_LENGTH = 12;
@@ -13,11 +14,6 @@ const STRENGTH_LABELS = [
 	"Good",
 	"Strong",
 ] as const;
-
-export interface PasswordStrengthIndicatorProps
-	extends React.ComponentProps<"div"> {
-	password: string;
-}
 
 function calculatePasswordStrength(pwd: string): number {
 	if (!pwd) {
@@ -56,7 +52,7 @@ export function PasswordStrengthIndicator({
 	slotStyles,
 	ref,
 	...props
-}: PasswordStrengthIndicatorProps & { slotStyles?: SlotStyles }): React.ReactNode | null {
+}: PasswordStrengthIndicatorProps): React.ReactNode | null {
 	if (!password) {
 		return null;
 	}

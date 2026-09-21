@@ -11,6 +11,7 @@ export {
 	DialogTitle,
 	DialogTrigger,
 } from "./dialog";
+export type { DialogContentProps } from "./dialog.types";
 export type {
 	DialogSkeletonConfig,
 	DialogSkeletonProps,

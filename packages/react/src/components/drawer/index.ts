@@ -10,6 +10,7 @@ export {
 	DrawerTitle,
 	DrawerTrigger,
 } from "./drawer";
+export type { DrawerContentProps } from "./drawer.types";
 export type {
 	DrawerSkeletonConfig,
 	DrawerSkeletonProps,

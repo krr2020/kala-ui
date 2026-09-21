@@ -1,7 +1,7 @@
 "use client";
 
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import * as React from "react";
 
 import {
@@ -10,8 +10,13 @@ import {
 	avatarStyles,
 } from "../../config/avatar";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { SkeletonCircle } from "../skeleton/skeleton-patterns";
+import type {
+	AvatarFallbackProps,
+	AvatarImageProps,
+	AvatarProps,
+} from "./avatar.types";
 
 const AvatarContext = React.createContext<{
 	shape?: "circle" | "rounded" | "square";
@@ -39,16 +44,6 @@ const AVATAR_SKELETON_SIZES: Record<string, string> = {
 	xl: "4rem",
 };
 
-interface AvatarProps
-	extends React.ComponentProps<typeof AvatarPrimitive.Root>,
-		VariantProps<typeof avatarVariants> {
-	/**
-	 * Show skeleton loading state
-	 */
-	isLoading?: boolean;
-	slotStyles?: SlotStyles;
-}
-
 function Avatar({
 	className,
 	size,
@@ -59,7 +54,10 @@ function Avatar({
 	slotStyles,
 	...props
 }: AvatarProps) {
-	const root = applySlot(cn(avatarVariants({ size, shape, status }), className), slotStyles?.root);
+	const root = applySlot(
+		cn(avatarVariants({ size, shape, status }), className),
+		slotStyles?.root,
+	);
 	// Show loading skeleton
 	if (isLoading) {
 		const skeletonSize =
@@ -88,17 +86,6 @@ function Avatar({
 	);
 }
 
-export interface AvatarImageProps
-	extends Omit<React.ComponentProps<typeof AvatarPrimitive.Image>, "alt">,
-		VariantProps<typeof avatarImageVariants> {
-	/**
-	 * Alternative text describing the avatar (the person's or entity's name).
-	 * Required so screen readers never land on an unnamed image.
-	 */
-	alt: string;
-	shape?: "circle" | "rounded" | "square";
-}
-
 function AvatarImage({
 	className,
 	shape: shapeProp,
@@ -121,12 +108,6 @@ export const avatarFallbackVariants = cva(avatarFallbackStyles.base, {
 	variants: avatarFallbackStyles.variants,
 	defaultVariants: avatarFallbackStyles.defaultVariants,
 });
-
-export interface AvatarFallbackProps
-	extends Omit<React.ComponentProps<typeof AvatarPrimitive.Fallback>, "color">,
-		VariantProps<typeof avatarFallbackVariants> {
-	slotStyles?: SlotStyles;
-}
 
 function AvatarFallback({
 	className,
@@ -154,4 +135,4 @@ function AvatarFallback({
 	);
 }
 
-export { Avatar, AvatarFallback, AvatarImage, type AvatarProps };
+export { Avatar, AvatarFallback, AvatarImage };

@@ -7,8 +7,11 @@ export {
 	type PanelProps,
 	type PanelProps as ResizablePanelProps,
 	ResizableHandle,
-	type ResizableHandleProps,
 	ResizablePanel,
 	ResizablePanelGroup,
 	type SeparatorProps,
 } from "./resizable";
+export type {
+	ResizableHandleProps,
+	ResizablePanelGroupProps,
+} from "./resizable.types";

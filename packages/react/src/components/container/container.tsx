@@ -1,8 +1,8 @@
 import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
-import type * as React from "react";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cva } from "class-variance-authority";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import type { ContainerProps } from "./container.types";
 
 const containerVariants = cva("mx-auto w-full px-4 md:px-6 lg:px-8", {
 	variants: {
@@ -22,13 +22,6 @@ const containerVariants = cva("mx-auto w-full px-4 md:px-6 lg:px-8", {
 		size: "xl",
 	},
 });
-
-export interface ContainerProps
-	extends React.ComponentProps<"div">,
-		VariantProps<typeof containerVariants> {
-	asChild?: boolean;
-	slotStyles?: SlotStyles;
-}
 
 function Container({
 	ref,

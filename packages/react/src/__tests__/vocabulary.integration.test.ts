@@ -113,13 +113,13 @@ describe("injected-content overrides (item 9)", () => {
 	it("dismiss/close buttons expose i18n label props", () => {
 		const alertTypes = read("../components/alert/alert.types.ts");
 		expect(alertTypes).toContain("dismissLabel?: string");
-		expect(read("../components/banner/banner.tsx")).toContain(
+		expect(read("../components/banner/banner.types.ts")).toContain(
 			"dismissLabel?: string",
 		);
-		expect(read("../components/tag/tag.tsx")).toContain(
+		expect(read("../components/tag/tag.types.ts")).toContain(
 			"dismissLabel?: string",
 		);
-		expect(read("../components/dialog/dialog.tsx")).toContain(
+		expect(read("../components/dialog/dialog.types.ts")).toContain(
 			"closeLabel?: string",
 		);
 	});
@@ -134,11 +134,11 @@ describe("injected-content overrides (item 9)", () => {
 	});
 
 	it("toast barrel exports the per-part type surface", () => {
-		expect(read("../components/toast/toast.tsx")).toContain(
-			"export type { ToastProps }",
+		expect(read("../components/toast/toast.types.ts")).toContain(
+			"ToastProps",
 		);
 		expect(read("../components/toast/index.ts")).toContain(
-			"type ToastProps",
+			"export type { ToastProps }",
 		);
 	});
 });

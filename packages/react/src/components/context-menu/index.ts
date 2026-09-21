@@ -15,3 +15,7 @@ export {
 	ContextMenuSubTrigger,
 	ContextMenuTrigger,
 } from "./context-menu";
+export type {
+	ContextMenuContentProps,
+	ContextMenuProps,
+} from "./context-menu.types";

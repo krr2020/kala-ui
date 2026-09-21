@@ -1,8 +1,8 @@
 import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
-import type * as React from "react";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cva } from "class-variance-authority";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import type { GridItemProps, GridProps } from "./grid.types";
 
 const gridVariants = cva("grid", {
 	variants: {
@@ -62,13 +62,6 @@ const gridVariants = cva("grid", {
 		flow: "row",
 	},
 });
-
-export interface GridProps
-	extends React.ComponentProps<"div">,
-		VariantProps<typeof gridVariants> {
-	asChild?: boolean;
-	slotStyles?: SlotStyles;
-}
 
 function Grid({
 	ref,
@@ -160,13 +153,6 @@ const gridItemVariants = cva("", {
 		},
 	},
 });
-
-export interface GridItemProps
-	extends React.ComponentProps<"div">,
-		VariantProps<typeof gridItemVariants> {
-	asChild?: boolean;
-	slotStyles?: SlotStyles;
-}
 
 function GridItem({
 	ref,

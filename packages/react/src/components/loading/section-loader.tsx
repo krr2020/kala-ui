@@ -1,25 +1,7 @@
-import type * as React from "react";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Spinner } from "../spinner";
-
-export interface SectionLoaderProps {
-	ref?: React.Ref<HTMLDivElement>;
-	/**
-	 * Loading message to display
-	 */
-	message?: string;
-	/**
-	 * Additional CSS classes
-	 */
-	className?: string;
-	/**
-	 * Minimum height for the loading container
-	 */
-	minHeight?: string;
-	style?: React.CSSProperties;
-	slotStyles?: SlotStyles;
-}
+import type { SectionLoaderProps } from "./loading.types";
 
 /**
  * Section-level loading state component

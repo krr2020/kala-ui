@@ -11,6 +11,7 @@ export {
 	tabsListVariants,
 	tabsTriggerVariants,
 } from "./tabs";
+export type { TabsProps } from "./tabs.types";
 export type {
 	TabsSkeletonConfig,
 	TabsSkeletonProps,

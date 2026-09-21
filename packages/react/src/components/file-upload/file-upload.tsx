@@ -3,27 +3,10 @@
 import { CloudUpload, File as FileIcon, X } from "lucide-react";
 import * as React from "react";
 import { fileUploadStyles } from "../../config/file-upload";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
-
-export interface FileUploadProps
-	extends Omit<React.ComponentProps<"div">, "onError"> {
-	/** Selected file (controlled; null = cleared) */
-	value?: File | null;
-	/**
-	 * Fired with the newly selected file, or null when cleared
-	 */
-	onValueChange?: (file: File | null) => void;
-	accept?: string;
-	maxSize?: number; // in bytes
-	disabled?: boolean;
-	error?: string;
-	progress?: number;
-	onError?: (error: string) => void;
-	/** Per-part overrides: `root` wins over `className`/`style`, `icon` targets the dropzone glyph circle. */
-	slotStyles?: SlotStyles;
-}
+import type { FileUploadProps } from "./file-upload.types";
 
 export function FileUpload({
 	value,
@@ -120,7 +103,10 @@ export function FileUpload({
 		return `${parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]}`;
 	};
 
-	const root = applySlot(cn(fileUploadStyles.root, className), slotStyles?.root);
+	const root = applySlot(
+		cn(fileUploadStyles.root, className),
+		slotStyles?.root,
+	);
 	const iconCircle = applySlot(fileUploadStyles.icon, slotStyles?.icon);
 
 	return (
@@ -200,10 +186,7 @@ export function FileUpload({
 						className,
 					)}
 				>
-					<div
-						className={iconCircle.className}
-						style={iconCircle.style}
-					>
+					<div className={iconCircle.className} style={iconCircle.style}>
 						<CloudUpload className="w-6 h-6 text-muted-foreground" />
 					</div>
 					<p className="mb-1 text-sm font-medium text-foreground">

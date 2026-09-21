@@ -1,25 +1,6 @@
-import type * as React from "react";
 import { cn } from "../../lib/utils";
-import { Box, type BoxProps } from "../box";
-
-export interface OverlayProps extends BoxProps {
-	/** Overlay background color, ignored if gradient is set, default #000 */
-	color?: string;
-	/** Overlay background opacity, ignored if gradient is set, default 0.6 */
-	backgroundOpacity?: number;
-	/** Overlay background blur in px */
-	blur?: number;
-	/** Overlay background gradient, overrides color and backgroundOpacity */
-	gradient?: string;
-	/** Overlay z-index */
-	zIndex?: number;
-	/** Use fixed position instead of absolute, default false */
-	fixed?: boolean;
-	/** Overlay border radius */
-	radius?: number | string;
-	/** Content inside overlay */
-	children?: React.ReactNode;
-}
+import { Box } from "../box";
+import type { OverlayProps } from "./overlay.types";
 
 // Helper to convert hex to rgb (simplified)
 const hexToRgb = (hex: string) => {

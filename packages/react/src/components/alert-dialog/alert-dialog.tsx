@@ -1,22 +1,20 @@
 "use client";
 
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
-import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
 
 import { cn } from "../../lib/utils";
-import {
-	applySlot,
-	mergeStyle,
-	type SlotStyles,
-} from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { Box } from "../box";
 import { buttonVariants } from "../button";
 import { Text } from "../text";
+import type {
+	AlertDialogActionProps,
+	AlertDialogContentProps,
+	AlertDialogProps,
+} from "./alert-dialog.types";
 
-function AlertDialog({
-	...props
-}: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
+function AlertDialog({ ...props }: AlertDialogProps) {
 	return (
 		<AlertDialogPrimitive.Root
 			data-kala-component="alert-dialog"
@@ -66,9 +64,7 @@ function AlertDialogContent({
 	style,
 	slotStyles,
 	...props
-}: React.ComponentProps<typeof AlertDialogPrimitive.Content> & {
-	slotStyles?: SlotStyles;
-}) {
+}: AlertDialogContentProps) {
 	const root = applySlot(
 		cn(
 			"bg-card data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-30 flex flex-col translate-x-[-50%] translate-y-[-50%] rounded-lg border duration-200 w-[90vw] max-w-lg kala-surface-card",
@@ -178,8 +174,7 @@ function AlertDialogAction({
 	variant,
 	size,
 	...props
-}: React.ComponentProps<typeof AlertDialogPrimitive.Action> &
-	VariantProps<typeof buttonVariants>) {
+}: AlertDialogActionProps) {
 	return (
 		<AlertDialogPrimitive.Action
 			data-kala-component="alert-dialog-action"

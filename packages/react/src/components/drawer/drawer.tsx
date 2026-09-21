@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
-
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import type { DrawerContentProps } from "./drawer.types";
 
 const DrawerContext = React.createContext<{
 	direction?: "top" | "bottom" | "left" | "right";
@@ -91,17 +91,6 @@ const SIZE_HEIGHT_CLASSES: Record<
 	full: "h-screen sm:max-h-none",
 };
 
-type DrawerContentProps = React.ComponentProps<
-	typeof DrawerPrimitive.Content
-> & {
-	/**
-	 * Width (left/right) or height (top/bottom) preset
-	 * @default "md"
-	 */
-	size?: "sm" | "md" | "lg" | "xl" | "full";
-	slotStyles?: SlotStyles;
-};
-
 function DrawerContent({
 	className,
 	style,
@@ -117,16 +106,16 @@ function DrawerContent({
 		: SIZE_HEIGHT_CLASSES[size];
 	const root = applySlot(
 		cn(
-				"fixed z-30 flex h-auto flex-col bg-background kala-surface-card",
-				(!direction || direction === "bottom") &&
-					"inset-x-0 bottom-0 mt-24 rounded-t-lg border-t",
-				direction === "right" && "inset-y-0 right-0 h-screen border-l",
-				direction === "left" && "inset-y-0 left-0 h-screen border-r",
-				direction === "top" && "inset-x-0 top-0 mb-24 rounded-b-lg border-b",
-				sizeClass,
-				className,
-			),
-			slotStyles?.root,
+			"fixed z-30 flex h-auto flex-col bg-background kala-surface-card",
+			(!direction || direction === "bottom") &&
+				"inset-x-0 bottom-0 mt-24 rounded-t-lg border-t",
+			direction === "right" && "inset-y-0 right-0 h-screen border-l",
+			direction === "left" && "inset-y-0 left-0 h-screen border-r",
+			direction === "top" && "inset-x-0 top-0 mb-24 rounded-b-lg border-b",
+			sizeClass,
+			className,
+		),
+		slotStyles?.root,
 	);
 	return (
 		<DrawerPortal data-slot="drawer-portal">

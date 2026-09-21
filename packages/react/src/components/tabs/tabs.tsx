@@ -10,8 +10,9 @@ import {
 	tabsListStyles,
 	tabsTriggerStyles,
 } from "../../config/tabs";
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
+import type { TabsProps } from "./tabs.types";
 
 const TabsContext = React.createContext<{
 	activeTab?: string | undefined;
@@ -29,7 +30,7 @@ function Tabs({
 	defaultValue,
 	orientation = "horizontal",
 	...props
-}: React.ComponentProps<typeof TabsPrimitive.Root> & { slotStyles?: SlotStyles }) {
+}: TabsProps) {
 	const uniqueId = React.useId();
 	const [activeTab, setActiveTab] = useUncontrolled({
 		value,
@@ -147,7 +148,10 @@ function TabsContent({
 }: React.ComponentProps<typeof TabsPrimitive.Content> & {
 	slotStyles?: SlotStyles;
 }) {
-	const root = applySlot(cn(tabsContentStyles.base, className), slotStyles?.root);
+	const root = applySlot(
+		cn(tabsContentStyles.base, className),
+		slotStyles?.root,
+	);
 	return (
 		<TabsPrimitive.Content
 			data-kala-component="tabs-content"

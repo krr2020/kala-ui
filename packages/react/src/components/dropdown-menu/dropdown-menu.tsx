@@ -7,10 +7,12 @@ import type * as React from "react";
 import { dropdownMenuStyles } from "../../config/dropdown-menu";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import type {
+	DropdownMenuContentProps,
+	DropdownMenuProps,
+} from "./dropdown-menu.types";
 
-function DropdownMenu({
-	...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
+function DropdownMenu({ ...props }: DropdownMenuProps) {
 	return (
 		<DropdownMenuPrimitive.Root
 			data-kala-component="dropdown-menu"
@@ -44,10 +46,7 @@ function DropdownMenuContent({
 	slotStyles,
 	sideOffset = 4,
 	...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Content> & {
-	/** Per-part overrides: `root` wins over `className`/`style` on the portal-rendered surface. */
-	slotStyles?: SlotStyles;
-}) {
+}: DropdownMenuContentProps) {
 	const root = applySlot(dropdownMenuStyles.content, slotStyles?.root);
 	return (
 		<DropdownMenuPrimitive.Portal>

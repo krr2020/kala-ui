@@ -1,8 +1,13 @@
 import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
+import type {
+	ButtonGroupProps,
+	ButtonGroupSeparatorProps,
+	ButtonGroupTextProps,
+} from "./button-group.types";
 
 const buttonGroupVariants = cva("inline-flex isolate", {
 	variants: {
@@ -18,21 +23,6 @@ const buttonGroupVariants = cva("inline-flex isolate", {
 	},
 });
 
-interface ButtonGroupProps
-	extends React.ComponentProps<"div">,
-		VariantProps<typeof buttonGroupVariants> {
-	/**
-	 * Accessible label describing the button group's purpose
-	 */
-	"aria-label"?: string;
-	/**
-	 * Whether to show separators between buttons
-	 * @default false
-	 */
-	separated?: boolean;
-	slotStyles?: SlotStyles;
-}
-
 function ButtonGroup({
 	className,
 	style,
@@ -47,14 +37,13 @@ function ButtonGroup({
 	return (
 		<div
 			data-kala-component="button-group"
-			className={applySlot(
-				cn(buttonGroupVariants({ orientation }), className),
-				slotStyles?.root,
-			).className}
-			style={mergeStyle(
-				style,
-				applySlot(null, slotStyles?.root).style,
-			)}
+			className={
+				applySlot(
+					cn(buttonGroupVariants({ orientation }), className),
+					slotStyles?.root,
+				).className
+			}
+			style={mergeStyle(style, applySlot(null, slotStyles?.root).style)}
 			{...props}
 		>
 			{separated
@@ -88,10 +77,6 @@ export const buttonGroupSeparatorVariants = cva("shrink-0 bg-separator z-30", {
 	},
 });
 
-interface ButtonGroupSeparatorProps
-	extends React.ComponentProps<"hr">,
-		VariantProps<typeof buttonGroupSeparatorVariants> {}
-
 function ButtonGroupSeparator({
 	className,
 	orientation = "horizontal",
@@ -105,10 +90,6 @@ function ButtonGroupSeparator({
 			{...props}
 		/>
 	);
-}
-
-interface ButtonGroupTextProps extends React.HTMLAttributes<HTMLSpanElement> {
-	asChild?: boolean;
 }
 
 function ButtonGroupText({
@@ -136,11 +117,6 @@ function ButtonGroupText({
 	);
 }
 
-export type {
-	ButtonGroupProps,
-	ButtonGroupSeparatorProps,
-	ButtonGroupTextProps,
-};
 export {
 	ButtonGroup,
 	ButtonGroupSeparator,

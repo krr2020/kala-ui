@@ -3,26 +3,10 @@
 import { useClipboard } from "@kala-ui/react-hooks";
 import { Check, Copy } from "lucide-react";
 import * as React from "react";
-
+import { applySlot } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, type SlotStyles } from "../../lib/slot-styles";
 import { Button } from "../button/button";
-import type { ButtonProps } from "../button/button.types";
-
-export interface CopyButtonProps
-	extends Omit<ButtonProps, "onClick" | "children"> {
-	/** Text to copy to clipboard */
-	value: string;
-	/** Duration in ms to show the success state */
-	timeout?: number;
-	/** Icon to show in copy state (default: Copy icon) */
-	copyIcon?: React.ReactNode;
-	/** Icon to show in success state (default: Check icon) */
-	checkIcon?: React.ReactNode;
-	/** Accessible label */
-	"aria-label"?: string;
-	slotStyles?: SlotStyles;
-}
+import type { CopyButtonProps } from "./copy-button.types";
 
 function CopyButton({
 	value,

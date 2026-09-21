@@ -1,8 +1,7 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import type * as React from "react";
-
+import { cva } from "class-variance-authority";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import type { KbdProps } from "./kbd.types";
 
 export const kbdVariants = cva(
 	"inline-flex items-center justify-center font-mono font-medium rounded border border-b-2 bg-muted text-muted-foreground shadow-sm select-none",
@@ -43,14 +42,6 @@ const KEY_SYMBOLS: Record<string, string> = {
 	right: "→",
 };
 
-export interface KbdProps
-	extends React.ComponentProps<"kbd">,
-		VariantProps<typeof kbdVariants> {
-	/** Key or array of keys to display as a chord */
-	keys?: string | string[];
-	slotStyles?: SlotStyles;
-}
-
 function Kbd({
 	className,
 	style,
@@ -64,7 +55,10 @@ function Kbd({
 		const keyArray = Array.isArray(keys) ? keys : [keys];
 
 		if (keyArray.length > 1) {
-			const root = applySlot("inline-flex items-center gap-0.5", slotStyles?.root);
+			const root = applySlot(
+				"inline-flex items-center gap-0.5",
+				slotStyles?.root,
+			);
 			return (
 				<span
 					data-kala-component="kbd"
@@ -86,7 +80,10 @@ function Kbd({
 		}
 
 		const key = keyArray[0];
-		const root = applySlot(cn(kbdVariants({ size }), className), slotStyles?.root);
+		const root = applySlot(
+			cn(kbdVariants({ size }), className),
+			slotStyles?.root,
+		);
 		return (
 			<kbd
 				data-kala-component="kbd"
@@ -100,7 +97,10 @@ function Kbd({
 		);
 	}
 
-	const root = applySlot(cn(kbdVariants({ size }), className), slotStyles?.root);
+	const root = applySlot(
+		cn(kbdVariants({ size }), className),
+		slotStyles?.root,
+	);
 	return (
 		<kbd
 			data-kala-component="kbd"

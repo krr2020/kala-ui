@@ -1,30 +1,15 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import type * as React from "react";
 
 import { nativeSelectStyles } from "../../config/select";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-
-export interface NativeSelectProps
-	extends Omit<React.ComponentProps<"select">, "size"> {
-	/**
-	 * Size variant
-	 * @default "md"
-	 */
-	size?: "sm" | "md";
-	/**
-	 * Error state styling
-	 */
-	hasError?: boolean;
-	/**
-	 * Success state styling
-	 */
-	hasSuccess?: boolean;
-	/** Per-part overrides: `root` targets the wrapper, `select` the native control, `icon` the chevron holder. */
-	slotStyles?: SlotStyles;
-}
+import type {
+	NativeSelectOptGroupProps,
+	NativeSelectOptionProps,
+	NativeSelectProps,
+} from "./select.types";
 
 function NativeSelect({
 	ref,
@@ -73,9 +58,6 @@ function NativeSelect({
 	);
 }
 
-export interface NativeSelectOptionProps
-	extends React.ComponentProps<"option"> {}
-
 function NativeSelectOption({
 	ref,
 	className,
@@ -89,9 +71,6 @@ function NativeSelectOption({
 		/>
 	);
 }
-
-export interface NativeSelectOptGroupProps
-	extends React.ComponentProps<"optgroup"> {}
 
 function NativeSelectOptGroup({
 	ref,

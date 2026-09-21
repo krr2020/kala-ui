@@ -1,8 +1,9 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import type * as React from "react";
+import { applySlot } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, type SlotStyles } from "../../lib/slot-styles";
 import { Box } from "../box";
+import type { IndicatorProps } from "./indicator.types";
 
 const indicatorVariants = cva(
 	"absolute flex items-center justify-center font-bold z-50",
@@ -42,39 +43,6 @@ const indicatorVariants = cva(
 		},
 	},
 );
-
-export interface IndicatorProps
-	extends Omit<React.ComponentProps<"div">, "color">,
-		VariantProps<typeof indicatorVariants> {
-	/** Indicator position relative to the target element */
-	position?:
-		| "top-left"
-		| "top-center"
-		| "top-right"
-		| "middle-left"
-		| "middle-center"
-		| "middle-right"
-		| "bottom-left"
-		| "bottom-center"
-		| "bottom-right";
-	/** Offset from the edge of the target element, in px */
-	offset?: number;
-	/** Determines whether the indicator should be displayed inline */
-	inline?: boolean;
-	/** Size of the indicator in px */
-	size?: number;
-	/** Determines whether the indicator should have a border */
-	withBorder?: boolean;
-	/** Determines whether the indicator should be disabled (hidden) */
-	disabled?: boolean;
-	/** Determines whether the indicator should show a processing animation */
-	processing?: boolean;
-	/** Indicator label */
-	label?: React.ReactNode;
-	/** Target element */
-	children?: React.ReactNode;
-	slotStyles?: SlotStyles;
-}
 
 function Indicator({
 	ref,

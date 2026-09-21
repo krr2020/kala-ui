@@ -4,17 +4,9 @@ import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import type * as React from "react";
 
 import { scrollAreaStyles } from "../../config/scroll-area";
-import {
-	applySlot,
-	mergeStyle,
-	type SlotStyles,
-} from "../../lib/slot-styles";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-
-interface ScrollAreaProps
-	extends React.ComponentProps<typeof ScrollAreaPrimitive.Root> {
-	slotStyles?: SlotStyles;
-}
+import type { ScrollAreaProps } from "./scroll-area.types";
 
 function ScrollArea({
 	ref,
@@ -47,9 +39,7 @@ function ScrollArea({
 }
 
 interface ScrollBarProps
-	extends React.ComponentProps<
-		typeof ScrollAreaPrimitive.ScrollAreaScrollbar
-	> {
+	extends React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar> {
 	slotStyles?: SlotStyles;
 }
 

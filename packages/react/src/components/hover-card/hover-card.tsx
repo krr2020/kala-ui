@@ -2,15 +2,15 @@
 
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 import type * as React from "react";
-
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
+import type { HoverCardProps } from "./hover-card.types";
 
 function HoverCard({
 	openDelay = 200,
 	closeDelay = 0,
 	...props
-}: React.ComponentProps<typeof HoverCardPrimitive.Root>) {
+}: HoverCardProps) {
 	return (
 		<HoverCardPrimitive.Root
 			data-kala-component="hover-card"
@@ -52,8 +52,8 @@ function HoverCardContent({
 			"data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
 			"data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
 			"data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-				className,
-			),
+			className,
+		),
 		slotStyles?.root,
 	);
 	return (

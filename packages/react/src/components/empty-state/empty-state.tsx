@@ -1,11 +1,10 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import { Inbox, type LucideIcon } from "lucide-react";
-import type * as React from "react";
+import { cva } from "class-variance-authority";
+import { Inbox } from "lucide-react";
 import { emptyStateStyles } from "../../config/empty-state";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Button } from "../button";
-import type { EmptyStateSkeletonConfig } from "../skeleton/skeleton.types";
+import type { EmptyStateProps } from "./empty-state.types";
 import { EmptyStateSkeleton } from "./empty-state-skeleton";
 
 const emptyStateVariants = cva(
@@ -28,24 +27,6 @@ const emptyStateVariants = cva(
 		},
 	},
 );
-
-export interface EmptyStateProps
-	extends Omit<React.ComponentProps<"div">, "color">,
-		VariantProps<typeof emptyStateVariants> {
-	icon?: LucideIcon | string;
-	title: string;
-	description?: string;
-	action?: {
-		label: string;
-		onClick: () => void;
-		variant?: React.ComponentProps<typeof Button>["variant"];
-	};
-	isLoading?: boolean;
-	skeletonConfig?: EmptyStateSkeletonConfig;
-	skeleton?: React.ReactNode;
-	/** Per-part overrides: `root` wins over `className`/`style` in every arm; `icon`/`title`/`description`/`action` target the inner nodes. */
-	slotStyles?: SlotStyles;
-}
 
 function EmptyState({
 	className,
@@ -118,7 +99,10 @@ function EmptyState({
 			>
 				{typeof resolvedIcon === "string" ? (
 					<span
-						className={cn("inline-block h-10 w-10 text-muted-foreground", resolvedIcon)}
+						className={cn(
+							"inline-block h-10 w-10 text-muted-foreground",
+							resolvedIcon,
+						)}
 					/>
 				) : IconComponent ? (
 					<IconComponent className="h-10 w-10 text-muted-foreground" />
@@ -134,11 +118,11 @@ function EmptyState({
 			)}
 			{action && (
 				<Button
-				onClick={action.onClick}
-				variant={action.variant}
-				className={actionSlot.className}
-				style={actionSlot.style}
-			>
+					onClick={action.onClick}
+					variant={action.variant}
+					className={actionSlot.className}
+					style={actionSlot.style}
+				>
 					{action.label}
 				</Button>
 			)}

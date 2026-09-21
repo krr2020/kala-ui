@@ -2,29 +2,8 @@
 
 import type { Easing } from "framer-motion";
 import { AnimatePresence, motion } from "framer-motion";
-import type * as React from "react";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
-
-export interface CollapseProps {
-	ref?: React.Ref<HTMLDivElement>;
-	/** If true, the content will be visible */
-	in: boolean;
-	/** The content to be collapsed */
-	children: React.ReactNode;
-	/** Id — lets aria-controls point at the collapsible region */
-	id?: string;
-	className?: string;
-	style?: React.CSSProperties;
-	/** Transition duration in seconds */
-	transitionDuration?: number;
-	/** Transition timing function */
-	transitionTimingFunction?: Easing | Easing[];
-	/** Called when transition starts */
-	onTransitionEnd?: () => void;
-	/** If true, opacity will be animated */
-	animateOpacity?: boolean;
-	slotStyles?: SlotStyles;
-}
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
+import type { CollapseProps } from "./collapse.types";
 
 export function Collapse({
 	ref,

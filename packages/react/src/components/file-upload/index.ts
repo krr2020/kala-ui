@@ -1,4 +1,5 @@
 export * from "./file-upload";
+export type { FileUploadProps } from "./file-upload.types";
 export type {
 	FileUploadSkeletonConfig,
 	FileUploadSkeletonProps,

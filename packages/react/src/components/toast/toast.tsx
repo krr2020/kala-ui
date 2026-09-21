@@ -1,14 +1,8 @@
-import type * as React from "react";
 import { Toaster as Sonner } from "sonner";
 import { toastStyles } from "../../config/toast";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { type ResolvedTheme, useOptionalTheme } from "../theme-provider";
-
-type ToastProps = React.ComponentProps<typeof Sonner> & {
-	slotStyles?: SlotStyles;
-};
-
-export type { ToastProps };
+import type { ToastProps } from "./toast.types";
 
 const DARK_THEMES: readonly ResolvedTheme[] = ["dark", "high-contrast-dark"];
 

@@ -1,11 +1,11 @@
 import { useUncontrolled } from "@kala-ui/react-hooks";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import { Check } from "lucide-react";
-import type * as React from "react";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Box } from "../box";
 import { Text } from "../text";
+import type { StepsProps } from "./steps.types";
 
 export const stepsVariants = cva("flex w-full", {
 	variants: {
@@ -18,29 +18,6 @@ export const stepsVariants = cva("flex w-full", {
 		orientation: "horizontal",
 	},
 });
-
-export interface StepItem {
-	title: string;
-	description?: string;
-	icon?: React.ReactNode;
-}
-
-export interface StepsProps
-	extends React.ComponentProps<"ol">,
-		VariantProps<typeof stepsVariants> {
-	/** Current step index, 0-based (controlled) */
-	value: number;
-	/** Initial step index, 0-based (uncontrolled) */
-	defaultValue?: number;
-	items: StepItem[];
-	onValueChange?: (step: number) => void;
-	/**
-	 * Show connecting lines between steps
-	 * @default true
-	 */
-	showLine?: boolean;
-	slotStyles?: SlotStyles;
-}
 
 function Steps({
 	ref,
@@ -65,7 +42,12 @@ function Steps({
 		<ol
 			data-kala-component="steps"
 			ref={ref}
-			className={applySlot(cn(stepsVariants({ orientation }), className), slotStyles?.root).className}
+			className={
+				applySlot(
+					cn(stepsVariants({ orientation }), className),
+					slotStyles?.root,
+				).className
+			}
 			style={mergeStyle(style, applySlot("", slotStyles?.root).style)}
 			{...props}
 		>

@@ -1,23 +1,8 @@
-import type * as React from "react";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
-import { Overlay, type OverlayProps } from "../overlay";
+import { Overlay } from "../overlay";
 import { Spinner } from "../spinner";
-
-export interface LoadingOverlayProps extends React.ComponentProps<"div"> {
-	/** If set loading overlay will be visible */
-	visible?: boolean;
-	/** Overlay z-index */
-	zIndex?: number;
-	/** Props passed to Overlay component */
-	overlayProps?: OverlayProps;
-	/** Props passed to Loader component */
-	loaderProps?: React.ComponentProps<typeof Spinner> & {
-		children?: React.ReactNode;
-	};
-	/** Transition duration in ms */
-	transitionDuration?: number;
-}
+import type { LoadingOverlayProps } from "./loading-overlay.types";
 
 function LoadingOverlay({
 	ref,
@@ -41,8 +26,8 @@ function LoadingOverlay({
 			data-kala-component="loading-overlay"
 			ref={ref}
 			// aria-busy marks the loading region; the Spinner's <output> is the
-		// live status. The fade-out shell gets aria-hidden so screen readers
-		// drop the stale status node once loading ends.
+			// live status. The fade-out shell gets aria-hidden so screen readers
+			// drop the stale status node once loading ends.
 			aria-busy="true"
 			aria-hidden={!visible || undefined}
 			className={cn(

@@ -8,6 +8,7 @@
 import type * as React from "react";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import type { InputGroupProps } from "./input-group.types";
 
 function InputGroup({
 	ref,
@@ -16,7 +17,7 @@ function InputGroup({
 	slotStyles,
 	children,
 	...props
-}: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+}: InputGroupProps) {
 	const root = applySlot(
 		cn(
 			"flex w-full items-stretch",

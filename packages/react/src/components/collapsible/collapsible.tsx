@@ -1,15 +1,14 @@
 "use client";
 
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
-import type * as React from "react";
-
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import type {
+	CollapsibleContentProps,
+	CollapsibleProps,
+} from "./collapsible.types";
 
-function Collapsible({
-	ref,
-	...props
-}: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {
+function Collapsible({ ref, ...props }: CollapsibleProps) {
 	return (
 		<CollapsiblePrimitive.Root
 			data-kala-component="collapsible"
@@ -40,9 +39,7 @@ function CollapsibleContent({
 	slotStyles,
 	ref,
 	...props
-}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent> & {
-	slotStyles?: SlotStyles;
-}) {
+}: CollapsibleContentProps) {
 	const root = applySlot(
 		cn(
 			"overflow-hidden data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up",

@@ -2,32 +2,9 @@
 
 import { ChevronRight } from "lucide-react";
 import * as React from "react";
-
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
-
-export interface TreeItem {
-	id: string;
-	label: string;
-	children?: TreeItem[];
-	icon?: React.ReactNode;
-	disabled?: boolean;
-}
-
-export interface TreeViewProps
-	extends Omit<React.ComponentProps<"ul">, "onSelect"> {
-	/** Tree data */
-	data: TreeItem[];
-	/** Selected item id(s) */
-	selected?: string | string[];
-	/** Default expanded item ids */
-	defaultExpanded?: string[];
-	/** Callback when selection changes */
-	onSelect?: (id: string) => void;
-	/** Multi-select mode */
-	multiSelect?: boolean;
-	slotStyles?: SlotStyles;
-}
+import type { TreeItem, TreeViewProps } from "./tree-view.types";
 
 interface TreeViewContextValue {
 	selected: Set<string>;
@@ -369,7 +346,10 @@ function TreeView({
 				data-kala-component="tree-view"
 				data-slot="tree-view"
 				aria-multiselectable={multiSelect}
-				className={applySlot(cn("space-y-0.5 p-1", className), slotStyles?.root).className}
+				className={
+					applySlot(cn("space-y-0.5 p-1", className), slotStyles?.root)
+						.className
+				}
 				style={mergeStyle(style, applySlot("", slotStyles?.root).style)}
 				{...props}
 			>

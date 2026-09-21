@@ -1,17 +1,14 @@
 "use client";
 
 import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import * as React from "react";
 
-import {
-	applySlot,
-	mergeStyle,
-	type SlotStyles,
-} from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Label } from "../label";
 import { Separator } from "../separator";
+import type { FieldProps } from "./field.types";
 
 interface FieldContextValue {
 	/** Id applied to the description element rendered by FieldDescription. */
@@ -117,8 +114,7 @@ function Field({
 	slotStyles,
 	orientation = "vertical",
 	...props
-}: React.ComponentProps<"fieldset"> &
-	VariantProps<typeof fieldVariants> & { slotStyles?: SlotStyles }) {
+}: FieldProps) {
 	const descriptionId = React.useId();
 	const errorId = React.useId();
 	const controlId = React.useId();

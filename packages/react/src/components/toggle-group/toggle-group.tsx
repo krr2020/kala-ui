@@ -3,10 +3,10 @@
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
-
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { toggleVariants } from "../toggle/toggle";
+import type { ToggleGroupProps } from "./toggle-group.types";
 
 const ToggleGroupContext = React.createContext<
 	VariantProps<typeof toggleVariants>
@@ -15,40 +15,36 @@ const ToggleGroupContext = React.createContext<
 	variant: "default",
 });
 
-	function ToggleGroup({
-		className,
-		style,
-		slotStyles,
-		variant,
-		size,
-		children,
-		ref,
-		...props
-	}: React.ComponentProps<typeof ToggleGroupPrimitive.Root> &
-		VariantProps<typeof toggleVariants> & {
-			slotStyles?: SlotStyles;
-		}) {
-		return (
-			<ToggleGroupContext.Provider value={{ variant, size }}>
-				<ToggleGroupPrimitive.Root
+function ToggleGroup({
+	className,
+	style,
+	slotStyles,
+	variant,
+	size,
+	children,
+	ref,
+	...props
+}: ToggleGroupProps) {
+	return (
+		<ToggleGroupContext.Provider value={{ variant, size }}>
+			<ToggleGroupPrimitive.Root
 				ref={ref}
 				data-kala-component="toggle-group"
 				data-slot="toggle-group"
-				className={applySlot(
-					cn("flex items-center justify-center gap-1", className),
-					slotStyles?.root,
-				).className}
-				style={mergeStyle(
-					style,
-					applySlot("", slotStyles?.root).style,
-				)}
+				className={
+					applySlot(
+						cn("flex items-center justify-center gap-1", className),
+						slotStyles?.root,
+					).className
+				}
+				style={mergeStyle(style, applySlot("", slotStyles?.root).style)}
 				{...props}
 			>
-					{children}
-				</ToggleGroupPrimitive.Root>
-			</ToggleGroupContext.Provider>
-		);
-	}
+				{children}
+			</ToggleGroupPrimitive.Root>
+		</ToggleGroupContext.Provider>
+	);
+}
 
 function ToggleGroupItem({
 	className,

@@ -1,20 +1,19 @@
 "use client";
 
 import * as ToolbarPrimitive from "@radix-ui/react-toolbar";
-import type { VariantProps } from "class-variance-authority";
-import type * as React from "react";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { toggleVariants } from "../toggle/toggle";
+import type {
+	ToolbarButtonProps,
+	ToolbarLinkProps,
+	ToolbarProps,
+	ToolbarSeparatorProps,
+	ToolbarToggleGroupProps,
+	ToolbarToggleItemProps,
+} from "./toolbar.types";
 
-function Toolbar({
-	className,
-	style,
-	slotStyles,
-	...props
-}: React.ComponentProps<typeof ToolbarPrimitive.Root> & {
-	slotStyles?: SlotStyles;
-}) {
+function Toolbar({ className, style, slotStyles, ...props }: ToolbarProps) {
 	const root = applySlot(
 		cn(
 			"flex h-10 items-center gap-1 rounded-md border bg-card p-1 kala-surface-input",
@@ -38,8 +37,7 @@ function ToolbarButton({
 	variant,
 	size,
 	...props
-}: React.ComponentProps<typeof ToolbarPrimitive.Button> &
-	VariantProps<typeof toggleVariants>) {
+}: ToolbarButtonProps) {
 	return (
 		<ToolbarPrimitive.Button
 			data-kala-component="toolbar-button"
@@ -50,10 +48,7 @@ function ToolbarButton({
 	);
 }
 
-function ToolbarToggleGroup({
-	className,
-	...props
-}: React.ComponentProps<typeof ToolbarPrimitive.ToggleGroup>) {
+function ToolbarToggleGroup({ className, ...props }: ToolbarToggleGroupProps) {
 	return (
 		<ToolbarPrimitive.ToggleGroup
 			data-kala-component="toolbar-toggle-group"
@@ -69,8 +64,7 @@ function ToolbarToggleItem({
 	variant,
 	size,
 	...props
-}: React.ComponentProps<typeof ToolbarPrimitive.ToggleItem> &
-	VariantProps<typeof toggleVariants>) {
+}: ToolbarToggleItemProps) {
 	return (
 		<ToolbarPrimitive.ToggleItem
 			data-kala-component="toolbar-toggle-item"
@@ -81,10 +75,7 @@ function ToolbarToggleItem({
 	);
 }
 
-function ToolbarSeparator({
-	className,
-	...props
-}: React.ComponentProps<typeof ToolbarPrimitive.Separator>) {
+function ToolbarSeparator({ className, ...props }: ToolbarSeparatorProps) {
 	return (
 		<ToolbarPrimitive.Separator
 			data-kala-component="toolbar-separator"
@@ -95,10 +86,7 @@ function ToolbarSeparator({
 	);
 }
 
-function ToolbarLink({
-	className,
-	...props
-}: React.ComponentProps<typeof ToolbarPrimitive.Link>) {
+function ToolbarLink({ className, ...props }: ToolbarLinkProps) {
 	return (
 		<ToolbarPrimitive.Link
 			data-kala-component="toolbar-link"

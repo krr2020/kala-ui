@@ -1,9 +1,10 @@
 "use client";
 
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import { AlertTriangle } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
+import type { ErrorFallbackProps } from "./error-boundary.types";
 
 export const errorFallbackVariants = cva(
 	"flex flex-col items-center justify-center p-8 text-center animate-in fade-in-50",
@@ -19,30 +20,6 @@ export const errorFallbackVariants = cva(
 		},
 	},
 );
-
-export interface ErrorFallbackProps
-	extends VariantProps<typeof errorFallbackVariants> {
-	/**
-	 * The error that was caught
-	 */
-	error?: Error;
-	/**
-	 * Callback to reset the error boundary
-	 */
-	reset?: () => void;
-	/**
-	 * Optional custom title
-	 */
-	title?: string;
-	/**
-	 * Optional custom description
-	 */
-	description?: string;
-	/**
-	 * Additional class name
-	 */
-	className?: string;
-}
 
 /**
  * Error Fallback UI Component
