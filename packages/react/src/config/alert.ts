@@ -3,7 +3,7 @@
  * Default: subtle + primary.
  */
 export const alertStyles = {
-	base: "relative w-full rounded-lg px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 border",
+	base: "relative w-full rounded-[var(--kala-radius-card)] px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 border",
 	variants: {
 		variant: {
 			subtle: "",
@@ -149,7 +149,7 @@ export const alertStyles = {
 	} as const,
 	icon: "size-4 translate-y-0.5",
 	dismiss:
-		"cursor-pointer absolute right-2 top-2 rounded-md p-1 hover:bg-accent transition-colors",
+		"cursor-pointer absolute right-2 top-2 rounded-[var(--kala-radius-sm)] p-1 hover:bg-accent transition-colors",
 	title: "col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight",
 	description: "col-start-2 text-sm [&_p]:leading-relaxed",
 } as const;

@@ -10,7 +10,7 @@ export const avatarStyles = {
 		},
 		shape: {
 			circle: "rounded-full",
-			rounded: "rounded-md",
+			rounded: "rounded-[var(--kala-radius-control)]",
 			square: "rounded-none",
 		},
 		status: {
@@ -93,7 +93,7 @@ export const avatarImageStyles = {
 	variants: {
 		shape: {
 			circle: "rounded-full",
-			rounded: "rounded-md",
+			rounded: "rounded-[var(--kala-radius-control)]",
 			square: "rounded-none",
 		},
 	},
@@ -107,7 +107,7 @@ export const avatarFallbackStyles = {
 	variants: {
 		shape: {
 			circle: "rounded-full",
-			rounded: "rounded-md",
+			rounded: "rounded-[var(--kala-radius-control)]",
 			square: "rounded-none",
 		},
 		color: {

@@ -30,10 +30,10 @@ export const buttonStyles = {
 		},
 		size: {
 			md: "h-[var(--kala-control-h)] px-[var(--kala-control-px)] py-2",
-			xs: "h-7 rounded-[var(--kala-radius-control)] px-2 text-xs",
-			sm: "h-9 rounded-[var(--kala-radius-control)] px-3",
-			lg: "h-11 rounded-[var(--kala-radius-control)] px-8",
-			icon: "h-10 w-10",
+			xs: "h-[var(--kala-control-h-xs)] px-[var(--kala-control-px-xs)] text-xs",
+			sm: "h-[var(--kala-control-h-sm)] px-[var(--kala-control-px-sm)]",
+			lg: "h-[var(--kala-control-h-lg)] px-[var(--kala-control-px-lg)]",
+			icon: "size-[var(--kala-control-h)]",
 		},
 		fullWidth: {
 			true: "w-full",

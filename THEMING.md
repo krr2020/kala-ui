@@ -93,7 +93,7 @@ engine exists, e.g. SSR).
 | Focus | `--ring`, `--ring-offset-color` |
 | Scrim | `--overlay`, `--overlay-alpha` (dialog/drawer/sidebar overlays; `bg-overlay` utility, `/40`-style modifiers work) |
 | Shadows | `--shadow-color`, `--shadow-alpha`, `--shadow-spread` |
-| Shape/density | `--kala-radius-control`, `--kala-radius-card`, `--kala-radius-input`, `--kala-control-h`, `--kala-control-px`, `--kala-card-pad` |
+| Shape/density | `--kala-radius-control`, `--kala-radius-card`, `--kala-radius-sm`, `--kala-radius-input`, `--kala-control-h`, `--kala-control-h-xs`, `--kala-control-h-sm`, `--kala-control-h-lg`, `--kala-control-px`, `--kala-control-px-xs`, `--kala-control-px-sm`, `--kala-control-px-lg`, `--kala-card-pad` |
 | Typography | `--font-heading` (defaults to the `--font-sans` stack; `Heading` and title treatments read it via the `font-heading` utility) |
 | Motion | `--kala-duration-fast` (120ms), `--kala-duration-base` (150ms), `--kala-duration-slow` (200ms), `--kala-ease` — wired into Tailwind's `--default-transition-duration` / `--default-transition-timing-function`, so every `transition-*` utility in the library retunes from these four vars |
 
@@ -106,8 +106,10 @@ Notes:
   theme draw borders/scrims/shadows at partial opacity in any color format;
   kala-ui applies them with `color-mix()`.
 - `--kala-*` knobs set the shape language in one place: control radius, card
-  radius, control height, control padding, card padding. Prefer them over
-  per-component overrides.
+  radius, inner hit-target radius, control height, control padding, card
+  padding. The `-xs`/`-sm`/`-lg` height and padding knobs are derived by
+  `calc()` from `--kala-control-h`/`--kala-control-px`, so retuning the base
+  knobs moves every control size. Prefer them over per-component overrides.
 - `--border-strong` is the stronger border used for table headers/separators.
 
 ## Built-in themes

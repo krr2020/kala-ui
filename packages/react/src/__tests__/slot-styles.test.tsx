@@ -183,7 +183,7 @@ describe("Alert slotStyles", () => {
 		expect(
 			container.querySelector('[data-kala-component="alert"]')?.className,
 		).toBe(
-			"relative w-full rounded-lg px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 border bg-primary/10 border-primary/20 text-primary [&>svg]:text-primary",
+			"relative w-full rounded-[var(--kala-radius-card)] px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 border bg-primary/10 border-primary/20 text-primary [&>svg]:text-primary",
 		);
 	});
 });
@@ -678,7 +678,7 @@ describe("SelectTrigger config composition", () => {
 			</Select>,
 		);
 		expect(screen.getByRole("combobox").className).toBe(
-			"cursor-pointer bg-card text-foreground data-placeholder:text-muted-foreground aria-invalid:kala-ring-destructive/20 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground flex w-full items-center justify-between gap-2 rounded-md border whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50 kala-surface-input kala-focus-ring *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 h-[var(--kala-control-h)] px-3 py-2 text-sm",
+			"cursor-pointer bg-card text-foreground data-placeholder:text-muted-foreground aria-invalid:kala-ring-destructive/20 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground flex w-full items-center justify-between gap-2 rounded-[var(--kala-radius-input,var(--kala-radius-control))] border whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50 kala-surface-input kala-focus-ring *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 h-[var(--kala-control-h)] px-3 py-2 text-sm",
 		);
 		rerender(
 			<Select defaultValue="a">
@@ -686,7 +686,7 @@ describe("SelectTrigger config composition", () => {
 			</Select>,
 		);
 		expect(screen.getByRole("combobox").className).toContain(
-			"h-9 px-2 py-1 text-xs",
+			"h-[var(--kala-control-h-sm)] px-2 py-1 text-xs",
 		);
 	});
 
@@ -746,7 +746,7 @@ describe("MultiSelect slotStyles", () => {
 		expect(
 			container.querySelector('[data-slot="multi-select"]')?.className,
 		).toBe(
-			"relative flex min-h-10 w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input hover:bg-accent/50",
+			"relative flex min-h-[var(--kala-control-h)] w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input hover:bg-accent/50",
 		);
 		expect(screen.getByText("A").className).toBe(
 			"inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground",
@@ -1126,7 +1126,7 @@ describe("NativeSelect slotStyles", () => {
 				?.className,
 		).toBe("relative w-full");
 		expect(container.querySelector("select")?.className).toBe(
-			"w-full rounded-md border bg-background text-sm transition-colors kala-surface-input kala-focus-ring disabled:cursor-not-allowed disabled:opacity-50 appearance-none h-9 px-3 py-2",
+			"w-full rounded-[var(--kala-radius-input,var(--kala-radius-control))] border bg-background text-sm transition-colors kala-surface-input kala-focus-ring disabled:cursor-not-allowed disabled:opacity-50 appearance-none h-[var(--kala-control-h)] px-3 py-2",
 		);
 	});
 
@@ -1137,7 +1137,7 @@ describe("NativeSelect slotStyles", () => {
 			</NativeSelect>,
 		);
 		const select = container.querySelector("select");
-		expect(select?.className).toContain("h-8 px-2 py-1 text-xs");
+		expect(select?.className).toContain("h-[var(--kala-control-h-sm)] px-2 py-1 text-xs");
 		expect(select?.className).toContain("border-destructive");
 	});
 });
@@ -1210,7 +1210,7 @@ const styleTableEntries = [
 		part: "dialog.close",
 		tsx: "../components/dialog/dialog.tsx",
 		config: "../config/dialog.ts",
-		base: "absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 disabled:pointer-events-none p-1 hover:bg-accent",
+		base: "absolute top-4 right-4 rounded-[var(--kala-radius-sm)] opacity-70 transition-opacity hover:opacity-100 disabled:pointer-events-none p-1 hover:bg-accent",
 	},
 	{
 		part: "dialog.header",
@@ -1222,7 +1222,7 @@ const styleTableEntries = [
 		part: "dialog.footer",
 		tsx: "../components/dialog/dialog.tsx",
 		config: "../config/dialog.ts",
-		base: "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end px-6 py-4 border-t bg-muted/50 rounded-b-lg",
+		base: "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end px-6 py-4 border-t bg-muted/50 rounded-b-[var(--kala-radius-card)]",
 	},
 	{
 		part: "dialog.title",
@@ -1306,7 +1306,7 @@ const styleTableEntries = [
 		part: "numberInput.root",
 		tsx: "../components/number-input/number-input.tsx",
 		config: "../config/number-input.ts",
-		base: "flex w-full rounded-md border bg-card kala-surface-input transition-colors",
+		base: "flex w-full rounded-[var(--kala-radius-input,var(--kala-radius-control))] border bg-card kala-surface-input transition-colors",
 	},
 	{
 		part: "numberInput.increment",
@@ -1450,7 +1450,7 @@ const styleTableEntries = [
 		part: "alert.dismiss",
 		tsx: "../components/alert/alert.tsx",
 		config: "../config/alert.ts",
-		base: "cursor-pointer absolute right-2 top-2 rounded-md p-1 hover:bg-accent transition-colors",
+		base: "cursor-pointer absolute right-2 top-2 rounded-[var(--kala-radius-sm)] p-1 hover:bg-accent transition-colors",
 	},
 	{
 		part: "popover.body",
@@ -1562,7 +1562,7 @@ const styleTableEntries = [
 		part: "nativeSelect.select",
 		tsx: "../components/select/native-select.tsx",
 		config: "../config/select.ts",
-		base: "w-full rounded-md border bg-background text-sm transition-colors kala-surface-input kala-focus-ring disabled:cursor-not-allowed disabled:opacity-50 appearance-none pr-10",
+		base: "w-full rounded-[var(--kala-radius-input,var(--kala-radius-control))] border bg-background text-sm transition-colors kala-surface-input kala-focus-ring disabled:cursor-not-allowed disabled:opacity-50 appearance-none pr-10",
 	},
 	{
 		part: "nativeSelect.icon",
@@ -1592,7 +1592,7 @@ const styleTableEntries = [
 		part: "multiSelect.root",
 		tsx: "../components/multi-select/multi-select.tsx",
 		config: "../config/multi-select.ts",
-		base: "relative flex min-h-10 w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input",
+		base: "relative flex min-h-[var(--kala-control-h)] w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input",
 	},
 	{
 		part: "multiSelect.rootHover",
@@ -1750,7 +1750,7 @@ const styleTableEntries = [
 		part: "selectTrigger.root",
 		tsx: "../components/select/select.tsx",
 		config: "../config/select.ts",
-		base: "cursor-pointer bg-card text-foreground data-placeholder:text-muted-foreground aria-invalid:kala-ring-destructive/20 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground flex w-full items-center justify-between gap-2 rounded-md border whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50 kala-surface-input kala-focus-ring *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+		base: "cursor-pointer bg-card text-foreground data-placeholder:text-muted-foreground aria-invalid:kala-ring-destructive/20 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground flex w-full items-center justify-between gap-2 rounded-[var(--kala-radius-input,var(--kala-radius-control))] border whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50 kala-surface-input kala-focus-ring *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
 	},
 	{
 		part: "selectTrigger.sizeMd",
@@ -1762,7 +1762,7 @@ const styleTableEntries = [
 		part: "selectTrigger.sizeSm",
 		tsx: "../components/select/select.tsx",
 		config: "../config/select.ts",
-		base: "h-9 px-2 py-1 text-xs",
+		base: "h-[var(--kala-control-h-sm)] px-2 py-1 text-xs",
 	},
 	{
 		part: "calendar.root",

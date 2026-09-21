@@ -29,7 +29,9 @@ describe("DialogSkeleton", () => {
 		const footer = container.querySelector(".justify-end.gap-2");
 		expect(footer).toBeInTheDocument();
 		// Footer should have 2 buttons
-		const buttons = container.querySelectorAll(".h-10.w-24");
+		const buttons = container.querySelectorAll(
+			".h-\\[var\\(--kala-control-h\\)\\].w-24",
+		);
 		expect(buttons).toHaveLength(2);
 	});
 

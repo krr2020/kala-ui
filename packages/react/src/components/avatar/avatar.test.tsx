@@ -18,6 +18,17 @@ describe("Avatar", () => {
 		expect(screen.getByText("RK")).toBeInTheDocument();
 	});
 
+	it("should use the control radius token for the rounded shape", () => {
+		const { container } = render(
+			<Avatar shape="rounded">
+				<AvatarFallback>RK</AvatarFallback>
+			</Avatar>,
+		);
+		expect(container.querySelector('[data-slot="avatar"]')).toHaveClass(
+			"rounded-[var(--kala-radius-control)]",
+		);
+	});
+
 	it("should render fallback when image fails", () => {
 		render(
 			<Avatar>

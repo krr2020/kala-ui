@@ -27,6 +27,17 @@ describe("Alert", () => {
 		expect(alert).toBeInTheDocument();
 	});
 
+	it("should keep the card radius token on the alert surface", () => {
+		const { container } = render(
+			<Alert>
+				<AlertTitle>Title</AlertTitle>
+			</Alert>,
+		);
+		expect(container.querySelector('[data-slot="alert"]')).toHaveClass(
+			"rounded-[var(--kala-radius-card)]",
+		);
+	});
+
 	it("should render with danger variant", () => {
 		const { container } = render(
 			<Alert color="destructive">

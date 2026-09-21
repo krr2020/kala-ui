@@ -141,7 +141,7 @@ function NumberInput({
 		cn(
 			numberInputStyles.root,
 			"focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-0",
-			size === "sm" ? "h-8" : "h-10",
+			size === "sm" ? "h-[var(--kala-control-h-sm)]" : "h-[var(--kala-control-h)]",
 			hasError && "border-destructive focus-within:kala-ring-destructive",
 			disabled && "opacity-50 cursor-not-allowed",
 			className,
@@ -155,8 +155,8 @@ function NumberInput({
 			<Skeleton
 				data-kala-component="number-input"
 				className={cn(
-					"w-full rounded-md",
-					size === "sm" ? "h-8" : "h-10",
+					"w-full rounded-[var(--kala-radius-input,var(--kala-radius-control))]",
+					size === "sm" ? "h-[var(--kala-control-h-sm)]" : "h-[var(--kala-control-h)]",
 					root.className,
 				)}
 				style={rootStyle}

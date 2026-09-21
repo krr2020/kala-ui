@@ -30,6 +30,15 @@ const optionsWithDisabled: MultiSelectOption[] = [
 	{ value: "enabled2", label: "Enabled 2" },
 ];
 
+it("sizes the root from the control-height knob", () => {
+	const { container } = render(
+		<MultiSelect options={mockOptions} placeholder="Select options..." />,
+	);
+	expect(container.querySelector('[data-slot="multi-select"]')).toHaveClass(
+		"min-h-[var(--kala-control-h)]",
+	);
+});
+
 describe("MultiSelect", () => {
 	it("renders with placeholder", () => {
 		render(

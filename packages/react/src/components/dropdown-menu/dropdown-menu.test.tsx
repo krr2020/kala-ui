@@ -33,6 +33,22 @@ describe("DropdownMenu", () => {
 		expect(screen.getByText("Open Menu")).toBeInTheDocument();
 	});
 
+	it("should render content with the card radius token", async () => {
+		const user = userEvent.setup();
+		render(
+			<DropdownMenu>
+				<DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					<DropdownMenuItem>Item 1</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>,
+		);
+		await user.click(screen.getByText("Open Menu"));
+		expect(
+			document.body.querySelector('[data-slot="dropdown-menu-content"]'),
+		).toHaveClass("rounded-[var(--kala-radius-card)]");
+	});
+
 	it("should open dropdown menu when trigger is clicked", async () => {
 		const user = userEvent.setup();
 

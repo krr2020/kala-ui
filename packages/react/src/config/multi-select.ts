@@ -4,7 +4,7 @@
  * sit beside their bases so the component composes without literals.
  */
 export const multiSelectStyles = {
-	root: "relative flex min-h-10 w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input",
+	root: "relative flex min-h-[var(--kala-control-h)] w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input",
 	rootHover: "hover:bg-accent/50",
 	rootDisabled: "cursor-not-allowed opacity-50",
 	trigger: "absolute inset-0 z-0 rounded-md kala-focus-ring",

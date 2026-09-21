@@ -52,20 +52,26 @@ describe("Button", () => {
 	it("applies small size styles", () => {
 		render(<Button size="sm">Small</Button>);
 		const button = screen.getByRole("button");
-		expect(button).toHaveClass("h-9");
+		expect(button).toHaveClass("h-[var(--kala-control-h-sm)]");
 	});
 
 	it("applies large size styles", () => {
 		render(<Button size="lg">Large</Button>);
 		const button = screen.getByRole("button");
-		expect(button).toHaveClass("h-11");
+		expect(button).toHaveClass("h-[var(--kala-control-h-lg)]");
 	});
 
 	it("applies icon size styles", () => {
 		render(<Button size="icon">→</Button>);
 		const button = screen.getByRole("button");
-		expect(button).toHaveClass("h-10");
-		expect(button).toHaveClass("w-10");
+		expect(button).toHaveClass("size-[var(--kala-control-h)]");
+	});
+
+	it("applies extra-small size styles", () => {
+		render(<Button size="xs">Extra Small</Button>);
+		const button = screen.getByRole("button");
+		expect(button).toHaveClass("h-[var(--kala-control-h-xs)]");
+		expect(button).toHaveClass("px-[var(--kala-control-px-xs)]");
 	});
 
 	it("respects disabled prop", () => {

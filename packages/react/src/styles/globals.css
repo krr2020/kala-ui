@@ -58,8 +58,15 @@
 		   (control radius, card radius, control height, padding) in one place. */
 		--kala-radius-control: 0.375rem; /* buttons, inputs, tabs triggers */
 		--kala-radius-card: 0.5rem; /* cards, alerts, popovers, dialogs */
+		--kala-radius-sm: 0.25rem; /* inner hit targets: menu items, dismiss/close buttons */
 		--kala-control-h: 2.5rem; /* default control height */
+		--kala-control-h-xs: calc(var(--kala-control-h) - 0.75rem); /* size-ladder step (28px at default) */
+		--kala-control-h-sm: calc(var(--kala-control-h) - 0.25rem); /* size-ladder step (36px at default) */
+		--kala-control-h-lg: calc(var(--kala-control-h) + 0.25rem); /* size-ladder step (44px at default) */
 		--kala-control-px: 1rem; /* default control horizontal padding */
+		--kala-control-px-xs: calc(var(--kala-control-px) - 0.5rem); /* size-ladder step (8px at default) */
+		--kala-control-px-sm: calc(var(--kala-control-px) - 0.25rem); /* size-ladder step (12px at default) */
+		--kala-control-px-lg: calc(var(--kala-control-px) + 1rem); /* size-ladder step (32px at default) */
 		--kala-card-pad: 1.5rem; /* card header/body/footer padding */
 		--kala-radius-input: var(--kala-radius-control); /* inputs, selects — falls back to the control radius when unset */
 		/* Motion — every `transition-*` utility consumes these via the

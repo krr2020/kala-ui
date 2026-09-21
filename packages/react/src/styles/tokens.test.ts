@@ -145,6 +145,69 @@ describe("theme-block token parity", () => {
 	});
 });
 
+describe("size-ladder knobs (item 7)", () => {
+	const ladder: Array<[name: string, pattern: RegExp]> = [
+		["--kala-control-h-xs", /--kala-control-h-xs:\s*calc\(var\(--kala-control-h\) - 0\.75rem\)/],
+		["--kala-control-h-sm", /--kala-control-h-sm:\s*calc\(var\(--kala-control-h\) - 0\.25rem\)/],
+		["--kala-control-h-lg", /--kala-control-h-lg:\s*calc\(var\(--kala-control-h\) \+ 0\.25rem\)/],
+		["--kala-control-px-xs", /--kala-control-px-xs:\s*calc\(var\(--kala-control-px\) - 0\.5rem\)/],
+		["--kala-control-px-sm", /--kala-control-px-sm:\s*calc\(var\(--kala-control-px\) - 0\.25rem\)/],
+		["--kala-control-px-lg", /--kala-control-px-lg:\s*calc\(var\(--kala-control-px\) \+ 1rem\)/],
+		["--kala-radius-sm", /--kala-radius-sm:\s*0\.25rem/],
+	];
+
+	it("derives every ladder step from the base density knobs at :root", () => {
+		for (const [name, pattern] of ladder)
+			expect(globalsCss, name).toMatch(pattern);
+	});
+
+	it("keeps ladder knobs theme-invariant — never redefined per theme", () => {
+		for (const selector of [
+			".dark",
+			".high-contrast-light",
+			".high-contrast-dark",
+		]) {
+			const names = tokenNames(selector);
+			for (const [name] of ladder)
+				expect(names.has(name), `${selector} ${name}`).toBe(false);
+		}
+	});
+
+	it("no radius-step literals remain in the seven swept config tables", () => {
+		// rounded-full stays (pill is semantic); every step radius must read
+		// the knobs so shape retuning reaches all swept surfaces.
+		const swept = [
+			"button",
+			"alert",
+			"dialog",
+			"dropdown-menu",
+			"number-input",
+			"avatar",
+			"select",
+		];
+		for (const file of swept) {
+			const src = read(`../config/${file}.ts`);
+			expect(
+				src.match(/(^|[\s"'])rounded-(sm|md|lg|xl)(?=[\s"'])/) ?? [],
+				file,
+			).toEqual([]);
+		}
+	});
+
+	it("swept configs consume the ladder and radius knobs", () => {
+		const alertConfig = read("../config/alert.ts");
+		expect(buttonConfig).toContain("h-[var(--kala-control-h-xs)]");
+		expect(buttonConfig).toContain("h-[var(--kala-control-h-sm)]");
+		expect(buttonConfig).toContain("h-[var(--kala-control-h-lg)]");
+		expect(buttonConfig).toContain("size-[var(--kala-control-h)]");
+		expect(selectConfig).toContain("h-[var(--kala-control-h-sm)]");
+		expect(alertConfig).toContain("rounded-[var(--kala-radius-sm)]");
+		expect(alertConfig).toContain("rounded-[var(--kala-radius-card)]");
+		expect(avatarConfig).toContain("rounded-[var(--kala-radius-control)]");
+		expect(avatarConfig).not.toContain("rounded-md");
+	});
+});
+
 describe("config color utilities resolve", () => {
 	const themeColors = new Set(
 		[...themeCss.matchAll(/--color-([a-z0-9-]+):/g)].map((match) => match[1]),
@@ -158,7 +221,7 @@ describe("config color utilities resolve", () => {
 	]);
 	// border-<width|style> operands: border-b, border-l-2, border-dashed, …
 	const BORDER_STRUCTURAL =
-		/^(b|l|r|t|x|y)(-\d+)?$|^(dashed|dotted|solid|double|hidden|none)$/;
+		/^(b|l|r|t|x|y)(-\d+)?$|^(dashed|dotted|solid|double|hidden|none|collapse)$/;
 
 	it("every color utility in src/config/*.ts maps to a --color-* @theme entry", () => {
 		const offenders = new Set<string>();

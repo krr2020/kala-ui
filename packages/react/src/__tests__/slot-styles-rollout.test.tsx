@@ -918,7 +918,7 @@ const BASELINES: Record<string, string> = {
 	"collapsible-content":
 		"overflow-hidden data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up",
 	"copy-button":
-		"cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--kala-radius-control)] text-sm font-medium disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed kala-focus-ring kala-touch h-10 w-10 hover:bg-accent hover:text-accent-foreground transition-all",
+		"cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--kala-radius-control)] text-sm font-medium disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed kala-focus-ring kala-touch size-[var(--kala-control-h)] hover:bg-accent hover:text-accent-foreground transition-all",
 	heading:
 		"font-heading tracking-tight text-foreground text-3xl lg:text-4xl text-left font-bold",
 	indicator: "relative block",

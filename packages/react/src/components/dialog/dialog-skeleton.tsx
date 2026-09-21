@@ -91,8 +91,8 @@ export function DialogSkeleton({
 			{/* Footer */}
 			{showFooter && (
 				<div className="flex justify-end gap-2">
-					<Skeleton className="h-10 w-24" />
-					<Skeleton className="h-10 w-24" />
+					<Skeleton className="h-[var(--kala-control-h)] w-24" />
+					<Skeleton className="h-[var(--kala-control-h)] w-24" />
 				</div>
 			)}
 		</section>

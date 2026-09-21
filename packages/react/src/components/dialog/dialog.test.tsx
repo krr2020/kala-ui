@@ -140,4 +140,18 @@ describe("Dialog", () => {
 		const def = document.body.querySelector('[data-slot="dialog-content"]');
 		expect(def?.className).toContain("sm:max-w-lg");
 	});
+
+	it("should keep the card radius token on the centered panel", () => {
+		render(
+			<Dialog open>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Radius</DialogTitle>
+					</DialogHeader>
+				</DialogContent>
+			</Dialog>,
+		);
+		const content = document.body.querySelector('[data-slot="dialog-content"]');
+		expect(content).toHaveClass("sm:rounded-[var(--kala-radius-card)]");
+	});
 });

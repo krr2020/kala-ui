@@ -242,7 +242,7 @@ function DropdownMenuSubTrigger({
 			data-slot="dropdown-menu-sub-trigger"
 			data-inset={inset}
 			className={cn(
-				"flex cursor-pointer select-none items-center gap-2 rounded-sm px-3 py-2 text-sm outline-none transition-colors",
+				"flex cursor-pointer select-none items-center gap-2 rounded-[var(--kala-radius-sm)] px-3 py-2 text-sm outline-none transition-colors",
 				"hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
 				"data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
 				"data-[inset]:pl-8",
@@ -268,7 +268,7 @@ function DropdownMenuSubContent({
 			data-slot="dropdown-menu-sub-content"
 			className={cn(
 				"z-30 min-w-[10rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden",
-				"rounded-md border bg-popover p-1 text-popover-foreground kala-surface-popover",
+				"rounded-[var(--kala-radius-card)] border bg-popover p-1 text-popover-foreground kala-surface-popover",
 				"data-[state=open]:animate-in data-[state=closed]:animate-out",
 				"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
 				"data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",

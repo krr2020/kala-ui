@@ -147,7 +147,7 @@ describe("Select", () => {
 			</Select>,
 		);
 		const skeleton = document.querySelector('[data-slot="skeleton"]');
-		expect(skeleton).toHaveClass("h-9");
+		expect(skeleton).toHaveClass("h-[var(--kala-control-h-sm)]");
 	});
 
 	it("should render loading skeleton with default size", () => {

@@ -71,7 +71,7 @@ describe("NativeSelect", () => {
 		);
 
 		const select = screen.getByRole("combobox");
-		expect(select).toHaveClass("h-8");
+		expect(select).toHaveClass("h-[var(--kala-control-h-sm)]");
 	});
 
 	it("applies default size classes", () => {
@@ -82,7 +82,7 @@ describe("NativeSelect", () => {
 		);
 
 		const select = screen.getByRole("combobox");
-		expect(select).toHaveClass("h-9");
+		expect(select).toHaveClass("h-[var(--kala-control-h)]");
 	});
 
 	it("applies error state classes", () => {

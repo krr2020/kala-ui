@@ -11,6 +11,17 @@ describe("NumberInput", () => {
 		expect(screen.getByLabelText("Decrease value")).toBeInTheDocument();
 	});
 
+	it("should size the root from the density knobs", () => {
+		const { container, rerender } = render(<NumberInput />);
+		expect(container.querySelector('[data-slot="number-input"]')).toHaveClass(
+			"h-[var(--kala-control-h)]",
+		);
+		rerender(<NumberInput size="sm" />);
+		expect(container.querySelector('[data-slot="number-input"]')).toHaveClass(
+			"h-[var(--kala-control-h-sm)]",
+		);
+	});
+
 	it("should render with defaultValue", () => {
 		render(<NumberInput defaultValue={5} />);
 		expect(screen.getByRole("textbox")).toHaveValue("5");
