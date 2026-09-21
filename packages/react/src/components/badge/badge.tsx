@@ -36,10 +36,7 @@ function Badge({
 			<Skeleton
 				data-kala-component="badge"
 				style={mergeStyle(style, root.style)}
-				className={cn(
-					"inline-flex h-5 w-16 items-center rounded-full",
-					root.className,
-				)}
+				className={cn(badgeStyles.loading, root.className)}
 			/>
 		);
 	}

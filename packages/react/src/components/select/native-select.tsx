@@ -3,6 +3,8 @@
 import { ChevronDown } from "lucide-react";
 import type * as React from "react";
 
+import { nativeSelectStyles } from "../../config/select";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 
 export interface NativeSelectProps
@@ -16,43 +18,50 @@ export interface NativeSelectProps
 	 * Error state styling
 	 */
 	error?: boolean;
+	/** Per-part overrides: `root` targets the wrapper, `select` the native control, `icon` the chevron holder. */
+	slotStyles?: SlotStyles;
 }
 
 function NativeSelect({
 	ref,
 	className,
+	style,
+	slotStyles,
 	size = "md",
 	error,
 	children,
 	disabled,
 	...props
 }: NativeSelectProps) {
+	const root = applySlot(nativeSelectStyles.root, slotStyles?.root);
+	const select = applySlot(
+		cn(
+			nativeSelectStyles.select,
+			nativeSelectStyles.size[size],
+			error && nativeSelectStyles.error,
+			className,
+		),
+		slotStyles?.select,
+	);
+	const icon = applySlot(nativeSelectStyles.icon, slotStyles?.icon);
+	const iconGlyph = applySlot(nativeSelectStyles.iconGlyph[size], null);
 	return (
-		<div data-kala-component="select-native-select" className="relative w-full">
+		<div
+			data-kala-component="select-native-select"
+			className={root.className}
+			style={root.style}
+		>
 			<select
 				ref={ref}
 				disabled={disabled}
-				className={cn(
-					"w-full rounded-md border bg-background text-sm transition-colors kala-surface-input",
-					"kala-focus-ring",
-					"disabled:cursor-not-allowed disabled:opacity-50",
-					"appearance-none pr-10",
-					{
-						"h-9 px-3 py-2": size === "md",
-						"h-8 px-2 py-1 text-xs": size === "sm",
-						"border-destructive kala-focus-ring-destructive": error,
-					},
-					className,
-				)}
+				className={select.className}
+				style={mergeStyle(style, select.style)}
 				{...props}
 			>
 				{children}
 			</select>
-			<div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2">
-				<ChevronDown
-					className={cn("opacity-70", size === "sm" ? "size-3" : "size-4")}
-					aria-hidden="true"
-				/>
+			<div className={icon.className} style={icon.style}>
+				<ChevronDown className={iconGlyph.className} aria-hidden="true" />
 			</div>
 		</div>
 	);

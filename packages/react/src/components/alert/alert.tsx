@@ -10,7 +10,7 @@ import {
 import * as React from "react";
 
 import { alertStyles } from "../../config/alert";
-import { applySlot, mergeStyle } from "../../lib/slot-styles";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
 import type { AlertProps } from "./alert.types";
@@ -155,15 +155,19 @@ function Alert({
 	);
 }
 
-function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
+function AlertTitle({
+	className,
+	style,
+	slotStyles,
+	...props
+}: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const root = applySlot(cn(alertStyles.title, className), slotStyles?.root);
 	return (
 		<Box
 			data-kala-component="alert-title"
 			data-slot="alert-title"
-			className={cn(
-				"col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight",
-				className,
-			)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);
@@ -171,13 +175,17 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
 
 function AlertDescription({
 	className,
+	style,
+	slotStyles,
 	...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const root = applySlot(cn(alertStyles.description, className), slotStyles?.root);
 	return (
 		<Box
 			data-kala-component="alert-description"
 			data-slot="alert-description"
-			className={cn("col-start-2 text-sm [&_p]:leading-relaxed", className)}
+			className={root.className}
+			style={mergeStyle(style, root.style)}
 			{...props}
 		/>
 	);

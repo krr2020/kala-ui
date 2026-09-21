@@ -1,2 +1,2 @@
 export { toast } from "sonner";
-export { Toast } from "./toast";
+export { buildToastClassNames, Toast } from "./toast";

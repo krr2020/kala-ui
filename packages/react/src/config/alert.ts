@@ -150,4 +150,6 @@ export const alertStyles = {
 	icon: "size-4 translate-y-0.5",
 	dismiss:
 		"cursor-pointer absolute right-2 top-2 rounded-md p-1 hover:bg-accent transition-colors",
+	title: "col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight",
+	description: "col-start-2 text-sm [&_p]:leading-relaxed",
 } as const;

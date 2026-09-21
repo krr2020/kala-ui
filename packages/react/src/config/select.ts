@@ -41,3 +41,19 @@ export const selectChevronStyles = {
 export const selectItemIndicatorStyles = {
 	base: "size-4",
 };
+
+export const nativeSelectStyles = {
+	root: "relative w-full",
+	select:
+		"w-full rounded-md border bg-background text-sm transition-colors kala-surface-input kala-focus-ring disabled:cursor-not-allowed disabled:opacity-50 appearance-none pr-10",
+	size: {
+		md: "h-9 px-3 py-2",
+		sm: "h-8 px-2 py-1 text-xs",
+	},
+	error: "border-destructive kala-focus-ring-destructive",
+	icon: "pointer-events-none absolute right-2 top-1/2 -translate-y-1/2",
+	iconGlyph: {
+		md: "opacity-70 size-4",
+		sm: "opacity-70 size-3",
+	},
+};

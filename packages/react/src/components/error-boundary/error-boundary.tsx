@@ -3,6 +3,8 @@
 import { AlertCircle } from "lucide-react";
 import type { ErrorInfo, ReactNode } from "react";
 import { Component } from "react";
+import { errorBoundaryStyles } from "../../config/error-boundary";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Button } from "../button";
 
 // Simple logger for error boundary
@@ -32,6 +34,9 @@ export interface ErrorBoundaryProps {
 	 * Children to render
 	 */
 	children: ReactNode;
+	/** Per-part overrides: `root` targets the default fallback surface; the
+	 * healthy path renders children verbatim. */
+	slotStyles?: SlotStyles;
 }
 
 interface ErrorBoundaryState {
@@ -51,15 +56,19 @@ function resetKeysDiffer(a?: unknown[], b?: unknown[]): boolean {
 function DefaultErrorFallback({
 	error,
 	reset,
+	slotStyles,
 }: {
 	error: Error;
 	reset: () => void;
+	slotStyles?: SlotStyles;
 }) {
+	const root = applySlot(errorBoundaryStyles.fallback, slotStyles?.root);
 	return (
 		<div
 			data-kala-component="error-boundary-default-error-fallback"
 			role="alert"
-			className="rounded-md border border-destructive/50 bg-destructive/5 p-4 text-sm kala-surface-card"
+			className={root.className}
+			style={mergeStyle(undefined, root.style)}
 		>
 			<div className="flex items-start gap-2">
 				<AlertCircle
@@ -143,7 +152,11 @@ export class ErrorBoundary extends Component<
 			}
 
 			return (
-				<DefaultErrorFallback error={this.state.error} reset={this.reset} />
+				<DefaultErrorFallback
+					error={this.state.error}
+					reset={this.reset}
+					slotStyles={this.props.slotStyles}
+				/>
 			);
 		}
 

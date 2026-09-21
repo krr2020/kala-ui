@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { Alert } from "../components/alert";
+import { Alert, AlertDescription, AlertTitle } from "../components/alert";
 import { Badge } from "../components/badge";
 import { Button } from "../components/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/card";
@@ -32,7 +32,7 @@ import { FileUpload } from "../components/file-upload";
 import { NumberInput } from "../components/number-input";
 import { TagInput } from "../components/tag-input";
 import { TimePicker } from "../components/time-picker";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "../components/select";
+import { NativeSelect, Select, SelectContent, SelectItem, SelectTrigger } from "../components/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/tooltip";
 import { Popover, PopoverBody, PopoverContent, PopoverTrigger } from "../components/popover";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../components/dropdown-menu";
@@ -42,7 +42,24 @@ import { AvatarGroup } from "../components/avatar-group";
 import { Progress } from "../components/progress";
 import { EmptyState } from "../components/empty-state";
 import { RingProgress } from "../components/ring-progress";
+import { buildToastClassNames } from "../components/toast/toast";
+import { Toast } from "../components/toast";
+import { toastStyles } from "../config/toast";
+import { ErrorBoundary } from "../components/error-boundary";
 import { applySlot, mergeStyle } from "../lib/slot-styles";
+
+// Passthrough double scoped to the Toaster component only: sonner's real
+// Toaster renders a classless section in jsdom (see the rollout suite's toast
+// delegation), hiding the root channel — every other sonner export stays real.
+vi.mock("sonner", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("sonner")>();
+	return {
+		...actual,
+		Toaster: (props: { className?: string }) => (
+			<div data-testid="sonner-toaster" className={props.className} />
+		),
+	};
+});
 
 describe("applySlot / mergeStyle units", () => {
 	it("undefined and null slot keep the base untouched with no style", () => {
@@ -801,6 +818,239 @@ describe("EmptyState slotStyles", () => {
 	});
 });
 
+describe("Input chrome slotStyles", () => {
+	it("wrapper, prefix, suffix and toggle slots reach their nodes", () => {
+		const { container } = render(
+			<Input
+				type="password"
+				showPasswordToggle
+				prefixIcon={<span>P</span>}
+				slotStyles={{
+					wrapper: "k-slot-wrapper w-64",
+					prefix: "k-slot-prefix",
+					suffix: "k-slot-suffix",
+					toggle: "k-slot-toggle",
+				}}
+			/>,
+		);
+		const wrapper = container.querySelector('[data-kala-component="input"]');
+		expect(wrapper?.className).toContain("k-slot-wrapper");
+		expect(wrapper?.className).toContain("w-64");
+		const prefix = wrapper?.firstElementChild;
+		expect(prefix?.className).toContain("k-slot-prefix");
+		const toggle = screen.getByRole("button", { name: "Show password" });
+		expect(toggle.className).toContain("k-slot-toggle");
+		expect(toggle.parentElement?.className).toContain("k-slot-suffix");
+	});
+
+	it("absent slotStyles keeps the chrome class strings byte-identical", () => {
+		const { container } = render(
+			<Input type="password" showPasswordToggle prefixIcon={<span>P</span>} />,
+		);
+		const wrapper = container.querySelector('[data-kala-component="input"]');
+		expect(wrapper?.className).toBe("relative w-full");
+		const toggle = screen.getByRole("button", { name: "Show password" });
+		expect(toggle.className).toBe(
+			"kala-touch cursor-pointer rounded-sm p-1 text-muted-foreground hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors",
+		);
+	});
+});
+
+describe("AlertTitle / AlertDescription slotStyles", () => {
+	it("title and description root slots beat legacy className", () => {
+		const { container } = render(
+			<Alert>
+				<AlertTitle className="w-10" slotStyles={{ root: "k-slot-title w-64" }}>
+					T
+				</AlertTitle>
+				<AlertDescription
+					className="w-10"
+					slotStyles={{ root: "k-slot-desc w-64" }}
+				>
+					D
+				</AlertDescription>
+			</Alert>,
+		);
+		const title = container.querySelector(
+			'[data-kala-component="alert-title"]',
+		);
+		expect(title?.className).toContain("k-slot-title");
+		expect(title?.className).not.toContain("w-10");
+		const desc = container.querySelector(
+			'[data-kala-component="alert-description"]',
+		);
+		expect(desc?.className).toContain("k-slot-desc");
+		expect(desc?.className).not.toContain("w-10");
+	});
+
+	it("absent slotStyles renders the exact pre-change class strings", () => {
+		const { container } = render(
+			<Alert>
+				<AlertTitle>T</AlertTitle>
+				<AlertDescription>D</AlertDescription>
+			</Alert>,
+		);
+		expect(
+			container.querySelector('[data-kala-component="alert-title"]')
+				?.className,
+		).toBe("col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight");
+		expect(
+			container.querySelector('[data-kala-component="alert-description"]')
+				?.className,
+		).toBe("col-start-2 text-sm [&_p]:leading-relaxed");
+	});
+});
+
+describe("Toast per-part slotStyles", () => {
+	it("every sonner surface merges its slot over the config base", () => {
+		const slots = {
+			toast: "k-slot-toast",
+			description: "k-slot-description",
+			actionButton: "k-slot-action",
+			cancelButton: "k-slot-cancel",
+			icon: "k-slot-icon",
+			closeButton: "k-slot-close",
+		} as const;
+		const classNames = buildToastClassNames(slots);
+		for (const part of Object.keys(slots) as Array<keyof typeof slots>) {
+			expect(classNames[part]).toContain(slots[part]);
+			expect(classNames[part]).toContain(toastStyles[part]);
+		}
+	});
+
+	it("absent slotStyles yields the exact current sonner classNames", () => {
+		expect(buildToastClassNames()).toEqual({
+			toast: "group toast group-[.toaster]:bg-popover group-[.toaster]:text-foreground group-[.toaster]:border data-[type=error]:!border-destructive data-[type=success]:!border-success data-[type=warning]:!border-warning data-[type=info]:!border-info data-[type=success]:[&_[data-icon]]:!text-success data-[type=error]:[&_[data-icon]]:!text-destructive data-[type=warning]:[&_[data-icon]]:!text-warning data-[type=info]:[&_[data-icon]]:!text-info",
+			description: "group-[.toast]:text-muted-foreground",
+			actionButton:
+				"group-[.toast]:bg-primary group-[.toast]:text-primary-foreground group-data-[type=success]:!bg-success group-data-[type=success]:!text-success-foreground group-data-[type=error]:!bg-destructive group-data-[type=error]:!text-destructive-foreground group-data-[type=warning]:!bg-warning group-data-[type=warning]:!text-warning-foreground group-data-[type=info]:!bg-info group-data-[type=info]:!text-info-foreground",
+			cancelButton:
+				"group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
+			icon: "group-[.toast]:!text-current",
+			closeButton:
+				"group-[.toast]:bg-popover group-[.toast]:border group-[.toast]:hover:bg-accent group-[.toast]:!left-auto group-[.toast]:!-right-4 group-[.toast]:!-top-1 group-data-[type=success]:!border-success group-data-[type=error]:!border-destructive group-data-[type=warning]:!border-warning group-data-[type=info]:!border-info",
+		});
+	});
+
+	it("slot entries beat same-group base utilities via tailwind-merge", () => {
+		// The description base and the slot share the group-[.toast]:text-*
+		// group; slot-last ordering must let the slot displace the base, not
+		// just append to it.
+		const classNames = buildToastClassNames({
+			description: "group-[.toast]:text-primary",
+		});
+		expect(classNames.description).toContain("group-[.toast]:text-primary");
+		expect(classNames.description).not.toContain(
+			"group-[.toast]:text-muted-foreground",
+		);
+	});
+
+	it("wrapper root still channels through the Toaster", () => {
+		// jsdom sonner swallows className (its section renders classless), so
+		// the root channel is asserted through a passthrough Toaster double.
+		render(<Toast slotStyles={{ root: "k-slot-root" }} />);
+		const toaster = screen.getByTestId("sonner-toaster");
+		expect(toaster.className).toContain("toaster group");
+		expect(toaster.className).toContain("k-slot-root");
+	});
+});
+
+describe("Badge loading arm", () => {
+	it("skeleton uses the config loading base and keeps slotStyles.root", () => {
+		const { container } = render(
+			<Badge isLoading slotStyles={{ root: "k-slot-root" }} />,
+		);
+		const el = container.querySelector('[data-kala-component="badge"]');
+		expect(el?.className).toContain("k-slot-root");
+		expect(el?.className).toContain("inline-flex h-5 w-16 items-center rounded-full");
+	});
+});
+
+describe("NativeSelect slotStyles", () => {
+	it("root, select and icon slots reach their nodes", () => {
+		const { container } = render(
+			<NativeSelect
+				className="w-10"
+				slotStyles={{
+					root: "k-slot-root",
+					select: "k-slot-select w-64",
+					icon: "k-slot-icon",
+				}}
+			>
+				<option value="a">A</option>
+			</NativeSelect>,
+		);
+		const root = container.querySelector(
+			'[data-kala-component="select-native-select"]',
+		);
+		expect(root?.className).toContain("k-slot-root");
+		const select = container.querySelector("select");
+		expect(select?.className).toContain("k-slot-select");
+		expect(select?.className).toContain("w-64");
+		expect(select?.className).not.toContain("w-10");
+		const icon = root?.querySelector("svg")?.parentElement;
+		expect(icon?.className).toContain("k-slot-icon");
+	});
+
+	it("absent slotStyles keeps the pre-change class strings", () => {
+		const { container } = render(
+			<NativeSelect>
+				<option value="a">A</option>
+			</NativeSelect>,
+		);
+		expect(
+			container.querySelector('[data-kala-component="select-native-select"]')
+				?.className,
+		).toBe("relative w-full");
+		expect(container.querySelector("select")?.className).toBe(
+			"w-full rounded-md border bg-background text-sm transition-colors kala-surface-input kala-focus-ring disabled:cursor-not-allowed disabled:opacity-50 appearance-none h-9 px-3 py-2",
+		);
+	});
+
+	it("size=sm and error variants keep their classes through the table", () => {
+		const { container } = render(
+			<NativeSelect size="sm" error>
+				<option value="a">A</option>
+			</NativeSelect>,
+		);
+		const select = container.querySelector("select");
+		expect(select?.className).toContain("h-8 px-2 py-1 text-xs");
+		expect(select?.className).toContain("border-destructive");
+	});
+});
+
+describe("ErrorBoundary slotStyles", () => {
+	it("applies the fallback root slot over the config base on error", () => {
+		const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+		const Bomb = (): never => {
+			throw new Error("boom");
+		};
+		const { container } = render(
+			<ErrorBoundary slotStyles={{ root: "k-slot-root" }}>
+				<Bomb />
+			</ErrorBoundary>,
+		);
+		const el = container.querySelector(
+			'[data-kala-component="error-boundary-default-error-fallback"]',
+		);
+		expect(el?.className).toContain("k-slot-root");
+		expect(el?.className).toContain(
+			"rounded-md border border-destructive/50 bg-destructive/5 p-4 text-sm kala-surface-card",
+		);
+		errorSpy.mockRestore();
+	});
+
+	it("healthy path renders children and leaks nothing", () => {
+		const { container } = render(
+			<ErrorBoundary slotStyles={{ root: "k-slot-root" }}>
+				<span>ok</span>
+			</ErrorBoundary>,
+		);
+		expect(container.querySelector("span")?.textContent).toBe("ok");
+		expect(container.innerHTML).not.toContain("slotStyles");
+	});
+});
+
 /**
  * Style-file guard: per-part base classes for the components wired in this
  * contract live in src/config/<name>.ts style tables (keys = slot part
@@ -1097,6 +1347,111 @@ const styleTableEntries = [
 		config: "../config/select.ts",
 		base: "size-4",
 		absent: 'applySlot("size-4",',
+	},
+	{
+		part: "input.wrapper",
+		tsx: "../components/input/input.tsx",
+		config: "../config/input.ts",
+		base: "relative w-full",
+	},
+	{
+		part: "input.prefix",
+		tsx: "../components/input/input.tsx",
+		config: "../config/input.ts",
+		base: "pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground",
+	},
+	{
+		part: "input.suffix",
+		tsx: "../components/input/input.tsx",
+		config: "../config/input.ts",
+		base: "absolute inset-y-0 right-0 flex items-center gap-2 pr-3",
+	},
+	{
+		part: "input.toggle",
+		tsx: "../components/input/input.tsx",
+		config: "../config/input.ts",
+		base: "kala-touch cursor-pointer rounded-sm p-1 text-muted-foreground hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors",
+	},
+	{
+		part: "alert.title",
+		tsx: "../components/alert/alert.tsx",
+		config: "../config/alert.ts",
+		base: "col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight",
+	},
+	{
+		part: "alert.description",
+		tsx: "../components/alert/alert.tsx",
+		config: "../config/alert.ts",
+		base: "col-start-2 text-sm [&_p]:leading-relaxed",
+	},
+	{
+		part: "badge.loading",
+		tsx: "../components/badge/badge.tsx",
+		config: "../config/badge.ts",
+		base: "inline-flex h-5 w-16 items-center rounded-full",
+	},
+	{
+		part: "toast.toast",
+		tsx: "../components/toast/toast.tsx",
+		config: "../config/toast.ts",
+		base: "group toast group-[.toaster]:bg-popover group-[.toaster]:text-foreground group-[.toaster]:border data-[type=error]:!border-destructive data-[type=success]:!border-success data-[type=warning]:!border-warning data-[type=info]:!border-info data-[type=success]:[&_[data-icon]]:!text-success data-[type=error]:[&_[data-icon]]:!text-destructive data-[type=warning]:[&_[data-icon]]:!text-warning data-[type=info]:[&_[data-icon]]:!text-info",
+	},
+	{
+		part: "toast.description",
+		tsx: "../components/toast/toast.tsx",
+		config: "../config/toast.ts",
+		base: "group-[.toast]:text-muted-foreground",
+		absent: 'description: "group-[.toast]:text-muted-foreground"',
+	},
+	{
+		part: "toast.actionButton",
+		tsx: "../components/toast/toast.tsx",
+		config: "../config/toast.ts",
+		base: "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground group-data-[type=success]:!bg-success group-data-[type=success]:!text-success-foreground group-data-[type=error]:!bg-destructive group-data-[type=error]:!text-destructive-foreground group-data-[type=warning]:!bg-warning group-data-[type=warning]:!text-warning-foreground group-data-[type=info]:!bg-info group-data-[type=info]:!text-info-foreground",
+	},
+	{
+		part: "toast.cancelButton",
+		tsx: "../components/toast/toast.tsx",
+		config: "../config/toast.ts",
+		base: "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
+		absent: 'cancelButton: "group-[.toast]:bg-muted',
+	},
+	{
+		part: "toast.icon",
+		tsx: "../components/toast/toast.tsx",
+		config: "../config/toast.ts",
+		base: "group-[.toast]:!text-current",
+		absent: 'icon: "group-[.toast]:!text-current"',
+	},
+	{
+		part: "toast.closeButton",
+		tsx: "../components/toast/toast.tsx",
+		config: "../config/toast.ts",
+		base: "group-[.toast]:bg-popover group-[.toast]:border group-[.toast]:hover:bg-accent group-[.toast]:!left-auto group-[.toast]:!-right-4 group-[.toast]:!-top-1 group-data-[type=success]:!border-success group-data-[type=error]:!border-destructive group-data-[type=warning]:!border-warning group-data-[type=info]:!border-info",
+	},
+	{
+		part: "nativeSelect.root",
+		tsx: "../components/select/native-select.tsx",
+		config: "../config/select.ts",
+		base: "relative w-full",
+	},
+	{
+		part: "nativeSelect.select",
+		tsx: "../components/select/native-select.tsx",
+		config: "../config/select.ts",
+		base: "w-full rounded-md border bg-background text-sm transition-colors kala-surface-input kala-focus-ring disabled:cursor-not-allowed disabled:opacity-50 appearance-none pr-10",
+	},
+	{
+		part: "nativeSelect.icon",
+		tsx: "../components/select/native-select.tsx",
+		config: "../config/select.ts",
+		base: "pointer-events-none absolute right-2 top-1/2 -translate-y-1/2",
+	},
+	{
+		part: "errorBoundary.fallback",
+		tsx: "../components/error-boundary/error-boundary.tsx",
+		config: "../config/error-boundary.ts",
+		base: "rounded-md border border-destructive/50 bg-destructive/5 p-4 text-sm kala-surface-card",
 	},
 ] as const satisfies readonly StyleTableEntry[];
 

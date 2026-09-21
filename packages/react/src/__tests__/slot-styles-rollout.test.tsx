@@ -155,7 +155,8 @@ const WIRED = [
 /** Families with no styled DOM root of their own. */
 const EXCLUDED: Record<string, string> = {
 	"theme-provider": "context provider, renders no styled element",
-	"error-boundary": "class wrapper, renders children or fallback only",
+	"error-boundary":
+		"class wrapper; healthy path renders children verbatim, slotStyles reaches the default fallback only",
 	"design-system": "docs/demo helper, not a shipped visual component",
 };
 

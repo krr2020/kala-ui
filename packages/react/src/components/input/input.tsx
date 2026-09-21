@@ -60,6 +60,10 @@ export function Input({
 		slotStyles?.root,
 	);
 	const rootStyle = mergeStyle(style, root.style);
+	const wrapper = applySlot(inputStyles.wrapper, slotStyles?.wrapper);
+	const prefix = applySlot(inputStyles.prefix, slotStyles?.prefix);
+	const suffix = applySlot(inputStyles.suffix, slotStyles?.suffix);
+	const toggle = applySlot(inputStyles.toggle, slotStyles?.toggle);
 
 	// Show loading skeleton
 	if (isLoading) {
@@ -88,9 +92,13 @@ export function Input({
 
 	// Input with wrapper for icons and password toggle
 	return (
-		<div data-kala-component="input" className="relative w-full">
+		<div
+			data-kala-component="input"
+			className={wrapper.className}
+			style={wrapper.style}
+		>
 			{hasPrefix && (
-				<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
+				<div className={prefix.className} style={prefix.style}>
 					{prefixIcon}
 				</div>
 			)}
@@ -108,13 +116,14 @@ export function Input({
 			/>
 
 			{hasSuffix && (
-				<div className="absolute inset-y-0 right-0 flex items-center gap-2 pr-3">
+				<div className={suffix.className} style={suffix.style}>
 					{/* Password visibility toggle */}
 					{typeProp === "password" && showPasswordToggle && (
 						<button
 							type="button"
 							onClick={() => setShowPassword(!showPassword)}
-							className="kala-touch cursor-pointer rounded-sm p-1 text-muted-foreground hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
+							className={toggle.className}
+							style={toggle.style}
 							aria-label={showPassword ? "Hide password" : "Show password"}
 						>
 							{showPassword ? (

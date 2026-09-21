@@ -140,4 +140,5 @@ export const badgeStyles = {
 		color: "primary",
 		shape: "rounded",
 	} as const,
+	loading: "inline-flex h-5 w-16 items-center rounded-full",
 };
