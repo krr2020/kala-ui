@@ -25,6 +25,8 @@ export { tagInputStyles } from "./tag-input";
 export { timePickerStyles } from "./time-picker";
 export { toastStyles } from "./toast";
 export { errorBoundaryStyles } from "./error-boundary";
+export { multiSelectStyles } from "./multi-select";
+export { calendarStyles } from "./calendar";
 export { tooltipStyles } from "./tooltip";
 export { aspectRatioStyles } from "./aspect-ratio";
 export {

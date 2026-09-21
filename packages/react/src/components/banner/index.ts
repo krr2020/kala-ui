@@ -1,3 +1,4 @@
 export type { BannerProps } from "./banner";
-export { Banner, bannerVariants } from "./banner";
+export { Banner } from "./banner";
 export { BannerSkeleton } from "./banner-skeleton";
+export { bannerStyles } from "../../config/banner";

@@ -18,31 +18,14 @@ import { cn } from "../../lib/utils";
 import type { BannerSkeletonConfig } from "../skeleton/skeleton.types";
 import { BannerSkeleton } from "./banner-skeleton";
 
-export const bannerVariants = cva(
-	"w-full z-50 px-4 py-3 text-sm font-medium flex items-center justify-between gap-4",
-	{
-		variants: {
-			color: {
-				info: "bg-info text-info-foreground",
-				warning: "bg-warning text-warning-foreground",
-				destructive: "bg-destructive text-destructive-foreground",
-				success: "bg-success text-success-foreground",
-			},
-			position: {
-				fixed: "fixed top-0 left-0 right-0 shadow-md",
-				static: "relative",
-			},
-		},
-		defaultVariants: {
-			color: "info",
-			position: "fixed",
-		},
-	},
-);
+const bannerClasses = cva(bannerStyles.base, {
+	variants: bannerStyles.variants,
+	defaultVariants: bannerStyles.defaultVariants,
+});
 
 export interface BannerProps
 	extends Omit<React.ComponentProps<"div">, "color">,
-		VariantProps<typeof bannerVariants> {
+		VariantProps<typeof bannerClasses> {
 	onClose?: () => void;
 	/**
 	 * ARIA role for the banner
@@ -76,7 +59,7 @@ skeleton,
 ...props
 }: BannerProps) {
 const root = applySlot(
-	cn(bannerVariants({ color, position }), className),
+	cn(bannerClasses({ color, position }), className),
 	slotStyles?.root,
 );
 const rootStyle = mergeStyle(style, root.style);

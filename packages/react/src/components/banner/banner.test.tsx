@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { Banner, bannerVariants } from "./banner";
+import { Banner } from "./banner";
+import { bannerStyles } from "../../config/banner";
 
 describe("Banner", () => {
 	it("should render banner with children", () => {
@@ -144,7 +145,13 @@ describe("Banner", () => {
 		expect(screen.queryByText("Content")).not.toBeInTheDocument();
 	});
 
-	it("should export bannerVariants", () => {
-		expect(bannerVariants).toBeDefined();
+	it("should expose the bannerStyles config table", () => {
+		expect(bannerStyles.base).toContain(
+			"w-full z-50 px-4 py-3 text-sm font-medium flex items-center justify-between gap-4",
+		);
+		expect(bannerStyles.variants.color.destructive).toBe(
+			"bg-destructive text-destructive-foreground",
+		);
+		expect(bannerStyles.variants.position.static).toBe("relative");
 	});
 });

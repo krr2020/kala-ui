@@ -1,2 +1,3 @@
 export type { TagProps } from "./tag";
-export { Tag, tagVariants } from "./tag";
+export { Tag } from "./tag";
+export { tagStyles } from "../../config/tag";

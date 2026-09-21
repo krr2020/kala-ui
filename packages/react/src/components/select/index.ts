@@ -22,5 +22,4 @@ export {
 	SelectSeparator,
 	SelectTrigger,
 	SelectValue,
-	selectTriggerVariants,
 } from "./select";

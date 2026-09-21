@@ -162,7 +162,7 @@ describe("Select", () => {
 			</Select>,
 		);
 		const skeleton = document.querySelector('[data-slot="skeleton"]');
-		expect(skeleton).toHaveClass("h-10");
+		expect(skeleton).toHaveClass("h-[var(--kala-control-h)]");
 	});
 
 	it("should set data-size on trigger", () => {

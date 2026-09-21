@@ -49,7 +49,7 @@ function SelectValue({
 
 import { cva } from "class-variance-authority";
 
-export const selectTriggerVariants = cva(selectTriggerStyles.base, {
+const selectTriggerClasses = cva(selectTriggerStyles.base, {
 	variants: selectTriggerStyles.variants,
 	defaultVariants: selectTriggerStyles.defaultVariants,
 });
@@ -70,11 +70,7 @@ function SelectTrigger({
 	slotStyles?: SlotStyles;
 }) {
 	const root = applySlot(
-		cn(
-			"w-full rounded-md flex items-center justify-between",
-			size === "sm" ? "h-9" : "h-10",
-			className,
-		),
+		cn(selectTriggerClasses({ size }), className),
 		slotStyles?.root ?? null,
 	);
 	if (isLoading) {
@@ -82,7 +78,7 @@ function SelectTrigger({
 			<Skeleton
 				data-kala-component="select-trigger"
 				style={mergeStyle(style, root.style)}
-				className={cn(root.className)}
+				className={root.className}
 			/>
 		);
 	}
@@ -94,7 +90,7 @@ function SelectTrigger({
 			ref={ref}
 			data-slot="select-trigger"
 			data-size={size}
-			className={cn(selectTriggerVariants({ size }), root.className)}
+			className={root.className}
 			style={mergeStyle(style, root.style)}
 			{...props}
 		>

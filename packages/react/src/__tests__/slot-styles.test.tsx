@@ -38,6 +38,7 @@ import { Popover, PopoverBody, PopoverContent, PopoverTrigger } from "../compone
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../components/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/tabs";
 import { Banner } from "../components/banner";
+import { MultiSelect } from "../components/multi-select";
 import { AvatarGroup } from "../components/avatar-group";
 import { Progress } from "../components/progress";
 import { EmptyState } from "../components/empty-state";
@@ -239,6 +240,44 @@ describe("Tag slotStyles", () => {
 		const tag = container.querySelector('[data-slot="tag"]');
 		expect(tag).toHaveClass("w-64");
 		expect(tag).not.toHaveClass("w-10");
+	});
+
+	it("absent slotStyles renders the exact pre-change class string", () => {
+		render(<Tag>x</Tag>);
+		expect(screen.getByText("x").className).toBe(
+			"inline-flex items-center gap-1 rounded-full font-medium transition-colors select-none text-sm px-2.5 py-1 [&_svg]:size-3.5 bg-muted text-muted-foreground",
+		);
+	});
+
+	it("variant arm composes base, size and compound in cva order", () => {
+		render(
+			<Tag variant="solid" color="primary" size="sm">
+				x
+			</Tag>,
+		);
+		expect(screen.getByText("x").className).toBe(
+			"inline-flex items-center gap-1 rounded-full font-medium transition-colors select-none text-xs px-2 py-0.5 [&_svg]:size-3 bg-primary text-primary-foreground",
+		);
+	});
+});
+
+describe("Banner slotStyles", () => {
+	it("absent slotStyles renders the exact pre-change class string", () => {
+		render(<Banner>x</Banner>);
+		expect(screen.getByRole("status").className).toBe(
+			"w-full z-50 px-4 py-3 text-sm font-medium flex items-center justify-between gap-4 bg-info text-info-foreground fixed top-0 left-0 right-0 shadow-md",
+		);
+	});
+
+	it("color and position arms compose from the table", () => {
+		render(
+			<Banner color="destructive" position="static">
+				x
+			</Banner>,
+		);
+		expect(screen.getByRole("status").className).toBe(
+			"w-full z-50 px-4 py-3 text-sm font-medium flex items-center justify-between gap-4 bg-destructive text-destructive-foreground relative",
+		);
 	});
 });
 
@@ -628,6 +667,90 @@ it("chevron slot beats its config base and reaches the glyph", () => {
 		);
 		expect(check).toHaveClass("my-chk");
 		expect(check).not.toHaveClass("size-4");
+	});
+});
+
+describe("SelectTrigger config composition", () => {
+	it("trigger composes base and size from the config table", () => {
+		const { rerender } = render(
+			<Select defaultValue="a">
+				<SelectTrigger>pick</SelectTrigger>
+			</Select>,
+		);
+		expect(screen.getByRole("combobox").className).toBe(
+			"cursor-pointer bg-card text-foreground data-placeholder:text-muted-foreground aria-invalid:kala-ring-destructive/20 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground flex w-full items-center justify-between gap-2 rounded-md border whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50 kala-surface-input kala-focus-ring *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 h-[var(--kala-control-h)] px-3 py-2 text-sm",
+		);
+		rerender(
+			<Select defaultValue="a">
+				<SelectTrigger size="sm">pick</SelectTrigger>
+			</Select>,
+		);
+		expect(screen.getByRole("combobox").className).toContain(
+			"h-9 px-2 py-1 text-xs",
+		);
+	});
+
+	it("trigger root slot still beats legacy className", () => {
+		render(
+			<Select defaultValue="a">
+				<SelectTrigger className="w-10" slotStyles={{ root: "w-64" }}>
+					pick
+				</SelectTrigger>
+			</Select>,
+		);
+		const trigger = screen.getByRole("combobox");
+		expect(trigger).toHaveClass("w-64");
+		expect(trigger).not.toHaveClass("w-full");
+	});
+});
+
+describe("MultiSelect slotStyles", () => {
+	it("trigger, chip, chipRemove, overflowChip, clearAll and chevron slots reach their nodes", () => {
+		const { container } = render(
+			<MultiSelect
+				options={[
+					{ value: "a", label: "A" },
+					{ value: "b", label: "B" },
+					{ value: "c", label: "C" },
+					{ value: "d", label: "D" },
+				]}
+				value={["a", "b", "c", "d"]}
+				slotStyles={{
+					root: "k-slot-root",
+					trigger: "k-slot-trig",
+					chip: "k-slot-chip",
+					chipRemove: "k-slot-rm",
+					overflowChip: "k-slot-more",
+					clearAll: "k-slot-clear",
+					chevron: "k-slot-chev",
+				}}
+			/>,
+		);
+		const root = container.querySelector('[data-slot="multi-select"]');
+		expect(root?.className).toContain("k-slot-root");
+		expect(
+			container.querySelector('button[role="combobox"]'),
+		).toHaveClass("k-slot-trig");
+		expect(screen.getByText("A").className).toContain("k-slot-chip");
+		expect(screen.getByLabelText("Remove A")).toHaveClass("k-slot-rm");
+		expect(screen.getByText("+1 more").className).toContain("k-slot-more");
+		expect(screen.getByLabelText("Clear all")).toHaveClass("k-slot-clear");
+		const svgs = root?.querySelectorAll("svg");
+		expect(svgs?.[svgs.length - 1]).toHaveClass("k-slot-chev");
+	});
+
+	it("absent slotStyles renders the exact pre-change class strings", () => {
+		const { container } = render(
+			<MultiSelect options={[{ value: "a", label: "A" }]} value={["a"]} />,
+		);
+		expect(
+			container.querySelector('[data-slot="multi-select"]')?.className,
+		).toBe(
+			"relative flex min-h-10 w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input hover:bg-accent/50",
+		);
+		expect(screen.getByText("A").className).toBe(
+			"inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground",
+		);
 	});
 });
 
@@ -1452,6 +1575,411 @@ const styleTableEntries = [
 		tsx: "../components/error-boundary/error-boundary.tsx",
 		config: "../config/error-boundary.ts",
 		base: "rounded-md border border-destructive/50 bg-destructive/5 p-4 text-sm kala-surface-card",
+	},
+	{
+		part: "tag.root",
+		tsx: "../components/tag/tag.tsx",
+		config: "../config/tag.ts",
+		base: "inline-flex items-center gap-1 rounded-full font-medium transition-colors select-none",
+	},
+	{
+		part: "banner.root",
+		tsx: "../components/banner/banner.tsx",
+		config: "../config/banner.ts",
+		base: "w-full z-50 px-4 py-3 text-sm font-medium flex items-center justify-between gap-4",
+	},
+	{
+		part: "multiSelect.root",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "relative flex min-h-10 w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input",
+	},
+	{
+		part: "multiSelect.rootHover",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "hover:bg-accent/50",
+		absent: '"hover:bg-accent/50"',
+	},
+	{
+		part: "multiSelect.rootDisabled",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "cursor-not-allowed opacity-50",
+		absent: '"cursor-not-allowed opacity-50"',
+	},
+	{
+		part: "multiSelect.trigger",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "absolute inset-0 z-0 rounded-md kala-focus-ring",
+	},
+	{
+		part: "multiSelect.chipsContainer",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "pointer-events-none relative z-10 flex flex-1 flex-wrap items-center gap-1 py-1.5 pl-3",
+	},
+	{
+		part: "multiSelect.placeholder",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "text-muted-foreground",
+		absent: '"text-muted-foreground"',
+	},
+	{
+		part: "multiSelect.chip",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground",
+	},
+	{
+		part: "multiSelect.chipIcon",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "mr-1 flex size-3 items-center",
+	},
+	{
+		part: "multiSelect.chipRemove",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "kala-touch pointer-events-auto rounded-sm hover:bg-secondary-foreground/20",
+	},
+	{
+		part: "multiSelect.chipRemoveIcon",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "size-3",
+		absent: '"size-3"',
+	},
+	{
+		part: "multiSelect.overflowChip",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "inline-flex items-center rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground",
+	},
+	{
+		part: "multiSelect.controls",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "pointer-events-none relative z-10 flex items-center gap-1 py-1.5 pr-3",
+	},
+	{
+		part: "multiSelect.clearAll",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "kala-touch pointer-events-auto mr-1 rounded-sm opacity-50 hover:opacity-100",
+	},
+	{
+		part: "multiSelect.clearAllIcon",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "size-4",
+		absent: '"size-4"',
+	},
+	{
+		part: "multiSelect.chevron",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "size-4 shrink-0 opacity-50",
+	},
+	{
+		part: "multiSelect.popoverContent",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "z-30 p-0",
+	},
+	{
+		part: "multiSelect.command",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "rounded-lg border bg-popover text-popover-foreground kala-surface-popover",
+	},
+	{
+		part: "multiSelect.commandMatched",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "w-full",
+		absent: '"w-full"',
+	},
+	{
+		part: "multiSelect.commandFluid",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "min-w-[200px]",
+	},
+	{
+		part: "multiSelect.groupHeader",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "sticky top-0 z-10 bg-popover p-0 kala-surface-card",
+	},
+	{
+		part: "multiSelect.groupHeaderItem",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "cursor-pointer rounded-none border-b py-2",
+	},
+	{
+		part: "multiSelect.checkbox",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "mr-2 pointer-events-none",
+	},
+	{
+		part: "multiSelect.separator",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "my-1",
+		absent: '"my-1"',
+	},
+	{
+		part: "multiSelect.optionIcon",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "mr-2 flex size-4 items-center text-muted-foreground",
+	},
+	{
+		part: "multiSelect.truncate",
+		tsx: "../components/multi-select/multi-select.tsx",
+		config: "../config/multi-select.ts",
+		base: "truncate",
+		absent: '"truncate"',
+	},
+	{
+		part: "selectTrigger.root",
+		tsx: "../components/select/select.tsx",
+		config: "../config/select.ts",
+		base: "cursor-pointer bg-card text-foreground data-placeholder:text-muted-foreground aria-invalid:kala-ring-destructive/20 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground flex w-full items-center justify-between gap-2 rounded-md border whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50 kala-surface-input kala-focus-ring *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+	},
+	{
+		part: "selectTrigger.sizeMd",
+		tsx: "../components/select/select.tsx",
+		config: "../config/select.ts",
+		base: "h-[var(--kala-control-h)] px-3 py-2 text-sm",
+	},
+	{
+		part: "selectTrigger.sizeSm",
+		tsx: "../components/select/select.tsx",
+		config: "../config/select.ts",
+		base: "h-9 px-2 py-1 text-xs",
+	},
+	{
+		part: "calendar.root",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
+	},
+	{
+		part: "calendar.rootRtlNext",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "rtl:**:[.rdp-button\\_next>svg]:rotate-180",
+	},
+	{
+		part: "calendar.rootRtlPrevious",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "rtl:**:[.rdp-button\\_previous>svg]:rotate-180",
+	},
+	{
+		part: "calendar.innerRoot",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "w-fit",
+		absent: '"w-fit"',
+	},
+	{
+		part: "calendar.months",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "flex gap-4 flex-col md:flex-row relative",
+	},
+	{
+		part: "calendar.month",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "flex flex-col w-full gap-4",
+	},
+	{
+		part: "calendar.nav",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "flex items-center gap-1 w-full absolute top-0 inset-x-0 justify-between",
+	},
+	{
+		part: "calendar.navButton",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "size-(--cell-size) aria-disabled:opacity-50 p-0 select-none",
+	},
+	{
+		part: "calendar.month_caption",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "flex items-center justify-center h-(--cell-size) w-full px-(--cell-size)",
+	},
+	{
+		part: "calendar.dropdowns",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "w-full flex items-center text-sm font-medium justify-center h-(--cell-size) gap-1.5",
+	},
+	{
+		part: "calendar.dropdown_root",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "relative focus-within:border-primary border focus-within:ring rounded-md kala-surface-input",
+	},
+	{
+		part: "calendar.dropdown",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "absolute bg-popover inset-0 opacity-0",
+	},
+	{
+		part: "calendar.caption_label",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "select-none font-medium",
+	},
+	{
+		part: "calendar.caption_labelLabel",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "text-sm",
+		absent: '"text-sm"',
+	},
+	{
+		part: "calendar.caption_labelDropdown",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "rounded-md pl-2 pr-1 flex items-center gap-1 text-sm h-8 [&>svg]:text-muted-foreground [&>svg]:size-3.5",
+	},
+	{
+		part: "calendar.month_grid",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "w-full border-collapse",
+	},
+	{
+		part: "calendar.weekdays",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "flex",
+		absent: '"flex"',
+	},
+	{
+		part: "calendar.weekday",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "text-muted-foreground rounded-md flex-1 font-normal text-[0.8rem] select-none",
+	},
+	{
+		part: "calendar.week",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "flex w-full mt-2",
+	},
+	{
+		part: "calendar.week_number_header",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "select-none w-(--cell-size)",
+	},
+	{
+		part: "calendar.week_number",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "text-[0.8rem] select-none text-muted-foreground",
+	},
+	{
+		part: "calendar.day",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "relative w-full h-full p-0 text-center [&:last-child[data-selected=true]_button]:rounded-r-md group/day aspect-square select-none",
+	},
+	{
+		part: "calendar.dayWeekNumber",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "[&:nth-child(2)[data-selected=true]_button]:rounded-l-md",
+	},
+	{
+		part: "calendar.dayDefault",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "[&:first-child[data-selected=true]_button]:rounded-l-md",
+	},
+	{
+		part: "calendar.range_start",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "rounded-l-md bg-accent",
+	},
+	{
+		part: "calendar.range_middle",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "rounded-none",
+		absent: '"rounded-none"',
+	},
+	{
+		part: "calendar.range_end",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "rounded-r-md bg-accent",
+	},
+	{
+		part: "calendar.today",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "bg-accent text-accent-foreground rounded-md data-[selected=true]:rounded-none",
+	},
+	{
+		part: "calendar.outside",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "text-muted-foreground aria-selected:text-muted-foreground",
+	},
+	{
+		part: "calendar.disabled",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "text-muted-foreground opacity-50",
+	},
+	{
+		part: "calendar.hidden",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "invisible",
+		absent: '"invisible"',
+	},
+	{
+		part: "calendar.chevron",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "size-4",
+		absent: '"size-4"',
+	},
+	{
+		part: "calendar.weekNumber",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "flex size-(--cell-size) items-center justify-center text-center",
+	},
+	{
+		part: "calendar.dayButton",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-primary group-data-[focused=true]/day:ring/50 flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md [&>span]:text-xs [&>span]:opacity-70",
+	},
+	{
+		part: "calendar.skeleton",
+		tsx: "../components/calendar/calendar.tsx",
+		config: "../config/calendar.ts",
+		base: "p-3",
+		absent: '"p-3"',
 	},
 ] as const satisfies readonly StyleTableEntry[];
 

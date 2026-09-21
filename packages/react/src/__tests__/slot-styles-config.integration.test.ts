@@ -79,6 +79,35 @@ describe("public slotStyles API", () => {
 	});
 });
 
+describe("migrated families expose config tables, not cva doubles", () => {
+	it("multiSelectStyles and calendarStyles are re-exported from the config barrel", () => {
+		const configIndex = read("config/index.ts");
+		expect(configIndex).toContain('multiSelectStyles } from "./multi-select"');
+		expect(configIndex).toContain('calendarStyles } from "./calendar"');
+		expect(configIndex).toContain('tagStyles } from "./tag"');
+		expect(configIndex).toContain('bannerStyles } from "./banner"');
+	});
+
+	it("no repo source still references tag/banner/selectTrigger variants", () => {
+		const offenders: string[] = [];
+		const walk = (dir: string) => {
+			for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+				const full = `${dir}/${entry.name}`;
+				if (entry.isDirectory()) walk(full);
+				else if (/\.(ts|tsx)$/.test(entry.name)) {
+					const src = fs.readFileSync(full, "utf8");
+					if (/(tag|banner|selectTrigger)Variants/.test(src))
+						offenders.push(full);
+				}
+			}
+		};
+		walk(srcRoot);
+		const reactAppSrc = `${process.cwd()}/../react-app/src`;
+		if (fs.existsSync(reactAppSrc)) walk(reactAppSrc);
+		expect(offenders).toEqual([]);
+	});
+});
+
 describe("button prop surface", () => {
 	it("button family no longer declares the removed i18n key props", () => {
 		const offenders: string[] = [];

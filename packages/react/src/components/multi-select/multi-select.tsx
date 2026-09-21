@@ -5,6 +5,7 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { ChevronsUpDown, X } from "lucide-react";
 import * as React from "react";
 
+import { multiSelectStyles } from "../../config/multi-select";
 import { cn } from "../../lib/utils";
 import { type SlotStyles, applySlot, mergeStyle } from "../../lib/slot-styles";
 import { Checkbox } from "../checkbox";
@@ -17,10 +18,6 @@ import {
 	CommandList,
 } from "../command";
 import { Separator } from "../separator";
-
-// ============================================================================
-// MultiSelect
-// ============================================================================
 
 export interface MultiSelectOption {
 	value: string;
@@ -239,6 +236,79 @@ function MultiSelect({
 		}
 	};
 
+	const s = multiSelectStyles;
+	const root = applySlot(
+		cn(
+			s.root,
+			!disabled && s.rootHover,
+			disabled && s.rootDisabled,
+			className,
+		),
+		slotStyles?.root,
+	);
+	const trigger = applySlot(s.trigger, slotStyles?.trigger);
+	const chipsContainer = applySlot(s.chipsContainer, slotStyles?.chipsContainer);
+	const placeholderSlot = applySlot(s.placeholder, slotStyles?.placeholder);
+	const chip = applySlot(s.chip, slotStyles?.chip);
+	const chipIcon = applySlot(s.chipIcon, slotStyles?.chipIcon);
+	const chipRemove = applySlot(s.chipRemove, slotStyles?.chipRemove);
+	const chipRemoveIcon = applySlot(s.chipRemoveIcon, slotStyles?.chipRemoveIcon);
+	const overflowChip = applySlot(s.overflowChip, slotStyles?.overflowChip);
+	const controls = applySlot(s.controls, slotStyles?.controls);
+	const clearAll = applySlot(s.clearAll, slotStyles?.clearAll);
+	const clearAllIcon = applySlot(s.clearAllIcon, slotStyles?.clearAllIcon);
+	const chevron = applySlot(s.chevron, slotStyles?.chevron);
+	const popoverContent = applySlot(s.popoverContent, slotStyles?.popoverContent);
+	const command = applySlot(
+		cn(s.command, matchTriggerWidth ? s.commandMatched : s.commandFluid),
+		slotStyles?.command,
+	);
+	const groupHeader = applySlot(s.groupHeader, slotStyles?.groupHeader);
+	const groupHeaderItem = applySlot(
+		s.groupHeaderItem,
+		slotStyles?.groupHeaderItem,
+	);
+	const checkbox = applySlot(s.checkbox, slotStyles?.checkbox);
+	const separator = applySlot(s.separator, slotStyles?.separator);
+	const optionIcon = applySlot(s.optionIcon, slotStyles?.optionIcon);
+
+	const renderOption = (option: MultiSelectOption, index: number) => {
+		const isSelected = selected.includes(option.value);
+		const isDisabled = option.disabled || (isMaxSelected && !isSelected);
+		return (
+			<React.Fragment key={option.value}>
+				{showSeparators && index > 0 && (
+					<Separator
+						className={separator.className}
+						style={separator.style}
+					/>
+				)}
+				<CommandItem
+						value={option.label}
+						disabled={isDisabled}
+						onSelect={() => handleSelect(option.value)}
+					>
+					<Checkbox
+							checked={isSelected}
+							className={checkbox.className}
+							style={checkbox.style}
+						/>
+					{option.icon && (
+						<span
+							className={optionIcon.className}
+							style={optionIcon.style}
+						>
+							{option.icon}
+						</span>
+					)}
+					<span className={cn(!matchTriggerWidth && s.truncate)}>
+						{option.label}
+					</span>
+				</CommandItem>
+			</React.Fragment>
+		);
+	};
+
 	return (
 		<PopoverPrimitive.Root
 			data-kala-component="multi-select"
@@ -248,19 +318,8 @@ function MultiSelect({
 			<div
 				data-kala-component="multi-select"
 				data-slot="multi-select"
-				className={applySlot(
-					cn(
-						"relative flex min-h-10 w-full items-center justify-between rounded-md border bg-background text-sm transition-colors kala-surface-input",
-						!disabled && "hover:bg-accent/50",
-							disabled && "cursor-not-allowed opacity-50",
-							className,
-					),
-					slotStyles?.root,
-				).className}
-				style={mergeStyle(
-					style,
-					applySlot(null, slotStyles?.root).style,
-				)}
+				className={root.className}
+				style={mergeStyle(style, root.style)}
 			>
 				<PopoverPrimitive.Trigger asChild>
 					<button
@@ -270,21 +329,31 @@ function MultiSelect({
 						aria-expanded={open}
 						aria-label={triggerLabel}
 						disabled={disabled}
-						className="absolute inset-0 z-0 rounded-md kala-focus-ring"
+						className={trigger.className}
+						style={trigger.style}
 					/>
 				</PopoverPrimitive.Trigger>
-				<div className="pointer-events-none relative z-10 flex flex-1 flex-wrap items-center gap-1 py-1.5 pl-3">
+				<div className={chipsContainer.className} style={chipsContainer.style}>
 					{selectedOptions.length === 0 ? (
-						<span className="text-muted-foreground">{placeholder}</span>
+						<span
+							className={placeholderSlot.className}
+							style={placeholderSlot.style}
+						>
+							{placeholder}
+						</span>
 					) : (
 						<>
 							{displayedOptions.map((option) => (
 								<span
 									key={option.value}
-									className="inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground"
+									className={chip.className}
+									style={chip.style}
 								>
 									{option.icon && (
-										<span className="mr-1 flex size-3 items-center">
+										<span
+											className={chipIcon.className}
+											style={chipIcon.style}
+										>
 											{option.icon}
 										</span>
 									)}
@@ -293,56 +362,66 @@ function MultiSelect({
 										<button
 											type="button"
 											onClick={(e) => handleRemove(option.value, e)}
-											className="kala-touch pointer-events-auto rounded-sm hover:bg-secondary-foreground/20"
+											className={chipRemove.className}
+											style={chipRemove.style}
 											aria-label={`Remove ${option.label}`}
 										>
-											<X className="size-3" aria-hidden="true" />
+											<X
+												className={chipRemoveIcon.className}
+												style={chipRemoveIcon.style}
+												aria-hidden="true"
+											/>
 										</button>
 									)}
 								</span>
 							))}
 							{remainingCount > 0 && (
-								<span className="inline-flex items-center rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
+								<span
+									className={overflowChip.className}
+									style={overflowChip.style}
+								>
 									+{remainingCount} more
 								</span>
 							)}
 						</>
 					)}
 				</div>
-				<div className="pointer-events-none relative z-10 flex items-center gap-1 py-1.5 pr-3">
+				<div className={controls.className} style={controls.style}>
 					{showClearAll && selected.length > 0 && !disabled && (
 						<button
 							type="button"
 							onClick={handleClearAll}
-							className="kala-touch pointer-events-auto mr-1 rounded-sm opacity-50 hover:opacity-100"
+							className={clearAll.className}
+							style={clearAll.style}
 							aria-label="Clear all"
 						>
-							<X className="size-4" aria-hidden="true" />
+							<X
+								className={clearAllIcon.className}
+								style={clearAllIcon.style}
+								aria-hidden="true"
+							/>
 						</button>
 					)}
 					<ChevronsUpDown
-						className="size-4 shrink-0 opacity-50"
+						className={chevron.className}
+						style={chevron.style}
 						aria-hidden="true"
 					/>
 				</div>
 			</div>
 			<PopoverPrimitive.Portal>
 				<PopoverPrimitive.Content
-					className="z-30 p-0"
-					align="start"
-					sideOffset={4}
-					style={
+					className={popoverContent.className}
+					style={mergeStyle(
 						matchTriggerWidth
 							? { width: "var(--radix-popover-trigger-width)" }
-							: undefined
-					}
+							: undefined,
+						popoverContent.style,
+					)}
+					align="start"
+					sideOffset={4}
 				>
-					<Command
-						className={cn(
-							"rounded-lg border bg-popover text-popover-foreground kala-surface-popover",
-							matchTriggerWidth ? "w-full" : "min-w-[200px]",
-						)}
-					>
+					<Command className={command.className} style={command.style}>
 						<CommandInput
 							placeholder={searchPlaceholder}
 							value={search}
@@ -351,10 +430,14 @@ function MultiSelect({
 						<CommandList>
 							<CommandEmpty>{emptyText}</CommandEmpty>
 							{showSelectAll && !maxSelected && (
-								<CommandGroup className="sticky top-0 z-10 bg-popover p-0 kala-surface-card">
+								<CommandGroup
+									className={groupHeader.className}
+									style={groupHeader.style}
+								>
 									<CommandItem
 										onSelect={handleSelectAll}
-										className="cursor-pointer rounded-none border-b py-2"
+										className={groupHeaderItem.className}
+										style={groupHeaderItem.style}
 									>
 										<Checkbox
 											checked={
@@ -363,8 +446,9 @@ function MultiSelect({
 													: isIndeterminate
 														? "indeterminate"
 														: false
-											}
-											className="mr-2 pointer-events-none"
+												}
+											className={checkbox.className}
+											style={checkbox.style}
 										/>
 										Select All
 									</CommandItem>
@@ -372,75 +456,13 @@ function MultiSelect({
 							)}
 							{noGroup.length > 0 && (
 								<CommandGroup>
-									{noGroup.map((option, index) => {
-										const isSelected = selected.includes(option.value);
-										const isDisabled =
-											option.disabled || (isMaxSelected && !isSelected);
-										return (
-											<React.Fragment key={option.value}>
-												{showSeparators && index > 0 && (
-													<Separator className="my-1" />
-												)}
-												<CommandItem
-													value={option.label}
-													disabled={isDisabled}
-													onSelect={() => handleSelect(option.value)}
-												>
-													<Checkbox
-														checked={isSelected}
-														className="mr-2 pointer-events-none"
-													/>
-													{option.icon && (
-														<span className="mr-2 flex size-4 items-center text-muted-foreground">
-															{option.icon}
-														</span>
-													)}
-													<span
-														className={cn(!matchTriggerWidth && "truncate")}
-													>
-														{option.label}
-													</span>
-												</CommandItem>
-											</React.Fragment>
-										);
-									})}
+							{noGroup.map(renderOption)}
 								</CommandGroup>
 							)}
 
 							{Object.entries(groups).map(([groupName, groupOptions]) => (
 								<CommandGroup key={groupName} heading={groupName}>
-									{groupOptions.map((option, index) => {
-										const isSelected = selected.includes(option.value);
-										const isDisabled =
-											option.disabled || (isMaxSelected && !isSelected);
-										return (
-											<React.Fragment key={option.value}>
-												{showSeparators && index > 0 && (
-													<Separator className="my-1" />
-												)}
-												<CommandItem
-													value={option.label}
-													disabled={isDisabled}
-													onSelect={() => handleSelect(option.value)}
-												>
-													<Checkbox
-														checked={isSelected}
-														className="mr-2 pointer-events-none"
-													/>
-													{option.icon && (
-														<span className="mr-2 flex size-4 items-center text-muted-foreground">
-															{option.icon}
-														</span>
-													)}
-													<span
-														className={cn(!matchTriggerWidth && "truncate")}
-													>
-														{option.label}
-													</span>
-												</CommandItem>
-											</React.Fragment>
-										);
-									})}
+							{groupOptions.map(renderOption)}
 								</CommandGroup>
 							))}
 						</CommandList>
