@@ -6,9 +6,9 @@
 import { useSlotStyles } from "@kala-ui/react/kala-provider";
 import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
-import { chartStyles } from "../../config/charts";
 import { lazy, Suspense } from "react";
 import type { Props } from "react-apexcharts";
+import { chartStyles } from "../../config/charts";
 import type { ChartSkeletonConfig } from "./chart.types";
 import { ChartSkeleton } from "./chart-skeleton";
 
@@ -114,23 +114,23 @@ export function Chart({
 
 	const root = applySlot(cn(chartStyles.root, className), slotStyles?.root);
 
-return (
-	<div
-		data-kala-component={_marker ?? "charts-chart"}
-		className={root.className}
-		style={root.style}
-	>
-		<Suspense
-			fallback={
-				skeleton ?? (
-					<ChartSkeleton {...(skeletonConfig || {})} className={className} />
-				)
-			}
+	return (
+		<div
+			data-kala-component={_marker ?? "charts-chart"}
+			className={root.className}
+			style={root.style}
 		>
-			<ReactApexChart {...chartProps} />
-		</Suspense>
-	</div>
-);
+			<Suspense
+				fallback={
+					skeleton ?? (
+						<ChartSkeleton {...(skeletonConfig || {})} className={className} />
+					)
+				}
+			>
+				<ReactApexChart {...chartProps} />
+			</Suspense>
+		</div>
+	);
 }
 
 export { ChartSkeleton } from "./chart-skeleton";

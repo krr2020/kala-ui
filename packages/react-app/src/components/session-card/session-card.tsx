@@ -3,8 +3,6 @@ import { Card, CardContent, CardHeader } from "@kala-ui/react/card";
 import { useSlotStyles } from "@kala-ui/react/kala-provider";
 import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
-import { sessionCardStyles } from "../../config/session-card";
-import type * as React from "react";
 import {
 	Clock,
 	HelpCircle,
@@ -14,8 +12,10 @@ import {
 	Tablet,
 	Wifi,
 } from "lucide-react";
-import { SessionCardSkeleton } from "./session-card-skeleton";
+import type * as React from "react";
+import { sessionCardStyles } from "../../config/session-card";
 import type { SessionCardProps, SessionData } from "./session-card.types";
+import { SessionCardSkeleton } from "./session-card-skeleton";
 
 function getDeviceIcon(device: string) {
 	const deviceLower = device.toLowerCase();
@@ -73,7 +73,10 @@ export function SessionCard({
 	...props
 }: SessionCardProps) {
 	const slotStyles = useSlotStyles("session-card", slotStylesRaw);
-	const root = applySlot(cn(sessionCardStyles.root, className), slotStyles?.root);
+	const root = applySlot(
+		cn(sessionCardStyles.root, className),
+		slotStyles?.root,
+	);
 
 	if (isLoading) {
 		if (skeleton) {
@@ -177,10 +180,7 @@ export function SessionCard({
 						</div>
 					</div>
 					{session.isCurrent ? (
-						<div
-							className={currentBadge.className}
-							style={currentBadge.style}
-						>
+						<div className={currentBadge.className} style={currentBadge.style}>
 							Current Session
 						</div>
 					) : (

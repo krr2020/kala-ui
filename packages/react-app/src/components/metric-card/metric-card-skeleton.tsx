@@ -10,6 +10,7 @@ import { cn } from "@kala-ui/react/lib/utils";
 import type { MetricCardSkeletonConfig } from "@kala-ui/react/skeleton";
 import { Skeleton, SkeletonCircle } from "@kala-ui/react/skeleton";
 import * as React from "react";
+import { metricCardSkeletonStyles } from "../../config/metric-card";
 
 export interface MetricCardSkeletonProps extends MetricCardSkeletonConfig {
 	/**
@@ -46,24 +47,27 @@ export function MetricCardSkeleton({
 			data-testid={dataTestId || "metric-card-skeleton"}
 			className={cn(className)}
 		>
-			<div className="p-6">
+			<div className={metricCardSkeletonStyles.body}>
 				{/* Header: title + optional icon */}
-				<div className="flex items-center justify-between mb-4">
-					<Skeleton className="h-4 w-24" />
+				<div className={metricCardSkeletonStyles.head}>
+					<Skeleton className={metricCardSkeletonStyles.title} />
 					{variant === "withIcon" || showIcon ? (
-						<SkeletonCircle size="1.5rem" className="rounded-md" />
+						<SkeletonCircle
+							size="1.5rem"
+							className={metricCardSkeletonStyles.icon}
+						/>
 					) : null}
 				</div>
 
 				{/* Value */}
-				<div className="mb-3">
-					<Skeleton className="h-10 w-32" />
+				<div className={metricCardSkeletonStyles.valueBlock}>
+					<Skeleton className={metricCardSkeletonStyles.value} />
 				</div>
 
 				{/* Change/subtitle */}
 				{(variant === "default" || showChange) && (
-					<div className="text-sm">
-						<Skeleton className="h-4 w-32" />
+					<div className={metricCardSkeletonStyles.meta}>
+						<Skeleton className={metricCardSkeletonStyles.metaLine} />
 					</div>
 				)}
 			</div>

@@ -51,10 +51,7 @@ export function Footer({
 		slotStyles?.copyright,
 	);
 	const socialList = applySlot(footerStyles.socialList, slotStyles?.socialList);
-	const socialLink = applySlot(
-		footerStyles.socialLink,
-		slotStyles?.socialLink,
-	);
+	const socialLink = applySlot(footerStyles.socialLink, slotStyles?.socialLink);
 
 	return (
 		<footer

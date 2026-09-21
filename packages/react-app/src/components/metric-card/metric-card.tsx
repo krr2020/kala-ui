@@ -1,30 +1,16 @@
+import { Card } from "@kala-ui/react/card";
 import { useSlotStyles } from "@kala-ui/react/kala-provider";
 import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
-import { metricCardStyles } from "../../config/metric-card";
-import type * as React from "react";
 import type { MetricCardSkeletonConfig } from "@kala-ui/react/skeleton";
-import { Card } from "@kala-ui/react/card";
-import { MetricCardSkeleton } from "./metric-card-skeleton";
+import type * as React from "react";
+import {
+	metricCardChangeColors,
+	metricCardColorStyles,
+	metricCardStyles,
+} from "../../config/metric-card";
 import type { MetricCardProps } from "./metric-card.types";
-
-const colorStyles: Record<string, string> = {
-	primary: "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground",
-	secondary:
-		"bg-gradient-to-br from-secondary to-secondary/90 text-secondary-foreground",
-	destructive:
-		"bg-gradient-to-br from-destructive to-destructive/90 text-destructive-foreground",
-	success: "bg-gradient-to-br from-success to-success/90 text-success-foreground",
-	warning: "bg-gradient-to-br from-warning to-warning/90 text-warning-foreground",
-	info: "bg-gradient-to-br from-info to-info/90 text-info-foreground",
-	muted: "bg-card border text-card-foreground",
-};
-
-const changeColors = {
-	up: "text-success",
-	down: "text-destructive",
-	flat: "text-muted-foreground",
-} as const;
+import { MetricCardSkeleton } from "./metric-card-skeleton";
 
 function MetricCard({
 	ref,
@@ -94,7 +80,7 @@ function MetricCard({
 	const isColorful = color !== "muted" || className?.includes("bg-");
 
 	const root = applySlot(
-		cn(colorStyles[color], className),
+		cn(metricCardColorStyles[color], className),
 		slotStyles?.root,
 	);
 	const body = applySlot(metricCardStyles.body, slotStyles?.body);

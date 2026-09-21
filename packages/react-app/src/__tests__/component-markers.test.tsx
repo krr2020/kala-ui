@@ -1,18 +1,18 @@
-import { render, screen } from "@testing-library/react";
 import { KalaProvider } from "@kala-ui/react";
 import type { SlotStyles } from "@kala-ui/react/lib/slot-styles";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { AppShell } from "../components/app-shell";
-import { Footer } from "../components/footer";
-import { SessionCard } from "../components/session-card";
-import { SocialLoginButtons } from "../components/social-login-button";
-import { DataTable } from "../components/data-table/data-table";
 import { LineChart } from "../components/charts/line-chart";
+import { DataTable } from "../components/data-table/data-table";
 import {
 	DragDropContext,
 	SortableContext,
 	SortableItem,
 } from "../components/dnd/dnd";
+import { Footer } from "../components/footer";
+import { SessionCard } from "../components/session-card";
+import { SocialLoginButtons } from "../components/social-login-button";
 
 const session = {
 	id: "1",
@@ -92,7 +92,11 @@ describe("react-app slotStyles contract", () => {
 	});
 
 	it("AppShell applies header/footer/main slot classes on part nodes", () => {
-		const slots: SlotStyles = { header: "ctx-h", footer: "ctx-f", main: "ctx-m" };
+		const slots: SlotStyles = {
+			header: "ctx-h",
+			footer: "ctx-f",
+			main: "ctx-m",
+		};
 		render(
 			<AppShell header={{ height: 64 }} footer={{ height: 48 }}>
 				<AppShell.Header slotStyles={{ header: "ctx-h" }}>h</AppShell.Header>
@@ -131,23 +135,23 @@ describe("react-app slotStyles contract", () => {
 		).toContain("ctx-chart");
 	});
 
-		it("dnd full part matrix: root/item/dragOverlay", () => {
-			render(
-				<div data-testid="dnd-host">
-					<DragDropContext>
-						<SortableContext items={["1"]}>
-							<SortableItem id="1" slotStyles={{ root: "d-item" }}>
-								<div>item one</div>
-							</SortableItem>
-						</SortableContext>
-					</DragDropContext>
-				</div>,
-			);
-			expect(
-				document.querySelector('[data-kala-component="dnd-sortable-item"]')
-					?.className,
-			).toContain("d-item");
-		});
+	it("dnd full part matrix: root/item/dragOverlay", () => {
+		render(
+			<div data-testid="dnd-host">
+				<DragDropContext>
+					<SortableContext items={["1"]}>
+						<SortableItem id="1" slotStyles={{ root: "d-item" }}>
+							<div>item one</div>
+						</SortableItem>
+					</SortableContext>
+				</DragDropContext>
+			</div>,
+		);
+		expect(
+			document.querySelector('[data-kala-component="dnd-sortable-item"]')
+				?.className,
+		).toContain("d-item");
+	});
 
 	it("KalaProvider context defaults flow into react-app composites", () => {
 		render(
@@ -155,7 +159,9 @@ describe("react-app slotStyles contract", () => {
 				defaultSlotStyles={{ "app-shell": { header: "ctx-class" } }}
 			>
 				<AppShell header={{ height: 64 }}>
-					<AppShell.Header slotStyles={{ header: "ctx-class" }}>h</AppShell.Header>
+					<AppShell.Header slotStyles={{ header: "ctx-class" }}>
+						h
+					</AppShell.Header>
 					<AppShell.Main>m</AppShell.Main>
 				</AppShell>
 			</KalaProvider>,

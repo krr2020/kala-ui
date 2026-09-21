@@ -6,7 +6,8 @@ export const appShellStyles = {
 	navbar:
 		"fixed left-0 z-40 flex flex-col bg-background transition-transform duration-300 ease-in-out",
 	navbarBorder: "border-r",
-	aside: "fixed right-0 z-40 flex flex-col bg-background transition-transform duration-300 ease-in-out",
+	aside:
+		"fixed right-0 z-40 flex flex-col bg-background transition-transform duration-300 ease-in-out",
 	asideBorder: "border-l",
 	main: "flex-1 transition-all duration-300 ease-in-out",
 	footer:

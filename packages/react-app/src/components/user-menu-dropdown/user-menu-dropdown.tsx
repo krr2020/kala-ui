@@ -13,8 +13,8 @@ import {
 import { useSlotStyles } from "@kala-ui/react/kala-provider";
 import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
-import { userMenuDropdownStyles } from "../../config/user-menu-dropdown";
 import { LogOut, Settings, User } from "lucide-react";
+import { userMenuDropdownStyles } from "../../config/user-menu-dropdown";
 import type { UserMenuDropdownProps } from "./user-menu-dropdown.types";
 
 export function UserMenuDropdown({

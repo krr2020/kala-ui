@@ -2,10 +2,10 @@ import { Button, type ButtonProps } from "@kala-ui/react/button";
 import { useSlotStyles } from "@kala-ui/react/kala-provider";
 import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
-import { socialLoginButtonStyles } from "../../config/social-login-button";
 import { Loader2 } from "lucide-react";
 import type { SimpleIcon } from "simple-icons";
 import { siFacebook, siGithub, siGoogle, siX } from "simple-icons";
+import { socialLoginButtonStyles } from "../../config/social-login-button";
 import type { SocialLoginButtonProps } from "./social-login-button.types";
 
 // Custom LinkedIn icon (removed from simple-icons due to Microsoft legal requirements)
@@ -113,7 +113,9 @@ export function SocialLoginButton({
 			{...props}
 		>
 			{isLoading ? (
-				<Loader2 className={cn(iconSlot.className, "animate-spin")} />
+				<Loader2
+				className={applySlot(socialLoginButtonStyles.spinner, slotStyles?.icon).className}
+			/>
 			) : provider === "linkedin" ? (
 				<LinkedInIcon className={iconSlot.className} />
 			) : icon ? (

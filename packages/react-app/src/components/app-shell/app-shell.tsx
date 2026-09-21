@@ -2,8 +2,8 @@ import { Box } from "@kala-ui/react/box";
 import { useSlotStyles } from "@kala-ui/react/kala-provider";
 import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
-import { appShellStyles } from "../../config/app-shell";
 import * as React from "react";
+import { appShellStyles } from "../../config/app-shell";
 import type {
 	AppShellAsideProps,
 	AppShellFooterProps,
@@ -84,7 +84,11 @@ function AppShellHeader({
 	if (!header) return null;
 
 	const part = applySlot(
-		cn(appShellStyles.header, withBorder && appShellStyles.headerBorder, className),
+		cn(
+			appShellStyles.header,
+			withBorder && appShellStyles.headerBorder,
+			className,
+		),
 		slotStyles?.header,
 	);
 
@@ -200,8 +204,7 @@ function AppShellMain({
 			// actually docked (breakpoint and up).
 			navbar &&
 				`${navbar.breakpoint ?? "md"}:pl-[var(--app-shell-navbar-width)]`,
-			aside &&
-				`${aside.breakpoint ?? "md"}:pr-[var(--app-shell-aside-width)]`,
+			aside && `${aside.breakpoint ?? "md"}:pr-[var(--app-shell-aside-width)]`,
 			className,
 		),
 		slotStyles?.main,
@@ -231,7 +234,11 @@ function AppShellFooter({
 	if (!footer) return null;
 
 	const part = applySlot(
-		cn(appShellStyles.footer, withBorder && appShellStyles.footerBorder, className),
+		cn(
+			appShellStyles.footer,
+			withBorder && appShellStyles.footerBorder,
+			className,
+		),
 		slotStyles?.footer,
 	);
 

@@ -3,8 +3,8 @@
  * Type definitions for ApexCharts-based chart components
  */
 
-import type { ApexOptions } from "apexcharts";
 import type { SlotStyles } from "@kala-ui/react/lib/slot-styles";
+import type { ApexOptions } from "apexcharts";
 
 /**
  * Base chart props shared across all chart types

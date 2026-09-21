@@ -1,5 +1,5 @@
-import { render } from "@testing-library/react";
 import { KalaProvider } from "@kala-ui/react";
+import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { LineChart } from "./line-chart";
 

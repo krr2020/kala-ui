@@ -1,6 +1,6 @@
-import { cn } from "@kala-ui/react/lib/utils";
 import { useSlotStyles } from "@kala-ui/react/kala-provider";
 import { applySlot } from "@kala-ui/react/lib/slot-styles";
+import { cn } from "@kala-ui/react/lib/utils";
 import type * as React from "react";
 import { socialLoginButtonsStyles } from "../../config/social-login-button";
 import { SocialLoginButton } from "./social-login-button";
@@ -23,7 +23,10 @@ export function SocialLoginButtons({
 		cn(socialLoginButtonsStyles.root, className),
 		slotStyles?.root,
 	);
-	const divider = applySlot(socialLoginButtonsStyles.divider, slotStyles?.divider);
+	const divider = applySlot(
+		socialLoginButtonsStyles.divider,
+		slotStyles?.divider,
+	);
 	const dividerLine = applySlot(
 		socialLoginButtonsStyles.dividerLine,
 		slotStyles?.dividerLine,

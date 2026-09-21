@@ -8,6 +8,7 @@
 import { cn } from "@kala-ui/react/lib/utils";
 import type { ApexOptions } from "apexcharts";
 import { useMemo } from "react";
+import { chartStyles } from "../../config/charts";
 import { Chart, getTooltipTheme } from "./chart";
 import type { LineChartProps } from "./chart.types";
 import { useThemeAwareChart } from "./use-theme-aware-chart";
@@ -189,7 +190,7 @@ export function LineChart({
 	return (
 		<Chart
 			data-kala-component="charts-line-chart"
-			className={cn("w-full", className)}
+			className={cn(chartStyles.root, className)}
 			slotStyles={slotStyles}
 			options={chartOptions}
 			series={series}
