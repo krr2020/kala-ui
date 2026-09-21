@@ -1774,13 +1774,16 @@ const styleTableEntries = [
 		part: "calendar.rootRtlNext",
 		tsx: "../components/calendar/calendar.tsx",
 		config: "../config/calendar.ts",
-		base: "rtl:**:[.rdp-button\\_next>svg]:rotate-180",
+		// Backslash-free pin: the value's `\_` escapes make byte-verbatim
+		// matching fragile across writers, so the key-prefixed prefix carries
+		// the uniqueness instead.
+		base: 'rootRtlNext: "rtl:**:[.rdp-button',
 	},
 	{
 		part: "calendar.rootRtlPrevious",
 		tsx: "../components/calendar/calendar.tsx",
 		config: "../config/calendar.ts",
-		base: "rtl:**:[.rdp-button\\_previous>svg]:rotate-180",
+		base: 'rootRtlPrevious: "rtl:**:[.rdp-button',
 	},
 	{
 		part: "calendar.innerRoot",
