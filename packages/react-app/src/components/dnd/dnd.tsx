@@ -55,6 +55,8 @@ import {
 import type { Transform } from "@dnd-kit/utilities";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@kala-ui/react/lib/utils";
+import { useSlotStyles } from "@kala-ui/react/kala-provider";
+import { applySlot, type SlotStyles } from "@kala-ui/react/lib/slot-styles";
 import { useMergedRef } from "@kala-ui/react-hooks";
 import * as React from "react";
 
@@ -333,6 +335,7 @@ export interface SortableItemProps {
 	className?: string;
 	disabled?: boolean;
 	handle?: boolean;
+	slotStyles?: SlotStyles;
 }
 
 // SortableHandle receives its parent SortableItem's dnd-kit wiring through
@@ -355,8 +358,11 @@ function SortableItem({
 	id,
 	disabled = false,
 	handle = false,
+	slotStyles: slotStylesRaw,
 	...props
 }: SortableItemProps) {
+	const slotStyles = useSlotStyles("dnd", slotStylesRaw);
+	const itemRoot = applySlot(cn(className), slotStyles?.root);
 	const {
 		attributes,
 		listeners,
@@ -400,7 +406,7 @@ function SortableItem({
 			<div
 				ref={useMergedRef(ref, setNodeRef)}
 				style={style}
-				className={cn(className)}
+				className={itemRoot.className}
 				{...attributes}
 				{...(handle ? {} : listeners)}
 				{...props}

@@ -35,10 +35,10 @@ const PORTED = new Set([
 	"metric-card",
 	"session-card",
 	"user-menu-dropdown",
-]);
-const PORT_QUEUE = [
 	"app-shell",
 	"charts",
+]);
+const PORT_QUEUE = [
 	"dnd",
 	"data-table",
 	"header",

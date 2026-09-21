@@ -20,9 +20,21 @@ pnpm --filter @kala-ui/react-app test:coverage
 - Most composites have a parallel `<name>-skeleton` for loading states — when adding one, add both test files.
 - `src/__tests__/a11y.test.tsx` — cross-component accessibility suite (AppShell, Header, Sidebar, DataTable, charts, cards, DnD); changing any composite's DOM/roles can break it.
 
+## Customization contract (item 14 port — IN PROGRESS)
+
+Every composite family is being ported onto the core customization contract:
+- `src/config/<family>.ts` holds the per-part base classes (re-exported from `src/config/index.ts`); component `.tsx` files carry JSX/logic only.
+- Every component accepts `slotStyles={{ root, <part> }}`, resolved via `useSlotStyles("<family>", slotStyles)` from `@kala-ui/react/kala-provider` — KalaProvider context defaults flow across the package boundary.
+- Roots carry `data-kala-component="<kebab-name>"`; families ship `<family>.types.ts` re-exported from their barrel.
+- Guards live in `src/__tests__/contract.integration.test.ts` (inline-Tailwind scan, 400-line cap, config+types presence) scoped to `PORTED`; `PORT_QUEUE` is shrink-only.
+
+**Ported:** social-login-button (incl. merged SocialLoginButtons), footer, metric-card, session-card, user-menu-dropdown, app-shell, charts (Chart core + line/area/bar/donut/radial wrappers), dnd (SortableItem).
+
+**PORT_QUEUE (port next, then delete the queue and flip guards to all-families):** header, sidebar, navigation, nav-link, data-table, sparkline-chart, dnd (remaining subcomponents).
+
 ## Rules
 
 - Import the core only via `@kala-ui/react/*` subpaths (boundary-enforced); never relative paths into `packages/react`.
 - Charts read CSS custom properties (token-driven theming) — token changes ripple into chart defaults; `theme-utils` / `use-theme-aware-chart` are the seam.
 - `@kala-ui/react` and `react-hooks` must be built before testing or type-checking this package (dist resolution).
-- New composite → stories + colocated tests + `index.ts` barrel + subpath export in `package.json`, mirroring the core package pattern.
+- New composite → stories + colocated tests + `index.ts` barrel + subpath export in `package.json`, mirroring the core package pattern — plus the contract rows above (config table, slotStyles, marker, types file).

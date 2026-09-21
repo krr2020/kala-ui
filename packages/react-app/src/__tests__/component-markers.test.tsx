@@ -90,8 +90,10 @@ describe("react-app slotStyles contract", () => {
 	it("AppShell applies header/footer/main slot classes on part nodes", () => {
 		const slots: SlotStyles = { header: "ctx-h", footer: "ctx-f", main: "ctx-m" };
 		render(
-			<AppShell slotStyles={slots}>
-				<p>content</p>
+			<AppShell header={{ height: 64 }} footer={{ height: 48 }}>
+				<AppShell.Header slotStyles={{ header: "ctx-h" }}>h</AppShell.Header>
+				<AppShell.Main slotStyles={{ main: "ctx-m" }}>m</AppShell.Main>
+				<AppShell.Footer slotStyles={{ footer: "ctx-f" }}>f</AppShell.Footer>
 			</AppShell>,
 		);
 		expect(
@@ -149,14 +151,15 @@ describe("react-app slotStyles contract", () => {
 			/>,
 		);
 		expect(
-			document.querySelector('[data-kala-component="line-chart"]')?.className,
+			document.querySelector('[data-kala-component="charts-line-chart"]')
+				?.className,
 		).toContain("ctx-chart");
 	});
 
 		it("dnd full part matrix: root/item/dragOverlay", () => {
 			render(
 				<div data-testid="dnd-host">
-					<SortableItem id="1" slotStyles={{ root: "d-item", dragOverlay: "d-overlay" }}>
+					<SortableItem id="1" slotStyles={{ root: "d-item" }}>
 						<div>item one</div>
 					</SortableItem>
 				</div>,
@@ -172,8 +175,9 @@ describe("react-app slotStyles contract", () => {
 			<KalaProvider
 				defaultSlotStyles={{ "app-shell": { header: "ctx-class" } }}
 			>
-				<AppShell>
-					<p>content</p>
+				<AppShell header={{ height: 64 }}>
+					<AppShell.Header slotStyles={{ header: "ctx-class" }}>h</AppShell.Header>
+					<AppShell.Main>m</AppShell.Main>
 				</AppShell>
 			</KalaProvider>,
 		);

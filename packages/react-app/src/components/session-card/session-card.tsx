@@ -92,7 +92,7 @@ export function SessionCard({
 		return (
 			<SessionCardSkeleton
 				data-kala-component="session-card"
-				className={className}
+				className={root.className}
 				{...skeletonConfig}
 			/>
 		);

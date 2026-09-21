@@ -19,6 +19,8 @@ export interface SessionCardSkeletonProps extends SessionCardSkeletonConfig {
 	 * Test ID for querying the element
 	 */
 	"data-testid"?: string;
+	[dataKala: `data-${string}`]: string | undefined;
+	style?: React.CSSProperties;
 }
 
 /**
@@ -36,12 +38,17 @@ export function SessionCardSkeleton({
 	showRevokeButton = true,
 	className,
 	"data-testid": dataTestId,
+	style,
+	...markerProps
 }: SessionCardSkeletonProps) {
 	return (
 		<Card
 			data-kala-component="session-card-skeleton"
 			data-testid={dataTestId || "session-card-skeleton"}
 			className={cn("relative", className)}
+			style={style}
+			{...(markerProps as Record<string, string>)
+			}
 		>
 			<CardHeader className="pb-3">
 				<div className="flex items-start justify-between gap-4">

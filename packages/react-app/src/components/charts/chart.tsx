@@ -52,6 +52,11 @@ export function Chart({
 	...props
 }: ChartProps) {
 	const slotStyles = useSlotStyles("charts", slotStylesRaw);
+	const { "data-kala-component": _marker, ...chartProps } = props as {
+		"data-kala-component"?: string;
+		[key: string]: unknown;
+	};
+	const markerProps = { "data-kala-component": _marker };
 
 	// Render skeleton if loading
 	if (isLoading) {
@@ -109,23 +114,23 @@ export function Chart({
 
 	const root = applySlot(cn(chartStyles.root, className), slotStyles?.root);
 
-	return (
-		<div
-			data-kala-component="charts-chart"
-			className={root.className}
-			style={root.style}
+return (
+	<div
+		data-kala-component={_marker ?? "charts-chart"}
+		className={root.className}
+		style={root.style}
+	>
+		<Suspense
+			fallback={
+				skeleton ?? (
+					<ChartSkeleton {...(skeletonConfig || {})} className={className} />
+				)
+			}
 		>
-			<Suspense
-				fallback={
-					skeleton ?? (
-						<ChartSkeleton {...(skeletonConfig || {})} className={className} />
-					)
-				}
-			>
-				<ReactApexChart {...props} />
-			</Suspense>
-		</div>
-	);
+			<ReactApexChart {...chartProps} />
+		</Suspense>
+	</div>
+);
 }
 
 export { ChartSkeleton } from "./chart-skeleton";
