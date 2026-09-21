@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 const read = (path: string) =>
@@ -42,11 +42,11 @@ describe("semantic vocabulary (item 8)", () => {
 	it("tag exposes the shape axis instead of hardcoding rounded-full", () => {
 		const tagConfig = read("../config/tag.ts");
 		expect(tagConfig).toMatch(/shape:\s*\{/);
-		expect(tagConfig).toMatch(/rounded:\s*"rounded-\[var\(--kala-radius-control\)\]"/);
-		expect(tagConfig).toMatch(/pill:\s*"rounded-full"/);
-		expect(tagConfig).not.toMatch(
-			/base:\s*"[^"]*rounded-full/,
+		expect(tagConfig).toMatch(
+			/rounded:\s*"rounded-\[var\(--kala-radius-control\)\]"/,
 		);
+		expect(tagConfig).toMatch(/pill:\s*"rounded-full"/);
+		expect(tagConfig).not.toMatch(/base:\s*"[^"]*rounded-full/);
 	});
 
 	it("badge exposes the size axis", () => {
@@ -57,12 +57,8 @@ describe("semantic vocabulary (item 8)", () => {
 	});
 
 	it("radio-group and native-select use hasError, never bare error props", () => {
-		const radioTypes = read(
-			"../components/radio-group/radio-group.types.ts",
-		);
-		const radioComponent = read(
-			"../components/radio-group/radio-group.tsx",
-		);
+		const radioTypes = read("../components/radio-group/radio-group.types.ts");
+		const radioComponent = read("../components/radio-group/radio-group.tsx");
 		const radioConfig = read("../config/radio-group.ts");
 		const nativeSelect = read("../components/select/native-select.tsx");
 		for (const src of [radioTypes, radioComponent, radioConfig, nativeSelect]) {
@@ -79,9 +75,7 @@ describe("semantic vocabulary (item 8)", () => {
 		expect(numberTypes).toContain(
 			"onValueChange?: (value: number | undefined) => void",
 		);
-		expect(numberTypes).not.toMatch(
-			/onChange\?:\s*\(value:\s*number/,
-		);
+		expect(numberTypes).not.toMatch(/onChange\?:\s*\(value:\s*number/);
 		const tagTypes = read("../components/tag-input/tag-input.types.ts");
 		expect(tagTypes).toContain("onValueChange?: (tags: string[]) => void");
 		expect(tagTypes).not.toMatch(/onChange\?:\s*\(tags:\s*string\[\]\)/);
@@ -128,15 +122,11 @@ describe("injected-content overrides (item 9)", () => {
 		const inputTypes = read("../components/input/input.types.ts");
 		expect(inputTypes).toContain("toggleAriaLabels?:");
 		expect(inputTypes).toContain("icons?:");
-		expect(read("../components/input/input.tsx")).toContain(
-			"toggleAriaLabels",
-		);
+		expect(read("../components/input/input.tsx")).toContain("toggleAriaLabels");
 	});
 
 	it("toast barrel exports the per-part type surface", () => {
-		expect(read("../components/toast/toast.types.ts")).toContain(
-			"ToastProps",
-		);
+		expect(read("../components/toast/toast.types.ts")).toContain("ToastProps");
 		expect(read("../components/toast/index.ts")).toContain(
 			"export type { ToastProps }",
 		);

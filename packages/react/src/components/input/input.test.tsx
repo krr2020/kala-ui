@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Eye, EyeOff, Mail, Search } from "lucide-react";
-import { inputStyles } from "../../config/input";
 import { describe, expect, it, vi } from "vitest";
+import { inputStyles } from "../../config/input";
 import { Button } from "../button";
 import { Input } from "./input";
 

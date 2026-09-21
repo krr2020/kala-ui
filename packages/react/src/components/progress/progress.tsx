@@ -5,6 +5,7 @@ import type * as React from "react";
 import { progressStyles } from "../../config/progress";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { ProgressBarProps, ProgressProps } from "./progress.types";
 
 type ProgressSize = "sm" | "md" | "lg";
@@ -19,7 +20,7 @@ function Progress({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	value = 0,
 	max = 100,
 	min = 0,
@@ -31,6 +32,7 @@ function Progress({
 	showValue = false,
 	...props
 }: ProgressProps) {
+	const slotStyles = useSlotStyles("progress", slotStylesRaw);
 	// Clamp value between min and max
 	const clampedValue = Math.min(Math.max(value ?? 0, min), max);
 	const percentage = ((clampedValue - min) / (max - min)) * 100;

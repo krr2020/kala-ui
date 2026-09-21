@@ -3,6 +3,7 @@
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type {
 	CollapsibleContentProps,
 	CollapsibleProps,
@@ -36,10 +37,11 @@ function CollapsibleTrigger({
 function CollapsibleContent({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	ref,
 	...props
 }: CollapsibleContentProps) {
+	const slotStyles = useSlotStyles("collapsible", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			"overflow-hidden data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up",

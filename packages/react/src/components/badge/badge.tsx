@@ -1,9 +1,9 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
-
 import { badgeStyles } from "../../config/badge";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { Skeleton } from "../skeleton";
 import type { BadgeProps } from "./badge.types";
 
@@ -16,7 +16,7 @@ const badgeVariants = cva(badgeStyles.base, {
 function Badge({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	variant,
 	color,
 	shape,
@@ -25,6 +25,7 @@ function Badge({
 	isLoading = false,
 	...props
 }: BadgeProps) {
+	const slotStyles = useSlotStyles("badge", slotStylesRaw, variant ?? undefined);
 	const root = applySlot(className, slotStyles?.root);
 	if (isLoading) {
 		return (

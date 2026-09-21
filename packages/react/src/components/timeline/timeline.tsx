@@ -3,6 +3,7 @@
 import * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { TimelineProps } from "./timeline.types";
 
 type TimelineStatus = "default" | "success" | "error" | "warning" | "pending";
@@ -88,11 +89,12 @@ function TimelineItem({
 function Timeline({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	children,
 	ref,
 	...props
 }: TimelineProps) {
+	const slotStyles = useSlotStyles("timeline", slotStylesRaw);
 	const items = React.Children.toArray(children);
 	const root = applySlot(cn("flex flex-col", className), slotStyles?.root);
 

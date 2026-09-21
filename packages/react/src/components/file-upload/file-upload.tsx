@@ -6,6 +6,7 @@ import { fileUploadStyles } from "../../config/file-upload";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
+import { useSlotStyles } from "../kala-provider";
 import type { FileUploadProps } from "./file-upload.types";
 
 export function FileUpload({
@@ -19,9 +20,10 @@ export function FileUpload({
 	onError,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: FileUploadProps) {
+	const slotStyles = useSlotStyles("file-upload", slotStylesRaw);
 	const [isDragging, setIsDragging] = React.useState(false);
 	const inputRef = React.useRef<HTMLInputElement>(null);
 	const errorId = React.useId();

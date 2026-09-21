@@ -1,17 +1,19 @@
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { CodeProps } from "./code.types";
 
 export function Code({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	block = false,
 	color,
 	children,
 	...props
 }: CodeProps) {
+	const slotStyles = useSlotStyles("code", slotStylesRaw);
 	const Comp = block ? "pre" : "code";
 
 	return (

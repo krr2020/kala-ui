@@ -1,6 +1,6 @@
+import type * as AvatarPrimitive from "@radix-ui/react-avatar";
 import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
-import type * as AvatarPrimitive from "@radix-ui/react-avatar";
 import type { SlotStyles } from "../../lib/slot-styles";
 import type {
 	avatarFallbackVariants,

@@ -4,7 +4,6 @@ import { useUncontrolled } from "@kala-ui/react-hooks";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
-
 import {
 	tabsContentStyles,
 	tabsListStyles,
@@ -12,6 +11,7 @@ import {
 } from "../../config/tabs";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { TabsProps } from "./tabs.types";
 
 const TabsContext = React.createContext<{
@@ -24,13 +24,14 @@ function Tabs({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	value,
 	onValueChange,
 	defaultValue,
 	orientation = "horizontal",
 	...props
 }: TabsProps) {
+	const slotStyles = useSlotStyles("tabs", slotStylesRaw);
 	const uniqueId = React.useId();
 	const [activeTab, setActiveTab] = useUncontrolled({
 		value,
@@ -77,12 +78,13 @@ function TabsList({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	variant = "default",
 	align,
 	...props
 }: React.ComponentProps<typeof TabsPrimitive.List> &
 	VariantProps<typeof tabsListVariants> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("tabs", slotStylesRaw);
 	const root = applySlot(
 		cn(tabsListVariants({ variant, align }), className),
 		slotStyles?.root,
@@ -111,12 +113,13 @@ function TabsTrigger({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	variant,
 	children,
 	...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger> &
 	VariantProps<typeof tabsTriggerVariants> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("tabs", slotStylesRaw, variant ?? undefined);
 	const { variant: listVariant } = React.useContext(TabsListContext);
 	const finalVariant = variant || listVariant || "default";
 	const root = applySlot(
@@ -143,11 +146,12 @@ function TabsContent({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<typeof TabsPrimitive.Content> & {
 	slotStyles?: SlotStyles;
 }) {
+	const slotStyles = useSlotStyles("tabs", slotStylesRaw);
 	const root = applySlot(
 		cn(tabsContentStyles.base, className),
 		slotStyles?.root,

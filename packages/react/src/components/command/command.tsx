@@ -6,15 +6,17 @@ import type * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Dialog, DialogContent, DialogTitle } from "../dialog";
+import { useSlotStyles } from "../kala-provider";
 import type { CommandDialogProps, CommandProps } from "./command.types";
 
 function Command({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: CommandProps) {
+	const slotStyles = useSlotStyles("command", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			"flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",

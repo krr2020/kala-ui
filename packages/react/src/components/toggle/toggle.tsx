@@ -4,6 +4,7 @@ import * as TogglePrimitive from "@radix-ui/react-toggle";
 import { cva } from "class-variance-authority";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { ToggleProps } from "./toggle.types";
 
 const toggleVariants = cva(
@@ -32,11 +33,12 @@ function Toggle({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	variant,
 	size,
 	...props
 }: ToggleProps) {
+	const slotStyles = useSlotStyles("toggle", slotStylesRaw, variant ?? undefined);
 	const root = applySlot(
 		cn(toggleVariants({ variant, size, className })),
 		slotStyles?.root,

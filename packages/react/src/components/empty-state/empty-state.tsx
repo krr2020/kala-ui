@@ -4,6 +4,7 @@ import { emptyStateStyles } from "../../config/empty-state";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
+import { useSlotStyles } from "../kala-provider";
 import type { EmptyStateProps } from "./empty-state.types";
 import { EmptyStateSkeleton } from "./empty-state-skeleton";
 
@@ -31,7 +32,7 @@ const emptyStateVariants = cva(
 function EmptyState({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	color,
 	size,
 	icon,
@@ -45,6 +46,7 @@ function EmptyState({
 	ref,
 	...props
 }: EmptyStateProps) {
+	const slotStyles = useSlotStyles("empty-state", slotStylesRaw);
 	const root = applySlot(
 		cn(emptyStateVariants({ color, size }), className),
 		slotStyles?.root,

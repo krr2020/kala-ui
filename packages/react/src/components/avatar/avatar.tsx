@@ -3,14 +3,14 @@
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { cva } from "class-variance-authority";
 import * as React from "react";
-
 import {
 	avatarFallbackStyles,
 	avatarImageStyles,
 	avatarStyles,
 } from "../../config/avatar";
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { SkeletonCircle } from "../skeleton/skeleton-patterns";
 import type {
 	AvatarFallbackProps,
@@ -51,9 +51,10 @@ function Avatar({
 	status,
 	isLoading,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: AvatarProps) {
+	const slotStyles = useSlotStyles("avatar", slotStylesRaw);
 	const root = applySlot(
 		cn(avatarVariants({ size, shape, status }), className),
 		slotStyles?.root,
@@ -112,11 +113,12 @@ export const avatarFallbackVariants = cva(avatarFallbackStyles.base, {
 function AvatarFallback({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	shape: shapeProp,
 	color,
 	...props
 }: AvatarFallbackProps) {
+	const slotStyles = useSlotStyles("avatar", slotStylesRaw);
 	const { shape: contextShape } = React.useContext(AvatarContext);
 	const shape = shapeProp || contextShape || "circle";
 	const root = applySlot(

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type {
 	SegmentedControlItem,
 	SegmentedControlProps,
@@ -12,7 +13,7 @@ export function SegmentedControl({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	data,
 	value: valueProp,
 	defaultValue,
@@ -24,6 +25,7 @@ export function SegmentedControl({
 	radius = "sm",
 	...props
 }: SegmentedControlProps) {
+	const slotStyles = useSlotStyles("segmented-control", slotStylesRaw);
 	const [internalValue, handleChange] = useUncontrolled<string>({
 		value: valueProp,
 		defaultValue:

@@ -1,6 +1,7 @@
 import type * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { PasswordStrengthIndicatorProps } from "./password-strength-indicator.types";
 
 const PASSWORD_MIN_LENGTH = 8;
@@ -49,10 +50,14 @@ export function PasswordStrengthIndicator({
 	password,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	ref,
 	...props
 }: PasswordStrengthIndicatorProps): React.ReactNode | null {
+	const slotStyles = useSlotStyles(
+		"password-strength-indicator",
+		slotStylesRaw,
+	);
 	if (!password) {
 		return null;
 	}

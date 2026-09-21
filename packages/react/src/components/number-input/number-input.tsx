@@ -2,10 +2,10 @@
 
 import { Minus, Plus } from "lucide-react";
 import * as React from "react";
-
 import { numberInputStyles } from "../../config/number-input";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { Skeleton } from "../skeleton/skeleton";
 import type { NumberInputProps } from "./number-input.types";
 
@@ -17,7 +17,7 @@ const NUMERIC_TEXT_PATTERN = /^[0-9.eE+-]*$/;
 function NumberInput({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	min,
 	max,
 	step = 1,
@@ -35,6 +35,7 @@ function NumberInput({
 	ref,
 	...props
 }: NumberInputProps) {
+	const slotStyles = useSlotStyles("number-input", slotStylesRaw);
 	const [internalValue, setInternalValue] = React.useState<number | "">(
 		defaultValue ?? "",
 	);
@@ -57,7 +58,7 @@ function NumberInput({
 		if (!isControlled) {
 			setInternalValue(newValue);
 		}
-			onValueChange?.(newValue === "" ? undefined : newValue);
+		onValueChange?.(newValue === "" ? undefined : newValue);
 	};
 
 	// 0.1 + 0.2 must be 0.3, not 0.30000000000000004: round the sum to the
@@ -144,7 +145,9 @@ function NumberInput({
 		cn(
 			numberInputStyles.root,
 			"focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-0",
-			size === "sm" ? "h-[var(--kala-control-h-sm)]" : "h-[var(--kala-control-h)]",
+			size === "sm"
+				? "h-[var(--kala-control-h-sm)]"
+				: "h-[var(--kala-control-h)]",
 			hasError && "border-destructive focus-within:kala-ring-destructive",
 			hasSuccess && "border-success",
 			disabled && "opacity-50 cursor-not-allowed",
@@ -160,7 +163,9 @@ function NumberInput({
 				data-kala-component="number-input"
 				className={cn(
 					"w-full rounded-[var(--kala-radius-input,var(--kala-radius-control))]",
-					size === "sm" ? "h-[var(--kala-control-h-sm)]" : "h-[var(--kala-control-h)]",
+					size === "sm"
+						? "h-[var(--kala-control-h-sm)]"
+						: "h-[var(--kala-control-h)]",
 					root.className,
 				)}
 				style={rootStyle}

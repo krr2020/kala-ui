@@ -1,9 +1,10 @@
 "use client";
 
 import { avatarGroupStyles } from "../../config/avatar-group";
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar/avatar";
+import { useSlotStyles } from "../kala-provider";
 import {
 	Tooltip,
 	TooltipContent,
@@ -19,10 +20,11 @@ function AvatarGroup({
 	showTooltip = true,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	ref,
 	...props
 }: AvatarGroupProps) {
+	const slotStyles = useSlotStyles("avatar-group", slotStylesRaw);
 	const visible = avatars.slice(0, max);
 	const overflow = avatars.length - max;
 

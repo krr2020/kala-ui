@@ -2,10 +2,10 @@
 
 import { useUncontrolled } from "@kala-ui/react-hooks";
 import * as React from "react";
-
-import { cn } from "../../lib/utils";
 import { timePickerStyles } from "../../config/time-picker";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { Skeleton } from "../skeleton/skeleton";
 import type { TimePickerProps, TimeValue } from "./time-picker.types";
 
@@ -121,8 +121,9 @@ function TimePicker({
 	isLoading = false,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 }: TimePickerProps) {
+	const slotStyles = useSlotStyles("time-picker", slotStylesRaw);
 	const [current, commit] = useUncontrolled<TimeValue>({
 		value,
 		defaultValue: defaultValue ?? { hours: 0, minutes: 0, seconds: 0 },

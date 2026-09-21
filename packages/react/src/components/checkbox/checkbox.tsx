@@ -2,21 +2,22 @@
 
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { Check, Minus } from "lucide-react";
-
 import { checkboxIndicatorStyles, checkboxStyles } from "../../config/checkbox";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { Skeleton } from "../skeleton";
 import type { CheckboxProps } from "./checkbox.types";
 
 function Checkbox({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	isLoading = false,
 	ref,
 	...props
 }: CheckboxProps & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("checkbox", slotStylesRaw);
 	if (isLoading) {
 		const skel = applySlot(cn("h-4 w-4 rounded", className), slotStyles?.root);
 		return (

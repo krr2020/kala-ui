@@ -2,9 +2,10 @@
 
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { cva } from "class-variance-authority";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { useSlotStyles } from "../kala-provider";
 import type { LabelProps } from "./label.types";
 
 const labelVariants = cva(
@@ -15,11 +16,12 @@ function Label({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	required,
 	children,
 	...props
 }: LabelProps & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("label", slotStylesRaw);
 	const root = applySlot(cn(labelVariants(), className), slotStyles?.root);
 	return (
 		<LabelPrimitive.Root

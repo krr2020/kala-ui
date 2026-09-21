@@ -6,6 +6,7 @@ import type * as React from "react";
 
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { MenubarProps } from "./menubar.types";
 
 function MenubarMenu({
@@ -20,7 +21,13 @@ function MenubarMenu({
 	);
 }
 
-function Menubar({ className, style, slotStyles, ...props }: MenubarProps) {
+function Menubar({
+	className,
+	style,
+	slotStyles: slotStylesRaw,
+	...props
+}: MenubarProps) {
+	const slotStyles = useSlotStyles("menubar", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			"flex h-10 items-center space-x-1 rounded-md border bg-background p-1 kala-surface-card",

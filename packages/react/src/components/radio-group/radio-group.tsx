@@ -11,8 +11,10 @@ import {
 	radioGroupLabelStyles,
 	radioGroupStyles,
 } from "../../config/radio-group";
+
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { Label } from "../label";
 
 export interface RadioGroupProps
@@ -68,11 +70,12 @@ function RadioGroup({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	variant = "default",
 	size = "md",
 	...props
 }: RadioGroupProps) {
+	const slotStyles = useSlotStyles("radio-group", slotStylesRaw);
 	const root = applySlot(
 		cn(radioGroupVariants({ variant }), className),
 		slotStyles?.root,
@@ -91,57 +94,58 @@ function RadioGroup({
 	);
 }
 
-	function RadioGroupItem({
-		ref,
-		className,
-		style,
-		slotStyles,
-		label,
-		description,
-		hasError,
-		id,
-		children,
-		...props
-	}: RadioGroupItemProps) {
-		const { variant = "default", size = "md" } =
-			React.useContext(RadioGroupContext);
-		const autoId = React.useId();
-		const itemId = id ?? autoId;
-		const hasContent = label || description || children;
+function RadioGroupItem({
+	ref,
+	className,
+	style,
+	slotStyles: slotStylesRaw,
+	label,
+	description,
+	hasError,
+	id,
+	children,
+	...props
+}: RadioGroupItemProps) {
+	const slotStyles = useSlotStyles("radio-group", slotStylesRaw);
+	const { variant = "default", size = "md" } =
+		React.useContext(RadioGroupContext);
+	const autoId = React.useId();
+	const itemId = id ?? autoId;
+	const hasContent = label || description || children;
 
-		const indicator = applySlot(
-			"flex items-center justify-center",
-			slotStyles?.indicator,
-		);
+	const indicator = applySlot(
+		"flex items-center justify-center",
+		slotStyles?.indicator,
+	);
 
-		const itemRoot = applySlot(
-			cn(
-				radioGroupItemVariants({
-					variant:
-						variant === "default" || variant === "cards" ? "default" : variant,
-					size,
-					hasError: hasError ? true : undefined,
-					}),
-				!hasContent && className,
-			),
-			hasContent ? undefined : slotStyles?.root,
-		);
+	const itemRoot = applySlot(
+		cn(
+			radioGroupItemVariants({
+				variant:
+					variant === "default" || variant === "cards" ? "default" : variant,
+				size,
+				hasError: hasError ? true : undefined,
+			}),
+			!hasContent && className,
+		),
+		hasContent ? undefined : slotStyles?.root,
+	);
 
-		const radioButton = (
-			<RadioGroupPrimitive.Item
-				ref={ref}
-				id={itemId}
-				data-kala-component="radio-group-item"
-				data-slot="radio-group-item"
-				className={itemRoot.className}
-				style={hasContent ? undefined : mergeStyle(style, itemRoot.style)}
-				{...props}
+	const radioButton = (
+		<RadioGroupPrimitive.Item
+			ref={ref}
+			id={itemId}
+			data-kala-component="radio-group-item"
+			data-slot="radio-group-item"
+			className={itemRoot.className}
+			style={hasContent ? undefined : mergeStyle(style, itemRoot.style)}
+			{...props}
 		>
-				<RadioGroupPrimitive.Indicator
-					data-slot="radio-group-indicator"
-					className={indicator.className}
-					style={indicator.style}
-				>
+			<RadioGroupPrimitive.Indicator
+				data-slot="radio-group-indicator"
+				className={indicator.className}
+				style={indicator.style}
+			>
 				<svg
 					width="8"
 					height="8"
@@ -199,21 +203,21 @@ function RadioGroup({
 	}
 
 	if (variant === "cards") {
-			const wrapper = applySlot(
-				cn(
-					radioGroupItemWrapperStyles.cards,
-					hasError && "border-destructive",
-					className,
-				),
-				slotStyles?.root,
-			);
-			return (
-				<label
-					data-kala-component="radio-group-item"
-					htmlFor={itemId}
-					className={wrapper.className}
-					style={mergeStyle(style, wrapper.style)}
-				>
+		const wrapper = applySlot(
+			cn(
+				radioGroupItemWrapperStyles.cards,
+				hasError && "border-destructive",
+				className,
+			),
+			slotStyles?.root,
+		);
+		return (
+			<label
+				data-kala-component="radio-group-item"
+				htmlFor={itemId}
+				className={wrapper.className}
+				style={mergeStyle(style, wrapper.style)}
+			>
 				<div className="flex items-start gap-3 w-full">
 					{radioButton}
 					{children || (
@@ -246,21 +250,21 @@ function RadioGroup({
 	}
 
 	if (variant === "buttons") {
-			const wrapper = applySlot(
-				cn(
-					radioGroupItemWrapperStyles.buttons,
-					hasError && "border-destructive",
-					className,
-				),
-				slotStyles?.root,
-			);
-			return (
-				<label
-					data-kala-component="radio-group-item"
-					htmlFor={itemId}
-					className={wrapper.className}
-					style={mergeStyle(style, wrapper.style)}
-				>
+		const wrapper = applySlot(
+			cn(
+				radioGroupItemWrapperStyles.buttons,
+				hasError && "border-destructive",
+				className,
+			),
+			slotStyles?.root,
+		);
+		return (
+			<label
+				data-kala-component="radio-group-item"
+				htmlFor={itemId}
+				className={wrapper.className}
+				style={mergeStyle(style, wrapper.style)}
+			>
 				<RadioGroupPrimitive.Item
 					ref={ref}
 					id={itemId}

@@ -2,20 +2,21 @@
 
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import type * as React from "react";
-
 import { scrollAreaStyles } from "../../config/scroll-area";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { ScrollAreaProps } from "./scroll-area.types";
 
 function ScrollArea({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	children,
 	...props
 }: ScrollAreaProps) {
+	const slotStyles = useSlotStyles("scroll-area", slotStylesRaw);
 	const root = applySlot(
 		cn("relative overflow-hidden", className),
 		slotStyles?.root,
@@ -47,10 +48,11 @@ function ScrollBar({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	orientation = "vertical",
 	...props
 }: ScrollBarProps) {
+	const slotStyles = useSlotStyles("scroll-area", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			scrollAreaStyles.scrollbar,

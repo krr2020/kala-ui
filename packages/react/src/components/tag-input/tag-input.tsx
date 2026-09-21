@@ -3,11 +3,12 @@
 import { useUncontrolled } from "@kala-ui/react-hooks";
 import { X } from "lucide-react";
 import * as React from "react";
+import { tagInputStyles } from "../../config/tag-input";
 
 import { applySlot } from "../../lib/slot-styles";
-import { tagInputStyles } from "../../config/tag-input";
 import { cn } from "../../lib/utils";
 import { Badge } from "../badge";
+import { useSlotStyles } from "../kala-provider";
 import type { TagInputProps } from "./tag-input.types";
 
 export function TagInput({
@@ -21,7 +22,7 @@ export function TagInput({
 	validateTag,
 	transformTag = (tag: string) => tag.trim(),
 	className,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	placeholder = "Type and press comma...",
 	disabled = false,
 	hasError = false,
@@ -30,6 +31,7 @@ export function TagInput({
 	onPaste,
 	...props
 }: TagInputProps) {
+	const slotStyles = useSlotStyles("tag-input", slotStylesRaw);
 	const [tags, setTags] = useUncontrolled<string[]>({
 		value,
 		defaultValue: defaultValue ?? [],

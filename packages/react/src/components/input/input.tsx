@@ -15,6 +15,7 @@ import * as React from "react";
 import { inputStyles } from "../../config/input";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { Skeleton } from "../skeleton";
 import type { InputProps } from "./input.types";
 
@@ -22,7 +23,7 @@ export function Input({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	type: typeProp = "text",
 	showPasswordToggle = false,
 	toggleAriaLabels,
@@ -34,6 +35,7 @@ export function Input({
 	isLoading = false,
 	...props
 }: InputProps) {
+	const slotStyles = useSlotStyles("input", slotStylesRaw);
 	const [showPassword, setShowPassword] = React.useState(false);
 	const [internalType, setInternalType] = React.useState(typeProp);
 

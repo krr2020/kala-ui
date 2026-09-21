@@ -1,17 +1,19 @@
 import { Slot } from "@radix-ui/react-slot";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { CenterProps } from "./center.types";
 
 function Center({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	inline = false,
 	asChild = false,
 	...props
 }: CenterProps) {
+	const slotStyles = useSlotStyles("center", slotStylesRaw);
 	const Comp = asChild ? Slot : "div";
 	const root = applySlot(
 		cn(

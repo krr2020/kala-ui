@@ -3,6 +3,7 @@ import * as React from "react";
 import { inputStyles } from "../../config/input";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
 import type { ColorInputProps } from "./color-input.types";
 
@@ -19,7 +20,7 @@ export function ColorInput({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	value: valueProp,
 	defaultValue,
 	onValueChange,
@@ -29,6 +30,7 @@ export function ColorInput({
 	disabled,
 	...props
 }: ColorInputProps) {
+	const slotStyles = useSlotStyles("color-input", slotStylesRaw);
 	const [internalValue, setInternalValue] = useUncontrolled<string>({
 		value: valueProp,
 		defaultValue: defaultValue ?? "",

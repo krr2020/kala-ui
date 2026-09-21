@@ -6,6 +6,7 @@ import * as React from "react";
 import { applySlot } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Button } from "../button/button";
+import { useSlotStyles } from "../kala-provider";
 import type { CopyButtonProps } from "./copy-button.types";
 
 function CopyButton({
@@ -16,10 +17,11 @@ function CopyButton({
 	className,
 	size = "icon",
 	variant = "ghost",
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	"aria-label": ariaLabel = "Copy to clipboard",
 	...props
 }: CopyButtonProps) {
+	const slotStyles = useSlotStyles("copy-button", slotStylesRaw);
 	const { copied, copy } = useClipboard({ timeout });
 
 	const handleCopy = React.useCallback(() => {

@@ -48,6 +48,7 @@ export * from "./components/indicator";
 export * from "./components/input";
 export * from "./components/input-group";
 export * from "./components/input-otp";
+export * from "./components/kala-provider";
 export * from "./components/kbd";
 export * from "./components/label";
 export * from "./components/list";

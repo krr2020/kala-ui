@@ -16,6 +16,7 @@ import {
 	CommandList,
 	CommandSeparator,
 } from "../command";
+import { useSlotStyles } from "../kala-provider";
 import { Text } from "../text";
 import type { ComboboxProps } from "./combobox.types";
 
@@ -39,8 +40,9 @@ function Combobox({
 	separateOptions = false,
 	"aria-label": ariaLabel,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 }: ComboboxProps) {
+	const slotStyles = useSlotStyles("combobox", slotStylesRaw);
 	const [open, { set: setOpen }] = useDisclosure(false);
 	const [internalValue, setInternalValue] = useUncontrolled<string>({
 		value,

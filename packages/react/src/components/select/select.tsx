@@ -3,7 +3,6 @@
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import type * as React from "react";
-
 import {
 	selectChevronStyles,
 	selectContentStyles,
@@ -16,6 +15,7 @@ import {
 } from "../../config/select";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { Skeleton } from "../skeleton";
 import type {
 	SelectContentProps,
@@ -63,12 +63,13 @@ function SelectTrigger({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	size = "md",
 	isLoading = false,
 	children,
 	...props
 }: SelectTriggerProps) {
+	const slotStyles = useSlotStyles("select", slotStylesRaw);
 	const root = applySlot(
 		cn(selectTriggerClasses({ size }), className),
 		slotStyles?.root ?? null,
@@ -146,13 +147,14 @@ function SelectContent({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	children,
 	position = "popper",
 	align = "center",
 	matchTriggerWidth = false,
 	...props
 }: SelectContentProps) {
+	const slotStyles = useSlotStyles("select", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			selectContentStyles.base,
@@ -208,10 +210,11 @@ function SelectItem({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	children,
 	...props
 }: SelectItemProps) {
+	const slotStyles = useSlotStyles("select", slotStylesRaw);
 	const root = applySlot(
 		cn(selectItemStyles.base, className),
 		slotStyles?.root,

@@ -8,16 +8,18 @@
 import type * as React from "react";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { InputGroupProps } from "./input-group.types";
 
 function InputGroup({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	children,
 	...props
 }: InputGroupProps) {
+	const slotStyles = useSlotStyles("input-group", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			"flex w-full items-stretch",
@@ -51,9 +53,10 @@ function InputGroupText({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("input-group", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			"flex items-center justify-center whitespace-nowrap rounded-md border bg-muted px-3 text-sm text-muted-foreground kala-surface-card",

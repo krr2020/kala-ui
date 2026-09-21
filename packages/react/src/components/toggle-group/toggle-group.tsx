@@ -5,6 +5,7 @@ import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { toggleVariants } from "../toggle/toggle";
 import type { ToggleGroupProps } from "./toggle-group.types";
 
@@ -18,13 +19,14 @@ const ToggleGroupContext = React.createContext<
 function ToggleGroup({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	variant,
 	size,
 	children,
 	ref,
 	...props
 }: ToggleGroupProps) {
+	const slotStyles = useSlotStyles("toggle-group", slotStylesRaw, variant ?? undefined);
 	return (
 		<ToggleGroupContext.Provider value={{ variant, size }}>
 			<ToggleGroupPrimitive.Root

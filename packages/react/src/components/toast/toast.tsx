@@ -1,6 +1,7 @@
 import { Toaster as Sonner } from "sonner";
 import { toastStyles } from "../../config/toast";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { useSlotStyles } from "../kala-provider";
 import { type ResolvedTheme, useOptionalTheme } from "../theme-provider";
 import type { ToastProps } from "./toast.types";
 
@@ -33,7 +34,8 @@ function useOptionalResolvedTheme(): ResolvedTheme | null {
 	return useOptionalTheme()?.resolvedTheme ?? null;
 }
 
-const Toast = ({ theme, slotStyles, ...props }: ToastProps) => {
+const Toast = ({ theme, slotStyles: slotStylesRaw, ...props }: ToastProps) => {
+	const slotStyles = useSlotStyles("toast", slotStylesRaw);
 	// Sonner paints its own light/dark surfaces from data-sonner-theme, so it
 	// must be told which kala-ui theme is active or toasts stay light while the
 	// app goes dark. resolvedTheme is concrete from the provider's first render

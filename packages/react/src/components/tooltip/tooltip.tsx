@@ -4,6 +4,7 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { tooltipStyles } from "../../config/tooltip";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type {
 	TooltipContentProps,
 	TooltipProps,
@@ -38,11 +39,12 @@ function TooltipTrigger({ ...props }: TooltipTriggerProps) {
 function TooltipContent({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	sideOffset = 4,
 	children,
 	...props
 }: TooltipContentProps) {
+	const slotStyles = useSlotStyles("tooltip", slotStylesRaw);
 	const root = applySlot(tooltipStyles.content, slotStyles?.root ?? null);
 	const arrow = applySlot(tooltipStyles.arrow, slotStyles?.arrow);
 	return (

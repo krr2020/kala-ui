@@ -1,5 +1,6 @@
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { Spinner } from "../spinner";
 import type { SectionLoaderProps } from "./loading.types";
 
@@ -14,9 +15,10 @@ function SectionLoader({
 	message = "Loading...",
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	minHeight = "200px",
 }: SectionLoaderProps) {
+	const slotStyles = useSlotStyles("loading", slotStylesRaw);
 	const root = applySlot(
 		cn("flex flex-col items-center justify-center gap-3 py-8", className),
 		slotStyles?.root,

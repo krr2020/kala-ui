@@ -1,9 +1,10 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
 import type * as React from "react";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 import { cn } from "../../lib/utils";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { useSlotStyles } from "../kala-provider";
 
 const spinnerVariants = cva("animate-spin", {
 	variants: {
@@ -28,22 +29,23 @@ const spinnerVariants = cva("animate-spin", {
 });
 
 export interface SpinnerProps
-		extends React.ComponentProps<"svg">,
+	extends React.ComponentProps<"svg">,
 		VariantProps<typeof spinnerVariants> {
-		label?: string;
-		slotStyles?: SlotStyles;
-	}
+	label?: string;
+	slotStyles?: SlotStyles;
+}
 
 function Spinner({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	size,
 	variant,
 	label = "Loading...",
 	...props
 }: SpinnerProps) {
+	const slotStyles = useSlotStyles("spinner", slotStylesRaw, variant ?? undefined);
 	const root = applySlot(
 		cn("inline-flex items-center justify-center", className),
 		slotStyles?.root,

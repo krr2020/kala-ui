@@ -1,17 +1,19 @@
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { Skeleton } from "../skeleton";
 import type { TextareaProps } from "./textarea.types";
 
 function Textarea({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	isLoading = false,
 	rows,
 	ref,
 	...props
 }: TextareaProps & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("textarea", slotStylesRaw);
 	if (isLoading) {
 		const skel = applySlot(
 			cn("min-h-[80px] w-full rounded-md", className),

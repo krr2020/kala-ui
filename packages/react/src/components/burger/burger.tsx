@@ -1,16 +1,18 @@
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { BurgerProps } from "./burger.types";
 
 export function Burger({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	opened,
 	size = "md",
 	...props
 }: BurgerProps) {
+	const slotStyles = useSlotStyles("burger", slotStylesRaw);
 	const sizeClasses = {
 		xs: "h-3 w-4",
 		sm: "h-4 w-5",

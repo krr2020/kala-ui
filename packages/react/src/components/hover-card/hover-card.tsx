@@ -4,6 +4,7 @@ import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 import type * as React from "react";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { HoverCardProps } from "./hover-card.types";
 
 function HoverCard({
@@ -37,13 +38,14 @@ function HoverCardTrigger({
 function HoverCardContent({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	align = "center",
 	sideOffset = 4,
 	...props
 }: React.ComponentProps<typeof HoverCardPrimitive.Content> & {
 	slotStyles?: SlotStyles;
 }) {
+	const slotStyles = useSlotStyles("hover-card", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			"z-30 w-64 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none kala-surface-popover",

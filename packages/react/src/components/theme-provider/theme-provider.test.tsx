@@ -1,8 +1,8 @@
 import { act, render, renderHook, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { THEMES, ThemeProvider, useTheme } from "./theme-provider";
-import { createThemeScript } from "./index";
 import type { ThemeRegistration } from "./index";
+import { createThemeScript } from "./index";
+import { THEMES, ThemeProvider, useTheme } from "./theme-provider";
 
 const ALL_THEME_CLASSES = [
 	"dark",

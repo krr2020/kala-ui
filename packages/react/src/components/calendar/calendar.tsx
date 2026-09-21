@@ -5,6 +5,7 @@ import {
 	ChevronLeftIcon,
 	ChevronRightIcon,
 } from "lucide-react";
+
 import * as React from "react";
 import {
 	type DayButton,
@@ -13,9 +14,10 @@ import {
 } from "react-day-picker";
 
 import { calendarStyles } from "../../config/calendar";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { type SlotStyles, applySlot, mergeStyle } from "../../lib/slot-styles";
 import { Button, buttonVariants } from "../button";
+import { useSlotStyles } from "../kala-provider";
 import { CalendarSkeleton } from "./calendar-skeleton";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
@@ -38,12 +40,16 @@ function Calendar({
 	skeletonConfig,
 	skeleton,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: CalendarProps) {
+	const slotStyles = useSlotStyles("calendar", slotStylesRaw);
 	if (isLoading) {
 		if (skeleton) {
-			const root = applySlot(cn(calendarStyles.skeleton, className), slotStyles?.root);
+			const root = applySlot(
+				cn(calendarStyles.skeleton, className),
+				slotStyles?.root,
+			);
 			return (
 				<div
 					data-kala-component="calendar"
@@ -67,12 +73,7 @@ function Calendar({
 	const c = calendarStyles;
 	const defaultClassNames = getDefaultClassNames();
 	const root = applySlot(
-		cn(
-			c.root,
-			c.rootRtlNext,
-			c.rootRtlPrevious,
-			className,
-		),
+		cn(c.root, c.rootRtlNext, c.rootRtlPrevious, className),
 		slotStyles?.root,
 	);
 
@@ -109,7 +110,9 @@ function Calendar({
 				dropdown: cn(c.dropdown, defaultClassNames.dropdown),
 				caption_label: cn(
 					c.caption_label,
-					captionLayout === "label" ? c.captionLabelLabel : c.captionLabelDropdown,
+					captionLayout === "label"
+						? c.captionLabelLabel
+						: c.captionLabelDropdown,
 					defaultClassNames.caption_label,
 				),
 				month_grid: cn(c.month_grid, defaultClassNames.month_grid),
@@ -149,13 +152,19 @@ function Calendar({
 				Chevron: ({ className, orientation, ...props }) => {
 					if (orientation === "left") {
 						return (
-							<ChevronLeftIcon className={cn(c.chevron, className)} {...props} />
+							<ChevronLeftIcon
+								className={cn(c.chevron, className)}
+								{...props}
+							/>
 						);
 					}
 
 					if (orientation === "right") {
 						return (
-							<ChevronRightIcon className={cn(c.chevron, className)} {...props} />
+							<ChevronRightIcon
+								className={cn(c.chevron, className)}
+								{...props}
+							/>
 						);
 					}
 
@@ -208,11 +217,7 @@ function CalendarDayButton({
 			data-range-start={modifiers.range_start}
 			data-range-end={modifiers.range_end}
 			data-range-middle={modifiers.range_middle}
-			className={cn(
-				calendarStyles.dayButton,
-				defaultClassNames.day,
-				className,
-			)}
+			className={cn(calendarStyles.dayButton, defaultClassNames.day, className)}
 			{...props}
 		/>
 	);

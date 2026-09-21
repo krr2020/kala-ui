@@ -3,9 +3,9 @@
 import { useUncontrolled } from "@kala-ui/react-hooks";
 import { Star } from "lucide-react";
 import * as React from "react";
-
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { RatingProps } from "./rating.types";
 
 const sizeMap = {
@@ -54,11 +54,12 @@ function Rating({
 	size = "md",
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	"aria-label": ariaLabel = "Rating",
 	ref,
 	...props
 }: RatingProps) {
+	const slotStyles = useSlotStyles("rating", slotStylesRaw);
 	const [currentValue, commit] = useUncontrolled<number>({
 		value,
 		defaultValue,

@@ -1,10 +1,10 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-
 import { nativeSelectStyles } from "../../config/select";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type {
 	NativeSelectOptGroupProps,
 	NativeSelectOptionProps,
@@ -15,7 +15,7 @@ function NativeSelect({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	size = "md",
 	hasError,
 	hasSuccess,
@@ -23,6 +23,7 @@ function NativeSelect({
 	disabled,
 	...props
 }: NativeSelectProps) {
+	const slotStyles = useSlotStyles("select", slotStylesRaw);
 	const root = applySlot(nativeSelectStyles.root, slotStyles?.root);
 	const select = applySlot(
 		cn(

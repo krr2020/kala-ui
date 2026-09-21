@@ -3,11 +3,6 @@ export {
 	avatarImageStyles,
 	avatarStyles,
 } from "../../config/avatar";
-export type {
-	AvatarFallbackProps,
-	AvatarImageProps,
-	AvatarProps,
-} from "./avatar.types";
 export {
 	Avatar,
 	AvatarFallback,
@@ -16,3 +11,8 @@ export {
 	avatarImageVariants,
 	avatarVariants,
 } from "./avatar";
+export type {
+	AvatarFallbackProps,
+	AvatarImageProps,
+	AvatarProps,
+} from "./avatar.types";

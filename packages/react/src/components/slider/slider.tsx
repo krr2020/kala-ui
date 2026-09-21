@@ -1,11 +1,7 @@
 import * as SliderPrimitive from "@radix-ui/react-slider";
-
-import {
-	applySlot,
-	mergeStyle,
-	type SlotStyles,
-} from "../../lib/slot-styles";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { Skeleton } from "../skeleton";
 import type { SliderProps } from "./slider.types";
 
@@ -13,7 +9,7 @@ function Slider({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	defaultValue,
 	value,
 	isLoading = false,
@@ -21,6 +17,7 @@ function Slider({
 	"aria-labelledby": ariaLabelledBy,
 	...props
 }: SliderProps & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("slider", slotStylesRaw);
 	// Show loading skeleton
 	if (isLoading) {
 		const skel = applySlot(
@@ -70,10 +67,7 @@ function Slider({
 			{...(value !== undefined && { value })}
 			{...props}
 		>
-			<SliderPrimitive.Track
-				className={track.className}
-				style={track.style}
-			>
+			<SliderPrimitive.Track className={track.className} style={track.style}>
 				<SliderPrimitive.Range
 					className={range.className}
 					style={range.style}

@@ -7,6 +7,7 @@ import { dialogStyles } from "../../config/dialog";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
+import { useSlotStyles } from "../kala-provider";
 import { Text } from "../text";
 import type { DialogContentProps } from "./dialog.types";
 
@@ -55,11 +56,12 @@ function DialogClose({
 function DialogOverlay({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Overlay> & {
 	slotStyles?: SlotStyles;
 }) {
+	const slotStyles = useSlotStyles("dialog", slotStylesRaw);
 	const root = applySlot(dialogStyles.overlay, slotStyles?.root ?? null);
 	return (
 		<DialogPrimitive.Overlay
@@ -75,13 +77,14 @@ function DialogOverlay({
 function DialogContent({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	children,
 	showCloseButton = true,
 	size = "md",
 	closeLabel = "Close",
 	...props
 }: DialogContentProps) {
+	const slotStyles = useSlotStyles("dialog", slotStylesRaw);
 	const root = applySlot(
 		cn(dialogStyles.content, dialogStyles.sizes[size], className),
 		slotStyles?.root,
@@ -127,7 +130,7 @@ function DialogContent({
 function DialogHeader({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	fixed = true,
 	...props
 }: React.ComponentProps<"div"> & {
@@ -136,6 +139,7 @@ function DialogHeader({
 	/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
 	slotStyles?: SlotStyles;
 }) {
+	const slotStyles = useSlotStyles("dialog", slotStylesRaw);
 	const root = applySlot(
 		cn(dialogStyles.header, fixed && "shrink-0", className),
 		slotStyles?.root,
@@ -154,7 +158,7 @@ function DialogHeader({
 function DialogFooter({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	fixed = false,
 	...props
 }: React.ComponentProps<"div"> & {
@@ -163,6 +167,7 @@ function DialogFooter({
 	/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
 	slotStyles?: SlotStyles;
 }) {
+	const slotStyles = useSlotStyles("dialog", slotStylesRaw);
 	const root = applySlot(
 		cn(dialogStyles.footer, fixed && "shrink-0", className),
 		slotStyles?.root,
@@ -181,7 +186,7 @@ function DialogFooter({
 function DialogTitle({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	translationKey,
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Title> & {
@@ -190,6 +195,7 @@ function DialogTitle({
 	/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
 	slotStyles?: SlotStyles;
 }) {
+	const slotStyles = useSlotStyles("dialog", slotStylesRaw);
 	const root = applySlot(cn(dialogStyles.title, className), slotStyles?.root);
 	return (
 		<DialogPrimitive.Title
@@ -205,7 +211,7 @@ function DialogTitle({
 function DialogDescription({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	descriptionKey,
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Description> & {
@@ -214,6 +220,7 @@ function DialogDescription({
 	/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
 	slotStyles?: SlotStyles;
 }) {
+	const slotStyles = useSlotStyles("dialog", slotStylesRaw);
 	const root = applySlot(
 		cn(dialogStyles.description, className),
 		slotStyles?.root,
@@ -231,9 +238,10 @@ function DialogDescription({
 function DialogBody({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("dialog", slotStylesRaw);
 	const root = applySlot(cn(dialogStyles.body, className), slotStyles?.root);
 	return (
 		<Box

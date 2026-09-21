@@ -5,8 +5,9 @@
  */
 
 import type * as React from "react";
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 
 export interface SkipToContentProps {
 	/** ID of the main content element to skip to */
@@ -24,8 +25,9 @@ export function SkipToContent({
 	text = "Skip to main content",
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 }: SkipToContentProps) {
+	const slotStyles = useSlotStyles("skip-to-content", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			// Screen reader only by default
@@ -52,4 +54,3 @@ export function SkipToContent({
 		</a>
 	);
 }
-

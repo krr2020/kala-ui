@@ -1,10 +1,10 @@
 "use client";
 
 import * as ResizablePrimitive from "react-resizable-panels";
-
 import { resizableStyles } from "../../config/resizable";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type {
 	ResizableHandleProps,
 	ResizablePanelGroupProps,
@@ -14,10 +14,11 @@ import type {
 const ResizablePanelGroup = ({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	orientation = "horizontal",
 	...props
 }: ResizablePanelGroupProps) => {
+	const slotStyles = useSlotStyles("resizable", slotStylesRaw);
 	const root = applySlot(
 		cn("group flex h-full w-full", className),
 		slotStyles?.root,
@@ -38,9 +39,10 @@ const ResizablePanelGroup = ({
 const ResizablePanel = ({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: ResizablePanelProps) => {
+	const slotStyles = useSlotStyles("resizable", slotStylesRaw);
 	const root = applySlot(cn("relative", className), slotStyles?.root);
 	return (
 		<ResizablePrimitive.Panel
@@ -57,9 +59,10 @@ const ResizableHandle = ({
 	withHandle,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: ResizableHandleProps) => {
+	const slotStyles = useSlotStyles("resizable", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			"bg-separator relative flex items-center justify-center kala-focus-ring",

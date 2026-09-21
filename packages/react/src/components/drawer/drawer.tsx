@@ -4,6 +4,7 @@ import * as React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { DrawerContentProps } from "./drawer.types";
 
 const DrawerContext = React.createContext<{
@@ -94,11 +95,12 @@ const SIZE_HEIGHT_CLASSES: Record<
 function DrawerContent({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	children,
 	size = "md",
 	...props
 }: DrawerContentProps) {
+	const slotStyles = useSlotStyles("drawer", slotStylesRaw);
 	const { direction } = React.useContext(DrawerContext);
 	const isHorizontal = direction === "left" || direction === "right";
 	const sizeClass = isHorizontal

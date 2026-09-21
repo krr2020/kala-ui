@@ -6,6 +6,7 @@ import { X } from "lucide-react";
 import { tagStyles } from "../../config/tag";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { TagProps } from "./tag.types";
 
 export const tagClasses = cva(tagStyles.base, {
@@ -17,7 +18,7 @@ export const tagClasses = cva(tagStyles.base, {
 function Tag({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	variant,
 	color,
 	size,
@@ -29,6 +30,7 @@ function Tag({
 	children,
 	...props
 }: TagProps) {
+	const slotStyles = useSlotStyles("tag", slotStylesRaw, variant ?? undefined);
 	const root = applySlot(
 		cn(tagClasses({ variant, color, size, shape }), className),
 		slotStyles?.root,

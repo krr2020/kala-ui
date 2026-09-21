@@ -8,6 +8,7 @@ import { cva } from "class-variance-authority";
 import { buttonStyles } from "../../config/button";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { ButtonProps } from "./button.types";
 
 const buttonVariants = cva(buttonStyles.base, {
@@ -16,54 +17,55 @@ const buttonVariants = cva(buttonStyles.base, {
 	defaultVariants: buttonStyles.defaultVariants,
 });
 
-	export function Button({
-		ref,
-		className,
-		style,
-		slotStyles,
-		variant,
-		color,
-		size,
-		fullWidth,
-		rounded,
-		isLoading,
-		asChild = false,
-		children,
-		disabled,
-		...props
-	}: ButtonProps) {
-		const Comp = asChild ? Slot : "button";
-		const effectiveDisabled = isLoading || disabled;
-		const root = applySlot(
-			cn(
-				buttonVariants({
-					variant,
-					color,
-					size,
-					fullWidth,
-					rounded,
-					className,
-				}),
-				// asChild renders arbitrary elements (e.g. <a>) where the
-					// `disabled` attribute is invalid — fall back to ARIA + CSS
-				asChild &&
-					effectiveDisabled &&
-					"pointer-events-none aria-disabled:opacity-50 aria-disabled:cursor-not-allowed",
-			),
-			slotStyles?.root,
-		);
-		const spinner = applySlot(buttonStyles.spinner, slotStyles?.spinner);
-		return (
-			<Comp
-				data-kala-component="button"
-				className={root.className}
-				style={mergeStyle(style, root.style)}
-				ref={ref}
-				disabled={asChild ? undefined : effectiveDisabled}
-				aria-disabled={asChild ? effectiveDisabled || undefined : undefined}
-				aria-busy={isLoading || undefined}
-				{...props}
-			>
+export function Button({
+	ref,
+	className,
+	style,
+	slotStyles: slotStylesRaw,
+	variant,
+	color,
+	size,
+	fullWidth,
+	rounded,
+	isLoading,
+	asChild = false,
+	children,
+	disabled,
+	...props
+}: ButtonProps) {
+	const slotStyles = useSlotStyles("button", slotStylesRaw, variant ?? undefined);
+	const Comp = asChild ? Slot : "button";
+	const effectiveDisabled = isLoading || disabled;
+	const root = applySlot(
+		cn(
+			buttonVariants({
+				variant,
+				color,
+				size,
+				fullWidth,
+				rounded,
+				className,
+			}),
+			// asChild renders arbitrary elements (e.g. <a>) where the
+			// `disabled` attribute is invalid — fall back to ARIA + CSS
+			asChild &&
+				effectiveDisabled &&
+				"pointer-events-none aria-disabled:opacity-50 aria-disabled:cursor-not-allowed",
+		),
+		slotStyles?.root,
+	);
+	const spinner = applySlot(buttonStyles.spinner, slotStyles?.spinner);
+	return (
+		<Comp
+			data-kala-component="button"
+			className={root.className}
+			style={mergeStyle(style, root.style)}
+			ref={ref}
+			disabled={asChild ? undefined : effectiveDisabled}
+			aria-disabled={asChild ? effectiveDisabled || undefined : undefined}
+			aria-busy={isLoading || undefined}
+			{...props}
+		>
 			{asChild ? (
 				children
 			) : (

@@ -1,5 +1,5 @@
-import type { SlotStyles } from "../../lib/slot-styles";
 import type * as React from "react";
+import type { SlotStyles } from "../../lib/slot-styles";
 
 export interface ComboboxOption {
 	value: string;

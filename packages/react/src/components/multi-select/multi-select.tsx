@@ -4,10 +4,9 @@ import { useUncontrolled } from "@kala-ui/react-hooks";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { ChevronsUpDown, X } from "lucide-react";
 import * as React from "react";
-
 import { multiSelectStyles } from "../../config/multi-select";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { type SlotStyles, applySlot, mergeStyle } from "../../lib/slot-styles";
 import { Checkbox } from "../checkbox";
 import {
 	Command,
@@ -17,6 +16,7 @@ import {
 	CommandItem,
 	CommandList,
 } from "../command";
+import { useSlotStyles } from "../kala-provider";
 import { Separator } from "../separator";
 
 export interface MultiSelectOption {
@@ -139,8 +139,9 @@ function MultiSelect({
 	showSeparators = false,
 	matchTriggerWidth = true,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 }: MultiSelectProps) {
+	const slotStyles = useSlotStyles("multi-select", slotStylesRaw);
 	const [selected, setSelected] = useUncontrolled<string[]>({
 		value,
 		defaultValue: defaultValue ?? [],
@@ -238,27 +239,31 @@ function MultiSelect({
 
 	const s = multiSelectStyles;
 	const root = applySlot(
-		cn(
-			s.root,
-			!disabled && s.rootHover,
-			disabled && s.rootDisabled,
-			className,
-		),
+		cn(s.root, !disabled && s.rootHover, disabled && s.rootDisabled, className),
 		slotStyles?.root,
 	);
 	const trigger = applySlot(s.trigger, slotStyles?.trigger);
-	const chipsContainer = applySlot(s.chipsContainer, slotStyles?.chipsContainer);
+	const chipsContainer = applySlot(
+		s.chipsContainer,
+		slotStyles?.chipsContainer,
+	);
 	const placeholderSlot = applySlot(s.placeholder, slotStyles?.placeholder);
 	const chip = applySlot(s.chip, slotStyles?.chip);
 	const chipIcon = applySlot(s.chipIcon, slotStyles?.chipIcon);
 	const chipRemove = applySlot(s.chipRemove, slotStyles?.chipRemove);
-	const chipRemoveIcon = applySlot(s.chipRemoveIcon, slotStyles?.chipRemoveIcon);
+	const chipRemoveIcon = applySlot(
+		s.chipRemoveIcon,
+		slotStyles?.chipRemoveIcon,
+	);
 	const overflowChip = applySlot(s.overflowChip, slotStyles?.overflowChip);
 	const controls = applySlot(s.controls, slotStyles?.controls);
 	const clearAll = applySlot(s.clearAll, slotStyles?.clearAll);
 	const clearAllIcon = applySlot(s.clearAllIcon, slotStyles?.clearAllIcon);
 	const chevron = applySlot(s.chevron, slotStyles?.chevron);
-	const popoverContent = applySlot(s.popoverContent, slotStyles?.popoverContent);
+	const popoverContent = applySlot(
+		s.popoverContent,
+		slotStyles?.popoverContent,
+	);
 	const command = applySlot(
 		cn(s.command, matchTriggerWidth ? s.commandMatched : s.commandFluid),
 		slotStyles?.command,
@@ -278,26 +283,20 @@ function MultiSelect({
 		return (
 			<React.Fragment key={option.value}>
 				{showSeparators && index > 0 && (
-					<Separator
-						className={separator.className}
-						style={separator.style}
-					/>
+					<Separator className={separator.className} style={separator.style} />
 				)}
 				<CommandItem
-						value={option.label}
-						disabled={isDisabled}
-						onSelect={() => handleSelect(option.value)}
-					>
+					value={option.label}
+					disabled={isDisabled}
+					onSelect={() => handleSelect(option.value)}
+				>
 					<Checkbox
-							checked={isSelected}
-							className={checkbox.className}
-							style={checkbox.style}
-						/>
+						checked={isSelected}
+						className={checkbox.className}
+						style={checkbox.style}
+					/>
 					{option.icon && (
-						<span
-							className={optionIcon.className}
-							style={optionIcon.style}
-						>
+						<span className={optionIcon.className} style={optionIcon.style}>
 							{option.icon}
 						</span>
 					)}
@@ -350,10 +349,7 @@ function MultiSelect({
 									style={chip.style}
 								>
 									{option.icon && (
-										<span
-											className={chipIcon.className}
-											style={chipIcon.style}
-										>
+										<span className={chipIcon.className} style={chipIcon.style}>
 											{option.icon}
 										</span>
 									)}
@@ -446,7 +442,7 @@ function MultiSelect({
 													: isIndeterminate
 														? "indeterminate"
 														: false
-												}
+											}
 											className={checkbox.className}
 											style={checkbox.style}
 										/>
@@ -455,14 +451,12 @@ function MultiSelect({
 								</CommandGroup>
 							)}
 							{noGroup.length > 0 && (
-								<CommandGroup>
-							{noGroup.map(renderOption)}
-								</CommandGroup>
+								<CommandGroup>{noGroup.map(renderOption)}</CommandGroup>
 							)}
 
 							{Object.entries(groups).map(([groupName, groupOptions]) => (
 								<CommandGroup key={groupName} heading={groupName}>
-							{groupOptions.map(renderOption)}
+									{groupOptions.map(renderOption)}
 								</CommandGroup>
 							))}
 						</CommandList>

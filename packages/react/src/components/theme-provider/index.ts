@@ -4,9 +4,9 @@ export type {
 	ThemeContextValue,
 } from "./theme-provider";
 export {
+	createThemeScript,
 	THEMES,
 	ThemeProvider,
-	createThemeScript,
 	useOptionalTheme,
 	useTheme,
 } from "./theme-provider";

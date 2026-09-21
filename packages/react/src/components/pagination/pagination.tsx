@@ -1,9 +1,11 @@
 import { usePagination } from "@kala-ui/react-hooks";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import * as React from "react";
+import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
 import { Flex } from "../flex";
+import { useSlotStyles } from "../kala-provider";
 import { Text } from "../text";
 import type {
 	PaginationContentProps,
@@ -12,7 +14,6 @@ import type {
 	PaginationPreviousProps,
 	PaginationProps,
 } from "./pagination.types";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 
 // ============================================================================
 // Pagination Root
@@ -21,7 +22,7 @@ import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 function Pagination({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	"aria-label": ariaLabel = "Pagination",
 	total,
 	page,
@@ -32,6 +33,7 @@ function Pagination({
 	children,
 	...props
 }: PaginationProps & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("pagination", slotStylesRaw);
 	const pagination = usePagination({
 		total: total || 0,
 		page,
@@ -48,7 +50,10 @@ function Pagination({
 				data-kala-component="pagination"
 				aria-label={ariaLabel}
 				slotStyles={slotStyles}
-				className={cn("mx-auto flex w-full flex-wrap justify-center", className)}
+				className={cn(
+					"mx-auto flex w-full flex-wrap justify-center",
+					className,
+				)}
 				style={style}
 				{...props}
 			>
@@ -80,11 +85,12 @@ function usePaginationContext() {
 function PaginationContent({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	variant = "default",
 	spaced = false,
 	...props
 }: PaginationContentProps & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("pagination", slotStylesRaw);
 	return (
 		<PaginationVariantContext.Provider value={variant}>
 			<Flex
@@ -111,18 +117,19 @@ function PaginationContent({
 function PaginationItem({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<"li"> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("pagination", slotStylesRaw);
 	return (
 		<Box
-				data-kala-component="pagination-item"
-				as="li"
-				slotStyles={slotStyles}
-				className={className}
-				style={style}
-				{...props}
-			/>
+			data-kala-component="pagination-item"
+			as="li"
+			slotStyles={slotStyles}
+			className={className}
+			style={style}
+			{...props}
+		/>
 	);
 }
 
@@ -133,7 +140,7 @@ function PaginationItem({
 function PaginationLink({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	isActive,
 	size = "md",
 	isIconButton = false,
@@ -144,6 +151,7 @@ function PaginationLink({
 	onClick,
 	...props
 }: PaginationLinkProps & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("pagination", slotStylesRaw);
 	const parentVariant = React.useContext(PaginationVariantContext) || "default";
 	const pagination = usePaginationContext();
 
@@ -246,12 +254,13 @@ function PaginationLink({
 
 function PaginationPrevious({
 	className,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	showLabel = true,
 	children,
 	onClick,
 	...props
 }: PaginationPreviousProps & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("pagination", slotStylesRaw);
 	const pagination = usePaginationContext();
 
 	const handleClick = (e: React.MouseEvent) => {
@@ -282,12 +291,13 @@ function PaginationPrevious({
 
 function PaginationNext({
 	className,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	showLabel = true,
 	children,
 	onClick,
 	...props
 }: PaginationNextProps & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("pagination", slotStylesRaw);
 	const pagination = usePaginationContext();
 
 	const handleClick = (e: React.MouseEvent) => {

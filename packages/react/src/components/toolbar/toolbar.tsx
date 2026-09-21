@@ -3,6 +3,7 @@
 import * as ToolbarPrimitive from "@radix-ui/react-toolbar";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { toggleVariants } from "../toggle/toggle";
 import type {
 	ToolbarButtonProps,
@@ -13,7 +14,13 @@ import type {
 	ToolbarToggleItemProps,
 } from "./toolbar.types";
 
-function Toolbar({ className, style, slotStyles, ...props }: ToolbarProps) {
+function Toolbar({
+	className,
+	style,
+	slotStyles: slotStylesRaw,
+	...props
+}: ToolbarProps) {
+	const slotStyles = useSlotStyles("toolbar", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			"flex h-10 items-center gap-1 rounded-md border bg-card p-1 kala-surface-input",

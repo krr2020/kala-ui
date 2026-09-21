@@ -3,6 +3,7 @@
 import type { Easing } from "framer-motion";
 import { AnimatePresence, motion } from "framer-motion";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
+import { useSlotStyles } from "../kala-provider";
 import type { CollapseProps } from "./collapse.types";
 
 export function Collapse({
@@ -12,12 +13,13 @@ export function Collapse({
 	id,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	transitionDuration = 0.2,
 	transitionTimingFunction = "easeInOut",
 	onTransitionEnd,
 	animateOpacity = true,
 }: CollapseProps) {
+	const slotStyles = useSlotStyles("collapse", slotStylesRaw);
 	const root = applySlot(className, slotStyles?.root);
 	return (
 		<AnimatePresence initial={false}>

@@ -25,7 +25,7 @@
       "cooldownMs": 900000
     },
     "compaction": {
-      "autoEnabled": true,
+      "autoEnabled": false,
       "thresholdPercent": 20,
       "keepRecentTokens": 20000,
       "readEarlyEnabled": false

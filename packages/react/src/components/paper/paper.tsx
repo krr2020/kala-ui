@@ -2,6 +2,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { PaperProps } from "./paper.types";
 
 const paperVariants = cva("bg-background text-foreground", {
@@ -37,13 +38,14 @@ function Paper({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	shadow,
 	radius,
 	withBorder,
 	asChild = false,
 	...props
 }: PaperProps) {
+	const slotStyles = useSlotStyles("paper", slotStylesRaw);
 	const Comp = asChild ? Slot : "div";
 	const root = applySlot(
 		cn(paperVariants({ shadow, radius, withBorder, className })),

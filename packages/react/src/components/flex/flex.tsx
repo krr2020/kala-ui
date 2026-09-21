@@ -3,6 +3,7 @@ import { cva } from "class-variance-authority";
 import type * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { FlexProps } from "./flex.types";
 
 const flexVariants = cva("flex", {
@@ -68,7 +69,7 @@ export function Flex<T extends React.ElementType = "div">(props: FlexProps<T>) {
 	const {
 		className,
 		style,
-		slotStyles,
+		slotStyles: slotStylesRaw,
 		direction,
 		wrap,
 		align,
@@ -81,6 +82,7 @@ export function Flex<T extends React.ElementType = "div">(props: FlexProps<T>) {
 		ref,
 		...rest
 	} = props as FlexProps<"div">;
+	const slotStyles = useSlotStyles("flex", slotStylesRaw);
 	const Comp = (asChild ? Slot : Tag) as React.ElementType;
 	const root = applySlot(
 		cn(

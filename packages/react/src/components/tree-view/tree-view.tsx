@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { TreeItem, TreeViewProps } from "./tree-view.types";
 
 interface TreeViewContextValue {
@@ -158,10 +159,11 @@ function TreeView({
 	multiSelect = false,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	ref,
 	...props
 }: TreeViewProps) {
+	const slotStyles = useSlotStyles("tree-view", slotStylesRaw);
 	const [selectedIds, setSelectedIds] = React.useState<Set<string>>(() => {
 		if (!selectedProp) return new Set();
 		return new Set(Array.isArray(selectedProp) ? selectedProp : [selectedProp]);

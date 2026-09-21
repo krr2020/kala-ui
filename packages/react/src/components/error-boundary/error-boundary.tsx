@@ -6,6 +6,7 @@ import { Component } from "react";
 import { errorBoundaryStyles } from "../../config/error-boundary";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { Button } from "../button";
+import { useSlotStyles } from "../kala-provider";
 import type { ErrorBoundaryProps } from "./error-boundary.types";
 
 // Simple logger for error boundary
@@ -32,12 +33,13 @@ function resetKeysDiffer(a?: unknown[], b?: unknown[]): boolean {
 function DefaultErrorFallback({
 	error,
 	reset,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 }: {
 	error: Error;
 	reset: () => void;
 	slotStyles?: SlotStyles;
 }) {
+	const slotStyles = useSlotStyles("error-boundary", slotStylesRaw);
 	const root = applySlot(errorBoundaryStyles.fallback, slotStyles?.root);
 	return (
 		<div

@@ -4,6 +4,7 @@ import { Check } from "lucide-react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
+import { useSlotStyles } from "../kala-provider";
 import { Text } from "../text";
 import type { StepsProps } from "./steps.types";
 
@@ -23,7 +24,7 @@ function Steps({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	orientation,
 	value: valueProp,
 	defaultValue,
@@ -32,6 +33,7 @@ function Steps({
 	showLine = true,
 	...props
 }: StepsProps) {
+	const slotStyles = useSlotStyles("steps", slotStylesRaw);
 	const [currentStep, setCurrentStep] = useUncontrolled<number>({
 		value: valueProp,
 		defaultValue,

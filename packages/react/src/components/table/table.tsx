@@ -10,9 +10,11 @@ import {
 	tableHeadStyles,
 	tableRowStyles,
 } from "../../config/table";
-import { cn } from "../../lib/utils";
+
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
 import { Box } from "../box";
+import { useSlotStyles } from "../kala-provider";
 import { Skeleton } from "../skeleton";
 import type { TableSkeletonConfig } from "./table.types";
 
@@ -134,7 +136,7 @@ export interface TableProps extends React.ComponentProps<"table"> {
 function Table({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	isLoading,
 	loadingRows = 5,
 	loadingColumns = 4,
@@ -144,6 +146,7 @@ function Table({
 	skeleton,
 	...props
 }: TableProps & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("table", slotStylesRaw);
 	// Render skeleton state directly
 	if (isLoading) {
 		// Use custom skeleton if provided

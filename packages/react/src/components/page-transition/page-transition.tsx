@@ -8,8 +8,9 @@
  */
 
 import * as React from "react";
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 
 export interface PageTransitionProps extends React.ComponentProps<"div"> {
 	/**
@@ -47,12 +48,13 @@ export function PageTransition({
 	children,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	duration = 300,
 	pageKey,
 	ref,
 	...props
 }: PageTransitionProps) {
+	const slotStyles = useSlotStyles("page-transition", slotStylesRaw);
 	const [isVisible, setIsVisible] = React.useState(false);
 
 	React.useEffect(() => {
@@ -70,14 +72,16 @@ export function PageTransition({
 			data-kala-component="page-transition"
 			data-slot="page-transition"
 			ref={ref}
-			className={applySlot(
-				cn(
-					"transition-opacity ease-in-out",
-					isVisible ? "opacity-100" : "opacity-0",
-					className,
-				),
-				slotStyles?.root,
-			).className}
+			className={
+				applySlot(
+					cn(
+						"transition-opacity ease-in-out",
+						isVisible ? "opacity-100" : "opacity-0",
+						className,
+					),
+					slotStyles?.root,
+				).className
+			}
 			style={{
 				transitionDuration: `${duration}ms`,
 				...mergeStyle(style, applySlot("", slotStyles?.root).style),

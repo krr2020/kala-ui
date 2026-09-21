@@ -25,11 +25,13 @@ describe("no test depends on repo-transient artifacts", () => {
 		const offenders: string[] = [];
 		const walk = (dir: string) => {
 			for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-			const full = `${dir}/${entry.name}`;
-			if (entry.isDirectory()) walk(full);
-			else if (/\.test\.(ts|tsx)$/.test(entry.name) &&
-				fs.readFileSync(full, "utf8").includes(needle))
-				offenders.push(full);
+				const full = `${dir}/${entry.name}`;
+				if (entry.isDirectory()) walk(full);
+				else if (
+					/\.test\.(ts|tsx)$/.test(entry.name) &&
+					fs.readFileSync(full, "utf8").includes(needle)
+				)
+					offenders.push(full);
 			}
 		};
 		walk(srcRoot);

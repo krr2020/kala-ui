@@ -10,6 +10,7 @@ import { applySlot } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
 import { Calendar } from "../calendar";
+import { useSlotStyles } from "../kala-provider";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
 import { Skeleton } from "../skeleton";
 import type {
@@ -28,9 +29,10 @@ export function DatePicker({
 	buttonClassName,
 	formatStr = "PPP",
 	isLoading = false,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: DatePickerProps) {
+	const slotStyles = useSlotStyles("date-picker", slotStylesRaw);
 	const [date, setDate] = useUncontrolled<Date | undefined>({
 		value: valueProp,
 		defaultValue,
@@ -105,9 +107,10 @@ export function DateRangePicker({
 	buttonClassName,
 	formatStr = "LLL dd, y",
 	isLoading = false,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: DateRangePickerProps) {
+	const slotStyles = useSlotStyles("date-picker", slotStylesRaw);
 	const [dateRange, setDateRange] = useUncontrolled<DateRange | undefined>({
 		value: valueProp,
 		defaultValue,

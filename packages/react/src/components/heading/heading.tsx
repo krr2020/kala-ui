@@ -3,6 +3,7 @@ import { cva } from "class-variance-authority";
 import type * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { HeadingProps } from "./heading.types";
 
 const headingVariants = cva(
@@ -41,7 +42,7 @@ function Heading({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	size,
 	align,
 	weight,
@@ -49,6 +50,7 @@ function Heading({
 	as,
 	...props
 }: HeadingProps) {
+	const slotStyles = useSlotStyles("heading", slotStylesRaw);
 	const defaultTag = (size as React.ElementType) || "h2";
 	const Tag = asChild ? Slot : as || defaultTag;
 	const root = applySlot(

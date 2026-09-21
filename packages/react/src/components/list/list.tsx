@@ -2,6 +2,7 @@ import * as React from "react";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Badge } from "../badge";
+import { useSlotStyles } from "../kala-provider";
 import type {
 	ListItemActionProps,
 	ListItemAvatarProps,
@@ -13,6 +14,7 @@ import type {
 	ListItemTitleProps,
 	ListProps,
 } from "./list.types";
+
 import { ListSkeleton } from "./list-skeleton";
 
 // ===========================
@@ -22,7 +24,7 @@ import { ListSkeleton } from "./list-skeleton";
 function List({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	divided = true,
 	dense = false,
 	isLoading = false,
@@ -31,6 +33,7 @@ function List({
 	children,
 	...props
 }: ListProps & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("list", slotStylesRaw);
 	if (isLoading) {
 		if (skeleton) {
 			const root = applySlot(
@@ -93,7 +96,7 @@ function List({
 function ListItem({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	interactive = false,
 	href,
 	active = false,
@@ -103,6 +106,7 @@ function ListItem({
 	onClick,
 	...props
 }: ListItemProps) {
+	const slotStyles = useSlotStyles("list", slotStylesRaw);
 	// The <li> wrapper is unconditional so interactive rows keep valid
 	// ul > li structure; the control itself (a/button) fills the row.
 	const rowClassName = cn(

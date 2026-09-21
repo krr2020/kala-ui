@@ -8,12 +8,14 @@ import {
 	Info,
 	X,
 } from "lucide-react";
+
 import * as React from "react";
 
 import { alertStyles } from "../../config/alert";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
+import { useSlotStyles } from "../kala-provider";
 import type { AlertProps } from "./alert.types";
 import { AlertSkeleton } from "./alert-skeleton";
 
@@ -36,7 +38,7 @@ const colorIcons = {
 function Alert({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	variant = "subtle",
 	color = "primary",
 	dismissible = false,
@@ -50,6 +52,7 @@ function Alert({
 	skeleton,
 	...props
 }: AlertProps) {
+	const slotStyles = useSlotStyles("alert", slotStylesRaw);
 	const [isVisible, { close, open }] = useDisclosure(true);
 
 	// Dismissing hides this instance only until its CONTENT changes — the
@@ -163,9 +166,10 @@ function Alert({
 function AlertTitle({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("alert", slotStylesRaw);
 	const root = applySlot(cn(alertStyles.title, className), slotStyles?.root);
 	return (
 		<Box
@@ -181,9 +185,10 @@ function AlertTitle({
 function AlertDescription({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("alert", slotStylesRaw);
 	const root = applySlot(
 		cn(alertStyles.description, className),
 		slotStyles?.root,

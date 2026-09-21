@@ -3,9 +3,9 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import * as React from "react";
-
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { Label } from "../label";
 import { Separator } from "../separator";
 import type { FieldProps } from "./field.types";
@@ -111,10 +111,11 @@ export const fieldVariants = cva(
 function Field({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	orientation = "vertical",
 	...props
 }: FieldProps) {
+	const slotStyles = useSlotStyles("field", slotStylesRaw);
 	const descriptionId = React.useId();
 	const errorId = React.useId();
 	const controlId = React.useId();

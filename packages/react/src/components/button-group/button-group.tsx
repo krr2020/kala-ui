@@ -1,8 +1,9 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import * as React from "react";
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type {
 	ButtonGroupProps,
 	ButtonGroupSeparatorProps,
@@ -26,12 +27,13 @@ const buttonGroupVariants = cva("inline-flex isolate", {
 function ButtonGroup({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	orientation = "horizontal",
 	separated = false,
 	children,
 	...props
 }: ButtonGroupProps) {
+	const slotStyles = useSlotStyles("button-group", slotStylesRaw);
 	const childrenArray = React.Children.toArray(children);
 
 	return (

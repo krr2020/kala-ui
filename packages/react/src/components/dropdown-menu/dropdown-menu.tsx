@@ -3,10 +3,10 @@
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { Check, ChevronRight, Circle } from "lucide-react";
 import type * as React from "react";
-
 import { dropdownMenuStyles } from "../../config/dropdown-menu";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type {
 	DropdownMenuContentProps,
 	DropdownMenuProps,
@@ -43,10 +43,11 @@ function DropdownMenuTrigger({
 function DropdownMenuContent({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	sideOffset = 4,
 	...props
 }: DropdownMenuContentProps) {
+	const slotStyles = useSlotStyles("dropdown-menu", slotStylesRaw);
 	const root = applySlot(dropdownMenuStyles.content, slotStyles?.root);
 	return (
 		<DropdownMenuPrimitive.Portal>
@@ -77,7 +78,7 @@ function DropdownMenuGroup({
 function DropdownMenuItem({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	inset,
 	color,
 	...props
@@ -87,6 +88,7 @@ function DropdownMenuItem({
 	/** Per-part overrides: `root` wins over `className`/`style`. */
 	slotStyles?: SlotStyles;
 }) {
+	const slotStyles = useSlotStyles("dropdown-menu", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			dropdownMenuStyles.item.base,

@@ -3,12 +3,21 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Button } from "../components/button";
 import { Card } from "../components/card";
+import { DateRangePicker } from "../components/date-picker";
 import { Dialog, DialogContent, DialogTitle } from "../components/dialog";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../components/dropdown-menu";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuTrigger,
+} from "../components/dropdown-menu";
 import { Input } from "../components/input";
 import { Paper } from "../components/paper";
-import { DateRangePicker } from "../components/date-picker";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "../components/select";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+} from "../components/select";
 import {
 	Tooltip,
 	TooltipContent,
@@ -110,15 +119,14 @@ describe("data-kala-component markers", () => {
 const componentsRoot = ["src/components", "packages/react/src/components"]
 	.map((p) => `${process.cwd()}/${p}`)
 	.find((p) => fs.existsSync(p));
-if (!componentsRoot) throw new Error("cannot locate packages/react/src/components from cwd");
+if (!componentsRoot)
+	throw new Error("cannot locate packages/react/src/components from cwd");
 
 const listFiles = (dir: string): string[] =>
-	fs
-		.readdirSync(dir, { withFileTypes: true })
-		.flatMap((entry) => {
-			const full = `${dir}/${entry.name}`;
-			return entry.isDirectory() ? listFiles(full) : [full];
-		});
+	fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+		const full = `${dir}/${entry.name}`;
+		return entry.isDirectory() ? listFiles(full) : [full];
+	});
 
 describe("data-kala-component source guard", () => {
 	it("every component dir declares at least one marker", () => {
@@ -132,11 +140,11 @@ describe("data-kala-component source guard", () => {
 			(dir) =>
 				!listFiles(`${componentsRoot}/${dir}`).some((f) => {
 					const src = fs.readFileSync(f, "utf8");
-				return (
-					src.includes("data-kala-component") &&
-					!/\.(test|stories)\.(ts|tsx)$/.test(f)
-				);
-			}),
+					return (
+						src.includes("data-kala-component") &&
+						!/\.(test|stories)\.(ts|tsx)$/.test(f)
+					);
+				}),
 		);
 		expect(withoutMarkers).toEqual([]);
 	});
@@ -145,8 +153,8 @@ describe("data-kala-component source guard", () => {
 		const offenders = listFiles(componentsRoot).filter((f) => {
 			if (!/\.tsx$/.test(f) || /\.(test|stories)\.tsx$/.test(f)) return false;
 			return /<[\w.]*Portal[^>]*data-kala-component/.test(
-			fs.readFileSync(f, "utf8"),
-		);
+				fs.readFileSync(f, "utf8"),
+			);
 		});
 		expect(offenders).toEqual([]);
 	});

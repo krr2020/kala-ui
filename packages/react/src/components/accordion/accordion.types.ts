@@ -1,6 +1,6 @@
+import type * as AccordionPrimitive from "@radix-ui/react-accordion";
 import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
-import type * as AccordionPrimitive from "@radix-ui/react-accordion";
 import type { SlotStyles } from "../../lib/slot-styles";
 import type { accordionVariants } from "./accordion";
 

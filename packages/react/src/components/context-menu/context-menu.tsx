@@ -3,10 +3,10 @@
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 import { Check, ChevronRight, Circle } from "lucide-react";
 import type * as React from "react";
-
 import { dropdownMenuStyles } from "../../config/dropdown-menu";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type {
 	ContextMenuContentProps,
 	ContextMenuProps,
@@ -43,10 +43,11 @@ function ContextMenuPortal({
 function ContextMenuContent({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	forceMount,
 	...props
 }: ContextMenuContentProps) {
+	const slotStyles = useSlotStyles("context-menu", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			"z-30 min-w-[10rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground kala-surface-popover",

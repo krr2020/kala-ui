@@ -2,19 +2,20 @@
 
 import { OTPInput, OTPInputContext } from "input-otp";
 import * as React from "react";
-
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { InputOTPProps } from "./input-otp.types";
 
 function InputOTP({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	containerClassName,
 	...props
 }: InputOTPProps) {
+	const slotStyles = useSlotStyles("input-otp", slotStylesRaw);
 	// input-otp overwrites the hidden input's `style` internally, so the root
 	// slot channel lives on a wrapper element we control; `className` moves
 	// with it because the input itself is visually hidden.
@@ -42,9 +43,10 @@ function InputOTPGroup({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("input-otp", slotStylesRaw);
 	const root = applySlot(cn("flex items-center", className), slotStyles?.root);
 	return (
 		<div
@@ -61,9 +63,10 @@ function InputOTPSlot({
 	index,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<"div"> & { index: number; slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("input-otp", slotStylesRaw);
 	const inputOTPContext = React.useContext(OTPInputContext);
 	const slot = inputOTPContext.slots[index];
 	const { char, hasFakeCaret, isActive } = slot || {
@@ -102,9 +105,10 @@ function InputOTPSeparator({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<"hr"> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("input-otp", slotStylesRaw);
 	const root = applySlot(cn(className), slotStyles?.root);
 	return (
 		<hr

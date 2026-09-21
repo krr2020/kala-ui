@@ -1,7 +1,8 @@
 import { ChevronRight } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
-import { cn } from "../../lib/utils";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 
 export interface BreadcrumbItem {
 	label: string;
@@ -23,8 +24,9 @@ export function Breadcrumbs({
 	style,
 	separator,
 	variant = "default",
-	slotStyles,
+	slotStyles: slotStylesRaw,
 }: BreadcrumbsProps) {
+	const slotStyles = useSlotStyles("breadcrumbs", slotStylesRaw);
 	if (!items.length) return null;
 
 	// Default separators based on variant

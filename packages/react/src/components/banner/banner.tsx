@@ -15,8 +15,9 @@ import { X } from "lucide-react";
 import { bannerStyles } from "../../config/banner";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
-import { BannerSkeleton } from "./banner-skeleton";
+import { useSlotStyles } from "../kala-provider";
 import type { BannerProps } from "./banner.types";
+import { BannerSkeleton } from "./banner-skeleton";
 
 export const bannerClasses = cva(bannerStyles.base, {
 	variants: bannerStyles.variants,
@@ -27,7 +28,7 @@ export const bannerClasses = cva(bannerStyles.base, {
 export function Banner({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	variant,
 	color,
 	position,
@@ -41,6 +42,7 @@ export function Banner({
 	asChild = false,
 	...props
 }: BannerProps) {
+	const slotStyles = useSlotStyles("banner", slotStylesRaw, variant ?? undefined);
 	const root = applySlot(
 		cn(bannerClasses({ variant, color, position }), className),
 		slotStyles?.root,

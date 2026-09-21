@@ -1,6 +1,7 @@
 import { cva } from "class-variance-authority";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { KbdProps } from "./kbd.types";
 
 export const kbdVariants = cva(
@@ -45,12 +46,13 @@ const KEY_SYMBOLS: Record<string, string> = {
 function Kbd({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	size,
 	keys,
 	children,
 	...props
 }: KbdProps) {
+	const slotStyles = useSlotStyles("kbd", slotStylesRaw);
 	if (keys) {
 		const keyArray = Array.isArray(keys) ? keys : [keys];
 

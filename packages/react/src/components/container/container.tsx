@@ -2,6 +2,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { ContainerProps } from "./container.types";
 
 const containerVariants = cva("mx-auto w-full px-4 md:px-6 lg:px-8", {
@@ -27,12 +28,13 @@ function Container({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	size,
 	centered,
 	asChild = false,
 	...props
 }: ContainerProps) {
+	const slotStyles = useSlotStyles("container", slotStylesRaw);
 	const Comp = asChild ? Slot : "div";
 	const root = applySlot(
 		cn(containerVariants({ size, centered, className })),

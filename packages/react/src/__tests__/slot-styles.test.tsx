@@ -10,9 +10,19 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { Alert, AlertDescription, AlertTitle } from "../components/alert";
+import { AvatarGroup } from "../components/avatar-group";
 import { Badge } from "../components/badge";
+import { Banner } from "../components/banner";
 import { Button } from "../components/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "../components/card";
+import { DatePicker, DateRangePicker } from "../components/date-picker";
 import {
 	Dialog,
 	DialogBody,
@@ -22,31 +32,45 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "../components/dialog";
-import { Input } from "../components/input";
-import { Tag } from "../components/tag";
 import {
-	DatePicker,
-	DateRangePicker,
-} from "../components/date-picker";
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuTrigger,
+} from "../components/dropdown-menu";
+import { EmptyState } from "../components/empty-state";
+import { ErrorBoundary } from "../components/error-boundary";
 import { FileUpload } from "../components/file-upload";
+import { Input } from "../components/input";
+import { MultiSelect } from "../components/multi-select";
 import { NumberInput } from "../components/number-input";
+import {
+	Popover,
+	PopoverBody,
+	PopoverContent,
+	PopoverTrigger,
+} from "../components/popover";
+import { Progress } from "../components/progress";
+import { RingProgress } from "../components/ring-progress";
+import {
+	NativeSelect,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+} from "../components/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/tabs";
+import { Tag } from "../components/tag";
 import { TagInput } from "../components/tag-input";
 import { TimePicker } from "../components/time-picker";
-import { NativeSelect, Select, SelectContent, SelectItem, SelectTrigger } from "../components/select";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/tooltip";
-import { Popover, PopoverBody, PopoverContent, PopoverTrigger } from "../components/popover";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../components/dropdown-menu";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/tabs";
-import { Banner } from "../components/banner";
-import { MultiSelect } from "../components/multi-select";
-import { AvatarGroup } from "../components/avatar-group";
-import { Progress } from "../components/progress";
-import { EmptyState } from "../components/empty-state";
-import { RingProgress } from "../components/ring-progress";
-import { buildToastClassNames } from "../components/toast/toast";
 import { Toast } from "../components/toast";
+import { buildToastClassNames } from "../components/toast/toast";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "../components/tooltip";
 import { toastStyles } from "../config/toast";
-import { ErrorBoundary } from "../components/error-boundary";
 import { applySlot, mergeStyle } from "../lib/slot-styles";
 
 // Passthrough double scoped to the Toaster component only: sonner's real
@@ -83,9 +107,9 @@ describe("applySlot / mergeStyle units", () => {
 	});
 
 	it("mergeStyle: slot wins per key, disjoint keys merge, empty stays empty", () => {
-		expect(mergeStyle({ marginTop: 1 }, { marginTop: 2, marginLeft: 3 })).toEqual(
-			{ marginTop: 2, marginLeft: 3 },
-		);
+		expect(
+			mergeStyle({ marginTop: 1 }, { marginTop: 2, marginLeft: 3 }),
+		).toEqual({ marginTop: 2, marginLeft: 3 });
 		expect(mergeStyle(undefined, undefined)).toBeUndefined();
 		expect(mergeStyle({ marginTop: 1 }, undefined)).toEqual({ marginTop: 1 });
 	});
@@ -144,7 +168,10 @@ describe("Button slotStyles", () => {
 describe("Alert slotStyles", () => {
 	it("icon and dismiss slots reach their nodes", () => {
 		render(
-			<Alert dismissible slotStyles={{ icon: "my-icon", dismiss: "my-dismiss" }}>
+			<Alert
+				dismissible
+				slotStyles={{ icon: "my-icon", dismiss: "my-dismiss" }}
+			>
 				x
 			</Alert>,
 		);
@@ -210,9 +237,9 @@ describe("Badge slotStyles", () => {
 				x
 			</Badge>,
 		);
-		expect(container.querySelector('[data-kala-component="badge"]')).toHaveClass(
-			"my-w-64",
-		);
+		expect(
+			container.querySelector('[data-kala-component="badge"]'),
+		).toHaveClass("my-w-64");
 	});
 });
 
@@ -293,9 +320,9 @@ describe("Input slotStyles", () => {
 		const { container } = render(
 			<Input isLoading slotStyles={{ root: "my-w-64" }} />,
 		);
-		expect(container.querySelector('[data-kala-component="input"]')).toHaveClass(
-			"my-w-64",
-		);
+		expect(
+			container.querySelector('[data-kala-component="input"]'),
+		).toHaveClass("my-w-64");
 	});
 
 	it("absent slotStyles renders the exact pre-change class string", () => {
@@ -350,11 +377,13 @@ describe("Dialog slotStyles", () => {
 		const content = document.body.querySelector('[data-slot="dialog-content"]');
 		expect(content).toHaveClass("p-6");
 		expect(content).not.toHaveClass("p-2");
-		expect(document.body.querySelector('[data-slot="dialog-close"]')).toHaveClass(
-			"my-close",
-		);
 		expect(
-			document.body.querySelector('[data-slot="dialog-close"]')?.querySelector("svg"),
+			document.body.querySelector('[data-slot="dialog-close"]'),
+		).toHaveClass("my-close");
+		expect(
+			document.body
+				.querySelector('[data-slot="dialog-close"]')
+				?.querySelector("svg"),
 		).toHaveClass("my-x");
 		expect(
 			document.body.querySelector('[data-slot="dialog-overlay"]'),
@@ -449,12 +478,15 @@ describe("TagInput slotStyles", () => {
 describe("TimePicker slotStyles", () => {
 	it("hour, minute, second and colon slots reach their columns", () => {
 		const { container } = render(
-			<TimePicker showSeconds slotStyles={{
-				hour: "my-h",
-				minute: "my-m",
-				second: "my-s",
-				colon: "my-c",
-			}} />,
+			<TimePicker
+				showSeconds
+				slotStyles={{
+					hour: "my-h",
+					minute: "my-m",
+					second: "my-s",
+					colon: "my-c",
+				}}
+			/>,
 		);
 		const cols = container.querySelectorAll(
 			'[data-kala-component="time-picker-time-column"]',
@@ -463,7 +495,9 @@ describe("TimePicker slotStyles", () => {
 		expect(cols[0]).toHaveClass("my-h");
 		expect(cols[1]).toHaveClass("my-m");
 		expect(cols[2]).toHaveClass("my-s");
-		const colons = container.querySelectorAll('[data-slot="time-picker-colon"]');
+		const colons = container.querySelectorAll(
+			'[data-slot="time-picker-colon"]',
+		);
 		expect(colons.length).toBe(2);
 		expect(colons[0]).toHaveClass("my-c");
 	});
@@ -485,7 +519,10 @@ describe("TimePicker slotStyles", () => {
 describe("DatePicker slotStyles", () => {
 	it("icon slot reaches the calendar glyph; root beats buttonClassName", () => {
 		const { container } = render(
-			<DatePicker buttonClassName="w-10" slotStyles={{ root: "w-64", icon: "my-ic" }} />,
+			<DatePicker
+				buttonClassName="w-10"
+				slotStyles={{ root: "w-64", icon: "my-ic" }}
+			/>,
 		);
 		const button = container.querySelector("button");
 		expect(button).toHaveClass("w-64");
@@ -500,13 +537,9 @@ describe("DatePicker slotStyles", () => {
 		expect(
 			container.querySelector('[data-kala-component="date-picker"]'),
 		).toHaveClass("w-64");
-		rerender(
-			<DateRangePicker isLoading slotStyles={{ root: "w-64" }} />,
-		);
+		rerender(<DateRangePicker isLoading slotStyles={{ root: "w-64" }} />);
 		expect(
-			container.querySelector(
-				'[data-kala-component="date-range-picker"]',
-			),
+			container.querySelector('[data-kala-component="date-range-picker"]'),
 		).toHaveClass("w-64");
 	});
 });
@@ -536,7 +569,7 @@ describe("RingProgress slotStyles", () => {
 			/>,
 		);
 		const el = container.querySelector<HTMLDivElement>(
-				'[data-kala-component="ring-progress"]',
+			'[data-kala-component="ring-progress"]',
 		);
 		expect(el?.style.marginTop).toBe("9px");
 		expect(el?.style.maxWidth).toBe("42px");
@@ -557,7 +590,11 @@ describe("RingProgress slotStyles", () => {
 	it("never leaks slotStyles to the DOM", () => {
 		const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 		const { container } = render(
-			<RingProgress value={50} label="x" slotStyles={{ root: "p-1", label: "p-2" }} />,
+			<RingProgress
+				value={50}
+				label="x"
+				slotStyles={{ root: "p-1", label: "p-2" }}
+			/>,
 		);
 		expect(container.innerHTML).not.toContain("slotStyles");
 		const leaked = errorSpy.mock.calls.filter((c) =>
@@ -570,7 +607,8 @@ describe("RingProgress slotStyles", () => {
 	it("absent slotStyles renders the pre-change root class string", () => {
 		const { container } = render(<RingProgress value={50} />);
 		expect(
-			container.querySelector('[data-kala-component="ring-progress"]')?.className,
+			container.querySelector('[data-kala-component="ring-progress"]')
+				?.className,
 		).toBe("relative flex items-center justify-center");
 	});
 });
@@ -578,7 +616,10 @@ describe("RingProgress slotStyles", () => {
 describe("FileUpload slotStyles", () => {
 	it("icon slot reaches the dropzone icon circle; root beats legacy className", () => {
 		const { container } = render(
-			<FileUpload className="w-10" slotStyles={{ root: "w-64", icon: "my-ic" }} />,
+			<FileUpload
+				className="w-10"
+				slotStyles={{ root: "w-64", icon: "my-ic" }}
+			/>,
 		);
 		const root = container.querySelector('[data-kala-component="file-upload"]');
 		expect(root).toHaveClass("w-64");
@@ -605,15 +646,24 @@ describe("TimePicker structure", () => {
 		const { container } = render(
 			<TimePicker
 				showSeconds
-				slotStyles={{ hour: "my-h", minute: "my-m", second: "my-s", colon: "my-c" }}
+				slotStyles={{
+					hour: "my-h",
+					minute: "my-m",
+					second: "my-s",
+					colon: "my-c",
+				}}
 			/>,
 		);
 		const cols = container.querySelectorAll(
 			'[data-kala-component="time-picker-time-column"]',
 		);
-		const labels = Array.from(cols).map((c) => c.querySelector("span")?.textContent);
+		const labels = Array.from(cols).map(
+			(c) => c.querySelector("span")?.textContent,
+		);
 		expect(labels).toEqual(["HH", "MM", "SS"]);
-		const colons = container.querySelectorAll('[data-slot="time-picker-colon"]');
+		const colons = container.querySelectorAll(
+			'[data-slot="time-picker-colon"]',
+		);
 		expect(colons.length).toBe(2);
 		expect(colons[0].nextElementSibling).toBe(cols[1]);
 		expect(colons[1].nextElementSibling).toBe(cols[2]);
@@ -632,19 +682,21 @@ describe("TimePicker structure", () => {
 		expect(periodButtons.length).toBe(2);
 		expect(periodButtons[0].textContent).toBe("AM");
 		expect(periodButtons[1].textContent).toBe("PM");
-		expect(cols[1].nextElementSibling?.querySelector("button[aria-pressed]")).toBe(
-			periodButtons[0] as HTMLButtonElement,
-		);
+		expect(
+			cols[1].nextElementSibling?.querySelector("button[aria-pressed]"),
+		).toBe(periodButtons[0] as HTMLButtonElement);
 	});
 });
 
 describe("Select slotStyles", () => {
-it("chevron slot beats its config base and reaches the glyph", () => {
-	render(
-		<Select defaultValue="a">
-			<SelectTrigger slotStyles={{ chevron: "my-chev size-8" }}>pick</SelectTrigger>
-		</Select>,
-	);
+	it("chevron slot beats its config base and reaches the glyph", () => {
+		render(
+			<Select defaultValue="a">
+				<SelectTrigger slotStyles={{ chevron: "my-chev size-8" }}>
+					pick
+				</SelectTrigger>
+			</Select>,
+		);
 		const chevron = screen.getByRole("combobox").querySelector("svg");
 		expect(chevron).toHaveClass("my-chev");
 		expect(chevron).toHaveClass("size-8");
@@ -659,7 +711,7 @@ it("chevron slot beats its config base and reaches the glyph", () => {
 					<SelectItem value="a" slotStyles={{ itemIndicator: "my-chk size-6" }}>
 						a
 					</SelectItem>
-			</SelectContent>
+				</SelectContent>
 			</Select>,
 		);
 		const check = document.body.querySelector(
@@ -728,9 +780,9 @@ describe("MultiSelect slotStyles", () => {
 		);
 		const root = container.querySelector('[data-slot="multi-select"]');
 		expect(root?.className).toContain("k-slot-root");
-		expect(
-			container.querySelector('button[role="combobox"]'),
-		).toHaveClass("k-slot-trig");
+		expect(container.querySelector('button[role="combobox"]')).toHaveClass(
+			"k-slot-trig",
+		);
 		expect(screen.getByText("A").className).toContain("k-slot-chip");
 		expect(screen.getByLabelText("Remove A")).toHaveClass("k-slot-rm");
 		expect(screen.getByText("+1 more").className).toContain("k-slot-more");
@@ -760,10 +812,8 @@ describe("Tooltip slotStyles", () => {
 			<TooltipProvider>
 				<Tooltip open>
 					<TooltipTrigger>trg</TooltipTrigger>
-				<TooltipContent
-						slotStyles={{ root: "my-ttc", arrow: "my-tta" }}
-					/>
-			</Tooltip>
+					<TooltipContent slotStyles={{ root: "my-ttc", arrow: "my-tta" }} />
+				</Tooltip>
 			</TooltipProvider>,
 		);
 		expect(
@@ -845,9 +895,9 @@ describe("Banner slotStyles", () => {
 			container.querySelector('[data-kala-component="banner"] > div'),
 		).toHaveClass("my-act");
 		expect(screen.getByLabelText("Close banner")).toHaveClass("my-cl");
-		expect(screen.getByLabelText("Close banner").querySelector("svg")).toHaveClass(
-			"my-ic",
-		);
+		expect(
+			screen.getByLabelText("Close banner").querySelector("svg"),
+		).toHaveClass("my-ic");
 	});
 
 	it("without onClose the actions slot still lands and no close button renders", () => {
@@ -863,11 +913,7 @@ describe("Banner slotStyles", () => {
 
 describe("AvatarGroup slotStyles", () => {
 	it("ring slot lands on every visible avatar; overflow chip only when overflowing", () => {
-		const avatars = [
-			{ fallback: "A" },
-			{ fallback: "B" },
-			{ fallback: "C" },
-		];
+		const avatars = [{ fallback: "A" }, { fallback: "B" }, { fallback: "C" }];
 		const { container, rerender } = render(
 			<AvatarGroup
 				avatars={avatars}
@@ -1014,8 +1060,7 @@ describe("AlertTitle / AlertDescription slotStyles", () => {
 			</Alert>,
 		);
 		expect(
-			container.querySelector('[data-kala-component="alert-title"]')
-				?.className,
+			container.querySelector('[data-kala-component="alert-title"]')?.className,
 		).toBe("col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight");
 		expect(
 			container.querySelector('[data-kala-component="alert-description"]')
@@ -1043,7 +1088,8 @@ describe("Toast per-part slotStyles", () => {
 
 	it("absent slotStyles yields the exact current sonner classNames", () => {
 		expect(buildToastClassNames()).toEqual({
-			toast: "group toast group-[.toaster]:bg-popover group-[.toaster]:text-foreground group-[.toaster]:border data-[type=error]:!border-destructive data-[type=success]:!border-success data-[type=warning]:!border-warning data-[type=info]:!border-info data-[type=success]:[&_[data-icon]]:!text-success data-[type=error]:[&_[data-icon]]:!text-destructive data-[type=warning]:[&_[data-icon]]:!text-warning data-[type=info]:[&_[data-icon]]:!text-info",
+			toast:
+				"group toast group-[.toaster]:bg-popover group-[.toaster]:text-foreground group-[.toaster]:border data-[type=error]:!border-destructive data-[type=success]:!border-success data-[type=warning]:!border-warning data-[type=info]:!border-info data-[type=success]:[&_[data-icon]]:!text-success data-[type=error]:[&_[data-icon]]:!text-destructive data-[type=warning]:[&_[data-icon]]:!text-warning data-[type=info]:[&_[data-icon]]:!text-info",
 			description: "group-[.toast]:text-muted-foreground",
 			actionButton:
 				"group-[.toast]:bg-primary group-[.toast]:text-primary-foreground group-data-[type=success]:!bg-success group-data-[type=success]:!text-success-foreground group-data-[type=error]:!bg-destructive group-data-[type=error]:!text-destructive-foreground group-data-[type=warning]:!bg-warning group-data-[type=warning]:!text-warning-foreground group-data-[type=info]:!bg-info group-data-[type=info]:!text-info-foreground",
@@ -1085,7 +1131,9 @@ describe("Badge loading arm", () => {
 		);
 		const el = container.querySelector('[data-kala-component="badge"]');
 		expect(el?.className).toContain("k-slot-root");
-		expect(el?.className).toContain("inline-flex h-5 w-16 items-center rounded-full");
+		expect(el?.className).toContain(
+			"inline-flex h-5 w-16 items-center rounded-full",
+		);
 	});
 });
 
@@ -1137,7 +1185,9 @@ describe("NativeSelect slotStyles", () => {
 			</NativeSelect>,
 		);
 		const select = container.querySelector("select");
-		expect(select?.className).toContain("h-[var(--kala-control-h-sm)] px-2 py-1 text-xs");
+		expect(select?.className).toContain(
+			"h-[var(--kala-control-h-sm)] px-2 py-1 text-xs",
+		);
 		expect(select?.className).toContain("border-destructive");
 	});
 });

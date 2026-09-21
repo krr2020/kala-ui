@@ -7,6 +7,7 @@ import * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
+import { useSlotStyles } from "../kala-provider";
 import type { AccordionProps, AccordionTriggerProps } from "./accordion.types";
 
 export const accordionVariants = cva("w-full", {
@@ -67,10 +68,11 @@ function AccordionItem({
 function AccordionTrigger({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	children,
 	...props
 }: AccordionTriggerProps) {
+	const slotStyles = useSlotStyles("accordion", slotStylesRaw);
 	const { variant } = React.useContext(AccordionContext);
 	const root = applySlot("flex", slotStyles?.root);
 	const chevron = applySlot(

@@ -6,6 +6,7 @@ import * as React from "react";
 import { type PopoverColor, popoverStyles } from "../../config/popover";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type {
 	PopoverContentProps,
 	PopoverHeaderProps,
@@ -73,7 +74,7 @@ const PopoverColorContext =
 function PopoverContent({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	align = "center",
 	sideOffset = 4,
 	variant = "default",
@@ -83,6 +84,7 @@ function PopoverContent({
 	children,
 	...props
 }: PopoverContentProps) {
+	const slotStyles = useSlotStyles("popover", slotStylesRaw);
 	const hasColoredHeader = headerColor !== undefined;
 	const padding = hasColoredHeader ? "none" : "md";
 	const arrowColor = headerColor ?? (variant === "solid" ? color : undefined);
@@ -145,10 +147,11 @@ function PopoverContent({
 function PopoverHeader({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	color,
 	...props
 }: PopoverHeaderProps) {
+	const slotStyles = useSlotStyles("popover", slotStylesRaw);
 	const context = React.useContext(PopoverColorContext);
 	const effectiveColor =
 		color ??
@@ -176,9 +179,10 @@ function PopoverHeader({
 function PopoverBody({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("popover", slotStylesRaw);
 	const context = React.useContext(PopoverColorContext);
 	const hasColoredHeader =
 		context?.headerColor !== undefined ||

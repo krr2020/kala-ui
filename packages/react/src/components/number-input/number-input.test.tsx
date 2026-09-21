@@ -53,7 +53,9 @@ describe("NumberInput", () => {
 	it("should increment by step amount", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={0} step={5} onValueChange={handleChange} />);
+		render(
+			<NumberInput defaultValue={0} step={5} onValueChange={handleChange} />,
+		);
 
 		await user.click(screen.getByLabelText("Increase value"));
 		expect(handleChange).toHaveBeenCalledWith(5);
@@ -62,7 +64,9 @@ describe("NumberInput", () => {
 	it("should not exceed max value", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={9} max={10} onValueChange={handleChange} />);
+		render(
+			<NumberInput defaultValue={9} max={10} onValueChange={handleChange} />,
+		);
 
 		await user.click(screen.getByLabelText("Increase value"));
 		expect(handleChange).toHaveBeenCalledWith(10);
@@ -76,7 +80,9 @@ describe("NumberInput", () => {
 	it("should not go below min value", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={1} min={0} onValueChange={handleChange} />);
+		render(
+			<NumberInput defaultValue={1} min={0} onValueChange={handleChange} />,
+		);
 
 		await user.click(screen.getByLabelText("Decrease value"));
 		expect(handleChange).toHaveBeenCalledWith(0);

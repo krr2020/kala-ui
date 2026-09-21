@@ -3,6 +3,7 @@ import type * as React from "react";
 import { applySlot } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
+import { useSlotStyles } from "../kala-provider";
 import type { IndicatorProps } from "./indicator.types";
 
 const indicatorVariants = cva(
@@ -58,9 +59,10 @@ function Indicator({
 	label,
 	children,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: IndicatorProps) {
+	const slotStyles = useSlotStyles("indicator", slotStylesRaw);
 	const getPositionStyles = () => {
 		const styles: React.CSSProperties = {};
 

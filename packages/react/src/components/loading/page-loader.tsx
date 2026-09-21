@@ -1,5 +1,6 @@
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import { Spinner } from "../spinner";
 import type { PageLoaderProps } from "./loading.types";
 
@@ -14,8 +15,9 @@ function PageLoader({
 	message = "Loading...",
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 }: PageLoaderProps) {
+	const slotStyles = useSlotStyles("loading", slotStylesRaw);
 	const root = applySlot(
 		cn(
 			"flex min-h-screen flex-col items-center justify-center gap-4 bg-background",

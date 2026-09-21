@@ -4,6 +4,7 @@ import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
 import { Heading } from "../heading";
+import { useSlotStyles } from "../kala-provider";
 import type { CardSkeletonConfig } from "../skeleton/skeleton.types";
 import { Text } from "../text";
 import { CardSkeleton } from "./card-skeleton";
@@ -20,13 +21,14 @@ function Card({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	isLoading = false,
 	skeletonConfig,
 	skeleton,
 	children,
 	...props
 }: CardProps) {
+	const slotStyles = useSlotStyles("card", slotStylesRaw);
 	const root = applySlot(cn(cardStyles.base, className), slotStyles?.root);
 	const rootStyle = mergeStyle(style, root.style);
 	if (isLoading) {
@@ -49,7 +51,7 @@ function Card({
 		<Box
 			data-kala-component="card"
 			ref={ref}
-				className={root.className}
+			className={root.className}
 			style={rootStyle}
 			{...props}
 		>
@@ -61,9 +63,10 @@ function Card({
 function CardHeader({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("card", slotStylesRaw);
 	const root = applySlot(cn(cardStyles.header, className), slotStyles?.root);
 	return (
 		<Box
@@ -78,9 +81,10 @@ function CardHeader({
 function CardTitle({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.HTMLAttributes<HTMLHeadingElement> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("card", slotStylesRaw);
 	const root = applySlot(cn(cardStyles.title, className), slotStyles?.root);
 	return (
 		<Heading
@@ -97,9 +101,10 @@ function CardTitle({
 function CardSubtitle({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.HTMLAttributes<HTMLHeadingElement> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("card", slotStylesRaw);
 	const root = applySlot(cn(cardStyles.subtitle, className), slotStyles?.root);
 	return (
 		<Heading
@@ -115,9 +120,10 @@ function CardSubtitle({
 function CardDescription({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: Omit<React.ComponentProps<"p">, "color"> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("card", slotStylesRaw);
 	const root = applySlot(
 		cn(cardStyles.description, className),
 		slotStyles?.root,
@@ -135,9 +141,10 @@ function CardDescription({
 function CardAction({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("card", slotStylesRaw);
 	const root = applySlot(cn("ml-auto", className), slotStyles?.root);
 	return (
 		<Box
@@ -152,9 +159,10 @@ function CardAction({
 function CardContent({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("card", slotStylesRaw);
 	const root = applySlot(cn(cardStyles.content, className), slotStyles?.root);
 	return (
 		<Box
@@ -169,9 +177,10 @@ function CardContent({
 function CardFooter({
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: React.ComponentProps<"div"> & { slotStyles?: SlotStyles }) {
+	const slotStyles = useSlotStyles("card", slotStylesRaw);
 	const root = applySlot(cn(cardStyles.footer, className), slotStyles?.root);
 	return (
 		<Box

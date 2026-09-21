@@ -1,5 +1,6 @@
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { RingProgressProps } from "./ring-progress.types";
 
 export function RingProgress({
@@ -14,9 +15,10 @@ export function RingProgress({
 	label,
 	roundCaps = true,
 	sections,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	...props
 }: RingProgressProps) {
+	const slotStyles = useSlotStyles("ring-progress", slotStylesRaw);
 	const radius = (size - thickness) / 2;
 	const circumference = radius * 2 * Math.PI;
 

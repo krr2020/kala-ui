@@ -1,6 +1,6 @@
+import type * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
-import type * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import type { SlotStyles } from "../../lib/slot-styles";
 import type { buttonVariants } from "../button";
 

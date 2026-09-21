@@ -171,6 +171,10 @@
 			"types": "./dist/components/input-otp/index.d.ts",
 			"default": "./dist/components/input-otp/index.js"
 		},
+		"./kala-provider": {
+			"types": "./dist/components/kala-provider/index.d.ts",
+			"default": "./dist/components/kala-provider/index.js"
+		},
 		"./kbd": {
 			"types": "./dist/components/kbd/index.d.ts",
 			"default": "./dist/components/kbd/index.js"

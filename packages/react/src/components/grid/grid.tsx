@@ -2,6 +2,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import { useSlotStyles } from "../kala-provider";
 import type { GridItemProps, GridProps } from "./grid.types";
 
 const gridVariants = cva("grid", {
@@ -67,7 +68,7 @@ function Grid({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	cols,
 	gap,
 	flow,
@@ -76,6 +77,7 @@ function Grid({
 	asChild = false,
 	...props
 }: GridProps) {
+	const slotStyles = useSlotStyles("grid", slotStylesRaw);
 	const Comp = asChild ? Slot : "div";
 	const root = applySlot(
 		cn(gridVariants({ cols, gap, flow, align, justify, className })),
@@ -158,7 +160,7 @@ function GridItem({
 	ref,
 	className,
 	style,
-	slotStyles,
+	slotStyles: slotStylesRaw,
 	colSpan,
 	rowSpan,
 	colStart,
@@ -166,6 +168,7 @@ function GridItem({
 	asChild = false,
 	...props
 }: GridItemProps) {
+	const slotStyles = useSlotStyles("grid", slotStylesRaw);
 	const Comp = asChild ? Slot : "div";
 	const root = applySlot(
 		cn(gridItemVariants({ colSpan, rowSpan, colStart, colEnd, className })),
