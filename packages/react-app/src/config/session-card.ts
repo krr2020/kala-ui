@@ -10,9 +10,14 @@ export const sessionCardStyles = {
 	subtitle: "text-xs text-muted-foreground mt-0.5",
 	currentBadge:
 		"inline-flex items-center rounded-md bg-success/10 px-2 py-1 text-xs font-medium text-success border border-success/20",
-	revokeButton: "text-destructive hover:text-destructive hover:bg-destructive/10",
+	revokeButton:
+		"text-destructive hover:text-destructive hover:bg-destructive/10",
 	content: "pt-0",
 	detailList: "space-y-1.5 text-xs text-muted-foreground",
 	detailRow: "flex items-center gap-1.5",
 	detailIcon: "size-3.5",
+};
+
+export const sessionCardSkeletonStyles = {
+	root: "relative",
 };

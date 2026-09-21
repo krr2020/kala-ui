@@ -5,10 +5,11 @@ import { describe, expect, it } from "vitest";
 const ROOT = join(__dirname, "../components");
 const CONFIG = join(__dirname, "../../src/config");
 
-function walk(dir: string, out: string[] = []): string[] {
+function walk(dir: string): string[] {
+	const out: string[] = [];
 	for (const entry of readdirSync(dir)) {
 		const full = join(dir, entry);
-		if (statSync(full).isDirectory()) out.push(...walk(full, out.slice()));
+		if (statSync(full).isDirectory()) out.push(...walk(full));
 		else out.push(full);
 	}
 	return out;
@@ -38,6 +39,11 @@ const PORTED = new Set([
 	"app-shell",
 	"charts",
 ]);
+// The charts family's types file is chart.types.ts (predates the port and
+// is the shared BaseChartProps surface), so the guard resolves it by alias.
+const TYPES_ALIAS: Record<string, string> = {
+	charts: "chart.types.ts",
+};
 const PORT_QUEUE = [
 	"dnd",
 	"data-table",
@@ -52,15 +58,21 @@ describe("react-app config-table contract", () => {
 	it("ported component .tsx files carry no inline Tailwind base strings", () => {
 		const violators: string[] = [];
 		for (const file of walk(ROOT)) {
-			if (!file.endsWith(".tsx")) continue;
-			if (file.endsWith(".test.tsx") || file.endsWith(".stories.tsx")) continue;
-			if (!file.includes(`/components/${[...PORTED].join("/")}`) &&
-				![...PORTED].some((f) => file.includes(`/components/${f}/`))) continue;
+			if (!/\.(tsx|ts)$/.test(file)) continue;
+			if (/\.(test|stories)\.(tsx|ts)$/.test(file)) continue;
+			if (
+				!file.includes(`/components/${[...PORTED].join("/")}`) &&
+				![...PORTED].some((f) => file.includes(`/components/${f}/`))
+			)
+				continue;
 			const source = readFileSync(file, "utf8");
 			for (const line of source.split("\n")) {
 				const trimmed = line.trim();
 				if (trimmed.startsWith("*") || trimmed.startsWith("//")) continue;
-				if (TAILWIND_BASE.test(line)) {
+				// Only className string literals are styling decisions; ApexOptions
+				// object keys (grid:, legend:, …) are config, not class strings.
+				const isClassContext = /className=|class:/.test(line);
+				if (TAILWIND_BASE.test(line) && isClassContext) {
 					violators.push(`${file}: ${trimmed.slice(0, 70)}`);
 					break;
 				}
@@ -80,7 +92,7 @@ describe("react-app config-table contract", () => {
 			try {
 				for (const file of walk(dir)) {
 					if (!/\.(tsx|ts)$/.test(file)) continue;
-					if (file.endsWith(".test.") || file.endsWith(".stories.")) continue;
+					if (/\.(test|stories)\.(tsx|ts)$/.test(file)) continue;
 					const lines = readFileSync(file, "utf8").split("\n").length;
 					if (lines > 400) offenders.push(`${file}: ${lines}`);
 				}
@@ -91,33 +103,35 @@ describe("react-app config-table contract", () => {
 		expect(offenders).toEqual([]);
 	});
 
-		it("every ported family has a config table re-exported from config/index.ts", () => {
-			let index = "";
-			try {
-				index = readFileSync(join(CONFIG, "index.ts"), "utf8");
-			} catch {
-				throw new Error("src/config/index.ts missing");
-			}
-			const missing = [...PORTED].filter(
-				(family) => !index.includes(`./${family}`),
-			);
-			expect(missing).toEqual([]);
-		});
-
-		it("every ported family ships a <name>.types.ts re-exported from its barrel", () => {
-			const missing: string[] = [];
-			for (const family of PORTED) {
-				const dir = join(ROOT, family);
-				const typesFile = join(dir, `${family}.types.ts`);
-				try {
-					statSync(typesFile);
-			} catch {
-					missing.push(typesFile);
-					continue;
-				}
-				const barrel = readFileSync(join(dir, "index.ts"), "utf8");
-				if (!barrel.includes(family)) missing.push(`${dir}/index.ts`);
-			}
-			expect(missing).toEqual([]);
-		});
+	it("every ported family has a config table re-exported from config/index.ts", () => {
+		let index = "";
+		try {
+			index = readFileSync(join(CONFIG, "index.ts"), "utf8");
+		} catch {
+			throw new Error("src/config/index.ts missing");
+		}
+		const missing = [...PORTED].filter(
+			(family) => !index.includes(`./${family}`),
+		);
+		expect(missing).toEqual([]);
 	});
+
+	it("every ported family ships a <name>.types.ts re-exported from its barrel", () => {
+		const missing: string[] = [];
+		for (const family of PORTED) {
+			const dir = join(ROOT, family);
+			const typesFile = join(dir, TYPES_ALIAS[family] ?? `${family}.types.ts`);
+			try {
+				statSync(typesFile);
+			} catch {
+				missing.push(typesFile);
+				continue;
+			}
+			const barrel = readFileSync(join(dir, "index.ts"), "utf8");
+			const typesModule = TYPES_ALIAS[family] ?? `${family}.types.ts`;
+			if (!barrel.includes(typesModule.replace(/\.ts$/, "")))
+				missing.push(`${dir}/index.ts`);
+		}
+		expect(missing).toEqual([]);
+	});
+});

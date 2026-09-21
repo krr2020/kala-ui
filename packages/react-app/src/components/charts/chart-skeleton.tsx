@@ -14,35 +14,15 @@ import {
 	TableHeader,
 	TableRow,
 } from "@kala-ui/react/table";
+import { chartSkeletonStyles } from "../../config/charts";
 
 export interface ChartSkeletonProps {
-	/**
-	 * Height of the chart area (default: 350)
-	 */
 	height?: number;
-	/**
-	 * Show legend skeleton (default: true)
-	 */
 	showLegend?: boolean;
-	/**
-	 * Number of legend items to show (default: 4)
-	 */
 	legendCount?: number;
-	/**
-	 * Show table skeleton below chart
-	 */
 	showTable?: boolean;
-	/**
-	 * Number of table rows to show (default: 5)
-	 */
 	tableRows?: number;
-	/**
-	 * Number of table columns to show (default: 3)
-	 */
 	tableColumns?: number;
-	/**
-	 * Custom CSS class
-	 */
 	className?: string;
 }
 
@@ -58,25 +38,25 @@ export function ChartSkeleton({
 	return (
 		<div
 			data-kala-component="charts-chart-skeleton"
-			className={cn("w-full space-y-4", className)}
+			className={cn(chartSkeletonStyles.root, className)}
 		>
 			{/* Chart area skeleton */}
 			<div
-				className="w-full rounded-lg border bg-card kala-surface-card"
+				className={chartSkeletonStyles.frame}
 				style={{ height: `${height}px` }}
 			>
-				<div className="flex items-center justify-center h-full">
-					<Skeleton className="h-full w-full" />
+				<div className={chartSkeletonStyles.frameInner}>
+					<Skeleton className={chartSkeletonStyles.frameFill} />
 				</div>
 			</div>
 
 			{/* Legend skeleton */}
 			{showLegend && (
-				<div className="flex gap-4 justify-center mt-4">
+				<div className={chartSkeletonStyles.legendRow}>
 					{Array.from({ length: legendCount }).map((_, i) => (
-						<div key={`legend-${i}`} className="flex items-center gap-2">
-							<Skeleton className="h-3 w-3 rounded-full" />
-							<Skeleton className="h-4 w-16" />
+						<div key={`legend-${i}`} className={chartSkeletonStyles.legendItem}>
+							<Skeleton className={chartSkeletonStyles.legendDot} />
+							<Skeleton className={chartSkeletonStyles.legendLabel} />
 						</div>
 					))}
 				</div>
@@ -84,23 +64,26 @@ export function ChartSkeleton({
 
 			{/* Optional table below */}
 			{showTable && (
-				<div className="mt-6">
+				<div className={chartSkeletonStyles.tableWrap}>
 					<Table>
 						<TableHeader>
 							<TableRow>
 								{Array.from({ length: tableColumns }).map((_, index) => (
 									<TableHead key={`header-${index}`}>
-										<Skeleton className="h-4 w-24" />
+										<Skeleton className={chartSkeletonStyles.tableHead} />
 									</TableHead>
 								))}
 							</TableRow>
 						</TableHeader>
 						<TableBody>
 							{Array.from({ length: tableRows }).map((_, rowIndex) => (
-								<TableRow key={`row-${rowIndex}`} className="border-0">
+								<TableRow
+									key={`row-${rowIndex}`}
+									className={chartSkeletonStyles.tableRow}
+								>
 									{Array.from({ length: tableColumns }).map((_, colIndex) => (
 										<TableCell key={`cell-${rowIndex}-${colIndex}`}>
-											<Skeleton className="h-4 w-20" />
+											<Skeleton className={chartSkeletonStyles.tableCell} />
 										</TableCell>
 									))}
 								</TableRow>

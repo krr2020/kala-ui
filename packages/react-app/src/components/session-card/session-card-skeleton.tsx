@@ -7,6 +7,10 @@
 
 import { Card, CardContent, CardHeader } from "@kala-ui/react/card";
 import { cn } from "@kala-ui/react/lib/utils";
+import {
+	sessionCardSkeletonStyles,
+	sessionCardStyles,
+} from "../../config/session-card";
 import type { SessionCardSkeletonConfig } from "@kala-ui/react/skeleton";
 import { Skeleton, SkeletonCircle } from "@kala-ui/react/skeleton";
 
@@ -45,12 +49,11 @@ export function SessionCardSkeleton({
 		<Card
 			data-kala-component="session-card-skeleton"
 			data-testid={dataTestId || "session-card-skeleton"}
-			className={cn("relative", className)}
+			className={cn(sessionCardSkeletonStyles.root, className)}
 			style={style}
-			{...(markerProps as Record<string, string>)
-			}
+			{...(markerProps as Record<string, string>)}
 		>
-			<CardHeader className="pb-3">
+			<CardHeader className={sessionCardStyles.header}>
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex items-start gap-3 flex-1">
 						<SkeletonCircle size="1.5rem" className="rounded-md" />
