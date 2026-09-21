@@ -2,7 +2,10 @@ import type * as React from "react";
 import type { SlotStyles } from "../../lib/slot-styles";
 
 export interface TagInputProps
-	extends Omit<React.ComponentProps<"input">, "value" | "defaultValue"> {
+	extends Omit<
+		React.ComponentProps<"input">,
+		"value" | "defaultValue" | "onChange"
+	> {
 	/**
 	 * Array of tag values (controlled)
 	 */

@@ -2,8 +2,28 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { TagInput } from "./tag-input";
+import type { TagInputProps } from "./tag-input.types";
+
+const _propsCheck: TagInputProps = { onValueChange: () => {} };
+void _propsCheck;
 
 describe("TagInput", () => {
+	it("keeps the native input onChange off the props surface", () => {
+		// @ts-expect-error — onChange is omitted from TagInputProps; the array-tags
+		// API is onValueChange only. This directive going unused means it leaked back.
+		render(<TagInput onChange={() => {}} />);
+	});
+
+	it("fires onValueChange with the tag array on separator key", async () => {
+		const user = userEvent.setup();
+		const onValueChange = vi.fn();
+		render(<TagInput value={[]} onValueChange={onValueChange} />);
+
+		await user.type(screen.getByRole("textbox"), "solo,");
+
+		expect(onValueChange).toHaveBeenCalledWith(["solo"]);
+	});
+
 	it("should render tag input", () => {
 		render(<TagInput />);
 
@@ -26,13 +46,13 @@ describe("TagInput", () => {
 	it("should apply error and success arms on the root", () => {
 		const { container, rerender } = render(<TagInput />);
 		rerender(<TagInput hasError />);
-		expect(container.querySelector('[data-kala-component="tag-input"] > div')).toHaveClass(
-			"border-destructive",
-		);
+		expect(
+			container.querySelector('[data-kala-component="tag-input"] > div'),
+		).toHaveClass("border-destructive");
 		rerender(<TagInput hasSuccess />);
-		expect(container.querySelector('[data-kala-component="tag-input"] > div')).toHaveClass(
-			"border-success",
-		);
+		expect(
+			container.querySelector('[data-kala-component="tag-input"] > div'),
+		).toHaveClass("border-success");
 	});
 
 	it("should add tag on comma press", async () => {

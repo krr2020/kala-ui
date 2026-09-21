@@ -26,7 +26,6 @@ export function TagInput({
 	disabled = false,
 	hasError = false,
 	hasSuccess = false,
-	onChange,
 	onKeyDown,
 	onPaste,
 	...props
@@ -66,7 +65,6 @@ export function TagInput({
 				// Check duplicates (also catches repeats within the same paste)
 				if (existing?.has(transformed)) continue;
 
-				// Validate tag
 				if (validateTag && !validateTag(transformed)) continue;
 
 				existing?.add(transformed);
@@ -160,40 +158,37 @@ export function TagInput({
 		}
 	};
 
-		const chipRoot = applySlot(
-			cn(
-				tagInputStyles.root,
-				"kala-focus-within-ring",
-					hasError && "border-destructive kala-focus-within-ring-destructive",
-					hasSuccess && "border-success",
-				hasSuccess && "border-success",
-				disabled && "cursor-not-allowed bg-muted",
-				tags.length > 0 && "pr-10",
-				className,
-			),
-			slotStyles?.root,
-		);
-		const removeSlot = applySlot(
-			cn(
-				tagInputStyles.remove,
-				disabled && "cursor-not-allowed opacity-50",
-			),
-			slotStyles?.remove,
-		);
-		const clearSlot = applySlot(
-			cn(
-				tagInputStyles.clear,
-				"text-muted-foreground hover:text-foreground hover:bg-accent",
-				"transition-colors",
-			),
-			slotStyles?.clear,
-		);
+	const chipRoot = applySlot(
+		cn(
+			tagInputStyles.root,
+			"kala-focus-within-ring",
+			hasError && "border-destructive kala-focus-within-ring-destructive",
+			hasSuccess && "border-success",
+			hasSuccess && "border-success",
+			disabled && "cursor-not-allowed bg-muted",
+			tags.length > 0 && "pr-10",
+			className,
+		),
+		slotStyles?.root,
+	);
+	const removeSlot = applySlot(
+		cn(tagInputStyles.remove, disabled && "cursor-not-allowed opacity-50"),
+		slotStyles?.remove,
+	);
+	const clearSlot = applySlot(
+		cn(
+			tagInputStyles.clear,
+			"text-muted-foreground hover:text-foreground hover:bg-accent",
+			"transition-colors",
+		),
+		slotStyles?.clear,
+	);
 
-		return (
-			<div data-kala-component="tag-input" className="relative w-full">
-				{/* biome-ignore lint/a11y/noStaticElementInteractions: click/keyboard anywhere in the chip container routes focus to the embedded input, which is the interactive element */}
-				<div
-					className={chipRoot.className}
+	return (
+		<div data-kala-component="tag-input" className="relative w-full">
+			{/* biome-ignore lint/a11y/noStaticElementInteractions: click/keyboard anywhere in the chip container routes focus to the embedded input, which is the interactive element */}
+			<div
+				className={chipRoot.className}
 				style={chipRoot.style}
 				onClick={handleContainerClick}
 				onKeyDown={handleContainerKeyDown}
@@ -230,7 +225,6 @@ export function TagInput({
 					type="text"
 					value={inputValue}
 					onChange={(e) => {
-						onChange?.(e);
 						setInputValue(e.target.value);
 					}}
 					onCompositionStart={() => {
