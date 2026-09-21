@@ -54,6 +54,9 @@ export function BannerSkeleton({
 				color === "warning" && "bg-warning text-warning-foreground",
 				color === "destructive" && "bg-destructive text-destructive-foreground",
 				color === "success" && "bg-success text-success-foreground",
+				color === "primary" && "bg-primary text-primary-foreground",
+				color === "secondary" && "bg-secondary text-secondary-foreground",
+				color === "muted" && "bg-muted text-muted-foreground",
 				className,
 			)}
 		>

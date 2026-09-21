@@ -20,6 +20,7 @@ function Badge({
 	variant,
 	color,
 	shape,
+	size,
 	asChild = false,
 	isLoading = false,
 	...props
@@ -47,7 +48,10 @@ function Badge({
 		<Comp
 			data-kala-component="badge"
 			data-slot="badge"
-			className={cn(badgeVariants({ variant, color, shape }), root.className)}
+			className={cn(
+				badgeVariants({ variant, color, shape, size }),
+				root.className,
+			)}
 			style={mergeStyle(style, root.style)}
 			{...props}
 		/>

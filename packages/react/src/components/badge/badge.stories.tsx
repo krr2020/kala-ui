@@ -12,20 +12,27 @@ const meta = {
 	argTypes: {
 		variant: {
 			control: "select",
+			options: ["solid", "outline", "subtle"],
+		},
+		color: {
+			control: "select",
 			options: [
 				"primary",
 				"secondary",
+				"destructive",
 				"success",
-				"danger",
 				"warning",
 				"info",
-				"light",
-				"dark",
+				"muted",
 			],
+		},
+		size: {
+			control: "select",
+			options: ["sm", "md", "lg"],
 		},
 		shape: {
 			control: "select",
-			options: ["default", "pill"],
+			options: ["rounded", "pill"],
 		},
 	},
 } satisfies Meta<typeof Badge>;
@@ -33,12 +40,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Contextual Variations
 export const ContextualVariations: Story = {
 	render: () => (
 		<div className="flex gap-2 flex-wrap items-center">
 			<Badge>Primary</Badge>
-			<Badge variant="secondary">Secondary</Badge>
+			<Badge color="secondary">Secondary</Badge>
 			<Badge color="success">Success</Badge>
 			<Badge color="destructive">Danger</Badge>
 			<Badge color="warning">Warning</Badge>
@@ -49,7 +55,6 @@ export const ContextualVariations: Story = {
 	),
 };
 
-// Pill Badges
 export const PillBadges: Story = {
 	render: () => (
 		<div className="flex gap-2 flex-wrap items-center">
@@ -70,16 +75,23 @@ export const PillBadges: Story = {
 				Info
 			</Badge>
 			<Badge color="muted" shape="pill">
-				Light
-			</Badge>
-			<Badge color="muted" shape="pill">
-				Dark
+				Muted
 			</Badge>
 		</div>
 	),
 };
 
-// Link Badges
+// Sizes
+export const Sizes: Story = {
+	render: () => (
+		<div className="flex gap-2 flex-wrap items-center">
+			<Badge size="sm">Small</Badge>
+			<Badge size="md">Medium</Badge>
+			<Badge size="lg">Large</Badge>
+		</div>
+	),
+};
+
 export const LinkBadges: Story = {
 	render: () => (
 		<div className="flex gap-2 flex-wrap items-center">

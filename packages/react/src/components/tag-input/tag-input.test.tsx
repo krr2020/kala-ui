@@ -23,6 +23,18 @@ describe("TagInput", () => {
 		expect(screen.getByText("tag2")).toBeInTheDocument();
 	});
 
+	it("should apply error and success arms on the root", () => {
+		const { container, rerender } = render(<TagInput />);
+		rerender(<TagInput hasError />);
+		expect(container.querySelector('[data-kala-component="tag-input"] > div')).toHaveClass(
+			"border-destructive",
+		);
+		rerender(<TagInput hasSuccess />);
+		expect(container.querySelector('[data-kala-component="tag-input"] > div')).toHaveClass(
+			"border-success",
+		);
+	});
+
 	it("should add tag on comma press", async () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();

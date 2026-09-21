@@ -87,13 +87,25 @@ describe("NativeSelect", () => {
 
 	it("applies error state classes", () => {
 		render(
-			<NativeSelect error>
+			<NativeSelect hasError>
 				<NativeSelectOption value="1">Option 1</NativeSelectOption>
 			</NativeSelect>,
 		);
 
 		const select = screen.getByRole("combobox");
 		expect(select).toHaveClass("border-destructive");
+	});
+
+	it("applies success state classes", () => {
+		render(
+			<NativeSelect hasSuccess>
+				<NativeSelectOption value="1">Option 1</NativeSelectOption>
+			</NativeSelect>,
+		);
+
+		const select = screen.getByRole("combobox");
+		expect(select).toHaveClass("border-success");
+		expect(select).toHaveClass("kala-focus-ring-success");
 	});
 
 	it("renders option groups", () => {

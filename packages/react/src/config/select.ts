@@ -50,7 +50,8 @@ export const nativeSelectStyles = {
 		md: "h-[var(--kala-control-h)] px-3 py-2",
 		sm: "h-[var(--kala-control-h-sm)] px-2 py-1 text-xs",
 	},
-	error: "border-destructive kala-focus-ring-destructive",
+	hasError: "border-destructive kala-focus-ring-destructive",
+	hasSuccess: "border-success kala-focus-ring-success",
 	icon: "pointer-events-none absolute right-2 top-1/2 -translate-y-1/2",
 	iconGlyph: {
 		md: "opacity-70 size-4",

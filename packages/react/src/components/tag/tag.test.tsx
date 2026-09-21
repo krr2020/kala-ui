@@ -67,6 +67,31 @@ describe("Tag", () => {
 		expect(container.querySelector('[data-slot="tag"]')).toHaveClass("text-xs");
 	});
 
+	it("should keep the pill shape by default and honor shape=rounded", () => {
+		const { container, rerender } = render(<Tag>React</Tag>);
+		expect(container.querySelector('[data-slot="tag"]')).toHaveClass(
+			"rounded-full",
+		);
+		rerender(<Tag shape="rounded">React</Tag>);
+		expect(container.querySelector('[data-slot="tag"]')).toHaveClass(
+			"rounded-[var(--kala-radius-control)]",
+		);
+		expect(container.querySelector('[data-slot="tag"]')).not.toHaveClass(
+			"rounded-full",
+		);
+	});
+
+	it("should render as a consumer element via asChild", () => {
+		render(
+			<Tag asChild>
+				<a href="/x">link tag</a>
+			</Tag>,
+		);
+		const link = screen.getByRole("link");
+		expect(link).toHaveAttribute("data-kala-component", "tag");
+		expect(link).toHaveClass("rounded-full");
+	});
+
 	it("should apply custom className", () => {
 		const { container } = render(<Tag className="custom-tag">Tag</Tag>);
 		expect(container.querySelector('[data-slot="tag"]')).toHaveClass(

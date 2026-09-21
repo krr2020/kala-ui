@@ -47,6 +47,30 @@ describe("Banner", () => {
 		expect(banner).not.toHaveClass("fixed");
 	});
 
+	it("should render with variant axis arms", () => {
+		render(
+			<Banner variant="subtle" color="primary">
+				Subtle
+			</Banner>,
+		);
+		expect(screen.getByRole("status")).toHaveClass(
+			"bg-primary/10",
+			"text-primary",
+		);
+	});
+
+	it("should render outline variant arms", () => {
+		render(
+			<Banner variant="outline" color="destructive">
+				Outline
+			</Banner>,
+		);
+		expect(screen.getByRole("status")).toHaveClass(
+			"border-destructive",
+			"text-destructive",
+		);
+	});
+
 	it("should render close button when onClose is provided", () => {
 		const onClose = vi.fn();
 		render(<Banner onClose={onClose}>Closable banner</Banner>);
@@ -133,7 +157,7 @@ describe("Banner", () => {
 
 	it("should render with isLoading and skeletonConfig (uses BannerSkeleton)", () => {
 		render(
-			<Banner isLoading skeletonConfig={{ variant: "warning" }}>
+			<Banner isLoading skeletonConfig={{ color: "warning" }}>
 				Content
 			</Banner>,
 		);
@@ -149,9 +173,25 @@ describe("Banner", () => {
 		expect(bannerStyles.base).toContain(
 			"w-full z-50 px-4 py-3 text-sm font-medium flex items-center justify-between gap-4",
 		);
-		expect(bannerStyles.variants.color.destructive).toBe(
-			"bg-destructive text-destructive-foreground",
-		);
 		expect(bannerStyles.variants.position.static).toBe("relative");
+		expect(bannerStyles.defaultVariants).toEqual({
+			variant: "solid",
+			color: "info",
+			position: "fixed",
+		});
+	});
+
+	it("should render as a consumer element via asChild", () => {
+		render(
+			<Banner asChild>
+				<a href="/x">link banner</a>
+			</Banner>,
+		);
+		// the banner role="status" is part of the merged props, so query by href
+		const link = screen.getByRole("status");
+		expect(link.tagName).toBe("A");
+		expect(link).toHaveAttribute("href", "/x");
+		expect(link).toHaveAttribute("data-kala-component", "banner");
+		expect(link).toHaveClass("bg-info");
 	});
 });

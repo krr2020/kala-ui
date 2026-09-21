@@ -205,7 +205,7 @@ export const WithDisabled: Story = {
 };
 
 /**
- * Radio group with error state
+ * Radio group with hasError state
  */
 export const WithError: Story = {
 	render: () => (
@@ -216,14 +216,14 @@ export const WithError: Story = {
 					id="e1"
 					label="Option One"
 					description="First option"
-					error
+					hasError
 				/>
 				<RadioGroupItem
 					value="option-two"
 					id="e2"
 					label="Option Two"
 					description="Second option"
-					error
+					hasError
 				/>
 			</RadioGroup>
 			<p className="text-sm text-destructive">

@@ -3,12 +3,16 @@
  * `size` the density. Default: subtle + muted + md.
  */
 export const tagStyles = {
-	base: "inline-flex items-center gap-1 rounded-full font-medium transition-colors select-none",
+	base: "inline-flex items-center gap-1 font-medium transition-colors select-none",
 	variants: {
 		variant: {
 			solid: "",
 			outline: "border bg-transparent",
 			subtle: "",
+		},
+		shape: {
+			rounded: "rounded-[var(--kala-radius-control)]",
+			pill: "rounded-full",
 		},
 		color: {
 			primary: "",
@@ -136,6 +140,7 @@ export const tagStyles = {
 		variant: "subtle",
 		color: "muted",
 		size: "md",
+		shape: "pill",
 	} as const,
 	icon: "shrink-0",
 	remove:

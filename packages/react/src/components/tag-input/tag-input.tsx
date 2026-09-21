@@ -76,6 +76,8 @@ export function TagInput({
 	placeholder = "Type and press comma...",
 	disabled = false,
 	hasError = false,
+	hasSuccess = false,
+	onChange,
 	onKeyDown,
 	onPaste,
 	...props
@@ -213,7 +215,9 @@ export function TagInput({
 			cn(
 				tagInputStyles.root,
 				"kala-focus-within-ring",
-				hasError && "border-destructive kala-focus-within-ring-destructive",
+					hasError && "border-destructive kala-focus-within-ring-destructive",
+					hasSuccess && "border-success",
+				hasSuccess && "border-success",
 				disabled && "cursor-not-allowed bg-muted",
 				tags.length > 0 && "pr-10",
 				className,
@@ -276,7 +280,10 @@ export function TagInput({
 					ref={inputRef}
 					type="text"
 					value={inputValue}
-					onChange={(e) => setInputValue(e.target.value)}
+					onChange={(e) => {
+						onChange?.(e);
+						setInputValue(e.target.value);
+					}}
 					onCompositionStart={() => {
 						isComposingRef.current = true;
 					}}

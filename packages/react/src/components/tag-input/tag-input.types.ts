@@ -1,7 +1,7 @@
 import type * as React from "react";
 
 export interface TagInputProps
-	extends Omit<React.ComponentProps<"input">, "value" | "onChange"> {
+	extends Omit<React.ComponentProps<"input">, "value"> {
 	/**
 	 * Array of tag values
 	 */
@@ -9,7 +9,7 @@ export interface TagInputProps
 	/**
 	 * Callback when tags change
 	 */
-	onChange?: (tags: string[]) => void;
+	onValueChange?: (tags: string[]) => void;
 	/**
 	 * Character(s) that trigger tag creation
 	 * @default [',']
@@ -40,4 +40,8 @@ export interface TagInputProps
 	 * Show error state
 	 */
 	hasError?: boolean;
+	/**
+	 * Show success state
+	 */
+	hasSuccess?: boolean;
 }

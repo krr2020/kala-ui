@@ -17,7 +17,10 @@ const meta = {
 			control: "radio",
 			options: ["sm", "default"],
 		},
-		error: {
+		hasError: {
+			control: "boolean",
+		},
+		hasSuccess: {
 			control: "boolean",
 		},
 		disabled: {
@@ -81,7 +84,7 @@ export const Disabled: Story = {
 export const WithError: Story = {
 	render: () => (
 		<div className="space-y-2">
-			<NativeSelect error defaultValue="">
+			<NativeSelect hasError defaultValue="">
 				<NativeSelectOption value="">
 					Please select an option
 				</NativeSelectOption>
@@ -90,6 +93,19 @@ export const WithError: Story = {
 				<NativeSelectOption value="orange">Orange</NativeSelectOption>
 			</NativeSelect>
 			<p className="text-destructive text-sm">This field is required</p>
+		</div>
+	),
+};
+
+export const WithSuccess: Story = {
+	render: () => (
+		<div className="space-y-2">
+			<NativeSelect hasSuccess defaultValue="apple">
+				<NativeSelectOption value="apple">Apple</NativeSelectOption>
+				<NativeSelectOption value="banana">Banana</NativeSelectOption>
+				<NativeSelectOption value="orange">Orange</NativeSelectOption>
+			</NativeSelect>
+			<p className="text-success text-sm">Looks good</p>
 		</div>
 	),
 };

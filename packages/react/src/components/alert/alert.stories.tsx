@@ -33,7 +33,7 @@ export const DefaultStyle: Story = {
 					A simple primary alert—check it out!
 				</AlertDescription>
 			</Alert>
-			<Alert variant="secondary">
+			<Alert color="secondary">
 				<AlertDescription>
 					A simple secondary alert—check it out!
 				</AlertDescription>
@@ -58,7 +58,6 @@ export const DefaultStyle: Story = {
 	),
 };
 
-// Outline Style
 export const OutlineStyle: Story = {
 	render: () => (
 		<Flex direction="column" gap={4} className="w-[600px]">
@@ -94,7 +93,6 @@ export const OutlineStyle: Story = {
 	),
 };
 
-// Solid Style
 export const SolidStyle: Story = {
 	render: () => (
 		<Flex direction="column" gap={4} className="w-[600px]">
@@ -154,7 +152,6 @@ export const WithIcons: Story = {
 	),
 };
 
-// With Title and Description
 export const WithTitleAndDescription: Story = {
 	render: () => (
 		<Alert color="success" className="w-[600px]">
@@ -192,14 +189,14 @@ export const WithLink: Story = {
 export const Dismissable: Story = {
 	render: () => (
 		<Flex direction="column" gap={4} className="w-[600px]">
-			<Alert color="success" dismissable>
+			<Alert color="success" dismissible>
 				<CheckCircle2 />
 				<AlertTitle>Success</AlertTitle>
 				<AlertDescription>
 					Your changes have been saved successfully.
 				</AlertDescription>
 			</Alert>
-			<Alert color="info" dismissable>
+			<Alert color="info" dismissible>
 				<InfoIcon />
 				<AlertTitle>Information</AlertTitle>
 				<AlertDescription>
@@ -208,7 +205,7 @@ export const Dismissable: Story = {
 			</Alert>
 			<Alert
 				color="warning"
-				dismissable
+				dismissible
 				onDismiss={() => console.log("Warning dismissed")}
 			>
 				<AlertTriangle />
@@ -218,7 +215,7 @@ export const Dismissable: Story = {
 					callback when dismissed.
 				</AlertDescription>
 			</Alert>
-			<Alert color="destructive" dismissable>
+			<Alert color="destructive" dismissible>
 				<AlertCircle />
 				<AlertTitle>Error</AlertTitle>
 				<AlertDescription>

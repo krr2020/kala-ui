@@ -9,6 +9,7 @@
  * being tied to a specific form or content area.
  */
 
+import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 import type * as React from "react";
@@ -20,6 +21,7 @@ import { BannerSkeleton } from "./banner-skeleton";
 
 const bannerClasses = cva(bannerStyles.base, {
 	variants: bannerStyles.variants,
+	compoundVariants: bannerStyles.compoundVariants as never,
 	defaultVariants: bannerStyles.defaultVariants,
 });
 
@@ -40,6 +42,8 @@ export interface BannerProps
 	isLoading?: boolean;
 	skeletonConfig?: BannerSkeletonConfig;
 	skeleton?: React.ReactNode;
+	/** Render the consumer's element instead of the default div */
+	asChild?: boolean;
 	/** Per-part overrides: `root` wins over `className`/`style`, `actions` targets the content row, `icon`/`close` the close glyph/button. */
 	slotStyles?: SlotStyles;
 }
@@ -48,6 +52,7 @@ export function Banner({
 className,
 style,
 slotStyles,
+variant,
 color,
 position,
 onClose,
@@ -56,12 +61,14 @@ role = "status",
 isLoading = false,
 skeletonConfig,
 skeleton,
+asChild = false,
 ...props
 }: BannerProps) {
 const root = applySlot(
-	cn(bannerClasses({ color, position }), className),
+	cn(bannerClasses({ variant, color, position }), className),
 	slotStyles?.root,
 );
+const Comp = asChild ? Slot : "div";
 const rootStyle = mergeStyle(style, root.style);
 if (isLoading) {
 	if (skeleton) {
@@ -92,16 +99,20 @@ const close = applySlot(bannerStyles.close, slotStyles?.close);
 const icon = applySlot(bannerStyles.icon, slotStyles?.icon);
 
 return (
-	<div
+	<Comp
 		data-kala-component="banner"
 		className={root.className}
 		style={rootStyle}
 		role={role}
 		{...props}
 	>
-		<div className={actions.className} style={actions.style}>
-			{children}
-		</div>
+		{asChild ? (
+			<Slottable>{children}</Slottable>
+		) : (
+			<div className={actions.className} style={actions.style}>
+				{children}
+			</div>
+		)}
 		{onClose && (
 			<button
 				type="button"
@@ -113,6 +124,6 @@ return (
 				<X className={icon.className} style={icon.style} aria-hidden="true" />
 			</button>
 		)}
-	</div>
+	</Comp>
 );
 }

@@ -8,6 +8,26 @@ describe("Badge", () => {
 		expect(screen.getByText("Badge")).toBeInTheDocument();
 	});
 
+	it("should size from the size axis with md default", () => {
+		const { container, rerender } = render(<Badge>MD</Badge>);
+		expect(container.querySelector('[data-slot="badge"]')).toHaveClass(
+			"px-2.5",
+			"py-1",
+			"text-xs",
+		);
+		rerender(<Badge size="sm">SM</Badge>);
+		expect(container.querySelector('[data-slot="badge"]')).toHaveClass(
+			"px-2",
+			"py-0.5",
+		);
+		rerender(<Badge size="lg">LG</Badge>);
+		expect(container.querySelector('[data-slot="badge"]')).toHaveClass(
+			"px-3",
+			"py-1.5",
+			"text-sm",
+		);
+	});
+
 	it("should render with default variant", () => {
 		const { container } = render(<Badge>Default</Badge>);
 		const badge = container.querySelector('[data-slot="badge"]');

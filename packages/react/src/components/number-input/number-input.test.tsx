@@ -28,14 +28,14 @@ describe("NumberInput", () => {
 	});
 
 	it("should render controlled value", () => {
-		render(<NumberInput value={10} onChange={vi.fn()} />);
+		render(<NumberInput value={10} onValueChange={vi.fn()} />);
 		expect(screen.getByRole("textbox")).toHaveValue("10");
 	});
 
 	it("should increment value when + button is clicked", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={5} onChange={handleChange} />);
+		render(<NumberInput defaultValue={5} onValueChange={handleChange} />);
 
 		await user.click(screen.getByLabelText("Increase value"));
 		expect(handleChange).toHaveBeenCalledWith(6);
@@ -44,7 +44,7 @@ describe("NumberInput", () => {
 	it("should decrement value when - button is clicked", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={5} onChange={handleChange} />);
+		render(<NumberInput defaultValue={5} onValueChange={handleChange} />);
 
 		await user.click(screen.getByLabelText("Decrease value"));
 		expect(handleChange).toHaveBeenCalledWith(4);
@@ -53,7 +53,7 @@ describe("NumberInput", () => {
 	it("should increment by step amount", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={0} step={5} onChange={handleChange} />);
+		render(<NumberInput defaultValue={0} step={5} onValueChange={handleChange} />);
 
 		await user.click(screen.getByLabelText("Increase value"));
 		expect(handleChange).toHaveBeenCalledWith(5);
@@ -62,7 +62,7 @@ describe("NumberInput", () => {
 	it("should not exceed max value", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={9} max={10} onChange={handleChange} />);
+		render(<NumberInput defaultValue={9} max={10} onValueChange={handleChange} />);
 
 		await user.click(screen.getByLabelText("Increase value"));
 		expect(handleChange).toHaveBeenCalledWith(10);
@@ -76,7 +76,7 @@ describe("NumberInput", () => {
 	it("should not go below min value", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={1} min={0} onChange={handleChange} />);
+		render(<NumberInput defaultValue={1} min={0} onValueChange={handleChange} />);
 
 		await user.click(screen.getByLabelText("Decrease value"));
 		expect(handleChange).toHaveBeenCalledWith(0);
@@ -89,7 +89,7 @@ describe("NumberInput", () => {
 	it("should increment on ArrowUp key", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={3} onChange={handleChange} />);
+		render(<NumberInput defaultValue={3} onValueChange={handleChange} />);
 
 		await user.click(screen.getByRole("textbox"));
 		await user.keyboard("{ArrowUp}");
@@ -99,7 +99,7 @@ describe("NumberInput", () => {
 	it("should decrement on ArrowDown key", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={3} onChange={handleChange} />);
+		render(<NumberInput defaultValue={3} onValueChange={handleChange} />);
 
 		await user.click(screen.getByRole("textbox"));
 		await user.keyboard("{ArrowDown}");
@@ -109,7 +109,7 @@ describe("NumberInput", () => {
 	it("should call onChange with undefined when input is cleared", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={5} onChange={handleChange} />);
+		render(<NumberInput defaultValue={5} onValueChange={handleChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.clear(input);
@@ -129,6 +129,28 @@ describe("NumberInput", () => {
 		expect(wrapper).toHaveClass("border-destructive");
 	});
 
+	it("should apply success styling when hasSuccess is true", () => {
+		const { container } = render(<NumberInput hasSuccess />);
+		const wrapper = container.querySelector('[data-slot="number-input"]');
+		expect(wrapper).toHaveClass("border-success");
+	});
+
+	it("fires the native onChange event alongside onValueChange", async () => {
+		const user = userEvent.setup();
+		const events: unknown[] = [];
+		render(
+			<NumberInput
+				defaultValue={5}
+				onChange={(e) => events.push(e.target.value)}
+				onValueChange={(v) => events.push(v)}
+			/>,
+		);
+		const input = screen.getByRole("textbox");
+		await user.type(input, "7");
+		expect(events).toContain("57");
+		expect(events).toContain(57);
+	});
+
 	it("should render loading skeleton when isLoading is true", () => {
 		const { container } = render(<NumberInput isLoading />);
 		expect(container.querySelector('[data-slot="number-input"]')).toBeNull();
@@ -140,7 +162,7 @@ describe("NumberInput", () => {
 	it("should clamp value to range on blur", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput min={0} max={100} onChange={handleChange} />);
+		render(<NumberInput min={0} max={100} onValueChange={handleChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.type(input, "150");
@@ -170,7 +192,7 @@ describe("NumberInput", () => {
 	it("should let the user type a leading minus without committing", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={5} onChange={handleChange} />);
+		render(<NumberInput defaultValue={5} onValueChange={handleChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.clear(input);
@@ -188,7 +210,7 @@ describe("NumberInput", () => {
 	it("should keep decimal points visible while typing", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={0} onChange={handleChange} />);
+		render(<NumberInput defaultValue={0} onValueChange={handleChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.clear(input);
@@ -205,7 +227,7 @@ describe("NumberInput", () => {
 	it("should clamp the buffered value on Enter", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput min={0} max={10} onChange={handleChange} />);
+		render(<NumberInput min={0} max={10} onValueChange={handleChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.type(input, "50");
@@ -219,7 +241,7 @@ describe("NumberInput", () => {
 	it("should revert non-numeric input on blur", async () => {
 		const user = userEvent.setup();
 		const handleChange = vi.fn();
-		render(<NumberInput defaultValue={7} onChange={handleChange} />);
+		render(<NumberInput defaultValue={7} onValueChange={handleChange} />);
 
 		const input = screen.getByRole("textbox");
 		await user.clear(input);

@@ -28,5 +28,5 @@ export interface RadioGroupItemProps
 	/**
 	 * Show error state
 	 */
-	error?: boolean;
+	hasError?: boolean;
 }

@@ -4,24 +4,26 @@ import type { SlotStyles } from "../../lib/slot-styles";
 export interface NumberInputProps
 	extends Omit<
 		React.ComponentProps<"input">,
-		"onChange" | "size" | "value" | "defaultValue" | "type"
+		"size" | "value" | "defaultValue" | "type"
 	> {
 	/** Controlled value */
 	value?: number;
 	/** Default value for uncontrolled usage */
 	defaultValue?: number;
-	/** Called with the new numeric value (undefined when input is cleared) */
-	onChange?: (value: number | undefined) => void;
 	/** Minimum allowed value */
 	min?: number;
 	/** Maximum allowed value */
 	max?: number;
 	/** Amount to increment/decrement per step */
 	step?: number;
+	/** Called with the new numeric value (undefined when input is cleared) */
+	onValueChange?: (value: number | undefined) => void;
 	/** Size variant */
 	size?: "sm" | "md";
 	/** Error state styling */
 	hasError?: boolean;
+	/** Success state styling */
+	hasSuccess?: boolean;
 	/** Show loading skeleton */
 	isLoading?: boolean;
 	/** Per-part overrides: `root` wins over `className`/`style` in every arm; `increment`/`decrement` target the stepper buttons, `divider` their inner borders. */

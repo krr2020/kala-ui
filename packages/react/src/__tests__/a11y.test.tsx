@@ -64,7 +64,7 @@ const cases: Array<[string, () => ReactElement]> = [
 		() => <K.AvatarGroup avatars={[{ fallback: "A" }, { fallback: "B" }]} />,
 	],
 	["Badge", () => <K.Badge>Badge</K.Badge>],
-	["Banner", () => <K.Banner variant="info">Maintenance at midnight</K.Banner>],
+	["Banner", () => <K.Banner color="info">Maintenance at midnight</K.Banner>],
 	["Box", () => <K.Box>box</K.Box>],
 	[
 		"Breadcrumbs",

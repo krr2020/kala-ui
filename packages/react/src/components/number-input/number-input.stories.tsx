@@ -10,7 +10,7 @@ const meta: Meta<typeof NumberInput> = {
 	},
 	tags: ["autodocs"],
 	args: {
-		onChange: fn(),
+		onValueChange: fn(),
 	},
 	argTypes: {
 		size: {
@@ -18,6 +18,7 @@ const meta: Meta<typeof NumberInput> = {
 			options: ["default", "sm"],
 		},
 		hasError: { control: "boolean" },
+		hasSuccess: { control: "boolean" },
 		disabled: { control: "boolean" },
 		isLoading: { control: "boolean" },
 		min: { control: "number" },

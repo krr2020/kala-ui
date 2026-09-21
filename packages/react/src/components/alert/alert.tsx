@@ -1,4 +1,5 @@
 import { useDisclosure } from "@kala-ui/react-hooks";
+import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import {
 	AlertCircle,
@@ -38,9 +39,10 @@ function Alert({
 	slotStyles,
 	variant = "subtle",
 	color = "primary",
-	dismissable = false,
+	dismissible = false,
 	onDismiss,
 	showIcon = true,
+	asChild = false,
 	children,
 	isLoading = false,
 	skeletonConfig,
@@ -99,7 +101,7 @@ function Alert({
 	const icon = applySlot(alertStyles.icon, slotStyles?.icon);
 	const dismiss = applySlot(alertStyles.dismiss, slotStyles?.dismiss);
 	const root = applySlot(
-		cn(alertVariants({ variant, color }), dismissable && "pr-10", className),
+		cn(alertVariants({ variant, color }), dismissible && "pr-10", className),
 		slotStyles?.root,
 	);
 	const hasCustomIcon = React.Children.toArray(children).some((child) => {
@@ -122,8 +124,10 @@ function Alert({
 		);
 	});
 
+	const Comp = asChild ? Slot : Box;
+
 	return (
-		<Box
+		<Comp
 			data-kala-component="alert"
 			data-slot="alert"
 			role="alert"
@@ -138,8 +142,8 @@ function Alert({
 					aria-hidden="true"
 				/>
 			)}
-			{children}
-			{dismissable && (
+			<Slottable>{children}</Slottable>
+			{dismissible && (
 				<Box
 					as="button"
 					type="button"
@@ -151,9 +155,9 @@ function Alert({
 					<X className="h-4 w-4" />
 				</Box>
 			)}
-		</Box>
-	);
-}
+			</Comp>
+		);
+	}
 
 function AlertTitle({
 	className,

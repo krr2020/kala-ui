@@ -1,5 +1,6 @@
 "use client";
 
+import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 import type * as React from "react";
@@ -21,6 +22,8 @@ export interface TagProps
 	onRemove?: () => void;
 	/** Icon to show before label */
 	icon?: React.ReactNode;
+	/** Render the consumer's element instead of the default span */
+	asChild?: boolean;
 	/** Per-part overrides: `root` wins over `className`/`style`, `icon` targets the icon wrapper, `remove` the remove button. */
 	slotStyles?: SlotStyles;
 }
@@ -32,16 +35,22 @@ function Tag({
 	variant,
 	color,
 	size,
+	shape,
+	asChild = false,
 	onRemove,
 	icon,
 	children,
 	...props
 }: TagProps) {
-	const root = applySlot(cn(tagClasses({ variant, color, size }), className), slotStyles?.root);
+	const root = applySlot(
+		cn(tagClasses({ variant, color, size, shape }), className),
+		slotStyles?.root,
+	);
 	const iconSlot = applySlot(tagStyles.icon, slotStyles?.icon);
 	const remove = applySlot(tagStyles.remove, slotStyles?.remove);
+	const Comp = asChild ? Slot : "span";
 	return (
-		<span
+		<Comp
 			data-kala-component="tag"
 			data-slot="tag"
 			className={root.className}
@@ -57,7 +66,7 @@ function Tag({
 					{icon}
 				</span>
 			)}
-			{children}
+			<Slottable>{children}</Slottable>
 			{onRemove && (
 				<button
 					type="button"
@@ -69,7 +78,7 @@ function Tag({
 					<X aria-hidden="true" />
 				</button>
 			)}
-		</span>
+		</Comp>
 	);
 }
 

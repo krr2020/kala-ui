@@ -17,7 +17,11 @@ export interface NativeSelectProps
 	/**
 	 * Error state styling
 	 */
-	error?: boolean;
+	hasError?: boolean;
+	/**
+	 * Success state styling
+	 */
+	hasSuccess?: boolean;
 	/** Per-part overrides: `root` targets the wrapper, `select` the native control, `icon` the chevron holder. */
 	slotStyles?: SlotStyles;
 }
@@ -28,7 +32,8 @@ function NativeSelect({
 	style,
 	slotStyles,
 	size = "md",
-	error,
+	hasError,
+	hasSuccess,
 	children,
 	disabled,
 	...props
@@ -38,7 +43,8 @@ function NativeSelect({
 		cn(
 			nativeSelectStyles.select,
 			nativeSelectStyles.size[size],
-			error && nativeSelectStyles.error,
+			hasError && nativeSelectStyles.hasError,
+			hasSuccess && nativeSelectStyles.hasSuccess,
 			className,
 		),
 		slotStyles?.select,

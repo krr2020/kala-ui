@@ -27,14 +27,14 @@ export const radioGroupItemStyles = {
 			md: "size-4",
 			lg: "size-5",
 		},
-		error: {
+		hasError: {
 			true: "border-destructive kala-ring-destructive",
 		},
 	},
 	defaultVariants: {
 		variant: "default",
 		size: "md",
-		error: false,
+		hasError: false,
 	} as const,
 };
 
@@ -48,13 +48,13 @@ export const radioGroupItemWrapperStyles = {
 
 export const radioGroupLabelStyles = {
 	base: "cursor-pointer",
-	error: "text-destructive",
+	hasError: "text-destructive",
 	cardBase: "text-sm font-medium",
 };
 
 export const radioGroupDescriptionStyles = {
 	base: "text-sm text-muted-foreground",
-	error: "text-destructive/80",
+	hasError: "text-destructive/80",
 };
 
 export const radioGroupIndicatorSizes = {

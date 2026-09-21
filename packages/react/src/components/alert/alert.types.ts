@@ -7,10 +7,12 @@ import type { alertVariants } from "./alert";
 export interface AlertProps
 	extends Omit<React.ComponentProps<"div">, "color">,
 		VariantProps<typeof alertVariants> {
-	dismissable?: boolean;
+	dismissible?: boolean;
 	onDismiss?: () => void;
 	showIcon?: boolean;
 	isLoading?: boolean;
+	/** Render the consumer's element instead of the default div */
+	asChild?: boolean;
 	skeletonConfig?: AlertSkeletonConfig;
 	skeleton?: React.ReactNode;
 	/** Per-part overrides: `root` wins over `className`/`style`, `icon` targets the status icon, `dismiss` the close button. */

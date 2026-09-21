@@ -144,7 +144,7 @@ describe("Button slotStyles", () => {
 describe("Alert slotStyles", () => {
 	it("icon and dismiss slots reach their nodes", () => {
 		render(
-			<Alert dismissable slotStyles={{ icon: "my-icon", dismiss: "my-dismiss" }}>
+			<Alert dismissible slotStyles={{ icon: "my-icon", dismiss: "my-dismiss" }}>
 				x
 			</Alert>,
 		);
@@ -245,7 +245,7 @@ describe("Tag slotStyles", () => {
 	it("absent slotStyles renders the exact pre-change class string", () => {
 		render(<Tag>x</Tag>);
 		expect(screen.getByText("x").className).toBe(
-			"inline-flex items-center gap-1 rounded-full font-medium transition-colors select-none text-sm px-2.5 py-1 [&_svg]:size-3.5 bg-muted text-muted-foreground",
+			"inline-flex items-center gap-1 font-medium transition-colors select-none rounded-full text-sm px-2.5 py-1 [&_svg]:size-3.5 bg-muted text-muted-foreground",
 		);
 	});
 
@@ -256,7 +256,7 @@ describe("Tag slotStyles", () => {
 			</Tag>,
 		);
 		expect(screen.getByText("x").className).toBe(
-			"inline-flex items-center gap-1 rounded-full font-medium transition-colors select-none text-xs px-2 py-0.5 [&_svg]:size-3 bg-primary text-primary-foreground",
+			"inline-flex items-center gap-1 font-medium transition-colors select-none rounded-full text-xs px-2 py-0.5 [&_svg]:size-3 bg-primary text-primary-foreground",
 		);
 	});
 });
@@ -265,7 +265,7 @@ describe("Banner slotStyles", () => {
 	it("absent slotStyles renders the exact pre-change class string", () => {
 		render(<Banner>x</Banner>);
 		expect(screen.getByRole("status").className).toBe(
-			"w-full z-50 px-4 py-3 text-sm font-medium flex items-center justify-between gap-4 bg-info text-info-foreground fixed top-0 left-0 right-0 shadow-md",
+			"w-full z-50 px-4 py-3 text-sm font-medium flex items-center justify-between gap-4 fixed top-0 left-0 right-0 shadow-md bg-info text-info-foreground",
 		);
 	});
 
@@ -276,7 +276,7 @@ describe("Banner slotStyles", () => {
 			</Banner>,
 		);
 		expect(screen.getByRole("status").className).toBe(
-			"w-full z-50 px-4 py-3 text-sm font-medium flex items-center justify-between gap-4 bg-destructive text-destructive-foreground relative",
+			"w-full z-50 px-4 py-3 text-sm font-medium flex items-center justify-between gap-4 relative bg-destructive text-destructive-foreground",
 		);
 	});
 });
@@ -1132,7 +1132,7 @@ describe("NativeSelect slotStyles", () => {
 
 	it("size=sm and error variants keep their classes through the table", () => {
 		const { container } = render(
-			<NativeSelect size="sm" error>
+			<NativeSelect size="sm" hasError>
 				<option value="a">A</option>
 			</NativeSelect>,
 		);
@@ -1580,7 +1580,7 @@ const styleTableEntries = [
 		part: "tag.root",
 		tsx: "../components/tag/tag.tsx",
 		config: "../config/tag.ts",
-		base: "inline-flex items-center gap-1 rounded-full font-medium transition-colors select-none",
+		base: "inline-flex items-center gap-1 font-medium transition-colors select-none",
 	},
 	{
 		part: "banner.root",

@@ -193,14 +193,14 @@ describe("RadioGroup", () => {
 	});
 
 	describe("Error State", () => {
-		it("should apply error styling when error prop is true", () => {
+		it("should apply hasError styling when hasError prop is true", () => {
 			render(
 				<RadioGroup>
 					<RadioGroupItem
 						value="option1"
 						id="option1"
 						label="Error Option"
-						error
+						hasError
 					/>
 				</RadioGroup>,
 			);
@@ -208,7 +208,7 @@ describe("RadioGroup", () => {
 			expect(label).toHaveClass("text-destructive");
 		});
 
-		it("should apply error styling to description", () => {
+		it("should apply hasError styling to description", () => {
 			render(
 				<RadioGroup>
 					<RadioGroupItem
@@ -216,7 +216,7 @@ describe("RadioGroup", () => {
 						id="option1"
 						label="Error Option"
 						description="Error description"
-						error
+						hasError
 					/>
 				</RadioGroup>,
 			);

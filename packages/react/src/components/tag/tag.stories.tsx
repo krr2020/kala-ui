@@ -22,7 +22,7 @@ export const Filled: Story = {
 	render: () => (
 		<div className="flex flex-wrap gap-2">
 			<Tag variant="solid">Default</Tag>
-			<Tag variant="filled" color="primary">
+			<Tag variant="solid" color="primary">
 				Primary
 			</Tag>
 			<Tag variant="solid" color="secondary">
@@ -106,6 +106,15 @@ export const Sizes: Story = {
 	),
 };
 
+export const Shapes: Story = {
+	render: () => (
+		<div className="flex items-center gap-2">
+			<Tag shape="pill">Pill</Tag>
+			<Tag shape="rounded">Rounded</Tag>
+		</div>
+	),
+};
+
 export const WithIcon: Story = {
 	render: () => (
 		<div className="flex flex-wrap gap-2">
@@ -165,7 +174,7 @@ export const WithIconAndRemove: Story = {
 export const AllVariants: Story = {
 	render: () => (
 		<div className="flex flex-col gap-6">
-			{(["filled", "outline", "soft"] as const).map((variant) => (
+			{(["solid", "outline", "subtle"] as const).map((variant) => (
 				<div key={variant} className="flex flex-col gap-2">
 					<span className="text-sm font-medium capitalize text-muted-foreground">
 						{variant}
@@ -173,12 +182,12 @@ export const AllVariants: Story = {
 					<div className="flex flex-wrap gap-2">
 						{(
 							[
-								"default",
+								"muted",
 								"primary",
 								"secondary",
 								"success",
 								"warning",
-								"error",
+								"destructive",
 								"info",
 							] as const
 						).map((color) => (

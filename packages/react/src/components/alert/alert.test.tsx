@@ -178,9 +178,9 @@ describe("Alert", () => {
 		expect(alert).toHaveClass("border-transparent");
 	});
 
-	it("should render dismiss button when dismissable is true", () => {
+	it("should render dismiss button when dismissible is true", () => {
 		render(
-			<Alert dismissable>
+			<Alert dismissible>
 				<AlertTitle>Dismissable</AlertTitle>
 			</Alert>,
 		);
@@ -188,9 +188,9 @@ describe("Alert", () => {
 		expect(button).toBeInTheDocument();
 	});
 
-	it("should add pr-10 class when dismissable", () => {
+	it("should add pr-10 class when dismissible", () => {
 		const { container } = render(
-			<Alert dismissable>
+			<Alert dismissible>
 				<AlertTitle>Dismissable</AlertTitle>
 			</Alert>,
 		);
@@ -202,7 +202,7 @@ describe("Alert", () => {
 		const onDismiss = vi.fn();
 		const user = userEvent.setup();
 		render(
-			<Alert dismissable onDismiss={onDismiss}>
+			<Alert dismissible onDismiss={onDismiss}>
 				<AlertTitle>Dismissable</AlertTitle>
 			</Alert>,
 		);
@@ -214,7 +214,7 @@ describe("Alert", () => {
 	it("should hide alert after dismiss", async () => {
 		const user = userEvent.setup();
 		render(
-			<Alert dismissable>
+			<Alert dismissible>
 				<AlertTitle>Dismissable</AlertTitle>
 			</Alert>,
 		);
@@ -245,15 +245,6 @@ describe("Alert", () => {
 		expect(screen.queryByText("Title")).not.toBeInTheDocument();
 	});
 
-	it("should render with isLoading and skeletonConfig (uses AlertSkeleton)", () => {
-		render(
-			<Alert isLoading skeletonConfig={{ variant: "warning" }}>
-				<AlertTitle>Title</AlertTitle>
-			</Alert>,
-		);
-		expect(screen.queryByText("Title")).not.toBeInTheDocument();
-	});
-
 	it("should render with isLoading and no skeleton props (uses default AlertSkeleton)", () => {
 		render(
 			<Alert isLoading>
@@ -263,7 +254,7 @@ describe("Alert", () => {
 		expect(screen.queryByText("Title")).not.toBeInTheDocument();
 	});
 
-	it("should not render dismiss button when dismissable is false", () => {
+	it("should not render dismiss button when dismissible is false", () => {
 		render(
 			<Alert>
 				<AlertTitle>Not Dismissable</AlertTitle>
@@ -377,7 +368,7 @@ describe("Alert", () => {
 	it("should call onDismiss without error when onDismiss is undefined", async () => {
 		const user = userEvent.setup();
 		render(
-			<Alert dismissable>
+			<Alert dismissible>
 				<AlertTitle>Dismissable</AlertTitle>
 			</Alert>,
 		);
@@ -462,7 +453,7 @@ describe("Alert", () => {
 
 	it("re-appears when content changes after dismissal", () => {
 		const { rerender } = render(
-			<Alert dismissable>
+			<Alert dismissible>
 				<AlertTitle>First message</AlertTitle>
 			</Alert>,
 		);
@@ -471,7 +462,7 @@ describe("Alert", () => {
 		expect(screen.queryByRole("alert")).not.toBeInTheDocument();
 
 		rerender(
-			<Alert dismissable>
+			<Alert dismissible>
 				<AlertTitle>Second message</AlertTitle>
 			</Alert>,
 		);

@@ -23,10 +23,12 @@ function NumberInput({
 	step = 1,
 	value,
 	defaultValue,
+	onValueChange,
 	onChange,
 	disabled = false,
 	size = "md",
 	hasError = false,
+	hasSuccess = false,
 	isLoading = false,
 	onKeyDown,
 	onBlur,
@@ -55,7 +57,7 @@ function NumberInput({
 		if (!isControlled) {
 			setInternalValue(newValue);
 		}
-		onChange?.(newValue === "" ? undefined : newValue);
+			onValueChange?.(newValue === "" ? undefined : newValue);
 	};
 
 	// 0.1 + 0.2 must be 0.3, not 0.30000000000000004: round the sum to the
@@ -117,6 +119,7 @@ function NumberInput({
 	};
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		onChange?.(e);
 		const raw = e.target.value;
 		if (!NUMERIC_TEXT_PATTERN.test(raw)) return;
 		setInputText(raw);
@@ -143,6 +146,7 @@ function NumberInput({
 			"focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-0",
 			size === "sm" ? "h-[var(--kala-control-h-sm)]" : "h-[var(--kala-control-h)]",
 			hasError && "border-destructive focus-within:kala-ring-destructive",
+			hasSuccess && "border-success",
 			disabled && "opacity-50 cursor-not-allowed",
 			className,
 		),

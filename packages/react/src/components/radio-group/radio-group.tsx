@@ -44,7 +44,7 @@ export interface RadioGroupItemProps
 	/**
 	 * Show error state
 	 */
-	error?: boolean;
+	hasError?: boolean;
 	/** Per-part style overrides (root wins over className/style) */
 	slotStyles?: SlotStyles;
 }
@@ -98,7 +98,7 @@ function RadioGroup({
 		slotStyles,
 		label,
 		description,
-		error,
+		hasError,
 		id,
 		children,
 		...props
@@ -120,7 +120,7 @@ function RadioGroup({
 					variant:
 						variant === "default" || variant === "cards" ? "default" : variant,
 					size,
-					error: error ? true : undefined,
+					hasError: hasError ? true : undefined,
 					}),
 				!hasContent && className,
 			),
@@ -176,7 +176,7 @@ function RadioGroup({
 								htmlFor={itemId}
 								className={cn(
 									radioGroupLabelStyles.base,
-									error && radioGroupLabelStyles.error,
+									hasError && radioGroupLabelStyles.hasError,
 								)}
 							>
 								{label}
@@ -186,7 +186,7 @@ function RadioGroup({
 							<p
 								className={cn(
 									radioGroupDescriptionStyles.base,
-									error && radioGroupDescriptionStyles.error,
+									hasError && radioGroupDescriptionStyles.hasError,
 								)}
 							>
 								{description}
@@ -198,12 +198,11 @@ function RadioGroup({
 		);
 	}
 
-		// For cards variant
-		if (variant === "cards") {
+	if (variant === "cards") {
 			const wrapper = applySlot(
 				cn(
 					radioGroupItemWrapperStyles.cards,
-					error && "border-destructive",
+					hasError && "border-destructive",
 					className,
 				),
 				slotStyles?.root,
@@ -223,7 +222,7 @@ function RadioGroup({
 								<div
 									className={cn(
 										radioGroupLabelStyles.cardBase,
-										error && radioGroupLabelStyles.error,
+										hasError && radioGroupLabelStyles.hasError,
 									)}
 								>
 									{label}
@@ -233,7 +232,7 @@ function RadioGroup({
 								<p
 									className={cn(
 										radioGroupDescriptionStyles.base,
-										error && radioGroupDescriptionStyles.error,
+										hasError && radioGroupDescriptionStyles.hasError,
 									)}
 								>
 									{description}
@@ -246,12 +245,11 @@ function RadioGroup({
 		);
 	}
 
-		// For buttons variant
-		if (variant === "buttons") {
+	if (variant === "buttons") {
 			const wrapper = applySlot(
 				cn(
 					radioGroupItemWrapperStyles.buttons,
-					error && "border-destructive",
+					hasError && "border-destructive",
 					className,
 				),
 				slotStyles?.root,

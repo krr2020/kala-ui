@@ -224,7 +224,14 @@ export interface BannerSkeletonConfig {
 	/**
 	 * Banner semantic color
 	 */
-	color?: "info" | "warning" | "destructive" | "success";
+	color?:
+		| "info"
+		| "warning"
+		| "destructive"
+		| "success"
+		| "primary"
+		| "secondary"
+		| "muted";
 	/**
 	 * Show icon in skeleton
 	 */

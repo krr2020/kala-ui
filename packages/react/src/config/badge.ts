@@ -23,6 +23,11 @@ export const badgeStyles = {
 			rounded: "rounded",
 			pill: "rounded-full",
 		},
+		size: {
+			sm: "px-2 py-0.5",
+			md: "",
+			lg: "px-3 py-1.5 text-sm",
+		},
 	},
 	compoundVariants: [
 		{
@@ -139,6 +144,7 @@ export const badgeStyles = {
 		variant: "solid",
 		color: "primary",
 		shape: "rounded",
+		size: "md",
 	} as const,
 	loading: "inline-flex h-5 w-16 items-center rounded-full",
 };
