@@ -2,27 +2,24 @@ packages:
   - 'packages/*'
   - 'apps/*'
 
-# Peer-range registry lag fixes (metadata, not install pins):
-# - jest-watch-typeahead 2.2.1 declares jest ^27||^28||^29 but works on 30;
-#   allowedVersions silences the unmet-peer warning without loosening any pin.
+# Expo SDK 57 pins react-native-worklets 0.10.1 in bundledNativeModules;
+# expo-modules-core/reanimated peer metadata asks 0.12.x. Force the single
+# SDK-tested version so a second worklets instance cannot split the module registry.
+overrides:
+  react-native-worklets: 0.10.1
+
+# Peer-range registry-lag fixes (warning filters, not install pins): each
+# entry silences an unmet-peer WARNING where published metadata trails the
+# versions this repo pins.
 peerDependencyRules:
   allowedVersions:
-    # '>=27' crashes pnpm 10.17.1's warning filter
-    # (bareSpecifier.startsWith is not a function); the major-only range
-    # silences the same stale-peer warning for the resolved jest 30.
-    jest-watch-typeahead:
-      jest: '30'
-    # Expo SDK 57's bundledNativeModules pins worklets 0.10.1 with
-    # reanimated 4.5.1; expo-modules-core 57's published peer range asks
-    # for 0.12.x — registry metadata lag, not a real matrix conflict.
-    expo-modules-core:
-      react-native-worklets: '0'
-    react-native-reanimated:
-      react-native-worklets: '0'
-    # The library pins react 19.2.3 (Expo SDK 57's tested pair); react-dom's
-    # metadata asks ^19.3.0 — same lag class as the catalog's web react pin.
-    react-dom:
-      react: '19'
+    # Flat 'parent>peer' selector keys are the documented shape. Object-valued
+    # entries crash pnpm's selector parser (bareSpecifier.startsWith on a
+    # non-string), so never nest a map under a package name here.
+    'jest-watch-typeahead>jest': '30'
+    'expo-modules-core>react-native-worklets': '0'
+    'react-native-reanimated>react-native-worklets': '0'
+    'react-dom>react': '19'
 
 # Single source of truth for dependency versions shared across workspace
 # packages — reference as "catalog:" from any package.json. Every entry is an

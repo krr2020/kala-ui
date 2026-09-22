@@ -45,10 +45,5 @@
 	"engines": {
 		"node": ">=18.0.0",
 		"pnpm": ">=8.0.0"
-	},
-	"pnpm": {
-		"overrides": {
-			"react-native-worklets": "0.10.1"
-		}
 	}
 }
