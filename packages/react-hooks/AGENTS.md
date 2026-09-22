@@ -1,6 +1,6 @@
 # AGENTS.md — @kala-ui/react-hooks
 
-38 SSR-safe utility hooks — no component code. Both `@kala-ui/react` and `@kala-ui/react-app` depend on this package.
+37 SSR-safe utility hooks — no component code. Both `@kala-ui/react` and `@kala-ui/react-app` depend on this package.
 
 ## Commands
 
@@ -13,7 +13,7 @@ pnpm --filter @kala-ui/react-hooks test      # vitest run — root test:watch/te
 ## Structure
 
 - One hook per directory in `src/`, re-exported (hook + types) from `src/index.ts`:
-  - State: `use-counter`, `use-toggle`, `use-disclosure`, `use-list-state`, `use-uncontrolled`, `use-previous`, `use-pagination`, `use-id`, `use-mounted`.
+  - State: `use-counter`, `use-toggle`, `use-disclosure`, `use-list-state`, `use-uncontrolled`, `use-previous`, `use-pagination`, `use-mounted`.
   - Timing: `use-debounce`, `use-debounced-value`, `use-timeout`, `use-interval`.
   - DOM/events: `use-click-outside`, `use-focus-trap`, `use-hotkeys`, `use-hover`, `use-mouse`, `use-move`, `use-element-size`, `use-viewport-size`, `use-window-event`, `use-window-scroll`, `use-scroll-lock`, `use-intersection`, `use-merged-ref`, `use-isomorphic-effect`.
   - Browser APIs: `use-clipboard`, `use-local-storage` (exports both `useLocalStorage` and `useSessionStorage`), `use-media-query`, `use-network`, `use-os`, `use-color-scheme`, `use-reduced-motion`, `use-document-title`, `use-idle`.

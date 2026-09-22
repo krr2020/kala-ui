@@ -8,7 +8,7 @@ Kala UI — pnpm monorepo for a token-driven React component library (web + Reac
 | --- | --- | --- |
 | `packages/react` | `@kala-ui/react` | ~90 web components (Radix + Tailwind): primitives, form controls, overlays/menus + theming tokens + Storybook |
 | `packages/react-app` | `@kala-ui/react-app` | 15 app composites on the core: AppShell, DataTable, charts, dnd, dashboard/auth widgets |
-| `packages/react-hooks` | `@kala-ui/react-hooks` | 38 SSR-safe hooks: state, timing, DOM observers, browser APIs |
+| `packages/react-hooks` | `@kala-ui/react-hooks` | 37 SSR-safe hooks: state, timing, DOM observers, browser APIs |
 | `packages/react-native` | `@kala-ui/react-native` | Native arm: Unistyles themes + ~50 rebuilt components (source-exported) |
 | `packages/react-native-app` | `@kala-ui/react-native-app` | Native chrome: app-shell, tab-bar, native charts/data-table (source-exported) |
 | `apps/playground` | `@kala-ui/playground` | Next.js App Router consumer gate — RSC/server-render check for web |

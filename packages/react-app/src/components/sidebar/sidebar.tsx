@@ -7,6 +7,7 @@ import {
 	useMediaQuery,
 	useMergedRef,
 	useScrollLock,
+	useWindowEvent,
 } from "@kala-ui/react-hooks";
 import { ChevronDown } from "lucide-react";
 import type * as React from "react";
@@ -83,14 +84,9 @@ export function Sidebar({
 		setScrollLocked(overlayActive);
 	}, [overlayActive, setScrollLocked]);
 
-	useEffect(() => {
-		if (!overlayActive) return;
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === "Escape") onClose?.();
-		};
-		window.addEventListener("keydown", handleKeyDown);
-		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, [overlayActive, onClose]);
+	useWindowEvent("keydown", (event) => {
+		if (event.key === "Escape" && overlayActive) onClose?.();
+	});
 
 	// Track which sections are expanded
 	const [expandedSections, setExpandedSections] = useState<Set<number>>(

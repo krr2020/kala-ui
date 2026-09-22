@@ -536,4 +536,19 @@ describe("Header mobile menu accessibility", () => {
 		await user.keyboard("{Escape}");
 		expect(onToggle).toHaveBeenCalledTimes(1);
 	});
+
+	it("ignores Escape while the menu is closed", async () => {
+		const user = userEvent.setup();
+		const onToggle = vi.fn();
+		render(
+			<Header
+				logo={<a href="/">Kala</a>}
+				navLinks={[{ label: "Home", href: "/" }]}
+				isMobileMenuOpen={false}
+				onMobileMenuToggle={onToggle}
+			/>,
+		);
+		await user.keyboard("{Escape}");
+		expect(onToggle).not.toHaveBeenCalled();
+	});
 });

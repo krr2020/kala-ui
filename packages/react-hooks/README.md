@@ -1,6 +1,6 @@
 # @kala-ui/react-hooks
 
-38 reusable React hooks for building modern web applications — the foundation
+37 reusable React hooks for building modern web applications — the foundation
 layer of [Kala UI](https://github.com/krr2020/kala-ui) (`@kala-ui/react`
 depends on this package). SSR-safe, React 19 typed, zero dependencies.
 
@@ -60,7 +60,6 @@ Requires React 19.2+ (peer dependency).
 ### SSR & utilities
 - `useIsomorphicEffect` — `useLayoutEffect` on the client, no-op on the server
 - `useMounted` — mounted flag
-- `useId` — unique id generator
 - `useCallbackRef` — stable ref for the latest callback
 
 ## Usage examples

@@ -17,7 +17,12 @@ import {
 import { Stack } from "@kala-ui/react/stack";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@kala-ui/react/tabs";
 import { Text } from "@kala-ui/react/text";
-import { useFocusTrap, useMounted, useScrollLock } from "@kala-ui/react-hooks";
+import {
+	useFocusTrap,
+	useMounted,
+	useScrollLock,
+	useWindowEvent,
+} from "@kala-ui/react-hooks";
 import { Bell, ChevronDown, Menu, Settings, X } from "lucide-react";
 import * as React from "react";
 import { createPortal } from "react-dom";
@@ -94,14 +99,9 @@ export function Header({
 
 	// Fullscreen mobile menu: trap focus, close on Escape.
 	const mobileNavRef = useFocusTrap(!!isMobileMenuOpen);
-	React.useEffect(() => {
-		if (!isMobileMenuOpen) return;
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === "Escape") onMobileMenuToggle?.();
-		};
-		window.addEventListener("keydown", handleKeyDown);
-		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, [isMobileMenuOpen, onMobileMenuToggle]);
+	useWindowEvent("keydown", (event) => {
+		if (event.key === "Escape" && isMobileMenuOpen) onMobileMenuToggle?.();
+	});
 
 	const mounted = useMounted();
 

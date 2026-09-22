@@ -1,4 +1,4 @@
-// 38 exported use* hooks (count pinned here; README.md, AGENTS.md, and
+// 37 exported use* hooks (count pinned here; README.md, AGENTS.md, and
 // packages/react-hooks/README.md state the same number).
 
 // State Management Hooks
@@ -41,7 +41,6 @@ export {
 	type UseHoverReturn,
 	useHover,
 } from "./use-hover/use-hover";
-export { useId } from "./use-id/use-id";
 export {
 	type UseIdleOptions,
 	useIdle,
@@ -108,5 +107,4 @@ export {
 	type WindowScrollPosition,
 } from "./use-window-scroll/use-window-scroll";
 
-// Utils
 export { useCallbackRef } from "./utils";

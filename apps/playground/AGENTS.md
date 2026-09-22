@@ -1,6 +1,6 @@
 # AGENTS.md — @kala-ui/playground
 
-Next.js App Router consumer gate: imports `@kala-ui/react`, `react-app`, and `react-hooks` exactly like a real application and server-renders components. This is a build-time integration test, not a package — it exists to catch RSC/server-render and packaging regressions before release.
+Next.js App Router consumer gate: imports `@kala-ui/react` and `react-app` exactly like a real application and server-renders components. This is a build-time integration test, not a package — it exists to catch RSC/server-render and packaging regressions before release.
 
 ## Commands
 

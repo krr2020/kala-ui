@@ -341,6 +341,22 @@ describe("Sidebar mobile overlay accessibility", () => {
 		expect(document.body.style.overflow).toBe("");
 	});
 
+	it("closes on Escape while the overlay is active", async () => {
+		const user = userEvent.setup();
+		const onClose = vi.fn();
+		render(<Sidebar navSections={[]} isOpen onClose={onClose} />);
+		await user.keyboard("{Escape}");
+		expect(onClose).toHaveBeenCalledTimes(1);
+	});
+
+	it("ignores Escape while the overlay is inactive", async () => {
+		const user = userEvent.setup();
+		const onClose = vi.fn();
+		render(<Sidebar navSections={[]} isOpen={false} onClose={onClose} />);
+		await user.keyboard("{Escape}");
+		expect(onClose).not.toHaveBeenCalled();
+	});
+
 	it("traps Tab focus within the open sidebar", async () => {
 		const user = userEvent.setup();
 		render(

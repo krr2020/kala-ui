@@ -1,5 +1,6 @@
 "use client";
 
+import { useClickOutside } from "@kala-ui/react-hooks";
 import { cn } from "@kala-ui/react/lib/utils";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
@@ -19,20 +20,11 @@ export function Navigation({
 
 	const isActive = (href: string) => isActivePath(pathname, href);
 
-	// Close mobile menu when clicking outside
-	React.useEffect(() => {
-		if (!isMobileOpen) return;
-
-		const handleClickOutside = (event: MouseEvent) => {
-			const target = event.target as HTMLElement;
-			if (!target.closest("[data-mobile-nav]")) {
-				setIsMobileOpen(false);
-			}
-		};
-
-		document.addEventListener("click", handleClickOutside);
-		return () => document.removeEventListener("click", handleClickOutside);
-	}, [isMobileOpen]);
+	// Close mobile menu when clicking outside the wrapper (toggle + dropdown);
+	// React bails out on the redundant setState while already closed.
+	const mobileNavRef = useClickOutside<HTMLDivElement>(() => {
+		setIsMobileOpen(false);
+	});
 
 	// Vertical desktop navigation (explicit opt-in via orientation)
 	if (orientation === "vertical") {
@@ -148,18 +140,15 @@ export function Navigation({
 				))}
 			</nav>
 
-			{/* Mobile Dropdown Navigation */}
+				{/* Mobile Dropdown Navigation */}
 			<div
 				data-kala-component="navigation"
 				className="md:hidden"
-				data-mobile-nav
+				ref={mobileNavRef}
 			>
 				<button
 					type="button"
-					onClick={(e) => {
-						e.stopPropagation();
-						setIsMobileOpen(!isMobileOpen);
-					}}
+					onClick={() => setIsMobileOpen(!isMobileOpen)}
 					className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md px-2 py-1"
 					aria-label="Toggle mobile navigation"
 					aria-expanded={isMobileOpen}
@@ -172,12 +161,10 @@ export function Navigation({
 						)}
 					/>
 				</button>
-				{isMobileOpen && (
-					// biome-ignore lint/a11y/useKeyWithClickEvents: Stop propagation is not an interactive action
+					{isMobileOpen && (
 					<nav
 						className="mt-2 flex flex-col gap-2 bg-popover border rounded-md p-3 text-popover-foreground kala-surface-popover"
 						aria-label="Mobile navigation"
-						onClick={(e) => e.stopPropagation()}
 					>
 						{links.map((link) => (
 							<a
