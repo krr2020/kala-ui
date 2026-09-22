@@ -11,20 +11,23 @@ import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Sheet } from "../sheet";
 import { applySlot } from "../slot-styles";
+import type { MenuTheme } from "./dropdown-menu.styles";
+import {
+	chevronStyle,
+	contentStyle,
+	emptyTextStyle,
+	indicatorStyle,
+	labelTextStyle,
+	rowBase,
+	rowTextStyle,
+	separatorStyle,
+	triggerLabelStyle,
+	triggerStyle,
+} from "./dropdown-menu.styles";
 import type {
 	DropdownMenuItem,
 	DropdownMenuProps,
 } from "./dropdown-menu.types";
-
-interface MenuTheme {
-	foreground: string;
-	mutedForeground: string;
-	primary: string;
-	destructive: string;
-	separator: string;
-	card: string;
-	border: string;
-}
 
 function renderMenuItem(
 	item: DropdownMenuItem,
@@ -33,21 +36,12 @@ function renderMenuItem(
 	close: () => void,
 	itemStyles?: ReturnType<typeof applySlot>,
 ): ReactElement {
-	const rowBase = {
-		minHeight: 44,
-		flexDirection: "row" as const,
-		alignItems: "center" as const,
-		gap: 8,
-		paddingHorizontal: 12,
-		borderRadius: 8,
-	};
-
 	if (item.type === "separator") {
 		return (
 			<View
 				key={item.key}
 				testID={`${prefix}-separator`}
-				style={{ height: 1, backgroundColor: theme.separator }}
+				style={separatorStyle(theme)}
 			/>
 		);
 	}
@@ -57,11 +51,7 @@ function renderMenuItem(
 			<View key={item.key} testID={`${prefix}-label`} style={rowBase}>
 				<RNText
 					numberOfLines={1}
-					style={{
-						fontSize: 12,
-						fontWeight: "600",
-						color: theme.mutedForeground,
-					}}
+					style={labelTextStyle(theme)}
 				>
 					{item.label}
 				</RNText>
@@ -106,23 +96,17 @@ function renderMenuItem(
 						) : (
 							<View
 								testID="k-menu-item-indicator"
-								style={{
-									width: 8,
-									height: 8,
-									borderRadius: 4,
-									backgroundColor: theme.primary,
-								}}
+								style={indicatorStyle(theme)}
 							/>
 						)
 					) : null}
 				</View>
 				<RNText
 					numberOfLines={1}
-					style={{
-						flex: 1,
-						fontSize: 14,
-						color: item.disabled ? theme.mutedForeground : theme.foreground,
-					}}
+					style={rowTextStyle(
+						theme,
+						item.disabled ? "mutedForeground" : "foreground",
+					)}
 				>
 					{item.label}
 				</RNText>
@@ -149,16 +133,14 @@ function renderMenuItem(
 		>
 			<RNText
 				numberOfLines={1}
-				style={{
-					flex: 1,
-					fontSize: 14,
-					color:
-						item.disabled === true
-							? theme.mutedForeground
-							: item.destructive === true
-								? theme.destructive
-								: theme.foreground,
-				}}
+				style={rowTextStyle(
+					theme,
+					item.disabled === true
+						? "mutedForeground"
+						: item.destructive === true
+							? "destructive"
+							: "foreground",
+				)}
 			>
 				{item.label}
 			</RNText>
@@ -191,17 +173,7 @@ export function DropdownMenu({
 				accessibilityState={{ expanded: open }}
 				onPress={() => setOpen((prev) => !prev)}
 				style={[
-					{
-						minHeight: 36,
-						flexDirection: "row",
-						alignItems: "center",
-						gap: 6,
-						paddingHorizontal: 12,
-						borderWidth: 1,
-						borderRadius: 8,
-						borderColor: theme.border,
-						backgroundColor: theme.card,
-					},
+					triggerStyle(theme),
 					applySlot(
 						applySlot(applySlot({}, style), slotStyles?.root),
 						slotStyles?.trigger,
@@ -210,13 +182,11 @@ export function DropdownMenu({
 			>
 				<RNText
 					numberOfLines={1}
-					style={{ fontSize: 14, color: theme.foreground }}
+					style={triggerLabelStyle(theme)}
 				>
 					{triggerLabel}
 				</RNText>
-				<RNText style={{ fontSize: 12, color: theme.mutedForeground }}>
-					▾
-				</RNText>
+				<RNText style={chevronStyle(theme)}>▾</RNText>
 			</Pressable>
 			<Sheet
 				open={open}
@@ -227,12 +197,12 @@ export function DropdownMenu({
 			>
 				<View
 					testID="k-dropdown-menu-content"
-					style={applySlot({ gap: 2 }, slotStyles?.content)}
+					style={applySlot(contentStyle, slotStyles?.content)}
 				>
 					{items.length === 0 ? (
 						<RNText
 							testID="k-dropdown-menu-empty"
-							style={{ fontSize: 14, color: theme.mutedForeground }}
+							style={emptyTextStyle(theme)}
 						>
 							No actions
 						</RNText>

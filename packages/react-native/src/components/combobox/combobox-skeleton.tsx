@@ -7,6 +7,11 @@ import { Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
+import {
+	skeletonBone,
+	skeletonChevron,
+	skeletonSurface,
+} from "./combobox.styles";
 
 export function ComboboxSkeleton({
 	style,
@@ -19,23 +24,10 @@ export function ComboboxSkeleton({
 	return (
 		<View
 			testID={testID}
-			style={applySlot(
-				{
-					minHeight: 44,
-					flexDirection: "row",
-					alignItems: "center",
-					justifyContent: "space-between",
-					paddingHorizontal: 12,
-					borderWidth: 1,
-					borderRadius: 8,
-					borderColor: theme.border,
-					backgroundColor: theme.input,
-				},
-				style,
-			)}
+			style={applySlot(skeletonSurface(theme), style)}
 		>
-			<Skeleton style={{ width: 120, height: 14 }} />
-			<RNText style={{ fontSize: 12, color: theme.mutedForeground }}>▾</RNText>
+			<Skeleton style={skeletonBone} />
+			<RNText style={skeletonChevron(theme)}>▾</RNText>
 		</View>
 	);
 }

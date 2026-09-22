@@ -7,6 +7,7 @@ import type { ReactElement } from "react";
 import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
+import { separatorStyle } from "./separator.styles";
 import type { SeparatorProps } from "./separator.types";
 
 export function Separator({
@@ -25,11 +26,7 @@ export function Separator({
 			accessibilityElementsHidden={decorative ? true : undefined}
 			accessibilityLabel={accessibilityLabel}
 			style={[
-				{
-					backgroundColor: theme.separator,
-					width: vertical ? 1 : "100%",
-					height: vertical ? "100%" : 1,
-				},
+				separatorStyle(theme, vertical),
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		/>

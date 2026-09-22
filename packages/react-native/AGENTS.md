@@ -21,7 +21,7 @@ Verify visually in `apps/native-playground` — Metro watches this package's sou
   - Forms: text-input, textarea, number-input, select, combobox, multi-select, checkbox, radio-group, switch, slider, rating, date-picker, time-picker, calendar, input-otp, field, label.
   - Overlays: dialog, alert-dialog, sheet, dropdown-menu, context-menu, toast.
   - Feedback/display: alert, banner, progress, ring-progress, spinner, skeleton, accordion, collapsible, tabs, segmented-control, toggle-group.
-- `src/components/<name>/` — `<name>.tsx` (JSX only) + `<name>.styles.ts` (style tables + pure mapping helpers like `look()`/`tone()`). Shared surface helpers: `input-surface.styles.ts`, `slot-styles.ts` (its `applySlot`/`SlotStyles` re-export from the root barrel so composite packages share one slot-merge helper).
+- `src/components/<name>/` — `<name>.tsx` (JSX only) + `<name>.styles.ts` (style tables + pure mapping helpers like `look()`/`tone()`); a family that fully delegates its surface to a composed shell needs no styles file (alert-dialog). Shared surface helpers: `input-surface.styles.ts`, `slot-styles.ts` (its `applySlot`/`SlotStyles` re-export from the root barrel so composite packages share one slot-merge helper).
 - `src/lib/<name>.utils.ts` — pure utilities, dot-file naming (NOT `<name>-utils.ts`).
 - Exports: root barrel `src/index.ts`; subpaths `./themes`, `./tokens`, `./types`.
 
@@ -30,5 +30,5 @@ Verify visually in `apps/native-playground` — Metro watches this package's sou
 - Package is **source-exported** (`main`/`exports` point at `src/`) — never add a dist build or hand-write compiled output.
 - Expo SDK 57 matrix pins are exact (`react-native 0.86.3`, `react 19.2.3`, `reanimated 4.5.1`…) — don't bump past the SDK's tested range.
 - Themes are generated, never hand-edited — change `packages/react/src/styles/globals.css`, run `generate-themes.mjs`, keep `tokens-parity.test.ts` green.
-- Tests: vitest for pure logic, jest-expo for component rendering — place each test in the runner that can execute it.
+- Tests: vitest for pure logic, jest-expo for component rendering — place each test in the runner that can execute it. Component tests live in `src/components/__tests__/`; theme/token tests in `src/__tests__/`.
 - Icons come from `lucide-react-native`; animations from `reanimated` (worklets — mind the babel plugin in consuming apps).

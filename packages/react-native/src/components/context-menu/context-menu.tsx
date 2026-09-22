@@ -11,6 +11,7 @@ import { useUnistyles } from "react-native-unistyles";
 import { renderMenuItem } from "../dropdown-menu/dropdown-menu";
 import { Sheet } from "../sheet";
 import { applySlot } from "../slot-styles";
+import { childRowStyle, contentStyle, triggerStyle } from "./context-menu.styles";
 import type { ContextMenuProps } from "./context-menu.types";
 
 export function ContextMenu({
@@ -39,11 +40,11 @@ export function ContextMenu({
 				onLongPress={() => setOpen(true)}
 				delayLongPress={300}
 				style={applySlot(
-					applySlot({ alignSelf: "stretch" }, style),
+					applySlot(triggerStyle, style),
 					slotStyles?.root,
 				)}
 			>
-				<View style={{ flexDirection: "row" }} testID="k-context-menu-child">
+				<View style={childRowStyle} testID="k-context-menu-child">
 					{children}
 				</View>
 			</Pressable>
@@ -56,7 +57,7 @@ export function ContextMenu({
 			>
 				<View
 					testID="k-context-menu-content"
-					style={applySlot({ gap: 2 }, slotStyles?.content)}
+					style={applySlot(contentStyle, slotStyles?.content)}
 				>
 					{items.map((item) =>
 						renderMenuItem(

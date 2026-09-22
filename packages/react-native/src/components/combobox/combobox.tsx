@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Icon } from "../icon";
-import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
+import { trigger } from "../input-surface.styles";
 import {
 	optionLabel,
 	optionRow,
@@ -27,6 +27,13 @@ import { Sheet } from "../sheet";
 import { applySlot } from "../slot-styles";
 import type { ComboboxProps } from "./combobox.types";
 import { ComboboxSkeleton } from "./combobox-skeleton";
+import {
+	clearStyle,
+	emptyTextStyle,
+	listContentStyle,
+	skeletonStyle,
+	valueTextStyle,
+} from "./combobox.styles";
 
 export function Combobox({
 	options,
@@ -80,11 +87,7 @@ export function Combobox({
 	if (isLoading) {
 		return (
 			<ComboboxSkeleton
-				style={[
-					{ width: "100%", height: SURFACE_HEIGHTS[size] },
-					style,
-					slotStyles?.root,
-				]}
+				style={[skeletonStyle(size), style, slotStyles?.root]}
 			/>
 		);
 	}
@@ -117,14 +120,10 @@ export function Combobox({
 				<RNText
 					testID="k-combobox-value"
 					numberOfLines={1}
-					style={{
-						flex: 1,
-						fontSize: 14,
-						color:
-							selectedOption || selectedLabel
-								? theme.foreground
-								: theme.mutedForeground,
-					}}
+					style={valueTextStyle(
+						theme,
+						Boolean(selectedOption || selectedLabel),
+					)}
 				>
 					{displayLabel}
 				</RNText>
@@ -142,11 +141,7 @@ export function Combobox({
 					accessibilityLabel="Clear selection"
 					onPress={() => commit("")}
 					hitSlop={8}
-					style={{
-						position: "absolute",
-						right: 10,
-						top: SURFACE_HEIGHTS[size] / 2 - 10,
-					}}
+					style={clearStyle(size)}
 				>
 					<X size={16} color={theme.mutedForeground} />
 				</Pressable>
@@ -177,11 +172,7 @@ export function Combobox({
 					{!isAsync && query.length > 0 && visible.length === 0 ? (
 						<RNText
 							testID="k-combobox-empty"
-							style={{
-								paddingVertical: 12,
-								fontSize: 14,
-								color: theme.mutedForeground,
-							}}
+							style={emptyTextStyle(theme)}
 						>
 							{emptyText}
 						</RNText>
@@ -189,7 +180,7 @@ export function Combobox({
 						<ScrollView
 							testID="k-combobox-scroll-content"
 							showsVerticalScrollIndicator={false}
-							contentContainerStyle={{ minHeight: 44 }}
+							contentContainerStyle={listContentStyle}
 						>
 							{visible.map((option, index) => (
 								<Pressable

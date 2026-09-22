@@ -57,23 +57,23 @@ The `.integration.test.tsx` suffix originally flagged under `charts/` is a sanct
 
 ## 3. `packages/react-native`
 
-### Violations
+### Violations — resolved 2026-09-22 (style-table extraction pass)
 
-All ~45 families follow `<name>.tsx` + `<name>.styles.ts` + `<name>.types.ts` + `index.ts` except five, which have **no `<name>.styles.ts`** and carry their styles inline in the component file:
+All ~45 families follow `<name>.tsx` + `<name>.styles.ts` + `<name>.types.ts` + `index.ts`. The five that lacked a styles file:
 
-| Path | Note |
+| Path | Resolution |
 | --- | --- |
-| `src/components/alert-dialog/` | No `alert-dialog.styles.ts`. |
-| `src/components/combobox/` | No `combobox.styles.ts` (has a skeleton arm but no style table). |
-| `src/components/context-menu/` | No `context-menu.styles.ts`. |
-| `src/components/dropdown-menu/` | No `dropdown-menu.styles.ts`. |
-| `src/components/separator/` | No `separator.styles.ts`; `separator.tsx` builds its style object inline from the theme. |
+| `src/components/alert-dialog/` | Documented exemption: the family delegates its whole surface to Dialog/Button (no inline styles to extract). |
+| `src/components/combobox/` | `combobox.styles.ts` extracted (value text, clear affordance, empty text, list/skeleton sizing). |
+| `src/components/context-menu/` | `context-menu.styles.ts` extracted (trigger, child row, content gap). |
+| `src/components/dropdown-menu/` | `dropdown-menu.styles.ts` extracted (MenuTheme slice, row/trigger/text tables); `renderMenuItem` stays in the component file and re-exports unchanged. |
+| `src/components/separator/` | `separator.styles.ts` extracted (themed divider by orientation). |
 
 Everything else (types files, barrels, test placement under `src/components/__tests__/`) is consistent across the package.
 
 ### Docs drift
 
-- AGENTS.md structure section doesn't state where component tests live; they are all in `src/components/__tests__/` while theme tests sit in `src/__tests__/` — worth stating explicitly in the doc.
+- ~~AGENTS.md structure section doesn't state where component tests live~~ — fixed 2026-09-22: test homes now stated in the Rules section; the styles-file rule now scopes the composed-shell exemption.
 
 ---
 
@@ -111,7 +111,7 @@ Only `empty-state`, `error-boundary`, `list`, `loading-overlay`, `password-stren
 ## Prioritized remediation
 
 1. ✅ Done 2026-09-21: react-app duplicates merged into colocated tests; react-native-app AGENTS.md corrected to the real test home (`src/components/__tests__/`).
-2. **react-native: add the five missing `.styles.ts` tables** (alert-dialog, combobox, context-menu, dropdown-menu, separator) — mechanical extraction of inline styles.
+2. ✅ Done 2026-09-22: react-native style tables extracted for combobox, context-menu, dropdown-menu, separator; alert-dialog recorded as the composed-shell exemption (AGENTS.md updated, test homes documented).
 3. **react-native-app: decide the styles-file rule** — either port the nine families or amend AGENTS.md to scope `<name>.styles.ts` to families with non-trivial style surface.
 4. **react: fix `loading/`** — split into `page-loader/` + `section-loader/` families (or document the shared-family pattern), each with its own types file.
 5. **react: relocate `design-system/`** into proper per-component folders with barrels + types, or move it out of `components/` (it is a showcase, not a primitive).
