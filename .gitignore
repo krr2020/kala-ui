@@ -10,8 +10,10 @@ coverage
 .env.local
 *.tgz
 .zcode
-# Conveyor machine-local state (board/, specs/, wiki/, design/ stay committable)
+# Conveyor machine-local state (board/, specs/, design/ stay committable;
+# wiki/ is engine-generated on demand — untracked)
 .conveyor/scratch/
+.conveyor/wiki/
 .conveyor/annotations/
 .conveyor/perf-audits/
 .conveyor/autocomplete-telemetry.db*

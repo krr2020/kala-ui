@@ -18,7 +18,7 @@ Server-side mode solves this by:
 ## Quick Start
 
 ```tsx
-import { DataTable } from '@kala-ui/react/data-table';
+import { DataTable } from '@kala-ui/react-app/data-table';
 import { useState, useEffect } from 'react';
 
 function UsersTable() {
@@ -126,7 +126,7 @@ onFilterChange={(filters) => {
 ## Complete Example with All Callbacks
 
 ```tsx
-import { DataTable, type ColumnDef, type SortConfig, type FilterConfig } from '@kala-ui/react/data-table';
+import { DataTable, type ColumnDef, type SortConfig, type FilterConfig } from '@kala-ui/react-app/data-table';
 import { useState, useEffect, useCallback } from 'react';
 
 interface User {

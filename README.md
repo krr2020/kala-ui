@@ -4,7 +4,7 @@ A React component library and design system built with Radix UI primitives
 and Tailwind CSS. Token-driven theming, accessible by default, React 19 and
 React Server Components ready.
 
-> **Status — `0.1.0-beta.0`.** Install with the `@beta` dist-tag. The library
+> **Status — `0.1.0-beta.3`.** Install with the `@beta` dist-tag. The library
 > is pre-1.0: breaking changes may land in any beta/minor release; see
 > [docs/MIGRATION-0.1.md](./docs/MIGRATION-0.1.md) for the 0.0.x → 0.1.0 guide.
 
@@ -17,7 +17,7 @@ Web packages split along architectural lines — `react-app` → `react` →
 | --- | --- |
 | **[@kala-ui/react](./packages/react)** | ~90 standard UI components: primitives, form controls, overlays and menus — buttons, dialogs, inputs, tables, calendars. The design-system vocabulary. |
 | **[@kala-ui/react-app](./packages/react-app)** | 15 app-level composites built on the core primitives: `AppShell`, `Header`, `Sidebar`, `DataTable`, ApexCharts `charts`, drag-and-drop, dashboard and auth widgets. |
-| **[@kala-ui/react-hooks](./packages/react-hooks)** | 37 utility hooks: state, debounce/timing, DOM observers, browser APIs, SSR helpers. |
+| **[@kala-ui/react-hooks](./packages/react-hooks)** | 38 utility hooks: state, debounce/timing, DOM observers, browser APIs, SSR helpers. |
 | **[@kala-ui/react-native](./packages/react-native)** | React Native + Expo arm: Unistyles themes transcribed from the web token source of truth, with the component vocabulary rebuilt natively. |
 
 ## Installation
@@ -68,10 +68,11 @@ function App() {
 
 ## Theming
 
-Six built-in themes (light, neutral, accent, dark, high-contrast-light,
-high-contrast-dark), class-based dark mode, and a `ThemeProvider`. Every
-component, chart, and scrim reads CSS custom properties — override tokens on
-`:root`/`.dark` and the whole library follows:
+Four built-in themes (`light`, `dark`, `high-contrast-light`,
+`high-contrast-dark`), class-based dark mode, and a `ThemeProvider` that also
+accepts custom themes via registration. Every component, chart, and scrim
+reads CSS custom properties — override tokens on `:root`/`.dark` and the
+whole library follows:
 
 ```css
 @import "@kala-ui/react/styles";

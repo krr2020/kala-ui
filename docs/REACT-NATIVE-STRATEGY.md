@@ -173,7 +173,8 @@ Port the web pyramid, layer for layer:
    assert overlay testID → swipe to dismiss").
 6. **Cross-app compatibility** — peer deps + changesets releases
    exactly like the web packages; breaking changes require a migration
-   doc patterned on `docs/MIGRATION-0.1.md`.
+   doc patterned on the existing `docs/MIGRATION-0.1.md` (restored 2026-09-22
+   after an over-broad docs-move commit deleted it).
 
 Validation must not stop at the library boundary: screens inside the
 consuming apps can re-diverge even with a shared kit. The token spec is

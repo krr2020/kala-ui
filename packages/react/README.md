@@ -38,14 +38,14 @@ Every component has a subpath export (`@kala-ui/react/<component>`) plus the bar
 - **Layout**: `box`, `flex`, `grid`, `stack`, `group`, `center`, `container`, `paper`, `aspect-ratio`, `overlay`, `separator`, `resizable`, `scroll-area`, `collapsible`, `collapse`, `accordion`, `tabs`
 - **Typography**: `text`, `heading`, `code`, `kbd`
 - **Buttons & toggles**: `button`, `button-group`, `copy-button`, `burger`, `toggle`, `toggle-group`, `toolbar`, `segmented-control`
-- **Forms**: `input`, `textarea`, `number-input`, `input-group`, `input-otp`, `label`, `field`, `checkbox`, `radio-group`, `switch`, `slider`, `select`, `combobox`, `multi-select`, `calendar`, `date-picker`, `time-picker`, `color-input`, `tag-input`, `file-upload`, `password-strength-indicator`, `rating`, `command`
+- **Forms**: `input`, `textarea`, `number-input`, `input-group`, `input-otp`, `label`, `field`, `checkbox`, `radio-group`, `switch`, `slider`, `select`, `native-select`, `combobox`, `multi-select`, `calendar`, `date-picker`, `time-picker`, `color-input`, `tag-input`, `file-upload`, `password-strength-indicator`, `rating`, `command`
 - **Display**: `avatar`, `avatar-group`, `badge`, `tag`, `card`, `indicator`, `spinner`, `skeleton`, `progress`, `ring-progress`, `banner`, `table`, `tree-view`, `list`, `timeline`, `steps`, `pagination`, `breadcrumbs`
 - **Overlays & menus**: `dialog`, `alert-dialog`, `drawer`, `popover`, `hover-card`, `tooltip`, `dropdown-menu`, `context-menu`, `menubar`, `navigation-menu`
-- **Feedback & utility**: `alert`, `empty-state`, `error-boundary`, `loading`, `loading-overlay`, `spoiler`, `page-transition`, `skip-to-content`, `toast`, `theme-provider`
+- **Feedback & utility**: `alert`, `empty-state`, `error-boundary`, `page-loader`, `section-loader`, `loading-overlay`, `spoiler`, `page-transition`, `skip-to-content`, `toast`, `theme-provider`, `kala-provider`
 
 ## Theming
 
-Six built-in themes (light, neutral, accent, dark, high-contrast-light, high-contrast-dark), class-based dark mode, and a `ThemeProvider`. Every component reads CSS custom properties — override tokens on `:root`/`.dark` and the whole library follows. See [THEMING.md](../../THEMING.md).
+Four built-in themes (`light`, `dark`, `high-contrast-light`, `high-contrast-dark`), class-based dark mode, and a `ThemeProvider` that also accepts custom themes via registration. Every component reads CSS custom properties — override tokens on `:root`/`.dark` and the whole library follows. See [THEMING.md](../../THEMING.md).
 
 ```css
 :root {

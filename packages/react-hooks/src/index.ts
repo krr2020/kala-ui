@@ -1,3 +1,6 @@
+// 38 exported use* hooks (count pinned here; README.md, AGENTS.md, and
+// packages/react-hooks/README.md state the same number).
+
 // State Management Hooks
 
 export {

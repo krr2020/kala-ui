@@ -1,6 +1,6 @@
 # @kala-ui/react-hooks
 
-37 reusable React hooks for building modern web applications — the foundation
+38 reusable React hooks for building modern web applications — the foundation
 layer of [Kala UI](https://github.com/krr2020/kala-ui) (`@kala-ui/react`
 depends on this package). SSR-safe, React 19 typed, zero dependencies.
 
@@ -89,7 +89,11 @@ function SearchInput() {
 import { useLocalStorage } from "@kala-ui/react-hooks";
 
 function ThemeToggle() {
-  const [theme, setTheme] = useLocalStorage("theme", "light");
+  const [theme, setTheme] = useLocalStorage({
+    key: "app-theme",
+    defaultValue: "light",
+  });
+
   return (
     <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
       Current theme: {theme}
@@ -106,6 +110,128 @@ import { useMediaQuery } from "@kala-ui/react-hooks";
 function ResponsiveComponent() {
   const isMobile = useMediaQuery("(max-width: 768px)");
   return <div>{isMobile ? "Mobile" : "Desktop"} view</div>;
+}
+```
+
+### useDisclosure
+
+```tsx
+import { useDisclosure } from "@kala-ui/react-hooks";
+
+function ModalExample() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    <div>
+      <button onClick={open}>Open Modal</button>
+      {opened && (
+        <div className="modal">
+          <h2>Modal Content</h2>
+          <button onClick={close}>Close</button>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### useClickOutside
+
+```tsx
+import { useState } from "react";
+import { useClickOutside } from "@kala-ui/react-hooks";
+
+function Dropdown() {
+  const [opened, setOpened] = useState(false);
+  const ref = useClickOutside<HTMLDivElement>(() => setOpened(false));
+
+  return (
+    <div ref={ref}>
+      <button onClick={() => setOpened(!opened)}>Toggle Dropdown</button>
+      {opened && <div className="dropdown-menu">…</div>}
+    </div>
+  );
+}
+```
+
+### useClipboard
+
+```tsx
+import { useClipboard } from "@kala-ui/react-hooks";
+
+function CopyButton({ text }: { text: string }) {
+  const { copy, copied } = useClipboard({ timeout: 2000 });
+
+  return <button onClick={() => copy(text)}>{copied ? "✓ Copied!" : "Copy"}</button>;
+}
+```
+
+### useIntersection
+
+```tsx
+import { useIntersection } from "@kala-ui/react-hooks";
+
+function LazyImage({ src, alt }: { src: string; alt: string }) {
+  const { ref, entry } = useIntersection({
+    threshold: 0.1,
+    disconnectOnIntersect: true,
+  });
+
+  return <div ref={ref}>{entry?.isIntersecting ? <img src={src} alt={alt} /> : <div className="placeholder" />}</div>;
+}
+```
+
+### useInterval
+
+```tsx
+import { useInterval } from "@kala-ui/react-hooks";
+
+function AutoRefresh() {
+  const interval = useInterval(() => refetch(), 5000, { autoInvoke: true });
+
+  return (
+    <button onClick={interval.toggle}>
+      {interval.active ? "Pause" : "Resume"} refresh
+    </button>
+  );
+}
+```
+
+### useElementSize
+
+```tsx
+import { useElementSize } from "@kala-ui/react-hooks";
+
+function ResponsiveComponent() {
+  const [ref, { width, height }] = useElementSize<HTMLDivElement>();
+
+  return (
+    <div ref={ref} style={{ resize: "both", overflow: "auto", border: "1px solid" }}>
+      <p>
+        {Math.round(width)}×{Math.round(height)}px — resize me!
+      </p>
+    </div>
+  );
+}
+```
+
+### usePrevious
+
+```tsx
+import { useState } from "react";
+import { usePrevious } from "@kala-ui/react-hooks";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  const previousCount = usePrevious(count);
+
+  return (
+    <div>
+      <p>Current: {count}</p>
+      <p>Previous: {previousCount}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
 }
 ```
 

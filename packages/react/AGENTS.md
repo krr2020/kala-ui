@@ -1,6 +1,6 @@
 # AGENTS.md — @kala-ui/react
 
-Core web component library: ~85 accessible components built on Radix UI primitives + Tailwind CSS, plus the token-driven theming system the whole repo consumes.
+Core web component library: 93 accessible component families built on Radix UI primitives + Tailwind CSS, plus the token-driven theming system the whole repo consumes.
 
 ## Commands
 
@@ -21,7 +21,7 @@ pnpm --filter @kala-ui/react test:tokens  # build + src/styles/tokens.test.ts �
   - Overlays/menus: overlay, dialog, alert-dialog, drawer (vaul), popover, hover-card, tooltip, dropdown-menu, context-menu, toolbar, command (cmdk), menubar, navigation-menu, breadcrumbs.
   - Feedback/data: alert, banner, toast (sonner), progress, ring-progress, spinner, page-loader, section-loader, page-transition, loading-overlay, skeleton, table, pagination, tabs, accordion, collapsible, collapse, steps, timeline, tree-view, empty-state, error-boundary.
   - Identity/text: avatar, avatar-group, badge, tag, heading, text, code, kbd, copy-button, spoiler, indicator, toggle, toggle-group, button, button-group, burger, theme-provider, kala-provider, skip-to-content.
-- `src/styles/globals.css` — the token source of truth (`:root` / `.dark` / theme custom properties + `@theme` block). Contract: `TOKEN_SPEC.md`; compiled to `dist/styles/globals.css` (utilities), `helpers.css`, `theme.css` (Tailwind mode).
+- `src/styles/` — `tokens.css` holds the semantic token set (`:root` / `.dark` custom properties); `globals.css` composes it with `helpers.css`/`theme.css` (+ `@theme` block) and is the compiled entry (`dist/styles/globals.css`, `helpers.css`, `theme.css`). Contract: `TOKEN_SPEC.md`.
 - `src/showcase/design-system/` — the in-repo design-system showcase (overview, category sections, preview cards; stories colocated). Not a shipped primitive: no barrel entry in `src/index.ts`, no `package.json` subpath.
 - `src/lib/` (shared utils), `src/config/` (style tables + exports config), `src/__tests__/` (cross-component suites: `a11y.test.tsx`, `component-markers.test.tsx`).
 - `src/config/<name>.ts` is the style-file home for every component family (the `<name>.styles.ts` role of the native package, using this package's config convention): per-part base classes live there in a `<name>Styles` object keyed by slotStyles part name (`root`, `icon`, `dismiss`, `close`, …), alongside any cva variant tables. Component `.tsx` files stay component code — JSX, state, handlers, and `applySlot(cn(<table>.<part>, className), slotStyles?.<part>)` composition only; no literal Tailwind base strings. New tables get re-exported from `src/config/index.ts`, and `src/__tests__/slot-styles.test.tsx` pins each base string to its table (re-inlining a base into a component fails the suite).
