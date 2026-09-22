@@ -10,6 +10,13 @@ import Svg, { Circle } from "react-native-svg";
 import { useUnistyles } from "react-native-unistyles";
 import { donutArcs } from "../../lib/chart-geometry";
 import { ChartSkeleton } from "./chart-skeleton";
+import {
+	donutOverlayStyle,
+	donutTotalStyle,
+	emptyBoxStyle,
+	emptyTextStyle,
+	svgOverlayStyle,
+} from "./charts.styles";
 import type { ChartTone, DonutChartProps } from "./donut-chart.types";
 
 const PALETTE: ChartTone[] = [
@@ -54,21 +61,12 @@ export function DonutChart({
 			<View
 				testID={testID}
 				style={[
-					{
-						width: size,
-						height: size,
-						justifyContent: "center",
-						alignItems: "center",
-						borderWidth: 1,
-						borderColor: theme.border,
-					},
+					emptyBoxStyle(theme, { width: size, height: size }),
 					style,
 					styles?.root,
 				]}
 			>
-				<Text style={{ color: theme.mutedForeground, fontSize: 13 }}>
-					{emptyMessage}
-				</Text>
+				<Text style={emptyTextStyle(theme, 13)}>{emptyMessage}</Text>
 			</View>
 		);
 	}
@@ -88,11 +86,7 @@ export function DonutChart({
 				.join(", ")}`}
 			style={[{ width: size, height: size }, style, styles?.root]}
 		>
-			<Svg
-				width={size}
-				height={size}
-				style={{ position: "absolute", top: 0, left: 0 }}
-			>
+			<Svg width={size} height={size} style={svgOverlayStyle}>
 				<Circle
 					testID="k-donut-chart-track"
 					cx={size / 2}
@@ -123,18 +117,8 @@ export function DonutChart({
 					);
 				})}
 			</Svg>
-			<View
-				style={{
-					position: "absolute",
-					width: size,
-					height: size,
-					justifyContent: "center",
-					alignItems: "center",
-				}}
-			>
-				<Text style={{ fontSize: 20, fontWeight: "700" }}>
-					{total.toLocaleString("en-US")}
-				</Text>
+			<View style={donutOverlayStyle(size)}>
+				<Text style={donutTotalStyle}>{total.toLocaleString("en-US")}</Text>
 			</View>
 		</View>
 	);

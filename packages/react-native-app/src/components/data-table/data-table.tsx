@@ -6,6 +6,15 @@
 import type { ReactElement } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import {
+	cellStyle,
+	cellTextStyle,
+	emptyTextStyle,
+	headerCellStyle,
+	headerRowStyle,
+	rootStyle,
+	rowStyle,
+} from "./data-table.styles";
 import type { DataTableColumn, DataTableProps } from "./data-table.types";
 import { DataTableSkeleton } from "./data-table-skeleton";
 
@@ -39,43 +48,21 @@ export function DataTable<T>({
 	};
 
 	return (
-		<View
-			testID={testID}
-			style={[
-				{ borderWidth: 1, borderColor: theme.border },
-				style,
-				styles?.root,
-			]}
-		>
-			<View style={{ flexDirection: "row", backgroundColor: theme.background }}>
+		<View testID={testID} style={[rootStyle(theme), style, styles?.root]}>
+			<View style={headerRowStyle(theme)}>
 				{columns.map((column) => (
 					<Text
 						key={String(column.key)}
 						testID={`k-data-table-header-${String(column.key)}`}
 						numberOfLines={1}
-						style={{
-							flex: 1,
-							fontSize: 12,
-							fontWeight: "600",
-							color: theme.mutedForeground,
-							paddingHorizontal: 12,
-							paddingVertical: 8,
-						}}
+						style={headerCellStyle(theme)}
 					>
 						{column.header}
 					</Text>
 				))}
 			</View>
 			{rows.length === 0 ? (
-				<Text
-					style={{
-						color: theme.mutedForeground,
-						padding: 16,
-						textAlign: "center",
-					}}
-				>
-					{emptyMessage}
-				</Text>
+				<Text style={emptyTextStyle(theme)}>{emptyMessage}</Text>
 			) : (
 				<FlatList<T>
 					data={rows}
@@ -108,26 +95,14 @@ export function DataTable<T>({
 									.join(", ")}
 								disabled={!onRowPress}
 								onPress={onRowPress ? () => onRowPress(item) : undefined}
-								style={{
-									flexDirection: "row",
-									minHeight: 44,
-									alignItems: "center",
-									borderTopWidth: 1,
-									borderTopColor: theme.border,
-								}}
+								style={rowStyle(theme)}
 							>
 								{columns.map((column) => (
-									<View
-										key={String(column.key)}
-										style={{ flex: 1, paddingHorizontal: 12 }}
-									>
+									<View key={String(column.key)} style={cellStyle}>
 										{column.cell ? (
 											column.cell(item)
 										) : (
-											<Text
-												numberOfLines={1}
-												style={{ color: theme.foreground, fontSize: 14 }}
-											>
+											<Text numberOfLines={1} style={cellTextStyle(theme)}>
 												{cellText(column, item)}
 											</Text>
 										)}

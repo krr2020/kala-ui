@@ -79,23 +79,23 @@ Everything else (types files, barrels, test placement under `src/components/__te
 
 ## 4. `packages/react-native-app`
 
-### Violations
+### Violations — resolved 2026-09-22 (styles-file port, all nine families)
 
-AGENTS.md says "Follow the same component split as `@kala-ui/react-native`" (`<name>.styles.ts` for style tables). Nine families have **no styles file**:
+AGENTS.md says "Follow the same component split as `@kala-ui/react-native`" (`<name>.styles.ts` for style tables). The nine families that had none now carry one; `charts/` (four components) shares one `charts.styles.ts`, the `list/` multi-file precedent:
 
-| Path |
-| --- |
-| `src/components/app-shell/` |
-| `src/components/charts/` (whole family: bar-chart, donut-chart, sparkline, chart-skeleton) |
-| `src/components/copy-button/` |
-| `src/components/data-table/` |
-| `src/components/header/` |
-| `src/components/metric-card/` |
-| `src/components/steps/` |
-| `src/components/tab-bar/` |
-| `src/components/timeline/` (confirmed fully inline in `timeline.tsx`) |
+| Path | Resolution |
+| --- | --- |
+| `src/components/app-shell/` | `app-shell.styles.ts` (shell frame + content regions). |
+| `src/components/charts/` | `charts.styles.ts` (empty arms, donut overlay, labels, skeleton bones). |
+| `src/components/copy-button/` | `copy-button.styles.ts` (icon size/tint). |
+| `src/components/data-table/` | `data-table.styles.ts` (header/row/cell tables + skeleton). |
+| `src/components/header/` | `header.styles.ts` (bar chrome, 44dp targets + skeleton). |
+| `src/components/metric-card/` | `metric-card.styles.ts` (TONE_BG map, card/body/text + skeleton). |
+| `src/components/steps/` | `steps.styles.ts` (circle geometry, connectors, text tables). |
+| `src/components/tab-bar/` | `tab-bar.styles.ts` (bar chrome, item/label + skeleton). |
+| `src/components/timeline/` | `timeline.styles.ts` (status dot mapping, rail, entry text). |
 
-Only `empty-state`, `error-boundary`, `list`, `loading-overlay`, `password-strength-indicator`, `screen-stack` comply.
+Decision 2026-09-22: port all nine rather than scope the AGENTS.md rule — the two native packages keep one convention.
 
 | Path | Deviation |
 | --- | --- |
@@ -112,7 +112,7 @@ Only `empty-state`, `error-boundary`, `list`, `loading-overlay`, `password-stren
 
 1. ✅ Done 2026-09-21: react-app duplicates merged into colocated tests; react-native-app AGENTS.md corrected to the real test home (`src/components/__tests__/`).
 2. ✅ Done 2026-09-22: react-native style tables extracted for combobox, context-menu, dropdown-menu, separator; alert-dialog recorded as the composed-shell exemption (AGENTS.md updated, test homes documented).
-3. **react-native-app: decide the styles-file rule** — either port the nine families or amend AGENTS.md to scope `<name>.styles.ts` to families with non-trivial style surface.
+3. ✅ Done 2026-09-22: react-native-app — all nine families ported to `<name>.styles.ts` (maintainer decision: port, don't scope the rule).
 4. **react: fix `loading/`** — split into `page-loader/` + `section-loader/` families (or document the shared-family pattern), each with its own types file.
 5. **react: relocate `design-system/`** into proper per-component folders with barrels + types, or move it out of `components/` (it is a showcase, not a primitive).
 6. **react: `native-select` → its own folder** with `native-select.types.ts`; rename `skeleton-wrapper`/`skeleton-patterns` to fit the naming or document them.

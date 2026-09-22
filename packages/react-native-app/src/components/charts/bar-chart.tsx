@@ -11,6 +11,12 @@ import { useUnistyles } from "react-native-unistyles";
 import { barHeights } from "../../lib/chart-geometry";
 import type { BarChartProps } from "./bar-chart.types";
 import { ChartSkeleton } from "./chart-skeleton";
+import {
+	emptyBoxStyle,
+	emptyTextStyle,
+	labelRowStyle,
+	labelTextStyle,
+} from "./charts.styles";
 
 function slug(label: string): string {
 	return label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -44,21 +50,9 @@ export function BarChart({
 		return (
 			<View
 				testID={testID}
-				style={[
-					{
-						height,
-						justifyContent: "center",
-						alignItems: "center",
-						borderWidth: 1,
-						borderColor: theme.border,
-					},
-					style,
-					styles?.root,
-				]}
+				style={[emptyBoxStyle(theme, { height }), style, styles?.root]}
 			>
-				<Text style={{ color: theme.mutedForeground, fontSize: 13 }}>
-					{emptyMessage}
-				</Text>
+				<Text style={emptyTextStyle(theme, 13)}>{emptyMessage}</Text>
 			</View>
 		);
 	}
@@ -93,18 +87,9 @@ export function BarChart({
 					/>
 				))}
 			</Svg>
-			<View style={{ flexDirection: "row", width }}>
+			<View style={labelRowStyle(width)}>
 				{data.map((d) => (
-					<Text
-						key={d.label}
-						numberOfLines={1}
-						style={{
-							flex: 1,
-							textAlign: "center",
-							fontSize: 11,
-							color: theme.mutedForeground,
-						}}
-					>
+					<Text key={d.label} numberOfLines={1} style={labelTextStyle(theme)}>
 						{d.label}
 					</Text>
 				))}

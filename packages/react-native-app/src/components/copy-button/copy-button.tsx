@@ -5,11 +5,12 @@
  * expo-clipboard's setTextAsync, bare-RN apps pass
  * @react-native-clipboard/clipboard — the library itself stays dep-free.
  */
+
+import { Button } from "@kala-ui/react-native";
 import { Check, Copy } from "lucide-react-native";
 import { useCallback, useRef, useState } from "react";
-
 import { useUnistyles } from "react-native-unistyles";
-import { Button } from "@kala-ui/react-native";
+import { ICON_SIZE, iconColor } from "./copy-button.styles";
 import type { CopyButtonProps } from "./copy-button.types";
 
 export function CopyButton({
@@ -91,15 +92,15 @@ export function CopyButton({
 			{copied
 				? (checkIcon ?? (
 						<Check
-							size={18}
-							color={theme.foreground}
+							size={ICON_SIZE}
+							color={iconColor(theme)}
 							testID="k-copy-button-check"
 						/>
 					))
 				: (copyIcon ?? (
 						<Copy
-							size={18}
-							color={theme.foreground}
+							size={ICON_SIZE}
+							color={iconColor(theme)}
 							testID="k-copy-button-copy"
 						/>
 					))}

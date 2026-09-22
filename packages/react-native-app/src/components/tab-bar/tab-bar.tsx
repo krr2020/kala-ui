@@ -7,10 +7,8 @@
 import type { ReactElement } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { barStyle, ICON, itemLabelStyle, itemStyle } from "./tab-bar.styles";
 import type { TabBarItemData, TabBarProps } from "./tab-bar.types";
-
-const HEIGHT = 56;
-const ICON = 22;
 
 function TabBarItem({
 	item,
@@ -35,17 +33,10 @@ function TabBarItem({
 			}}
 			disabled={item.disabled}
 			onPress={onPress}
-			style={{
-				flex: 1,
-				minHeight: 44,
-				minWidth: 44,
-				alignItems: "center",
-				justifyContent: "center",
-				gap: 2,
-			}}
+			style={itemStyle}
 		>
 			{Icon ? <Icon size={ICON} color={tint} /> : null}
-			<Text numberOfLines={1} style={{ color: tint, fontSize: 11 }}>
+			<Text numberOfLines={1} style={itemLabelStyle(tint)}>
 				{item.label}
 			</Text>
 		</Pressable>
@@ -66,19 +57,7 @@ export function TabBar({
 		<View
 			testID={testID}
 			accessibilityRole="tablist"
-			style={[
-				{
-					height: HEIGHT,
-					flexDirection: "row",
-					alignItems: "center",
-					backgroundColor: theme.background,
-					borderTopWidth: 1,
-					borderTopColor: theme.border,
-					paddingHorizontal: 4,
-				},
-				style,
-				styles?.root,
-			]}
+			style={[barStyle(theme), style, styles?.root]}
 		>
 			{items.map((item) => (
 				<TabBarItem

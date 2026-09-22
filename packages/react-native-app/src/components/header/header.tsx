@@ -7,11 +7,16 @@ import { ChevronLeft } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import {
+	actionLabelStyle,
+	actionsRowStyle,
+	barStyle,
+	ICON,
+	titleStyle,
+	touchTargetStyle,
+} from "./header.styles";
 import type { HeaderProps } from "./header.types";
 import { HeaderSkeleton } from "./header-skeleton";
-
-const HEIGHT = 56;
-const ICON = 22;
 
 export function Header({
 	title,
@@ -30,22 +35,7 @@ export function Header({
 	}
 
 	return (
-		<View
-			testID={testID}
-			style={[
-				{
-					height: HEIGHT,
-					flexDirection: "row",
-					alignItems: "center",
-					backgroundColor: theme.background,
-					borderBottomWidth: 1,
-					borderBottomColor: theme.border,
-					paddingHorizontal: 8,
-				},
-				style,
-				styles?.root,
-			]}
-		>
+		<View testID={testID} style={[barStyle(theme), style, styles?.root]}>
 			{onBack ? (
 				<Pressable
 					testID="k-header-back"
@@ -53,12 +43,7 @@ export function Header({
 					accessibilityLabel={backLabel}
 					onPress={onBack}
 					hitSlop={8}
-					style={{
-						minHeight: 44,
-						minWidth: 44,
-						alignItems: "center",
-						justifyContent: "center",
-					}}
+					style={touchTargetStyle}
 				>
 					<ChevronLeft size={ICON} color={theme.foreground} />
 				</Pressable>
@@ -68,19 +53,13 @@ export function Header({
 				numberOfLines={1}
 				accessibilityRole="header"
 				accessibilityLabel={title}
-				style={{
-					flex: 1,
-					color: theme.foreground,
-					fontSize: 17,
-					fontWeight: "600",
-					textAlign: "center",
-				}}
+				style={titleStyle(theme)}
 			>
 				{title}
 			</Text>
 
 			{actions && actions.length > 0 ? (
-				<View style={{ flexDirection: "row", gap: 4 }}>
+				<View style={actionsRowStyle}>
 					{actions.map((action, i) => (
 						<Pressable
 							key={action.label}
@@ -91,17 +70,10 @@ export function Header({
 							disabled={action.disabled}
 							onPress={action.onPress}
 							hitSlop={8}
-							style={{
-								minHeight: 44,
-								minWidth: 44,
-								alignItems: "center",
-								justifyContent: "center",
-							}}
+							style={touchTargetStyle}
 						>
 							{action.icon ?? (
-								<Text style={{ color: theme.foreground, fontSize: 15 }}>
-									{action.label}
-								</Text>
+								<Text style={actionLabelStyle(theme)}>{action.label}</Text>
 							)}
 						</Pressable>
 					))}

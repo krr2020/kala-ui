@@ -8,6 +8,14 @@ import { Skeleton } from "@kala-ui/react-native";
 import type { ReactElement } from "react";
 import { View } from "react-native";
 import type { ChartSkeletonProps } from "./chart-skeleton.types";
+import {
+	skeletonLegendBone,
+	skeletonLegendChipStyle,
+	skeletonLegendDot,
+	skeletonLegendRowStyle,
+	skeletonPlotStyle,
+	skeletonRootStyle,
+} from "./charts.styles";
 
 export function ChartSkeleton({
 	height = 120,
@@ -17,17 +25,14 @@ export function ChartSkeleton({
 	testID = "k-chart-skeleton",
 }: ChartSkeletonProps): ReactElement {
 	return (
-		<View testID={testID} style={[{ gap: 12 }, style, styles?.root]}>
-			<Skeleton style={{ height, width: "100%" }} />
-			<View style={{ flexDirection: "row", gap: 12, justifyContent: "center" }}>
+		<View testID={testID} style={[skeletonRootStyle, style, styles?.root]}>
+			<Skeleton style={skeletonPlotStyle(height)} />
+			<View style={skeletonLegendRowStyle}>
 				{Array.from({ length: legendCount }, (_, i) => (
-					<View
-						// biome-ignore lint/suspicious/noArrayIndexKey: fixed-length placeholder rows, never reordered
-						key={`legend-${i}`}
-						style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
-					>
-						<Skeleton variant="circle" style={{ width: 8, height: 8 }} />
-						<Skeleton style={{ width: 32, height: 8 }} />
+					// biome-ignore lint/suspicious/noArrayIndexKey: fixed-length placeholder rows, never reordered
+					<View key={`legend-${i}`} style={skeletonLegendChipStyle}>
+						<Skeleton variant="circle" style={skeletonLegendDot} />
+						<Skeleton style={skeletonLegendBone} />
 					</View>
 				))}
 			</View>

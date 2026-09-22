@@ -1,12 +1,21 @@
+import { applySlot } from "@kala-ui/react-native";
 import { Check } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { applySlot } from "@kala-ui/react-native";
+import {
+	hLineStyle,
+	indicatorStyle,
+	labelBlockStyle,
+	numberStyle,
+	rootStyle,
+	descriptionStyle as stepDescriptionStyle,
+	stepStyle,
+	titleStyle as stepTitleStyle,
+	vLineStyle,
+} from "./steps.styles";
 import type { StepItem, StepsOrientation, StepsProps } from "./steps.types";
-
-const CIRCLE = 32;
 
 /**
  * Steps: numbered progress rail. `value` is 1-based (the web component
@@ -40,10 +49,7 @@ export function Steps({
 		<View
 			testID={testID}
 			style={[
-				{
-					flexDirection: orientation === "vertical" ? "column" : "row",
-					alignItems: orientation === "vertical" ? "flex-start" : "flex-start",
-				},
+				rootStyle(orientation),
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
@@ -61,41 +67,15 @@ export function Steps({
 						key={step.title}
 						testID="k-step"
 						style={[
-							{
-								flex: orientation === "vertical" ? undefined : 1,
-								flexDirection: "column",
-								alignItems:
-									orientation === "vertical" ? "flex-start" : "center",
-								paddingBottom: orientation === "vertical" && !isLast ? 32 : 0,
-							},
+							stepStyle(orientation, isLast),
 							applySlot({}, slotStyles?.step),
 						]}
 					>
 						{!isLast && showLine ? (
 							orientation === "horizontal" ? (
-								<View
-									testID="k-step-line"
-									style={{
-										position: "absolute",
-										top: CIRCLE / 2 - 1,
-										left: "50%",
-										right: 0,
-										height: 2,
-										backgroundColor: theme.separator,
-									}}
-								/>
+								<View testID="k-step-line" style={hLineStyle(theme)} />
 							) : (
-								<View
-									testID="k-step-line"
-									style={{
-										position: "absolute",
-										top: CIRCLE + 8,
-										bottom: 0,
-										left: CIRCLE / 2 - 1,
-										width: 2,
-										backgroundColor: theme.separator,
-									}}
-								/>
+								<View testID="k-step-line" style={vLineStyle(theme)} />
 							)
 						) : null}
 
@@ -107,20 +87,7 @@ export function Steps({
 							disabled={!clickable}
 							onPress={() => commit(stepNumber)}
 							style={[
-								{
-									width: CIRCLE,
-									height: CIRCLE,
-									borderRadius: CIRCLE / 2,
-									borderWidth: 2,
-									alignItems: "center",
-									justifyContent: "center",
-									zIndex: 1,
-									transform: [{ scale: isActive ? 1.1 : 1 }],
-									borderColor:
-										isActive || isCompleted ? theme.primary : theme.border,
-									backgroundColor:
-										isActive || isCompleted ? theme.primary : theme.background,
-								},
+								indicatorStyle(theme, { isActive, isCompleted }),
 								applySlot({}, slotStyles?.indicator),
 							]}
 						>
@@ -128,50 +95,19 @@ export function Steps({
 								<Check size={16} color={theme.primaryForeground} />
 							) : (
 								(step.icon ?? (
-									<RNText
-										style={{
-											fontSize: 14,
-											fontWeight: "600",
-											color:
-												isActive || isCompleted
-													? theme.primaryForeground
-													: theme.mutedForeground,
-										}}
-									>
+									<RNText style={numberStyle(theme, { isActive, isCompleted })}>
 										{stepNumber}
 									</RNText>
 								))
 							)}
 						</Pressable>
 
-						<View
-							style={{
-								marginTop: orientation === "vertical" ? 0 : 8,
-								marginLeft: orientation === "vertical" ? 12 : 0,
-								alignItems:
-									orientation === "vertical" ? "flex-start" : "center",
-								flex: orientation === "vertical" ? 1 : undefined,
-							}}
-						>
-							<RNText
-								numberOfLines={1}
-								style={{
-									fontSize: 14,
-									fontWeight: "500",
-									color: isActive ? theme.primary : theme.foreground,
-								}}
-							>
+						<View style={labelBlockStyle(orientation)}>
+							<RNText numberOfLines={1} style={stepTitleStyle(theme, isActive)}>
 								{step.title}
 							</RNText>
 							{step.description ? (
-								<RNText
-									numberOfLines={2}
-									style={{
-										fontSize: 12,
-										marginTop: 2,
-										color: theme.mutedForeground,
-									}}
-								>
+								<RNText numberOfLines={2} style={stepDescriptionStyle(theme)}>
 									{step.description}
 								</RNText>
 							) : null}

@@ -6,6 +6,11 @@
 import type { ReactElement } from "react";
 import { ScrollView, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import {
+	contentStyle,
+	scrollContentStyle,
+	shellStyle,
+} from "./app-shell.styles";
 import type { AppShellProps } from "./app-shell.types";
 
 export function AppShell({
@@ -22,25 +27,18 @@ export function AppShell({
 	const content = scrollable ? (
 		<ScrollView
 			testID="k-app-shell-content"
-			contentContainerStyle={{ flexGrow: 1 }}
+			contentContainerStyle={scrollContentStyle}
 		>
 			{children}
 		</ScrollView>
 	) : (
-		<View testID="k-app-shell-content" style={{ flex: 1 }}>
+		<View testID="k-app-shell-content" style={contentStyle}>
 			{children}
 		</View>
 	);
 
 	return (
-		<View
-			testID={testID}
-			style={[
-				{ flex: 1, backgroundColor: theme.background },
-				style,
-				styles?.root,
-			]}
-		>
+		<View testID={testID} style={[shellStyle(theme), style, styles?.root]}>
 			{header ? <View>{header}</View> : null}
 			{content}
 			{tabBar ? <View>{tabBar}</View> : null}

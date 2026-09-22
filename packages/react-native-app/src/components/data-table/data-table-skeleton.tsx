@@ -7,6 +7,11 @@ import { Skeleton } from "@kala-ui/react-native";
 import type { ReactElement } from "react";
 import { View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import {
+	skeletonHeaderBone,
+	skeletonRowBone,
+	skeletonSurfaceStyle,
+} from "./data-table.styles";
 import type { DataTableSkeletonProps } from "./data-table.types";
 
 export function DataTableSkeleton({
@@ -19,16 +24,12 @@ export function DataTableSkeleton({
 	return (
 		<View
 			testID={testID}
-			style={[
-				{ borderWidth: 1, borderColor: theme.border, padding: 12, gap: 10 },
-				style,
-				styles?.root,
-			]}
+			style={[skeletonSurfaceStyle(theme), style, styles?.root]}
 		>
-			<Skeleton style={{ height: 14, width: "60%" }} />
+			<Skeleton style={skeletonHeaderBone} />
 			{Array.from({ length: rowCount }).map((_, i) => (
 				// biome-ignore lint/suspicious/noArrayIndexKey: fixed-length placeholder rows, never reordered
-				<Skeleton key={`row-${i}`} style={{ height: 12, width: "100%" }} />
+				<Skeleton key={`row-${i}`} style={skeletonRowBone} />
 			))}
 		</View>
 	);

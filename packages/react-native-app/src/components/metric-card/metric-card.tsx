@@ -9,17 +9,19 @@ import type { ThemeToken } from "@kala-ui/react-native";
 import type { ReactElement } from "react";
 import { Text, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import type { MetricCardProps, MetricTone } from "./metric-card.types";
+import {
+	accentStyle,
+	bodyStyle,
+	cardStyle,
+	changeStyle,
+	subtitleStyle,
+	TONE_BG,
+	titleRowStyle,
+	titleStyle,
+	valueStyle,
+} from "./metric-card.styles";
+import type { MetricCardProps } from "./metric-card.types";
 import { MetricCardSkeleton } from "./metric-card-skeleton";
-
-const TONE_BG: Partial<Record<MetricTone, string>> = {
-	primary: "primary",
-	destructive: "destructive",
-	success: "success",
-	warning: "warning",
-	info: "info",
-	muted: "muted",
-};
 
 export function MetricCard({
 	title,
@@ -55,61 +57,29 @@ export function MetricCard({
 			: changeLabel || (change === 0 ? "No change" : `${abs}% than last week`);
 
 	return (
-		<View
-			testID={testID}
-			style={[
-				{
-					flexDirection: "row",
-					backgroundColor: theme.card,
-					borderWidth: 1,
-					borderColor: theme.border,
-				},
-				style,
-				styles?.root,
-			]}
-		>
+		<View testID={testID} style={[cardStyle(theme), style, styles?.root]}>
 			<View
 				testID="k-metric-card-accent"
-				style={{
-					width: 4,
-					backgroundColor: String(
-						theme[(TONE_BG[tone] ?? "muted") as ThemeToken],
-					),
-				}}
+				style={accentStyle(
+					String(theme[(TONE_BG[tone] ?? "muted") as ThemeToken]),
+				)}
 			/>
-			<View style={{ flex: 1, padding: 16, gap: 6 }}>
-				<View
-					style={{
-						flexDirection: "row",
-						alignItems: "center",
-						justifyContent: "space-between",
-					}}
-				>
-					<Text
-						numberOfLines={1}
-						style={{
-							fontSize: 12,
-							fontWeight: "600",
-							color: theme.mutedForeground,
-						}}
-					>
+			<View style={bodyStyle}>
+				<View style={titleRowStyle}>
+					<Text numberOfLines={1} style={titleStyle(theme)}>
 						{title}
 					</Text>
 					{icon}
 				</View>
-				<Text
-					style={{ fontSize: 30, fontWeight: "700", color: theme.foreground }}
-				>
+				<Text style={valueStyle(theme)}>
 					{typeof value === "number" ? value.toLocaleString("en-US") : value}
 				</Text>
 				{change !== undefined ? (
-					<Text style={{ fontSize: 13, color: changeColor }}>
+					<Text style={changeStyle(changeColor)}>
 						{sign} {changeText}
 					</Text>
 				) : subtitle ? (
-					<Text style={{ fontSize: 13, color: theme.mutedForeground }}>
-						{subtitle}
-					</Text>
+					<Text style={subtitleStyle(theme)}>{subtitle}</Text>
 				) : null}
 			</View>
 		</View>

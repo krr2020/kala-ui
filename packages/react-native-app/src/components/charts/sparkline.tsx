@@ -9,6 +9,7 @@ import Svg, { Polyline } from "react-native-svg";
 import { useUnistyles } from "react-native-unistyles";
 import { sparklinePoints } from "../../lib/chart-geometry";
 import { ChartSkeleton } from "./chart-skeleton";
+import { emptyBoxStyle, emptyTextStyle } from "./charts.styles";
 import type { SparklineProps } from "./sparkline.types";
 
 export function Sparkline({
@@ -42,22 +43,9 @@ export function Sparkline({
 		return (
 			<View
 				testID={testID}
-				style={[
-					{
-						width,
-						height,
-						justifyContent: "center",
-						alignItems: "center",
-						borderWidth: 1,
-						borderColor: theme.border,
-					},
-					style,
-					styles?.root,
-				]}
+				style={[emptyBoxStyle(theme, { width, height }), style, styles?.root]}
 			>
-				<Text style={{ color: theme.mutedForeground, fontSize: 12 }}>
-					{emptyMessage}
-				</Text>
+				<Text style={emptyTextStyle(theme, 12)}>{emptyMessage}</Text>
 			</View>
 		);
 	}
