@@ -12,6 +12,10 @@ module.exports = {
   // jest-expo's customExportConditions resolve lucide to its ESM .mjs build,
   // which jest's CJS runtime cannot load — pin the require/CJS build instead.
   moduleNameMapper: {
+    // Workspace react-hooks dist is resolved through its own node_modules,
+    // which lands on the root react@19.3.0 — a second React instance breaks
+    // hook dispatch inside jest. Pin react to THIS package's 19.2.3 copy.
+    '^react$': require.resolve('react'),
     '^lucide-react-native$':
       '<rootDir>/node_modules/lucide-react-native/dist/cjs/lucide-react-native.js',
     // pnpm-hoisted unistyles resolves fine from the old component dirs but

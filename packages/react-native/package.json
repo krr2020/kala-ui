@@ -31,6 +31,9 @@
     "./tokens": "./src/tokens/index.ts",
     "./types": "./src/types/index.ts"
   },
+  "dependencies": {
+    "@kala-ui/react-hooks": "workspace:*"
+  },
 	"files": [
 		"src",
 		"README.md",

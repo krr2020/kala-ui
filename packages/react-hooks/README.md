@@ -14,6 +14,21 @@ npm install @kala-ui/react-hooks@beta
 
 Requires React 19.2+ (peer dependency).
 
+## React Native & no-DOM environments
+
+The root entry (`@kala-ui/react-hooks`) is web-only. For React Native (or
+any DOM-free runtime) import the portable subset instead — it is guaranteed
+to contain no `window`/`document`/`navigator` access and no `react-dom`
+import (enforced by a fail-closed test):
+
+```tsx
+import { useUncontrolled } from "@kala-ui/react-hooks/portable";
+```
+
+Portable hooks: `useCounter`, `useDebounce`, `useDisclosure`, `useListState`,
+`useMergedRef` (+ `mergeRefs`, `assignRef`), `useMounted`, `usePagination`,
+`usePrevious`, `useToggle`, `useUncontrolled`, `useCallbackRef`.
+
 ## Hooks
 
 ### State & values

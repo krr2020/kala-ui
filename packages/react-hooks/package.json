@@ -17,6 +17,16 @@
 				"types": "./dist/index.d.cts",
 				"default": "./dist/index.cjs"
 			}
+		},
+		"./portable": {
+			"import": {
+				"types": "./dist/portable.d.mts",
+				"default": "./dist/portable.mjs"
+			},
+			"require": {
+				"types": "./dist/portable.d.cts",
+				"default": "./dist/portable.cjs"
+			}
 		}
 	},
 	"files": [
@@ -45,7 +55,7 @@
 			"optional": false
 		},
 		"react-dom": {
-			"optional": false
+			"optional": true
 		}
 	},
 	"devDependencies": {

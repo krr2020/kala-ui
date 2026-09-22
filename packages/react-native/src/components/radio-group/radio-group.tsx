@@ -11,7 +11,7 @@ import { createContext, useContext } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import type { StyleProp, ViewStyle } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { useUncontrolled } from "../../lib/use-uncontrolled.utils";
+import { useUncontrolled } from "@kala-ui/react-hooks/portable";
 import { applySlot } from "../slot-styles";
 import {
 	body as bodyStyle,
@@ -49,10 +49,11 @@ export function RadioGroup({
 	slotStyles,
 	testID = "k-radio-group",
 }: RadioGroupProps): ReactElement {
-	const [current, setCurrent] = useUncontrolled<string | undefined>(
+	const [current, setCurrent] = useUncontrolled<string>({
 		value,
 		defaultValue,
-	);
+		onChange: onValueChange,
+	});
 	const state: RadioGroupState = {
 		value: current,
 		groupDisabled: disabled,
@@ -61,7 +62,6 @@ export function RadioGroup({
 			// re-selecting the checked item is a no-op — radios don't unselect
 			if (next === current) return;
 			setCurrent(next);
-			onValueChange?.(next);
 		},
 	};
 	return (

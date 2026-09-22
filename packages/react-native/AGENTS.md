@@ -5,6 +5,7 @@ React Native + Expo arm: Unistyles themes generated from the web token source of
 ## Commands
 
 ```bash
+pnpm --filter @kala-ui/react-hooks build        # REQUIRED first — this package consumes @kala-ui/react-hooks/portable from its dist
 pnpm --filter @kala-ui/react-native build       # tsc --noEmit (source-exported — no dist step)
 pnpm --filter @kala-ui/react-native test        # vitest run && jest (both stacks)
 node scripts/generate-themes.mjs                # regenerate themes from packages/react/src/styles/globals.css

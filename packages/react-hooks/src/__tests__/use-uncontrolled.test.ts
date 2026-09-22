@@ -67,4 +67,27 @@ describe("useUncontrolled", () => {
 		// Controlled: internal state is untouched; the prop still drives it.
 		expect(result.current[0]).toBe("controlled");
 	});
+
+	it("controlled without onChange: setter is a callable no-op, not a TypeError", () => {
+		const { result } = renderHook(() =>
+			useUncontrolled<string>({ value: "locked" }),
+		);
+
+		expect(() => result.current[1]("next")).not.toThrow();
+		expect(result.current[0]).toBe("locked");
+	});
+
+	it("controlled setter forwards trailing payload to onChange", () => {
+		const onChange = vi.fn();
+		const { result } = renderHook(() =>
+			useUncontrolled<string>({ value: "controlled", onChange }),
+		);
+
+		act(() => {
+			result.current[1]("next", "meta");
+		});
+
+		expect(onChange).toHaveBeenCalledWith("next", "meta");
+		expect(result.current[0]).toBe("controlled");
+	});
 });

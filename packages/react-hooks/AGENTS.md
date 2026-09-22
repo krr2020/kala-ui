@@ -18,6 +18,7 @@ pnpm --filter @kala-ui/react-hooks test      # vitest run — root test:watch/te
   - DOM/events: `use-click-outside`, `use-focus-trap`, `use-hotkeys`, `use-hover`, `use-mouse`, `use-move`, `use-element-size`, `use-viewport-size`, `use-window-event`, `use-window-scroll`, `use-scroll-lock`, `use-intersection`, `use-merged-ref`, `use-isomorphic-effect`.
   - Browser APIs: `use-clipboard`, `use-local-storage` (exports both `useLocalStorage` and `useSessionStorage`), `use-media-query`, `use-network`, `use-os`, `use-color-scheme`, `use-reduced-motion`, `use-document-title`, `use-idle`.
 - `src/utils/` — shared helpers (`useCallbackRef`); `use-merged-ref` also exports `mergeRefs`/`assignRef`, `use-move` exports `clamp`. `src/__tests__/` — one test file per hook + `setup.ts`.
+- `src/portable.ts` — DOM-free barrel for React Native (`@kala-ui/react-hooks/portable`); the root `.` barrel is web-only. A hook enters the portable barrel only if its source has zero `window`/`document`/`navigator` access — `src/__tests__/portable.test.ts` walks the sources and fails closed.
 - `README.md` — usage doc per hook; update it when changing a hook's API.
 
 ## Rules

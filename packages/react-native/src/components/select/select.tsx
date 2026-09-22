@@ -3,7 +3,7 @@ import type { ComponentRef, ReactElement, ReactNode } from "react";
 import { useRef, useState } from "react";
 import { Pressable, Text as RNText, ScrollView, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { useUncontrolled } from "../../lib/use-uncontrolled.utils";
+import { useUncontrolled } from "@kala-ui/react-hooks/portable";
 import { Icon } from "../icon";
 import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
 import { Sheet } from "../sheet";
@@ -44,10 +44,10 @@ export function Select({
 	testID = "k-select",
 }: SelectProps): ReactElement {
 	const { theme } = useUnistyles();
-	const [current, setCurrent] = useUncontrolled<string | undefined>(
+	const [current, setCurrent] = useUncontrolled<string | undefined>({
 		value,
 		defaultValue,
-	);
+	});
 	const [open, setOpen] = useState(false);
 	const triggerRef = useRef<ComponentRef<typeof Pressable> | null>(null);
 

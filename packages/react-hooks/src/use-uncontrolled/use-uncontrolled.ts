@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-interface UseUncontrolledInput<T> {
+export interface UseUncontrolledInput<T> {
 	/** Controlled value */
 	value?: T;
 
@@ -34,11 +34,15 @@ export function useUncontrolled<T>({
 	};
 
 	if (value !== undefined) {
-		return [
-			value as T,
-			onChange as (value: T, ...payload: unknown[]) => void,
-			true,
-		];
+		// Always callable: a controlled consumer without an onChange handler
+		// gets a safe no-op instead of the raw (possibly undefined) callback.
+		const handleControlledChange = (
+			val: T,
+			...payload: unknown[]
+		): void => {
+			onChange?.(val, ...payload);
+		};
+		return [value as T, handleControlledChange, true];
 	}
 
 	return [uncontrolledValue as T, handleUncontrolledChange, false];

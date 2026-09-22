@@ -96,7 +96,10 @@ export {
 } from "./use-scroll-lock/use-scroll-lock";
 export { useTimeout } from "./use-timeout/use-timeout";
 export { useToggle } from "./use-toggle/use-toggle";
-export { useUncontrolled } from "./use-uncontrolled/use-uncontrolled";
+export {
+	type UseUncontrolledInput,
+	useUncontrolled,
+} from "./use-uncontrolled/use-uncontrolled";
 export {
 	useViewportSize,
 	type ViewportSize,
