@@ -2,6 +2,7 @@
 export const socialLoginButtonStyles = {
 	root: "relative transition-colors duration-200 bg-transparent border-input text-foreground",
 	icon: "w-5 h-5 mr-2",
+	spinner: "w-5 h-5 mr-2 animate-spin",
 };
 
 export const socialLoginButtonsStyles = {

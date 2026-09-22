@@ -57,10 +57,10 @@ function MetricCard({
 
 	const getChangeColor = (changeValue: number) =>
 		changeValue > 0
-			? changeColors.up
+			? metricCardChangeColors.up
 			: changeValue < 0
-				? changeColors.down
-				: changeColors.flat;
+				? metricCardChangeColors.down
+				: metricCardChangeColors.flat;
 
 	const getChangeIcon = (changeValue: number) => {
 		if (changeValue > 0) return "↑";

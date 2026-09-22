@@ -55,6 +55,9 @@ describe("MetricCard", () => {
 
 		expect(screen.getByText("No change")).toBeInTheDocument();
 		expect(screen.getByText("−")).toBeInTheDocument();
+		expect(screen.getByText("−").closest("div")).toHaveClass(
+			"text-muted-foreground",
+		);
 	});
 
 	it("should render custom change label", () => {
