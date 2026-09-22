@@ -18,8 +18,8 @@ export {
 	selectScrollButtonStyles,
 	selectSeparatorStyles,
 	selectTriggerStyles,
-	nativeSelectStyles,
 } from "./select";
+export { nativeSelectStyles } from "./native-select";
 export { tagStyles } from "./tag";
 export { tagInputStyles } from "./tag-input";
 export { timePickerStyles } from "./time-picker";

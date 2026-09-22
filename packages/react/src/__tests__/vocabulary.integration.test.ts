@@ -60,7 +60,7 @@ describe("semantic vocabulary (item 8)", () => {
 		const radioTypes = read("../components/radio-group/radio-group.types.ts");
 		const radioComponent = read("../components/radio-group/radio-group.tsx");
 		const radioConfig = read("../config/radio-group.ts");
-		const nativeSelect = read("../components/select/native-select.tsx");
+		const nativeSelect = read("../components/native-select/native-select.tsx");
 		for (const src of [radioTypes, radioComponent, radioConfig, nativeSelect]) {
 			expect(src).toContain("hasError");
 			expect(src).not.toMatch(/\berror[?:]/);

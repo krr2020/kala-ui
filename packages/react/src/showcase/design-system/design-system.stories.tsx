@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { DesignSystemOverview } from "./design-system/overview";
+import { DesignSystemOverview } from "./overview";
 
 const meta = {
 	title: "Design System",

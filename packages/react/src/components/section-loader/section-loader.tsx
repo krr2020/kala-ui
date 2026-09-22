@@ -2,7 +2,7 @@ import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { useSlotStyles } from "../kala-provider";
 import { Spinner } from "../spinner";
-import type { SectionLoaderProps } from "./loading.types";
+import type { SectionLoaderProps } from "./section-loader.types";
 
 /**
  * Section-level loading state component

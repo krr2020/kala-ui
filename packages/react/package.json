@@ -402,9 +402,17 @@
 			"types": "./dist/components/button/index.d.ts",
 			"default": "./dist/components/button/index.js"
 		},
-		"./loading": {
-			"types": "./dist/components/loading/index.d.ts",
-			"default": "./dist/components/loading/index.js"
+		"./page-loader": {
+			"types": "./dist/components/page-loader/index.d.ts",
+			"default": "./dist/components/page-loader/index.js"
+		},
+		"./section-loader": {
+			"types": "./dist/components/section-loader/index.d.ts",
+			"default": "./dist/components/section-loader/index.js"
+		},
+		"./native-select": {
+			"types": "./dist/components/native-select/index.d.ts",
+			"default": "./dist/components/native-select/index.js"
 		},
 		"./loading-overlay": {
 			"types": "./dist/components/loading-overlay/index.d.ts",

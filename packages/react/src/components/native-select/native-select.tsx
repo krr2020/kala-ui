@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import { nativeSelectStyles } from "../../config/select";
+import { nativeSelectStyles } from "../../config/native-select";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { useSlotStyles } from "../kala-provider";
@@ -9,7 +9,7 @@ import type {
 	NativeSelectOptGroupProps,
 	NativeSelectOptionProps,
 	NativeSelectProps,
-} from "./select.types";
+} from "./native-select.types";
 
 function NativeSelect({
 	ref,

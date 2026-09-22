@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { SkeletonCardContent, SkeletonText } from "../skeleton";
-import { PageLoader } from "./page-loader";
 import { SectionLoader } from "./section-loader";
 
 const meta: Meta = {
-	title: "Feedback/Loading",
+	title: "Feedback/SectionLoader",
 	parameters: {
 		layout: "fullscreen",
 	},
@@ -12,16 +11,6 @@ const meta: Meta = {
 };
 
 export default meta;
-
-export const PageLoaderStory: StoryObj<typeof PageLoader> = {
-	name: "Page Loader",
-	render: () => <PageLoader message="Loading page..." />,
-};
-
-export const PageLoaderNoMessage: StoryObj<typeof PageLoader> = {
-	name: "Page Loader (No Message)",
-	render: () => <PageLoader message="" />,
-};
 
 export const SectionLoaderStory: StoryObj<typeof SectionLoader> = {
 	name: "Section Loader",

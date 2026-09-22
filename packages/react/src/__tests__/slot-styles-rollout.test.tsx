@@ -6,7 +6,7 @@
  * when a family is neither wired, rolled out here, nor explicitly excluded.
  *
  * Excluded (no styled DOM root of their own): theme-provider (context
- * provider), error-boundary (class wrapper), design-system (docs helper).
+ * provider), error-boundary (class wrapper).
  */
 import fs from "node:fs";
 import { resolve } from "node:path";
@@ -70,7 +70,8 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "../components/input-otp";
 import { Kbd } from "../components/kbd";
 import { Label } from "../components/label";
 import { List, ListItem } from "../components/list";
-import { PageLoader, SectionLoader } from "../components/loading";
+import { PageLoader } from "../components/page-loader";
+import { SectionLoader } from "../components/section-loader";
 import { LoadingOverlay } from "../components/loading-overlay";
 import { Menubar, MenubarMenu, MenubarTrigger } from "../components/menubar";
 import { MultiSelect } from "../components/multi-select";
@@ -141,6 +142,7 @@ const WIRED = [
 	"file-upload",
 	"input",
 	"number-input",
+	"native-select",
 	"popover",
 	"progress",
 	"ring-progress",
@@ -157,7 +159,6 @@ const EXCLUDED: Record<string, string> = {
 	"theme-provider": "context provider, renders no styled element",
 	"error-boundary":
 		"class wrapper; healthy path renders children verbatim, slotStyles reaches the default fallback only",
-	"design-system": "docs/demo helper, not a shipped visual component",
 };
 
 type OverrideProps = {
@@ -471,12 +472,12 @@ const rows: Row[] = [
 	// react-day-picker but the wrapper renders our own slotted root.
 	{ family: "spinner", marker: "spinner", render: (p) => <Spinner {...p} /> },
 	{
-		family: "loading",
+		family: "page-loader",
 		marker: "loading-page-loader",
 		render: (p) => <PageLoader {...p} />,
 	},
 	{
-		family: "loading",
+		family: "section-loader",
 		marker: "loading-section-loader",
 		render: (p) => <SectionLoader {...p} />,
 	},

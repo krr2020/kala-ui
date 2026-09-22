@@ -15,13 +15,13 @@ File/folder-structure compliance of every component family in `packages/react`, 
 
 ## 1. `packages/react` (web core)
 
-### Violations
+### Violations — items 1–3 below resolved 2026-09-22 (structure moves pass)
 
-| Path | Deviation |
+| Path | Resolution |
 | --- | --- |
-| `src/components/loading/` | No `loading.tsx`. The family is `page-loader.tsx` + `section-loader.tsx` sharing one `loading.types.ts` — neither component has its own `<name>.types.ts`, breaking the one-types-file-per-component rule everywhere else followed. |
-| `src/components/design-system/` | Four loose components (`overview.tsx`, `category-section.tsx`, `component-preview-card.tsx`, `design-system-utils.ts`) in one folder: no per-component folders, no `index.ts` barrels, no `.types.ts` files. Wired via a `package.json` subpath but absent from the root barrel `src/index.ts` and from the AGENTS.md family inventory. Biggest structural outlier in the package. |
-| `src/components/select/` | `native-select.tsx` is a second component inside `select/` (own stories + test) but has no folder of its own and no `native-select.types.ts` — types borrowed from `select.types.ts`. |
+| `src/components/loading/` | Split into `page-loader/` + `section-loader/` families, each with its own `.types.ts`/`.test.tsx`/`.stories.tsx`/barrel; markers and the `useSlotStyles("loading")` family key unchanged. |
+| `src/components/design-system/` | Relocated to `src/showcase/design-system/` (stories colocated) — it is an in-repo docs showcase, not a shipped component; no barrel entry, no subpath. |
+| `src/components/select/` | `native-select/` extracted as its own family with `native-select.types.ts` and `config/native-select.ts`; select/ is single-component again. |
 | `src/components/skeleton/` | `skeleton-wrapper.tsx` and `skeleton-patterns.tsx` are extra components outside the sanctioned `<name>.tsx` / `<name>-skeleton.tsx` naming; plus a colocated `README.md`. |
 | `src/components/error-boundary/` | Extra component `error-fallback.tsx` beyond the `<name>.tsx` + `<name>-skeleton.tsx` pattern (its native-app twin is sanctioned by that package's docs; here it is undocumented). |
 | `src/components/collapse/` | No `collapse.stories.tsx` — every other family ships stories. |
@@ -113,9 +113,9 @@ Decision 2026-09-22: port all nine rather than scope the AGENTS.md rule — the 
 1. ✅ Done 2026-09-21: react-app duplicates merged into colocated tests; react-native-app AGENTS.md corrected to the real test home (`src/components/__tests__/`).
 2. ✅ Done 2026-09-22: react-native style tables extracted for combobox, context-menu, dropdown-menu, separator; alert-dialog recorded as the composed-shell exemption (AGENTS.md updated, test homes documented).
 3. ✅ Done 2026-09-22: react-native-app — all nine families ported to `<name>.styles.ts` (maintainer decision: port, don't scope the rule).
-4. **react: fix `loading/`** — split into `page-loader/` + `section-loader/` families (or document the shared-family pattern), each with its own types file.
-5. **react: relocate `design-system/`** into proper per-component folders with barrels + types, or move it out of `components/` (it is a showcase, not a primitive).
-6. **react: `native-select` → its own folder** with `native-select.types.ts`; rename `skeleton-wrapper`/`skeleton-patterns` to fit the naming or document them.
+4. ✅ Done 2026-09-22: react `loading/` split into `page-loader/` + `section-loader/` families (types/tests/stories split per component; markers + slotStyles family keys unchanged).
+5. ✅ Done 2026-09-22: react `design-system/` moved out of `components/` to `src/showcase/design-system/` (showcase, not a primitive; stories colocated; marker-guard skip filters removed).
+6. ✅ (native-select half) Done 2026-09-22: `native-select/` is its own family with `native-select.types.ts` + `config/native-select.ts` + barrel + subpath. **Open:** `skeleton-wrapper`/`skeleton-patterns` naming — document the sanction in the docs sweep.
 7. **Docs sweep** (partial, 2026-09-21): `screen-stack` added to react-native-app's inventory; `useTableState.ts`/`utils.ts` renamed rather than documented. Remaining: add missing families to both web AGENTS.md inventories (card, kala-provider, …) and state the react config-table coverage rule (port queue or exemption).
 
 Items 1–2 are quick, self-contained follow-up units; 3–5 need a maintainers' decision on intended convention before code moves.

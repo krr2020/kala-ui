@@ -7,11 +7,6 @@ export {
 	selectTriggerStyles,
 } from "../../config/select";
 export {
-	NativeSelect,
-	NativeSelectOptGroup,
-	NativeSelectOption,
-} from "./native-select";
-export {
 	Select,
 	SelectContent,
 	SelectGroup,
@@ -24,9 +19,6 @@ export {
 	SelectValue,
 } from "./select";
 export type {
-	NativeSelectOptGroupProps,
-	NativeSelectOptionProps,
-	NativeSelectProps,
 	SelectContentProps,
 	SelectItemProps,
 	SelectTriggerProps,

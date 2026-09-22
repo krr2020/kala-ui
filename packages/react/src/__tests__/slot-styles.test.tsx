@@ -51,8 +51,8 @@ import {
 } from "../components/popover";
 import { Progress } from "../components/progress";
 import { RingProgress } from "../components/ring-progress";
+import { NativeSelect } from "../components/native-select";
 import {
-	NativeSelect,
 	Select,
 	SelectContent,
 	SelectItem,
@@ -1604,20 +1604,20 @@ const styleTableEntries = [
 	},
 	{
 		part: "nativeSelect.root",
-		tsx: "../components/select/native-select.tsx",
-		config: "../config/select.ts",
+		tsx: "../components/native-select/native-select.tsx",
+		config: "../config/native-select.ts",
 		base: "relative w-full",
 	},
 	{
 		part: "nativeSelect.select",
-		tsx: "../components/select/native-select.tsx",
-		config: "../config/select.ts",
+		tsx: "../components/native-select/native-select.tsx",
+		config: "../config/native-select.ts",
 		base: "w-full rounded-[var(--kala-radius-input,var(--kala-radius-control))] border bg-background text-sm transition-colors kala-surface-input kala-focus-ring disabled:cursor-not-allowed disabled:opacity-50 appearance-none pr-10",
 	},
 	{
 		part: "nativeSelect.icon",
-		tsx: "../components/select/native-select.tsx",
-		config: "../config/select.ts",
+		tsx: "../components/native-select/native-select.tsx",
+		config: "../config/native-select.ts",
 		base: "pointer-events-none absolute right-2 top-1/2 -translate-y-1/2",
 	},
 	{
