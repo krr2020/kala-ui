@@ -1,6 +1,6 @@
 {
 	"name": "@kala-ui/react-native-app",
-	"version": "0.1.0-beta.0",
+	"version": "0.1.0-beta.1",
 	"description": "App-level composite components for kala-ui on React Native — mobile application chrome built on @kala-ui/react-native primitives.",
 	"keywords": [
 		"react-native",

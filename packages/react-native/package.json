@@ -1,6 +1,6 @@
 {
 	"name": "@kala-ui/react-native",
-	"version": "0.1.0-beta.0",
+	"version": "0.1.0-beta.1",
 	"description": "Token-driven theming system and components for kala-ui on React Native — Unistyles themes transcribed from the web token source of truth.",
 	"keywords": [
 		"react-native",
