@@ -130,10 +130,9 @@ const listFiles = (dir: string): string[] =>
 
 describe("data-kala-component source guard", () => {
 	it("every component dir declares at least one marker", () => {
-		// design-system is an in-repo docs helper, deliberately unshipped.
 		const dirs = fs
 			.readdirSync(componentsRoot, { withFileTypes: true })
-			.filter((d) => d.isDirectory() && d.name !== "design-system")
+			.filter((d) => d.isDirectory())
 			.map((d) => d.name);
 		expect(dirs.length).toBeGreaterThan(0);
 		const withoutMarkers = dirs.filter(

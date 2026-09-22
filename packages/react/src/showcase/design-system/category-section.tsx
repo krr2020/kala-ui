@@ -1,4 +1,4 @@
-import { Separator } from "../separator";
+import { Separator } from "../../components/separator";
 import { ComponentPreviewCard } from "./component-preview-card";
 import type { CategoryMetadata } from "./design-system-utils";
 

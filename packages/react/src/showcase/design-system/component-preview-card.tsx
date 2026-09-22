@@ -4,7 +4,7 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "../card";
+} from "../../components/card";
 import type { ComponentMetadata } from "./design-system-utils";
 
 interface ComponentPreviewCardProps {

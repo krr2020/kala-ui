@@ -8,6 +8,8 @@ const storybookDir = dirname(fileURLToPath(import.meta.url));
 
 const config: StorybookConfig = {
   stories: [
+    // src-wide glob: covers components/** and the unshipped src/showcase/**
+    // design-system overview alike.
     '../src/**/*.stories.@(js|jsx|mjs|tsx|ts)',
     '../../react-app/src/**/*.stories.@(js|jsx|mjs|tsx|ts)',
   ],

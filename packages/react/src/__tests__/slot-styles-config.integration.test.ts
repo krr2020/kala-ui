@@ -53,10 +53,9 @@ describe("config tables and barrel stay in lockstep", () => {
 
 	it("every component dir is exported from the package barrel", () => {
 		const index = read("index.ts");
-		// design-system is an in-repo docs helper, deliberately unshipped.
 		const dirs = fs
 			.readdirSync(`${srcRoot}/components`, { withFileTypes: true })
-			.filter((d) => d.isDirectory() && d.name !== "design-system")
+			.filter((d) => d.isDirectory())
 			.map((d) => d.name);
 		expect(dirs.length).toBeGreaterThan(0);
 		for (const dir of dirs) {

@@ -4,24 +4,24 @@ import {
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from "../accordion";
-import { Alert } from "../alert";
-import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
-import { Badge } from "../badge";
-import { Breadcrumbs } from "../breadcrumbs";
+} from "../../components/accordion";
+import { Alert } from "../../components/alert";
+import { Avatar, AvatarFallback, AvatarImage } from "../../components/avatar";
+import { Badge } from "../../components/badge";
+import { Breadcrumbs } from "../../components/breadcrumbs";
 // Component imports for previews
-import { Button } from "../button";
-import { Card, CardContent, CardHeader, CardTitle } from "../card";
-import { Checkbox } from "../checkbox";
-import { Input } from "../input";
-import { Label } from "../label";
-import { Progress } from "../progress";
-import { RadioGroup, RadioGroupItem } from "../radio-group";
-import { Select, SelectTrigger, SelectValue } from "../select";
-import { Skeleton } from "../skeleton";
-import { Slider } from "../slider";
-import { Spinner } from "../spinner";
-import { Switch } from "../switch";
+import { Button } from "../../components/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/card";
+import { Checkbox } from "../../components/checkbox";
+import { Input } from "../../components/input";
+import { Label } from "../../components/label";
+import { Progress } from "../../components/progress";
+import { RadioGroup, RadioGroupItem } from "../../components/radio-group";
+import { Select, SelectTrigger, SelectValue } from "../../components/select";
+import { Skeleton } from "../../components/skeleton";
+import { Slider } from "../../components/slider";
+import { Spinner } from "../../components/spinner";
+import { Switch } from "../../components/switch";
 import {
 	Table,
 	TableBody,
@@ -29,10 +29,10 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "../table";
-import { Tabs, TabsList, TabsTrigger } from "../tabs";
-import { Textarea } from "../textarea";
-import { Toggle } from "../toggle";
+} from "../../components/table";
+import { Tabs, TabsList, TabsTrigger } from "../../components/tabs";
+import { Textarea } from "../../components/textarea";
+import { Toggle } from "../../components/toggle";
 import { designSystemComponents } from "./design-system-utils";
 
 export const DesignSystemOverview = () => {

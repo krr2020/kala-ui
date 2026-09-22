@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { DesignSystemOverview } from "./overview";
 
 // Mock all child components to avoid complex rendering
-vi.mock("../accordion", () => ({
+vi.mock("../../components/accordion", () => ({
 	Accordion: ({ children }: { children: React.ReactNode }) => (
 		<div data-testid="accordion">{children}</div>
 	),
@@ -18,13 +18,13 @@ vi.mock("../accordion", () => ({
 	),
 }));
 
-vi.mock("../alert", () => ({
+vi.mock("../../components/alert", () => ({
 	Alert: ({ children }: { children: React.ReactNode }) => (
 		<div data-testid="alert">{children}</div>
 	),
 }));
 
-vi.mock("../avatar", () => ({
+vi.mock("../../components/avatar", () => ({
 	Avatar: ({ children }: { children: React.ReactNode }) => (
 		<div data-testid="avatar">{children}</div>
 	),
@@ -34,13 +34,13 @@ vi.mock("../avatar", () => ({
 	AvatarImage: () => <div data-testid="avatar-image" />,
 }));
 
-vi.mock("../badge", () => ({
+vi.mock("../../components/badge", () => ({
 	Badge: ({ children }: { children: React.ReactNode }) => (
 		<span data-testid="badge">{children}</span>
 	),
 }));
 
-vi.mock("../breadcrumbs", () => ({
+vi.mock("../../components/breadcrumbs", () => ({
 	Breadcrumbs: ({
 		items,
 	}: {
@@ -54,7 +54,7 @@ vi.mock("../breadcrumbs", () => ({
 	),
 }));
 
-vi.mock("../button", () => ({
+vi.mock("../../components/button", () => ({
 	Button: ({ children }: { children: React.ReactNode }) => (
 		<button type="button" data-testid="button">
 			{children}
@@ -62,7 +62,7 @@ vi.mock("../button", () => ({
 	),
 }));
 
-vi.mock("../card", () => ({
+vi.mock("../../components/card", () => ({
 	Card: ({ children }: { children: React.ReactNode }) => (
 		<div data-testid="card">{children}</div>
 	),
@@ -77,32 +77,32 @@ vi.mock("../card", () => ({
 	),
 }));
 
-vi.mock("../checkbox", () => ({
+vi.mock("../../components/checkbox", () => ({
 	Checkbox: () => <div data-testid="checkbox" />,
 }));
 
-vi.mock("../input", () => ({
+vi.mock("../../components/input", () => ({
 	Input: () => <input data-testid="input" />,
 }));
 
-vi.mock("../label", () => ({
+vi.mock("../../components/label", () => ({
 	Label: ({ children }: { children: React.ReactNode }) => (
 		<label htmlFor="mock-input">{children}</label>
 	),
 }));
 
-vi.mock("../progress", () => ({
+vi.mock("../../components/progress", () => ({
 	Progress: () => <div data-testid="progress" />,
 }));
 
-vi.mock("../radio-group", () => ({
+vi.mock("../../components/radio-group", () => ({
 	RadioGroup: ({ children }: { children: React.ReactNode }) => (
 		<div data-testid="radio-group">{children}</div>
 	),
 	RadioGroupItem: () => <div data-testid="radio-group-item" />,
 }));
 
-vi.mock("../select", () => ({
+vi.mock("../../components/select", () => ({
 	Select: ({ children }: { children: React.ReactNode }) => (
 		<div data-testid="select">{children}</div>
 	),
@@ -114,25 +114,25 @@ vi.mock("../select", () => ({
 	),
 }));
 
-vi.mock("../skeleton", () => ({
+vi.mock("../../components/skeleton", () => ({
 	Skeleton: ({ className }: { className?: string }) => (
 		<div data-testid="skeleton" className={className} />
 	),
 }));
 
-vi.mock("../slider", () => ({
+vi.mock("../../components/slider", () => ({
 	Slider: () => <div data-testid="slider" />,
 }));
 
-vi.mock("../spinner", () => ({
+vi.mock("../../components/spinner", () => ({
 	Spinner: () => <div data-testid="spinner" />,
 }));
 
-vi.mock("../switch", () => ({
+vi.mock("../../components/switch", () => ({
 	Switch: () => <div data-testid="switch" />,
 }));
 
-vi.mock("../table", () => ({
+vi.mock("../../components/table", () => ({
 	Table: ({ children }: { children: React.ReactNode }) => (
 		<table data-testid="table">{children}</table>
 	),
@@ -153,7 +153,7 @@ vi.mock("../table", () => ({
 	),
 }));
 
-vi.mock("../tabs", () => ({
+vi.mock("../../components/tabs", () => ({
 	Tabs: ({ children }: { children: React.ReactNode }) => (
 		<div data-testid="tabs">{children}</div>
 	),
@@ -165,11 +165,11 @@ vi.mock("../tabs", () => ({
 	),
 }));
 
-vi.mock("../textarea", () => ({
+vi.mock("../../components/textarea", () => ({
 	Textarea: () => <textarea data-testid="textarea" />,
 }));
 
-vi.mock("../toggle", () => ({
+vi.mock("../../components/toggle", () => ({
 	Toggle: ({ children }: { children: React.ReactNode }) => (
 		<button type="button" data-testid="toggle">
 			{children}
