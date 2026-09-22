@@ -249,9 +249,6 @@ importers:
       '@kala-ui/react-app':
         specifier: workspace:*
         version: link:../../packages/react-app
-      '@kala-ui/react-hooks':
-        specifier: workspace:*
-        version: link:../../packages/react-hooks
       next:
         specifier: ~16.3.3
         version: 16.3.5(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
