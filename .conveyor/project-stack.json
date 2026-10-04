@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "capturedAt": "2026-09-14T11:37:53.781Z",
+  "capturedAt": "2026-10-04T03:09:59.446Z",
   "packageManager": "pnpm",
   "lockfile": "pnpm-lock.yaml",
   "languages": [
@@ -41,6 +41,52 @@
       "devPorts": []
     },
     {
+      "name": "@kala-ui/native-playground",
+      "root": "apps/native-playground",
+      "manifest": "package.json",
+      "manifestName": "@kala-ui/native-playground",
+      "kind": "mobile",
+      "runtime": "Node.js",
+      "languages": [
+        "TypeScript"
+      ],
+      "frameworks": [
+        "react",
+        "expo",
+        "react-native"
+      ],
+      "keyDependencies": [
+        "@expo/metro-runtime@catalog:",
+        "@kala-ui/react-native@workspace:*",
+        "@kala-ui/react-native-app@workspace:*",
+        "@react-native/normalize-colors@catalog:",
+        "expo@catalog:",
+        "lucide-react-native@catalog:",
+        "react@19.2.3",
+        "react-dom@19.2.3",
+        "react-native@catalog:",
+        "react-native-edge-to-edge@catalog:",
+        "react-native-gesture-handler@catalog:",
+        "react-native-nitro-modules@catalog:",
+        "react-native-reanimated@catalog:",
+        "react-native-safe-area-context@catalog:",
+        "react-native-screens@catalog:",
+        "react-native-svg@catalog:",
+        "react-native-unistyles@catalog:",
+        "react-native-worklets@0.10.1",
+        "react-native-web@catalog:",
+        "@react-native/metro-config@catalog:",
+        "@types/react@catalog:",
+        "babel-preset-expo@catalog:",
+        "jest-expo@catalog:",
+        "typescript@catalog:"
+      ],
+      "commands": {
+        "start": "expo start"
+      },
+      "devPorts": []
+    },
+    {
       "name": "@kala-ui/playground",
       "root": "apps/playground",
       "manifest": "package.json",
@@ -57,7 +103,6 @@
       "keyDependencies": [
         "@kala-ui/react@workspace:*",
         "@kala-ui/react-app@workspace:*",
-        "@kala-ui/react-hooks@workspace:*",
         "next@~16.3.3",
         "react@catalog:",
         "react-dom@catalog:",
@@ -149,7 +194,7 @@
         "simple-icons@catalog:"
       ],
       "commands": {
-        "build": "tsc && node ../../scripts/add-js-extensions.mjs . && pnpm exec postcss src/styles/globals.css -o dist/styles/globals.css && cp src/styles/helpers.css src/styles/theme.css dist/styles/",
+        "build": "tsc && node ../../scripts/add-js-extensions.mjs . && pnpm exec postcss src/styles/globals.css -o dist/styles/globals.css && cp src/styles/helpers.css src/styles/theme.css src/styles/tokens.css dist/styles/",
         "test": "vitest run",
         "lint": "biome lint ."
       },
@@ -238,15 +283,98 @@
         "lint": "biome check ."
       },
       "devPorts": []
+    },
+    {
+      "name": "@kala-ui/react-native",
+      "root": "packages/react-native",
+      "manifest": "package.json",
+      "manifestName": "@kala-ui/react-native",
+      "kind": "mobile",
+      "runtime": "Node.js",
+      "languages": [
+        "TypeScript"
+      ],
+      "frameworks": [
+        "react",
+        "react-native"
+      ],
+      "keyDependencies": [
+        "@kala-ui/react-hooks@workspace:*",
+        "@testing-library/react-native@catalog:",
+        "@types/jest@catalog:",
+        "@types/node@catalog:",
+        "@react-native/jest-preset@catalog:",
+        "babel-preset-expo@catalog:",
+        "jest-expo@catalog:",
+        "lucide-react-native@catalog:",
+        "react@19.2.3",
+        "react-native@catalog:",
+        "react-native-gesture-handler@catalog:",
+        "react-native-reanimated@catalog:",
+        "react-native-safe-area-context@catalog:",
+        "react-native-unistyles@catalog:",
+        "test-renderer@1.2.0",
+        "typescript@catalog:",
+        "vitest@catalog:"
+      ],
+      "commands": {
+        "build": "tsc --noEmit",
+        "test": "vitest run && jest",
+        "lint": "biome lint ."
+      },
+      "devPorts": []
+    },
+    {
+      "name": "@kala-ui/react-native-app",
+      "root": "packages/react-native-app",
+      "manifest": "package.json",
+      "manifestName": "@kala-ui/react-native-app",
+      "kind": "mobile",
+      "runtime": "Node.js",
+      "languages": [
+        "TypeScript"
+      ],
+      "frameworks": [
+        "react",
+        "react-native"
+      ],
+      "keyDependencies": [
+        "@kala-ui/react-native@workspace:*",
+        "@testing-library/react-native@catalog:",
+        "@types/jest@catalog:",
+        "@types/node@catalog:",
+        "@react-native/jest-preset@catalog:",
+        "babel-preset-expo@catalog:",
+        "jest-expo@catalog:",
+        "lucide-react-native@catalog:",
+        "react@19.2.3",
+        "react-native@catalog:",
+        "react-native-gesture-handler@catalog:",
+        "react-native-reanimated@catalog:",
+        "react-native-svg@catalog:",
+        "react-native-unistyles@catalog:",
+        "test-renderer@1.2.0",
+        "typescript@catalog:",
+        "vitest@catalog:"
+      ],
+      "commands": {
+        "build": "tsc --noEmit",
+        "test": "vitest run && jest",
+        "lint": "biome lint ."
+      },
+      "devPorts": []
     }
   ],
   "infraServices": [],
   "inputs": [
     "package.json",
+    "apps/native-playground/package.json",
     "apps/playground/package.json",
     "packages/react/package.json",
     "packages/react-app/package.json",
     "packages/react-hooks/package.json",
+    "packages/react-native/package.json",
+    "packages/react-native-app/package.json",
     "pnpm-lock.yaml"
   ]
 }

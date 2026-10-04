@@ -9,15 +9,11 @@
     "overrides": {}
   },
   "execution": {
-    "worktrees": false
+    "worktrees": true
   },
   "agent": {
     "defaultMode": "build",
-    "approvalPosture": "full_access",
-    "fastPath": {
-      "enabled": true,
-      "maxFiles": 2
-    },
+    "approvalPosture": "auto",
     "guardian": {
       "enabled": true,
       "timeoutMs": 30000,
@@ -26,27 +22,15 @@
     },
     "compaction": {
       "autoEnabled": false,
-      "thresholdPercent": 20,
+      "thresholdPercent": 80,
       "keepRecentTokens": 20000,
       "readEarlyEnabled": false
     },
+    "chatSpendLimitUsd": 5,
+    "chatMaxTurns": 120,
+    "chatMaxToolCalls": 300,
     "sessions": {
       "retentionDays": 30
-    },
-    "memory": {
-      "enabled": true,
-      "overflow": "fifo",
-      "maxItems": 100,
-      "retentionDays": 90,
-      "inject": "auto",
-      "capture": "tool",
-      "pendingDays": 30,
-      "embedder": {
-        "provider": "ngram"
-      },
-      "consolidation": {
-        "enabled": false
-      }
     },
     "learning": {
       "enabled": true,
@@ -73,6 +57,7 @@
         "enabled": true,
         "captureRequestBody": true,
         "captureResponseBody": true,
+        "retentionDays": 7,
         "otlp": {
           "enabled": false
         }
@@ -87,13 +72,35 @@
       "enabled": true,
       "gitLogLines": 10,
       "diffContext": 1
+    },
+    "efficiencyNudges": {
+      "enabled": true,
+      "redundantReadThreshold": 4,
+      "serialReadTurns": 3,
+      "diagnosticsThreshold": 3,
+      "reworkEditThreshold": 3,
+      "planRewriteThreshold": 2,
+      "repeatFailureThreshold": 2,
+      "reasoningRepeatThreshold": 2,
+      "minWindowTurns": 4,
+      "maxNudgesPerTurn": 2,
+      "maxReminders": 2,
+      "weights": {
+        "redundantRead": 1,
+        "repeatFailure": 2,
+        "reworkEdit": 3,
+        "violation": 5,
+        "planRewrite": 8,
+        "reasoningRepeat": 4
+      }
     }
   },
   "autonomy": {
-    "requireApprovalBeforeCommit": true,
-    "stopAfter": "all-done",
+    "requireApprovalBeforeCommit": false,
+    "stopAfter": "feature",
     "resumeAfterApproval": true,
     "approvalTimeoutMinutes": 120,
+    "approvalTimeoutDecision": "auto-decide",
     "reviewResumeTimeoutMinutes": 15,
     "autoAdoptGates": [],
     "autoAccept": "recommended",
@@ -115,7 +122,7 @@
     "snapshots": true,
     "branchPer": "auto",
     "baseBranch": "main",
-    "commitMessageTemplate": "chore({taskId}): {title}",
+    "commitMessageTemplate": "{commitType}({taskId}): {title}",
     "autoPush": true,
     "autoPR": false,
     "prTitleTemplate": "{storyId}: {storyTitle}",
@@ -167,8 +174,8 @@
   "codeIntel": {
     "lsp": {
       "enabled": true,
-      "idleShutdownMin": 15,
-      "maxServers": 4
+      "idleShutdownMin": 3,
+      "maxServers": 2
     },
     "formatter": {
       "enabled": true,
@@ -288,9 +295,9 @@
     }
   },
   "wiki": {
-    "autoRefresh": false,
+    "autoRefresh": true,
     "refreshIntervalHours": 24,
-    "checkIntervalMinutes": 0
+    "checkIntervalMinutes": 60
   },
   "codeIntelligence": {
     "enabled": true,
@@ -311,9 +318,7 @@
   },
   "autocomplete": {
     "enabled": true,
-    "models": {
-      "default": "zai-coding-plan/glm-5.3-flash"
-    },
+    "models": {},
     "fimMode": "auto",
     "debounce": "adaptive",
     "candidates": 1,

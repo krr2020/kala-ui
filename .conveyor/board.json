@@ -2,7 +2,7 @@
   "project": {
     "name": "kala ui",
     "root": "/Users/rk/workspace/kala-ui",
-    "createdAt": "2026-09-14T11:37:53.770Z"
+    "createdAt": "2026-10-04T03:09:59.434Z"
   },
   "revision": 3,
   "features": [
@@ -14,8 +14,8 @@
       "stories": [
         "S0.1"
       ],
-      "createdAt": "2026-09-14T11:37:53.771Z",
-      "updatedAt": "2026-09-14T11:37:53.773Z",
+      "createdAt": "2026-10-04T03:09:59.435Z",
+      "updatedAt": "2026-10-04T03:09:59.437Z",
       "needsUi": false,
       "ux": {
         "value": "not-required",
@@ -50,9 +50,16 @@
       },
       "status": "not-started",
       "tasks": [],
-      "createdAt": "2026-09-14T11:37:53.773Z",
-      "updatedAt": "2026-09-14T11:37:53.773Z"
+      "createdAt": "2026-10-04T03:09:59.437Z",
+      "updatedAt": "2026-10-04T03:09:59.437Z"
     }
   ],
-  "tasks": []
+  "tasks": [],
+  "sequences": {
+    "feature": 0,
+    "story": {
+      "F0": 1
+    },
+    "task": {}
+  }
 }

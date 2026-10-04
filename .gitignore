@@ -23,3 +23,20 @@ coverage
 .conveyor/ui-evidence/
 .conveyor/recordings/
 .conveyor/followups.json
+# Conveyor machine-local state (board/, specs/, wiki/, design/ stay committable)
+.conveyor/logs/
+.conveyor/runs/
+.conveyor/terminals/
+.conveyor/agent-data/
+.conveyor/attempts/
+.conveyor/snapshots/
+.conveyor/executions/
+.conveyor/daemon.*
+.conveyor/background-ledger.jsonl
+.conveyor/stack-summary-served
+.conveyor/transactions/
+.conveyor/board.json.unloadable-*.json
+.conveyor/deps-stamps/
+.conveyor/status/
+.conveyor/board.json
+.conveyor/index.json
