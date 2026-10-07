@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Info } from "lucide-react";
 import { describe, expect, it, vi } from "vitest";
 import { bannerStyles } from "../../config/banner";
 import { Banner } from "./banner";
@@ -209,5 +210,43 @@ describe("Banner", () => {
 		expect(
 			screen.getByRole("button", { name: "Close banner" }),
 		).toBeInTheDocument();
+	});
+
+	it("should render a leading icon aria-hidden before the content", () => {
+		render(
+			<Banner icon={Info} onClose={vi.fn()}>
+				Engine state
+			</Banner>,
+		);
+		const banner = screen.getByRole("status");
+		const leading = banner.querySelector("svg[aria-hidden='true']");
+		expect(leading).toBeInTheDocument();
+		expect(leading).toHaveClass("h-4", "w-4", "shrink-0");
+		expect(banner.firstElementChild).toBe(leading);
+		expect(
+			screen
+				.getByRole("button", { name: "Close banner" })
+				.querySelector("svg"),
+		).not.toBeNull();
+	});
+
+	it("should omit the leading icon in the asChild arm", () => {
+		render(
+			<Banner asChild icon={Info}>
+				<a href="/x">link banner</a>
+			</Banner>,
+		);
+		expect(screen.getByRole("status").querySelector("svg")).toBeNull();
+	});
+
+	it("should let slotStyles.leadingIcon win over the base classes", () => {
+		render(
+			<Banner icon={Info} slotStyles={{ leadingIcon: "size-6" }}>
+				msg
+			</Banner>,
+		);
+		expect(
+			screen.getByRole("status").querySelector("svg[aria-hidden='true']"),
+		).toHaveClass("size-6");
 	});
 });

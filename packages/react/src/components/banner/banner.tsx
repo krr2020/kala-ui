@@ -12,6 +12,7 @@
 import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import { X } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { bannerStyles } from "../../config/banner";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
@@ -32,6 +33,7 @@ export function Banner({
 	variant,
 	color,
 	position,
+	icon: LeadingIcon,
 	onClose,
 	dismissLabel = "Close banner",
 	children,
@@ -75,7 +77,11 @@ export function Banner({
 
 	const actions = applySlot(bannerStyles.actions, slotStyles?.actions);
 	const close = applySlot(bannerStyles.close, slotStyles?.close);
-	const icon = applySlot(bannerStyles.icon, slotStyles?.icon);
+	const closeIcon = applySlot(bannerStyles.icon, slotStyles?.icon);
+	const leadingIcon = applySlot(
+		bannerStyles.leadingIcon,
+		slotStyles?.leadingIcon,
+	);
 
 	return (
 		<Comp
@@ -88,9 +94,18 @@ export function Banner({
 			{asChild ? (
 				<Slottable>{children}</Slottable>
 			) : (
-				<div className={actions.className} style={actions.style}>
-					{children}
-				</div>
+				<>
+					{LeadingIcon ? (
+						<LeadingIcon
+							aria-hidden="true"
+							className={leadingIcon.className}
+							style={leadingIcon.style}
+						/>
+					) : null}
+					<div className={actions.className} style={actions.style}>
+						{children}
+					</div>
+				</>
 			)}
 			{onClose && (
 				<button
@@ -100,7 +115,7 @@ export function Banner({
 					style={close.style}
 					aria-label={dismissLabel}
 				>
-					<X className={icon.className} style={icon.style} aria-hidden="true" />
+					<X className={closeIcon.className} style={closeIcon.style} aria-hidden="true" />
 				</button>
 			)}
 		</Comp>

@@ -11,6 +11,8 @@ export interface EmptyStateProps
 		VariantProps<typeof emptyStateVariants> {
 	/** Icon component or emoji/text glyph shown in the badge */
 	icon?: LucideIcon | string;
+	/** "tile" (default) frames the icon in the muted circle; "plain" renders it bare — no size box, no background */
+	iconVariant?: "tile" | "plain";
 	/** Primary heading */
 	title: string;
 	/** Supporting copy under the title */

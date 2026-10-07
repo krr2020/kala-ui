@@ -3,6 +3,7 @@ import {
 	Activity,
 	Database,
 	FolderOpen,
+	Inbox,
 	Key,
 	Lock,
 	Search,
@@ -27,6 +28,15 @@ export const Basic: Story = {
 	args: {
 		title: "No items found",
 		description: "There are no items to display at this time.",
+	},
+};
+
+export const PlainIcon: Story = {
+	args: {
+		title: "No runs yet",
+		description: "Kick off a story to see runs.",
+		icon: Inbox,
+		iconVariant: "plain",
 	},
 };
 

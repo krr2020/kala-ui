@@ -36,6 +36,7 @@ function EmptyState({
 	color,
 	size,
 	icon,
+	iconVariant = "tile",
 	title,
 	description,
 	action,
@@ -78,7 +79,9 @@ function EmptyState({
 
 	const resolvedIcon = icon ?? Inbox;
 	const IconComponent = typeof resolvedIcon === "string" ? null : resolvedIcon;
-	const iconCircle = applySlot(emptyStateStyles.icon, slotStyles?.icon);
+	const iconBase =
+		iconVariant === "plain" ? emptyStateStyles.iconPlain : emptyStateStyles.icon;
+	const iconCircle = applySlot(iconBase, slotStyles?.icon);
 	const titleSlot = applySlot(emptyStateStyles.title, slotStyles?.title);
 	const descriptionSlot = applySlot(
 		emptyStateStyles.description,

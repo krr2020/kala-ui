@@ -1335,10 +1335,22 @@ const styleTableEntries = [
 		base: "w-4 h-4",
 	},
 	{
+		part: "banner.leadingIcon",
+		tsx: "../components/banner/banner.tsx",
+		config: "../config/banner.ts",
+		base: "h-4 w-4 shrink-0",
+	},
+	{
 		part: "emptyState.icon",
 		tsx: "../components/empty-state/empty-state.tsx",
 		config: "../config/empty-state.ts",
 		base: "flex h-20 w-20 items-center justify-center rounded-full bg-muted",
+	},
+	{
+		part: "emptyState.iconPlain",
+		tsx: "../components/empty-state/empty-state.tsx",
+		config: "../config/empty-state.ts",
+		base: "flex items-center justify-center",
 	},
 	{
 		part: "emptyState.title",

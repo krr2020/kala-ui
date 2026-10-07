@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { Info as InfoIcon } from "lucide-react";
 import { Skeleton } from "../skeleton";
 import { Banner } from "./banner";
 
@@ -12,7 +13,7 @@ const meta = {
 	argTypes: {
 		variant: {
 			control: "select",
-			options: ["info", "warning", "error", "success"],
+			options: ["solid", "subtle", "outline"],
 		},
 		onClose: {
 			action: "close",
@@ -29,7 +30,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Info: Story = {
 	args: {
-		variant: "info",
+		color: "info",
 		position: "static",
 		children: "This is an informational banner message.",
 		onClose: () => console.log("Banner closed"),
@@ -38,7 +39,7 @@ export const Info: Story = {
 
 export const Warning: Story = {
 	args: {
-		variant: "warning",
+		color: "warning",
 		position: "static",
 		children: "Warning: Please review your account settings.",
 		onClose: () => console.log("Banner closed"),
@@ -47,7 +48,7 @@ export const Warning: Story = {
 
 export const ErrorBanner: Story = {
 	args: {
-		variant: "error",
+		color: "destructive",
 		position: "static",
 		children: "Error: Unable to process your request. Please try again.",
 		onClose: () => console.log("Banner closed"),
@@ -56,16 +57,27 @@ export const ErrorBanner: Story = {
 
 export const Success: Story = {
 	args: {
-		variant: "success",
+		color: "success",
 		position: "static",
 		children: "Success! Your changes have been saved.",
 		onClose: () => console.log("Banner closed"),
 	},
 };
 
+export const WithIcon: Story = {
+	args: {
+		icon: InfoIcon,
+		color: "success",
+		variant: "subtle",
+		position: "static",
+		children: "Engine restarted — HEAD is now at d713a58.",
+		onClose: () => undefined,
+	},
+};
+
 export const WithoutCloseButton: Story = {
 	args: {
-		variant: "info",
+		color: "info",
 		position: "static",
 		children: "This banner cannot be dismissed.",
 	},
@@ -73,7 +85,7 @@ export const WithoutCloseButton: Story = {
 
 export const LongMessage: Story = {
 	args: {
-		variant: "warning",
+		color: "warning",
 		position: "static",
 		children:
 			"This is a longer banner message that demonstrates how the banner handles multiple lines of text. The close button remains aligned to the top right while the content wraps naturally.",
@@ -119,7 +131,7 @@ export const AllVariants: Story = {
 
 export const Fixed: Story = {
 	args: {
-		variant: "info",
+		color: "info",
 		position: "fixed",
 		children: "This is a fixed banner at the top of the viewport.",
 		onClose: () => console.log("Banner closed"),

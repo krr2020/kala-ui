@@ -331,5 +331,40 @@ describe("EmptyState", () => {
 			expect(iconTile).not.toHaveClass("w-20");
 			expect(iconTile).not.toHaveClass("bg-muted");
 		});
+
+		it("iconVariant=plain renders the icon without the tile box or background", () => {
+			const { container } = render(
+				<EmptyState title="No data" icon={Search} iconVariant="plain" />,
+			);
+			const iconTile = container.querySelector('[aria-hidden="true"]');
+			expect(iconTile).toHaveClass("flex", "items-center", "justify-center");
+			expect(iconTile).not.toHaveClass("h-20");
+			expect(iconTile).not.toHaveClass("w-20");
+			expect(iconTile).not.toHaveClass("rounded-full");
+			expect(iconTile).not.toHaveClass("bg-muted");
+			expect(iconTile?.querySelector("svg")).toBeInTheDocument();
+		});
+
+		it("iconVariant=plain keeps the string-glyph arm decorative", () => {
+			const { container } = render(
+				<EmptyState title="No data" icon="📦" iconVariant="plain" />,
+			);
+			const iconTile = container.querySelector('[aria-hidden="true"]');
+			expect(iconTile?.querySelector("span")).toHaveClass("inline-block");
+			expect(iconTile).not.toHaveClass("bg-muted");
+		});
+
+		it("slotStyles.icon still wins over the plain base", () => {
+			const { container } = render(
+				<EmptyState
+					title="No data"
+					iconVariant="plain"
+					slotStyles={{ icon: "my-ic" }}
+				/>,
+			);
+			expect(container.querySelector('[aria-hidden="true"]')).toHaveClass(
+				"my-ic",
+			);
+		});
 	});
 });

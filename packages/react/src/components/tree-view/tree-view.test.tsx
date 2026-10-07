@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { act } from "react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { TreeView } from "./tree-view";
@@ -577,5 +578,93 @@ describe("TreeView keyboard navigation", () => {
 		expect(
 			screen.getByRole("tree", { name: "File browser" }),
 		).toBeInTheDocument();
+	});
+});
+
+describe("TreeView consumer keyboard contract", () => {
+	const consumerData: TreeItem[] = [
+		{
+			id: "src",
+			label: "src",
+			children: [
+				{ id: "a", label: "a.ts" },
+				{ id: "b", label: "b.ts" },
+			],
+		},
+		{ id: "readme", label: "README.md" },
+	];
+
+	const item = (label: string) =>
+		screen.getByText(label).closest('[role="treeitem"]') as HTMLElement;
+
+	const focusItem = (label: string) => {
+		const node = item(label);
+		act(() => {
+			node.focus();
+		});
+		return node;
+	};
+
+	const press = (node: HTMLElement, key: string) => {
+		fireEvent.keyDown(node, { key });
+	};
+
+	it("collapsed tree: parent is the tab stop, sibling is not", () => {
+		render(<TreeView data={consumerData} aria-label="Files" />);
+		expect(screen.getByRole("tree", { name: "Files" })).toBeInTheDocument();
+		expect(screen.getAllByRole("treeitem")).toHaveLength(2);
+		expect(item("src")).toHaveAttribute("aria-expanded", "false");
+		expect(item("src")).toHaveAttribute("tabIndex", "0");
+		expect(item("README.md")).toHaveAttribute("tabIndex", "-1");
+	});
+
+	it("ArrowRight expands, ArrowDown enters children, ArrowUp climbs back", () => {
+		render(<TreeView data={consumerData} aria-label="Files" />);
+		const src = focusItem("src");
+		press(src, "ArrowRight");
+		expect(src).toHaveAttribute("aria-expanded", "true");
+		expect(screen.getAllByRole("treeitem")).toHaveLength(4);
+
+		press(src, "ArrowDown");
+		expect(item("a.ts")).toHaveFocus();
+
+		const readme = focusItem("README.md");
+		press(readme, "ArrowUp");
+		expect(item("b.ts")).toHaveFocus();
+		press(item("b.ts"), "ArrowUp");
+		expect(item("a.ts")).toHaveFocus();
+	});
+
+	it("ArrowLeft collapses an expanded parent", () => {
+		render(<TreeView data={consumerData} aria-label="Files" />);
+		const src = focusItem("src");
+		press(src, "ArrowRight");
+		expect(src).toHaveAttribute("aria-expanded", "true");
+	press(src, "ArrowLeft");
+		expect(src).toHaveAttribute("aria-expanded", "false");
+		expect(screen.getAllByRole("treeitem")).toHaveLength(2);
+	});
+
+	it("Home and End jump to the first and last visible node", () => {
+		render(
+			<TreeView data={consumerData} aria-label="Files" defaultExpanded={["src"]} />,
+		);
+		expect(screen.getAllByRole("treeitem")).toHaveLength(4);
+		const readme = focusItem("README.md");
+		press(readme, "Home");
+		expect(item("src")).toHaveFocus();
+		press(item("src"), "End");
+		expect(readme).toHaveFocus();
+	});
+
+	it("Enter selects the active node and reports it", () => {
+		const onSelect = vi.fn();
+		render(
+			<TreeView data={consumerData} aria-label="Files" onSelect={onSelect} />,
+		);
+		const src = focusItem("src");
+		press(src, "Enter");
+		expect(onSelect).toHaveBeenCalledWith("src");
+		expect(src).toHaveAttribute("aria-selected", "true");
 	});
 });
