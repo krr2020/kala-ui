@@ -157,6 +157,8 @@ const WIRED = [
 /** Families with no styled DOM root of their own. */
 const EXCLUDED: Record<string, string> = {
 	"theme-provider": "context provider, renders no styled element",
+	"kala-provider":
+		"context provider (useSlotStyles defaults), renders no styled element",
 	"error-boundary":
 		"class wrapper; healthy path renders children verbatim, slotStyles reaches the default fallback only",
 };

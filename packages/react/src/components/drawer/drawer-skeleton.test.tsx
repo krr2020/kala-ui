@@ -31,7 +31,9 @@ describe("DrawerSkeleton", () => {
 
 	it("should show footer by default", () => {
 		const { container } = render(<DrawerSkeleton />);
-		const buttons = container.querySelectorAll(".h-10.w-24");
+		const buttons = container.querySelectorAll(
+			".h-\\[var\\(--kala-control-h\\)\\].w-24",
+		);
 		expect(buttons).toHaveLength(2);
 	});
 

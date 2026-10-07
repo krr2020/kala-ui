@@ -84,9 +84,28 @@ describe("web↔native token seam (item 13)", () => {
 		}
 
 		const tokenToKey = (token: string) =>
-			token
-				.replace(/^--/, "")
-				.replace(/-([a-z])/g, (_m, c: string) => c.toUpperCase());
+				token
+						.replace(/^--/, "")
+						.replace(/-([a-z])/g, (_m, c: string) => c.toUpperCase());
+
+		const WEB_ONLY = /^--(?:background-alpha|online|offline)$/;
+
+		function resolveVars(
+			decls: Map<string, string>,
+			raw: string,
+		): string {
+			let value = raw;
+			let guard = 0;
+			while (value.includes("var(") && guard < 10) {
+				guard += 1;
+				value = value.replace(
+					/var\((--[\w-]+)(?:\s*,\s*([^()]+))?\)/,
+					(_all, varName: string, fallback?: string) =>
+						decls.get(varName) ?? fallback ?? "",
+				);
+			}
+			return value;
+		}
 
 		for (const [selector, constName] of Object.entries(selectorToConst)) {
 			const block = blocks.get(selector);
@@ -97,10 +116,12 @@ describe("web↔native token seam (item 13)", () => {
 			if (!constMatch) throw new Error(`definitions.ts missing ${constName}`);
 			for (const [token, value] of block) {
 				if (/^--(?:kala|default-transition)/.test(token)) continue;
+				if (WEB_ONLY.test(token)) continue;
 				const key = tokenToKey(token);
-				const native = value.startsWith("hsl(")
-					? hslToHex(value)
-					: value.replace(/px$/, "");
+				const resolved = resolveVars(block, value);
+				const native = resolved.startsWith("hsl(")
+					? hslToHex(resolved)
+					: resolved.replace(/px$/, "");
 				const nativeLiteral = /^[\d.]+$/.test(native)
 					? native
 					: `"${native}"`;
