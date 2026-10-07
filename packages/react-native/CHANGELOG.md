@@ -1,5 +1,13 @@
 # @kala-ui/react-native
 
+## 0.1.0-beta.2
+
+### Patch Changes
+
+- new changes
+- Updated dependencies
+  - @kala-ui/react-hooks@0.1.0-beta.1
+
 ## 0.1.0-beta.1
 
 ### Minor Changes

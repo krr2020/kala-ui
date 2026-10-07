@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0-beta.1
+
+### Patch Changes
+
+- new changes
+
 ## 0.1.0-beta.0
 
 ### Minor Changes
