@@ -36,10 +36,7 @@ export function useUncontrolled<T>({
 	if (value !== undefined) {
 		// Always callable: a controlled consumer without an onChange handler
 		// gets a safe no-op instead of the raw (possibly undefined) callback.
-		const handleControlledChange = (
-			val: T,
-			...payload: unknown[]
-		): void => {
+		const handleControlledChange = (val: T, ...payload: unknown[]): void => {
 			onChange?.(val, ...payload);
 		};
 		return [value as T, handleControlledChange, true];

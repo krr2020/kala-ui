@@ -4,15 +4,9 @@ import { describe, expect, it } from "vitest";
 import { themes } from "../themes";
 import type { ThemeName } from "../types";
 
-/**
- * Cross-package seam: native themes are transcribed from the web token source
- * of truth (packages/react/src/styles/globals.css). This suite pins the
- * crash-regression contract at that seam — a theme block in the CSS that
- * silently drops a token present in :root must never again ship as a native
- * theme with undefined color slots.
- */
+/** Seam pin: a theme block silently dropping a :root token must never ship as a native theme with undefined color slots. */
 
-const CSS_PATH = resolve(__dirname, "../../../react/src/styles/globals.css");
+const CSS_PATH = resolve(__dirname, "../../../react/src/styles/tokens.css");
 
 const SELECTOR_BY_THEME: Record<ThemeName, string> = {
 	light: ":root",

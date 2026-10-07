@@ -61,10 +61,9 @@ describe("portable barrel", () => {
 				/\b(window|document|navigator)\b/.test(code),
 				`${rel} references a DOM global`,
 			).toBe(false);
-			expect(
-				/["']react-dom["']/.test(raw),
-				`${rel} imports react-dom`,
-			).toBe(false);
+			expect(/["']react-dom["']/.test(raw), `${rel} imports react-dom`).toBe(
+				false,
+			);
 		}
 	});
 

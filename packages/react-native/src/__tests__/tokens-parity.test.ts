@@ -15,18 +15,9 @@ const _themeSatisfies: Record<ThemeName, KalaTheme> = {
 };
 void _themeSatisfies;
 
-/**
- * Token parity contract: packages/react-native themes must match the web
- * source of truth (packages/react/src/styles/globals.css) token-for-token.
- *
- * The CSS is parsed here with a hand-rolled tokenizer on purpose — no parser
- * dependency. globals.css theme blocks are flat `--token: value;` declaration
- * lists (no nesting), so scanning selector-scoped blocks is sound; if the CSS
- * ever grows nesting, these tests fail and that is the signal to adopt a real
- * parser.
- */
+/** Native themes must match the web source of truth (tokens.css) token-for-token; CSS nesting appearing here is the signal to adopt a real parser. */
 
-const CSS_PATH = resolve(__dirname, "../../../react/src/styles/globals.css");
+const CSS_PATH = resolve(__dirname, "../../../react/src/styles/tokens.css");
 
 /** Strip /* ... *​/ comments (block level; theme blocks contain no strings). */
 function stripComments(css: string): string {
@@ -156,6 +147,9 @@ const THEME_SOURCES: Record<ThemeName, string[]> = {
 /** Tokens that are not theme-dependent (shape/motion/Tailwind plumbing) — they live in tokens.ts as dp values, not in the themes. */
 const NON_THEMED = /^--(?:kala|default-transition)/;
 
+/** Web-only tokens generate-themes.mjs deliberately does not transcribe. */
+const WEB_ONLY = /^--(?:background-alpha|online|offline)$/;
+
 function resolvedCssTheme(name: ThemeName): Map<string, string | number> {
 	const selectors = THEME_SOURCES[name];
 	const merged = new Map<string, string>();
@@ -163,7 +157,7 @@ function resolvedCssTheme(name: ThemeName): Map<string, string | number> {
 		const block = blocks.get(selector);
 		if (!block) throw new Error(`missing CSS block ${selector}`);
 		for (const [k, v] of resolveVars(block)) {
-			if (!NON_THEMED.test(k)) merged.set(k, v);
+			if (!NON_THEMED.test(k) && !WEB_ONLY.test(k)) merged.set(k, v);
 		}
 	}
 	const out = new Map<string, string | number>();
@@ -350,13 +344,8 @@ describe("layout restructure pins", () => {
 		// An empty set means the entry stopped matching the re-export shape —
 		// that is a parse failure, not a passing pin.
 		expect(names.size).toBeGreaterThan(0);
-		// The list below is generated from src/index.ts export statements
-		// (same parser as above) — extend the entry, then regenerate rather
-		// than hand-editing so ordering cannot drift. The six composite
-		// families (copy-button, empty-state, error-boundary,
-		// password-strength-indicator, steps, timeline) now ship from
-		// @kala-ui/react-native-app; core gained the applySlot/SlotStyles
-		// slot-merge helper and the ButtonColor/ButtonVariant types.
+		// Generated from src/index.ts export statements (same parser as
+		// above) — extend the entry, then regenerate, never hand-edit.
 		expect([...names].sort()).toEqual(
 			[
 				"Accordion",
@@ -468,8 +457,9 @@ describe("layout restructure pins", () => {
 				"IconComponent",
 				"IconProps",
 				"Indicator",
+				"IndicatorAnchorOrigin",
 				"IndicatorColor",
-				"IndicatorPosition",
+				"IndicatorOverlap",
 				"IndicatorProps",
 				"InputOtp",
 				"InputOtpProps",

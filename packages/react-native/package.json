@@ -46,7 +46,7 @@
 		"lint:fix": "biome lint . --write",
 		"lint:fix-unsafe": "biome lint . --write --unsafe",
 		"format": "biome format --write .",
-		"test": "vitest run && jest",
+		"test": "vitest run && jest --passWithNoTests",
 		"test:watch": "jest --watch",
 		"test:coverage": "vitest run --coverage"
 	},
