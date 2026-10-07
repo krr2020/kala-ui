@@ -42,6 +42,7 @@ export function Dialog({
 	triggerRef,
 	dismissable = true,
 	showCloseButton = true,
+	closeLabel = "Close dialog",
 	size = "md",
 	accessibilityLabel,
 	accessibilityRole,
@@ -107,7 +108,7 @@ export function Dialog({
 			<Pressable
 				testID={`${testID}-overlay`}
 				accessibilityRole="button"
-				accessibilityLabel="Close dialog"
+				accessibilityLabel={closeLabel}
 				onPress={dismissable ? close : undefined}
 				style={applySlot(scrimStyle(theme), slotStyles?.overlay)}
 			/>
@@ -153,7 +154,7 @@ export function Dialog({
 						<Pressable
 							testID="k-dialog-close"
 							accessibilityRole="button"
-							accessibilityLabel="Close dialog"
+							accessibilityLabel={closeLabel}
 							hitSlop={8}
 							onPress={close}
 							style={applySlot(closeStyle(), slotStyles?.close)}

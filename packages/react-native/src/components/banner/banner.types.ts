@@ -22,6 +22,8 @@ export interface BannerProps {
 	 */
 	position?: BannerPosition;
 	onClose?: () => void;
+	/** accessible name for the close button (default "Close banner") */
+	dismissLabel?: string;
 	/**
 	 * status (default) announces politely; alert announces assertively
 	 */

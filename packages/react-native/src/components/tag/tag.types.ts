@@ -20,6 +20,8 @@ export interface TagProps {
 	size?: TagSize;
 	/** Show the remove affordance; each press calls this exactly once. */
 	onRemove?: () => void;
+	/** accessible name for the remove button (default "Remove") */
+	dismissLabel?: string;
 	/** Icon-library component rendered before the label; themed to the tag's fg. */
 	icon?: IconComponent;
 	/** Hard override for the icon color: token key or raw color string. */

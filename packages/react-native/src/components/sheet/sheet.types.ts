@@ -19,6 +19,8 @@ export interface SheetProps {
 	footer?: ReactNode;
 	/** shows the header close icon (forced off when dismissable=false) */
 	showClose?: boolean;
+	/** accessible name for the overlay and header close button (default "Close sheet") */
+	closeLabel?: string;
 	/** false blocks overlay-press dismissal (back/escape paths still fire) */
 	dismissable?: boolean;
 	/** wraps children in a ScrollView so long bodies scroll; off keeps

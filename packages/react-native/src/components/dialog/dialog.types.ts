@@ -13,6 +13,8 @@ export interface DialogProps {
 	dismissable?: boolean;
 	/** When true (default), renders the top-right close affordance. */
 	showCloseButton?: boolean;
+	/** accessible name for the overlay and close button (default "Close dialog") */
+	closeLabel?: string;
 	size?: DialogSize;
 	accessibilityLabel?: string;
 	/** accessibility role for the dialog card (Dialog: none, AlertDialog: alert). */

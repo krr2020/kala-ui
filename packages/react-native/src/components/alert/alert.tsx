@@ -38,6 +38,7 @@ export function Alert({
 	showIcon = true,
 	dismissable = false,
 	onDismiss,
+	dismissLabel = "Dismiss alert",
 	accessibilityLabel,
 	style,
 	slotStyles,
@@ -86,7 +87,7 @@ export function Alert({
 				<Pressable
 					testID="k-alert-dismiss"
 					accessibilityRole="button"
-					accessibilityLabel="Dismiss alert"
+					accessibilityLabel={dismissLabel}
 					hitSlop={8}
 					onPress={() => {
 						setHidden(true);

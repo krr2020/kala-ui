@@ -33,6 +33,8 @@ export type ScreenStackProps = {
 	/** Allow the modal scrim to pop. Off by default: destructive tasks
 	 * must not be dismissable by an accidental scrim tap (pattern 5). */
 	dismissOnScrimPress?: boolean;
+	/** accessible name for the dismissible modal scrim (default "Dismiss") */
+	dismissLabel?: string;
 	style?: StyleProp<ViewStyle>;
 	styles?: {
 		root?: StyleProp<ViewStyle>;

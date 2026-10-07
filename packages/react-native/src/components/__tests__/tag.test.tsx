@@ -117,8 +117,19 @@ describe("remove affordance", () => {
 		const s = flatStyle(btn);
 		expect(s.minWidth).toBe(44);
 		expect(s.minHeight).toBe(44);
+		expect(btn.props.accessibilityLabel).toBe("Remove");
 		fireEvent.press(btn);
 		expect(onRemove).toHaveBeenCalledTimes(1);
+	});
+
+	it("dismissLabel overrides the remove button's announced label", async () => {
+		const { screen } = await renderTag({
+			onRemove: () => undefined,
+			dismissLabel: "Quitar",
+		});
+		expect(
+			screen.getByTestId("k-tag-remove", incl).props.accessibilityLabel,
+		).toBe("Quitar");
 	});
 
 	it("no remove affordance without onRemove", async () => {

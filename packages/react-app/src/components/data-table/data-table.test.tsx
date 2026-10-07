@@ -1381,9 +1381,31 @@ describe("DataTable", () => {
 						title: "No data",
 						icon: "alert-circle",
 					}}
-				/>,
+					/>,
 			);
 			expect(screen.getByText("No data")).toBeInTheDocument();
+		});
+
+		it("forwards emptyState.slotStyles to the embedded EmptyState parts", () => {
+			const { container } = render(
+				<DataTable
+					data={[]}
+					columns={mockColumns}
+					emptyState={{
+						title: "No data",
+						slotStyles: { icon: "h-auto w-auto bg-transparent" },
+					}}
+					/>,
+			);
+			const emptyRoot = container.querySelector(
+				'[data-kala-component="empty-state"]',
+			);
+			const iconTile = emptyRoot?.querySelector('[aria-hidden="true"]');
+			expect(iconTile).toHaveClass("h-auto");
+			expect(iconTile).toHaveClass("w-auto");
+			expect(iconTile).toHaveClass("bg-transparent");
+			expect(iconTile).not.toHaveClass("h-20");
+			expect(iconTile).not.toHaveClass("bg-muted");
 		});
 
 		it("shows custom empty state action", () => {

@@ -78,3 +78,27 @@ describe("Alert resolved styles", () => {
 		expect(title.color).toBe(themes.light.destructive);
 	});
 });
+
+describe("Alert dismiss control", () => {
+	it("dismissable renders the dismiss button with the default label", async () => {
+		const screen: Screen = await render(
+			<Alert dismissable onDismiss={() => undefined}>
+				msg
+			</Alert>,
+		);
+		expect(
+			screen.getByTestId("k-alert-dismiss").props.accessibilityLabel,
+		).toBe("Dismiss alert");
+	});
+
+	it("dismissLabel overrides the announced label", async () => {
+		const screen: Screen = await render(
+			<Alert dismissable onDismiss={() => undefined} dismissLabel="Cerrar aviso">
+				msg
+			</Alert>,
+		);
+		expect(
+			screen.getByTestId("k-alert-dismiss").props.accessibilityLabel,
+		).toBe("Cerrar aviso");
+	});
+});

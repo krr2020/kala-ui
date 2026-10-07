@@ -393,6 +393,9 @@ export function DataTable<TData>({
 					description={emptyConfig.description}
 					{...(emptyState?.icon && { icon: emptyState.icon })}
 					{...(emptyState?.action && { action: emptyState.action })}
+					{...(emptyState?.slotStyles && {
+						slotStyles: emptyState.slotStyles,
+					})}
 				/>
 			) : (
 				<>

@@ -284,6 +284,35 @@ describe("ScreenStack", () => {
 		expect(onRequestPop).not.toHaveBeenCalled();
 	});
 
+	it("scrim announces the default Dismiss label", async () => {
+		const screen = await render(
+			<ScreenStack
+				entries={[entryOf("a", "a"), entryOf("m", "m", "modal")]}
+				onRequestPop={jest.fn()}
+				dismissOnScrimPress
+			/>,
+		);
+		expect(
+			screen.getByTestId("k-screen-stack-scrim", inclHidden).props
+				.accessibilityLabel,
+		).toBe("Dismiss");
+	});
+
+	it("scrim honors a custom dismissLabel", async () => {
+		const screen = await render(
+			<ScreenStack
+				entries={[entryOf("a", "a"), entryOf("m", "m", "modal")]}
+				onRequestPop={jest.fn()}
+				dismissOnScrimPress
+				dismissLabel="Cerrar"
+			/>,
+		);
+		expect(
+			screen.getByTestId("k-screen-stack-scrim", inclHidden).props
+				.accessibilityLabel,
+		).toBe("Cerrar");
+	});
+
 	it("presentation none swaps instantly with no animation and keeps state on return", async () => {
 		const screen = await render(
 			<ScreenStack entries={[entryOf("a", "a")]} onRequestPop={jest.fn()} />,

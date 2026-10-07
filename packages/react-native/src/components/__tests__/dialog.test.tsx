@@ -629,3 +629,33 @@ describe("dialog gesture + keyboard hardening", () => {
 		expect(onOpenChange).not.toHaveBeenCalled();
 	});
 });
+
+describe("dialog close labels", () => {
+	it("overlay and close button announce the default label", async () => {
+		const screen = await render(
+			<Dialog open onOpenChange={() => undefined}>
+				<Dialog.Body>body</Dialog.Body>
+			</Dialog>,
+		);
+		expect(
+			screen.getByTestId("k-dialog-overlay", incl).props.accessibilityLabel,
+		).toBe("Close dialog");
+		expect(
+			screen.getByTestId("k-dialog-close", incl).props.accessibilityLabel,
+		).toBe("Close dialog");
+	});
+
+	it("closeLabel overrides both affordances", async () => {
+		const screen = await render(
+			<Dialog open onOpenChange={() => undefined} closeLabel="Cerrar">
+				<Dialog.Body>body</Dialog.Body>
+			</Dialog>,
+		);
+		expect(
+			screen.getByTestId("k-dialog-overlay", incl).props.accessibilityLabel,
+		).toBe("Cerrar");
+		expect(
+			screen.getByTestId("k-dialog-close", incl).props.accessibilityLabel,
+		).toBe("Cerrar");
+	});
+});

@@ -314,4 +314,22 @@ describe("EmptyState", () => {
 			expect(description).toHaveClass("max-w-sm");
 		});
 	});
+
+	describe("Slot Styles", () => {
+		it("slotStyles.icon neutralizes the icon tile without child selectors", () => {
+			const { container } = render(
+				<EmptyState
+					title="No data"
+					slotStyles={{ icon: "h-auto w-auto bg-transparent" }}
+				/>,
+			);
+			const iconTile = container.querySelector('[aria-hidden="true"]');
+			expect(iconTile).toHaveClass("h-auto");
+			expect(iconTile).toHaveClass("w-auto");
+			expect(iconTile).toHaveClass("bg-transparent");
+			expect(iconTile).not.toHaveClass("h-20");
+			expect(iconTile).not.toHaveClass("w-20");
+			expect(iconTile).not.toHaveClass("bg-muted");
+		});
+	});
 });

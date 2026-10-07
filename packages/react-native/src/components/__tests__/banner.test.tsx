@@ -88,6 +88,17 @@ describe("Banner close control", () => {
 		expect(close.props.accessibilityLabel).toBe("Close banner");
 	});
 
+	it("dismissLabel overrides the close button's announced label", async () => {
+		const screen = await render(
+			<Banner onClose={() => undefined} dismissLabel="Cerrar aviso">
+				m
+			</Banner>,
+		);
+		expect(
+			screen.getByTestId("k-banner-close").props.accessibilityLabel,
+		).toBe("Cerrar aviso");
+	});
+
 	it("pressing close fires onClose exactly once", async () => {
 		const onClose = jest.fn();
 		const screen = await render(<Banner onClose={onClose}>m</Banner>);

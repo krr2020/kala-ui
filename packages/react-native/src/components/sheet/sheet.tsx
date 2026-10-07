@@ -105,6 +105,7 @@ export function Sheet({
 	maxHeight,
 	title,
 	showClose = true,
+	closeLabel = "Close sheet",
 	dismissable = true,
 	scrollable = false,
 	avoidKeyboard = false,
@@ -290,7 +291,7 @@ export function Sheet({
 				<AnimatedPressable
 					testID="k-sheet-overlay"
 					accessibilityRole="button"
-					accessibilityLabel="Close sheet"
+					accessibilityLabel={closeLabel}
 					onPress={dismissable ? onClose : undefined}
 					style={[
 						overlayStyle,
@@ -400,7 +401,7 @@ export function Sheet({
 										<Pressable
 											testID="k-sheet-close"
 											accessibilityRole="button"
-											accessibilityLabel="Close"
+											accessibilityLabel={closeLabel}
 											onPress={onClose}
 											style={sheetCloseHit()}
 										>

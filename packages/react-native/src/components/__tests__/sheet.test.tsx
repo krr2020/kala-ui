@@ -203,6 +203,32 @@ describe("Sheet", () => {
 		expect(bubble.borderColor).toBe(themes.light.border);
 	});
 
+	it("closeLabel names both the overlay and the header close affordance", async () => {
+		const screen: Screen = await render(
+			<Sheet open onClose={() => {}} title="Options" closeLabel="Cerrar panel">
+				<Text>content</Text>
+			</Sheet>,
+		);
+		expect(
+			screen.getByTestId("k-sheet-overlay", inclHidden).props
+				.accessibilityLabel,
+		).toBe("Cerrar panel");
+		expect(
+			screen.getByTestId("k-sheet-close", inclHidden).props.accessibilityLabel,
+		).toBe("Cerrar panel");
+	});
+
+	it("default close affordance announces Close sheet", async () => {
+		const screen: Screen = await render(
+			<Sheet open onClose={() => {}} title="Options">
+				<Text>content</Text>
+			</Sheet>,
+		);
+		expect(
+			screen.getByTestId("k-sheet-close", inclHidden).props.accessibilityLabel,
+		).toBe("Close sheet");
+	});
+
 	it("footer divider bleeds to the sheet edges symmetrically with the header", async () => {
 		const screen: Screen = await render(
 			<Sheet open onClose={() => {}} title="Options" footer={<Text>done</Text>}>

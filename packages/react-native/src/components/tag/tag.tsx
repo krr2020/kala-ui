@@ -23,6 +23,7 @@ export function Tag({
 	color = "muted",
 	size = "md",
 	onRemove,
+	dismissLabel = "Remove",
 	icon,
 	iconColor,
 	children,
@@ -75,7 +76,7 @@ export function Tag({
 				<Pressable
 					testID="k-tag-remove"
 					accessibilityRole="button"
-					accessibilityLabel="Remove"
+					accessibilityLabel={dismissLabel}
 					onPress={onRemove}
 					style={applySlot(
 						{

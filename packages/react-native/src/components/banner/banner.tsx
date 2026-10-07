@@ -48,6 +48,7 @@ export function Banner({
 	color = "info",
 	position = "fixed",
 	onClose,
+	dismissLabel = "Close banner",
 	role = "status",
 	isLoading = false,
 	skeletonConfig,
@@ -97,7 +98,7 @@ export function Banner({
 				<Pressable
 					testID="k-banner-close"
 					accessibilityRole="button"
-					accessibilityLabel="Close banner"
+					accessibilityLabel={dismissLabel}
 					hitSlop={8}
 					onPress={onClose}
 					style={[closeStyle, applySlot({}, slotStyles?.close)]}

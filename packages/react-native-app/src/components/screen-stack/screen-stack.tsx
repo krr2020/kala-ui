@@ -74,6 +74,7 @@ function ScreenLayer({
 	reduceMotion,
 	onExited,
 	onScrimPress,
+	dismissLabel,
 	scrimInk,
 	scrimStyle,
 }: {
@@ -85,6 +86,7 @@ function ScreenLayer({
 	reduceMotion: boolean;
 	onExited: (key: string) => void;
 	onScrimPress: (() => void) | null;
+	dismissLabel: string;
 	scrimInk: string;
 	scrimStyle?: StyleProp<ViewStyle>;
 }): React.JSX.Element {
@@ -167,7 +169,7 @@ function ScreenLayer({
 				<AnimatedPressable
 					testID="k-screen-stack-scrim"
 					accessibilityRole="button"
-					accessibilityLabel="Dismiss"
+					accessibilityLabel={dismissLabel}
 					onPress={onScrimPress ?? undefined}
 					disabled={!onScrimPress}
 					style={[
@@ -191,6 +193,7 @@ export function ScreenStack({
 	entries,
 	onRequestPop,
 	dismissOnScrimPress = false,
+	dismissLabel = "Dismiss",
 	style,
 	styles,
 	testID = "k-screen-stack-root",
@@ -287,6 +290,7 @@ export function ScreenStack({
 					}
 					scrimInk={scrimColor(theme)}
 					scrimStyle={styles?.scrim}
+					dismissLabel={dismissLabel}
 				/>
 			))}
 		</View>

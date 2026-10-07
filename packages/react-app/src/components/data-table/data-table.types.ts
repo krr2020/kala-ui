@@ -133,6 +133,8 @@ export interface EmptyStateConfig {
 		label: string;
 		onClick: () => void;
 	};
+	/** Per-part overrides forwarded to the embedded EmptyState */
+	slotStyles?: EmptyStateProps["slotStyles"];
 }
 
 /**

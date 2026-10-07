@@ -19,6 +19,8 @@ export interface AlertProps {
 	showIcon?: boolean;
 	dismissable?: boolean;
 	onDismiss?: () => void;
+	/** accessible name for the dismiss button (default "Dismiss alert") */
+	dismissLabel?: string;
 	accessibilityLabel?: string;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
