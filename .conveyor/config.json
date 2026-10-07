@@ -47,7 +47,7 @@
     "showReasoning": true,
     "showStepNarration": false,
     "shiftEnterToSubmit": false,
-    "chatAutoValidate": true,
+    "chatAutoValidate": false,
     "coordinator": {
       "enabled": true
     },
@@ -81,6 +81,8 @@
       "reworkEditThreshold": 3,
       "planRewriteThreshold": 2,
       "repeatFailureThreshold": 2,
+      "toolFailureThreshold": 3,
+      "browserProbeThreshold": 6,
       "reasoningRepeatThreshold": 2,
       "minWindowTurns": 4,
       "maxNudgesPerTurn": 2,
@@ -88,6 +90,8 @@
       "weights": {
         "redundantRead": 1,
         "repeatFailure": 2,
+        "toolFailure": 2,
+        "browserProbe": 2,
         "reworkEdit": 3,
         "violation": 5,
         "planRewrite": 8,
@@ -125,6 +129,7 @@
     "commitMessageTemplate": "{commitType}({taskId}): {title}",
     "autoPush": true,
     "autoPR": false,
+    "autoCommitWiki": true,
     "prTitleTemplate": "{storyId}: {storyTitle}",
     "prBodyTemplate": "Completed work on {storyTitle}.\n\n## Tasks\n"
   },
@@ -292,7 +297,9 @@
         ".svg",
         ".lock"
       ]
-    }
+    },
+    "commentGate": "advisory",
+    "cleanCodeGate": "block"
   },
   "wiki": {
     "autoRefresh": true,
@@ -368,5 +375,8 @@
     "wordWrap": false,
     "formatOnSave": false,
     "openMode": "open-each"
+  },
+  "board": {
+    "tombstoneRetentionHours": 24
   }
 }
