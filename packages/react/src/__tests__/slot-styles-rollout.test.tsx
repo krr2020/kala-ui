@@ -867,7 +867,9 @@ describe("absent slotStyles renders byte-identical class strings", () => {
 		render(
 			<Table>
 				<thead>
-					<TableHead>H</TableHead>
+					<TableRow>
+						<TableHead>H</TableHead>
+					</TableRow>
 				</thead>
 			</Table>,
 		);
