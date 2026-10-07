@@ -39,8 +39,8 @@ const config: StorybookConfig = {
             replacement: join(coreSrc, 'index.ts'),
           },
           {
-            find: /^@kala-ui\/react\/lib\/utils$/,
-            replacement: join(coreSrc, 'lib/utils.ts'),
+            find: /^@kala-ui\/react\/lib\/(.+)$/,
+            replacement: join(coreSrc, 'lib/$1.ts'),
           },
           {
             find: /^@kala-ui\/react\/(.+)$/,
