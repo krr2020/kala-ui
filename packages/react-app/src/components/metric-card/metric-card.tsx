@@ -108,7 +108,9 @@ function MetricCard({
 					<h6
 						className={cn(
 							titleLabel.className,
-							isColorful ? "opacity-90" : "text-muted-foreground",
+							isColorful
+								? metricCardStyles.titleOnColor
+								: metricCardStyles.titleMuted,
 						)}
 					>
 						{title}
@@ -117,7 +119,9 @@ function MetricCard({
 						<div
 							className={cn(
 								iconSlot.className,
-								isColorful ? "opacity-70" : "text-muted-foreground",
+								isColorful
+									? metricCardStyles.iconOnColor
+									: metricCardStyles.iconMuted,
 							)}
 							aria-hidden="true"
 						>
@@ -126,11 +130,13 @@ function MetricCard({
 					)}
 				</div>
 
-				<div className="mb-3">
+				<div className={metricCardStyles.valueBlock}>
 					<div
 						className={cn(
 							valueSlot.className,
-							isColorful ? "" : "text-card-foreground",
+							isColorful
+								? metricCardStyles.valueOnColor
+								: metricCardStyles.valueMuted,
 						)}
 					>
 						<span className="sr-only">
@@ -147,7 +153,9 @@ function MetricCard({
 							<div
 								className={cn(
 									changeSlot.className,
-									isColorful ? "opacity-90" : getChangeColor(change),
+									isColorful
+										? metricCardStyles.changeOnColor
+										: getChangeColor(change),
 								)}
 							>
 								<span className="sr-only">Change: {getChangeText(change)}</span>
@@ -160,7 +168,9 @@ function MetricCard({
 							<div
 								className={cn(
 									subtitleSlot.className,
-									isColorful ? "opacity-80" : "text-muted-foreground",
+									isColorful
+										? metricCardStyles.subtitleOnColor
+										: metricCardStyles.subtitleMuted,
 								)}
 							>
 								{subtitle}

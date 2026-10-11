@@ -17,11 +17,21 @@ export const metricCardStyles = {
 	body: "p-6",
 	head: "flex items-center justify-between mb-4",
 	title: "text-xs font-semibold uppercase tracking-wide",
+	titleOnColor: "opacity-90",
+	titleMuted: "text-muted-foreground",
 	icon: "",
+	iconOnColor: "opacity-70",
+	iconMuted: "text-muted-foreground",
 	value: "text-4xl font-bold leading-none",
+	valueBlock: "mb-3",
+	valueOnColor: "",
+	valueMuted: "text-card-foreground",
 	meta: "text-sm",
 	change: "flex items-center gap-1",
+	changeOnColor: "opacity-90",
 	subtitle: "",
+	subtitleOnColor: "opacity-80",
+	subtitleMuted: "text-muted-foreground",
 };
 
 export const metricCardChangeColors = {
