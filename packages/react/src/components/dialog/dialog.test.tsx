@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { Button } from "../button";
 import {
 	Dialog,
+	DialogBody,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
@@ -153,6 +154,64 @@ describe("Dialog", () => {
 		);
 		const content = document.body.querySelector('[data-slot="dialog-content"]');
 		expect(content).toHaveClass("sm:rounded-[var(--kala-radius-card)]");
+	});
+
+	it("should ship the layout contract: card clips, header/footer pinned, body scrolls", () => {
+		render(
+			<Dialog open>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Contract</DialogTitle>
+					</DialogHeader>
+					<DialogBody>Body</DialogBody>
+					<DialogFooter>
+						<Button>Save</Button>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>,
+		);
+		const content = document.body.querySelector('[data-slot="dialog-content"]');
+		expect(content).toHaveClass("overflow-hidden");
+		const header = document.body.querySelector('[data-slot="dialog-header"]');
+		expect(header).toHaveClass("shrink-0");
+		const footer = document.body.querySelector('[data-slot="dialog-footer"]');
+		expect(footer).toHaveClass("shrink-0");
+		const body = document.body.querySelector('[data-slot="dialog-body"]');
+		for (const cls of [
+			"flex-1",
+			"min-h-0",
+			"flex-col",
+			"gap-4",
+			"overflow-y-auto",
+		]) {
+			expect(body).toHaveClass(cls);
+		}
+	});
+
+	it("should leave a single flex form child free to own its scroll region", () => {
+		render(
+			<Dialog open>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Form</DialogTitle>
+					</DialogHeader>
+					<form className="flex min-h-0 flex-1 flex-col">
+						<div className="min-h-0 flex-1 overflow-y-auto px-6 py-4">
+							Field rows
+						</div>
+						<DialogFooter>
+							<Button type="submit">Save</Button>
+						</DialogFooter>
+					</form>
+				</DialogContent>
+			</Dialog>,
+		);
+		const form = document.body.querySelector(
+			'[data-slot="dialog-content"] form',
+		);
+		expect(form).toHaveClass("flex-1");
+		expect(form).toHaveClass("min-h-0");
+		expect(form?.firstElementChild).toHaveClass("overflow-y-auto");
 	});
 
 	it("should use closeLabel for the close button's accessible name", () => {

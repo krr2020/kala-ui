@@ -181,7 +181,7 @@ export const ScrollingContent: Story = {
 				</DialogHeader>
 				<DialogBody>
 					{Array.from({ length: 20 }).map(() => (
-						<p key={crypto.randomUUID()} className="mb-4">
+						<p key={crypto.randomUUID()}>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
 							eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
 							enim ad minim veniam, quis nostrud exercitation ullamco laboris.
@@ -205,4 +205,116 @@ export const LoadingSkeleton: Story = {
 			},
 		},
 	},
+};
+
+// 100 rows: the footer stays pinned while DialogBody scrolls
+export const PinnedFooter: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story:
+					"Layout contract: DialogBody is the only scrollable region — header and footer stay pinned no matter how tall the body gets.",
+			},
+		},
+	},
+	render: () => (
+		<Dialog defaultOpen>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle>Select items</DialogTitle>
+					<DialogDescription>
+						Scroll the body — the footer never moves.
+					</DialogDescription>
+				</DialogHeader>
+				<DialogBody>
+					{Array.from({ length: 100 }).map((_, i) => (
+						<div key={i} className="flex items-center gap-2 py-2">
+							<span className="w-8 text-right text-sm text-muted-foreground">
+								{i + 1}.
+							</span>
+							<span className="text-sm">Item row {i + 1}</span>
+						</div>
+					))}
+				</DialogBody>
+				<DialogFooter>
+					<Button variant="outline">Cancel</Button>
+					<Button>Confirm</Button>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
+	),
+};
+
+// Single form child owning its own scroll region — the pre-contract workaround
+export const FormComposition: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story:
+					"Backward compatible: a single form child with its own overflow-y-auto region and a footer pinned inside the form keeps working unchanged.",
+			},
+		},
+	},
+	render: () => (
+		<Dialog defaultOpen>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle>Edit account</DialogTitle>
+					<DialogDescription>
+						The form owns the scroll region; the footer stays inside it.
+					</DialogDescription>
+				</DialogHeader>
+				<form className="flex min-h-0 flex-1 flex-col">
+					<div
+						data-testid="form-scroll-region"
+						className="min-h-0 flex-1 overflow-y-auto px-6 py-4"
+					>
+						<div className="grid gap-4">
+							{Array.from({ length: 40 }).map((_, i) => (
+								<div key={i} className="grid gap-2">
+									<Label htmlFor={`field-${i}`}>Field {i + 1}</Label>
+									<Input id={`field-${i}`} defaultValue={`Value ${i + 1}`} />
+								</div>
+							))}
+						</div>
+					</div>
+					<DialogFooter>
+						<Button type="button" variant="outline">
+							Cancel
+						</Button>
+						<Button type="submit">Save changes</Button>
+					</DialogFooter>
+				</form>
+			</DialogContent>
+		</Dialog>
+	),
+};
+
+// Short content: no scrollbar, no visual change
+export const ShortContent: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story:
+					"Short content never shows a scrollbar — the scroll region only engages when the 90vh cap is hit.",
+			},
+		},
+	},
+	render: () => (
+		<Dialog defaultOpen>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle>Short dialog</DialogTitle>
+					<DialogDescription>Nothing here to scroll.</DialogDescription>
+				</DialogHeader>
+				<DialogBody>
+					<p>Two short rows of content.</p>
+					<p>No scrollbar appears.</p>
+				</DialogBody>
+				<DialogFooter>
+					<Button>Got it</Button>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
+	),
 };

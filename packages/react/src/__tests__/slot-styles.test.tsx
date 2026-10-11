@@ -42,6 +42,7 @@ import { ErrorBoundary } from "../components/error-boundary";
 import { FileUpload } from "../components/file-upload";
 import { Input } from "../components/input";
 import { MultiSelect } from "../components/multi-select";
+import { NativeSelect } from "../components/native-select";
 import { NumberInput } from "../components/number-input";
 import {
 	Popover,
@@ -51,7 +52,6 @@ import {
 } from "../components/popover";
 import { Progress } from "../components/progress";
 import { RingProgress } from "../components/ring-progress";
-import { NativeSelect } from "../components/native-select";
 import {
 	Select,
 	SelectContent,
@@ -1254,7 +1254,7 @@ const styleTableEntries = [
 		part: "dialog.content",
 		tsx: "../components/dialog/dialog.tsx",
 		config: "../config/dialog.ts",
-		base: "bg-card text-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed inset-0 z-30 flex flex-col w-full h-full max-h-none translate-x-0 translate-y-0 rounded-none border duration-200 kala-surface-card",
+		base: "bg-card text-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed inset-0 z-30 flex flex-col overflow-hidden w-full h-full max-h-none translate-x-0 translate-y-0 rounded-none border duration-200 kala-surface-card",
 	},
 	{
 		part: "dialog.close",
@@ -1266,13 +1266,13 @@ const styleTableEntries = [
 		part: "dialog.header",
 		tsx: "../components/dialog/dialog.tsx",
 		config: "../config/dialog.ts",
-		base: "flex flex-col gap-1.5 px-6 py-4 border-b",
+		base: "flex shrink-0 flex-col gap-1.5 px-6 py-4 border-b",
 	},
 	{
 		part: "dialog.footer",
 		tsx: "../components/dialog/dialog.tsx",
 		config: "../config/dialog.ts",
-		base: "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end px-6 py-4 border-t bg-muted/50 rounded-b-[var(--kala-radius-card)]",
+		base: "flex shrink-0 flex-col-reverse gap-2 sm:flex-row sm:justify-end px-6 py-4 border-t bg-muted/50 rounded-b-[var(--kala-radius-card)]",
 	},
 	{
 		part: "dialog.title",
@@ -1290,7 +1290,7 @@ const styleTableEntries = [
 		part: "dialog.body",
 		tsx: "../components/dialog/dialog.tsx",
 		config: "../config/dialog.ts",
-		base: "flex-auto overflow-y-auto px-6 py-4 min-h-0",
+		base: "flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-6 py-4",
 	},
 	{
 		part: "tooltip.content",

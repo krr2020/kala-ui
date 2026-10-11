@@ -3,6 +3,10 @@ import { existsSync } from 'node:fs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+	assertDialogLayoutContract,
+	LAYOUT_CONTRACT_STORIES,
+} from './dialog-layout-contract';
 
 /**
  * Storybook test-runner harness.
@@ -143,8 +147,6 @@ type CapturedNode = {
 	slot: string;
 	styles: Record<(typeof VISUAL_PROPS)[number], string>;
 };
-
-const FREEZE_STYLE_ID = 'kala-visual-freeze';
 
 async function applyTheme(
 	page: import('playwright').Page,
@@ -297,7 +299,6 @@ const config: TestRunnerConfig = {
 
 		// Freeze animations and carets so timing never leaks into a capture.
 		await page.addStyleTag({
-			id: FREEZE_STYLE_ID,
 			content: `*, *::before, *::after {
 				animation: none !important;
 				transition: none !important;
@@ -351,6 +352,11 @@ const config: TestRunnerConfig = {
 
 		// Leave the story in its default state for the DOM snapshot.
 		await applyTheme(page, 'light');
+
+		const layout = LAYOUT_CONTRACT_STORIES[context.id];
+		if (layout) {
+			await assertDialogLayoutContract(page, layout.scrollable);
+		}
 	},
 };
 

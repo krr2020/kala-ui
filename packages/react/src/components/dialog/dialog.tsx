@@ -131,19 +131,13 @@ function DialogHeader({
 	className,
 	style,
 	slotStyles: slotStylesRaw,
-	fixed = true,
 	...props
 }: React.ComponentProps<"div"> & {
-	/** When true (default), header stays fixed at the top of the modal. Set to false to allow header to scroll with content. */
-	fixed?: boolean;
 	/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
 	slotStyles?: SlotStyles;
 }) {
 	const slotStyles = useSlotStyles("dialog", slotStylesRaw);
-	const root = applySlot(
-		cn(dialogStyles.header, fixed && "shrink-0", className),
-		slotStyles?.root,
-	);
+	const root = applySlot(cn(dialogStyles.header, className), slotStyles?.root);
 	return (
 		<Box
 			data-kala-component="dialog-header"
@@ -159,19 +153,13 @@ function DialogFooter({
 	className,
 	style,
 	slotStyles: slotStylesRaw,
-	fixed = false,
 	...props
 }: React.ComponentProps<"div"> & {
-	/** When true, footer stays fixed at the bottom of the modal (content scrolls between header and footer) */
-	fixed?: boolean;
 	/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
 	slotStyles?: SlotStyles;
 }) {
 	const slotStyles = useSlotStyles("dialog", slotStylesRaw);
-	const root = applySlot(
-		cn(dialogStyles.footer, fixed && "shrink-0", className),
-		slotStyles?.root,
-	);
+	const root = applySlot(cn(dialogStyles.footer, className), slotStyles?.root);
 	return (
 		<Box
 			data-kala-component="dialog-footer"
