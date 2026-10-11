@@ -40,3 +40,5 @@ coverage
 .conveyor/status/
 .conveyor/board.json
 .conveyor/index.json
+# Conveyor machine-local state (board/, specs/, wiki/, design/ stay committable)
+.conveyor/locks.sqlite*
