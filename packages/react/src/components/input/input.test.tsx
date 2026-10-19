@@ -356,6 +356,30 @@ describe("Input", () => {
 		});
 	});
 
+	describe("Interactive suffix adornments", () => {
+		it("keeps decorative suffixes click-through while re-enabling nested buttons and links", () => {
+			render(<Input suffixIcon={<Mail data-testid="mail-icon" />} />);
+			const host = screen.getByTestId("mail-icon").closest("span");
+			expect(host).toHaveClass("pointer-events-none");
+			expect(host).toHaveClass("[&_button]:pointer-events-auto");
+			expect(host).toHaveClass("[&_a]:pointer-events-auto");
+		});
+
+		it("fires click handlers on a button passed as the suffix icon", async () => {
+			const onClear = vi.fn();
+			const user = userEvent.setup();
+			render(
+				<Input
+					suffixIcon={
+						<Button type="button" aria-label="Clear search" onClick={onClear} />
+					}
+				/>,
+			);
+			await user.click(screen.getByRole("button", { name: "Clear search" }));
+			expect(onClear).toHaveBeenCalledOnce();
+		});
+	});
+
 	describe("HTML Attributes", () => {
 		it("accepts standard input attributes", () => {
 			render(

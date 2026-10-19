@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0-beta.7
+
+### Patch Changes
+
+- Fix Input suffix adornments swallowing clicks on interactive children (e.g. DataTable's Clear search button): the pointer-events-none wrapper now re-enables pointer events on nested buttons and links while decorative icons stay click-through.
+
 ## 0.1.0-beta.6
 
 ### Patch Changes

@@ -1,8 +1,8 @@
 {
-  "id": "S0.1",
+  "id": "S0.2",
   "featureId": "F0",
   "title": "Backlog",
-  "description": "Manually added backlog items that are not yet part of a product feature.",
+  "description": "Deferred work — enhancements and gaps observed mid-task. Picked up only after every product feature settles.",
   "requirementIds": [],
   "dependsOn": [],
   "origin": {
@@ -12,6 +12,6 @@
   },
   "status": "not-started",
   "tasks": [],
-  "createdAt": "2026-10-04T03:09:59.437Z",
-  "updatedAt": "2026-10-04T03:09:59.437Z"
+  "createdAt": "2026-10-19T04:25:00.692Z",
+  "updatedAt": "2026-10-19T04:25:00.692Z"
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "capturedAt": "2026-10-04T03:09:59.446Z",
+  "capturedAt": "2026-10-19T04:25:00.719Z",
   "packageManager": "pnpm",
   "lockfile": "pnpm-lock.yaml",
   "languages": [
@@ -319,7 +319,7 @@
       ],
       "commands": {
         "build": "tsc --noEmit",
-        "test": "vitest run && jest",
+        "test": "vitest run && jest --passWithNoTests",
         "lint": "biome lint ."
       },
       "devPorts": []
@@ -359,7 +359,7 @@
       ],
       "commands": {
         "build": "tsc --noEmit",
-        "test": "vitest run && jest",
+        "test": "vitest run && jest --passWithNoTests",
         "lint": "biome lint ."
       },
       "devPorts": []

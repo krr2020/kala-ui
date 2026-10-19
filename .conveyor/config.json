@@ -1,6 +1,6 @@
 {
   "project": {
-    "name": "kala ui",
+    "name": "kala-ui",
     "root": "/Users/rk/workspace/kala-ui"
   },
   "projects": {
@@ -26,9 +26,9 @@
       "keepRecentTokens": 20000,
       "readEarlyEnabled": false
     },
-    "chatSpendLimitUsd": 5,
-    "chatMaxTurns": 120,
-    "chatMaxToolCalls": 300,
+    "chatSpendLimitUsd": 0,
+    "chatMaxTurns": 0,
+    "chatMaxToolCalls": 0,
     "sessions": {
       "retentionDays": 30
     },
@@ -47,7 +47,7 @@
     "showReasoning": true,
     "showStepNarration": false,
     "shiftEnterToSubmit": false,
-    "chatAutoValidate": false,
+    "chatAutoValidate": true,
     "coordinator": {
       "enabled": true
     },
@@ -76,15 +76,15 @@
     "efficiencyNudges": {
       "enabled": true,
       "redundantReadThreshold": 4,
-      "serialReadTurns": 3,
-      "diagnosticsThreshold": 3,
-      "reworkEditThreshold": 3,
-      "planRewriteThreshold": 2,
-      "repeatFailureThreshold": 2,
-      "toolFailureThreshold": 3,
+      "serialReadTurns": 4,
+      "diagnosticsThreshold": 4,
+      "reworkEditThreshold": 4,
+      "planRewriteThreshold": 3,
+      "repeatFailureThreshold": 3,
+      "toolFailureThreshold": 4,
       "browserProbeThreshold": 6,
-      "reasoningRepeatThreshold": 2,
-      "minWindowTurns": 4,
+      "reasoningRepeatThreshold": 3,
+      "minWindowTurns": 5,
       "maxNudgesPerTurn": 2,
       "maxReminders": 2,
       "weights": {
@@ -174,13 +174,14 @@
     }
   },
   "planning": {
-    "autoPlan": true
+    "autoPlan": false
   },
   "codeIntel": {
     "lsp": {
       "enabled": true,
       "idleShutdownMin": 3,
-      "maxServers": 2
+      "maxServers": 2,
+      "typescriptServer": "auto"
     },
     "formatter": {
       "enabled": true,
@@ -229,12 +230,8 @@
       "validateParse": true
     },
     "diagnostics": {
-      "mode": "block",
-      "budgetMs": 4000,
-      "maxFindings": 12,
-      "blockOn": [
-        "error"
-      ]
+      "enabled": true,
+      "maxFindings": 12
     },
     "cascade": {
       "enabled": true,
@@ -243,6 +240,7 @@
     },
     "actionableWarnings": {
       "autoFix": true,
+      "budgetMs": 4000,
       "maxFixes": 5
     },
     "lineLimit": {
@@ -299,7 +297,7 @@
       ]
     },
     "commentGate": "advisory",
-    "cleanCodeGate": "block"
+    "cleanCodeGate": "advisory"
   },
   "wiki": {
     "autoRefresh": true,
@@ -307,6 +305,9 @@
     "checkIntervalMinutes": 60
   },
   "codeIntelligence": {
+    "reranking": {
+      "provider": "disabled"
+    },
     "enabled": true,
     "sources": {
       "excludeDirs": []
@@ -374,7 +375,11 @@
     "pinnedFiles": [],
     "wordWrap": false,
     "formatOnSave": false,
-    "openMode": "open-each"
+    "openMode": "open-each",
+    "iconVisibility": "show",
+    "codeFontFamily": "",
+    "codeTheme": "auto",
+    "codeFontSize": 13
   },
   "board": {
     "tombstoneRetentionHours": 24

@@ -141,9 +141,9 @@ export function Input({
 						</button>
 					)}
 
-					{/* Custom suffix icon — never blocks input clicks */}
+					{/* Decorative suffix clicks through; interactive children stay clickable */}
 					{suffixIcon && (
-						<span className="pointer-events-none text-muted-foreground">
+						<span className="pointer-events-none text-muted-foreground [&_a]:pointer-events-auto [&_button]:pointer-events-auto">
 							{suffixIcon}
 						</span>
 					)}
