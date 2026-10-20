@@ -62,7 +62,7 @@ function DrawerOverlay({
 			data-kala-component="drawer-overlay"
 			data-slot="drawer-overlay"
 			className={cn(
-				"fixed inset-0 z-30 bg-overlay backdrop-blur-sm",
+				"fixed inset-0 z-(--kala-z-overlay) bg-overlay backdrop-blur-sm",
 				className,
 			)}
 			{...props}
@@ -108,7 +108,7 @@ function DrawerContent({
 		: SIZE_HEIGHT_CLASSES[size];
 	const root = applySlot(
 		cn(
-			"fixed z-30 flex h-auto flex-col bg-background kala-surface-card",
+							"fixed z-(--kala-z-overlay) flex h-auto flex-col bg-background kala-surface-card",
 			(!direction || direction === "bottom") &&
 				"inset-x-0 bottom-0 mt-24 rounded-t-lg border-t",
 			direction === "right" && "inset-y-0 right-0 h-screen border-l",

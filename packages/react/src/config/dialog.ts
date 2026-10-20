@@ -6,9 +6,9 @@
  */
 export const dialogStyles = {
 	overlay:
-		"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-30 bg-overlay backdrop-blur-sm",
+		"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-(--kala-z-overlay) bg-overlay backdrop-blur-sm",
 	content:
-		"bg-card text-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed inset-0 z-30 flex flex-col overflow-hidden w-full h-full max-h-none translate-x-0 translate-y-0 rounded-none border duration-200 kala-surface-card",
+		"bg-card text-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed inset-0 z-(--kala-z-overlay) flex flex-col overflow-hidden w-full h-full max-h-none translate-x-0 translate-y-0 rounded-none border duration-200 kala-surface-card",
 	sizes: {
 		sm: "sm:inset-auto sm:h-auto sm:w-[90vw] sm:max-w-sm sm:max-h-[90vh] sm:rounded-[var(--kala-radius-card)] sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]",
 		md: "sm:inset-auto sm:h-auto sm:w-[90vw] sm:max-w-lg sm:max-h-[90vh] sm:rounded-[var(--kala-radius-card)] sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]",

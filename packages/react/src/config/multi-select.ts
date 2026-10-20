@@ -23,7 +23,7 @@ export const multiSelectStyles = {
 		"kala-touch pointer-events-auto mr-1 rounded-sm opacity-50 hover:opacity-100",
 	clearAllIcon: "size-4",
 	chevron: "size-4 shrink-0 opacity-50",
-	popoverContent: "z-30 p-0",
+	popoverContent: "z-(--kala-z-popup) p-0",
 	command:
 		"rounded-lg border bg-popover text-popover-foreground kala-surface-popover",
 	commandMatched: "w-full",

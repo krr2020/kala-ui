@@ -1248,13 +1248,13 @@ const styleTableEntries = [
 		part: "dialog.overlay",
 		tsx: "../components/dialog/dialog.tsx",
 		config: "../config/dialog.ts",
-		base: "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-30 bg-overlay backdrop-blur-sm",
+		base: "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-(--kala-z-overlay) bg-overlay backdrop-blur-sm",
 	},
 	{
 		part: "dialog.content",
 		tsx: "../components/dialog/dialog.tsx",
 		config: "../config/dialog.ts",
-		base: "bg-card text-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed inset-0 z-30 flex flex-col overflow-hidden w-full h-full max-h-none translate-x-0 translate-y-0 rounded-none border duration-200 kala-surface-card",
+		base: "bg-card text-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed inset-0 z-(--kala-z-overlay) flex flex-col overflow-hidden w-full h-full max-h-none translate-x-0 translate-y-0 rounded-none border duration-200 kala-surface-card",
 	},
 	{
 		part: "dialog.close",
@@ -1296,13 +1296,13 @@ const styleTableEntries = [
 		part: "tooltip.content",
 		tsx: "../components/tooltip/tooltip.tsx",
 		config: "../config/tooltip.ts",
-		base: "z-30 rounded-md border bg-popover px-3 py-1.5 text-xs text-popover-foreground duration-200 animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 kala-surface-popover",
+		base: "z-(--kala-z-popup) rounded-md border bg-popover px-3 py-1.5 text-xs text-popover-foreground duration-200 animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 kala-surface-popover",
 	},
 	{
 		part: "tooltip.arrow",
 		tsx: "../components/tooltip/tooltip.tsx",
 		config: "../config/tooltip.ts",
-		base: "z-30 size-2.5 rotate-225 border-t border-l bg-popover border-inherit -translate-y-[50%] kala-surface-popover",
+		base: "z-(--kala-z-popup) size-2.5 rotate-225 border-t border-l bg-popover border-inherit -translate-y-[50%] kala-surface-popover",
 	},
 	{
 		part: "tag.icon",
@@ -1749,7 +1749,7 @@ const styleTableEntries = [
 		part: "multiSelect.popoverContent",
 		tsx: "../components/multi-select/multi-select.tsx",
 		config: "../config/multi-select.ts",
-		base: "z-30 p-0",
+		base: "z-(--kala-z-popup) p-0",
 	},
 	{
 		part: "multiSelect.command",

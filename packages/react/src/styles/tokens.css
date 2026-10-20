@@ -49,6 +49,9 @@
 		--kala-control-px-lg: calc(var(--kala-control-px) + 1rem); /* size-ladder step (32px at default) */
 		--kala-card-pad: 1.5rem; /* card header/body/footer padding */
 		--kala-radius-input: var(--kala-radius-control); /* inputs, selects — falls back to the control radius when unset */
+		/* Layering — popups sit above overlays by token, never by portal DOM order. */
+		--kala-z-overlay: 30;
+		--kala-z-popup: 40;
 		/* Motion — every `transition-*` utility consumes these via the
 	   Tailwind default-transition chain, so one override retunes the whole library. */
 		--kala-duration-fast: 120ms;
