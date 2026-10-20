@@ -1,5 +1,20 @@
 # @kala-ui/react-native-app
 
+## 0.1.0-beta.4
+
+### Patch Changes
+
+- Fixes
+- Updated dependencies
+  - @kala-ui/react-native@0.1.0-beta.4
+
+## 0.1.0-beta.3
+
+### Patch Changes
+
+- Updated dependencies
+  - @kala-ui/react-native@0.1.0-beta.3
+
 ## 0.1.0-beta.2
 
 ### Patch Changes

@@ -160,7 +160,7 @@ describe("Button slotStyles", () => {
 	it("absent slotStyles renders the exact pre-change class string", () => {
 		render(<Button>Go</Button>);
 		expect(screen.getByRole("button").className).toBe(
-			"cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--kala-radius-control)] text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed kala-focus-ring kala-touch h-[var(--kala-control-h)] px-[var(--kala-control-px)] py-2 bg-primary text-primary-foreground hover:bg-primary/90",
+			"cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--kala-radius-control)] text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed kala-focus-ring kala-touch h-[var(--kala-control-h)] px-[var(--kala-control-px)] py-2 bg-primary text-primary-foreground hover:bg-primary/95",
 		);
 	});
 });

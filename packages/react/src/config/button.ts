@@ -46,7 +46,7 @@ export const buttonStyles = {
 		// ---- neutral baselines (no color) ----
 		{
 			variant: "solid",
-			className: "bg-primary text-primary-foreground hover:bg-primary/90",
+			className: "bg-primary text-primary-foreground hover:bg-primary/95",
 		},
 		{
 			variant: "outline",
@@ -68,33 +68,33 @@ export const buttonStyles = {
 		{
 			variant: "solid",
 			color: "primary",
-			className: "bg-primary text-primary-foreground hover:bg-primary/90",
+			className: "bg-primary text-primary-foreground hover:bg-primary/95",
 		},
 		{
 			variant: "solid",
 			color: "secondary",
-			className: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+			className: "bg-secondary text-secondary-foreground hover:bg-secondary/95",
 		},
 		{
 			variant: "solid",
 			color: "destructive",
 			className:
-				"bg-destructive text-destructive-foreground hover:bg-destructive/90",
+				"bg-destructive text-destructive-foreground hover:bg-destructive/95",
 		},
 		{
 			variant: "solid",
 			color: "success",
-			className: "bg-success text-success-foreground hover:bg-success/80",
+			className: "bg-success text-success-foreground hover:bg-success/95",
 		},
 		{
 			variant: "solid",
 			color: "warning",
-			className: "bg-warning text-warning-foreground hover:bg-warning/80",
+			className: "bg-warning text-warning-foreground hover:bg-warning/95",
 		},
 		{
 			variant: "solid",
 			color: "info",
-			className: "bg-info text-info-foreground hover:bg-info/80",
+			className: "bg-info text-info-foreground hover:bg-info/95",
 		},
 		{
 			variant: "solid",

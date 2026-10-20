@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.0-beta.9
+
+### Patch Changes
+
+- Fixes
+
+## 0.1.0-beta.8
+
+### Patch Changes
+
+- Fix AA contrast issues
+
 ## 0.1.0-beta.7
 
 ### Patch Changes

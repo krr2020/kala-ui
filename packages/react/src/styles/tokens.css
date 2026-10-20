@@ -16,13 +16,13 @@
 		--popover-foreground: hsl(222.2 84% 4.9%);
 		--primary: hsl(221.2 83.2% 53.3%);
 		--primary-foreground: hsl(210 40% 98%);
-		--secondary: hsl(219 18% 55%);
+		--secondary: hsl(219 18% 46%);
 		--secondary-foreground: hsl(0 0% 100%);
 		--muted: hsl(210 40% 96.1%);
-		--muted-foreground: hsl(215.4 16.3% 46.9%);
+		--muted-foreground: hsl(215.4 16.3% 45.4%);
 		--accent: hsl(210 40% 96.1%);
 		--accent-foreground: hsl(222.2 47.4% 11.2%);
-		--destructive: hsl(0 84.2% 60.2%);
+		--destructive: hsl(0 84.2% 47.7%);
 		--destructive-foreground: hsl(210 40% 98%);
 		--border: hsl(211 27% 81%);
 		--border-strong: hsl(211 27% 60%);
@@ -61,13 +61,13 @@
 		--shadow-alpha: 0;
 		--shadow-spread: 0px;
 		--separator: hsl(211 27% 81%);
-		--success: hsl(142 76% 36%);
+		--success: hsl(142 76% 27%);
 		--success-foreground: hsl(355.7 100% 97.3%);
-		--warning: hsl(38 92% 50%);
+		--warning: hsl(38 92% 29.7%);
 		--warning-foreground: hsl(355.7 100% 97.3%);
 		--error: hsl(0 72% 51%);
 		--error-foreground: hsl(355.7 100% 97.3%);
-		--info: hsl(190 90% 45%);
+		--info: hsl(190 90% 28.3%);
 		--info-foreground: hsl(355.7 100% 97.3%);
 		/* Presence — avatar status dots; dark-family themes brighten both. */
 		--online: #22c55e;
@@ -149,7 +149,7 @@
 		--card-foreground: hsl(210 40% 98%);
 		--popover: hsl(219 31% 17%);
 		--popover-foreground: hsl(210 40% 98%);
-		--primary: hsl(217.2 91.2% 59.8%);
+		--primary: hsl(217.2 91.2% 62.8%);
 		--primary-foreground: hsl(222.2 47.4% 11.2%);
 		--secondary: hsl(215 20.2% 65.1%);
 		--secondary-foreground: hsl(222.2 47.4% 11.2%);
@@ -157,8 +157,8 @@
 		--muted-foreground: hsl(215 20.2% 65.1%);
 		--accent: hsl(217.2 32.6% 17.5%);
 		--accent-foreground: hsl(210 40% 98%);
-		--destructive: hsl(0 62.8% 30.6%);
-		--destructive-foreground: hsl(210 40% 98%);
+		--destructive: hsl(0 62.8% 65.1%);
+		--destructive-foreground: hsl(222.2 47.4% 11.2%);
 		--border: hsl(221 32% 43%);
 		--border-strong: hsl(221 15% 60%);
 		--border-alpha: 0.16;
@@ -206,10 +206,10 @@
 		--popover-foreground: hsl(222.2 84% 4.9%);
 		--primary: hsl(221.2 83.2% 53.3%);
 		--primary-foreground: hsl(210 40% 98%);
-		--secondary: hsl(219 18% 55%);
+		--secondary: hsl(219 18% 46%);
 		--secondary-foreground: hsl(0 0% 100%);
 		--muted: hsl(210 40% 96.1%);
-		--muted-foreground: hsl(215.4 16.3% 46.9%);
+		--muted-foreground: hsl(215.4 16.3% 45.4%);
 		--accent: hsl(210 40% 96.1%);
 		--accent-foreground: hsl(222.2 47.4% 11.2%);
 		--destructive: hsl(0 84.2% 60.2%);
@@ -227,13 +227,13 @@
 		--separator: hsl(0 0% 0%);
 		--overlay: hsl(0 0% 0%);
 		--overlay-alpha: 0.6;
-		--success: hsl(142 76% 36%);
+		--success: hsl(142 76% 27%);
 		--success-foreground: hsl(355.7 100% 97.3%);
-		--warning: hsl(38 92% 50%);
+		--warning: hsl(38 92% 29.7%);
 		--warning-foreground: hsl(355.7 100% 97.3%);
 		--error: hsl(0 72% 51%);
 		--error-foreground: hsl(355.7 100% 97.3%);
-		--info: hsl(190 90% 45%);
+		--info: hsl(190 90% 28.3%);
 		--info-foreground: hsl(355.7 100% 97.3%);
 		/* Presence — avatar status dots; dark-family themes brighten both. */
 		--online: #22c55e;
@@ -248,7 +248,7 @@
 		--card-foreground: hsl(210 40% 98%);
 		--popover: hsl(222.2 84% 4.9%);
 		--popover-foreground: hsl(210 40% 98%);
-		--primary: hsl(217.2 91.2% 59.8%);
+		--primary: hsl(217.2 91.2% 62.8%);
 		--primary-foreground: hsl(222.2 47.4% 11.2%);
 		--secondary: hsl(215 20.2% 65.1%);
 		--secondary-foreground: hsl(222.2 47.4% 11.2%);
@@ -256,8 +256,8 @@
 		--muted-foreground: hsl(215 20.2% 65.1%);
 		--accent: hsl(217.2 32.6% 17.5%);
 		--accent-foreground: hsl(210 40% 98%);
-		--destructive: hsl(0 62.8% 30.6%);
-		--destructive-foreground: hsl(210 40% 98%);
+		--destructive: hsl(0 62.8% 65.1%);
+		--destructive-foreground: hsl(222.2 47.4% 11.2%);
 		--border: hsl(0 0% 100%);
 		--border-strong: hsl(0 0% 100%);
 		--border-alpha: 1;

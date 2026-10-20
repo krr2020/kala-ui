@@ -214,7 +214,33 @@ export const LoadingSkeleton: Story = {
 		docs: {
 			description: {
 				story:
-					"Loading skeleton placeholders for buttons while content is loading.",
+				"Loading skeleton placeholders for buttons while content is loading.",
+			},
+		},
+	},
+};
+
+export const AsChildLinks: Story = {
+	render: (args) => (
+		<Flex wrap="wrap" gap={2}>
+			<Button {...args} asChild>
+				<a href="https://example.com">Anchor link</a>
+			</Button>
+			<Button {...args} asChild>
+				<a href="https://example.com" target="_blank" rel="noopener noreferrer">
+					External link
+				</a>
+			</Button>
+			<Button {...args} variant="outline" asChild>
+				<a href="#section">Jump to section</a>
+			</Button>
+		</Flex>
+	),
+	parameters: {
+		docs: {
+			description: {
+				story:
+				"Compose any navigation element with button styling via asChild — wrap your router's Link (Next.js, react-router) the same way. Keeps native link semantics (middle-click, cmd-click, crawlers) while variants and tokens stay owned by kala-ui; no custom button classes needed at call sites.",
 			},
 		},
 	},

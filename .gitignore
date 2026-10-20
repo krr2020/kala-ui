@@ -45,3 +45,5 @@ coverage
 # Conveyor machine-local state (board/, specs/, wiki/, design/ stay committable)
 .conveyor/mobile-installs.json
 .conveyor/followups.json*
+# Conveyor machine-local state (board/, specs/, wiki/, design/ stay committable)
+.conveyor/design-writer.sqlite*
