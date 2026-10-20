@@ -36,7 +36,7 @@ describe("MetricCard", () => {
 		);
 		const line = screen.getByText(/5% than last week/);
 		expect(line.props.children.join("")).toContain("↑");
-		expect(styleColor(line as unknown as TextHost)).toBe("#16a249");
+		expect(styleColor(line as unknown as TextHost)).toBe("#117937");
 	});
 
 	it("negative change is a destructive-colored down arrow", async () => {
@@ -45,7 +45,7 @@ describe("MetricCard", () => {
 		);
 		const line = screen.getByText(/3% than last week/);
 		expect(line.props.children.join("")).toContain("↓");
-		expect(styleColor(line as unknown as TextHost)).toBe("#ef4444");
+		expect(styleColor(line as unknown as TextHost)).toBe("#e01313");
 	});
 
 	it("zero change is neutral with the no-change label", async () => {
@@ -54,7 +54,7 @@ describe("MetricCard", () => {
 		);
 		const line = screen.getByText(/No change/);
 		expect(line.props.children.join("")).toContain("−");
-		expect(styleColor(line as unknown as TextHost)).toBe("#64748b");
+		expect(styleColor(line as unknown as TextHost)).toBe("#617087");
 	});
 
 	it("a custom changeLabel wins over the default", async () => {

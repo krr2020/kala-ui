@@ -31,7 +31,7 @@ describe("BarChart", () => {
 			<BarChart data={data} height={100} tone="destructive" />,
 		);
 		expect(screen.getByTestId("k-bar-chart-bar-mon").props.fill.payload).toBe(
-			0xffef4444,
+			0xffe01313,
 		);
 	});
 
