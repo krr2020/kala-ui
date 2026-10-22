@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.0-beta.11
+
+### Major Changes
+
+- Make drawers open from the right by default and keep drawer headers and footers available while content scrolls. Drawer headers now include an accessible close button by default, with alignment and visibility controls; footers can opt out of sticking to the bottom.
+
+### Patch Changes
+
+- Fix drawer
+
 ## 0.1.0-beta.10
 
 ### Patch Changes

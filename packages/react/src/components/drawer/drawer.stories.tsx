@@ -293,6 +293,42 @@ export const PositionExamples: Story = {
 		</div>
 	),
 };
+
+export const StandardRightDrawer: Story = {
+	name: "Right drawer with pinned header and actions",
+	render: () => (
+		<Drawer>
+			<DrawerTrigger asChild>
+				<Button variant="outline">Open settings</Button>
+			</DrawerTrigger>
+			<DrawerContent size="md">
+				<DrawerHeader>
+					<DrawerTitle>Notification settings</DrawerTitle>
+					<DrawerDescription>
+						Choose which updates you want to receive.
+					</DrawerDescription>
+				</DrawerHeader>
+				<div className="space-y-4 px-6 py-5">
+					{Array.from({ length: 12 }, (_, index) => (
+						<div className="rounded-lg border p-4" key={index}>
+							<p className="font-medium">Update category {index + 1}</p>
+							<p className="mt-1 text-sm text-muted-foreground">
+								Receive an email when there is a new update in this category.
+							</p>
+						</div>
+					))}
+				</div>
+				<DrawerFooter className="flex-row justify-end">
+					<DrawerClose asChild>
+						<Button variant="outline">Cancel</Button>
+					</DrawerClose>
+					<Button>Save settings</Button>
+				</DrawerFooter>
+			</DrawerContent>
+		</Drawer>
+	),
+};
+
 export const LoadingSkeleton: Story = {
 	render: () => <Skeleton className="h-10 w-32 rounded-md" />,
 	parameters: {

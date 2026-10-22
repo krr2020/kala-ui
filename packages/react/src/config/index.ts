@@ -5,6 +5,7 @@ export { alertStyles } from "./alert";
 export { bannerStyles } from "./banner";
 export { datePickerStyles } from "./date-picker";
 export { dialogStyles } from "./dialog";
+export { drawerStyles } from "./drawer";
 export { emptyStateStyles } from "./empty-state";
 export { fileUploadStyles } from "./file-upload";
 export { numberInputStyles } from "./number-input";

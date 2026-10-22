@@ -169,7 +169,7 @@ describe("Drawer", () => {
 		);
 	});
 
-	it("defaults to bottom direction when no direction prop", () => {
+	it("defaults to right direction when no direction prop", () => {
 		render(
 			<Drawer>
 				<DrawerTrigger>Open</DrawerTrigger>
@@ -180,7 +180,7 @@ describe("Drawer", () => {
 		);
 		expect(screen.getByTestId("drawer-root")).toHaveAttribute(
 			"data-direction",
-			"bottom",
+			"right",
 		);
 	});
 

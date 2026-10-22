@@ -127,6 +127,7 @@ describe("Dialog", () => {
 		const full = document.body.querySelector('[data-slot="dialog-content"]');
 		expect(full?.className).not.toContain("sm:max-w-");
 		expect(full?.className).not.toContain("sm:top-");
+		expect(full?.className).toContain("rounded-none!");
 		unmount();
 
 		render(
@@ -139,7 +140,8 @@ describe("Dialog", () => {
 			</Dialog>,
 		);
 		const def = document.body.querySelector('[data-slot="dialog-content"]');
-		expect(def?.className).toContain("sm:max-w-lg");
+		expect(def?.className).toContain("sm:max-w-[32rem]");
+		expect(def?.className).toContain("max-sm:rounded-none!");
 	});
 
 	it("should keep the card radius token on the centered panel", () => {

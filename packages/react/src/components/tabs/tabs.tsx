@@ -97,6 +97,7 @@ function TabsList({
 			<TabsPrimitive.List
 				ref={ref}
 				data-slot="tabs-list"
+			data-variant={variant}
 				className={root.className}
 				style={mergeStyle(style, root.style)}
 				{...props}
@@ -132,6 +133,7 @@ function TabsTrigger({
 			data-kala-component="tabs-trigger"
 			ref={ref}
 			data-slot="tabs-trigger"
+			data-variant={finalVariant}
 			className={root.className}
 			style={mergeStyle(style, root.style)}
 			{...props}

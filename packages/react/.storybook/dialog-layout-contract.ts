@@ -1,3 +1,6 @@
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+
 /**
  * Geometry contract for the dialog scroll fix; the pinned stories render
  * open via defaultOpen so postVisit can measure real layout in Chromium.
@@ -12,7 +15,9 @@ export const LAYOUT_CONTRACT_STORIES: Record<string, { scrollable: boolean }> =
 
 type DialogLayoutMeasurement = {
 	viewport: { width: number; height: number };
+	rootFontSize: number;
 	contentOverflow: string;
+	cardRadius: string;
 	card: {
 		top: number;
 		left: number;
@@ -58,7 +63,9 @@ async function measureDialogLayout(
 		}
 		return {
 			viewport: { width: window.innerWidth, height: window.innerHeight },
+			rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
 			contentOverflow: getComputedStyle(content).overflow,
+			cardRadius: getComputedStyle(content).borderTopLeftRadius,
 			card: {
 				top: card.top,
 				left: card.left,
@@ -78,7 +85,7 @@ async function measureDialogLayout(
 	});
 }
 
-export async function assertDialogLayoutContract(
+async function assertLayout(
 	page: import('playwright').Page,
 	scrollable: boolean,
 ) {
@@ -91,10 +98,27 @@ export async function assertDialogLayoutContract(
 		await page.waitForTimeout(120);
 		const m = await measureDialogLayout(page);
 		const label = `${viewport.width}x${viewport.height}`;
+		if (viewport.width >= 640) {
+			if (Math.abs(m.card.right - m.card.left - 32 * m.rootFontSize) > 1) {
+				failures.push(`${label}: default panel width does not match the 32rem dialog size`);
+			}
+			if (
+				Math.abs(m.card.left + m.card.right - viewport.width) > 1 ||
+				Math.abs(m.card.top + m.card.bottom - viewport.height) > 1
+			) {
+				failures.push(`${label}: desktop panel is not centered`);
+			}
+			if (!scrollable && m.card.height >= viewport.height * 0.9) {
+				failures.push(`${label}: short content stretches to the viewport cap`);
+			}
+		}
 		if (m.contentOverflow !== 'hidden') {
 			failures.push(
 				`${label}: content overflow is ${m.contentOverflow}, expected hidden`,
 			);
+		}
+		if (viewport.width < 640 && m.cardRadius !== "0px") {
+			failures.push(`${label}: fullscreen mobile panel keeps a rounded corner (${m.cardRadius})`);
 		}
 		if (m.scroll.overflowY !== 'auto') {
 			failures.push(
@@ -151,5 +175,23 @@ export async function assertDialogLayoutContract(
 		throw new Error(
 			`dialog layout contract failed:\n  ${failures.join('\n  ')}`,
 		);
+	}
+}
+
+/** Exercise the distributed styles separately, as real consumers import them. */
+export async function assertDialogLayoutContract(
+	page: import("playwright").Page,
+	scrollable: boolean,
+) {
+	const core = await readFile(join(process.cwd(), "dist/styles/globals.css"), "utf8");
+	const app = await readFile(join(process.cwd(), "../react-app/dist/styles/app.css"), "utf8");
+	const consumer = '@layer utilities { .inset-0 { inset: 0 } .h-full { height: 100% } .w-full { width: 100% } .max-h-none { max-height: none } } [data-kala-component="dialog-content"] { border-radius: 12px; }';
+	for (const styles of [[core, app, consumer], [app, core, consumer]]) {
+		const injected = await page.addStyleTag({ content: styles.join("\n") });
+		try {
+			await assertLayout(page, scrollable);
+		} finally {
+			await injected.evaluate((element) => element.remove());
+		}
 	}
 }

@@ -427,7 +427,7 @@ describe("Tabs", () => {
 		);
 		const trigger = container.querySelector('[data-slot="tabs-trigger"]');
 		expect(trigger).toBeInTheDocument();
-		expect(trigger).toHaveClass("rounded-none", "border-b-2");
+		expect(trigger).toHaveClass("rounded-none", "shrink-0");
 	});
 
 	it("should support TabsTrigger variant as vertical", () => {

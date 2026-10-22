@@ -1254,7 +1254,7 @@ const styleTableEntries = [
 		part: "dialog.content",
 		tsx: "../components/dialog/dialog.tsx",
 		config: "../config/dialog.ts",
-		base: "bg-card text-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed inset-0 z-(--kala-z-overlay) flex flex-col overflow-hidden w-full h-full max-h-none translate-x-0 translate-y-0 rounded-none border duration-200 kala-surface-card",
+		base: "bg-card text-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed z-(--kala-z-overlay) flex flex-col overflow-hidden border duration-200 kala-surface-card",
 	},
 	{
 		part: "dialog.close",
