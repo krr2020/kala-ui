@@ -12,9 +12,8 @@ import {
 	Tablet,
 	Wifi,
 } from "lucide-react";
-import type * as React from "react";
 import { sessionCardStyles } from "../../config/session-card";
-import type { SessionCardProps, SessionData } from "./session-card.types";
+import type { SessionCardProps } from "./session-card.types";
 import { SessionCardSkeleton } from "./session-card-skeleton";
 
 function getDeviceIcon(device: string) {

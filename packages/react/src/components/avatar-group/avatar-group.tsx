@@ -1,7 +1,7 @@
 "use client";
 
 import { avatarGroupStyles } from "../../config/avatar-group";
-import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
+import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar/avatar";
 import { useSlotStyles } from "../kala-provider";

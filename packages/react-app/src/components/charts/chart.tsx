@@ -56,7 +56,6 @@ export function Chart({
 		"data-kala-component"?: string;
 		[key: string]: unknown;
 	};
-	const markerProps = { "data-kala-component": _marker };
 
 	// Render skeleton if loading
 	if (isLoading) {

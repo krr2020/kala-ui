@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "../button/button";
 import { Text } from "../text/text";

@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from "@kala-ui/react/button";
+import { Button } from "@kala-ui/react/button";
 import { useSlotStyles } from "@kala-ui/react/kala-provider";
 import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";

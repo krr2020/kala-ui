@@ -4,10 +4,7 @@ import { cn } from "@kala-ui/react/lib/utils";
 import type * as React from "react";
 import { socialLoginButtonsStyles } from "../../config/social-login-button";
 import { SocialLoginButton } from "./social-login-button";
-import type {
-	SocialLoginButtonProps,
-	SocialLoginButtonsProps,
-} from "./social-login-button.types";
+import type { SocialLoginButtonsProps } from "./social-login-button.types";
 
 export function SocialLoginButtons({
 	onProviderClick,

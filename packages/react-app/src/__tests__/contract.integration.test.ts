@@ -97,7 +97,7 @@ describe("inline-Tailwind detection primitives", () => {
 		['<div className="flex items-start gap-4">', true],
 		['<div className="flex \\"gap\\" items-center">', true],
 		['const cls = cn(base, "w-full");', true],
-		["className={`flex ${cond ? 'p-2' : ''}`}", true],
+		[`className={\`flex \${cond ? 'p-2' : ''}\`}`, true],
 		['<Loader2 className={cn(icon, "animate-spin")} />', true],
 		['<span className="mb-1 h-4 w-32">', true],
 		['color: "var(--border)",', false],

@@ -2,8 +2,6 @@ import { Card } from "@kala-ui/react/card";
 import { useSlotStyles } from "@kala-ui/react/kala-provider";
 import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
-import type { MetricCardSkeletonConfig } from "@kala-ui/react/skeleton";
-import type * as React from "react";
 import {
 	metricCardChangeColors,
 	metricCardColorStyles,

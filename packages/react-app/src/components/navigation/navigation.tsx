@@ -5,7 +5,7 @@ import { cn } from "@kala-ui/react/lib/utils";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
 import { isActivePath } from "../../lib/active-path";
-import type { NavigationLink, NavigationProps } from "./navigation.types";
+import type { NavigationProps } from "./navigation.types";
 
 export function Navigation({
 	ref,

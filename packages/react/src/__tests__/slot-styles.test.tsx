@@ -1326,7 +1326,7 @@ const styleTableEntries = [
 		part: "banner.close",
 		tsx: "../components/banner/banner.tsx",
 		config: "../config/banner.ts",
-		base: "kala-touch cursor-pointer shrink-0 p-1 rounded hover:bg-overlay/20 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
+		base: "kala-touch inline-flex items-center justify-center cursor-pointer shrink-0 p-1 rounded hover:bg-overlay/20 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
 	},
 	{
 		part: "banner.icon",

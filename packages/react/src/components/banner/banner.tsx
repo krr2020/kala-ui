@@ -12,7 +12,6 @@
 import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import { X } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { bannerStyles } from "../../config/banner";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";

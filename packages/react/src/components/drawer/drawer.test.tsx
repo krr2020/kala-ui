@@ -49,11 +49,14 @@ vi.mock("vaul", () => {
 		),
 	);
 	const DrawerClose = vi.fn(
-		({ children, className, asChild, ...props }: any) => (
-			<button data-testid="drawer-close" className={className} {...props}>
-				{children}
-			</button>
-		),
+		({ children, className, asChild, ...props }: any) =>
+			asChild ? (
+				children
+			) : (
+				<button data-testid="drawer-close" className={className} {...props}>
+					{children}
+				</button>
+			),
 	);
 	const DrawerContent = vi.fn(({ children, className, ...props }: any) => (
 		<div data-testid="drawer-content" className={className} {...props}>
@@ -341,7 +344,7 @@ describe("DrawerContent", () => {
 		const content = screen.getByTestId("drawer-content");
 		expect(content.className).toContain("inset-y-0");
 		expect(content.className).toContain("right-0");
-		expect(content.className).toContain("h-screen");
+		expect(content.className).toContain("h-dvh");
 		expect(content.className).toContain("border-l");
 	});
 
@@ -354,7 +357,7 @@ describe("DrawerContent", () => {
 		const content = screen.getByTestId("drawer-content");
 		expect(content.className).toContain("inset-y-0");
 		expect(content.className).toContain("left-0");
-		expect(content.className).toContain("h-screen");
+		expect(content.className).toContain("h-dvh");
 		expect(content.className).toContain("border-r");
 	});
 
@@ -400,7 +403,7 @@ describe("DrawerContent", () => {
 	it.each([
 		["sm", "h-[24rem]"],
 		["md", "h-[32rem]"],
-		["full", "h-screen"],
+		["full", "h-[calc(100dvh-6rem)]"],
 	] as const)(
 		"applies %s height size for bottom direction",
 		(size, expected) => {
@@ -417,7 +420,7 @@ describe("DrawerContent", () => {
 
 	it("applies md height class for bottom direction without size prop", () => {
 		render(
-			<Drawer>
+			<Drawer direction="bottom">
 				<DrawerContent>Content</DrawerContent>
 			</Drawer>,
 		);
@@ -436,14 +439,14 @@ describe("DrawerContent", () => {
 		expect(handle).toBeInTheDocument();
 	});
 
-	it("renders handle div when no direction specified", () => {
+	it("does not render handle div when no direction specified", () => {
 		const { container } = render(
 			<Drawer>
 				<DrawerContent>Content</DrawerContent>
 			</Drawer>,
 		);
 		const handle = container.querySelector(".rounded-full.bg-muted");
-		expect(handle).toBeInTheDocument();
+		expect(handle).not.toBeInTheDocument();
 	});
 
 	it("does not render handle div for right direction", () => {
@@ -504,32 +507,32 @@ describe("DrawerHeader", () => {
 	});
 
 	it("applies default classes", () => {
-		render(
+		const { container } = render(
 			<Drawer>
 				<DrawerContent>
-					<DrawerHeader>Header</DrawerHeader>
+				<DrawerHeader>Header</DrawerHeader>
 				</DrawerContent>
 			</Drawer>,
 		);
-		const header = screen.getByText("Header");
-		expect(header.className).toContain("grid");
-		expect(header.className).toContain("px-6");
-		expect(header.className).toContain("py-5");
-		expect(header.className).toContain("text-center");
-		expect(header.className).toContain("sm:text-left");
+		const header = container.querySelector('[data-slot="drawer-header"]');
+		expect(header?.className).toContain("grid");
+		expect(header?.className).toContain("px-6");
+		expect(header?.className).toContain("py-5");
+		expect(header?.className).toContain("border-b");
+		expect(screen.getByText("Header").className).toContain("text-left");
 	});
 
 	it("merges custom className", () => {
-		render(
+		const { container } = render(
 			<Drawer>
 				<DrawerContent>
 					<DrawerHeader className="custom-header">Header</DrawerHeader>
 				</DrawerContent>
 			</Drawer>,
 		);
-		const header = screen.getByText("Header");
-		expect(header.className).toContain("custom-header");
-		expect(header.className).toContain("grid");
+		const header = container.querySelector('[data-slot="drawer-header"]');
+		expect(header?.className).toContain("custom-header");
+		expect(header?.className).toContain("grid");
 	});
 });
 
