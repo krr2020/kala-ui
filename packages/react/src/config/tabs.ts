@@ -35,5 +35,5 @@ export const tabsTriggerStyles = {
 };
 
 export const tabsContentStyles = {
-	base: "mt-2 kala-focus-ring",
+	base: "mt-4 kala-focus-ring",
 };
