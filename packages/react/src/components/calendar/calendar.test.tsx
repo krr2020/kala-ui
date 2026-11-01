@@ -326,19 +326,14 @@ describe("Calendar", () => {
 	});
 
 	it("disables dates before a specific date", () => {
-		const today = new Date();
-		const yesterday = new Date(today);
-		yesterday.setDate(today.getDate() - 1);
-
 		render(
 			<Calendar
 				mode="single"
-				disabled={{ before: today }}
-				defaultMonth={today}
+				disabled={{ before: new Date(2024, 0, 15) }}
+				defaultMonth={new Date(2024, 0, 1)}
 			/>,
 		);
 
-		// Previous dates should be disabled
 		const dateButtons = screen
 			.getAllByRole("button")
 			.filter((btn) => btn.textContent && /^\d{1,2}$/.test(btn.textContent));

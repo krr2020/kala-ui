@@ -475,4 +475,35 @@ describe("Tabs", () => {
 		expect(trigger).toBeInTheDocument();
 		expect(trigger).toHaveClass("rounded-[var(--kala-radius-control)]");
 	});
+
+	it("should scroll the trigger into view when it becomes active", async () => {
+		const user = userEvent.setup();
+		const scrollIntoView = vi.fn();
+		const original = Element.prototype.scrollIntoView;
+		Element.prototype.scrollIntoView = scrollIntoView;
+
+		try {
+			render(
+				<Tabs defaultValue="tab1">
+					<TabsList>
+						<TabsTrigger value="tab1">Tab 1</TabsTrigger>
+						<TabsTrigger value="tab2">Tab 2</TabsTrigger>
+					</TabsList>
+					<TabsContent value="tab1">Content 1</TabsContent>
+					<TabsContent value="tab2">Content 2</TabsContent>
+				</Tabs>,
+			);
+
+			const mountCalls = scrollIntoView.mock.calls.length;
+			await user.click(screen.getByText("Tab 2"));
+			expect(scrollIntoView.mock.calls.length).toBeGreaterThan(mountCalls);
+			expect(scrollIntoView).toHaveBeenLastCalledWith({
+				behavior: "smooth",
+				block: "nearest",
+				inline: "nearest",
+			});
+		} finally {
+			Element.prototype.scrollIntoView = original;
+		}
+	});
 });

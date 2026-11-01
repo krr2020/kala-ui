@@ -116,22 +116,40 @@ function TabsTrigger({
 	style,
 	slotStyles: slotStylesRaw,
 	variant,
+	value,
 	children,
 	...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger> &
 	VariantProps<typeof tabsTriggerVariants> & { slotStyles?: SlotStyles }) {
 	const slotStyles = useSlotStyles("tabs", slotStylesRaw, variant ?? undefined);
 	const { variant: listVariant } = React.useContext(TabsListContext);
+	const tabs = React.useContext(TabsContext);
 	const finalVariant = variant || listVariant || "default";
 	const root = applySlot(
 		cn(tabsTriggerVariants({ variant: finalVariant }), className),
 		slotStyles?.root,
 	);
+	const innerRef = React.useRef<HTMLButtonElement | null>(null);
+	const isActive = tabs?.activeTab === value;
+
+	React.useEffect(() => {
+		if (!isActive) return;
+		innerRef.current?.scrollIntoView?.({
+			behavior: "smooth",
+			block: "nearest",
+			inline: "nearest",
+		});
+	}, [isActive]);
 
 	return (
 		<TabsPrimitive.Trigger
 			data-kala-component="tabs-trigger"
-			ref={ref}
+			ref={(node: HTMLButtonElement | null) => {
+				innerRef.current = node;
+				if (typeof ref === "function") ref(node);
+				else if (ref) ref.current = node;
+			}}
+			value={value}
 			data-slot="tabs-trigger"
 			data-variant={finalVariant}
 			className={root.className}
