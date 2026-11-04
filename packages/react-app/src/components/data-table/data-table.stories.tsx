@@ -539,10 +539,8 @@ export const FullFeatured: Story = {
 	},
 };
 
-/**
- * Mobile responsive table
- */
-export const MobileResponsive: Story = {
+// Mobile cards layout — column roles decide what collapses into the card
+export const MobileCards: Story = {
 	args: {
 		data: mockUsers.slice(0, 5),
 		columns: [
@@ -550,12 +548,52 @@ export const MobileResponsive: Story = {
 				id: "name",
 				header: "Name",
 				accessorKey: "name",
+				mobile: "title",
 			},
 			{
 				id: "email",
 				header: "Email",
 				accessorKey: "email",
-				hideOnMobile: true,
+				mobile: "hidden",
+			},
+			{
+				id: "role",
+				header: "Role",
+				accessorKey: "role",
+				mobile: "meta",
+			},
+			{
+				id: "status",
+				header: "Status",
+				accessorKey: "status",
+				mobile: "badge",
+			},
+		],
+		mobile: "cards",
+		searchable: true,
+	},
+	parameters: {
+		viewport: {
+			defaultViewport: "mobile1",
+		},
+	},
+};
+
+// Mobile stack layout — every visible column as a label-value row
+export const MobileStack: Story = {
+	args: {
+		data: mockUsers.slice(0, 5),
+		columns: [
+			{
+				id: "name",
+				header: "Name",
+				accessorKey: "name",
+				mobile: "title",
+			},
+			{
+				id: "email",
+				header: "Email",
+				accessorKey: "email",
 			},
 			{
 				id: "role",
@@ -566,9 +604,9 @@ export const MobileResponsive: Story = {
 				id: "status",
 				header: "Status",
 				accessorKey: "status",
-				hideOnMobile: true,
 			},
 		],
+		mobile: "stack",
 		searchable: true,
 	},
 	parameters: {

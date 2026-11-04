@@ -196,7 +196,6 @@ export function DataTableSkeleton<TData = unknown>({
 											className={cn(
 												column.align === "center" && "text-center",
 												column.align === "right" && "text-right",
-												column.hideOnMobile && "hidden md:table-cell",
 												stickyHeader
 													? "border-b border-border-strong/50"
 													: "border-b",
@@ -250,7 +249,6 @@ export function DataTableSkeleton<TData = unknown>({
 													className={cn(
 														column.align === "center" && "text-center",
 														column.align === "right" && "text-right",
-														column.hideOnMobile && "hidden md:table-cell",
 														!isLastRow && "border-b",
 													)}
 												>

@@ -51,9 +51,12 @@ import type {
 import { DataTableBodyRows } from "./data-table-body-rows";
 import { DataTableFilterChips } from "./data-table-filter-chips";
 import { DataTableHeaderRow } from "./data-table-header-row";
+import { DataTableMobileList } from "./data-table-mobile";
+import { DataTableMobileSkeleton } from "./data-table-mobile-skeleton";
 import { DataTableSkeleton } from "./data-table-skeleton";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { PaginationNav } from "./pagination-nav";
+import { useMobileLayout } from "./use-mobile-layout";
 import { useTableState } from "./use-table-state";
 
 /**
@@ -91,6 +94,8 @@ export function DataTable<TData>({
 	onSortChange,
 	onFilterChange,
 	toolbarContent,
+	mobile = "scroll",
+	mobileBreakpoint,
 }: DataTableProps<TData>) {
 	// Determine page size
 	const pageSize = useMemo(() => {
@@ -160,6 +165,8 @@ export function DataTable<TData>({
 
 	// Determine display data: use full data for server-side pagination, pageData for client-side
 	const displayData = paginationCallback ? data : pageData;
+
+	const mobileActive = useMobileLayout(mobile, mobileBreakpoint);
 
 	// Row selection state. When the caller controls selection via
 	// `selection.selectedIds`, mirror prop changes into state during render
@@ -326,6 +333,17 @@ export function DataTable<TData>({
 
 		const skeletonRows = skeletonConfig?.rows ?? loadingConfig?.rows ?? 5;
 
+		if (mobileActive) {
+			return (
+				<Stack data-kala-component="data-table" gap={4} className={className}>
+					<DataTableMobileSkeleton
+						rows={skeletonRows}
+						showSelection={!!selection?.enabled}
+					/>
+				</Stack>
+			);
+		}
+
 		return (
 			<Stack data-kala-component="data-table" gap={4} className={className}>
 				<DataTableSkeleton<TData>
@@ -423,168 +441,203 @@ export function DataTable<TData>({
 								stickyFooter ? "flex-1 min-h-0 max-h-[70vh]" : "max-h-[800px]",
 							)}
 						>
-							<table className="w-full border-separate border-spacing-0 caption-bottom text-sm">
-								{caption && <caption className="sr-only">{caption}</caption>}
-
-								<DataTableHeaderRow<TData>
-									columns={columns}
-									selection={selection}
-									sortConfig={sortConfig}
-									onToggleSort={toggleSort}
-									filterableColumns={filterableColumns}
-									filterConfigs={filterConfigs}
-									onSetFilter={setFilter}
-									onRemoveFilter={removeFilter}
-									isAllSelected={isAllSelected}
-									isSomeSelected={isSomeSelected}
-									onSelectAll={handleSelectAll}
-									stickyHeader={stickyHeader}
-								/>
-
-								{displayData.length === 0 ? (
-									<tbody>
-										<tr>
-											<td
-												colSpan={columns.length + (selection?.enabled ? 1 : 0)}
-												className="h-48 text-center"
+							{mobileActive ? (
+								displayData.length === 0 ? (
+									<Box className="p-8 flex flex-col items-center gap-3">
+										<Text size="sm" className="text-muted-foreground">
+											No results match the current filters.
+										</Text>
+										{clearFilters && (
+											<Button
+												variant="outline"
+												size="sm"
+												onClick={clearFilters}
 											>
-												<div className="flex flex-col items-center gap-3">
-													<Text size="sm" className="text-muted-foreground">
-														No results match the current filters.
-													</Text>
-													{clearFilters && (
-														<Button
-															variant="outline"
-															size="sm"
-															onClick={clearFilters}
-														>
-															Clear Filters
-														</Button>
-													)}
-												</div>
-											</td>
-										</tr>
-									</tbody>
+												Clear Filters
+											</Button>
+										)}
+									</Box>
 								) : (
-									<>
-										<DataTableBodyRows<TData>
-											displayData={displayData}
-											columns={columns}
-											selection={selection}
-											selectedIds={selectedIds}
-											onSelectRow={handleSelectRow}
-											onRowClick={onRowClick}
-											compact={compact}
-											striped={striped}
-											hoverable={hoverable}
-											getRowClassName={getRowClassName}
-											getRowAttributes={getRowAttributes}
-											hasPagination={!!paginationConfig}
-											hasFooter={!!footer}
-										/>
+									<DataTableMobileList
+										displayData={displayData}
+										columns={columns}
+										mode={mobile === "stack" ? "stack" : "cards"}
+										selection={selection}
+										selectedIds={selectedIds}
+										onSelectRow={handleSelectRow}
+										onRowClick={onRowClick}
+										getRowClassName={getRowClassName}
+										getRowAttributes={getRowAttributes}
+										ariaLabel={ariaLabel ?? caption}
+									/>
+								)
+							) : (
+								<table className="w-full border-separate border-spacing-0 caption-bottom text-sm">
+									{caption && <caption className="sr-only">{caption}</caption>}
 
-										{/* Duplicate headers at bottom for long tables */}
-										{headersBelow && displayData.length > 10 && (
-											<TableHeader
-												className={cn(
-													"bg-muted border-t",
-													stickyFooter &&
-														"sticky bottom-0 z-40 shadow-[0_-1px_0_0_var(--border)] backdrop-blur-sm bg-muted/95",
-												)}
-											>
-												<TableRow>
-													{selection?.enabled && (
-														<TableHead className="w-12">
-															<Checkbox
-																checked={
-																	isAllSelected
-																		? true
-																		: isSomeSelected
-																			? "indeterminate"
-																			: false
-																}
-																onCheckedChange={handleSelectAll}
-																aria-label="Select all rows (bottom)"
-															/>
-														</TableHead>
+									<DataTableHeaderRow<TData>
+										columns={columns}
+										selection={selection}
+										sortConfig={sortConfig}
+										onToggleSort={toggleSort}
+										filterableColumns={filterableColumns}
+										filterConfigs={filterConfigs}
+										onSetFilter={setFilter}
+										onRemoveFilter={removeFilter}
+										isAllSelected={isAllSelected}
+										isSomeSelected={isSomeSelected}
+										onSelectAll={handleSelectAll}
+										stickyHeader={stickyHeader}
+									/>
+
+									{displayData.length === 0 ? (
+										<tbody>
+											<tr>
+												<td
+													colSpan={
+														columns.length + (selection?.enabled ? 1 : 0)
+													}
+													className="h-48 text-center"
+												>
+													<div className="flex flex-col items-center gap-3">
+														<Text size="sm" className="text-muted-foreground">
+															No results match the current filters.
+														</Text>
+														{clearFilters && (
+															<Button
+																variant="outline"
+																size="sm"
+																onClick={clearFilters}
+															>
+																Clear Filters
+															</Button>
+														)}
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									) : (
+										<>
+											<DataTableBodyRows<TData>
+												displayData={displayData}
+												columns={columns}
+												selection={selection}
+												selectedIds={selectedIds}
+												onSelectRow={handleSelectRow}
+												onRowClick={onRowClick}
+												compact={compact}
+												striped={striped}
+												hoverable={hoverable}
+												getRowClassName={getRowClassName}
+												getRowAttributes={getRowAttributes}
+												hasPagination={!!paginationConfig}
+												hasFooter={!!footer}
+											/>
+
+											{/* Duplicate headers at bottom for long tables */}
+											{headersBelow && displayData.length > 10 && (
+												<TableHeader
+													className={cn(
+														"bg-muted border-t",
+														stickyFooter &&
+															"sticky bottom-0 z-40 shadow-[0_-1px_0_0_var(--border)] backdrop-blur-sm bg-muted/95",
 													)}
-													{columns.map((column) => (
-														<TableHead
-															key={column.id}
-															className={cn(
-																column.className,
-																column.align === "center" && "text-center",
-																column.align === "right" && "text-right",
-															)}
-														>
-															<Flex
-																align="center"
-																gap={2}
+												>
+													<TableRow>
+														{selection?.enabled && (
+															<TableHead className="w-12">
+																<Checkbox
+																	checked={
+																		isAllSelected
+																			? true
+																			: isSomeSelected
+																				? "indeterminate"
+																				: false
+																	}
+																	onCheckedChange={handleSelectAll}
+																	aria-label="Select all rows (bottom)"
+																/>
+															</TableHead>
+														)}
+														{columns.map((column) => (
+															<TableHead
+																key={column.id}
 																className={cn(
-																	column.align === "center" && "justify-center",
-																	column.align === "right" && "justify-end",
+																	column.className,
+																	column.align === "center" && "text-center",
+																	column.align === "right" && "text-right",
 																)}
 															>
-																{column.enableSorting !== false ? (
-																	<Button
-																		variant="ghost"
-																		size="sm"
-																		className="h-auto p-0 -ml-2 justify-start font-medium hover:bg-transparent"
-																		onClick={() =>
-																			toggleSort(
-																				column.accessorKey ||
-																					(column.id as keyof TData),
-																			)
-																		}
-																		aria-label={`Sort by ${column.header}`}
-																	>
-																		{column.header}
-																		{sortConfig?.key ===
-																			(column.accessorKey || column.id) &&
-																			(sortConfig.direction === "asc" ? (
-																				<ArrowUp
-																					className="ml-2 h-4 w-4 text-muted-foreground"
-																					aria-hidden="true"
-																				/>
-																			) : (
-																				<ArrowDown
-																					className="ml-2 h-4 w-4 text-muted-foreground"
-																					aria-hidden="true"
-																				/>
-																			))}
-																	</Button>
-																) : (
-																	<Text weight="medium">{column.header}</Text>
-																)}
-															</Flex>
-														</TableHead>
-													))}
-												</TableRow>
-											</TableHeader>
-										)}
+																<Flex
+																	align="center"
+																	gap={2}
+																	className={cn(
+																		column.align === "center" &&
+																			"justify-center",
+																		column.align === "right" && "justify-end",
+																	)}
+																>
+																	{column.enableSorting !== false ? (
+																		<Button
+																			variant="ghost"
+																			size="sm"
+																			className="h-auto p-0 -ml-2 justify-start font-medium hover:bg-transparent"
+																			onClick={() =>
+																				toggleSort(
+																					column.accessorKey ||
+																						(column.id as keyof TData),
+																				)
+																			}
+																			aria-label={`Sort by ${column.header}`}
+																		>
+																			{column.header}
+																			{sortConfig?.key ===
+																				(column.accessorKey || column.id) &&
+																				(sortConfig.direction === "asc" ? (
+																					<ArrowUp
+																						className="ml-2 h-4 w-4 text-muted-foreground"
+																						aria-hidden="true"
+																					/>
+																				) : (
+																					<ArrowDown
+																						className="ml-2 h-4 w-4 text-muted-foreground"
+																						aria-hidden="true"
+																					/>
+																				))}
+																		</Button>
+																	) : (
+																		<Text weight="medium">{column.header}</Text>
+																	)}
+																</Flex>
+															</TableHead>
+														))}
+													</TableRow>
+												</TableHeader>
+											)}
 
-										{footer && (
-											<TableFooter
-												className={cn(
-													"border-t",
-													!!paginationConfig && "border-b",
-												)}
-											>
-												<TableRow className="border-0">
-													<TableCell
-														colSpan={
-															columns.length + (selection?.enabled ? 1 : 0)
-														}
-														className="p-4"
-													>
-														{footer}
-													</TableCell>
-												</TableRow>
-											</TableFooter>
-										)}
-									</>
-								)}
-							</table>
+											{footer && (
+												<TableFooter
+													className={cn(
+														"border-t",
+														!!paginationConfig && "border-b",
+													)}
+												>
+													<TableRow className="border-0">
+														<TableCell
+															colSpan={
+																columns.length + (selection?.enabled ? 1 : 0)
+															}
+															className="p-4"
+														>
+															{footer}
+														</TableCell>
+													</TableRow>
+												</TableFooter>
+											)}
+										</>
+									)}
+								</table>
+							)}
 						</Box>
 
 						{showScrollButtons && (
@@ -610,6 +663,17 @@ export function DataTable<TData>({
 							</Flex>
 						)}
 					</Box>
+
+					{footer && mobileActive ? (
+						<Box
+							className={cn(
+								"border border-t-0 p-4",
+								!paginationConfig && "rounded-b-lg",
+							)}
+						>
+							{footer}
+						</Box>
+					) : null}
 
 					{/* Pagination */}
 					{paginationConfig && displayData.length > 0 && (

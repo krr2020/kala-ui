@@ -109,7 +109,6 @@ export function DataTableBodyRows<TData>({
 							const cellClassNames = cn(
 								column.align === "center" && "text-center",
 								column.align === "right" && "text-right",
-								column.hideOnMobile && "hidden md:table-cell",
 								compact && "py-2",
 								(!isLastRow || (hasPagination && !hasFooter)) && "border-b",
 							);

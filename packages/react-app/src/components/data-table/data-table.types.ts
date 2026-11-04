@@ -38,6 +38,10 @@ export interface FilterConfig<TData> {
 	value: unknown;
 }
 
+export type DataColumnMobileRole = "title" | "badge" | "meta" | "hidden";
+
+export type DataTableMobileMode = "scroll" | "stack" | "cards";
+
 /**
  * Filterable column configuration
  */
@@ -80,8 +84,8 @@ export interface ColumnDef<TData> {
 	width?: string;
 	/** Column alignment */
 	align?: "left" | "center" | "right";
-	/** Hide column on mobile */
-	hideOnMobile?: boolean;
+	/** Role this column plays in mobile cards/stack layouts (default: stacked label-value row) */
+	mobile?: DataColumnMobileRole;
 	/** ARIA label for column header */
 	ariaLabel?: string;
 }
@@ -276,6 +280,10 @@ export interface DataTableProps<TData> {
 	stickyFooter?: boolean;
 	/** Show duplicate column headers below data rows */
 	headersBelow?: boolean;
+	/** Mobile layout mode; "scroll" keeps the table with horizontal overflow (default) */
+	mobile?: DataTableMobileMode;
+	/** Viewport width in px below which mobile modes activate (default: 768) */
+	mobileBreakpoint?: number;
 }
 
 /**

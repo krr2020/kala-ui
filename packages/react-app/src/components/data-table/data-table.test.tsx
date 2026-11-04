@@ -3,11 +3,17 @@
  * Tests for sorting, filtering, search, pagination, selection, and accessibility
  */
 
+import { useMediaQuery } from "@kala-ui/react-hooks";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { DataTable } from "./data-table";
 import type { ColumnDef } from "./data-table.types";
+
+vi.mock("@kala-ui/react-hooks", async (importOriginal) => {
+	const actual = await importOriginal<Record<string, unknown>>();
+	return { ...actual, useMediaQuery: vi.fn(() => false) };
+});
 
 // Test data
 interface TestUser {
@@ -1381,7 +1387,7 @@ describe("DataTable", () => {
 						title: "No data",
 						icon: "alert-circle",
 					}}
-					/>,
+				/>,
 			);
 			expect(screen.getByText("No data")).toBeInTheDocument();
 		});
@@ -1395,7 +1401,7 @@ describe("DataTable", () => {
 						title: "No data",
 						slotStyles: { icon: "h-auto w-auto bg-transparent" },
 					}}
-					/>,
+				/>,
 			);
 			const emptyRoot = container.querySelector(
 				'[data-kala-component="empty-state"]',
@@ -1615,5 +1621,119 @@ describe("DataTable", () => {
 			// Should show skeleton but no search skeleton
 			expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
 		});
+	});
+});
+
+describe("DataTable mobile modes", () => {
+	const mobileColumns: ColumnDef<TestUser>[] = [
+		{ id: "name", header: "Name", accessorKey: "name", mobile: "title" },
+		{ id: "email", header: "Email", accessorKey: "email", mobile: "hidden" },
+		{ id: "role", header: "Role", accessorKey: "role", mobile: "meta" },
+		{ id: "status", header: "Status", accessorKey: "status", mobile: "badge" },
+	];
+
+	afterEach(() => {
+		vi.mocked(useMediaQuery).mockReturnValue(false);
+	});
+
+	it("keeps the table and renders no mobile list when mobile is unset", () => {
+		vi.mocked(useMediaQuery).mockReturnValue(true);
+		const { container } = render(
+			<DataTable data={mockUsers} columns={mockColumns} />,
+		);
+		expect(screen.getByRole("table")).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-kala-component="data-table-mobile"]'),
+		).toBeNull();
+	});
+
+	it("renders the cards list instead of the table below the breakpoint", () => {
+		vi.mocked(useMediaQuery).mockReturnValue(true);
+		const { container } = render(
+			<DataTable data={mockUsers} columns={mobileColumns} mobile="cards" />,
+		);
+		expect(screen.queryByRole("table")).not.toBeInTheDocument();
+		expect(
+			container.querySelector('[data-kala-component="data-table-mobile"]'),
+		).not.toBeNull();
+		expect(screen.getByText("Alice Johnson")).toBeInTheDocument();
+		expect(screen.queryByText("alice@example.com")).not.toBeInTheDocument();
+		expect(screen.getAllByText("admin").length).toBe(1);
+		expect(screen.getAllByText("active").length).toBe(3);
+	});
+
+	it("renders the stack list with label-value rows below the breakpoint", () => {
+		vi.mocked(useMediaQuery).mockReturnValue(true);
+		render(
+			<DataTable data={mockUsers} columns={mobileColumns} mobile="stack" />,
+		);
+		expect(screen.queryByRole("table")).not.toBeInTheDocument();
+		expect(screen.queryByText("Email")).not.toBeInTheDocument();
+		expect(screen.getAllByText("Role").length).toBe(mockUsers.length);
+		expect(screen.getAllByText("Status").length).toBe(mockUsers.length);
+	});
+
+	it("renders the table above the breakpoint even with a mobile mode set", () => {
+		vi.mocked(useMediaQuery).mockReturnValue(false);
+		render(
+			<DataTable data={mockUsers} columns={mobileColumns} mobile="cards" />,
+		);
+		expect(screen.getByRole("table")).toBeInTheDocument();
+	});
+
+	it("keeps pagination and row clicks working in cards mode", async () => {
+		vi.mocked(useMediaQuery).mockReturnValue(true);
+		const user = userEvent.setup();
+		const onRowClick = vi.fn();
+		const { container } = render(
+			<DataTable
+				data={mockUsers}
+				columns={mobileColumns}
+				mobile="cards"
+				pagination={{ page: 1, pageSize: 2, total: mockUsers.length }}
+				onRowClick={onRowClick}
+			/>,
+		);
+		const card = container.querySelector(
+			'[data-kala-component="data-table-mobile"] > div',
+		);
+		expect(card).not.toBeNull();
+		await user.click(card as HTMLElement);
+		expect(onRowClick).toHaveBeenCalledWith(mockUsers[0]);
+		expect(screen.getByText("1")).toBeInTheDocument();
+	});
+
+	it("shows the mobile skeleton while loading in cards mode", () => {
+		vi.mocked(useMediaQuery).mockReturnValue(true);
+		const { container } = render(
+			<DataTable
+				data={mockUsers}
+				columns={mobileColumns}
+				mobile="cards"
+				isLoading
+			/>,
+		);
+		expect(
+			container.querySelector(
+				'[data-kala-component="data-table-mobile-skeleton"]',
+			),
+		).not.toBeNull();
+		expect(screen.queryByRole("table")).not.toBeInTheDocument();
+	});
+
+	it("shows the filtered-empty message in cards mode", () => {
+		vi.mocked(useMediaQuery).mockReturnValue(true);
+		render(
+			<DataTable
+				data={[]}
+				columns={mobileColumns}
+				mobile="cards"
+				searchable
+				defaultFilters={[{ key: "name", operator: "contains", value: "zzz" }]}
+			/>,
+		);
+		expect(
+			screen.getByText("No results match the current filters."),
+		).toBeInTheDocument();
 	});
 });

@@ -6,6 +6,8 @@ export { DataTable, DataTableSkeleton } from "./data-table";
 export type {
 	BulkAction,
 	ColumnDef,
+	DataColumnMobileRole,
+	DataTableMobileMode,
 	DataTableProps,
 	DataTableSkeletonConfig,
 	EmptyStateConfig,
