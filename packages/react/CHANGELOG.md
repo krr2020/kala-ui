@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.0.0-beta.13
+
+### Patch Changes
+
+- data table to support mobile list view
+
+## 1.0.0-beta.12
+
+### Patch Changes
+
+- ce1117a: Fix responsive dialog sizing when consumer stylesheets emit overlapping utilities. Desktop dialogs stay centered and fit their content, with independent dialog widths for sm (24rem), md (32rem), lg (42rem), and xl (56rem), rather than page-container widths. Mobile dialogs and the explicit full size fill the viewport with square corners, even when consumer styles add a radius. Consumers no longer need sizing overrides.
+- 8711f3b: Tabs: scroll the newly active trigger into view (`scrollIntoView` with nearest alignment) so partially clipped tabs in a horizontally scrolling tab list become fully visible when activated by click or keyboard navigation.
+- CHnages for drawer
+
 ## 1.0.0-beta.11
 
 ### Major Changes

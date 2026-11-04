@@ -1,5 +1,42 @@
 # @kala-ui/react-app
 
+## 0.1.0-beta.14
+
+### Minor Changes
+
+- df449c1: feat(data-table): mobile layout modes with per-column roles.
+  
+  `DataTable` gains `mobile?: "scroll" | "stack" | "cards"` (default `"scroll"`, today's table + horizontal overflow) and `mobileBreakpoint` (default 768). Below the breakpoint, `cards` collapses marked columns into title/badge/meta lines and `stack` renders every visible column as a label-value row; selection, row click, toolbar, pagination, loading and empty states all keep working, and the layout is SSR-safe (desktop-first render).
+  
+  ```tsx
+  <DataTable
+    mobile="cards"
+    columns={[
+      { id: "name", header: "Name", accessorKey: "name", mobile: "title" },
+      { id: "status", header: "Status", accessorKey: "status", mobile: "badge" },
+      { id: "roll", header: "Roll No", accessorKey: "roll", mobile: "hidden" },
+    ]}
+  />
+  ```
+  
+  BREAKING: `ColumnDef.hideOnMobile` is removed. Migrate `hideOnMobile: true` to `mobile: "hidden"`. Unmarked columns stay visible on mobile as stacked label-value rows instead of disappearing.
+
+### Patch Changes
+
+- data table to support mobile list view
+- Updated dependencies
+  - @kala-ui/react@1.0.0-beta.13
+
+## 0.1.0-beta.13
+
+### Patch Changes
+
+- CHnages for drawer
+- Updated dependencies [ce1117a]
+- Updated dependencies [8711f3b]
+- Updated dependencies
+  - @kala-ui/react@1.0.0-beta.12
+
 ## 0.1.0-beta.12
 
 ### Patch Changes
