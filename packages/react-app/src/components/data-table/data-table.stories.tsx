@@ -608,12 +608,231 @@ export const MobileStack: Story = {
 		],
 		mobile: "stack",
 		searchable: true,
-	},
-	parameters: {
-		viewport: {
-			defaultViewport: "mobile1",
 		},
-	},
+		parameters: {
+				viewport: {
+						defaultViewport: "mobile1",
+				},
+		},
+};
+
+interface FeeRecord {
+		id: string;
+		student: string;
+		admissionNo: string;
+		status: string;
+		priority: string;
+		category: string;
+		classRoom: string;
+		dueAmount: string;
+		dueDate: string;
+		guardianEmail: string;
+		updatedBy: string;
+}
+
+const feeRecords: FeeRecord[] = [
+		{
+				id: "1",
+				student: "Ravi Kumar",
+				admissionNo: "ADM-0091",
+				status: "paid",
+				priority: "",
+				category: "Bus + Lab",
+				classRoom: "Grade 8 — Section B",
+				dueAmount: "₹12,400",
+				dueDate: "12 Nov 2026",
+				guardianEmail: "ravi.guardian@example.com",
+				updatedBy: "Priya (accounts)",
+		},
+		{
+				id: "2",
+				student: "Balakrishnan Venkatanarasimharajuvaripeta",
+				admissionNo: "ADM-2024-0091-XR7",
+				status: "pending guardian signature",
+				priority: "overdue",
+				category: "Annual fee — first instalment with sibling discount",
+				classRoom: "Grade 8 — Section B (Second Floor, New Block)",
+				dueAmount: "₹1,24,500.75",
+				dueDate: "30 Nov 2026",
+				guardianEmail:
+						"balakrishnan.venkatanarasimharajuvaripeta.guardian@example.com",
+				updatedBy: "Office · Sunita",
+		},
+		{
+				id: "3",
+				student: "Aarav Sharma",
+				admissionNo: "",
+				status: "",
+				priority: "",
+				category: "",
+				classRoom: "",
+				dueAmount: "",
+				dueDate: "",
+				guardianEmail: "",
+				updatedBy: "",
+		},
+		{
+				id: "4",
+				student: "Sneha Reddy",
+				admissionNo: "ADM-771",
+				status: "active",
+				priority: "escalated",
+				category: "Bus",
+				classRoom: "Grade 3 — Section A",
+				dueAmount: "₹8,000",
+				dueDate: "05 Dec 2026",
+				guardianEmail: "sneha.r.family@longdomain-name.example.co.in",
+				updatedBy: "Vikram",
+		},
+];
+
+const feeColumns: ColumnDef<FeeRecord>[] = [
+		{ id: "student", header: "Student", accessorKey: "student", mobile: "title" },
+		{ id: "status", header: "Status", accessorKey: "status", mobile: "badge" },
+		{
+				id: "priority",
+				header: "Priority",
+				accessorKey: "priority",
+				mobile: "badge",
+		},
+		{
+				id: "updatedBy",
+				header: "Last updated by",
+				accessorKey: "updatedBy",
+				mobile: "meta",
+		},
+		{
+				id: "category",
+				header: "Category",
+				accessorKey: "category",
+				mobile: "meta",
+		},
+		{
+				id: "classRoom",
+				header: "कक्षा और वर्ग",
+				accessorKey: "classRoom",
+		},
+		{
+				id: "dueAmount",
+				header: "ఫీజు గడువు మొత్తం",
+				accessorKey: "dueAmount",
+		},
+		{ id: "dueDate", header: "Due date", accessorKey: "dueDate" },
+		{
+				id: "guardianEmail",
+				header: "Guardian email",
+				accessorKey: "guardianEmail",
+		},
+		{
+				id: "admissionNo",
+				header: "Admission number",
+				accessorKey: "admissionNo",
+				mobile: "hidden",
+		},
+];
+
+const mobileViewportParams = {
+		viewport: {
+				defaultViewport: "mobile1",
+		},
+};
+
+// Length, badge-count and empty-value matrix — audited at 360px
+export const MobileCardsVariations: Story = {
+		args: {
+				data: feeRecords,
+				columns: feeColumns,
+				mobile: "cards",
+				selection: {
+						enabled: true,
+						selectedIds: new Set(),
+						getRowId: (row: FeeRecord) => row.id,
+						onSelectionChange: () => {},
+				},
+				onRowClick: () => {},
+		},
+		parameters: {
+				...mobileViewportParams,
+				docs: {
+						description: {
+								story:
+										"Stress matrix: short vs long titles, 0–2 badges including long badge text, empty values skipped in the header zone, localized stacked labels wrapping at 60%.",
+						},
+				},
+		},
+};
+
+// Same matrix in stack mode — every visible column becomes a label-value row
+export const MobileStackVariations: Story = {
+		args: {
+				data: feeRecords,
+				columns: feeColumns,
+				mobile: "stack",
+		},
+		parameters: {
+				...mobileViewportParams,
+				docs: {
+						description: {
+								story:
+								"Stack mode with long localized labels and long values (emails, IDs) — labels wrap instead of crushing the value column.",
+						},
+				},
+		},
+};
+
+// Custom cell renderers keep their markup inside the card header zone
+export const MobileCardsCustomCells: Story = {
+		args: {
+				data: feeRecords,
+				columns: [
+						{
+								id: "student",
+								header: "Student",
+								cell: (row) => (
+										<div className="flex items-center gap-2 min-w-0">
+												<div className="w-8 h-8 shrink-0 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold text-sm">
+														{row.student.charAt(0)}
+												</div>
+												<div className="min-w-0">
+														<div className="font-medium break-words">{row.student}</div>
+														<div className="text-xs text-muted-foreground break-words">
+																{row.updatedBy || "—"}
+														</div>
+												</div>
+										</div>
+								),
+								mobile: "title",
+						},
+						{
+								id: "status",
+								header: "Status",
+								cell: (row) =>
+										row.status ? (
+												<Badge variant={row.status === "paid" ? "success" : "secondary"}>
+														{row.status}
+												</Badge>
+										) : null,
+								mobile: "badge",
+						},
+						{
+								id: "dueAmount",
+								header: "Due",
+								accessorKey: "dueAmount",
+								mobile: "meta",
+						},
+						{ id: "classRoom", header: "Class", accessorKey: "classRoom" },
+				],
+				mobile: "cards",
+		},
+		parameters: {
+				...mobileViewportParams,
+				docs: {
+						description: {
+								story:
+								"Avatar title cells and null-returning badge cells compose with the inline badge row.",
+						},
+				},
+		},
 };
 
 /**

@@ -92,6 +92,98 @@ describe("DataTableMobileList cards mode", () => {
 		expect(screen.getByText("Alice Johnson")).toBeInTheDocument();
 	});
 
+	it("renders badges inline on the title row, not as a separate row", () => {
+		setupCards();
+		const headerRow = screen.getByText("Alice Johnson").closest("div");
+		expect(headerRow).not.toBeNull();
+		expect(within(headerRow as HTMLElement).getByText("active")).toBeInTheDocument();
+	});
+
+	it("omits empty badge and meta values while stacked rows keep the placeholder", () => {
+		const sparse: TestUser[] = [
+			{ id: "1", name: "Only Name", email: "", role: "", status: "" },
+		];
+		render(
+			<DataTableMobileList
+				displayData={sparse}
+				columns={[
+					{ id: "name", header: "Name", accessorKey: "name", mobile: "title" },
+					{ id: "status", header: "Status", accessorKey: "status", mobile: "badge" },
+					{ id: "role", header: "Role", accessorKey: "role", mobile: "meta" },
+					{ id: "email", header: "Email", accessorKey: "email" },
+				]}
+				mode="cards"
+				selectedIds={new Set()}
+				onSelectRow={vi.fn()}
+			/>,
+		);
+		expect(screen.getByText("Only Name")).toBeInTheDocument();
+		expect(screen.getAllByText("—")).toHaveLength(1);
+		expect(screen.queryByText(/·/)).not.toBeInTheDocument();
+	});
+
+	it("omits empty custom cell output from badge and meta slots", () => {
+		const sparse: TestUser[] = [
+			{ id: "1", name: "Only Name", email: "", role: "", status: "" },
+		];
+		render(
+			<DataTableMobileList
+				displayData={sparse}
+				columns={[
+					{ id: "name", header: "Name", accessorKey: "name", mobile: "title" },
+					{
+						id: "status",
+						header: "Status",
+						cell: () => null,
+						mobile: "badge",
+					},
+					{
+						id: "role",
+						header: "Role",
+						cell: () => "",
+						mobile: "meta",
+					},
+					{ id: "email", header: "Email", accessorKey: "email" },
+				]}
+				mode="cards"
+				selectedIds={new Set()}
+				onSelectRow={vi.fn()}
+			/>,
+		);
+		expect(screen.queryByText("active")).not.toBeInTheDocument();
+		expect(screen.queryByText(/·/)).not.toBeInTheDocument();
+		expect(screen.getAllByText("—")).toHaveLength(1);
+	});
+
+	it("does not trigger row click when Space toggles the inner checkbox", async () => {
+		const user = userEvent.setup();
+		const onSelectRow = vi.fn();
+		const onRowClick = vi.fn();
+		render(
+			<DataTableMobileList
+				displayData={users.slice(0, 1)}
+				columns={[
+					{ id: "name", header: "Name", accessorKey: "name", mobile: "title" },
+				]}
+				mode="cards"
+				selection={{
+					enabled: true,
+					selectedIds: new Set(),
+					getRowId: (row: TestUser) => row.id,
+					onSelectionChange: vi.fn(),
+				}}
+				selectedIds={new Set()}
+				onSelectRow={onSelectRow}
+				onRowClick={onRowClick}
+			/>,
+		);
+		const checkbox = screen.getByRole("checkbox", { name: "Select row 1" });
+		checkbox.focus();
+		await user.keyboard(" ");
+		expect(onRowClick).not.toHaveBeenCalled();
+		expect(onSelectRow).toHaveBeenCalledTimes(1);
+	});
+
 	it("renders custom cell renderers as-is", () => {
 		const columns: ColumnDef<TestUser>[] = [
 			{ id: "name", header: "Name", accessorKey: "name", mobile: "title" },

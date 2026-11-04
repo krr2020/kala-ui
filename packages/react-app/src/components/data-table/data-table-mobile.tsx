@@ -72,6 +72,50 @@ function resolveMobileColumns<TData>(
 	};
 }
 
+function isRenderedNode(node: ReactNode): boolean {
+	return node !== null && node !== undefined && node !== "" && node !== false;
+}
+
+function badgeNodes<TData>(
+	columns: ColumnDef<TData>[],
+	row: TData,
+): ReactNode[] {
+	const nodes: ReactNode[] = [];
+	for (const column of columns) {
+		if (column.cell) {
+			const output = column.cell(row);
+			if (isRenderedNode(output)) {
+				nodes.push(<Fragment key={column.id}>{output}</Fragment>);
+			}
+			continue;
+		}
+		const plain = plainText(column, row);
+		if (plain !== null) nodes.push(<Badge key={column.id}>{plain}</Badge>);
+	}
+	return nodes;
+}
+
+function metaNodes<TData>(
+	columns: ColumnDef<TData>[],
+	row: TData,
+): ReactNode[] {
+	const nodes: ReactNode[] = [];
+	for (const column of columns) {
+		if (column.cell) {
+			const output = column.cell(row);
+			if (isRenderedNode(output)) {
+				nodes.push(<Fragment key={column.id}>{output}</Fragment>);
+			}
+			continue;
+		}
+		const plain = plainText(column, row);
+		if (plain !== null) {
+			nodes.push(<Fragment key={column.id}>{plain}</Fragment>);
+		}
+	}
+	return nodes;
+}
+
 export function DataTableMobileList<TData>({
 	displayData,
 	columns,
@@ -93,6 +137,9 @@ export function DataTableMobileList<TData>({
 			!selection?.isRowSelectable || selection.isRowSelectable(row);
 		const isClickable = !!onRowClick;
 		const titleText = title ? plainText(title, row) : null;
+		const rowBadges = mode === "cards" ? badgeNodes(badges, row) : [];
+		const rowMetas = metaNodes(metas, row);
+		const hasHeaderRow = mode === "cards" && (!!title || rowBadges.length > 0);
 
 		return (
 			<Box
@@ -102,6 +149,7 @@ export function DataTableMobileList<TData>({
 				data-state={isSelected ? "selected" : undefined}
 				onClick={() => isClickable && onRowClick(row)}
 				onKeyDown={(event) => {
+					if (event.target !== event.currentTarget) return;
 					if (isClickable && (event.key === "Enter" || event.key === " ")) {
 						event.preventDefault();
 						onRowClick(row);
@@ -135,48 +183,50 @@ export function DataTableMobileList<TData>({
 						/>
 					) : null}
 					<Stack gap={1} className="min-w-0 flex-1">
-						{title ? (
+						{mode === "stack" && title ? (
 							<Text weight="medium" className="break-words leading-snug">
 								{cellContent(title, row)}
 							</Text>
 						) : null}
-						{badges.length > 0 ? (
-							<Flex gap={2} wrap="wrap">
-								{badges.map((column) => {
-									const plain = plainText(column, row);
-									return (
-										<Fragment key={column.id}>
-											{plain !== null ? (
-												<Badge>{plain}</Badge>
-											) : (
-												cellContent(column, row)
-											)}
-										</Fragment>
-									);
-								})}
+						{hasHeaderRow ? (
+							<Flex align="start" gap={2} wrap="wrap" className="min-w-0">
+								{title ? (
+									<Text
+										weight="medium"
+										className="min-w-0 flex-1 break-words leading-snug"
+									>
+										{cellContent(title, row)}
+									</Text>
+								) : null}
+								{rowBadges.length > 0 ? (
+									<Flex gap={2} wrap="wrap" className="min-w-0 shrink-0">
+										{rowBadges}
+									</Flex>
+								) : null}
 							</Flex>
 						) : null}
-						{metas.length > 0 ? (
+						{rowMetas.length > 0 ? (
 							<Text size="sm" className="text-muted-foreground break-words">
-								{metas.map((column, index) => (
-									<Fragment key={column.id}>
+								{rowMetas.map((node, index) => (
+									<Fragment key={index}>
 										{index > 0 ? " · " : null}
-										{cellContent(column, row)}
+										{node}
 									</Fragment>
 								))}
 							</Text>
 						) : null}
 						{stacked.map((column) => (
-							<Flex
-								key={column.id}
-								justify="between"
-								gap={4}
-								className="text-sm"
-							>
-								<Text size="sm" className="text-muted-foreground shrink-0">
+							<Flex key={column.id} justify="between" gap={4}>
+								<Text
+									size="sm"
+									className="text-muted-foreground min-w-0 max-w-[60%] break-words"
+								>
 									{column.header}
 								</Text>
-								<Text size="sm" className="text-right min-w-0 break-words">
+								<Text
+									size="sm"
+									className="min-w-0 flex-1 text-right break-words"
+								>
 									{cellContent(column, row)}
 								</Text>
 							</Flex>
