@@ -1097,7 +1097,7 @@ describe("Toast per-part slotStyles", () => {
 				"group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
 			icon: "group-[.toast]:!text-current",
 			closeButton:
-				"group-[.toast]:bg-popover group-[.toast]:border group-[.toast]:hover:bg-accent group-[.toast]:!left-auto group-[.toast]:!-right-4 group-[.toast]:!-top-1 group-data-[type=success]:!border-success group-data-[type=error]:!border-destructive group-data-[type=warning]:!border-warning group-data-[type=info]:!border-info",
+				"group-[.toast]:!h-6 group-[.toast]:!w-6 group-[.toast]:bg-popover group-[.toast]:border group-[.toast]:hover:bg-accent group-[.toast]:!left-auto group-[.toast]:!-right-4 group-[.toast]:!-top-1 group-data-[type=success]:!border-success group-data-[type=error]:!border-destructive group-data-[type=warning]:!border-warning group-data-[type=info]:!border-info",
 		});
 	});
 
@@ -1260,7 +1260,7 @@ const styleTableEntries = [
 		part: "dialog.close",
 		tsx: "../components/dialog/dialog.tsx",
 		config: "../config/dialog.ts",
-		base: "absolute top-4 right-4 rounded-[var(--kala-radius-sm)] opacity-70 transition-opacity hover:opacity-100 disabled:pointer-events-none p-1 hover:bg-accent",
+		base: "kala-touch absolute top-4 right-4 z-10 inline-flex size-11 items-center justify-center rounded-full bg-muted/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-accent disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
 	},
 	{
 		part: "dialog.header",
@@ -1612,7 +1612,7 @@ const styleTableEntries = [
 		part: "toast.closeButton",
 		tsx: "../components/toast/toast.tsx",
 		config: "../config/toast.ts",
-		base: "group-[.toast]:bg-popover group-[.toast]:border group-[.toast]:hover:bg-accent group-[.toast]:!left-auto group-[.toast]:!-right-4 group-[.toast]:!-top-1 group-data-[type=success]:!border-success group-data-[type=error]:!border-destructive group-data-[type=warning]:!border-warning group-data-[type=info]:!border-info",
+		base: "group-[.toast]:!h-6 group-[.toast]:!w-6 group-[.toast]:bg-popover group-[.toast]:border group-[.toast]:hover:bg-accent group-[.toast]:!left-auto group-[.toast]:!-right-4 group-[.toast]:!-top-1 group-data-[type=success]:!border-success group-data-[type=error]:!border-destructive group-data-[type=warning]:!border-warning group-data-[type=info]:!border-info",
 	},
 	{
 		part: "nativeSelect.root",

@@ -16,6 +16,10 @@ export interface DrawerContentProps
 	slotStyles?: SlotStyles;
 }
 
+export interface DrawerBodyProps extends React.ComponentProps<"div"> {
+	slotStyles?: SlotStyles;
+}
+
 export interface DrawerHeaderProps
 	extends Omit<React.ComponentProps<"div">, "align"> {
 	/** Text alignment for the title and description. Defaults to left with a close button, otherwise center. */

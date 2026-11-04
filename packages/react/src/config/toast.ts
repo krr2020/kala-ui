@@ -12,7 +12,7 @@ export const toastStyles = {
 	cancelButton: "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
 	icon: "group-[.toast]:!text-current",
 	closeButton:
-		"group-[.toast]:bg-popover group-[.toast]:border group-[.toast]:hover:bg-accent group-[.toast]:!left-auto group-[.toast]:!-right-4 group-[.toast]:!-top-1 group-data-[type=success]:!border-success group-data-[type=error]:!border-destructive group-data-[type=warning]:!border-warning group-data-[type=info]:!border-info",
+		"group-[.toast]:!h-6 group-[.toast]:!w-6 group-[.toast]:bg-popover group-[.toast]:border group-[.toast]:hover:bg-accent group-[.toast]:!left-auto group-[.toast]:!-right-4 group-[.toast]:!-top-1 group-data-[type=success]:!border-success group-data-[type=error]:!border-destructive group-data-[type=warning]:!border-warning group-data-[type=info]:!border-info",
 } as const;
 
 export type ToastPart = keyof typeof toastStyles;

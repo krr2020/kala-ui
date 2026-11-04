@@ -30,6 +30,7 @@ const meta: Meta<typeof Button> = {
 				"light",
 				"dark",
 				"link",
+				"text",
 				"ghost",
 				"outline",
 				"outline-primary",
@@ -105,6 +106,10 @@ export const Variants: Story = {
 			</Flex>
 		</Stack>
 	),
+};
+
+export const TextAction: Story = {
+	args: { variant: "text", size: "sm", children: "Create group" },
 };
 
 export const OutlineVariants: Story = {

@@ -1,13 +1,5 @@
 /**
- * Button styles.
- *
- * Two orthogonal axes:
- * - `variant` — fill style: solid | outline | ghost | subtle | link
- * - `color` — semantic color: primary | secondary | destructive | success |
- *   warning | info | muted
- *
- * Omitting `color` selects the variant's neutral treatment (solid → primary,
- * outline/ghost → border/surface tokens, subtle → muted, link → primary).
+ * Button variants and semantic color styles.
  */
 export const buttonStyles = {
 	base: "cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--kala-radius-control)] text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed kala-focus-ring kala-touch",
@@ -18,6 +10,7 @@ export const buttonStyles = {
 			ghost: "",
 			subtle: "",
 			link: "",
+			text: "",
 		},
 		color: {
 			primary: "",
@@ -64,6 +57,16 @@ export const buttonStyles = {
 			variant: "link",
 			className: "text-primary underline-offset-4 hover:underline",
 		},
+		{
+			variant: "text",
+			className: "h-auto min-h-11 whitespace-normal text-primary hover:bg-primary/10",
+		},
+		{ variant: "text", color: "secondary", className: "text-secondary hover:bg-secondary/10" },
+		{ variant: "text", color: "destructive", className: "text-destructive hover:bg-destructive/10" },
+		{ variant: "text", color: "success", className: "text-success hover:bg-success/10" },
+		{ variant: "text", color: "warning", className: "text-warning hover:bg-warning/10" },
+		{ variant: "text", color: "info", className: "text-info hover:bg-info/10" },
+		{ variant: "text", color: "muted", className: "text-muted-foreground hover:bg-muted" },
 		// ---- solid + color ----
 		{
 			variant: "solid",

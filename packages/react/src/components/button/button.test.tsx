@@ -49,6 +49,13 @@ describe("Button", () => {
 		expect(button).toHaveClass("hover:bg-accent");
 	});
 
+	it("renders a wrapping, touch-friendly text action with semantic color", () => {
+		render(<Button variant="text" color="destructive" size="sm">Delete group</Button>);
+		const button = screen.getByRole("button");
+		expect(button).toHaveClass("text-destructive", "whitespace-normal", "min-h-11", "h-auto");
+		expect(button).not.toHaveClass("whitespace-nowrap", "bg-primary");
+	});
+
 	it("applies small size styles", () => {
 		render(<Button size="sm">Small</Button>);
 		const button = screen.getByRole("button");

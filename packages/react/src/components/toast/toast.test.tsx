@@ -315,6 +315,8 @@ describe("Toast", () => {
 				const closeButton = screen.getByRole("button", { name: /close/i });
 				expect(closeButton).toHaveClass(
 					"group-data-[type=error]:!border-destructive",
+					"group-[.toast]:!h-6",
+					"group-[.toast]:!w-6",
 				);
 			});
 		});

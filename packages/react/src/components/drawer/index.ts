@@ -1,5 +1,6 @@
 export {
 	Drawer,
+	DrawerBody,
 	DrawerClose,
 	DrawerContent,
 	DrawerDescription,
@@ -11,6 +12,7 @@ export {
 	DrawerTrigger,
 } from "./drawer";
 export type {
+	DrawerBodyProps,
 	DrawerContentProps,
 	DrawerFooterProps,
 	DrawerHeaderAlign,

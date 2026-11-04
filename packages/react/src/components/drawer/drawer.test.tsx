@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import {
 	Drawer,
+	DrawerBody,
 	DrawerClose,
 	DrawerContent,
 	DrawerDescription,
@@ -329,6 +330,7 @@ describe("DrawerContent", () => {
 		);
 		const content = screen.getByTestId("drawer-content");
 		expect(content.className).toContain("fixed");
+		expect(content.className).toContain("overflow-hidden");
 		expect(content.className).toContain("inset-x-0");
 		expect(content.className).toContain("bottom-0");
 		expect(content.className).toContain("rounded-t-lg");
@@ -418,6 +420,30 @@ describe("DrawerContent", () => {
 		},
 	);
 
+	it("assigns scrolling to the body while keeping header and footer fixed", () => {
+		const { container } = render(
+			<Drawer direction="bottom">
+				<DrawerContent>
+					<DrawerHeader>Title</DrawerHeader>
+					<DrawerBody>
+						<div>Short content</div>
+						<div>Long content</div>
+					</DrawerBody>
+					<DrawerFooter>Actions</DrawerFooter>
+				</DrawerContent>
+			</Drawer>,
+		);
+		const content = screen.getByTestId("drawer-content");
+		const body = container.querySelector('[data-slot="drawer-body"]');
+		const header = container.querySelector('[data-slot="drawer-header"]');
+		const footer = container.querySelector('[data-slot="drawer-footer"]');
+		expect(content.className).toContain("overflow-hidden");
+		expect(body?.className).toContain("overflow-y-auto");
+		expect(body?.className).toContain("flex-1");
+		expect(header?.className).toContain("shrink-0");
+		expect(footer?.className).toContain("shrink-0");
+	});
+
 	it("applies md height class for bottom direction without size prop", () => {
 		render(
 			<Drawer direction="bottom">
@@ -494,6 +520,22 @@ describe("DrawerContent", () => {
 // DrawerHeader
 // ============================================================================
 
+describe("DrawerBody", () => {
+	it("renders its content in a scrollable region", () => {
+		const { container } = render(
+			<Drawer direction="bottom">
+				<DrawerContent>
+					<DrawerBody>Short content</DrawerBody>
+				</DrawerContent>
+			</Drawer>,
+		);
+		const body = container.querySelector('[data-slot="drawer-body"]');
+		expect(body).toHaveAttribute("data-slot", "drawer-body");
+		expect(body.className).toContain("overflow-y-auto");
+		expect(screen.getByText("Short content")).toBeInTheDocument();
+	});
+});
+
 describe("DrawerHeader", () => {
 	it("renders children", () => {
 		render(
@@ -510,16 +552,54 @@ describe("DrawerHeader", () => {
 		const { container } = render(
 			<Drawer>
 				<DrawerContent>
-				<DrawerHeader>Header</DrawerHeader>
+					<DrawerHeader>Header</DrawerHeader>
 				</DrawerContent>
 			</Drawer>,
 		);
 		const header = container.querySelector('[data-slot="drawer-header"]');
 		expect(header?.className).toContain("grid");
-		expect(header?.className).toContain("px-6");
-		expect(header?.className).toContain("py-5");
+		expect(header?.className).toContain("px-4");
+		expect(header?.className).toContain("py-3");
 		expect(header?.className).toContain("border-b");
 		expect(screen.getByText("Header").className).toContain("text-left");
+	});
+
+	it("keeps a title and subtitle compact with a readable gap", () => {
+		const { container } = render(
+			<Drawer>
+				<DrawerContent>
+					<DrawerHeader>
+						<DrawerTitle>Language</DrawerTitle>
+						<DrawerDescription>
+							Choose your preferred language
+						</DrawerDescription>
+					</DrawerHeader>
+				</DrawerContent>
+			</Drawer>,
+		);
+		const header = container.querySelector('[data-slot="drawer-header"]');
+		const title = screen.getByTestId("drawer-title");
+		const description = screen.getByTestId("drawer-description");
+		expect(header?.className).toContain("px-4");
+		expect(header?.className).toContain("py-3");
+		expect(title).toHaveTextContent("Language");
+		expect(description).toHaveTextContent("Choose your preferred language");
+		expect(title.parentElement?.className).toContain("gap-1");
+	});
+	it("styles the close button as a touch-sized, theme-aware control", () => {
+		render(
+			<Drawer>
+				<DrawerContent>
+					<DrawerHeader>Header</DrawerHeader>
+				</DrawerContent>
+			</Drawer>,
+		);
+		const closeButton = screen.getByRole("button", { name: "Close" });
+		expect(closeButton.className).toContain("kala-touch");
+		expect(closeButton.className).toContain("rounded-full");
+		expect(closeButton.className).toContain("bg-muted/60");
+		expect(closeButton.className).toContain("hover:bg-muted");
+		expect(closeButton.className).toContain("focus-visible:ring-2");
 	});
 
 	it("merges custom className", () => {

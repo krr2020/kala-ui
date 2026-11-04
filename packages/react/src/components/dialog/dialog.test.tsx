@@ -174,6 +174,18 @@ describe("Dialog", () => {
 		);
 		const content = document.body.querySelector('[data-slot="dialog-content"]');
 		expect(content).toHaveClass("overflow-hidden");
+		expect(content).toHaveClass("fixed");
+		expect(content).not.toHaveClass("relative");
+		for (const cls of [
+			"sm:fixed!",
+			"sm:top-[50%]!",
+			"sm:left-[50%]!",
+			"sm:translate-x-[-50%]!",
+			"sm:translate-y-[-50%]!",
+			"max-sm:inset-0",
+		]) {
+			expect(content).toHaveClass(cls);
+		}
 		const header = document.body.querySelector('[data-slot="dialog-header"]');
 		expect(header).toHaveClass("shrink-0");
 		const footer = document.body.querySelector('[data-slot="dialog-footer"]');
@@ -214,6 +226,38 @@ describe("Dialog", () => {
 		expect(form).toHaveClass("flex-1");
 		expect(form).toHaveClass("min-h-0");
 		expect(form?.firstElementChild).toHaveClass("overflow-y-auto");
+	});
+
+	it("should center the close icon in a subtle touch-sized control", () => {
+		render(
+			<Dialog open>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Close styling</DialogTitle>
+					</DialogHeader>
+				</DialogContent>
+			</Dialog>,
+		);
+		const closeButton = screen.getByRole("button", { name: "Close" });
+		const header = document.body.querySelector('[data-slot="dialog-header"]');
+		expect(header?.parentElement).toContainElement(closeButton);
+		expect(header?.parentElement).toBe(
+			document.body.querySelector('[data-slot="dialog-content"]'),
+		);
+		for (const cls of [
+			"kala-touch",
+			"inline-flex",
+			"size-11",
+			"items-center",
+			"justify-center",
+			"rounded-full",
+			"bg-muted/60",
+			"hover:bg-muted",
+			"active:bg-accent",
+			"focus-visible:ring-2",
+		]) {
+			expect(closeButton).toHaveClass(cls);
+		}
 	});
 
 	it("should use closeLabel for the close button's accessible name", () => {

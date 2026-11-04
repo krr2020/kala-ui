@@ -10,6 +10,7 @@ import { cn } from "../../lib/utils";
 import { Button } from "../button";
 import { useSlotStyles } from "../kala-provider";
 import type {
+	DrawerBodyProps,
 	DrawerContentProps,
 	DrawerFooterProps,
 	DrawerHeaderAlign,
@@ -129,9 +130,28 @@ function DrawerContent({
 						style={applySlot(drawerStyles.handle, slotStyles?.handle).style}
 					/>
 				)}
-				{children}
+				<DrawerBody>{children}</DrawerBody>
 			</DrawerPrimitive.Content>
 		</DrawerPortal>
+	);
+}
+
+function DrawerBody({
+	className,
+	style,
+	slotStyles: slotStylesRaw,
+	...props
+}: DrawerBodyProps) {
+	const slotStyles = useSlotStyles("drawer", slotStylesRaw);
+	const root = applySlot(cn(drawerStyles.body, className), slotStyles?.body);
+	return (
+		<div
+			data-kala-component="drawer-body"
+			data-slot="drawer-body"
+			className={root.className}
+			style={mergeStyle(style, root.style)}
+			{...props}
+		/>
 	);
 }
 
@@ -270,6 +290,7 @@ function DrawerDescription({
 
 export {
 	Drawer,
+	DrawerBody,
 	DrawerClose,
 	DrawerContent,
 	DrawerDescription,
