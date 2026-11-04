@@ -40,9 +40,8 @@ import {
 	TableRow,
 } from "@kala-ui/react/table";
 import { Text } from "@kala-ui/react/text";
-import { useDisclosure } from "@kala-ui/react-hooks";
 import { ArrowDown, ArrowUp } from "lucide-react";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type {
 	DataTableProps,
 	PaginationConfig,
@@ -188,16 +187,31 @@ export function DataTable<TData>({
 
 	// Scroll container ref for scroll-to-top/bottom buttons
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
-	const [showScrollButtons, { set: setShowScrollButtons }] =
-		useDisclosure(false);
+	const [scrollEdges, setScrollEdges] = useState({
+		canScroll: false,
+		atTop: true,
+		atBottom: false,
+	});
 
-	const handleScroll = useCallback(() => {
-		if (scrollContainerRef.current) {
-			const { scrollTop, scrollHeight, clientHeight } =
-				scrollContainerRef.current;
-			setShowScrollButtons(scrollHeight > clientHeight && scrollTop > 100);
-		}
-	}, [setShowScrollButtons]);
+	const measureScroll = useCallback(() => {
+		const container = scrollContainerRef.current;
+		if (!container) return;
+		const { scrollTop, scrollHeight, clientHeight } = container;
+		const canScroll = scrollHeight - clientHeight > 1;
+		const atTop = scrollTop <= 1;
+		const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+		setScrollEdges((prev) =>
+			prev.canScroll === canScroll &&
+			prev.atTop === atTop &&
+			prev.atBottom === atBottom
+				? prev
+				: { canScroll, atTop, atBottom },
+		);
+	}, []);
+
+	useEffect(() => {
+		measureScroll();
+	}, [measureScroll, displayData, isLoading, mobileActive]);
 
 	const scrollToTop = useCallback(() => {
 		scrollContainerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
@@ -432,7 +446,7 @@ export function DataTable<TData>({
 					>
 						<Box
 							ref={scrollContainerRef}
-							onScroll={handleScroll}
+						onScroll={measureScroll}
 							className={cn(
 								"overflow-auto relative",
 								paginationConfig && displayData.length > 0
@@ -640,26 +654,31 @@ export function DataTable<TData>({
 							)}
 						</Box>
 
-						{showScrollButtons && (
+						{scrollEdges.canScroll &&
+						(!scrollEdges.atTop || !scrollEdges.atBottom) && (
 							<Flex gap={2} className="absolute bottom-4 right-4 z-10">
-								<Button
-									color="secondary"
-									size="icon"
-									onClick={scrollToTop}
-									className="rounded-full shadow-lg h-9 w-9 bg-background/80 backdrop-blur-sm border-border-strong/20"
-									aria-label="Scroll to top"
-								>
-									<ArrowUp className="h-4 w-4" />
-								</Button>
-								<Button
-									color="secondary"
-									size="icon"
-									onClick={scrollToBottom}
-									className="rounded-full shadow-lg h-9 w-9 bg-background/80 backdrop-blur-sm border-border-strong/20"
-									aria-label="Scroll to bottom"
-								>
-									<ArrowDown className="h-4 w-4" />
-								</Button>
+								{!scrollEdges.atTop ? (
+									<Button
+										variant="ghost"
+										size="icon"
+										onClick={scrollToTop}
+										className="rounded-full shadow-lg h-9 w-9 text-foreground bg-background/80 backdrop-blur-sm border border-border-strong/20"
+										aria-label="Scroll to top"
+									>
+										<ArrowUp className="h-4 w-4" />
+									</Button>
+								) : null}
+								{!scrollEdges.atBottom ? (
+									<Button
+										variant="ghost"
+										size="icon"
+										onClick={scrollToBottom}
+										className="rounded-full shadow-lg h-9 w-9 text-foreground bg-background/80 backdrop-blur-sm border border-border-strong/20"
+										aria-label="Scroll to bottom"
+									>
+										<ArrowDown className="h-4 w-4" />
+									</Button>
+								) : null}
 							</Flex>
 						)}
 					</Box>

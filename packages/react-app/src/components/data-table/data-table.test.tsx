@@ -4,7 +4,7 @@
  */
 
 import { useMediaQuery } from "@kala-ui/react-hooks";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { DataTable } from "./data-table";
@@ -1735,5 +1735,137 @@ describe("DataTable mobile modes", () => {
 		expect(
 			screen.getByText("No results match the current filters."),
 		).toBeInTheDocument();
+	});
+});
+
+function setScrollMetrics(
+	element: HTMLElement,
+	metrics: { scrollTop: number; scrollHeight: number; clientHeight: number },
+) {
+	for (const [key, value] of Object.entries(metrics)) {
+		Object.defineProperty(element, key, {
+			configurable: true,
+			get: () => value,
+		});
+	}
+}
+
+function getScrollContainer(container: HTMLElement) {
+	return container.querySelector(
+		'[data-kala-component="data-table"] .overflow-auto',
+	) as HTMLElement;
+}
+
+describe("DataTable scroll arrows", () => {
+	const renderTable = () =>
+		render(<DataTable data={largeMockUsers} columns={mockColumns} />);
+
+	it("shows only the down arrow at the top of an overflowing table", () => {
+		const { container } = renderTable();
+		setScrollMetrics(getScrollContainer(container), {
+			scrollTop: 0,
+			scrollHeight: 1000,
+			clientHeight: 500,
+		});
+		fireEvent.scroll(getScrollContainer(container));
+		expect(
+			screen.queryByRole("button", { name: "Scroll to bottom" }),
+		).toBeInTheDocument();
+		expect(
+			screen.queryByRole("button", { name: "Scroll to top" }),
+		).not.toBeInTheDocument();
+	});
+
+	it("shows both arrows mid-scroll and only the up arrow at the bottom", () => {
+		const { container } = renderTable();
+		const scrollContainer = getScrollContainer(container);
+		setScrollMetrics(scrollContainer, {
+			scrollTop: 300,
+			scrollHeight: 1000,
+			clientHeight: 500,
+		});
+		fireEvent.scroll(scrollContainer);
+		expect(
+			screen.getByRole("button", { name: "Scroll to top" }),
+		).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: "Scroll to bottom" }),
+		).toBeInTheDocument();
+
+		setScrollMetrics(scrollContainer, {
+			scrollTop: 500,
+			scrollHeight: 1000,
+			clientHeight: 500,
+		});
+		fireEvent.scroll(scrollContainer);
+		expect(
+			screen.getByRole("button", { name: "Scroll to top" }),
+		).toBeInTheDocument();
+		expect(
+			screen.queryByRole("button", { name: "Scroll to bottom" }),
+		).not.toBeInTheDocument();
+	});
+
+	it("renders no arrows when the content fits", () => {
+		const { container } = renderTable();
+		setScrollMetrics(getScrollContainer(container), {
+			scrollTop: 0,
+			scrollHeight: 500,
+			clientHeight: 500,
+		});
+		fireEvent.scroll(getScrollContainer(container));
+		expect(
+			screen.queryByRole("button", { name: "Scroll to top" }),
+		).not.toBeInTheDocument();
+		expect(
+			screen.queryByRole("button", { name: "Scroll to bottom" }),
+		).not.toBeInTheDocument();
+	});
+
+	it("re-measures on data change without a scroll event", () => {
+		const { rerender } = render(
+			<DataTable data={mockUsers} columns={mockColumns} />,
+		);
+		expect(
+			screen.queryByRole("button", { name: "Scroll to bottom" }),
+		).not.toBeInTheDocument();
+		rerender(
+			<DataTable
+				data={[...mockUsers, ...largeMockUsers]}
+				columns={mockColumns}
+			/>,
+		);
+		const scrollContainer = document.querySelector(
+			'[data-kala-component="data-table"] .overflow-auto',
+		) as HTMLElement;
+		setScrollMetrics(scrollContainer, {
+			scrollTop: 0,
+			scrollHeight: 2000,
+			clientHeight: 500,
+		});
+		rerender(
+			<DataTable
+				data={[...largeMockUsers, ...mockUsers]}
+				columns={mockColumns}
+			/>,
+		);
+		expect(
+			screen.getByRole("button", { name: "Scroll to bottom" }),
+		).toBeInTheDocument();
+	});
+
+	it("uses a contrasting ghost chip for the arrow icons", () => {
+		const { container } = renderTable();
+		setScrollMetrics(getScrollContainer(container), {
+			scrollTop: 300,
+			scrollHeight: 1000,
+			clientHeight: 500,
+		});
+		fireEvent.scroll(getScrollContainer(container));
+		for (const name of ["Scroll to top", "Scroll to bottom"]) {
+			const button = screen.getByRole("button", { name });
+			expect(button.className).toContain("text-foreground");
+			expect(button.className).not.toContain("text-secondary-foreground");
+		}
 	});
 });
