@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEvent, { PointerEventsCheckLevel } from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import {
 	Select,
@@ -620,5 +620,49 @@ describe("Select", () => {
 		const svg = trigger.querySelector("svg");
 		expect(svg).toBeInTheDocument();
 		expect(svg).toHaveClass("opacity-50");
+	});
+
+	it("should close and stay closed when the trigger is clicked while open", async () => {
+		const user = userEvent.setup({
+			pointerEventsCheck: PointerEventsCheckLevel.None,
+		});
+		render(
+			<Select>
+				<SelectTrigger>
+					<SelectValue placeholder="Select" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="a">A</SelectItem>
+				</SelectContent>
+			</Select>,
+		);
+		const trigger = screen.getByRole("combobox");
+		await user.click(trigger);
+		expect(await screen.findByRole("listbox")).toBeInTheDocument();
+		await user.click(trigger);
+		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+	});
+
+	it("should close and stay closed for touch pointers that open on click", async () => {
+		const user = userEvent.setup({
+			pointerEventsCheck: PointerEventsCheckLevel.None,
+		});
+		const { fireEvent } = await import("@testing-library/react");
+		render(
+			<Select>
+				<SelectTrigger>
+					<SelectValue placeholder="Select" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="a">A</SelectItem>
+				</SelectContent>
+			</Select>,
+		);
+		const trigger = screen.getByRole("combobox");
+		await user.click(trigger);
+		expect(await screen.findByRole("listbox")).toBeInTheDocument();
+		fireEvent.pointerDown(trigger, { button: 0, pointerType: "touch" });
+		fireEvent.click(trigger);
+		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
 	});
 });

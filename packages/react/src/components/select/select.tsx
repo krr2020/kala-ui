@@ -2,6 +2,7 @@
 
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import { useRef } from "react";
 import type * as React from "react";
 import {
 	selectChevronStyles,
@@ -70,6 +71,7 @@ function SelectTrigger({
 	...props
 }: SelectTriggerProps) {
 	const slotStyles = useSlotStyles("select", slotStylesRaw);
+	const wasOpenAtPointerDown = useRef(false);
 	const root = applySlot(
 		cn(selectTriggerClasses({ size }), className),
 		slotStyles?.root ?? null,
@@ -94,6 +96,27 @@ function SelectTrigger({
 			className={root.className}
 			style={mergeStyle(style, root.style)}
 			{...props}
+			onPointerDown={(event) => {
+				props.onPointerDown?.(event);
+				wasOpenAtPointerDown.current = false;
+				// Radix re-opens on the same pointerdown that dismisses the content — swallow it so clicking an open trigger just closes
+				if (
+					event.button === 0 &&
+					!event.ctrlKey &&
+					event.currentTarget.dataset.state === "open"
+				) {
+					wasOpenAtPointerDown.current = true;
+					event.preventDefault();
+				}
+			}}
+			onClick={(event) => {
+				props.onClick?.(event);
+				// Touch pointers open on click — suppress the click that follows a close gesture
+				if (wasOpenAtPointerDown.current) {
+					wasOpenAtPointerDown.current = false;
+					event.preventDefault();
+				}
+			}}
 		>
 			{children}
 			<SelectPrimitive.Icon asChild>
