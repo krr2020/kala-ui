@@ -665,4 +665,49 @@ describe("Select", () => {
 		fireEvent.click(trigger);
 		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
 	});
+
+	it("should stay closed when a label forwards a synthetic click after an outside press dismisses the content", async () => {
+		const { fireEvent } = await import("@testing-library/react");
+		render(
+			<Select>
+				<SelectTrigger>
+					<SelectValue placeholder="Select" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="a">A</SelectItem>
+				</SelectContent>
+			</Select>,
+		);
+		const trigger = screen.getByRole("combobox");
+		fireEvent.pointerDown(trigger, { button: 0, pointerType: "touch" });
+		fireEvent.click(trigger);
+		expect(await screen.findByRole("listbox")).toBeInTheDocument();
+		fireEvent.pointerDown(document.body, { button: 0, pointerType: "touch" });
+		fireEvent.click(trigger, { detail: 0 });
+		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+	});
+
+	it("should reopen from a forwarded click after closing through item selection", async () => {
+		const { fireEvent, waitFor } = await import("@testing-library/react");
+		render(
+			<Select>
+				<SelectTrigger>
+					<SelectValue placeholder="Select" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="a">A</SelectItem>
+				</SelectContent>
+			</Select>,
+		);
+		const trigger = screen.getByRole("combobox");
+		fireEvent.pointerDown(trigger, { button: 0, pointerType: "touch" });
+		fireEvent.click(trigger);
+		expect(await screen.findByRole("listbox")).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("option"));
+		expect(await waitFor(() =>
+			expect(screen.queryByRole("listbox")).not.toBeInTheDocument(),
+		));
+		fireEvent.click(trigger, { detail: 0 });
+		expect(await screen.findByRole("listbox")).toBeInTheDocument();
+	});
 });

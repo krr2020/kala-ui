@@ -2,7 +2,7 @@
 
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import type * as React from "react";
 import {
 	selectChevronStyles,
@@ -72,6 +72,35 @@ function SelectTrigger({
 }: SelectTriggerProps) {
 	const slotStyles = useSlotStyles("select", slotStylesRaw);
 	const wasOpenAtPointerDown = useRef(false);
+	const suppressForwardedOpen = useRef(false);
+	const triggerRef = useRef<HTMLButtonElement | null>(null);
+
+	useEffect(() => {
+		const armOnOutsidePress = (event: PointerEvent) => {
+			const el = triggerRef.current;
+			const target = event.target;
+			if (
+				el?.dataset.state === "open" &&
+				target instanceof Element &&
+				!el.contains(target) &&
+				!target.closest('[data-slot="select-content"]')
+			) {
+				suppressForwardedOpen.current = true;
+			}
+		};
+		document.addEventListener("pointerdown", armOnOutsidePress, true);
+		return () =>
+			document.removeEventListener("pointerdown", armOnOutsidePress, true);
+	}, []);
+
+	const setTriggerRef = (node: HTMLButtonElement | null) => {
+		triggerRef.current = node;
+		if (typeof ref === "function") {
+			ref(node);
+		} else if (ref) {
+			ref.current = node;
+		}
+	};
 	const root = applySlot(
 		cn(selectTriggerClasses({ size }), className),
 		slotStyles?.root ?? null,
@@ -90,7 +119,7 @@ function SelectTrigger({
 	return (
 		<SelectPrimitive.Trigger
 			data-kala-component="select-trigger"
-			ref={ref}
+			ref={setTriggerRef}
 			data-slot="select-trigger"
 			data-size={size}
 			className={root.className}
@@ -99,6 +128,7 @@ function SelectTrigger({
 			onPointerDown={(event) => {
 				props.onPointerDown?.(event);
 				wasOpenAtPointerDown.current = false;
+				suppressForwardedOpen.current = false;
 				// Radix re-opens on the same pointerdown that dismisses the content — swallow it so clicking an open trigger just closes
 				if (
 					event.button === 0 &&
@@ -111,11 +141,16 @@ function SelectTrigger({
 			}}
 			onClick={(event) => {
 				props.onClick?.(event);
-				// Touch pointers open on click — suppress the click that follows a close gesture
-				if (wasOpenAtPointerDown.current) {
+				// Label taps forward a synthetic click (detail 0) after the press already dismissed the content — swallow it too
+				const forwardedFromLabel =
+					suppressForwardedOpen.current && event.detail === 0;
+				if (wasOpenAtPointerDown.current || forwardedFromLabel) {
 					wasOpenAtPointerDown.current = false;
+					suppressForwardedOpen.current = false;
 					event.preventDefault();
+					return;
 				}
+				suppressForwardedOpen.current = false;
 			}}
 		>
 			{children}
