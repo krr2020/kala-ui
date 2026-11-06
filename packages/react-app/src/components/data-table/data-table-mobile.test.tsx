@@ -63,6 +63,17 @@ describe("DataTableMobileList cards mode", () => {
 		).toBeGreaterThan(0);
 	});
 
+	it("separates meta items with flex gap and never renders a dot separator", () => {
+		setupCards();
+		const metaRow = screen
+			.getAllByText("admin")[0]
+			.closest('[data-kala-component="flex"]');
+		expect(metaRow).not.toBeNull();
+		expect(metaRow?.className).toContain("gap-3");
+		expect(metaRow?.className).toContain("flex-wrap");
+		expect(screen.queryByText(/·/)).not.toBeInTheDocument();
+	});
+
 	it("falls back to the first visible column as title when none is marked", () => {
 		const columns: ColumnDef<TestUser>[] = [
 			{ id: "name", header: "Name", accessorKey: "name" },
@@ -96,7 +107,12 @@ describe("DataTableMobileList cards mode", () => {
 		setupCards();
 		const headerRow = screen.getByText("Alice Johnson").closest("div");
 		expect(headerRow).not.toBeNull();
-		expect(within(headerRow as HTMLElement).getByText("active")).toBeInTheDocument();
+		expect(
+			within(headerRow as HTMLElement).getByText("active"),
+		).toBeInTheDocument();
+		const title = screen.getByText("Alice Johnson");
+		expect(title.className).toContain("min-w-[60%]");
+		expect(title.className).not.toContain("min-w-0");
 	});
 
 	it("omits empty badge and meta values while stacked rows keep the placeholder", () => {
@@ -108,7 +124,12 @@ describe("DataTableMobileList cards mode", () => {
 				displayData={sparse}
 				columns={[
 					{ id: "name", header: "Name", accessorKey: "name", mobile: "title" },
-					{ id: "status", header: "Status", accessorKey: "status", mobile: "badge" },
+					{
+						id: "status",
+						header: "Status",
+						accessorKey: "status",
+						mobile: "badge",
+					},
 					{ id: "role", header: "Role", accessorKey: "role", mobile: "meta" },
 					{ id: "email", header: "Email", accessorKey: "email" },
 				]}

@@ -193,7 +193,7 @@ export function DataTableMobileList<TData>({
 								{title ? (
 									<Text
 										weight="medium"
-										className="min-w-0 flex-1 break-words leading-snug"
+										className="min-w-[60%] flex-1 break-words leading-snug"
 									>
 										{cellContent(title, row)}
 									</Text>
@@ -206,14 +206,16 @@ export function DataTableMobileList<TData>({
 							</Flex>
 						) : null}
 						{rowMetas.length > 0 ? (
-							<Text size="sm" className="text-muted-foreground break-words">
+							<Flex
+								gap={3}
+								wrap="wrap"
+								align="baseline"
+								className="text-sm text-muted-foreground"
+							>
 								{rowMetas.map((node, index) => (
-									<Fragment key={index}>
-										{index > 0 ? " · " : null}
-										{node}
-									</Fragment>
+									<Fragment key={index}>{node}</Fragment>
 								))}
-							</Text>
+							</Flex>
 						) : null}
 						{stacked.map((column) => (
 							<Flex key={column.id} justify="between" gap={4}>
