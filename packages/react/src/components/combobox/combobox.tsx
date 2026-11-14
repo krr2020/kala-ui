@@ -93,7 +93,9 @@ function Combobox({
 						disabled={disabled}
 						className={cn(
 							"w-full justify-between font-normal overflow-hidden",
-							size === "sm" ? "h-8 px-3 text-xs" : "h-10 px-4",
+							size === "sm"
+								? "h-[var(--kala-control-h-sm)] px-3 py-1 text-xs"
+								: "h-[var(--kala-control-h)] px-3 py-2 text-sm",
 							!internalValue && "text-muted-foreground",
 							clearable && internalValue && "pr-16",
 							className,

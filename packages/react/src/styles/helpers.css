@@ -31,7 +31,7 @@
 
 	.kala-surface-input {
 		background-color: var(--card);
-		border-color: var(--kala-mix-border);
+		border-color: var(--input, var(--kala-mix-border));
 	}
 
 	.kala-surface-popover {
@@ -168,6 +168,13 @@
 			background: transparent;
 			-webkit-user-select: none;
 			user-select: none;
+			}
 		}
-	}
+}
+
+/* Combobox trigger is an outline Button — pin control height like input/select; padding-block stays 0 so consumer py-* utilities cannot dilute vertical rhythm. */
+[data-kala-component="combobox"] > button[role="combobox"] {
+	height: var(--kala-control-h);
+	padding-block: 0;
+	border-color: var(--input, var(--kala-mix-border));
 }

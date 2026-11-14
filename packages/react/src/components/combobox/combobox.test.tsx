@@ -82,14 +82,14 @@ describe("Combobox", () => {
 		render(<Combobox options={mockOptions} size="sm" />);
 
 		const button = screen.getByRole("combobox");
-		expect(button).toHaveClass("h-8");
+		expect(button).toHaveClass("h-[var(--kala-control-h-sm)]");
 	});
 
 	it("applies default size classes", () => {
 		render(<Combobox options={mockOptions} size="md" />);
 
 		const button = screen.getByRole("combobox");
-		expect(button).toHaveClass("h-10");
+		expect(button).toHaveClass("h-[var(--kala-control-h)]");
 	});
 
 	it("shows empty text when no results found", async () => {
