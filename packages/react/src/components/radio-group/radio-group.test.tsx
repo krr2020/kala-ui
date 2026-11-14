@@ -204,7 +204,7 @@ describe("RadioGroup", () => {
 					/>
 				</RadioGroup>,
 			);
-			const label = screen.getByText("Error Option");
+			const label = screen.getByText("Error Option").closest("label");
 			expect(label).toHaveClass("text-destructive");
 		});
 

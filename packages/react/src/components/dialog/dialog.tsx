@@ -4,6 +4,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import type * as React from "react";
 import { dialogStyles } from "../../config/dialog";
+import { useFrozenChildren } from "../../lib/use-frozen-children";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
@@ -12,14 +13,20 @@ import { Text } from "../text";
 import type { DialogContentProps } from "./dialog.types";
 
 function Dialog({
+	open,
+	children,
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Root>) {
+	const content = useFrozenChildren(open, children);
 	return (
 		<DialogPrimitive.Root
 			data-kala-component="dialog"
 			data-slot="dialog"
+			open={open}
 			{...props}
-		/>
+		>
+			{content}
+		</DialogPrimitive.Root>
 	);
 }
 

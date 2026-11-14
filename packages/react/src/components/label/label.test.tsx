@@ -21,19 +21,20 @@ describe("Label", () => {
 
 	it("accepts htmlFor prop for accessibility", () => {
 		render(<Label htmlFor="input-id">Associated Label</Label>);
-		const label = screen.getByText("Associated Label");
+		const label = screen.getByText("Associated Label").closest("label");
 		expect(label).toHaveAttribute("for", "input-id");
 	});
 
 	it("accepts custom className", () => {
 		render(<Label className="custom-class">Custom</Label>);
-		expect(screen.getByText("Custom")).toHaveClass("custom-class");
+		expect(screen.getByText("Custom").closest("label")).toHaveClass("custom-class");
 	});
 
 	it("applies label-base styles", () => {
 		render(<Label>Styled Label</Label>);
-		expect(screen.getByText("Styled Label")).toHaveClass("text-sm");
-		expect(screen.getByText("Styled Label")).toHaveClass("font-medium");
+		const label = screen.getByText("Styled Label").closest("label");
+		expect(label).toHaveClass("text-sm");
+		expect(label).toHaveClass("font-medium");
 	});
 
 	it("forwards ref correctly", () => {

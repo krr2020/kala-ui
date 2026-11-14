@@ -105,7 +105,7 @@ describe("DataTableMobileList cards mode", () => {
 
 	it("renders badges inline on the title row, not as a separate row", () => {
 		setupCards();
-		const headerRow = screen.getByText("Alice Johnson").closest("div");
+		const headerRow = screen.getByText("Alice Johnson").parentElement;
 		expect(headerRow).not.toBeNull();
 		expect(
 			within(headerRow as HTMLElement).getByText("active"),
@@ -217,6 +217,29 @@ describe("DataTableMobileList cards mode", () => {
 		];
 		setupCards({ columns });
 		expect(screen.getByTestId("custom-1")).toBeInTheDocument();
+	});
+
+	it("renders title and stacked cell wrappers as div so block cells never nest in p", () => {
+		const columns: ColumnDef<TestUser>[] = [
+			{
+				id: "name",
+				header: "Name",
+				cell: (row) => <p>{row.name}</p>,
+				mobile: "title",
+			},
+			{ id: "role", header: "Role", accessorKey: "role" },
+		];
+		const { container } = setupCards({ columns });
+		const titleInner = container.querySelector(
+			'[data-kala-component="text"] > p',
+		);
+		expect(titleInner?.textContent).toBe("Alice Johnson");
+		expect(titleInner?.parentElement?.tagName).toBe("DIV");
+		const stackedWrapper = container.querySelector(
+			'[data-kala-component="text"].text-right',
+		);
+		expect(stackedWrapper?.tagName).toBe("DIV");
+		expect(stackedWrapper?.textContent).toBe("admin");
 	});
 });
 

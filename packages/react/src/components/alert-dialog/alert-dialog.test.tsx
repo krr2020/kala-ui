@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { useFrozenChildren } from "../../lib/use-frozen-children";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import {
@@ -15,6 +16,7 @@ import {
 } from "./alert-dialog";
 
 describe("AlertDialog", () => {
+
 	it("should render trigger button", () => {
 		render(
 			<AlertDialog>
@@ -150,4 +152,37 @@ describe("AlertDialog", () => {
 			.closest('[data-slot="alert-dialog-content"]');
 		expect(content).toHaveClass("custom-content");
 	});
+	it("applies the destructive color to the action button", async () => {
+		const user = userEvent.setup();
+
+		render(
+			<AlertDialog>
+				<AlertDialogTrigger>Open</AlertDialogTrigger>
+				<AlertDialogContent>
+					<AlertDialogTitle>Title</AlertDialogTitle>
+					<AlertDialogAction color="destructive">Delete</AlertDialogAction>
+				</AlertDialogContent>
+			</AlertDialog>,
+		);
+
+		await user.click(screen.getByText("Open"));
+		const action = screen.getByText("Delete");
+		expect(action).toHaveClass("bg-destructive");
+	});
+});
+
+function FreezeProbe({ open, text }: { open: boolean; text: string }) {
+	const content = useFrozenChildren(open, <p>{text}</p>);
+	return <div>{content}</div>;
+}
+
+describe("useFrozenChildren", () => {
+	it("freezes children at the last-open snapshot while closed", () => {
+		const { rerender, container } = render(<FreezeProbe open text="Confirm" />);
+		rerender(<FreezeProbe open={false} text="" />);
+		expect(container.textContent).toBe("Confirm");
+		rerender(<FreezeProbe open text="Next" />);
+		expect(container.textContent).toBe("Next");
+	});
+
 });

@@ -5,6 +5,7 @@ import type * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 
 import { cn } from "../../lib/utils";
+import { useFrozenChildren } from "../../lib/use-frozen-children";
 import { Box } from "../box";
 import { buttonVariants } from "../button";
 import { useSlotStyles } from "../kala-provider";
@@ -15,13 +16,21 @@ import type {
 	AlertDialogProps,
 } from "./alert-dialog.types";
 
-function AlertDialog({ ...props }: AlertDialogProps) {
+function AlertDialog({
+	open,
+	children,
+	...props
+}: AlertDialogProps) {
+	const content = useFrozenChildren(open, children);
 	return (
 		<AlertDialogPrimitive.Root
 			data-kala-component="alert-dialog"
 			data-slot="alert-dialog"
+			open={open}
 			{...props}
-		/>
+		>
+			{content}
+		</AlertDialogPrimitive.Root>
 	);
 }
 
@@ -174,13 +183,14 @@ function AlertDialogBody({ className, ...props }: React.ComponentProps<"div">) {
 function AlertDialogAction({
 	className,
 	variant,
+	color,
 	size,
 	...props
 }: AlertDialogActionProps) {
 	return (
 		<AlertDialogPrimitive.Action
 			data-kala-component="alert-dialog-action"
-			className={cn(buttonVariants({ variant, size }), className)}
+			className={cn(buttonVariants({ variant, color, size }), className)}
 			{...props}
 		/>
 	);

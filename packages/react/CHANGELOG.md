@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.0-beta.15
+
+### Patch Changes
+
+- Fix data table
+- Updated dependencies
+  - @kala-ui/react-hooks@0.1.0-beta.2
+
 ## 1.0.0-beta.13
 
 ### Patch Changes

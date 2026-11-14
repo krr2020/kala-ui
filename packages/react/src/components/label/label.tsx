@@ -31,8 +31,11 @@ function Label({
 			style={mergeStyle(style, root.style)}
 			{...props}
 		>
-			{children}
-			{required && <span className="ml-1 text-destructive">*</span>}
+			{/* Single inline wrapper: keeps children + indicator one flex item so label flex-gap can't stack with the indicator's ml-1. */}
+			<span>
+				{children}
+				{required && <span className="ml-1 text-destructive">*</span>}
+			</span>
 		</LabelPrimitive.Root>
 	);
 }

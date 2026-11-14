@@ -700,8 +700,8 @@ export function DataTable<TData>({
 							align="center"
 							justify="between"
 							className={cn(
-								"flex-col gap-3 sm:flex-row sm:gap-0 px-4 py-3 border rounded-b-lg bg-muted/30",
-								stickyFooter && "shrink-0",
+							  "flex-col gap-3 sm:flex-row sm:gap-0 px-4 py-3 border border-t-0 rounded-b-lg bg-muted/30",
+							  stickyFooter && "shrink-0",
 							)}
 						>
 							<Flex

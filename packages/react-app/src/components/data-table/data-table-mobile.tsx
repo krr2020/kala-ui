@@ -184,7 +184,11 @@ export function DataTableMobileList<TData>({
 					) : null}
 					<Stack gap={1} className="min-w-0 flex-1">
 						{mode === "stack" && title ? (
-							<Text weight="medium" className="break-words leading-snug">
+							<Text
+								as="div"
+								weight="medium"
+								className="break-words leading-snug"
+							>
 								{cellContent(title, row)}
 							</Text>
 						) : null}
@@ -192,6 +196,7 @@ export function DataTableMobileList<TData>({
 							<Flex align="start" gap={2} wrap="wrap" className="min-w-0">
 								{title ? (
 									<Text
+										as="div"
 										weight="medium"
 										className="min-w-[60%] flex-1 break-words leading-snug"
 									>
@@ -226,6 +231,7 @@ export function DataTableMobileList<TData>({
 									{column.header}
 								</Text>
 								<Text
+									as="div"
 									size="sm"
 									className="min-w-0 flex-1 text-right break-words"
 								>

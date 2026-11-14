@@ -6,6 +6,7 @@ import { Drawer as DrawerPrimitive } from "vaul";
 import { drawerStyles } from "../../config/drawer";
 import type { SlotStyles } from "../../lib/slot-styles";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
+import { useFrozenChildren } from "../../lib/use-frozen-children";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
 import { useSlotStyles } from "../kala-provider";
@@ -24,17 +25,23 @@ const DrawerContext = React.createContext<{
 });
 
 function Drawer({
+	open,
+	children,
 	shouldScaleBackground = true,
 	direction = "right",
 	...props
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) {
+	const content = useFrozenChildren(open, children);
 	return (
 		<DrawerContext.Provider data-kala-component="drawer" value={{ direction }}>
 			<DrawerPrimitive.Root
 				direction={direction}
 				shouldScaleBackground={shouldScaleBackground}
+				open={open}
 				{...props}
-			/>
+			>
+				{content}
+			</DrawerPrimitive.Root>
 		</DrawerContext.Provider>
 	);
 }

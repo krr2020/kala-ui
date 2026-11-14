@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { useFrozenChildren } from "../../lib/use-frozen-children";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { Button } from "../button";
@@ -14,6 +15,7 @@ import {
 } from "./dialog";
 
 describe("Dialog", () => {
+
 	it("should render dialog trigger", () => {
 		render(
 			<Dialog>
@@ -283,4 +285,20 @@ describe("Dialog", () => {
 		);
 		expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
 	});
+});
+
+function FreezeProbe({ open, text }: { open: boolean; text: string }) {
+	const content = useFrozenChildren(open, <p>{text}</p>);
+	return <div>{content}</div>;
+}
+
+describe("useFrozenChildren", () => {
+	it("freezes children at the last-open snapshot while closed", () => {
+		const { rerender, container } = render(<FreezeProbe open text="Confirm" />);
+		rerender(<FreezeProbe open={false} text="" />);
+		expect(container.textContent).toBe("Confirm");
+		rerender(<FreezeProbe open text="Next" />);
+		expect(container.textContent).toBe("Next");
+	});
+
 });

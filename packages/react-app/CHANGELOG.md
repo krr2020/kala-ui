@@ -1,5 +1,20 @@
 # @kala-ui/react-app
 
+## 0.1.0-beta.17
+
+### Patch Changes
+
+- Fix **DataTable** mobile cards to wrap title and stacked cell content in a `div` instead of `p`, avoiding invalid `<p>` inside `<p>` DOM nesting (React hydration warnings) when cells render block text components.
+
+## 0.1.0-beta.16
+
+### Patch Changes
+
+- Fix data table
+- Updated dependencies
+  - @kala-ui/react@1.0.0-beta.15
+  - @kala-ui/react-hooks@0.1.0-beta.2
+
 ## 0.1.0-beta.14
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0-beta.2
+
+### Patch Changes
+
+- Fix data table
+
 ## 0.1.0-beta.1
 
 ### Patch Changes
