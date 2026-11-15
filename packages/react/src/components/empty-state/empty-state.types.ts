@@ -7,18 +7,18 @@ import type { EmptyStateSkeletonConfig } from "../skeleton/skeleton.types";
 import type { emptyStateVariants } from "./empty-state";
 
 export interface EmptyStateProps
-	extends Omit<React.ComponentProps<"div">, "color">,
+	extends Omit<React.ComponentProps<"div">, "color" | "title">,
 		VariantProps<typeof emptyStateVariants> {
-	/** Icon component or emoji/text glyph shown in the badge */
-	icon?: LucideIcon | string;
+	/** Icon component, ReactNode, or emoji/text glyph shown in the badge */
+	icon?: LucideIcon | string | React.ReactNode;
 	/** "tile" (default) frames the icon in the muted circle; "plain" renders it bare — no size box, no background */
 	iconVariant?: "tile" | "plain";
 	/** Primary heading */
-	title: string;
+	title: React.ReactNode;
 	/** Supporting copy under the title */
-	description?: string;
-	/** Optional call-to-action rendered under the description */
-	action?: {
+	description?: React.ReactNode;
+	/** Optional call-to-action rendered under the description — a node (rendered as-is) or the library Button props */
+	action?: React.ReactNode | {
 		label: string;
 		onClick: () => void;
 		variant?: React.ComponentProps<typeof Button>["variant"];

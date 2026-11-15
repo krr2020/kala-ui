@@ -1,5 +1,7 @@
 import { cva } from "class-variance-authority";
-import { Inbox } from "lucide-react";
+import { type LucideIcon, Inbox } from "lucide-react";
+import type * as React from "react";
+import { isValidElement } from "react";
 import { emptyStateStyles } from "../../config/empty-state";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
@@ -28,6 +30,21 @@ const emptyStateVariants = cva(
 		},
 	},
 );
+
+type ButtonActionProps = {
+	label: string;
+	onClick: () => void;
+	variant?: React.ComponentProps<typeof Button>["variant"];
+};
+
+function isButtonAction(action: EmptyStateProps["action"]): action is ButtonActionProps {
+	return (
+		typeof action === "object" &&
+		action !== null &&
+		!isValidElement(action) &&
+		"label" in action
+	);
+}
 
 function EmptyState({
 	className,
@@ -78,7 +95,16 @@ function EmptyState({
 	}
 
 	const resolvedIcon = icon ?? Inbox;
-	const IconComponent = typeof resolvedIcon === "string" ? null : resolvedIcon;
+	const iconNode =
+		typeof resolvedIcon !== "string" && isValidElement(resolvedIcon)
+			? resolvedIcon
+			: null;
+	const IconComponent =
+		iconNode || typeof resolvedIcon === "string"
+			? null
+			: (resolvedIcon as LucideIcon);
+	const actionNode = isValidElement(action) ? action : null;
+	const buttonAction = isButtonAction(action) ? action : null;
 	const iconBase =
 		iconVariant === "plain" ? emptyStateStyles.iconPlain : emptyStateStyles.icon;
 	const iconCircle = applySlot(iconBase, slotStyles?.icon);
@@ -109,6 +135,8 @@ function EmptyState({
 							resolvedIcon,
 						)}
 					/>
+				) : iconNode ? (
+					iconNode
 				) : IconComponent ? (
 					<IconComponent className="h-10 w-10 text-muted-foreground" />
 				) : null}
@@ -121,16 +149,18 @@ function EmptyState({
 					{description}
 				</p>
 			)}
-			{action && (
+			{actionNode ? (
+				actionNode
+			) : buttonAction ? (
 				<Button
-					onClick={action.onClick}
-					variant={action.variant}
+					onClick={buttonAction.onClick}
+					variant={buttonAction.variant}
 					className={actionSlot.className}
 					style={actionSlot.style}
 				>
-					{action.label}
+					{buttonAction.label}
 				</Button>
-			)}
+			) : null}
 			{children}
 		</div>
 	);

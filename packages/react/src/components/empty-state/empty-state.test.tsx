@@ -11,6 +11,17 @@ describe("EmptyState", () => {
 			expect(screen.getByText("No data")).toBeInTheDocument();
 		});
 
+		it("renders ReactNode title and description", () => {
+			render(
+				<EmptyState
+					title={<span>No entries yet</span>}
+					description={<>Nothing to show here</>}
+				/>,
+			);
+			expect(screen.getByText("No entries yet")).toBeInTheDocument();
+			expect(screen.getByText("Nothing to show here")).toBeInTheDocument();
+		});
+
 		it("renders with description", () => {
 			render(
 				<EmptyState title="No data" description="There is no data available" />,
@@ -32,6 +43,20 @@ describe("EmptyState", () => {
 			const { container } = render(
 				<EmptyState title="No data" icon={Search} />,
 			);
+			expect(container.querySelector("svg")).toBeInTheDocument();
+		});
+
+		it("renders a ReactNode icon as-is inside the icon tile", () => {
+			const { container } = render(
+				<EmptyState
+					title="No data"
+					icon={<svg data-testid="node-icon" viewBox="0 0 24 24" />}
+				/>,
+			);
+			const icon = screen.getByTestId("node-icon");
+			expect(
+				icon.closest('[aria-hidden="true"]'),
+			).toBeInTheDocument();
 			expect(container.querySelector("svg")).toBeInTheDocument();
 		});
 
@@ -368,3 +393,21 @@ describe("EmptyState", () => {
 		});
 	});
 });
+
+	describe("ReactNode action", () => {
+		it("renders a ReactNode action directly without the library Button", () => {
+			const { container } = render(
+				<EmptyState
+					title="No data"
+					action={
+						<a data-testid="node-action" href="/create">
+							Create one
+						</a>
+					}
+				/>,
+			);
+			expect(screen.getByTestId("node-action")).toBeInTheDocument();
+			expect(screen.getByText("Create one")).toBeInTheDocument();
+			expect(container.querySelector("button")).toBeNull();
+		});
+	});
