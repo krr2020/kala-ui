@@ -49,3 +49,6 @@ coverage
 .conveyor/design-writer.sqlite*
 # Conveyor machine-local state (board/, specs/, wiki/, design/ stay committable)
 .conveyor/workspace-artifacts/
+# Conveyor machine-local state (board/, specs/, wiki/, design/ stay committable)
+.conveyor/design-scenes/
+.conveyor/design-workspaces/

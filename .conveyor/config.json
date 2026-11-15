@@ -27,9 +27,9 @@
       "keepRecentTokens": 20000,
       "readEarlyEnabled": false
     },
-    "chatSpendLimitUsd": 5,
-    "chatMaxTurns": 60,
-    "chatMaxToolCalls": 150,
+    "chatSpendLimitUsd": 50,
+    "chatMaxTurns": 0,
+    "chatMaxToolCalls": 0,
     "sessions": {
       "retentionDays": 30
     },
@@ -54,7 +54,7 @@
     "showReasoning": true,
     "showStepNarration": false,
     "shiftEnterToSubmit": false,
-    "chatAutoValidate": true,
+    "chatAutoValidate": false,
     "coordinator": {
       "enabled": true
     },
