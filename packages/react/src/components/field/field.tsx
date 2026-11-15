@@ -8,6 +8,7 @@ import { cn } from "../../lib/utils";
 import { useSlotStyles } from "../kala-provider";
 import { Label } from "../label";
 import { Separator } from "../separator";
+import { fieldStyles } from "./fieldStyles";
 import type { FieldProps } from "./field.types";
 
 interface FieldContextValue {
@@ -281,7 +282,8 @@ function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
 			data-kala-component="field-title"
 			data-slot="field-label"
 			className={cn(
-				"flex w-fit items-center gap-2 text-sm leading-snug font-medium group-data-[disabled=true]/field:opacity-50",
+				"flex w-fit items-center gap-2 leading-snug font-medium group-data-[disabled=true]/field:opacity-50",
+				fieldStyles.label,
 				className,
 			)}
 			{...props}
@@ -304,9 +306,10 @@ function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
 			data-slot="field-description"
 			id={field?.descriptionId}
 			className={cn(
-				"text-muted-foreground text-xs leading-normal font-normal group-has-data-[orientation=horizontal]/field:text-balance",
+				"group-has-data-[orientation=horizontal]/field:text-balance",
 				"last:mt-0 nth-last-2:-mt-1 [[data-variant=legend]+&]:-mt-1.5",
 				"[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
+				fieldStyles.hint,
 				className,
 			)}
 			{...props}
@@ -400,7 +403,7 @@ function FieldError({
 			role="alert"
 			data-slot="field-error"
 			id={field?.errorId}
-			className={cn("text-destructive text-xs font-medium", className)}
+			className={cn(fieldStyles.error, className)}
 			{...props}
 		>
 			{content}

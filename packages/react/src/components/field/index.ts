@@ -12,6 +12,7 @@ export {
 	FieldTitle,
 	fieldVariants,
 } from "./field";
+export { fieldStyles } from "./fieldStyles";
 export type { FieldProps } from "./field.types";
 export type { FieldSkeletonProps } from "./field-skeleton";
 export { FieldSkeleton } from "./field-skeleton";
