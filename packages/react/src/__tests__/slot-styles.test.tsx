@@ -1260,7 +1260,13 @@ const styleTableEntries = [
 		part: "dialog.close",
 		tsx: "../components/dialog/dialog.tsx",
 		config: "../config/dialog.ts",
-		base: "kala-touch absolute top-4 right-4 z-10 inline-flex size-11 items-center justify-center rounded-full bg-muted/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-accent disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+		base: "kala-touch absolute top-2.5 right-2.5 z-10 inline-flex size-8 items-center justify-center rounded-full bg-muted/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-accent disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+	},
+	{
+		part: "dialog.headerWithClose",
+		tsx: "../components/dialog/dialog.tsx",
+		config: "../config/dialog.ts",
+		base: "pr-14",
 	},
 	{
 		part: "dialog.header",

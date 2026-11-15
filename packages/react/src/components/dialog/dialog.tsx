@@ -2,6 +2,7 @@
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
+import { createContext, useContext } from "react";
 import type * as React from "react";
 import { dialogStyles } from "../../config/dialog";
 import { useFrozenChildren } from "../../lib/use-frozen-children";
@@ -11,6 +12,8 @@ import { Box } from "../box";
 import { useSlotStyles } from "../kala-provider";
 import { Text } from "../text";
 import type { DialogContentProps } from "./dialog.types";
+
+const DialogCloseContext = createContext(false);
 
 function Dialog({
 	open,
@@ -112,7 +115,9 @@ function DialogContent({
 				style={mergeStyle(style, root.style)}
 				{...props}
 			>
-				{children}
+				<DialogCloseContext.Provider value={showCloseButton}>
+					{children}
+				</DialogCloseContext.Provider>
 				{showCloseButton && (
 					<DialogPrimitive.Close
 						data-slot="dialog-close"
@@ -144,7 +149,15 @@ function DialogHeader({
 	slotStyles?: SlotStyles;
 }) {
 	const slotStyles = useSlotStyles("dialog", slotStylesRaw);
-	const root = applySlot(cn(dialogStyles.header, className), slotStyles?.root);
+	const hasClose = useContext(DialogCloseContext);
+	const root = applySlot(
+		cn(
+			dialogStyles.header,
+			hasClose && dialogStyles.headerWithClose,
+			className,
+		),
+		slotStyles?.root,
+	);
 	return (
 		<Box
 			data-kala-component="dialog-header"

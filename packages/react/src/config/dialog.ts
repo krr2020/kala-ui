@@ -9,8 +9,9 @@ const desktopPanel =
 	"sm:inset-auto sm:h-auto sm:w-[90vw] sm:max-h-[90vh] sm:rounded-[var(--kala-radius-card)] sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]";
 const desktopPosition =
 	"sm:fixed! sm:top-[50%]! sm:left-[50%]! sm:translate-x-[-50%]! sm:translate-y-[-50%]!";
+// 32px disc inside the header band; kala-touch keeps the 44px hit area and headerWithClose reserves the matching text gap.
 const closeControl =
-	"kala-touch absolute top-4 right-4 z-10 inline-flex size-11 items-center justify-center rounded-full bg-muted/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-accent disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+	"kala-touch absolute top-2.5 right-2.5 z-10 inline-flex size-8 items-center justify-center rounded-full bg-muted/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-accent disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 export const dialogStyles = {
 	overlay:
@@ -25,8 +26,9 @@ export const dialogStyles = {
 		full: "inset-0 w-full h-full max-h-none translate-x-0 translate-y-0 rounded-none!",
 	},
 	close: closeControl,
-	closeIcon: "size-5",
+	closeIcon: "size-4",
 	header: "flex shrink-0 flex-col gap-1.5 px-6 py-4 border-b",
+	headerWithClose: "pr-14",
 	footer:
 		"flex shrink-0 flex-col-reverse gap-2 sm:flex-row sm:justify-end px-6 py-4 border-t bg-muted/50 rounded-b-[var(--kala-radius-card)]",
 	title: "text-lg font-semibold leading-none tracking-tight text-foreground",

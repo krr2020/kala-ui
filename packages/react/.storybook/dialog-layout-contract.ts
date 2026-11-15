@@ -11,6 +11,7 @@ export const LAYOUT_CONTRACT_STORIES: Record<string, { scrollable: boolean }> =
 		'overlay-dialog--pinned-footer': { scrollable: true },
 		'overlay-dialog--form-composition': { scrollable: true },
 		'overlay-dialog--short-content': { scrollable: false },
+		'overlay-dialog--title-only': { scrollable: false },
 	};
 
 type DialogLayoutMeasurement = {
@@ -147,6 +148,24 @@ async function assertLayout(
 			failures.push(
 				`${label}: header escapes the card (bottom ${m.headerBottom} > card ${m.card.bottom})`,
 			);
+		}
+		const close = document.querySelector('[data-slot="dialog-close"]');
+		const title = document.querySelector('[data-slot="dialog-title"]');
+		if (close && header) {
+			const closeRect = close.getBoundingClientRect();
+			if (closeRect.bottom > m.headerBottom + 0.5) {
+				failures.push(
+					`${label}: close button crosses the header border (bottom ${closeRect.bottom} > header ${m.headerBottom})`,
+				);
+			}
+			if (title) {
+				const titleRect = title.getBoundingClientRect();
+				if (titleRect.right > closeRect.left + 0.5) {
+					failures.push(
+						`${label}: header text runs under the close button (title right ${titleRect.right} > close left ${closeRect.left})`,
+					);
+				}
+			}
 		}
 		if (m.offenders.length > 0) {
 			failures.push(

@@ -241,6 +241,7 @@ describe("Dialog", () => {
 			</Dialog>,
 		);
 		const closeButton = screen.getByRole("button", { name: "Close" });
+		const closeIcon = closeButton.querySelector("svg");
 		const header = document.body.querySelector('[data-slot="dialog-header"]');
 		expect(header?.parentElement).toContainElement(closeButton);
 		expect(header?.parentElement).toBe(
@@ -249,7 +250,9 @@ describe("Dialog", () => {
 		for (const cls of [
 			"kala-touch",
 			"inline-flex",
-			"size-11",
+			"size-8",
+			"top-2.5",
+			"right-2.5",
 			"items-center",
 			"justify-center",
 			"rounded-full",
@@ -260,6 +263,23 @@ describe("Dialog", () => {
 		]) {
 			expect(closeButton).toHaveClass(cls);
 		}
+		expect(closeIcon).toHaveClass("size-4");
+		expect(header).toHaveClass("pr-14");
+	});
+
+	it("keeps the header padding symmetric when the close button is hidden", () => {
+		render(
+			<Dialog open>
+				<DialogContent showCloseButton={false}>
+					<DialogHeader>
+						<DialogTitle>No close</DialogTitle>
+					</DialogHeader>
+				</DialogContent>
+			</Dialog>,
+		);
+		const header = document.body.querySelector('[data-slot="dialog-header"]');
+		expect(header).not.toHaveClass("pr-14");
+		expect(header).toHaveClass("px-6");
 	});
 
 	it("should use closeLabel for the close button's accessible name", () => {

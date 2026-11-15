@@ -290,6 +290,34 @@ export const FormComposition: Story = {
 	),
 };
 
+// Title-only header: the geometry case that used to let the close button bleed below the header border.
+export const TitleOnly: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story:
+					"Layout contract: with no subtitle the close control stays inside the header band above the border.",
+			},
+		},
+	},
+	render: () => (
+		<Dialog defaultOpen>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle>Short dialog</DialogTitle>
+				</DialogHeader>
+				<DialogBody>
+					<p>Two short rows of content.</p>
+					<p>No subtitle above.</p>
+				</DialogBody>
+				<DialogFooter>
+					<Button>Got it</Button>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
+	),
+};
+
 // Short content: no scrollbar, no visual change
 export const ShortContent: Story = {
 	parameters: {
