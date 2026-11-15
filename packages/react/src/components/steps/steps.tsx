@@ -1,6 +1,6 @@
 import { useUncontrolled } from "@kala-ui/react-hooks";
 import { cva } from "class-variance-authority";
-import { Check } from "lucide-react";
+import { Check } from "../icons";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Box } from "../box";
@@ -31,6 +31,7 @@ function Steps({
 	items,
 	onValueChange,
 	showLine = true,
+	checkIcon: CheckIcon = Check,
 	...props
 }: StepsProps) {
 	const slotStyles = useSlotStyles("steps", slotStylesRaw);
@@ -129,7 +130,7 @@ function Steps({
 								onClick={() => setCurrentStep(stepNumber)}
 							>
 								{isCompleted ? (
-									<Check className="h-4 w-4" />
+									<CheckIcon className="h-4 w-4" />
 								) : (
 									step.icon || stepNumber
 								)}

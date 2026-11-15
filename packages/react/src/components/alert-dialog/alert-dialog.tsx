@@ -16,11 +16,7 @@ import type {
 	AlertDialogProps,
 } from "./alert-dialog.types";
 
-function AlertDialog({
-	open,
-	children,
-	...props
-}: AlertDialogProps) {
+function AlertDialog({ open, children, ...props }: AlertDialogProps) {
 	const content = useFrozenChildren(open, children);
 	return (
 		<AlertDialogPrimitive.Root

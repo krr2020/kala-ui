@@ -12,16 +12,14 @@ const incl = { includeHiddenElements: true } as const;
 const flatStyle = (node: {
 	props: { style?: unknown };
 }): Record<string, unknown> =>
-	(require("react-native").StyleSheet.flatten(node.props.style) ?? {}) as Record<
-		string,
-		unknown
-	>;
+	(require("react-native").StyleSheet.flatten(node.props.style) ??
+		{}) as Record<string, unknown>;
 
 const rotateOf = (screen: Awaited<ReturnType<typeof render>>) =>
 	(
-			flatStyle(screen.getByTestId("k-collapsible-chevron", incl)).transform as {
-				rotate?: string;
-			}[]
+		flatStyle(screen.getByTestId("k-collapsible-chevron", incl)).transform as {
+			rotate?: string;
+		}[]
 	)[0]?.rotate;
 
 const pair = (extra: { open?: boolean; defaultOpen?: boolean } = {}) => (
@@ -194,10 +192,10 @@ describe("Collapsible", () => {
 		);
 		expect(flatStyle(screen.getByTestId("k-collapsible")).padding).toBe(13);
 		expect(
-				flatStyle(screen.getByTestId("k-collapsible-trigger", incl)).minWidth,
+			flatStyle(screen.getByTestId("k-collapsible-trigger", incl)).minWidth,
 		).toBe(120);
 		expect(
-				flatStyle(screen.getByTestId("k-collapsible-content")).paddingBottom,
+			flatStyle(screen.getByTestId("k-collapsible-content")).paddingBottom,
 		).toBe(21);
 	});
 

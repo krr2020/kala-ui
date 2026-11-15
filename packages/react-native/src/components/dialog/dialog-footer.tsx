@@ -39,8 +39,8 @@ export function DialogFooter({
 		<View
 			testID={testID}
 			style={applySlot([footerStyle(theme), style], slotStyles?.root)}
-			>
-				{typeof children === "string" || typeof children === "number" ? (
+		>
+			{typeof children === "string" || typeof children === "number" ? (
 				<RNText style={partTextStyle(theme)}>{children}</RNText>
 			) : (
 				children

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
+import type { IconComponent } from "../icon";
 
 export interface SelectOption {
 	/** identity of the option — what onValueChange reports and lookups key on */
@@ -32,6 +33,8 @@ export interface SelectProps {
 	hasSuccess?: boolean;
 	/** swaps the trigger for a skeleton surface while keeping the k-select marker */
 	isLoading?: boolean;
+	/** icon-library component for the trigger chevron — kala ChevronDown by default */
+	chevronIcon?: IconComponent;
 	accessibilityLabel?: string;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;

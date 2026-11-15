@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
+import type { IconComponent } from "../icon";
 
 export interface CollapsibleProps {
 	children?: ReactNode;
@@ -20,6 +21,8 @@ export interface CollapsibleProps {
 export interface CollapsibleTriggerProps {
 	children?: ReactNode;
 	accessibilityLabel?: string;
+	/** icon-library component for the expand chevron — kala ChevronDown by default */
+	chevronIcon?: IconComponent;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */

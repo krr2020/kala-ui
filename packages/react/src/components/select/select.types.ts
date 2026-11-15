@@ -1,5 +1,6 @@
 import type * as SelectPrimitive from "@radix-ui/react-select";
 import type * as React from "react";
+import type { IconComponent } from "../icons";
 import type { SlotStyles } from "../../lib/slot-styles";
 
 export interface SelectTriggerProps
@@ -8,6 +9,8 @@ export interface SelectTriggerProps
 	size?: "sm" | "md";
 	/** Replace the trigger with a skeleton placeholder */
 	isLoading?: boolean;
+	/** Trigger chevron — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	chevronIcon?: IconComponent;
 	/** Per-part overrides: `root` wins over `className`/`style` in every arm, `chevron` targets the dropdown glyph. */
 	slotStyles?: SlotStyles;
 }
@@ -22,6 +25,8 @@ export interface SelectContentProps
 
 export interface SelectItemProps
 	extends React.ComponentProps<typeof SelectPrimitive.Item> {
+	/** Selected-item check — any `{className, size}` icon component; defaults to kala's built-in check. */
+	checkIcon?: IconComponent;
 	/** Per-part overrides: `root` wins over `className`/`style`, `itemIndicator` targets the check glyph. */
 	slotStyles?: SlotStyles;
 }

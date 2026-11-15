@@ -102,7 +102,7 @@ describe("inline-Tailwind detection primitives", () => {
 		['<span className="mb-1 h-4 w-32">', true],
 		['color: "var(--border)",', false],
 		['columnWidth: "55%",', false],
-		['strokeDashArray: 3,', false],
+		["strokeDashArray: 3,", false],
 		["data-testid='session-card-skeleton'", false],
 	])("line %s → %s", (line, expected) => {
 		expect(lineViolates(line)).toBe(expected);

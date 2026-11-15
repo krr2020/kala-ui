@@ -121,14 +121,18 @@ describe("RadioGroup demo ↔ package seam", () => {
 		const onValueChange = jest.fn();
 		const screen = await render(
 			<RadioGroup defaultValue="a" disabled onValueChange={onValueChange}>
-				<RadioGroup.Item value="b" label="Locked out" testID="k-radio-item-lo" />
+				<RadioGroup.Item
+					value="b"
+					label="Locked out"
+					testID="k-radio-item-lo"
+				/>
 			</RadioGroup>,
 		);
 		await fireEvent.press(screen.getByTestId("k-radio-item-lo", inclHidden));
 		expect(onValueChange).not.toHaveBeenCalled();
 		expect(
-			screen.getByTestId("k-radio-item-lo", inclHidden).props
-				.accessibilityState?.disabled,
+			screen.getByTestId("k-radio-item-lo", inclHidden).props.accessibilityState
+				?.disabled,
 		).toBe(true);
 	});
 });

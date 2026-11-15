@@ -22,7 +22,9 @@ export const variantColor = (
 			? theme.mutedForeground
 			: theme.primary;
 
-export const wrapperStyle = (variant: NonNullable<SpinnerProps["variant"]>) => ({
+export const wrapperStyle = (
+	variant: NonNullable<SpinnerProps["variant"]>,
+) => ({
 	alignItems: "center" as const,
 	justifyContent: "center" as const,
 	opacity: variant === "ghost" ? 0.6 : 1,

@@ -50,9 +50,18 @@ describe("Button", () => {
 	});
 
 	it("renders a wrapping, touch-friendly text action with semantic color", () => {
-		render(<Button variant="text" color="destructive" size="sm">Delete group</Button>);
+		render(
+			<Button variant="text" color="destructive" size="sm">
+				Delete group
+			</Button>,
+		);
 		const button = screen.getByRole("button");
-		expect(button).toHaveClass("text-destructive", "whitespace-normal", "min-h-11", "h-auto");
+		expect(button).toHaveClass(
+			"text-destructive",
+			"whitespace-normal",
+			"min-h-11",
+			"h-auto",
+		);
 		expect(button).not.toHaveClass("whitespace-nowrap", "bg-primary");
 	});
 

@@ -11,7 +11,12 @@ import { Badge } from "../../components/badge";
 import { Breadcrumbs } from "../../components/breadcrumbs";
 // Component imports for previews
 import { Button } from "../../components/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/card";
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from "../../components/card";
 import { Checkbox } from "../../components/checkbox";
 import { Input } from "../../components/input";
 import { Label } from "../../components/label";

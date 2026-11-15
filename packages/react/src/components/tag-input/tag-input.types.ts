@@ -1,4 +1,5 @@
 import type * as React from "react";
+import type { IconComponent } from "../icons";
 import type { SlotStyles } from "../../lib/slot-styles";
 
 export interface TagInputProps
@@ -52,6 +53,10 @@ export interface TagInputProps
 	 * Show success state
 	 */
 	hasSuccess?: boolean;
+	/** Remove-chip glyph — any `{className, size}` icon component; defaults to kala's built-in ✕. */
+	removeIcon?: IconComponent;
+	/** Clear-all glyph — any `{className, size}` icon component; defaults to kala's built-in ✕. */
+	clearIcon?: IconComponent;
 	/**
 	 * Per-part overrides: `root` wins over `className` on the chip container,
 	 * `tag` targets each chip, `remove` a chip's X button, `clear` the

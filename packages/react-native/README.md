@@ -14,9 +14,9 @@ pnpm add @kala-ui/react-native react-native-unistyles
 ```
 
 Peer dependencies: `react` ≥ 19.2, `react-native` ≥ 0.86,
-`react-native-unistyles` 3.3, plus `lucide-react-native`,
-`react-native-gesture-handler`, `react-native-reanimated`, and
-`react-native-svg` for the components that use them.
+`react-native-unistyles` 3.3, plus `react-native-gesture-handler`,
+`react-native-reanimated`, and `react-native-svg` for the components that
+use them.
 
 ## Theme setup
 

@@ -5,8 +5,8 @@
  * select.styles).
  */
 import type { TextStyle, ViewStyle } from "react-native";
-import { SURFACE_HEIGHTS } from "../input-surface.styles";
 import type { KalaTheme } from "../../types";
+import { SURFACE_HEIGHTS } from "../input-surface.styles";
 
 type SurfaceSize = keyof typeof SURFACE_HEIGHTS;
 

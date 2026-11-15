@@ -44,8 +44,7 @@ describe("Progress resolved style tables", () => {
 	});
 
 	it("font-padding fix survives every consumer override path", async () => {
-		// no prop reaches the inner text: style/slotStyles land on the track
-		// and indicator, the text stays table-styled
+		// no prop reaches the inner text: style/slotStyles land on the track and indicator, the text stays table-styled
 		const screen = await render(
 			<Progress
 				value={50}
@@ -57,9 +56,9 @@ describe("Progress resolved style tables", () => {
 				}}
 			/>,
 		);
-		expect(flatStyle(screen.getByText("50%", inclHidden)).includeFontPadding).toBe(
-			false,
-		);
+		expect(
+			flatStyle(screen.getByText("50%", inclHidden)).includeFontPadding,
+		).toBe(false);
 	});
 
 	it("clamped values render clamped text: 120 reads 100%, -20 reads 0%", async () => {

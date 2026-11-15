@@ -1,5 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import userEvent, { PointerEventsCheckLevel } from "@testing-library/user-event";
+import userEvent, {
+	PointerEventsCheckLevel,
+} from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import {
 	Select,
@@ -704,9 +706,11 @@ describe("Select", () => {
 		fireEvent.click(trigger);
 		expect(await screen.findByRole("listbox")).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("option"));
-		expect(await waitFor(() =>
-			expect(screen.queryByRole("listbox")).not.toBeInTheDocument(),
-		));
+		expect(
+			await waitFor(() =>
+				expect(screen.queryByRole("listbox")).not.toBeInTheDocument(),
+			),
+		);
 		fireEvent.click(trigger, { detail: 0 });
 		expect(await screen.findByRole("listbox")).toBeInTheDocument();
 	});

@@ -10,7 +10,7 @@ import { Checkbox } from "@kala-ui/react/checkbox";
 import { Flex } from "@kala-ui/react/flex";
 import { cn } from "@kala-ui/react/lib/utils";
 import { TableHead, TableHeader, TableRow } from "@kala-ui/react/table";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp } from "@kala-ui/react/icons";
 import { ColumnHeaderFilter } from "./column-header-filter";
 import type {
 	ColumnDef,

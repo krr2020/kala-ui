@@ -33,7 +33,11 @@ export function Button({
 	disabled,
 	...props
 }: ButtonProps) {
-	const slotStyles = useSlotStyles("button", slotStylesRaw, variant ?? undefined);
+	const slotStyles = useSlotStyles(
+		"button",
+		slotStylesRaw,
+		variant ?? undefined,
+	);
 	const Comp = asChild ? Slot : "button";
 	const effectiveDisabled = isLoading || disabled;
 	const root = applySlot(

@@ -1,7 +1,8 @@
 "use client";
 
 import { useClipboard } from "@kala-ui/react-hooks";
-import { Check, Copy } from "lucide-react";
+import type { IconComponent } from "../icons";
+import { Check, Copy } from "../icons";
 import * as React from "react";
 import { applySlot } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
@@ -12,8 +13,8 @@ import type { CopyButtonProps } from "./copy-button.types";
 function CopyButton({
 	value,
 	timeout = 2000,
-	copyIcon,
-	checkIcon,
+	copyIcon = Copy,
+	checkIcon = Check,
 	className,
 	size = "icon",
 	variant = "ghost",
@@ -28,8 +29,28 @@ function CopyButton({
 		copy(value);
 	}, [copy, value]);
 
-	// Default glyphs honor the icon slot; custom icons stay untouched.
 	const icon = applySlot("h-4 w-4", slotStyles?.icon);
+
+	const renderGlyph = (
+		glyph: CopyButtonProps["copyIcon"],
+		Fallback: IconComponent,
+	) => {
+		if (typeof glyph === "function") {
+			return React.createElement(glyph, {
+				className: icon.className,
+				style: icon.style,
+				"aria-hidden": "true",
+			});
+		}
+		return (
+			glyph ??
+			React.createElement(Fallback, {
+				className: icon.className,
+				style: icon.style,
+				"aria-hidden": "true",
+			})
+		);
+	};
 
 	return (
 		<Button
@@ -45,21 +66,7 @@ function CopyButton({
 			slotStyles={slotStyles}
 			{...props}
 		>
-			{copied
-				? (checkIcon ?? (
-						<Check
-							className={icon.className}
-							style={icon.style}
-							aria-hidden="true"
-						/>
-					))
-				: (copyIcon ?? (
-						<Copy
-							className={icon.className}
-							style={icon.style}
-							aria-hidden="true"
-						/>
-					))}
+			{copied ? renderGlyph(checkIcon, Check) : renderGlyph(copyIcon, Copy)}
 		</Button>
 	);
 }

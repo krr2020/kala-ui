@@ -32,9 +32,7 @@ describe("UserMenuDropdown", () => {
 	it("should render the avatar surface when an avatar url is provided", () => {
 		const { container } = render(<UserMenuDropdown user={mockUser} />);
 
-		expect(
-			container.querySelector('[data-slot="avatar"]'),
-		).toBeInTheDocument();
+		expect(container.querySelector('[data-slot="avatar"]')).toBeInTheDocument();
 	});
 
 	it("should display first letter of email when no name", () => {

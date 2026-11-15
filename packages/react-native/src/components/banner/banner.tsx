@@ -4,10 +4,10 @@
  * default mirrors the web role=status → polite announcement.
  */
 
-import { X } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { X } from "../icon/glyphs";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
 import {
@@ -49,6 +49,7 @@ export function Banner({
 	position = "fixed",
 	onClose,
 	dismissLabel = "Close banner",
+	closeIcon: CloseIcon = X,
 	role = "status",
 	isLoading = false,
 	skeletonConfig,
@@ -77,10 +78,7 @@ export function Banner({
 		>
 			<View
 				testID="k-banner-content"
-				style={[
-					contentStyle,
-					applySlot({}, slotStyles?.content),
-				]}
+				style={[contentStyle, applySlot({}, slotStyles?.content)]}
 			>
 				{isLoading ? (
 					skeleton !== undefined ? (
@@ -103,7 +101,7 @@ export function Banner({
 					onPress={onClose}
 					style={[closeStyle, applySlot({}, slotStyles?.close)]}
 				>
-					<X size={16} color={fg} />
+					<CloseIcon size={16} color={fg} />
 				</Pressable>
 			) : null}
 		</View>

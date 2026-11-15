@@ -24,9 +24,7 @@ export function field(theme: KalaTheme, opts: FieldOptions = {}): TextStyle {
 	};
 }
 
-// Inside a sectioned group the chrome (border, fill, padding) belongs to
-// the group; the input keeps only typography + height and flexes between
-// the sections.
+// Inside a sectioned group the chrome (border, fill, padding) belongs to the group; the input keeps only typography + height and flexes between the sections.
 export function fieldInGroup(theme: KalaTheme): TextStyle {
 	return {
 		flex: 1,

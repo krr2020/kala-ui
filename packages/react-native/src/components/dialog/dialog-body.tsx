@@ -20,9 +20,11 @@ export function DialogBody({
 			testID={testID}
 			keyboardShouldPersistTaps="handled"
 			contentContainerStyle={{ paddingHorizontal: 24, paddingVertical: 16 }}
-			// yield to siblings so the body scrolls inside the card's maxHeight
-			// instead of growing it or being clipped
-			style={applySlot([{ flexGrow: 1, flexShrink: 1 }, style], slotStyles?.root)}
+			// yield to siblings so the body scrolls inside the card's maxHeight instead of growing it or being clipped
+			style={applySlot(
+				[{ flexGrow: 1, flexShrink: 1 }, style],
+				slotStyles?.root,
+			)}
 		>
 			{typeof children === "string" || typeof children === "number" ? (
 				<RNText style={{ color: theme.foreground, fontSize: 14 }}>

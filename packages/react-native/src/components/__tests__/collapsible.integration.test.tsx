@@ -28,11 +28,17 @@ describe("Collapsible ↔ playground demo contract", () => {
 	it("controlled block: readout tracks the open state", async () => {
 		const onOpenChange = jest.fn();
 		const screen = await render(
-			<Collapsible open={false} onOpenChange={onOpenChange} testID="k-collapsible">
+			<Collapsible
+				open={false}
+				onOpenChange={onOpenChange}
+				testID="k-collapsible"
+			>
 				<Collapsible.Trigger accessibilityLabel="Advanced Filters">
 					Advanced Filters
 				</Collapsible.Trigger>
-				<Collapsible.Content>only verified sellers · min rating 4</Collapsible.Content>
+				<Collapsible.Content>
+					only verified sellers · min rating 4
+				</Collapsible.Content>
 			</Collapsible>,
 		);
 		await fireEvent.press(screen.getByTestId("k-collapsible-trigger", incl));
@@ -47,7 +53,9 @@ describe("Collapsible ↔ playground demo contract", () => {
 				<Collapsible.Trigger accessibilityLabel="Session details">
 					Session details
 				</Collapsible.Trigger>
-				<Collapsible.Content>starts open without local state</Collapsible.Content>
+				<Collapsible.Content>
+					starts open without local state
+				</Collapsible.Content>
 			</Collapsible>,
 		);
 		expect(screen.getAllByTestId("k-collapsible-content")).toHaveLength(1);

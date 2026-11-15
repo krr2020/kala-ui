@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
+import type { IconComponent } from "../icon";
 
 export type BannerColor = "info" | "warning" | "destructive" | "success";
 export type BannerPosition = "fixed" | "static";
@@ -24,6 +25,8 @@ export interface BannerProps {
 	onClose?: () => void;
 	/** accessible name for the close button (default "Close banner") */
 	dismissLabel?: string;
+	/** icon-library component for the close icon — kala X glyph by default */
+	closeIcon?: IconComponent;
 	/**
 	 * status (default) announces politely; alert announces assertively
 	 */

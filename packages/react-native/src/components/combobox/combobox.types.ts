@@ -1,4 +1,5 @@
 import type { StyleProp, ViewStyle } from "react-native";
+import type { IconComponent } from "../icon";
 
 export interface ComboboxOption {
 	value: string;
@@ -29,6 +30,10 @@ export interface ComboboxProps {
 	onSearchChange?: (search: string) => void;
 	/** label for a controlled value not present in options (async search) */
 	selectedLabel?: string;
+	/** icon-library component for the trigger chevron — kala ChevronDown by default */
+	chevronIcon?: IconComponent;
+	/** icon-library component for the clear affordance — kala X by default */
+	clearIcon?: IconComponent;
 	isLoading?: boolean;
 	accessibilityLabel?: string;
 	/** Root layout/positioning; sits below `slotStyles.root`. */

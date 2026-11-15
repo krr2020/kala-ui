@@ -35,12 +35,10 @@ describe("tag demo seam (icon visibility)", () => {
 	it("delegates icon theming to Tag: bare icon component, no demo-side color threading", () => {
 		const demo = readFileSync(PLAYGROUND_TAG_DEMO, "utf8");
 		expect(demo).toMatch(/icon=\{Sun\}/);
-		// the anti-pattern this seam pins: the demo hand-threading theme colors
-		// through icons is exactly how the invisible-dark-icon bug happened
+		// the anti-pattern this seam pins: the demo hand-threading theme colors through icons is exactly how the invisible-dark-icon bug happened
 		expect(demo).not.toMatch(/<Icon\s/);
 		expect(demo).not.toMatch(/color=\{theme\./);
-		// iconColor is the only sanctioned override channel, and the demo
-		// exercises it with a token key — never a raw cross-theme value
+		// iconColor is the only sanctioned override channel, and the demo exercises it with a token key — never a raw cross-theme value
 		expect(demo).toMatch(/iconColor="destructive"/);
 	});
 
@@ -49,8 +47,7 @@ describe("tag demo seam (icon visibility)", () => {
 			const ratio = contrast(c, dark.background);
 			expect(ratio).toBeGreaterThanOrEqual(3);
 		}
-		// light.foreground is only valid on light surfaces — pairing it with
-		// the dark background is the bug this seam exists to catch
+		// light.foreground is only valid on light surfaces — pairing it with the dark background is the bug this seam exists to catch
 		expect(contrast(light.foreground, dark.background)).toBeLessThan(3);
 	});
 

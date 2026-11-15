@@ -93,9 +93,9 @@ describe("Textarea", () => {
 		const screen = await render(<Textarea isLoading accessibilityLabel="b" />);
 		// marker survives for E2E; the skeleton block is the visible body
 		expect(screen.getByTestId("k-textarea", inclHidden)).toBeTruthy();
-		expect(screen.getAllByTestId("k-skeleton", inclHidden).length).toBeGreaterThan(
-			0,
-		);
+		expect(
+			screen.getAllByTestId("k-skeleton", inclHidden).length,
+		).toBeGreaterThan(0);
 		const s = flatStyle(screen.getByTestId("k-textarea", inclHidden));
 		expect(Number(s.minHeight)).toBeGreaterThanOrEqual(80);
 	});

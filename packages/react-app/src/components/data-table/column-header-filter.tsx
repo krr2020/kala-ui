@@ -20,7 +20,7 @@ import {
 import { Stack } from "@kala-ui/react/stack";
 import { Text } from "@kala-ui/react/text";
 import { useDisclosure } from "@kala-ui/react-hooks";
-import { Filter, X } from "lucide-react";
+import { Filter, X } from "@kala-ui/react/icons";
 import * as React from "react";
 import type { FilterableColumn, FilterConfig } from "./data-table.types";
 

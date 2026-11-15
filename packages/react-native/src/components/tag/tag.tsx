@@ -9,11 +9,11 @@
  * (iconColor hard-overrides) so a bare icon is visible in every variant.
  */
 
-import { X } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Icon } from "../icon";
+import { X } from "../icon/glyphs";
 import { applySlot } from "../slot-styles";
 import { FONT, ICON_FOR_SIZE, look, PAD_H, PAD_V } from "./tag.styles";
 import type { TagProps } from "./tag.types";
@@ -26,6 +26,7 @@ export function Tag({
 	dismissLabel = "Remove",
 	icon,
 	iconColor,
+	removeIcon: RemoveIcon = X,
 	children,
 	style,
 	slotStyles,
@@ -90,7 +91,7 @@ export function Tag({
 						slotStyles?.remove,
 					)}
 				>
-					<Icon icon={X} size="xs" color={fg} />
+					<Icon icon={RemoveIcon} size="xs" color={fg} />
 				</Pressable>
 			)}
 		</View>

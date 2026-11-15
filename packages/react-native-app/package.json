@@ -1,7 +1,7 @@
 {
 	"name": "@kala-ui/react-native-app",
 	"version": "0.1.0-beta.5",
-	"description": "App-level composite components for kala-ui on React Native — mobile application chrome built on @kala-ui/react-native primitives.",
+	"description": "App-level composite components for kala-ui on React Native \u2014 mobile application chrome built on @kala-ui/react-native primitives.",
 	"keywords": [
 		"react-native",
 		"expo",
@@ -47,7 +47,6 @@
 		"registry": "https://registry.npmjs.org/"
 	},
 	"peerDependencies": {
-		"lucide-react-native": ">=1.46.0",
 		"react": ">=19.2.0",
 		"react-native": ">=0.86.0",
 		"react-native-gesture-handler": ">=2.32.0",

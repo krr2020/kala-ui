@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 import type { OverlayTriggerRef } from "../../lib/use-overlay-focus.utils";
+import type { IconComponent } from "../icon";
 
 export type DialogSize = "sm" | "md" | "lg" | "full";
 
@@ -15,6 +16,8 @@ export interface DialogProps {
 	showCloseButton?: boolean;
 	/** accessible name for the overlay and close button (default "Close dialog") */
 	closeLabel?: string;
+	/** icon-library component for the close icon — kala X glyph by default */
+	closeIcon?: IconComponent;
 	size?: DialogSize;
 	accessibilityLabel?: string;
 	/** accessibility role for the dialog card (Dialog: none, AlertDialog: alert). */

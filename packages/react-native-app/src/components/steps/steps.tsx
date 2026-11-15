@@ -1,5 +1,5 @@
 import { applySlot } from "@kala-ui/react-native";
-import { Check } from "lucide-react-native";
+import { Check } from "@kala-ui/react-native/icons";
 import type { ReactElement } from "react";
 import { useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";

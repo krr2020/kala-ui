@@ -45,8 +45,7 @@ describe("spinner demo ↔ library seam", () => {
 	});
 
 	it("shows the white variant on a themed primary tile", () => {
-		// primaryForeground is white-on-light — bare on the page it is
-		// unverifiable; the tile must use the theme token, not a color
+		// primaryForeground is white-on-light — bare on the page it is unverifiable; the tile must use the theme token, not a color
 		expect(demo).toMatch(/variant="white"/);
 		expect(demo).toMatch(/backgroundColor: theme\.primary/);
 	});

@@ -14,16 +14,13 @@ export function CardImage({
 	slotStyles,
 	testID = "k-card-image",
 }: CardImageProps): ReactElement {
-	// `flush` is consumed by the parent Card's clip logic (groupMedia),
-	// not by the image itself — destructured here so the prop is an
-	// explicit part of the component's signature.
+	// `flush` is consumed by the parent Card's clip logic (groupMedia), not by the image itself — destructured here so the prop is an explicit part of the component's signature.
 	void flush;
 	const { theme } = useUnistyles();
 	const [failed, setFailed] = useState(false);
 	const composed = [IMAGE, applySlot(applySlot({}, style), slotStyles?.root)];
 	if (failed) {
-		// A dead source must not leave an empty unstyled box — keep the
-		// image geometry and degrade to the muted surface.
+		// A dead source must not leave an empty unstyled box — keep the image geometry and degrade to the muted surface.
 		return (
 			<View
 				testID={`${testID}-fallback`}

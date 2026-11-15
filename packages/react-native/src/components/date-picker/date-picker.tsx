@@ -1,4 +1,3 @@
-import { Calendar as CalendarIcon } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
@@ -7,8 +6,13 @@ import { useUnistyles } from "react-native-unistyles";
 import { formatDay } from "../../lib/date.utils";
 import type { DateRangeValue } from "../calendar";
 import { Calendar } from "../calendar";
+import type { IconComponent } from "../icon";
+import { Calendar as CalendarIcon } from "../icon/glyphs";
+import {
+	SURFACE_HEIGHTS as HEIGHT,
+	trigger as triggerRow,
+} from "../input-surface.styles";
 import { Sheet } from "../sheet";
-import { SURFACE_HEIGHTS as HEIGHT, trigger as triggerRow } from "../input-surface.styles";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
 import type {
@@ -27,6 +31,7 @@ function TriggerChrome({
 	onPress,
 	style,
 	accessibilityLabel,
+	calendarIcon: CalendarGlyph = CalendarIcon,
 }: {
 	label: string;
 	filled: boolean;
@@ -38,10 +43,10 @@ function TriggerChrome({
 	onPress: () => void;
 	style?: StyleProp<ViewStyle>;
 	accessibilityLabel?: string;
+	calendarIcon?: IconComponent;
 }): ReactElement {
 	const { theme } = useUnistyles();
-	// an explicit field label must not hide the chosen value from TalkBack:
-	// combine when filled, keep the bare name while the placeholder shows
+	// an explicit field label must not hide the chosen value from TalkBack: combine when filled, keep the bare name while the placeholder shows
 	const announced =
 		accessibilityLabel && filled
 			? `${accessibilityLabel}, ${label}`
@@ -54,12 +59,9 @@ function TriggerChrome({
 			accessibilityState={{ disabled, expanded }}
 			disabled={disabled}
 			onPress={disabled ? undefined : onPress}
-			style={[
-				triggerRow(theme, { size, hasError, disabled }),
-				style,
-			]}
+			style={[triggerRow(theme, { size, hasError, disabled }), style]}
 		>
-			<CalendarIcon size={16} color={theme.mutedForeground} />
+			<CalendarGlyph size={16} color={theme.mutedForeground} />
 			<RNText
 				style={{
 					color: filled ? theme.foreground : theme.mutedForeground,
@@ -87,6 +89,7 @@ export function DatePicker({
 	min,
 	max,
 	disabledDates,
+	calendarIcon,
 	buttonDisabled = false,
 	disabled,
 	hasError = false,
@@ -135,6 +138,7 @@ export function DatePicker({
 				onPress={() => setOpen(true)}
 				style={applySlot(applySlot({}, style), slotStyles?.root)}
 				accessibilityLabel={accessibilityLabel}
+				calendarIcon={calendarIcon}
 			/>
 			<Sheet open={open} onClose={() => setOpen(false)} snap="half">
 				<Calendar
@@ -168,6 +172,7 @@ export function DateRangePicker({
 	min,
 	max,
 	disabledDates,
+	calendarIcon,
 	buttonDisabled = false,
 	disabled,
 	hasError = false,
@@ -224,6 +229,7 @@ export function DateRangePicker({
 				onPress={() => setOpen(true)}
 				style={applySlot(applySlot({}, style), slotStyles?.root)}
 				accessibilityLabel={accessibilityLabel}
+				calendarIcon={calendarIcon}
 			/>
 			<Sheet open={open} onClose={() => setOpen(false)} snap="half">
 				<Calendar

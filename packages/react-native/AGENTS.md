@@ -32,4 +32,4 @@ Verify visually in `apps/native-playground` — Metro watches this package's sou
 - Expo SDK 57 matrix pins are exact (`react-native 0.86.3`, `react 19.2.3`, `reanimated 4.5.1`…) — don't bump past the SDK's tested range.
 - Themes are generated, never hand-edited — change `packages/react/src/styles/globals.css`, run `generate-themes.mjs`, keep `tokens-parity.test.ts` green.
 - Tests: vitest for pure logic, jest-expo for component rendering — place each test in the runner that can execute it. Component tests live in `src/components/__tests__/`; theme/token tests in `src/__tests__/`.
-- Icons come from `lucide-react-native`; animations from `reanimated` (worklets — mind the babel plugin in consuming apps).
+- Icons come from kala's built-in glyphs (`src/components/icon/glyphs.tsx`, exported via the `@kala-ui/react-native/icons` subpath) — lucide is dev-only for tests/demos; animations from `reanimated` (worklets — mind the babel plugin in consuming apps).

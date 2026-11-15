@@ -37,7 +37,6 @@ export default defineConfig({
     'clsx',
     'tailwind-merge',
     'framer-motion',
-    'lucide-react',
     '@dnd-kit/*',
     'cmdk',
     'date-fns',

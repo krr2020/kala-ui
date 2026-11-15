@@ -59,14 +59,35 @@ export const buttonStyles = {
 		},
 		{
 			variant: "text",
-			className: "h-auto min-h-11 whitespace-normal text-primary hover:bg-primary/10",
+			className:
+				"h-auto min-h-11 whitespace-normal text-primary hover:bg-primary/10",
 		},
-		{ variant: "text", color: "secondary", className: "text-secondary hover:bg-secondary/10" },
-		{ variant: "text", color: "destructive", className: "text-destructive hover:bg-destructive/10" },
-		{ variant: "text", color: "success", className: "text-success hover:bg-success/10" },
-		{ variant: "text", color: "warning", className: "text-warning hover:bg-warning/10" },
+		{
+			variant: "text",
+			color: "secondary",
+			className: "text-secondary hover:bg-secondary/10",
+		},
+		{
+			variant: "text",
+			color: "destructive",
+			className: "text-destructive hover:bg-destructive/10",
+		},
+		{
+			variant: "text",
+			color: "success",
+			className: "text-success hover:bg-success/10",
+		},
+		{
+			variant: "text",
+			color: "warning",
+			className: "text-warning hover:bg-warning/10",
+		},
 		{ variant: "text", color: "info", className: "text-info hover:bg-info/10" },
-		{ variant: "text", color: "muted", className: "text-muted-foreground hover:bg-muted" },
+		{
+			variant: "text",
+			color: "muted",
+			className: "text-muted-foreground hover:bg-muted",
+		},
 		// ---- solid + color ----
 		{
 			variant: "solid",

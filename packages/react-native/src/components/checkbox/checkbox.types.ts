@@ -1,4 +1,5 @@
 import type { StyleProp, ViewStyle } from "react-native";
+import type { IconComponent } from "../icon";
 
 export interface CheckboxProps {
 	/** false | true | "indeterminate" — tri-state like the web control. */
@@ -12,6 +13,10 @@ export interface CheckboxProps {
 	accessibilityLabel?: string;
 	/** swaps the control for a skeleton surface keeping the marker */
 	isLoading?: boolean;
+	/** icon-library component for the checked marker — kala Check glyph by default */
+	checkIcon?: IconComponent;
+	/** icon-library component for the indeterminate marker — kala Minus glyph by default */
+	minusIcon?: IconComponent;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */

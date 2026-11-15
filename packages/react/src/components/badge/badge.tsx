@@ -25,7 +25,11 @@ function Badge({
 	isLoading = false,
 	...props
 }: BadgeProps) {
-	const slotStyles = useSlotStyles("badge", slotStylesRaw, variant ?? undefined);
+	const slotStyles = useSlotStyles(
+		"badge",
+		slotStylesRaw,
+		variant ?? undefined,
+	);
 	const root = applySlot(className, slotStyles?.root);
 	if (isLoading) {
 		return (

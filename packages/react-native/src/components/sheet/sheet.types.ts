@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import type { OverlayTriggerRef } from "../../lib/use-overlay-focus.utils";
+import type { IconComponent } from "../icon";
 
 export type SheetSnap = "auto" | "peek" | "half" | "full";
 
@@ -21,6 +22,8 @@ export interface SheetProps {
 	showClose?: boolean;
 	/** accessible name for the overlay and header close button (default "Close sheet") */
 	closeLabel?: string;
+	/** icon-library component for the header close icon — kala X glyph by default */
+	closeIcon?: IconComponent;
 	/** false blocks overlay-press dismissal (back/escape paths still fire) */
 	dismissable?: boolean;
 	/** wraps children in a ScrollView so long bodies scroll; off keeps

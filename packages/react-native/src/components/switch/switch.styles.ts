@@ -32,10 +32,7 @@ export function track(theme: KalaTheme, value: boolean): ViewStyle {
 	};
 }
 
-// the off pill's stroke is an absolute overlay, not a borderWidth on the
-// track: a border shrinks the content box (24 - 2 stroke - 2x2 padding =
-// 18dp), which starves the 20dp thumb's vertical centering and drops it
-// below center. The overlay outlines without touching child layout.
+// the off pill's stroke is an absolute overlay, not a borderWidth on the track: a border shrinks the content box (24 - 2 stroke - 2x2 padding = 18dp), which starves the 20dp thumb's vertical centering and drops it below center. The overlay outlines without touching child layout.
 export function trackStroke(theme: KalaTheme): ViewStyle {
 	return {
 		position: "absolute",
@@ -61,13 +58,10 @@ export function thumb(
 		width: THUMB,
 		height: THUMB,
 		borderRadius: THUMB / 2,
-		// constant knob geometry, theme-aware knob color: the on-knob uses
-	// primaryForeground (the token designed to sit on primary — navy in
-	// dark), the off-knob mutedForeground (soft slate in dark, visible on
-	// the input pill yet never stark white)
+		// constant knob geometry, theme-aware knob color: the on-knob uses primaryForeground (the token designed to sit on primary — navy in dark), the off-knob mutedForeground (soft slate in dark, visible on the input pill yet never stark white)
 		backgroundColor: value ? theme.primaryForeground : theme.mutedForeground,
-	elevation: disabled ? 0 : 2,
-	shadowColor: theme.shadowColor,
+		elevation: disabled ? 0 : 2,
+		shadowColor: theme.shadowColor,
 		shadowOpacity: disabled ? 0 : 0.15,
 		shadowRadius: 2,
 		shadowOffset: { width: 0, height: 1 },

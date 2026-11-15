@@ -1,5 +1,6 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { View } from "react-native";
+import { chunk } from "../../lib/calendar.utils";
 import {
 	addMonths,
 	clampTimePart,
@@ -11,7 +12,6 @@ import {
 	monthIsBefore,
 	startOfMonth,
 } from "../../lib/date.utils";
-import { chunk } from "../../lib/calendar.utils";
 import { Calendar, CalendarSkeleton } from "../calendar";
 
 const inclHidden = { includeHiddenElements: true } as const;
@@ -33,8 +33,7 @@ function flatStyle(node: {
 	return out;
 }
 
-// Grid is rendered inside the sheet-free inline surface; days expose
-// k-calendar-day-<iso> markers (iso = YYYY-MM-DD, stable for Maestro).
+// Grid is rendered inside the sheet-free inline surface; days expose k-calendar-day-<iso> markers (iso = YYYY-MM-DD, stable for Maestro).
 const iso = (d: Date): string =>
 	`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
 		d.getDate(),
@@ -95,7 +94,12 @@ describe("date.utils", () => {
 
 	it("chunk splits into fixed-size rows (even, ragged, empty)", () => {
 		expect(chunk([1, 2, 3, 4, 5, 6, 7], 7)).toEqual([[1, 2, 3, 4, 5, 6, 7]]);
-		expect(chunk(Array.from({ length: 42 }, (_, i) => i), 7)).toHaveLength(6);
+		expect(
+			chunk(
+				Array.from({ length: 42 }, (_, i) => i),
+				7,
+			),
+		).toHaveLength(6);
 		expect(chunk([1, 2, 3, 4, 5], 3)).toEqual([
 			[1, 2, 3],
 			[4, 5],
@@ -105,27 +109,26 @@ describe("date.utils", () => {
 });
 
 describe("Calendar", () => {
-it("week rows keep stable identity across month navigation", async () => {
-	const screen: Screen = await render(
-		<Calendar month={new Date(2026, 8, 1)} />, // September 2026
-	);
-	const before = screen
-		.getAllByTestId(/^k-calendar-cell-/)
-		.slice(0, 1)
-		.map((node) => node.props.testID);
-	await fireEvent.press(screen.getByTestId("k-calendar-next"));
-	const after = screen
-		.getAllByTestId(/^k-calendar-cell-/)
-		.slice(0, 1)
-		.map((node) => node.props.testID);
-	// cells identify by ISO day (no index keys); October's grid starts on
-	// a different first cell and every cell key is unique
-	expect(after[0]).not.toBe(before[0]);
-	expect(new Set(after).size).toBe(after.length);
-	expect(after.length).toBe(before.length);
-});
+	it("week rows keep stable identity across month navigation", async () => {
+		const screen: Screen = await render(
+			<Calendar month={new Date(2026, 8, 1)} />, // September 2026
+		);
+		const before = screen
+			.getAllByTestId(/^k-calendar-cell-/)
+			.slice(0, 1)
+			.map((node) => node.props.testID);
+		await fireEvent.press(screen.getByTestId("k-calendar-next"));
+		const after = screen
+			.getAllByTestId(/^k-calendar-cell-/)
+			.slice(0, 1)
+			.map((node) => node.props.testID);
+		// cells identify by ISO day (no index keys); October's grid starts on a different first cell and every cell key is unique
+		expect(after[0]).not.toBe(before[0]);
+		expect(new Set(after).size).toBe(after.length);
+		expect(after.length).toBe(before.length);
+	});
 
-it("renders the k-calendar marker with weekday header and a 6x7 grid", async () => {
+	it("renders the k-calendar marker with weekday header and a 6x7 grid", async () => {
 		const screen: Screen = await render(
 			<Calendar month={new Date(2026, 1, 1)} />,
 		);
@@ -244,16 +247,16 @@ it("renders the k-calendar marker with weekday header and a 6x7 grid", async () 
 		expect(onValueChange).toHaveBeenCalledTimes(1);
 	});
 
-		// month label is now a Pressable: its text rides inside a child RNText
-		const labelText = (screen: Screen): string => {
-			const first = (
-				screen.getByTestId("k-calendar-month-label").props.children as unknown[]
-			)[0];
-			if (first && typeof first === "object" && "props" in first) {
-				return String((first as { props: { children?: string } }).props.children);
-			}
-			return String(first);
-		};
+	// month label is now a Pressable: its text rides inside a child RNText
+	const labelText = (screen: Screen): string => {
+		const first = (
+			screen.getByTestId("k-calendar-month-label").props.children as unknown[]
+		)[0];
+		if (first && typeof first === "object" && "props" in first) {
+			return String((first as { props: { children?: string } }).props.children);
+		}
+		return String(first);
+	};
 
 	it("prev/next navigate across month and year boundaries", async () => {
 		const screen: Screen = await render(
@@ -339,15 +342,15 @@ it("renders the k-calendar marker with weekday header and a 6x7 grid", async () 
 			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
 			const options = screen.getAllByTestId(/^k-calendar-month-option-\d+$/);
 			expect(options.length).toBe(12);
-				expect(
-					screen.getByTestId("k-calendar-month-option-2").props
-						.accessibilityLabel,
-				).toBe("March");
+			expect(
+				screen.getByTestId("k-calendar-month-option-2").props
+					.accessibilityLabel,
+			).toBe("March");
 			const feb = screen.getByTestId("k-calendar-month-option-1");
 			expect(feb.props.accessibilityState?.selected).toBe(true);
 			expect(
 				screen.getByTestId("k-calendar-month-option-0").props.accessibilityState
-				?.selected,
+					?.selected,
 			).toBe(false);
 		});
 
@@ -396,7 +399,7 @@ it("renders the k-calendar marker with weekday header and a 6x7 grid", async () 
 			);
 			expect(
 				screen.getByTestId("k-calendar-month-option-6").props.accessibilityState
-				?.disabled,
+					?.disabled,
 			).toBe(true);
 		});
 
@@ -411,19 +414,19 @@ it("renders the k-calendar marker with weekday header and a 6x7 grid", async () 
 			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
 			expect(
 				screen.getByTestId("k-calendar-month-option-0").props.accessibilityState
-				?.disabled,
+					?.disabled,
 			).toBe(true);
 			expect(
 				screen.getByTestId("k-calendar-month-option-1").props.accessibilityState
-				?.disabled,
+					?.disabled,
 			).toBe(false);
 			expect(
 				screen.getByTestId("k-calendar-month-option-5").props.accessibilityState
-				?.disabled,
+					?.disabled,
 			).toBe(false);
 			expect(
 				screen.getByTestId("k-calendar-month-option-6").props.accessibilityState
-				?.disabled,
+					?.disabled,
 			).toBe(true);
 		});
 
@@ -487,7 +490,9 @@ it("renders the k-calendar marker with weekday header and a 6x7 grid", async () 
 			const screen: Screen = await render(
 				<Calendar month={new Date(2026, 0, 1)} />,
 			);
-			const leading = flatStyle(screen.getByTestId("k-calendar-cell-2025-12-28"));
+			const leading = flatStyle(
+				screen.getByTestId("k-calendar-cell-2025-12-28"),
+			);
 			expect(leading.flexGrow).toBe(1);
 			expect(
 				screen.getByTestId("k-calendar-day-2025-12-28").props.accessibilityState
@@ -498,8 +503,8 @@ it("renders the k-calendar marker with weekday header and a 6x7 grid", async () 
 		it("week rows stay 7 columns inside a narrow container", async () => {
 			const screen: Screen = await render(
 				<View style={{ width: 200 }}>
-				<Calendar month={new Date(2026, 1, 1)} />
-			</View>,
+					<Calendar month={new Date(2026, 1, 1)} />
+				</View>,
 			);
 			for (const week of screen.getAllByTestId("k-calendar-week")) {
 				expect(weekCells(week)).toBe(7);
@@ -520,13 +525,15 @@ it("renders the k-calendar marker with weekday header and a 6x7 grid", async () 
 						typeof c === "object" &&
 						typeof (c as { props?: { testID?: string } }).props?.testID ===
 							"string" &&
-						(c as unknown as { props: { testID: string } }).props.testID.startsWith(
-							"k-calendar-month-option-",
-					),
+						(
+							c as unknown as { props: { testID: string } }
+						).props.testID.startsWith("k-calendar-month-option-"),
 				);
 				expect(options).toHaveLength(3);
 				for (const option of options) {
-					const style = flatStyle(option as unknown as { props: { style?: unknown } });
+					const style = flatStyle(
+						option as unknown as { props: { style?: unknown } },
+					);
 					expect(style.flexGrow).toBe(1);
 					expect(style.flexBasis).toBe(0);
 					expect(style.width).toBeUndefined();
@@ -555,10 +562,7 @@ it("renders the k-calendar marker with weekday header and a 6x7 grid", async () 
 		it("opening, navigating years, and picking months never commit a value", async () => {
 			const onValueChange = jest.fn();
 			const screen: Screen = await render(
-				<Calendar
-					month={new Date(2026, 1, 1)}
-					onValueChange={onValueChange}
-			/>,
+				<Calendar month={new Date(2026, 1, 1)} onValueChange={onValueChange} />,
 			);
 			await fireEvent.press(screen.getByTestId("k-calendar-month-label"));
 			await fireEvent.press(screen.getByTestId("k-calendar-year-prev"));

@@ -1,5 +1,6 @@
 import type * as DialogPrimitive from "@radix-ui/react-dialog";
 import type * as React from "react";
+import type { IconComponent } from "../icons";
 import type { SlotStyles } from "../../lib/slot-styles";
 
 export interface DialogContentProps
@@ -10,6 +11,8 @@ export interface DialogContentProps
 	size?: "sm" | "md" | "lg" | "xl" | "full";
 	/** Accessible name for the close button; defaults to "Close". */
 	closeLabel?: string;
+	/** Close-button glyph — any `{className, size}` icon component; defaults to kala's built-in ✕. */
+	closeIcon?: IconComponent;
 	/** Per-part overrides: `root` wins over `className`/`style`; `overlay` targets the backdrop, `close` the close button, `closeIcon` its glyph. */
 	slotStyles?: SlotStyles;
 }

@@ -26,7 +26,11 @@ function ToggleGroup({
 	ref,
 	...props
 }: ToggleGroupProps) {
-	const slotStyles = useSlotStyles("toggle-group", slotStylesRaw, variant ?? undefined);
+	const slotStyles = useSlotStyles(
+		"toggle-group",
+		slotStylesRaw,
+		variant ?? undefined,
+	);
 	return (
 		<ToggleGroupContext.Provider value={{ variant, size }}>
 			<ToggleGroupPrimitive.Root

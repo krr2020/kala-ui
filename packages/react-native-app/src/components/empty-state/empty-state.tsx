@@ -5,7 +5,7 @@
  * 44dp-floor pressable. isLoading swaps the body for skeleton rows.
  */
 
-import { Inbox } from "lucide-react-native";
+import { Inbox } from "@kala-ui/react-native/icons";
 import type { ReactElement } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";

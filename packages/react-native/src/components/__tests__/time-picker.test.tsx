@@ -49,8 +49,7 @@ describe("TimePicker", () => {
 			<TimePicker onValueChange={onValueChange} />,
 		);
 		expect(onValueChange).not.toHaveBeenCalled();
-		// zero-value hour is index 0 in the 24h wheel and reads "00";
-		// it is the selected row, every other row is dimmed
+		// zero-value hour is index 0 in the 24h wheel and reads "00"; it is the selected row, every other row is dimmed
 		const zero = screen.getByTestId("k-time-picker-hour-item-0");
 		expect(flatStyle(zero).opacity).toBe(1);
 		expect(

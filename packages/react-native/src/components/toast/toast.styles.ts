@@ -25,8 +25,7 @@ export const viewportStyle = (
 	zIndex: 200,
 	justifyContent: position === "top" ? "flex-start" : "flex-end",
 	padding: 16,
-	// each end pads only for the surface it sits against: a top toast
-	// clears the status bar, a bottom toast clears the nav bar / keyboard
+	// each end pads only for the surface it sits against: a top toast clears the status bar, a bottom toast clears the nav bar / keyboard
 	...(position === "top"
 		? { paddingTop: 16 + insets.top }
 		: { paddingBottom: 16 + insets.bottom }),

@@ -26,9 +26,7 @@ export function box(
 		borderRadius: 6,
 		alignItems: "center",
 		justifyContent: "center",
-		// resting box is border-defined, not card-filled: a card fill is
-		// invisible on card-colored surfaces (dark sheets/pages). RN sizes
-		// width/height border-box, so the stroke draws inside the 22dp box
+		// resting box is border-defined, not card-filled: a card fill is invisible on card-colored surfaces (dark sheets/pages). RN sizes width/height border-box, so the stroke draws inside the 22dp box
 		backgroundColor: active ? theme.primary : "transparent",
 		borderWidth,
 		borderColor: active

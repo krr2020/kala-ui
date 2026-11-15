@@ -2,7 +2,7 @@
 
 import { useUncontrolled } from "@kala-ui/react-hooks";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
-import { ChevronsUpDown, X } from "lucide-react";
+import { ChevronsUpDown, X, type IconComponent } from "../icons";
 import * as React from "react";
 import { multiSelectStyles } from "../../config/multi-select";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
@@ -113,6 +113,12 @@ export interface MultiSelectProps {
 	 * Inline styles for the trigger wrapper
 	 */
 	style?: React.CSSProperties;
+	/** Trigger toggle glyph — any `{className, size}` icon component; defaults to kala's built-in chevrons. */
+	toggleIcon?: IconComponent;
+	/** Chip remove glyph — any `{className, size}` icon component; defaults to kala's built-in ✕. */
+	removeIcon?: IconComponent;
+	/** Clear-all glyph — any `{className, size}` icon component; defaults to kala's built-in ✕. */
+	clearIcon?: IconComponent;
 	/**
 	 * Overrides for the multi-select parts
 	 */
@@ -139,6 +145,9 @@ function MultiSelect({
 	showSeparators = false,
 	matchTriggerWidth = true,
 	style,
+	toggleIcon: ToggleIcon = ChevronsUpDown,
+	removeIcon: RemoveIcon = X,
+	clearIcon: ClearIcon = X,
 	slotStyles: slotStylesRaw,
 }: MultiSelectProps) {
 	const slotStyles = useSlotStyles("multi-select", slotStylesRaw);
@@ -362,7 +371,7 @@ function MultiSelect({
 											style={chipRemove.style}
 											aria-label={`Remove ${option.label}`}
 										>
-											<X
+											<RemoveIcon
 												className={chipRemoveIcon.className}
 												style={chipRemoveIcon.style}
 												aria-hidden="true"
@@ -391,14 +400,14 @@ function MultiSelect({
 							style={clearAll.style}
 							aria-label="Clear all"
 						>
-							<X
+							<ClearIcon
 								className={clearAllIcon.className}
 								style={clearAllIcon.style}
 								aria-hidden="true"
 							/>
 						</button>
 					)}
-					<ChevronsUpDown
+					<ToggleIcon
 						className={chevron.className}
 						style={chevron.style}
 						aria-hidden="true"

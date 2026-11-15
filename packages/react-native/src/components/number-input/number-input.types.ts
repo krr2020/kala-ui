@@ -4,6 +4,7 @@ import type {
 	TextStyle,
 	ViewStyle,
 } from "react-native";
+import type { IconComponent } from "../icon";
 
 export interface NumberInputProps {
 	/** controlled numeric value; null = empty field. Rendered verbatim, even outside [min, max] — the parent owns clamping for its own state. */
@@ -32,6 +33,10 @@ export interface NumberInputProps {
 	/** stepper labels, default "Increase" / "Decrease" */
 	incrementLabel?: string;
 	decrementLabel?: string;
+	/** icon-library component for the increment stepper — kala Plus by default */
+	incrementIcon?: IconComponent;
+	/** icon-library component for the decrement stepper — kala Minus by default */
+	decrementIcon?: IconComponent;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library row and `style`; input/stepper reach the field and the pressable steppers. */

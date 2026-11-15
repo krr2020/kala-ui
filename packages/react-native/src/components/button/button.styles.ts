@@ -2,10 +2,7 @@
  * Non-component wiring for Button: size tiers, variant color mapping,
  * the base style builder, and the animated pressable wrapper.
  */
-// gesture-handler's Pressable: its press completes as a native gesture,
-// so a Button still fires on the first tap that also dismisses the
-// software keyboard inside an Android Modal (the JS-thread responder
-// is cancelled by the IME-hide window resize before onPress lands)
+// gesture-handler's Pressable: its press completes as a native gesture, so a Button still fires on the first tap that also dismisses the software keyboard inside an Android Modal (the JS-thread responder is cancelled by the IME-hide window resize before onPress lands)
 import { Pressable } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import { motion, tokens } from "../../tokens";
@@ -92,9 +89,7 @@ export function baseStyle(
 ): Record<string, unknown> {
 	const isIcon = size === "icon";
 	const height = isIcon ? ICON_BOX : (HEIGHT[size] ?? ICON_BOX);
-	// visual height follows the size tier (minHeight, not height, so
-	// accessibility font scales can still grow the button); hitSlop
-	// restores the 44dp touch floor around the compact tiers.
+	// visual height follows the size tier (minHeight, not height, so accessibility font scales can still grow the button); hitSlop restores the 44dp touch floor around the compact tiers.
 	const hitSlop = Math.max(0, (44 - height) / 2);
 	return {
 		minHeight: height,

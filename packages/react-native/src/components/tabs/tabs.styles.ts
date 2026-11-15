@@ -2,8 +2,8 @@ import type { TextStyle, ViewStyle } from "react-native";
 import { tokens } from "../../tokens";
 import type { KalaTheme } from "../../types";
 import type { BadgeColor, BadgeVariant } from "../badge/badge.types";
-import type { IndicatorColor } from "../indicator/indicator.types";
 import type { IconColor } from "../icon/icon.types";
+import type { IndicatorColor } from "../indicator/indicator.types";
 import type { TabsVariant } from "./tabs.types";
 
 /**
@@ -18,13 +18,10 @@ import type { TabsVariant } from "./tabs.types";
 
 export type TabsLook = "line" | "pill";
 
-// Matches the segmented-control full-radius precedent; shape tokens carry no
-// "full" entry.
+// Matches the segmented-control full-radius precedent; shape tokens carry no "full" entry.
 const RADIUS_FULL = 999;
 
-// Anything other than the literal "pill" resolves to line, so a stray variant
-// string can never produce a hybrid (primary fill + underline) or an
-// unstyled tab.
+// Anything other than the literal "pill" resolves to line, so a stray variant string can never produce a hybrid (primary fill + underline) or an unstyled tab.
 export const resolveTabsVariant = (
 	variant: TabsVariant | undefined,
 ): TabsLook => (variant === "pill" ? "pill" : "line");
@@ -84,10 +81,7 @@ export const tabsTabStyle = ({
 			: {}),
 });
 
-// The line-variant selection marker: an absolutely-positioned zero-size box
-// whose 2px themed border IS the underline/rail — bottom edge when tabs run
-// horizontally, leading edge when stacked vertically. It sits on top of the
-// track's 1px divider (2px primary over 1px border).
+// The line-variant selection marker: an absolutely-positioned zero-size box whose 2px themed border IS the underline/rail — bottom edge when tabs run horizontally, leading edge when stacked vertically. It sits on top of the track's 1px divider (2px primary over 1px border).
 export const tabsUnderlineStyle = ({
 	theme,
 	vertical,
@@ -131,18 +125,14 @@ export const tabsTabTextStyle = ({
 	fontWeight: selected ? "600" : "500",
 });
 
-// Count chip beside the label: subtle-muted on plain tab surfaces; solid
-// secondary keeps the chip readable on the primary-filled active pill.
-export const tabsBadgeVariant = (
-	onActivePill: boolean,
-): BadgeVariant => (onActivePill ? "solid" : "subtle");
+// Count chip beside the label: subtle-muted on plain tab surfaces; solid secondary keeps the chip readable on the primary-filled active pill.
+export const tabsBadgeVariant = (onActivePill: boolean): BadgeVariant =>
+	onActivePill ? "solid" : "subtle";
 
-export const tabsBadgeColor = (
-	onActivePill: boolean,
-): BadgeColor => (onActivePill ? "secondary" : "muted");
+export const tabsBadgeColor = (onActivePill: boolean): BadgeColor =>
+	onActivePill ? "secondary" : "muted";
 
-// Notification dot color: primary on plain surfaces, secondary on the
-// active pill so it never disappears into the primary fill.
+// Notification dot color: primary on plain surfaces, secondary on the active pill so it never disappears into the primary fill.
 export const tabsDotColor = (onActivePill: boolean): IndicatorColor =>
 	onActivePill ? "secondary" : "primary";
 

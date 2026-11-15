@@ -5,8 +5,7 @@ import { themes } from "../themes";
 import { motion, tokens } from "../tokens";
 import type { KalaTheme, ThemeName } from "../types";
 
-// compile-time pin: every shipped theme satisfies the fully-keyed KalaTheme
-// interface — a missing/extra/mis-typed token anywhere is a tsc error
+// compile-time pin: every shipped theme satisfies the fully-keyed KalaTheme interface — a missing/extra/mis-typed token anywhere is a tsc error
 const _themeSatisfies: Record<ThemeName, KalaTheme> = {
 	light: themes.light,
 	dark: themes.dark,
@@ -321,11 +320,9 @@ describe("layout restructure pins", () => {
 	});
 
 	it("src/index.ts public export names are unchanged", () => {
-		// Static parse (not import): the entry pulls in react-native, which
-		// vitest cannot execute — the export LIST is the contract anyway.
+		// Static parse (not import): the entry pulls in react-native, which vitest cannot execute — the export LIST is the contract anyway.
 		const entry = readFileSync(resolve(__dirname, "../index.ts"), "utf8");
-		// `export *` and default exports are outside this pin's vocabulary —
-		// fail loudly instead of silently under-collecting.
+		// `export *` and default exports are outside this pin's vocabulary — fail loudly instead of silently under-collecting.
 		expect(entry).not.toMatch(/export\s+\*/);
 		expect(entry).not.toMatch(/export\s+default/);
 		const names = new Set<string>();
@@ -341,11 +338,9 @@ describe("layout restructure pins", () => {
 				if (name) names.add(name);
 			}
 		}
-		// An empty set means the entry stopped matching the re-export shape —
-		// that is a parse failure, not a passing pin.
+		// An empty set means the entry stopped matching the re-export shape — that is a parse failure, not a passing pin.
 		expect(names.size).toBeGreaterThan(0);
-		// Generated from src/index.ts export statements (same parser as
-		// above) — extend the entry, then regenerate, never hand-edit.
+		// Generated from src/index.ts export statements (same parser as above) — extend the entry, then regenerate, never hand-edit.
 		expect([...names].sort()).toEqual(
 			[
 				"Accordion",

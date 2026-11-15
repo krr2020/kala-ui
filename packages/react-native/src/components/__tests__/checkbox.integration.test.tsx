@@ -38,7 +38,7 @@ describe("Checkbox demo ↔ package seam", () => {
 	it("demo renders Checkboxes the way this contract pins (source census)", () => {
 		const source = readFileSync(DEMO, "utf8");
 		expect(source).toContain("<Checkbox");
-		expect(source).toContain("useState<TriState>(\"indeterminate\")");
+		expect(source).toContain('useState<TriState>("indeterminate")');
 		expect(source).toContain("onValueChange={cycle}");
 	});
 
@@ -65,9 +65,7 @@ describe("Checkbox demo ↔ package seam", () => {
 		);
 		await fireEvent.press(screen.getByTestId("k-checkbox"));
 		expect(seen).toEqual([true]);
-		expect(
-			seen.every((payload) => typeof payload === "boolean"),
-		).toBe(true);
+		expect(seen.every((payload) => typeof payload === "boolean")).toBe(true);
 	});
 
 	it("demo demo pins hasError and the closing tri-state cycle (source census)", () => {
@@ -80,8 +78,8 @@ describe("Checkbox demo ↔ package seam", () => {
 	it("demo-shaped hasError row: destructive resting border", async () => {
 		const { themes } = require("../../themes");
 		const screen = await render(
-				<Checkbox label="Accept shipping terms" value={false} hasError />,
-			);
+			<Checkbox label="Accept shipping terms" value={false} hasError />,
+		);
 		const box = flatStyle(screen.getByTestId("k-checkbox-box", inclHidden));
 		expect(box.borderColor).toBe(themes.light.destructive);
 		expect(box.backgroundColor).toBe("transparent");

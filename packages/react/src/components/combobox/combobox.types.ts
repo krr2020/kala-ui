@@ -1,4 +1,5 @@
 import type * as React from "react";
+import type { IconComponent } from "../icons";
 import type { SlotStyles } from "../../lib/slot-styles";
 
 export interface ComboboxOption {
@@ -16,6 +17,12 @@ export interface ComboboxProps {
 	"aria-label"?: string;
 	/** Options to display in the combobox. */
 	options: ComboboxOption[];
+	/** Trigger toggle glyph — any `{className, size}` icon component; defaults to kala's built-in chevrons. */
+	toggleIcon?: IconComponent;
+	/** Clear glyph — any `{className, size}` icon component; defaults to kala's built-in ✕. */
+	clearIcon?: IconComponent;
+	/** Selected-item check — any `{className, size}` icon component; defaults to kala's built-in check. */
+	checkIcon?: IconComponent;
 	/** Selected value (controlled). */
 	value?: string;
 	/** Initially selected value (uncontrolled). */

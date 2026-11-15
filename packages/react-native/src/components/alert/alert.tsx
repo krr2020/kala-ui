@@ -6,11 +6,11 @@
  * compare children identity and reopen).
  */
 
-import { X } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { X } from "../icon/glyphs";
 import { applySlot } from "../slot-styles";
 import {
 	bodyStyle,
@@ -36,9 +36,11 @@ export function Alert({
 	variant = "subtle",
 	color = "primary",
 	showIcon = true,
+	icon: IconOverride,
 	dismissable = false,
 	onDismiss,
 	dismissLabel = "Dismiss alert",
+	closeIcon: CloseIcon = X,
 	accessibilityLabel,
 	style,
 	slotStyles,
@@ -58,13 +60,12 @@ export function Alert({
 
 	if (hidden) return null;
 
-	const Icon = ICONS[color];
+	const Icon = IconOverride ?? ICONS[color];
 
 	return (
 		<View
 			testID={testID}
-			// accessible: surface the container as ONE a11y element — without
-			// it TLB (and VoiceOver) sees only the leaf text, never role=alert
+			// accessible: surface the container as ONE a11y element — without it TLB (and VoiceOver) sees only the leaf text, never role=alert
 			accessible={true}
 			accessibilityRole="alert"
 			accessibilityLabel={accessibilityLabel}
@@ -95,7 +96,7 @@ export function Alert({
 					}}
 					style={applySlot(dismissStyle, slotStyles?.dismiss)}
 				>
-					<X size={16} color={fg} />
+					<CloseIcon size={16} color={fg} />
 				</Pressable>
 			) : null}
 		</View>
@@ -113,10 +114,7 @@ function AlertTitle({
 	return (
 		<RNText
 			testID={testID}
-			style={applySlot(
-				[titleStyle(fg), style],
-				slotStyles?.root,
-			)}
+			style={applySlot([titleStyle(fg), style], slotStyles?.root)}
 		>
 			{children}
 		</RNText>
@@ -134,10 +132,7 @@ function AlertDescription({
 	return (
 		<RNText
 			testID={testID}
-			style={applySlot(
-				[descriptionStyle(fg), style],
-				slotStyles?.root,
-			)}
+			style={applySlot([descriptionStyle(fg), style], slotStyles?.root)}
 		>
 			{children}
 		</RNText>

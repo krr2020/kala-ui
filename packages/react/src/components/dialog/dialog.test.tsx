@@ -15,7 +15,6 @@ import {
 } from "./dialog";
 
 describe("Dialog", () => {
-
 	it("should render dialog trigger", () => {
 		render(
 			<Dialog>
@@ -320,5 +319,4 @@ describe("useFrozenChildren", () => {
 		rerender(<FreezeProbe open text="Next" />);
 		expect(container.textContent).toBe("Next");
 	});
-
 });

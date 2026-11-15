@@ -24,7 +24,9 @@ describe("alert demo ↔ library seam", () => {
 	});
 
 	it("segregates the sweep: one labeled block per dimension, humanized copy", () => {
-		expect(demo).toMatch(/VARIANTS = \["solid", "outline", "subtle"\] as const/);
+		expect(demo).toMatch(
+			/VARIANTS = \["solid", "outline", "subtle"\] as const/,
+		);
 		const colorsBlock =
 			demo.match(/const COLORS = \[([\s\S]*?)\] as const/)?.[1] ?? "";
 		for (const color of [
@@ -48,16 +50,16 @@ describe("alert demo ↔ library seam", () => {
 			/\{COLORS\.map\(\(color\) => \([\s\S]*?humanizeLabel\(color\)/,
 		);
 		// no flat variant×color debug sweep, no raw enum text in the copy
-		expect(demo).not.toMatch(/VARIANTS\.map\(\(variant\) =>\s*\n\s*COLORS\.map/);
+		expect(demo).not.toMatch(
+			/VARIANTS\.map\(\(variant\) =>\s*\n\s*COLORS\.map/,
+		);
 		expect(demo).not.toMatch(/\{variant\} · \{color\}/);
 	});
 
 	it("demonstrates Title/Description pairing and a plain-string child", () => {
 		expect(demo).toMatch(/<Alert\.Title>/);
 		expect(demo).toMatch(/<Alert\.Description>/);
-		expect(demo).toMatch(
-			/<Alert[^>]*>\n[\s]*[A-Z][^<\n]*\n[\s]*<\/Alert>/m,
-		);
+		expect(demo).toMatch(/<Alert[^>]*>\n[\s]*[A-Z][^<\n]*\n[\s]*<\/Alert>/m);
 	});
 
 	it("dismissal round-trips: counter on hide, explicit re-show control", () => {
@@ -65,10 +67,11 @@ describe("alert demo ↔ library seam", () => {
 		expect(demo).toMatch(/Dismissed \{dismissed\} Times/);
 		expect(demo).toMatch(/Show Alert Again/);
 		expect(demo).toMatch(/setVisible\(true\)/);
-		// the re-show control lives in the hidden arm: counter text first,
-		// then the button, inside the same conditional branch
+		// the re-show control lives in the hidden arm: counter text first, then the button, inside the same conditional branch
 		const hiddenArm = demo.slice(demo.indexOf(") : ("));
-		expect(hiddenArm.indexOf("Dismissed {dismissed} Times")).toBeGreaterThan(-1);
+		expect(hiddenArm.indexOf("Dismissed {dismissed} Times")).toBeGreaterThan(
+			-1,
+		);
 		expect(hiddenArm.indexOf("Show Alert Again")).toBeGreaterThan(
 			hiddenArm.indexOf("Dismissed {dismissed} Times"),
 		);

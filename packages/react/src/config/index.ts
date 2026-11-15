@@ -1,6 +1,4 @@
-export {
-	avatarGroupStyles,
-} from "./avatar-group";
+export { avatarGroupStyles } from "./avatar-group";
 export { alertStyles } from "./alert";
 export { bannerStyles } from "./banner";
 export { datePickerStyles } from "./date-picker";

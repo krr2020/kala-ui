@@ -25,8 +25,20 @@ describe("tokens.css extraction (item 13)", () => {
 		"ships a tokens.css with the theme blocks; globals no longer inlines them",
 		() => {
 			const tokens = tokensCss as string;
-			for (const selector of [":root", ".neutral", ".accent", ".dark", ".dark.accent", ".high-contrast-light", ".high-contrast-dark"]) {
-				expect(tokens, selector).toMatch(new RegExp(`${selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*\\{`));
+			for (const selector of [
+				":root",
+				".neutral",
+				".accent",
+				".dark",
+				".dark.accent",
+				".high-contrast-light",
+				".high-contrast-dark",
+			]) {
+				expect(tokens, selector).toMatch(
+					new RegExp(
+						`${selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*\\{`,
+					),
+				);
 			}
 			expect(globalsCss).not.toMatch(/:root\s*\{/);
 			expect(globalsCss).toContain('@import "./tokens.css";');
@@ -36,8 +48,9 @@ describe("tokens.css extraction (item 13)", () => {
 	it.skipIf(tokensCss === null)(
 		"color-mix alpha formulas live only in tokens.css",
 		() => {
-			const FORMULA = /color-mix\(\s*in oklab[\s\S]*?--(?:border|shadow|overlay|background)-alpha/;
-			expect((tokensCss as string)).toMatch(FORMULA);
+			const FORMULA =
+				/color-mix\(\s*in oklab[\s\S]*?--(?:border|shadow|overlay|background)-alpha/;
+			expect(tokensCss as string).toMatch(FORMULA);
 			for (const [name, css] of [
 				["globals.css", globalsCss],
 				["helpers.css", helpersCss],
@@ -150,24 +163,35 @@ const tokenNames = (selector: string): Set<string> => {
 };
 
 describe("theme-block token parity", () => {
-	const selectable = [":root", ".dark", ".high-contrast-light", ".high-contrast-dark"];
+	const selectable = [
+		":root",
+		".dark",
+		".high-contrast-light",
+		".high-contrast-dark",
+	];
 	// Radii/motion are theme-invariant: defined once on :root and inherited,
 	// so they are excluded from per-theme parity instead of being duplicated.
 	const isInvariant = (name: string) =>
 		name.startsWith("--kala-") || name.startsWith("--default-transition");
 
 	it("the four selectable theme blocks define identical themeable token sets", () => {
-		const baseline = [...tokenNames(":root")].filter((n) => !isInvariant(n)).sort();
+		const baseline = [...tokenNames(":root")]
+			.filter((n) => !isInvariant(n))
+			.sort();
 		expect(baseline.length).toBeGreaterThan(0);
 		for (const selector of selectable.slice(1)) {
-			const names = [...tokenNames(selector)].filter((n) => !isInvariant(n)).sort();
+			const names = [...tokenNames(selector)]
+				.filter((n) => !isInvariant(n))
+				.sort();
 			expect(names, selector).toEqual(baseline);
 		}
 	});
 
 	it("keeps invariant radii/motion tokens out of per-theme blocks", () => {
 		for (const selector of selectable.slice(1)) {
-			expect([...tokenNames(selector)].filter(isInvariant), selector).toEqual([]);
+			expect([...tokenNames(selector)].filter(isInvariant), selector).toEqual(
+				[],
+			);
 		}
 	});
 
@@ -184,12 +208,30 @@ describe("theme-block token parity", () => {
 
 describe("size-ladder knobs (item 7)", () => {
 	const ladder: Array<[name: string, pattern: RegExp]> = [
-		["--kala-control-h-xs", /--kala-control-h-xs:\s*calc\(var\(--kala-control-h\) - 0\.75rem\)/],
-		["--kala-control-h-sm", /--kala-control-h-sm:\s*calc\(var\(--kala-control-h\) - 0\.25rem\)/],
-		["--kala-control-h-lg", /--kala-control-h-lg:\s*calc\(var\(--kala-control-h\) \+ 0\.25rem\)/],
-		["--kala-control-px-xs", /--kala-control-px-xs:\s*calc\(var\(--kala-control-px\) - 0\.5rem\)/],
-		["--kala-control-px-sm", /--kala-control-px-sm:\s*calc\(var\(--kala-control-px\) - 0\.25rem\)/],
-		["--kala-control-px-lg", /--kala-control-px-lg:\s*calc\(var\(--kala-control-px\) \+ 1rem\)/],
+		[
+			"--kala-control-h-xs",
+			/--kala-control-h-xs:\s*calc\(var\(--kala-control-h\) - 0\.75rem\)/,
+		],
+		[
+			"--kala-control-h-sm",
+			/--kala-control-h-sm:\s*calc\(var\(--kala-control-h\) - 0\.25rem\)/,
+		],
+		[
+			"--kala-control-h-lg",
+			/--kala-control-h-lg:\s*calc\(var\(--kala-control-h\) \+ 0\.25rem\)/,
+		],
+		[
+			"--kala-control-px-xs",
+			/--kala-control-px-xs:\s*calc\(var\(--kala-control-px\) - 0\.5rem\)/,
+		],
+		[
+			"--kala-control-px-sm",
+			/--kala-control-px-sm:\s*calc\(var\(--kala-control-px\) - 0\.25rem\)/,
+		],
+		[
+			"--kala-control-px-lg",
+			/--kala-control-px-lg:\s*calc\(var\(--kala-control-px\) \+ 1rem\)/,
+		],
 		["--kala-radius-sm", /--kala-radius-sm:\s*0\.25rem/],
 	];
 
@@ -252,9 +294,31 @@ describe("config color utilities resolve", () => {
 	// Non-color operands of color-prefixed utilities: font sizes, text
 	// alignment, and CSS keywords that are not @theme color entries.
 	const NON_COLOR = new Set([
-		"sm", "xs", "base", "lg", "xl", "2xl", "3xl", "4xl", "5xl", "6xl", "7xl", "8xl",
-		"9xl", "left", "center", "right", "top", "bottom", "start", "end",
-		"transparent", "current", "inherit", "none", "hidden",
+		"sm",
+		"xs",
+		"base",
+		"lg",
+		"xl",
+		"2xl",
+		"3xl",
+		"4xl",
+		"5xl",
+		"6xl",
+		"7xl",
+		"8xl",
+		"9xl",
+		"left",
+		"center",
+		"right",
+		"top",
+		"bottom",
+		"start",
+		"end",
+		"transparent",
+		"current",
+		"inherit",
+		"none",
+		"hidden",
 	]);
 	// border-<width|style> operands: border-b, border-l-2, border-dashed, …
 	const BORDER_STRUCTURAL =
@@ -265,12 +329,11 @@ describe("config color utilities resolve", () => {
 		const configDir = ["src/config", "packages/react/src/config"]
 			.map((p) => `${process.cwd()}/${p}`)
 			.find((p) => readdirSync(p).length > 0);
-		if (!configDir) throw new Error("cannot locate packages/react/src/config from cwd");
-		for (
-			const file of readdirSync(configDir).filter(
-				(f) => f.endsWith(".ts") && f !== "index.ts",
-			)
-		) {
+		if (!configDir)
+			throw new Error("cannot locate packages/react/src/config from cwd");
+		for (const file of readdirSync(configDir).filter(
+			(f) => f.endsWith(".ts") && f !== "index.ts",
+		)) {
 			const src = readFileSync(`${configDir}/${file}`, "utf8");
 			for (const match of src.matchAll(
 				/(?:^|[^\w-])((?:bg|text|ring|border|fill|stroke|outline|divide|from|via|to|accent|caret|decoration)-([a-z][a-z0-9-/]*))/g,
@@ -279,7 +342,8 @@ describe("config color utilities resolve", () => {
 				const name = match[2].split("/")[0];
 				if (themeColors.has(name)) continue;
 				if (NON_COLOR.has(name)) continue;
-				if (utility.startsWith("border") && BORDER_STRUCTURAL.test(name)) continue;
+				if (utility.startsWith("border") && BORDER_STRUCTURAL.test(name))
+					continue;
 				offenders.add(`${utility} (${file})`);
 			}
 		}

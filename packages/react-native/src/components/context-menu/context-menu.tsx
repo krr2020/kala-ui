@@ -9,9 +9,14 @@ import { useRef, useState } from "react";
 import { Pressable, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { renderMenuItem } from "../dropdown-menu/dropdown-menu";
+import { Check } from "../icon/glyphs";
 import { Sheet } from "../sheet";
 import { applySlot } from "../slot-styles";
-import { childRowStyle, contentStyle, triggerStyle } from "./context-menu.styles";
+import {
+	childRowStyle,
+	contentStyle,
+	triggerStyle,
+} from "./context-menu.styles";
 import type { ContextMenuProps } from "./context-menu.types";
 
 export function ContextMenu({
@@ -19,6 +24,7 @@ export function ContextMenu({
 	children,
 	snap,
 	dismissable,
+	checkIcon = Check,
 	onClose,
 	style,
 	slotStyles,
@@ -39,10 +45,7 @@ export function ContextMenu({
 				ref={triggerRef}
 				onLongPress={() => setOpen(true)}
 				delayLongPress={300}
-				style={applySlot(
-					applySlot(triggerStyle, style),
-					slotStyles?.root,
-				)}
+				style={applySlot(applySlot(triggerStyle, style), slotStyles?.root)}
 			>
 				<View style={childRowStyle} testID="k-context-menu-child">
 					{children}
@@ -66,6 +69,7 @@ export function ContextMenu({
 							"k-context-menu",
 							close,
 							applySlot({}, slotStyles?.item),
+							checkIcon,
 						),
 					)}
 				</View>

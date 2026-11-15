@@ -1,5 +1,5 @@
 import { cva } from "class-variance-authority";
-import { type LucideIcon, Inbox } from "lucide-react";
+import { Inbox, type IconComponent } from "../icons";
 import type * as React from "react";
 import { isValidElement } from "react";
 import { emptyStateStyles } from "../../config/empty-state";
@@ -37,7 +37,9 @@ type ButtonActionProps = {
 	variant?: React.ComponentProps<typeof Button>["variant"];
 };
 
-function isButtonAction(action: EmptyStateProps["action"]): action is ButtonActionProps {
+function isButtonAction(
+	action: EmptyStateProps["action"],
+): action is ButtonActionProps {
 	return (
 		typeof action === "object" &&
 		action !== null &&
@@ -102,11 +104,13 @@ function EmptyState({
 	const IconComponent =
 		iconNode || typeof resolvedIcon === "string"
 			? null
-			: (resolvedIcon as LucideIcon);
+			: (resolvedIcon as IconComponent);
 	const actionNode = isValidElement(action) ? action : null;
 	const buttonAction = isButtonAction(action) ? action : null;
 	const iconBase =
-		iconVariant === "plain" ? emptyStateStyles.iconPlain : emptyStateStyles.icon;
+		iconVariant === "plain"
+			? emptyStateStyles.iconPlain
+			: emptyStateStyles.icon;
 	const iconCircle = applySlot(iconBase, slotStyles?.icon);
 	const titleSlot = applySlot(emptyStateStyles.title, slotStyles?.title);
 	const descriptionSlot = applySlot(

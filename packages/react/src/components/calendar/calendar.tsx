@@ -1,10 +1,11 @@
 "use client";
 
 import {
-	ChevronDownIcon,
-	ChevronLeftIcon,
-	ChevronRightIcon,
-} from "lucide-react";
+	ChevronDown,
+	ChevronLeft,
+	ChevronRight,
+	type IconComponent,
+} from "../icons";
 
 import * as React from "react";
 import {
@@ -23,6 +24,12 @@ import { CalendarSkeleton } from "./calendar-skeleton";
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
 	buttonVariant?: React.ComponentProps<typeof Button>["variant"];
 	isLoading?: boolean;
+	/** Previous-month glyph — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	chevronLeftIcon?: IconComponent;
+	/** Next-month glyph — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	chevronRightIcon?: IconComponent;
+	/** Dropdown (month/year) glyph — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	chevronDownIcon?: IconComponent;
 	skeletonConfig?: import("./calendar-skeleton").CalendarSkeletonConfig;
 	skeleton?: React.ReactNode;
 	slotStyles?: SlotStyles;
@@ -37,6 +44,9 @@ function Calendar({
 	formatters,
 	components,
 	isLoading = false,
+	chevronLeftIcon: ChevronLeftIcon = ChevronLeft,
+	chevronRightIcon: ChevronRightIcon = ChevronRight,
+	chevronDownIcon: ChevronDownIcon = ChevronDown,
 	skeletonConfig,
 	skeleton,
 	style,

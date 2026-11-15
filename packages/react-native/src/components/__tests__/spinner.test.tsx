@@ -17,8 +17,7 @@ describe("Spinner a11y surface", () => {
 	});
 
 	it("indeterminate spinner carries no synthetic role", async () => {
-		// a fake progressbar/timer role would misannounce state the
-		// component does not have
+		// a fake progressbar/timer role would misannounce state the component does not have
 		const screen = await render(<Spinner />);
 		expect(
 			screen.getByTestId("k-spinner").props.accessibilityRole,

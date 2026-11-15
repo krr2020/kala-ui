@@ -38,7 +38,8 @@ export const calendarStyles = {
 	range_start: "rounded-l-md bg-accent",
 	range_middle: "rounded-none",
 	range_end: "rounded-r-md bg-accent",
-	today: "bg-accent text-accent-foreground rounded-md data-[selected=true]:rounded-none",
+	today:
+		"bg-accent text-accent-foreground rounded-md data-[selected=true]:rounded-none",
 	outside: "text-muted-foreground aria-selected:text-muted-foreground",
 	disabled: "text-muted-foreground opacity-50",
 	hidden: "invisible",

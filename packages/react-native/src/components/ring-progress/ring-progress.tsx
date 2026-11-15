@@ -99,15 +99,10 @@ export function RingProgress({
 			{label ? (
 				<View
 					testID="k-ring-progress-label"
-					style={[
-						labelOverlayStyle,
-						applySlot({}, slotStyles?.label),
-					]}
+					style={[labelOverlayStyle, applySlot({}, slotStyles?.label)]}
 				>
 					{typeof label === "string" || typeof label === "number" ? (
-								<RNText style={labelTextStyle(theme)}>
-								{label}
-							</RNText>
+						<RNText style={labelTextStyle(theme)}>{label}</RNText>
 					) : (
 						label
 					)}
@@ -116,4 +111,3 @@ export function RingProgress({
 		</View>
 	);
 }
-

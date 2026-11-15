@@ -79,9 +79,7 @@ describe("forms demos ↔ library seam", () => {
 				.map((part) => part[0].toUpperCase() + part.slice(1))
 				.join("");
 			expect(registry, `${name} → ${demo}`).toMatch(
-				new RegExp(
-					`name: "${name}",[\\s\\S]*?render: \\(\\) => <${demo}Demo`,
-				),
+				new RegExp(`name: "${name}",[\\s\\S]*?render: \\(\\) => <${demo}Demo`),
 			);
 		}
 	});

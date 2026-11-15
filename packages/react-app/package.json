@@ -1,11 +1,11 @@
 {
 	"name": "@kala-ui/react-app",
-	  "version": "0.1.0-beta.18",
+	"version": "0.1.0-beta.18",
 	"type": "module",
 	"sideEffects": [
 		"**/*.css"
 	],
-	"description": "App-level composite components for Kala UI — AppShell, Sidebar, Header, DataTable, ApexCharts wrappers, drag-and-drop and dashboard widgets — built on @kala-ui/react primitives.",
+	"description": "App-level composite components for Kala UI \u2014 AppShell, Sidebar, Header, DataTable, ApexCharts wrappers, drag-and-drop and dashboard widgets \u2014 built on @kala-ui/react primitives.",
 	"keywords": [
 		"react",
 		"ui",
@@ -103,9 +103,9 @@
 		"lint": "biome lint .",
 		"lint:fix": "biome lint . --write",
 		"lint:fix-unsafe": "biome lint . --write --unsafe",
-		"test": "vitest run",
-		"test:watch": "vitest",
-		"test:coverage": "vitest run --coverage",
+		"test": "vitest run --configLoader runner",
+		"test:watch": "vitest --configLoader runner",
+		"test:coverage": "vitest run --configLoader runner --coverage",
 		"format": "biome format --write ."
 	},
 	"main": "./dist/index.js",
@@ -132,7 +132,6 @@
 		"@kala-ui/react": "workspace:*",
 		"@kala-ui/react-hooks": "workspace:*",
 		"apexcharts": "~7.0.0",
-		"lucide-react": "catalog:",
 		"react-apexcharts": "~2.1.1",
 		"simple-icons": "catalog:"
 	},
@@ -155,6 +154,7 @@
 		"typescript": "catalog:",
 		"vite": "catalog:",
 		"vitest": "catalog:",
-		"vitest-axe": "catalog:"
+		"vitest-axe": "catalog:",
+		"lucide-react": "catalog:"
 	}
 }

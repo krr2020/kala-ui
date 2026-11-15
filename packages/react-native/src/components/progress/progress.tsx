@@ -30,8 +30,7 @@ export function Progress({
 	const pct = max === min ? 0 : ((clamped - min) / (max - min)) * 100;
 	const inner =
 		label !== undefined ? label : showValue ? `${Math.round(pct)}%` : null;
-	// text arms render the md pill at the 16dp text height — the 10dp
-	// default pill cannot fit legible digits
+	// text arms render the md pill at the 16dp text height — the 10dp default pill cannot fit legible digits
 	const hasText = inner !== null && size !== "sm";
 
 	return (
@@ -49,15 +48,10 @@ export function Progress({
 		>
 			<View
 				testID="k-progress-indicator"
-				style={[
-					indicatorStyle(pct, theme[color]),
-					slotStyles?.indicator,
-				]}
+				style={[indicatorStyle(pct, theme[color]), slotStyles?.indicator]}
 			>
 				{inner !== null && size !== "sm" ? (
-					<RNText
-						style={valueStyle(theme[`${color}Foreground`], size)}
-					>
+					<RNText style={valueStyle(theme[`${color}Foreground`], size)}>
 						{inner}
 					</RNText>
 				) : null}

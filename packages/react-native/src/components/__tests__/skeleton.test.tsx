@@ -19,9 +19,7 @@ describe("Skeleton a11y surface", () => {
 		expect(root.props.accessible).not.toBe(true);
 		expect(root.props.accessibilityLabel).toBeUndefined();
 		expect(root.props.accessibilityElementsHidden).toBe(true);
-		expect(root.props.importantForAccessibility).toBe(
-			"no-hide-descendants",
-		);
+		expect(root.props.importantForAccessibility).toBe("no-hide-descendants");
 	});
 
 	it("static arm: animated=false renders without the pulse loop", async () => {
@@ -30,17 +28,11 @@ describe("Skeleton a11y surface", () => {
 	});
 
 	it("variant radii resolve: rect and circle styles both land", async () => {
-		const rect = await render(
-			<Skeleton style={{ width: 48, height: 12 }} />,
-		);
-		expect(
-			rect.getByTestId("k-skeleton", inclHidden).props.style,
-		).toBeTruthy();
+		const rect = await render(<Skeleton style={{ width: 48, height: 12 }} />);
+		expect(rect.getByTestId("k-skeleton", inclHidden).props.style).toBeTruthy();
 		const circle = await render(
 			<Skeleton variant="circle" style={{ width: 48, height: 48 }} />,
 		);
-		expect(
-			circle.getByTestId("k-skeleton", inclHidden),
-		).toBeTruthy();
+		expect(circle.getByTestId("k-skeleton", inclHidden)).toBeTruthy();
 	});
 });

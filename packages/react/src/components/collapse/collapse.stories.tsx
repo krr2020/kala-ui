@@ -53,9 +53,7 @@ export const Default: Story = {
 };
 
 export const SlowFade: Story = {
-	render: () => (
-		<CollapseDemo transitionDuration={0.6} animateOpacity={true} />
-	),
+	render: () => <CollapseDemo transitionDuration={0.6} animateOpacity={true} />,
 };
 
 export const HeightOnly: Story = {

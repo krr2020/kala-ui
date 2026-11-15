@@ -1,4 +1,5 @@
 import type * as React from "react";
+import type { IconComponent } from "../icons";
 import type { SlotStyles } from "../../lib/slot-styles";
 
 export interface TreeItem {
@@ -21,5 +22,7 @@ export interface TreeViewProps
 	onSelect?: (id: string) => void;
 	/** Multi-select mode */
 	multiSelect?: boolean;
+	/** Expand chevron — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	chevronIcon?: IconComponent;
 	slotStyles?: SlotStyles;
 }

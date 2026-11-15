@@ -27,9 +27,7 @@ export function Label({
 			]}
 		>
 			{children}
-			{required ? (
-				<RNText style={labelStyle.required(theme)}> *</RNText>
-			) : null}
+			{required ? <RNText style={labelStyle.required(theme)}> *</RNText> : null}
 		</RNText>
 	);
 }

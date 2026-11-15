@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
+import type { IconComponent } from "../icon";
 
 export type AlertVariant = "solid" | "outline" | "subtle";
 export type AlertColor =
@@ -17,10 +18,14 @@ export interface AlertProps {
 	color?: AlertColor;
 	/** Show the per-color status icon (default true). */
 	showIcon?: boolean;
+	/** icon-library component for the status icon — kala per-color glyphs by default */
+	icon?: IconComponent;
 	dismissable?: boolean;
 	onDismiss?: () => void;
 	/** accessible name for the dismiss button (default "Dismiss alert") */
 	dismissLabel?: string;
+	/** icon-library component for the dismiss icon — kala X glyph by default */
+	closeIcon?: IconComponent;
 	accessibilityLabel?: string;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;

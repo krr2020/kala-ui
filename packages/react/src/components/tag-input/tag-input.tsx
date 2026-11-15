@@ -1,7 +1,7 @@
 "use client";
 
 import { useUncontrolled } from "@kala-ui/react-hooks";
-import { X } from "lucide-react";
+import { X } from "../icons";
 import * as React from "react";
 import { tagInputStyles } from "../../config/tag-input";
 
@@ -27,6 +27,8 @@ export function TagInput({
 	disabled = false,
 	hasError = false,
 	hasSuccess = false,
+	removeIcon: RemoveIcon = X,
+	clearIcon: ClearIcon = X,
 	onKeyDown,
 	onPaste,
 	...props
@@ -216,7 +218,7 @@ export function TagInput({
 							style={removeSlot.style}
 							aria-label={`Remove ${tag}`}
 						>
-							<X className="h-3 w-3" />
+							<RemoveIcon className="h-3 w-3" />
 						</button>
 					</Badge>
 				))}
@@ -260,7 +262,7 @@ export function TagInput({
 					style={clearSlot.style}
 					aria-label="Clear all tags"
 				>
-					<X className="h-4 w-4" />
+					<ClearIcon className="h-4 w-4" />
 				</button>
 			)}
 		</div>

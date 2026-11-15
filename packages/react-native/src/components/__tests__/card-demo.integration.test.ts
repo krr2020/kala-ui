@@ -62,8 +62,7 @@ describe("card demo ↔ library seam", () => {
 	it("wires the loading state through the Card API and shows both cards", () => {
 		expect(demo).toMatch(/<Card isLoading>/);
 		expect(demo).toMatch(/\{!loading && \(/);
-		// loading visuals come from the Card API — the demo renders no
-		// skeleton elements of its own (the toggle label may say "Skeleton")
+		// loading visuals come from the Card API — the demo renders no skeleton elements of its own (the toggle label may say "Skeleton")
 		expect(demo).not.toMatch(/<Skeleton/);
 		expect(demo).not.toMatch(/CardSkeletonStack/);
 	});

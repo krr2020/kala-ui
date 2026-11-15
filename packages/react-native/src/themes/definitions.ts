@@ -1,11 +1,6 @@
 import type { KalaTheme, ThemeName } from "../types";
 
-// Transcribed from packages/react/src/styles/tokens.css — regenerate with
-// `node scripts/generate-themes.mjs`; parity with the CSS is enforced by
-// src/__tests__/tokens-parity.test.ts. Mobile ships light/dark plus the
-// high-contrast a11y pair; web-only brand variants (neutral/accent/
-// dark-accent) are deliberately not transcribed. Colors are hex;
-// alphas/spreads are numbers.
+// Transcribed from packages/react/src/styles/tokens.css — regenerate with `node scripts/generate-themes.mjs`; parity with the CSS is enforced by src/__tests__/tokens-parity.test.ts. Mobile ships light/dark plus the high-contrast a11y pair; web-only brand variants (neutral/accent/ dark-accent) are deliberately not transcribed. Colors are hex; alphas/spreads are numbers.
 export const light = {
 	background: "#ffffff",
 	foreground: "#001338",

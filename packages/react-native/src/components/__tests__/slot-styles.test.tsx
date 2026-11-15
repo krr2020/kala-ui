@@ -773,7 +773,7 @@ describe("multi-part slots", () => {
 		).toBe(6);
 	});
 
-it("alert.dismiss overrides the dismiss pressable", async () => {
+	it("alert.dismiss overrides the dismiss pressable", async () => {
 		const screen = await render(
 			<Alert dismissable slotStyles={{ dismiss: { borderWidth: 3 } }} />,
 		);
@@ -1126,9 +1126,9 @@ describe("root precedence — style sits below slotStyles.root", () => {
 				slotStyles={{ root: { opacity: 0.9 } }}
 			/>,
 		);
-		expect(Number(flatStyle(screen.getByTestId("k-indicator", incl)).opacity)).toBe(
-			0.9,
-		);
+		expect(
+			Number(flatStyle(screen.getByTestId("k-indicator", incl)).opacity),
+		).toBe(0.9);
 	});
 });
 
@@ -1154,9 +1154,8 @@ describe("loading and read-only arms keep the slot contract", () => {
 		);
 		expect(
 			Number(
-				flatStyle(
-				drp.getByTestId("k-date-picker-date-range-picker", incl),
-				).borderWidth,
+				flatStyle(drp.getByTestId("k-date-picker-date-range-picker", incl))
+					.borderWidth,
 			),
 		).toBe(7);
 	});
@@ -1206,8 +1205,7 @@ describe("dead slot keys come alive", () => {
 			`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
 				d.getDate(),
 			).padStart(2, "0")}`;
-		// pin the visible month so a midnight rollover between capture and
-		// render can't move the target day out of the grid
+		// pin the visible month so a midnight rollover between capture and render can't move the target day out of the grid
 		const screen = await render(
 			<Calendar month={now} slotStyles={{ day: { borderWidth: 3 } }} />,
 		);
@@ -1260,14 +1258,18 @@ describe("dead slot keys come alive", () => {
 			<DialogHeader slotStyles={{ root: { borderWidth: 5 } }}>t</DialogHeader>,
 		);
 		expect(
-			Number(flatStyle(header.getByTestId("k-dialog-header", incl)).borderWidth),
+			Number(
+				flatStyle(header.getByTestId("k-dialog-header", incl)).borderWidth,
+			),
 		).toBe(5);
 
 		const footer = await render(
 			<DialogFooter slotStyles={{ root: { borderWidth: 5 } }}>f</DialogFooter>,
 		);
 		expect(
-			Number(flatStyle(footer.getByTestId("k-dialog-footer", incl)).borderWidth),
+			Number(
+				flatStyle(footer.getByTestId("k-dialog-footer", incl)).borderWidth,
+			),
 		).toBe(5);
 	});
 });

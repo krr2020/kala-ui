@@ -15,7 +15,10 @@ const DEMOS_DIR = resolve(
 	"../../../../../apps/native-playground/src/demos",
 );
 const COMPONENTS_DIR = resolve(DEMOS_DIR, "components");
-const registryFile = readFileSync(resolve(COMPONENTS_DIR, "registry.tsx"), "utf8");
+const registryFile = readFileSync(
+	resolve(COMPONENTS_DIR, "registry.tsx"),
+	"utf8",
+);
 const registry = registryFile;
 
 interface GroupBlock {
@@ -39,8 +42,7 @@ const kebab = (pascal: string): string =>
 		.replace(/([A-Z]+)([A-Z][a-z])/g, "$1-$2")
 		.toLowerCase();
 
-// group headers carry name/label/title/source/overview in declaration
-// order; each group's component list lives inside its block
+// group headers carry name/label/title/source/overview in declaration order; each group's component list lives inside its block
 function parseGroups(source: string): GroupBlock[] {
 	const heads = [
 		...source.matchAll(
@@ -57,7 +59,10 @@ function parseGroups(source: string): GroupBlock[] {
 	}));
 }
 
-function parseComponents(source: string, groups: GroupBlock[]): RegisteredComponent[] {
+function parseComponents(
+	source: string,
+	groups: GroupBlock[],
+): RegisteredComponent[] {
 	const out: RegisteredComponent[] = [];
 	for (const group of groups) {
 		const block = source.slice(group.start, group.end);
@@ -71,8 +76,7 @@ function parseComponents(source: string, groups: GroupBlock[]): RegisteredCompon
 			`${group.name} lists its dedicated demos`,
 		).toBeGreaterThan(0);
 		for (const m of entries) {
-			// per-entry source overrides the group default for composite
-			// widgets that live in @kala-ui/react-native-app
+			// per-entry source overrides the group default for composite widgets that live in @kala-ui/react-native-app
 			out.push({
 				name: m[1],
 				group: group.name,
@@ -80,20 +84,20 @@ function parseComponents(source: string, groups: GroupBlock[]): RegisteredCompon
 				demo: m[3],
 			});
 		}
-		// no fallback entries: a bare `name: "x" },` component entry (no
-		// render) would silently fall back to the group overview
+		// no fallback entries: a bare `name: "x" },` component entry (no render) would silently fall back to the group overview
 		const fallbacks = block.match(/name: "([\w-]+)",\s*\n\s*\},/g) ?? [];
 		expect(
 			fallbacks,
 			`${group.name} has render-less fallback entries: ${fallbacks.join(", ")}`,
 		).toEqual([]);
 		// single-line fallback shape
-		const inlineFallbacks = block.match(
-			/\{ label: humanizeLabel\("[^"]+"\), name: "[^"]+" \},/g,
-		) ?? [];
-		expect(inlineFallbacks, `${group.name} has inline fallback entries`).toEqual(
-			[],
-		);
+		const inlineFallbacks =
+			block.match(/\{ label: humanizeLabel\("[^"]+"\), name: "[^"]+" \},/g) ??
+			[];
+		expect(
+			inlineFallbacks,
+			`${group.name} has inline fallback entries`,
+		).toEqual([]);
 	}
 	return out;
 }
@@ -111,11 +115,10 @@ const demoPath = (demo: string): string => {
 	return path;
 };
 
-const demoSource = (demo: string): string => readFileSync(demoPath(demo), "utf8");
+const demoSource = (demo: string): string =>
+	readFileSync(demoPath(demo), "utf8");
 
-// dedicated screens live under components/; parent-dir files are group
-// overviews whose surface rules (barrel imports, humanized copy) are
-// owned by the older seams
+// dedicated screens live under components/; parent-dir files are group overviews whose surface rules (barrel imports, humanized copy) are owned by the older seams
 const isDedicated = (demo: string): boolean =>
 	demoPath(demo).startsWith(COMPONENTS_DIR);
 
@@ -130,9 +133,7 @@ describe("playground registry ↔ dedicated demo seam", () => {
 	});
 
 	it("the migration covers every group — dedicated demos exist for all registered components", () => {
-		// 10 groups × their full component lists; the count is the full
-		// registry, so a new fallback entry fails the count OR the
-		// fallback assertions above
+		// 10 groups × their full component lists; the count is the full registry, so a new fallback entry fails the count OR the fallback assertions above
 		expect(groups).toHaveLength(10);
 		expect(components.length).toBe(61);
 	});
@@ -158,8 +159,7 @@ describe("playground registry ↔ dedicated demo seam", () => {
 			expect(inAppGroup, `${name} lives in app components`).toContain(name);
 		}
 		expect(inAppGroup).toHaveLength(moved.length);
-		// library groups carry zero app-backed entries after the move;
-		// whole-app groups (data/charts/app chrome) keep their app source
+		// library groups carry zero app-backed entries after the move; whole-app groups (data/charts/app chrome) keep their app source
 		const libraryGroups = groups
 			.filter((g) => g.source === "library")
 			.map((g) => g.name);
@@ -170,16 +170,14 @@ describe("playground registry ↔ dedicated demo seam", () => {
 				);
 			}
 		}
-		// ordering: app components clusters with the app-backed groups —
-		// directly after data, directly before charts
+		// ordering: app components clusters with the app-backed groups — directly after data, directly before charts
 		const names = groups.map((g) => g.name);
 		expect(names.indexOf("app components") - names.indexOf("data")).toBe(1);
 		expect(names.indexOf("charts") - names.indexOf("app components")).toBe(1);
 	});
 
 	it("every registered component's demo carries its k-demo root marker", () => {
-		// markers that predate the kebab-exact convention keep their
-		// historical plural/short spellings
+		// markers that predate the kebab-exact convention keep their historical plural/short spellings
 		const markerAliases: Record<string, string> = {
 			icon: "k-demo-icons",
 			avatar: "k-demo-avatars",
@@ -190,10 +188,9 @@ describe("playground registry ↔ dedicated demo seam", () => {
 		for (const { name, demo } of components) {
 			const src = demoSource(demo);
 			const marker = markerAliases[name] ?? `k-demo-${name}`;
-			expect(
-				src,
-				`${kebab(demo)}.tsx carries ${marker}`,
-			).toMatch(new RegExp(`testID="${marker}"`));
+			expect(src, `${kebab(demo)}.tsx carries ${marker}`).toMatch(
+				new RegExp(`testID="${marker}"`),
+			);
 		}
 	});
 

@@ -36,9 +36,12 @@ export const SEGMENT_TRACK_PADDING = 4;
  * their vertical press area — never sideways, so adjacent segments cannot
  * steal each other's taps.
  */
-export function segmentHitSlop(
-	height: number,
-): { top: number; bottom: number; left: number; right: number } {
+export function segmentHitSlop(height: number): {
+	top: number;
+	bottom: number;
+	left: number;
+	right: number;
+} {
 	const overflow = Math.max(0, (44 - height) / 2);
 	return { top: overflow, bottom: overflow, left: 0, right: 0 };
 }

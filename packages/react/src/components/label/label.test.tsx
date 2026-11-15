@@ -27,7 +27,9 @@ describe("Label", () => {
 
 	it("accepts custom className", () => {
 		render(<Label className="custom-class">Custom</Label>);
-		expect(screen.getByText("Custom").closest("label")).toHaveClass("custom-class");
+		expect(screen.getByText("Custom").closest("label")).toHaveClass(
+			"custom-class",
+		);
 	});
 
 	it("applies label-base styles", () => {

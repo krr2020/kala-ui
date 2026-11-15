@@ -1,6 +1,6 @@
 import { fireEvent, render } from "@testing-library/react-native";
-import { Toggle } from "../toggle";
 import { themes } from "../../themes";
+import { Toggle } from "../toggle";
 
 const inclHidden = { includeHiddenElements: true } as const;
 
@@ -38,8 +38,7 @@ describe("Toggle", () => {
 			const style = flatStyle(screen.getByTestId("k-toggle"));
 			expect(style.minHeight).toBe(height);
 			expect(style.height).toBeUndefined();
-			// hitSlop is a Pressable prop, not a style key — the touch floor
-			// only exists when it reaches the pressable itself
+			// hitSlop is a Pressable prop, not a style key — the touch floor only exists when it reaches the pressable itself
 			const hitSlop = screen.getByTestId("k-toggle").props.hitSlop as
 				| { top?: number }
 				| undefined;
@@ -94,9 +93,7 @@ describe("Toggle", () => {
 				Locked
 			</Toggle>,
 		);
-		expect(
-			screen.getByTestId("k-toggle-glyph-lock", inclHidden),
-		).toBeTruthy();
+		expect(screen.getByTestId("k-toggle-glyph-lock", inclHidden)).toBeTruthy();
 		expect(screen.queryByTestId("k-toggle-glyph-check")).toBeNull();
 		const state = screen.getByTestId("k-toggle").props.accessibilityState;
 		expect(state.disabled).toBe(true);
@@ -109,9 +106,7 @@ describe("Toggle", () => {
 				Locked
 			</Toggle>,
 		);
-		expect(
-			screen.getByTestId("k-toggle-glyph-check", inclHidden),
-		).toBeTruthy();
+		expect(screen.getByTestId("k-toggle-glyph-check", inclHidden)).toBeTruthy();
 		expect(screen.queryByTestId("k-toggle-glyph-lock")).toBeNull();
 		expect(
 			screen.getByTestId("k-toggle").props.accessibilityState.checked,

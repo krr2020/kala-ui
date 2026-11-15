@@ -70,15 +70,15 @@ describe("Navigation", () => {
 		});
 
 		it("should close mobile menu on mousedown outside", () => {
-		render(<Navigation links={mockLinks} pathname="/" />);
+			render(<Navigation links={mockLinks} pathname="/" />);
 
-		const toggleButton = screen.getByLabelText("Toggle mobile navigation");
-		fireEvent.click(toggleButton);
-		expect(toggleButton).toHaveAttribute("aria-expanded", "true");
+			const toggleButton = screen.getByLabelText("Toggle mobile navigation");
+			fireEvent.click(toggleButton);
+			expect(toggleButton).toHaveAttribute("aria-expanded", "true");
 
-		fireEvent.mouseDown(document.body);
-		expect(toggleButton).toHaveAttribute("aria-expanded", "false");
-	});
+			fireEvent.mouseDown(document.body);
+			expect(toggleButton).toHaveAttribute("aria-expanded", "false");
+		});
 
 		it("should close mobile menu when link is clicked", () => {
 			render(<Navigation links={mockLinks} pathname="/" />);

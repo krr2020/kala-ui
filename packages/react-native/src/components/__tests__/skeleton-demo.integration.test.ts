@@ -91,7 +91,9 @@ describe("basics skeletons block regression pin", () => {
 
 	it("overview still renders its k-demo-skeletons block with 3 blocks", () => {
 		expect(basics).toMatch(/testID="k-demo-skeletons"/);
-		expect(basics).toMatch(/<Skeleton style=\{\{ width: 96, height: 12 \}\} \/>/);
+		expect(basics).toMatch(
+			/<Skeleton style=\{\{ width: 96, height: 12 \}\} \/>/,
+		);
 		expect(basics).toMatch(
 			/<Skeleton variant="circle" style=\{\{ width: 32, height: 32 \}\} \/>/,
 		);

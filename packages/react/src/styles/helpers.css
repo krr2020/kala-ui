@@ -138,7 +138,6 @@
 	}
 }
 
-
 /*
  * Touch targets (WCAG 2.5.8 / mobile 44×44 guidance).
  *
@@ -168,8 +167,8 @@
 			background: transparent;
 			-webkit-user-select: none;
 			user-select: none;
-			}
 		}
+	}
 }
 
 /* Combobox trigger is an outline Button — pin control height like input/select; padding-block stays 0 so consumer py-* utilities cannot dilute vertical rhythm. */

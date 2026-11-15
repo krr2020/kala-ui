@@ -165,3 +165,48 @@ for chart content.
 - `src/primitives/command/*` — use `@kala-ui/react/command`
 - `lib/animations`, `lib/use-mobile` — use framer-motion transitions and
   `useMediaQuery` from `@kala-ui/react-hooks`
+
+## Icons are library-agnostic
+
+`lucide-react` / `lucide-react-native` are no longer dependencies or peer
+dependencies of any kala package — lucide is dev-only now (stories, tests,
+playground demos).
+
+**New:** every glyph a component renders internally is (a) kala's own
+zero-dependency inline-SVG glyph and (b) overridable via a matching
+`*Icon` prop. Defaults draw the same 24×24 stroke geometry, so visuals
+are unchanged.
+
+- Web: glyphs live at `@kala-ui/react/icons`; the shared contract is
+  `IconComponent = ComponentType<{ className?: string; size?: number | string }>`
+  (also re-exported from the root barrel). Any icon-library component
+  accepting those props fits — lucide included.
+- Native: glyphs live at `@kala-ui/react-native/icons`; the contract is
+  `ComponentType<{ size?: number; color?: string; testID?: string }>`,
+  drawn with `react-native-svg` (peer dep, unchanged).
+
+```tsx
+import { ChevronDown } from "lucide-react"; // your choice of library
+<Select chevronIcon={ChevronDown} />
+<Dialog closeIcon={MyCloseGlyph}>…</Dialog>
+<Checkbox checkIcon={MyCheck} />
+```
+
+Per-glyph override props added across the library: accordion
+`chevronIcon`; alert `icon`/`closeIcon`; banner `icon`/`closeIcon`;
+breadcrumbs `separatorIcon`; calendar `chevronLeftIcon`/`chevronRightIcon`/
+`chevronDownIcon`; checkbox `checkIcon`/`minusIcon`; combobox
+`toggleIcon`/`clearIcon`/`checkIcon`; command `searchIcon`; menus
+`checkIcon`/`radioIcon`/`submenuIcon`; copy-button `copyIcon`/`checkIcon`;
+date-picker `calendarIcon`; dialog/drawer `closeIcon`; empty-state `icon`;
+error-fallback `icon`; file-upload `uploadIcon`/`fileIcon`/`removeIcon`;
+input `icons.showPassword`/`icons.hidePassword`; multi-select
+`toggleIcon`/`removeIcon`/`clearIcon`; native-select `chevronIcon`;
+navigation-menu `chevronIcon`; number-input `decrementIcon`/
+`incrementIcon`; pagination `previousIcon`/`nextIcon`/`ellipsisIcon`;
+rating `starIcon`; select `chevronIcon`/`scrollUpIcon`/`scrollDownIcon`/
+`checkIcon`; spinner `icon`; steps `checkIcon`; tag `removeIcon`;
+tag-input `removeIcon`/`clearIcon`; tree-view `chevronIcon`.
+
+Previously `banner.icon` typed `LucideIcon` — now `IconComponent`;
+`empty-state.icon` accepts `IconComponent | string | ReactNode`.

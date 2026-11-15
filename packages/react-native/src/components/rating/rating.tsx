@@ -8,11 +8,11 @@
  * from the a11y tree and the root exposes increment/decrement actions.
  */
 
-import { Star } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { Star } from "../icon/glyphs";
 import { applySlot } from "../slot-styles";
 import { emptyStarColor, root, starHit } from "./rating.styles";
 import type { RatingProps, RatingSize } from "./rating.types";
@@ -35,21 +35,22 @@ export function Rating({
 	readOnly = false,
 	disabled = false,
 	size = "md",
+	starIcon: StarIcon = Star,
 	accessibilityLabel = "Rating",
 	style,
 	slotStyles,
 	testID = "k-rating",
 }: RatingProps): ReactElement {
 	const { theme } = useUnistyles();
-	// controlled lock: a provided value prop always wins over internal state;
-	// non-finite values (NaN) degrade to 0 so the control can still clear
+	// controlled lock: a provided value prop always wins over internal state; non-finite values (NaN) degrade to 0 so the control can still clear
 	const controlled = value !== undefined;
 	const [internal, setInternal] = useState(() => defaultValue);
-	const active = controlled && Number.isFinite(value)
-		? (value as number)
-		: controlled
-			? 0
-			: internal;
+	const active =
+		controlled && Number.isFinite(value)
+			? (value as number)
+			: controlled
+				? 0
+				: internal;
 	const px = STAR_PX[size];
 	const emptyColor = emptyStarColor(theme.mutedForeground);
 	const fillColor = theme.warning;
@@ -87,7 +88,7 @@ export function Rating({
 		const fill = fillFor(star);
 		return (
 			<View style={{ width: px, height: px }}>
-				<Star size={px} color={emptyColor} />
+				<StarIcon size={px} color={emptyColor} />
 				{fill !== "empty" && (
 					<View
 						testID={fill === "half" ? "k-rating-star-half" : undefined}
@@ -110,7 +111,7 @@ export function Rating({
 									}
 						}
 					>
-						<Star size={px} color={fillColor} />
+						<StarIcon size={px} color={fillColor} />
 					</View>
 				)}
 			</View>
@@ -136,16 +137,16 @@ export function Rating({
 				)}
 			>
 				{stars.map((star, i) => (
-				<View
-					// biome-ignore lint/suspicious/noArrayIndexKey: star identity is its slot
-					key={i}
-					testID="k-rating-star"
-					accessibilityElementsHidden={true}
-					style={applySlot({ justifyContent: "center" }, slotStyles?.star)}
-				>
-					{star}
-				</View>
-			))}
+					<View
+						// biome-ignore lint/suspicious/noArrayIndexKey: star identity is its slot
+						key={i}
+						testID="k-rating-star"
+						accessibilityElementsHidden={true}
+						style={applySlot({ justifyContent: "center" }, slotStyles?.star)}
+					>
+						{star}
+					</View>
+				))}
 			</View>
 		);
 	}
@@ -162,10 +163,7 @@ export function Rating({
 				if (event.nativeEvent.actionName === "increment") adjust(1);
 				if (event.nativeEvent.actionName === "decrement") adjust(-1);
 			}}
-			style={applySlot(
-				applySlot([root(disabled)], style),
-				slotStyles?.root,
-			)}
+			style={applySlot(applySlot([root(disabled)], style), slotStyles?.root)}
 		>
 			{Array.from({ length: count }, (_, i) => {
 				const star = i + 1;

@@ -1,7 +1,7 @@
 {
 	"name": "@kala-ui/react-native",
 	"version": "0.1.0-beta.5",
-	"description": "Token-driven theming system and components for kala-ui on React Native — Unistyles themes transcribed from the web token source of truth.",
+	"description": "Token-driven theming system and components for kala-ui on React Native \u2014 Unistyles themes transcribed from the web token source of truth.",
 	"keywords": [
 		"react-native",
 		"expo",
@@ -25,15 +25,16 @@
 	},
 	"main": "./src/index.ts",
 	"types": "./src/index.ts",
-  "exports": {
-    ".": "./src/index.ts",
-    "./themes": "./src/themes/index.ts",
-    "./tokens": "./src/tokens/index.ts",
-    "./types": "./src/types/index.ts"
-  },
-  "dependencies": {
-    "@kala-ui/react-hooks": "workspace:*"
-  },
+	"exports": {
+		".": "./src/index.ts",
+		"./themes": "./src/themes/index.ts",
+		"./tokens": "./src/tokens/index.ts",
+		"./icons": "./src/components/icon/glyphs.tsx",
+		"./types": "./src/types/index.ts"
+	},
+	"dependencies": {
+		"@kala-ui/react-hooks": "workspace:*"
+	},
 	"files": [
 		"src",
 		"README.md",
@@ -46,20 +47,19 @@
 		"lint:fix": "biome lint . --write",
 		"lint:fix-unsafe": "biome lint . --write --unsafe",
 		"format": "biome format --write .",
-		"test": "vitest run && jest --passWithNoTests",
+		"test": "vitest run --configLoader runner && jest --passWithNoTests",
 		"test:watch": "jest --watch",
-		"test:coverage": "vitest run --coverage"
+		"test:coverage": "vitest run --configLoader runner --coverage"
 	},
-  "peerDependencies": {
-    "lucide-react-native": ">=1.46.0",
-    "react": ">=19.2.0",
-    "react-native": ">=0.86.0",
-    "react-native-gesture-handler": ">=2.32.0",
-    "react-native-reanimated": ">=4.5.0",
-    "react-native-safe-area-context": ">=5.0.0",
-    "react-native-svg": ">=15.15.0",
-    "react-native-unistyles": "3.3.0"
-  },
+	"peerDependencies": {
+		"react": ">=19.2.0",
+		"react-native": ">=0.86.0",
+		"react-native-gesture-handler": ">=2.32.0",
+		"react-native-reanimated": ">=4.5.0",
+		"react-native-safe-area-context": ">=5.0.0",
+		"react-native-svg": ">=15.15.0",
+		"react-native-unistyles": "3.3.0"
+	},
 	"devDependencies": {
 		"@testing-library/react-native": "catalog:",
 		"@types/jest": "catalog:",
@@ -71,9 +71,9 @@
 		"react": "19.2.3",
 		"react-native": "catalog:",
 		"react-native-gesture-handler": "catalog:",
-    "react-native-reanimated": "catalog:",
-    "react-native-safe-area-context": "catalog:",
-    "react-native-unistyles": "catalog:",
+		"react-native-reanimated": "catalog:",
+		"react-native-safe-area-context": "catalog:",
+		"react-native-unistyles": "catalog:",
 		"test-renderer": "1.2.0",
 		"typescript": "catalog:",
 		"vitest": "catalog:"

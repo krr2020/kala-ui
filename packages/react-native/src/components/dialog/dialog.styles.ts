@@ -59,15 +59,13 @@ export function cardStyle(
 		height: isFull ? "100%" : undefined,
 		maxWidth: isFull ? undefined : MAX_WIDTH[size],
 		maxHeight: isFull ? undefined : "90%",
-		// full bleeds edge to edge: no radius, no outer border, no caps;
-		// keyboard safety comes from the wrapper's KeyboardAvoidingView
+		// full bleeds edge to edge: no radius, no outer border, no caps; keyboard safety comes from the wrapper's KeyboardAvoidingView
 		borderRadius: isFull ? 0 : tokens.radius.card,
 		borderWidth: isFull ? 0 : 1,
 		backgroundColor: theme.card,
 		borderColor: theme.border,
 		overflow: "hidden",
-		// fixed chrome: header and footer pin top/bottom, the body column
-		// child between them is the only scroll region
+		// fixed chrome: header and footer pin top/bottom, the body column child between them is the only scroll region
 		flexDirection: "column",
 		opacity: dragOpacityFor(dragDy),
 		// the card follows the finger while dragging; upward drags clamp at 0

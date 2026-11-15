@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertCircle } from "lucide-react";
+import { AlertCircle } from "../icons";
 import type { ErrorInfo, ReactNode } from "react";
 import { Component } from "react";
 import { errorBoundaryStyles } from "../../config/error-boundary";

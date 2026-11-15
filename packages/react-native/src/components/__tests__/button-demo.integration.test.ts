@@ -37,18 +37,14 @@ describe("button demo ↔ library seam", () => {
 	});
 
 	it("icon glyphs use contrast tokens against solid fills", () => {
-		// foreground on a primary fill is invisible in dark themes; solid-fill
-		// buttons must pass the ramp's paired foreground token. Transparent
-		// variants (subtle/ghost) may use theme.foreground — their fill is not
-		// the primary tint, so the contrast pairing rule does not apply there.
+		// foreground on a primary fill is invisible in dark themes; solid-fill buttons must pass the ramp's paired foreground token. Transparent variants (subtle/ghost) may use theme.foreground — their fill is not the primary tint, so the contrast pairing rule does not apply there.
 		const solid =
 			demo.match(
 				/<Button[^>]*accessibilityLabel="[^"]+"[^>]*>[\s\S]*?<\/Button>/g,
 			) ?? [];
 		const sunGlyph = demo.match(/<Sun[^/]*color=\{theme\.primaryForeground\}/);
 		expect(sunGlyph).toBeTruthy();
-		// leading/trailing icons on transparent variants keep foreground
-		// contrast; only the solid-fill icon must use the paired token
+		// leading/trailing icons on transparent variants keep foreground contrast; only the solid-fill icon must use the paired token
 		expect(demo).toMatch(
 			/<Save size=\{16\} color=\{theme\.primaryForeground\}/,
 		);
@@ -73,11 +69,7 @@ describe("button demo ↔ library seam", () => {
 			),
 			"utf8",
 		);
-		// end-of-scroll padding must extend the scroll CONTENT, not clip
-		// the ScrollView frame — pin it inside routeContent and forbid it
-		// on the screen frame (scoped to the screen block itself: a lazy
-		// [\s\S]* scan past its closing brace would false-positive on
-		// routeContent's intentional paddingBottom)
+		// end-of-scroll padding must extend the scroll CONTENT, not clip the ScrollView frame — pin it inside routeContent and forbid it on the screen frame (scoped to the screen block itself: a lazy [\s\S]* scan past its closing brace would false-positive on routeContent's intentional paddingBottom)
 		expect(stylesheet).toMatch(/routeContent: \{[\s\S]*?paddingBottom: 7[0-9]/);
 		expect(stylesheet).not.toMatch(/screen: \{[^}]*paddingBottom: 7[0-9]/);
 	});

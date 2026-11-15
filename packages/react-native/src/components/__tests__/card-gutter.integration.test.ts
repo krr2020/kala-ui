@@ -21,9 +21,7 @@ describe("playground scroll gutter ↔ library card shadow seam", () => {
 	const shell = readFileSync(SHELL_PATH, "utf8");
 
 	it("the ScrollView frame carries no horizontal padding", () => {
-		const screenBlock = stylesheet.match(
-			/\tscreen: \{[\s\S]*?\},/,
-		);
+		const screenBlock = stylesheet.match(/\tscreen: \{[\s\S]*?\},/);
 		expect(screenBlock?.[0]).toBeTruthy();
 		expect(screenBlock?.[0]).not.toMatch(/paddingHorizontal/);
 	});
@@ -43,8 +41,7 @@ describe("playground scroll gutter ↔ library card shadow seam", () => {
 		const chipRows = stylesheet.match(/\tchipRows: \{[\s\S]*?\},/);
 		expect(chipRows?.[0]).toBeTruthy();
 		expect(chipRows?.[0]).toMatch(/marginHorizontal: -16/);
-		// the breakout is defined against the content gutter — both must
-		// stay in lockstep or the chip rows drift off the screen rail
+		// the breakout is defined against the content gutter — both must stay in lockstep or the chip rows drift off the screen rail
 		expect(stylesheet).toMatch(/routeContent: \{[\s\S]*?paddingHorizontal: 16/);
 	});
 });

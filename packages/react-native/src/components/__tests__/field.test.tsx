@@ -179,9 +179,9 @@ describe("Field", () => {
 				<TextInput hasError={false} />
 			</Field>,
 		);
-		expect(
-			flatStyle(own.getByTestId("k-text-input")).borderColor,
-		).not.toBe(themes.light.destructive);
+		expect(flatStyle(own.getByTestId("k-text-input")).borderColor).not.toBe(
+			themes.light.destructive,
+		);
 	});
 
 	it("slotStyles.root slot overrides the surface", async () => {

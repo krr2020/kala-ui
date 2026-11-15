@@ -37,10 +37,7 @@ export type ValueStyle = {
 	color: string;
 	fontSize: number;
 	fontWeight: "500";
-	// Android pads Text with ascent/descent room by default — the md/lg
-	// pill is only 10/16dp tall, so the padding clips the digits. The
-	// indicator centers the text; keep the table the only style source
-	// (no consumer prop path) so the fix cannot be overridden away.
+	// Android pads Text with ascent/descent room by default — the md/lg pill is only 10/16dp tall, so the padding clips the digits. The indicator centers the text; keep the table the only style source (no consumer prop path) so the fix cannot be overridden away.
 	includeFontPadding: false;
 	textAlignVertical: "center";
 };

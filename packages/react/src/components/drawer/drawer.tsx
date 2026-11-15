@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { X } from "../icons";
 import * as React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
 import { drawerStyles } from "../../config/drawer";
@@ -169,6 +169,7 @@ function DrawerHeader({
 	align,
 	showCloseButton = true,
 	closeLabel = "Close",
+	closeIcon: CloseIconProp,
 	children,
 	...props
 }: DrawerHeaderProps) {
@@ -181,6 +182,7 @@ function DrawerHeader({
 	);
 	const close = applySlot(drawerStyles.close, slotStyles?.close);
 	const closeIcon = applySlot(drawerStyles.closeIcon, slotStyles?.closeIcon);
+	const CloseIcon = CloseIconProp ?? X;
 	return (
 		<div
 			data-kala-component="drawer-header"
@@ -214,7 +216,7 @@ function DrawerHeader({
 							className={close.className}
 							style={close.style}
 						>
-							<X
+							<CloseIcon
 								className={closeIcon.className}
 								style={closeIcon.style}
 								aria-hidden="true"

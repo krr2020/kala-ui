@@ -6,13 +6,13 @@
  * the open state reads visually, not just from the expanded state.
  */
 
-import { ChevronDown } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { createContext, useContext, useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Icon } from "../icon";
+import { ChevronDown } from "../icon/glyphs";
 import { applySlot } from "../slot-styles";
 import {
 	contentSurface,
@@ -81,6 +81,7 @@ function Root({
 function Trigger({
 	children,
 	accessibilityLabel,
+	chevronIcon: ChevronIcon = ChevronDown,
 	style,
 	slotStyles,
 	testID = "k-collapsible-trigger",
@@ -101,28 +102,25 @@ function Trigger({
 				expanded: open,
 				disabled: disabled || undefined,
 			}}
-				style={applySlot(
-					applySlot(
-						applySlot(triggerSurface(), style),
-						group?.triggerStyles,
-					),
-					slotStyles?.root,
-				)}
+			style={applySlot(
+				applySlot(applySlot(triggerSurface(), style), group?.triggerStyles),
+				slotStyles?.root,
+			)}
+		>
+			{typeof children === "string" || typeof children === "number" ? (
+				<RNText style={triggerLabel(theme.foreground)}>{children}</RNText>
+			) : (
+				<View style={{ flex: 1 }}>{children}</View>
+			)}
+			<View
+				testID="k-collapsible-chevron"
+				style={{ transform: [{ rotate: open ? "180deg" : "0deg" }] }}
 			>
-				{typeof children === "string" || typeof children === "number" ? (
-					<RNText style={triggerLabel(theme.foreground)}>{children}</RNText>
-				) : (
-					<View style={{ flex: 1 }}>{children}</View>
-				)}
-				<View
-					testID="k-collapsible-chevron"
-					style={{ transform: [{ rotate: open ? "180deg" : "0deg" }] }}
-				>
-					<Icon icon={ChevronDown} size="sm" />
-				</View>
-			</Pressable>
-		);
-	}
+				<Icon icon={ChevronIcon} size="sm" />
+			</View>
+		</Pressable>
+	);
+}
 
 function Content({
 	children,

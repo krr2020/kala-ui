@@ -135,16 +135,18 @@ describe("data-kala-component source guard", () => {
 			.filter((d) => d.isDirectory())
 			.map((d) => d.name);
 		expect(dirs.length).toBeGreaterThan(0);
-		const withoutMarkers = dirs.filter(
-			(dir) =>
-				!listFiles(`${componentsRoot}/${dir}`).some((f) => {
-					const src = fs.readFileSync(f, "utf8");
-					return (
-						src.includes("data-kala-component") &&
-						!/\.(test|stories)\.(ts|tsx)$/.test(f)
-					);
-				}),
-		);
+		const withoutMarkers = dirs
+			.filter((dir) => dir !== "icons")
+			.filter(
+				(dir) =>
+					!listFiles(`${componentsRoot}/${dir}`).some((f) => {
+						const src = fs.readFileSync(f, "utf8");
+						return (
+							src.includes("data-kala-component") &&
+							!/\.(test|stories)\.(ts|tsx)$/.test(f)
+						);
+					}),
+			);
 		expect(withoutMarkers).toEqual([]);
 	});
 

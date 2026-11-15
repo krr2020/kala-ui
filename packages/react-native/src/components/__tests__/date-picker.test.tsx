@@ -147,7 +147,9 @@ describe("DatePicker", () => {
 		expect(filled.getByTestId("k-date-picker").props.accessibilityLabel).toBe(
 			"Feb 10, 2026",
 		);
-		const empty: Screen = await render(<DatePicker placeholder="pick a date" />);
+		const empty: Screen = await render(
+			<DatePicker placeholder="pick a date" />,
+		);
 		expect(empty.getByTestId("k-date-picker").props.accessibilityLabel).toBe(
 			"pick a date",
 		);
@@ -282,8 +284,8 @@ describe("DateRangePicker", () => {
 			/>,
 		);
 		expect(
-				partial.getByTestId("k-date-picker-date-range-picker").props
-					.accessibilityLabel,
+			partial.getByTestId("k-date-picker-date-range-picker").props
+				.accessibilityLabel,
 		).toBe("report window, Feb 4, 2026");
 	});
 });

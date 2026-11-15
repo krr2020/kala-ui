@@ -118,8 +118,7 @@ export function Card({
 		<Pressable
 			testID={testID}
 			onPress={() => {
-				// guarded internally so disabled/loading cards can't fire even
-				// when the host still delivers the event
+				// guarded internally so disabled/loading cards can't fire even when the host still delivers the event
 				if (!effectiveDisabled) onPress();
 			}}
 			onPressIn={() => setPressed(true)}

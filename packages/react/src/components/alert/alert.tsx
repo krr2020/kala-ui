@@ -7,7 +7,8 @@ import {
 	CheckCircle2,
 	Info,
 	X,
-} from "lucide-react";
+	type IconComponent,
+} from "../icons";
 
 import * as React from "react";
 
@@ -45,6 +46,8 @@ function Alert({
 	onDismiss,
 	dismissLabel = "Dismiss alert",
 	showIcon = true,
+	icon: CustomIcon,
+	closeIcon: CloseIcon = X,
 	asChild = false,
 	children,
 	isLoading = false,
@@ -101,7 +104,7 @@ function Alert({
 
 	if (!isVisible) return null;
 
-	const Icon = colorIcons[color ?? "primary"] ?? Info;
+	const Icon = CustomIcon ?? colorIcons[color ?? "primary"] ?? Info;
 	const icon = applySlot(alertStyles.icon, slotStyles?.icon);
 	const dismiss = applySlot(alertStyles.dismiss, slotStyles?.dismiss);
 	const root = applySlot(
@@ -123,8 +126,7 @@ function Alert({
 			name.includes("Alert") ||
 			name.includes("Check") ||
 			name.includes("Info") ||
-			name.includes("X") ||
-			props.className?.includes("lucide")
+			name.includes("X")
 		);
 	});
 
@@ -156,7 +158,7 @@ function Alert({
 					style={dismiss.style}
 					aria-label={dismissLabel}
 				>
-					<X className="h-4 w-4" />
+					<CloseIcon className="h-4 w-4" />
 				</Box>
 			)}
 		</Comp>

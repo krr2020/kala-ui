@@ -116,10 +116,7 @@ export function TimePicker({
 				onMomentumScrollEnd={(event) => {
 					// a flick commits the row the wheel settled on, not just taps
 					const y = event.nativeEvent.contentOffset.y;
-					const index = Math.max(
-						0,
-						Math.min(count - 1, Math.round(y / ITEM)),
-					);
+					const index = Math.max(0, Math.min(count - 1, Math.round(y / ITEM)));
 					onPick(index);
 				}}
 				style={{ height: WHEEL_HEIGHT }}

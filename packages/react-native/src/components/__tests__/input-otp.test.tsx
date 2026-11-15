@@ -19,15 +19,13 @@ function sixSlots() {
 	);
 }
 
-// a filled slot wraps its character in RNText; an empty one has no child.
-// Pressable children arrive as a 2-array, so walk entries for a string.
+// a filled slot wraps its character in RNText; an empty one has no child. Pressable children arrive as a 2-array, so walk entries for a string.
 function charAt(slot: { props: { children?: unknown } }): unknown {
 	const kids = slot.props.children;
 	const arr = Array.isArray(kids) ? kids : [kids];
 	for (const kid of arr) {
 		if (kid && typeof kid === "object" && "props" in kid) {
-			const text = (kid as { props?: { children?: unknown } }).props
-				?.children;
+			const text = (kid as { props?: { children?: unknown } }).props?.children;
 			if (typeof text === "string") return text;
 		}
 	}

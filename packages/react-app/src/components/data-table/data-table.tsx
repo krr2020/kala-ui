@@ -40,7 +40,7 @@ import {
 	TableRow,
 } from "@kala-ui/react/table";
 import { Text } from "@kala-ui/react/text";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp } from "@kala-ui/react/icons";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type {
 	DataTableProps,
@@ -446,7 +446,7 @@ export function DataTable<TData>({
 					>
 						<Box
 							ref={scrollContainerRef}
-						onScroll={measureScroll}
+							onScroll={measureScroll}
 							className={cn(
 								"overflow-auto relative",
 								paginationConfig && displayData.length > 0
@@ -655,32 +655,32 @@ export function DataTable<TData>({
 						</Box>
 
 						{scrollEdges.canScroll &&
-						(!scrollEdges.atTop || !scrollEdges.atBottom) && (
-							<Flex gap={2} className="absolute bottom-4 right-4 z-10">
-								{!scrollEdges.atTop ? (
-									<Button
-										variant="ghost"
-										size="icon"
-										onClick={scrollToTop}
-										className="rounded-full shadow-lg h-9 w-9 text-foreground bg-background/80 backdrop-blur-sm border border-border-strong/20"
-										aria-label="Scroll to top"
-									>
-										<ArrowUp className="h-4 w-4" />
-									</Button>
-								) : null}
-								{!scrollEdges.atBottom ? (
-									<Button
-										variant="ghost"
-										size="icon"
-										onClick={scrollToBottom}
-										className="rounded-full shadow-lg h-9 w-9 text-foreground bg-background/80 backdrop-blur-sm border border-border-strong/20"
-										aria-label="Scroll to bottom"
-									>
-										<ArrowDown className="h-4 w-4" />
-									</Button>
-								) : null}
-							</Flex>
-						)}
+							(!scrollEdges.atTop || !scrollEdges.atBottom) && (
+								<Flex gap={2} className="absolute bottom-4 right-4 z-10">
+									{!scrollEdges.atTop ? (
+										<Button
+											variant="ghost"
+											size="icon"
+											onClick={scrollToTop}
+											className="rounded-full shadow-lg h-9 w-9 text-foreground bg-background/80 backdrop-blur-sm border border-border-strong/20"
+											aria-label="Scroll to top"
+										>
+											<ArrowUp className="h-4 w-4" />
+										</Button>
+									) : null}
+									{!scrollEdges.atBottom ? (
+										<Button
+											variant="ghost"
+											size="icon"
+											onClick={scrollToBottom}
+											className="rounded-full shadow-lg h-9 w-9 text-foreground bg-background/80 backdrop-blur-sm border border-border-strong/20"
+											aria-label="Scroll to bottom"
+										>
+											<ArrowDown className="h-4 w-4" />
+										</Button>
+									) : null}
+								</Flex>
+							)}
 					</Box>
 
 					{footer && mobileActive ? (
@@ -700,8 +700,8 @@ export function DataTable<TData>({
 							align="center"
 							justify="between"
 							className={cn(
-							  "flex-col gap-3 sm:flex-row sm:gap-0 px-4 py-3 border border-t-0 rounded-b-lg bg-muted/30",
-							  stickyFooter && "shrink-0",
+								"flex-col gap-3 sm:flex-row sm:gap-0 px-4 py-3 border border-t-0 rounded-b-lg bg-muted/30",
+								stickyFooter && "shrink-0",
 							)}
 						>
 							<Flex

@@ -10,7 +10,7 @@ import {
 	resolveSlotStyles,
 	tokenStyle,
 	useKalaConfig,
-	} from "./kala-provider";
+} from "./kala-provider";
 
 function badgeRoot(): HTMLElement {
 	return screen

@@ -1,7 +1,7 @@
 import type { ReactElement, ReactNode } from "react";
+import { useState } from "react";
 import { Text as RNText, TextInput as RNTextInput, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { useState } from "react";
 import { applySlot } from "../slot-styles";
 import * as fieldStyle from "./text-input.styles";
 import type { TextInputProps } from "./text-input.types";

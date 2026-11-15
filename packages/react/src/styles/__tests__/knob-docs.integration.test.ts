@@ -36,8 +36,7 @@ const rootBlock = (() => {
 
 describe("shape/density knob docs parity", () => {
 	it("declares the full knob registry on :root", () => {
-		for (const knob of KNOBS)
-			expect(rootBlock, knob).toContain(`${knob}:`);
+		for (const knob of KNOBS) expect(rootBlock, knob).toContain(`${knob}:`);
 	});
 
 	it("documents every knob in THEMING.md and TOKEN_SPEC.md", () => {

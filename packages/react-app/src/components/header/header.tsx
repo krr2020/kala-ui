@@ -23,7 +23,7 @@ import {
 	useScrollLock,
 	useWindowEvent,
 } from "@kala-ui/react-hooks";
-import { Bell, ChevronDown, Menu, Settings, X } from "lucide-react";
+import { Bell, ChevronDown, Menu, Settings, X } from "@kala-ui/react/icons";
 import * as React from "react";
 import { createPortal } from "react-dom";
 

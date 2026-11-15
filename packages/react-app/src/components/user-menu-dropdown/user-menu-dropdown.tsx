@@ -13,7 +13,7 @@ import {
 import { useSlotStyles } from "@kala-ui/react/kala-provider";
 import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
-import { LogOut, Settings, User } from "lucide-react";
+import { LogOut, Settings, User } from "@kala-ui/react/icons";
 import { userMenuDropdownStyles } from "../../config/user-menu-dropdown";
 import type { UserMenuDropdownProps } from "./user-menu-dropdown.types";
 
@@ -22,6 +22,9 @@ export function UserMenuDropdown({
 	isOpen,
 	onOpenChange,
 	onLogout,
+	userIcon: UserIcon = User,
+	settingsIcon: SettingsIcon = Settings,
+	logoutIcon: LogoutIcon = LogOut,
 	baseUrl = "/admin",
 	className,
 	style,
@@ -121,16 +124,16 @@ export function UserMenuDropdown({
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem onClick={handleProfileClick}>
-					<User className={itemIcon.className} />
+					<UserIcon className={itemIcon.className} />
 					Profile
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={handleSettingsClick}>
-					<Settings className={itemIcon.className} />
+					<SettingsIcon className={itemIcon.className} />
 					Settings
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem onClick={handleLogoutClick} color="destructive">
-					<LogOut className={itemIcon.className} />
+					<LogoutIcon className={itemIcon.className} />
 					Logout
 				</DropdownMenuItem>
 			</DropdownMenuContent>

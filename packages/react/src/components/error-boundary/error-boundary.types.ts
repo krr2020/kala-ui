@@ -1,6 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import type { ErrorInfo, ReactNode } from "react";
 import type { SlotStyles } from "../../lib/slot-styles";
+import type { IconComponent } from "../icons";
 import type { errorFallbackVariants } from "./error-fallback";
 
 export interface ErrorBoundaryProps {
@@ -27,6 +28,8 @@ export interface ErrorFallbackProps
 	extends VariantProps<typeof errorFallbackVariants> {
 	/** The error that was caught */
 	error?: Error;
+	/** Status glyph — any `{className, size}` icon component; defaults to kala's built-in warning triangle. */
+	icon?: IconComponent;
 	/** Callback to reset the error boundary */
 	reset?: () => void;
 	/** Overrides the default title */

@@ -150,8 +150,8 @@ describe("Toast resolved style tables", () => {
 		try {
 			const screen = await render(
 				<Toast open onOpenChange={() => {}} position="bottom">
-				<Toast.Title>Saved</Toast.Title>
-			</Toast>,
+					<Toast.Title>Saved</Toast.Title>
+				</Toast>,
 			);
 			const vb = flatStyle(screen.getByTestId("k-toast-viewport", inclHidden));
 			expect(vb.paddingBottom).toBe(16 + 48);
@@ -171,8 +171,8 @@ describe("Toast resolved style tables", () => {
 		try {
 			const screen = await render(
 				<Toast open onOpenChange={() => {}} position="bottom">
-				<Toast.Title>Saved</Toast.Title>
-			</Toast>,
+					<Toast.Title>Saved</Toast.Title>
+				</Toast>,
 			);
 			const vb = flatStyle(screen.getByTestId("k-toast-viewport", inclHidden));
 			expect(vb.paddingBottom).toBe(16 + 760);
@@ -205,7 +205,7 @@ describe("Toast resolved style tables", () => {
 			await act(async () => {
 				emitter.emit("keyboardDidShow", {
 					endCoordinates: { height: 840 },
-			});
+				});
 			});
 			let vb = flatStyle(screen.getByTestId("k-toast-viewport", inclHidden));
 			expect(vb.paddingBottom).toBe(16 + 840);
@@ -213,7 +213,7 @@ describe("Toast resolved style tables", () => {
 			await act(async () => {
 				emitter.emit("keyboardDidShow", {
 					endCoordinates: { height: 620 },
-			});
+				});
 			});
 			vb = flatStyle(screen.getByTestId("k-toast-viewport", inclHidden));
 			expect(vb.paddingBottom).toBe(16 + 620);

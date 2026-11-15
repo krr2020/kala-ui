@@ -1,11 +1,14 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import type { DropdownMenuItem } from "../dropdown-menu/dropdown-menu.types";
+import type { IconComponent } from "../icon";
 import type { SheetSnap } from "../sheet";
 
 export interface ContextMenuProps {
 	/** action rows sharing the DropdownMenu item shape */
 	items: DropdownMenuItem[];
+	/** icon-library component for the checked/radio marker — kala Check by default */
+	checkIcon?: IconComponent;
 	/** the wrapped surface — long-press it to open the menu */
 	children: ReactNode;
 	snap?: SheetSnap;

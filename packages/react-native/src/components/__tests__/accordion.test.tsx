@@ -35,7 +35,7 @@ const twoItems = (
 	</Accordion>
 );
 
-	describe("Accordion", () => {
+describe("Accordion", () => {
 	it("default variant: only non-last items draw the bottom divider", async () => {
 		const screen = await render(
 			<Accordion type="single">
@@ -81,7 +81,9 @@ const twoItems = (
 					</Accordion.Item>
 				</Accordion>,
 			);
-			const rows = screen.getAllByTestId("k-accordion-item", incl).map(flatStyle);
+			const rows = screen
+				.getAllByTestId("k-accordion-item", incl)
+				.map(flatStyle);
 			expect(Number(rows[0].marginBottom)).toBe(8);
 			expect(Number(rows[0].borderWidth)).toBe(1);
 			expect(Number(rows[0].borderRadius)).toBe(8);
@@ -101,7 +103,8 @@ const twoItems = (
 				<Accordion.Item value="c">
 					<Accordion.Trigger>Gamma</Accordion.Trigger>
 				</Accordion.Item>
-		</Accordion>);
+			</Accordion>
+		);
 		const screen = await render(three);
 		await screen.rerender(
 			<Accordion type="single">
@@ -119,7 +122,10 @@ const twoItems = (
 		// and growing back re-adds the divider
 		await screen.rerender(three);
 		expect(
-			Number(flatStyle(screen.getAllByTestId("k-accordion-item", incl)[1]).borderBottomWidth),
+			Number(
+				flatStyle(screen.getAllByTestId("k-accordion-item", incl)[1])
+					.borderBottomWidth,
+			),
 		).toBe(1);
 	});
 
@@ -380,8 +386,7 @@ const twoItems = (
 			);
 			tints.add(String(trigger.backgroundColor));
 		}
-		// default has no box, bordered/filled add one — and their OPEN tints
-		// (none / accent / primary) separate all three arms
+		// default has no box, bordered/filled add one — and their OPEN tints (none / accent / primary) separate all three arms
 		expect(itemSigs.size).toBe(2);
 		expect(tints.size).toBe(3);
 	});

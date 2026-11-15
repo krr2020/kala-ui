@@ -8,11 +8,11 @@
  * synthetic role — an indeterminate spinner is not a progressbar/timer.
  */
 
-import { Loader } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useEffect, useRef } from "react";
 import { Animated, Easing } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { Loader2 as Loader } from "../icon/glyphs";
 import { applySlot } from "../slot-styles";
 import { SIZE, variantColor, wrapperStyle } from "./spinner.styles";
 import type { SpinnerProps } from "./spinner.types";
@@ -20,6 +20,7 @@ import type { SpinnerProps } from "./spinner.types";
 export function Spinner({
 	size = "md",
 	variant = "default",
+	icon: LoaderIcon = Loader,
 	label = "Loading...",
 	accessibilityLabel,
 	style,
@@ -64,7 +65,7 @@ export function Spinner({
 			]}
 		>
 			<Animated.View style={{ transform: [{ rotate }] }}>
-				<Loader size={SIZE[size]} color={color} />
+				<LoaderIcon size={SIZE[size]} color={color} />
 			</Animated.View>
 		</Animated.View>
 	);

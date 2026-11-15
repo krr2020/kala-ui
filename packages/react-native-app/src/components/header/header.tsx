@@ -3,7 +3,7 @@
  * back affordance and trailing actions; every arm carries a label so the
  * bar reads cleanly under TalkBack/VoiceOver. Skeleton keeps the marker.
  */
-import { ChevronLeft } from "lucide-react-native";
+import { ChevronLeft } from "@kala-ui/react-native/icons";
 import type { ReactElement } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";

@@ -1,6 +1,6 @@
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
 import { cva } from "class-variance-authority";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDown, type IconComponent } from "../icons";
 import type * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
@@ -76,8 +76,12 @@ const navigationMenuTriggerStyle = cva(
 function NavigationMenuTrigger({
 	className,
 	children,
+	chevronIcon: Chevron = ChevronDown,
 	...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.Trigger>) {
+}: React.ComponentProps<typeof NavigationMenuPrimitive.Trigger> & {
+	/** Trigger chevron — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	chevronIcon?: IconComponent;
+}) {
 	return (
 		<NavigationMenuPrimitive.Trigger
 			data-kala-component="navigation-menu-trigger"
@@ -86,7 +90,7 @@ function NavigationMenuTrigger({
 			{...props}
 		>
 			{children}{" "}
-			<ChevronDownIcon
+			<Chevron
 				className="relative top-[1px] ml-1 size-3 transition duration-300 group-data-[state=open]:rotate-180"
 				aria-hidden="true"
 			/>

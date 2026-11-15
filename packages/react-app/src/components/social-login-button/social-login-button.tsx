@@ -2,7 +2,7 @@ import { Button } from "@kala-ui/react/button";
 import { useSlotStyles } from "@kala-ui/react/kala-provider";
 import { applySlot } from "@kala-ui/react/lib/slot-styles";
 import { cn } from "@kala-ui/react/lib/utils";
-import { Loader2 } from "lucide-react";
+import { Loader2 } from "@kala-ui/react/icons";
 import type { SimpleIcon } from "simple-icons";
 import { siFacebook, siGithub, siGoogle, siX } from "simple-icons";
 import { socialLoginButtonStyles } from "../../config/social-login-button";
@@ -84,6 +84,7 @@ export function SocialLoginButton({
 	ref,
 	provider,
 	isLoading = false,
+	loadingIcon: LoadingIcon = Loader2,
 	label,
 	className,
 	style,
@@ -113,9 +114,12 @@ export function SocialLoginButton({
 			{...props}
 		>
 			{isLoading ? (
-				<Loader2
-				className={applySlot(socialLoginButtonStyles.spinner, slotStyles?.icon).className}
-			/>
+				<LoadingIcon
+					className={
+						applySlot(socialLoginButtonStyles.spinner, slotStyles?.icon)
+							.className
+					}
+				/>
 			) : provider === "linkedin" ? (
 				<LinkedInIcon className={iconSlot.className} />
 			) : icon ? (

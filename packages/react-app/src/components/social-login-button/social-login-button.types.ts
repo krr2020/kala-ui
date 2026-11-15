@@ -1,4 +1,5 @@
 import type { ButtonProps } from "@kala-ui/react/button";
+import type { IconComponent } from "@kala-ui/react/icons";
 import type { SlotStyles } from "@kala-ui/react/lib/slot-styles";
 
 export interface SocialLoginButtonProps extends Omit<ButtonProps, "variant"> {
@@ -6,6 +7,8 @@ export interface SocialLoginButtonProps extends Omit<ButtonProps, "variant"> {
 	provider: "google" | "github" | "facebook" | "twitter" | "x" | "linkedin";
 	/** Loading state during OAuth redirect */
 	isLoading?: boolean;
+	/** Loading spinner glyph — any `{className, size}` icon component; defaults to kala's built-in loader. */
+	loadingIcon?: IconComponent;
 	/** Optional custom label (defaults to provider name, e.g., "Google") */
 	label?: string;
 	/** Per-part overrides: `root` (button), `icon` (provider glyph). */

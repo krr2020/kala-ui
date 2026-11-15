@@ -1,5 +1,6 @@
 import type { StyleProp, ViewStyle } from "react-native";
 import type { DateRangeValue } from "../calendar";
+import type { IconComponent } from "../icon";
 
 /** Calendar props forwarded into the sheet of both picker triggers. */
 export interface PickerCalendarProps {
@@ -11,6 +12,8 @@ export interface PickerCalendarProps {
 	max?: Date;
 	/** Extra per-day disable rule, merged with min/max. */
 	disabledDates?: (date: Date) => boolean;
+	/** icon-library component for the trigger calendar glyph — kala Calendar by default */
+	calendarIcon?: IconComponent;
 }
 
 export interface DatePickerProps extends PickerCalendarProps {

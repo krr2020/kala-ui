@@ -1,4 +1,5 @@
 import type { StyleProp, ViewStyle } from "react-native";
+import type { IconComponent } from "../icon";
 
 export type RatingSize = "sm" | "md" | "lg";
 
@@ -21,6 +22,8 @@ export interface RatingProps {
 	size?: RatingSize;
 	/** Accessible label (prefixes the readOnly summary) */
 	accessibilityLabel?: string;
+	/** icon-library component for the stars — kala Star by default */
+	starIcon?: IconComponent;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */

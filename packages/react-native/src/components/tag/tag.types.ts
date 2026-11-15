@@ -26,6 +26,8 @@ export interface TagProps {
 	icon?: IconComponent;
 	/** Hard override for the icon color: token key or raw color string. */
 	iconColor?: IconColor;
+	/** icon-library component for the remove affordance — kala X glyph by default */
+	removeIcon?: IconComponent;
 	children?: ReactNode;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;

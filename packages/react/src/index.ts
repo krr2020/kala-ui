@@ -98,3 +98,8 @@ export * from "./components/toggle-group";
 export * from "./components/toolbar";
 export * from "./components/tooltip";
 export * from "./components/tree-view";
+// Built-in glyphs are NOT re-exported here (name collisions with components) — consume them via the `@kala-ui/react/icons` subpath.
+export type {
+	IconComponent,
+	KalaIconProps,
+} from "./components/icons";

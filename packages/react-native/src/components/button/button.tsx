@@ -54,8 +54,7 @@ export function Button({
 		<AnimatedPressable
 			testID={testID}
 			onPress={() => {
-				// guarded internally (not undefined) so disabled/loading buttons
-				// can't fire even when the host still delivers the event
+				// guarded internally (not undefined) so disabled/loading buttons can't fire even when the host still delivers the event
 				if (!effectiveDisabled) onPress?.();
 			}}
 			onPressIn={() => {
@@ -95,8 +94,7 @@ export function Button({
 					{children}
 				</Text>
 			) : (
-				// row container so composed icon+label children sit inline —
-				// RN's default column stacks them vertically
+				// row container so composed icon+label children sit inline — RN's default column stacks them vertically
 				<View
 					style={{
 						flexDirection: "row",

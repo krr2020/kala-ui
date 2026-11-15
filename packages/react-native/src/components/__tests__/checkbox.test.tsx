@@ -20,9 +20,7 @@ function flatStyle(node: {
 	return out;
 }
 
-function iconStroke(node: {
-	children?: unknown[];
-}): unknown {
+function iconStroke(node: { children?: unknown[] }): unknown {
 	const icon = node.children?.[0] as
 		| { props: Record<string, unknown> }
 		| undefined;
@@ -209,6 +207,8 @@ describe("Checkbox", () => {
 			/>,
 		);
 		expect(flatStyle(screen.getByTestId("k-checkbox")).minWidth).toBe(90);
-		expect(flatStyle(screen.getByTestId("k-checkbox-box")).borderRadius).toBe(9);
+		expect(flatStyle(screen.getByTestId("k-checkbox-box")).borderRadius).toBe(
+			9,
+		);
 	});
 });

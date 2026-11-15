@@ -88,7 +88,8 @@ interface Combo {
 function combos(): Combo[] {
 	const colors = Object.keys(buttonStyles.variants.color);
 	const out: Combo[] = [{ name: "solid(default)", variant: "solid" }];
-	for (const color of colors) out.push({ name: `solid/${color}`, variant: "solid", color });
+	for (const color of colors)
+		out.push({ name: `solid/${color}`, variant: "solid", color });
 	for (const color of colors)
 		out.push({ name: `outline/${color}`, variant: "outline", color });
 	return out;
@@ -107,7 +108,9 @@ function classesFor(combo: Combo): string {
 function bgText(classes: string, hover: boolean) {
 	const rest = classes.replace(/hover:\S+/g, "");
 	const pick = (source: string, utility: string) => {
-		const m = source.match(new RegExp(`(?:^|\\s)${utility}-([\\w-]+)(?:\\/(\\d+))?`));
+		const m = source.match(
+			new RegExp(`(?:^|\\s)${utility}-([\\w-]+)(?:\\/(\\d+))?`),
+		);
 		return m ? { token: m[1], alpha: m[2] ? Number(m[2]) / 100 : 1 } : null;
 	};
 	return {
@@ -152,7 +155,9 @@ describe("button contrast guard (default tokens)", () => {
 					const key = `${theme.label} ${combo.name} ${hover ? "hover" : "rest"}`;
 					const known = KNOWN_SUB_AA[key];
 					if (ratio < AA && !(known && Math.abs(known - ratio) < 0.15))
-						failures.push(`${key}: ${ratio.toFixed(2)}:1 (bg --${bg.token}/${bg.alpha} fg --${fgToken})`);
+						failures.push(
+							`${key}: ${ratio.toFixed(2)}:1 (bg --${bg.token}/${bg.alpha} fg --${fgToken})`,
+						);
 				}
 			}
 			expect(failures, failures.join("\n")).toEqual([]);

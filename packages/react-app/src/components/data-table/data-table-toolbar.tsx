@@ -11,7 +11,7 @@ import { Flex } from "@kala-ui/react/flex";
 import { Input } from "@kala-ui/react/input";
 import { cn } from "@kala-ui/react/lib/utils";
 import { Text } from "@kala-ui/react/text";
-import { Search, X } from "lucide-react";
+import { Search, X } from "@kala-ui/react/icons";
 import type { BulkAction, SearchConfig } from "./data-table.types";
 
 interface DataTableToolbarProps<TData> {

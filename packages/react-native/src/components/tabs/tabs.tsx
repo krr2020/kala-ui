@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
-import { Pressable, Text as RNText, View } from "react-native";
 import type { ViewStyle } from "react-native";
+import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Badge } from "../badge";
 import { Icon } from "../icon";
@@ -68,27 +68,24 @@ export function Tabs({
 					slotStyles?.list,
 				)}
 			>
-			{items.map((item: TabsItem) => {
-				const selected = item.value === active;
-				const disabled = item.disabled === true;
-				const onActivePill = look === "pill" && selected;
-				// badge count rides the a11y name so screen-reader users hear the
-				// pending-work signal too
-				const a11yName =
-					item.badge !== undefined
-						? `${item.label} ${item.badge}`
-						: item.label;
-			// the dot is an absolute-positioned zero-size overlay pinned to the
-			// tab's top-right corner; a flex wrapper would zero the row's
-			// intrinsic width and collapse the label
-			const overlayStyle: ViewStyle = {
-				position: "absolute",
-				top: 6,
-				right: 6,
-				width: 0,
-				height: 0,
-			};
-				return (
+				{items.map((item: TabsItem) => {
+					const selected = item.value === active;
+					const disabled = item.disabled === true;
+					const onActivePill = look === "pill" && selected;
+					// badge count rides the a11y name so screen-reader users hear the pending-work signal too
+					const a11yName =
+						item.badge !== undefined
+							? `${item.label} ${item.badge}`
+							: item.label;
+					// the dot is an absolute-positioned zero-size overlay pinned to the tab's top-right corner; a flex wrapper would zero the row's intrinsic width and collapse the label
+					const overlayStyle: ViewStyle = {
+						position: "absolute",
+						top: 6,
+						right: 6,
+						width: 0,
+						height: 0,
+					};
+					return (
 						<Pressable
 							key={item.value}
 							testID="k-tab"
@@ -110,15 +107,15 @@ export function Tabs({
 										slotStyles?.indicator,
 									)}
 								/>
-								)}
-						<Indicator
-							dot
-							size={8}
-							offset={[0, 0]}
-							color={tabsDotColor(onActivePill)}
-							invisible={item.indicator !== true}
-							slotStyles={{ root: overlayStyle }}
-						/>
+							)}
+							<Indicator
+								dot
+								size={8}
+								offset={[0, 0]}
+								color={tabsDotColor(onActivePill)}
+								invisible={item.indicator !== true}
+								slotStyles={{ root: overlayStyle }}
+							/>
 							<View
 								testID="k-tab-row"
 								style={{
@@ -129,33 +126,33 @@ export function Tabs({
 									gap: 6,
 								}}
 							>
-							{item.icon !== undefined && (
-								<Icon
-									icon={item.icon}
+								{item.icon !== undefined && (
+									<Icon
+										icon={item.icon}
 										size="sm"
 										color={tabsIconColor({ look, selected })}
 									/>
-							)}
-							<RNText
-								numberOfLines={2}
-								ellipsizeMode="tail"
-								style={tabsTabTextStyle({ look, selected, theme })}
-							>
-								{item.label}
-							</RNText>
-							{item.badge !== undefined && (
-								<Badge
-									testID="k-tab-badge"
+								)}
+								<RNText
+									numberOfLines={2}
+									ellipsizeMode="tail"
+									style={tabsTabTextStyle({ look, selected, theme })}
+								>
+									{item.label}
+								</RNText>
+								{item.badge !== undefined && (
+									<Badge
+										testID="k-tab-badge"
 										variant={tabsBadgeVariant(onActivePill)}
 										color={tabsBadgeColor(onActivePill)}
-									shape="pill"
-									numberOfLines={1}
-									style={{ maxWidth: 72, alignSelf: "center" }}
-								>
-									{String(item.badge)}
-								</Badge>
-							)}
-						</View>
+										shape="pill"
+										numberOfLines={1}
+										style={{ maxWidth: 72, alignSelf: "center" }}
+									>
+										{String(item.badge)}
+									</Badge>
+								)}
+							</View>
 						</Pressable>
 					);
 				})}

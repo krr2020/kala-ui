@@ -6,10 +6,10 @@
  * web convention.
  */
 
-import { Check, Minus } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import { Check, Minus } from "../icon/glyphs";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
 import { box as boxStyle, label as labelStyle, root } from "./checkbox.styles";
@@ -22,6 +22,8 @@ export function Checkbox({
 	hasError = false,
 	label,
 	isLoading = false,
+	checkIcon: CheckIcon = Check,
+	minusIcon: MinusIcon = Minus,
 	accessibilityLabel,
 	style,
 	slotStyles,
@@ -58,25 +60,25 @@ export function Checkbox({
 				applySlot(applySlot([], style), slotStyles?.root),
 			]}
 		>
-				<View testID="k-checkbox-wrap">
-					<View
-						testID="k-checkbox-box"
-						style={[boxStyle(theme, active, hasError), slotStyles?.box]}
-					>
-						{value === true && (
-								<Check
-									size={14}
-									color={hasError ? theme.destructive : theme.primaryForeground}
-								/>
-						)}
-						{value === "indeterminate" && (
-								<Minus
-									size={14}
-									color={hasError ? theme.destructive : theme.primaryForeground}
-								/>
-						)}
-					</View>
+			<View testID="k-checkbox-wrap">
+				<View
+					testID="k-checkbox-box"
+					style={[boxStyle(theme, active, hasError), slotStyles?.box]}
+				>
+					{value === true && (
+						<CheckIcon
+							size={14}
+							color={hasError ? theme.destructive : theme.primaryForeground}
+						/>
+					)}
+					{value === "indeterminate" && (
+						<MinusIcon
+							size={14}
+							color={hasError ? theme.destructive : theme.primaryForeground}
+						/>
+					)}
 				</View>
+			</View>
 			{label !== undefined ? (
 				<RNText style={labelStyle(theme)}>{label}</RNText>
 			) : null}

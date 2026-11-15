@@ -42,8 +42,7 @@ export function SegmentedControl({
 }: SegmentedControlProps): ReactElement {
 	const { theme } = useUnistyles();
 	const items = data.map(resolveItem);
-	// controlled lock: a provided value prop always wins over internal state,
-	// even when it matches no data item (no implicit fallback to data[0])
+	// controlled lock: a provided value prop always wins over internal state, even when it matches no data item (no implicit fallback to data[0])
 	const controlled = value !== undefined;
 	const [internal, setInternal] = useState<string>(
 		() => defaultValue ?? items[0]?.value ?? "",

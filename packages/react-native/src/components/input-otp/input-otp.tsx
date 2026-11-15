@@ -1,11 +1,5 @@
 import type { ReactElement, ReactNode } from "react";
-import {
-	createContext,
-	useContext,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
+import { createContext, useContext, useMemo, useRef, useState } from "react";
 import {
 	Pressable,
 	Text as RNText,
@@ -61,17 +55,14 @@ export function InputOtp({
 	const sanitize = (next: string): string =>
 		DIGITS.test(next) ? next : (next.match(/\d/g) ?? []).join("");
 
-	// paste and typed edits both land here: RN gives the FULL new text, so a
-	// multi-char payload distributes across slots from the focused position
+	// paste and typed edits both land here: RN gives the FULL new text, so a multi-char payload distributes across slots from the focused position
 	const handleChange = (next: string): void => {
 		const clean = sanitize(next).slice(0, maxLength);
 		if (!isControlled) setInternal(clean);
 		onChange?.(clean);
 	};
 
-	// RN cannot delete backwards past the field's own text — when the focused
-	// position is empty, an incoming shorter-or-equal text means the user
-	// pressed backspace on an empty slot: step the focus back one position
+	// RN cannot delete backwards past the field's own text — when the focused position is empty, an incoming shorter-or-equal text means the user pressed backspace on an empty slot: step the focus back one position
 	const handleBackspace = (): void => {
 		if (current.length === 0) return;
 		const shorter = current.slice(0, Math.max(0, current.length - 1));
@@ -88,8 +79,7 @@ export function InputOtp({
 	const pressSlot = (index: number): void => {
 		if (disabled) return;
 		fieldRef.current?.focus();
-		// caret moves to the pressed slot: pad/trim so the next keystroke
-		// lands at that position
+		// caret moves to the pressed slot: pad/trim so the next keystroke lands at that position
 		if (current.length > index) {
 			const trimmed = current.slice(0, index);
 			if (!isControlled) setInternal(trimmed);
@@ -107,9 +97,7 @@ export function InputOtp({
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
-			<OtpContext.Provider
-				value={{ chars, activeIndex, disabled, pressSlot }}
-			>
+			<OtpContext.Provider value={{ chars, activeIndex, disabled, pressSlot }}>
 				{children}
 			</OtpContext.Provider>
 			<RNTextInput
@@ -160,9 +148,7 @@ export function InputOtpSlot({
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
-			{char ? (
-				<RNText style={otpStyle.slotText(theme)}>{char}</RNText>
-			) : null}
+			{char ? <RNText style={otpStyle.slotText(theme)}>{char}</RNText> : null}
 		</Pressable>
 	);
 }

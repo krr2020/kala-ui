@@ -1,5 +1,5 @@
-import { fireEvent, render } from "@testing-library/react-native";
 import { useUncontrolled } from "@kala-ui/react-hooks/portable";
+import { fireEvent, render } from "@testing-library/react-native";
 import { RadioGroup } from "../radio-group";
 import { Select } from "../select";
 
@@ -8,8 +8,7 @@ const OPTIONS = [
 	{ value: "banana", label: "Banana" },
 ] as const;
 
-// Cross-package seam: react-native form controls consume the portable
-// entry of @kala-ui/react-hooks via the workspace link.
+// Cross-package seam: react-native form controls consume the portable entry of @kala-ui/react-hooks via the workspace link.
 describe("react-native ↔ react-hooks portable seam", () => {
 	it("resolves the portable subpath through the workspace link", () => {
 		expect(typeof useUncontrolled).toBe("function");

@@ -23,12 +23,20 @@ describe("Accordion ↔ playground demo contract", () => {
 		const screen = await render(
 			<Accordion type="single" value="billing" onValueChange={onValueChange}>
 				<Accordion.Item value="billing">
-					<Accordion.Trigger accessibilityLabel="Billing">Billing</Accordion.Trigger>
-					<Accordion.Content>invoices email on the first of each month</Accordion.Content>
+					<Accordion.Trigger accessibilityLabel="Billing">
+						Billing
+					</Accordion.Trigger>
+					<Accordion.Content>
+						invoices email on the first of each month
+					</Accordion.Content>
 				</Accordion.Item>
 				<Accordion.Item value="account">
-					<Accordion.Trigger accessibilityLabel="Account">Account</Accordion.Trigger>
-					<Accordion.Content>change email or password any time</Accordion.Content>
+					<Accordion.Trigger accessibilityLabel="Account">
+						Account
+					</Accordion.Trigger>
+					<Accordion.Content>
+						change email or password any time
+					</Accordion.Content>
 				</Accordion.Item>
 			</Accordion>,
 		);
@@ -37,7 +45,9 @@ describe("Accordion ↔ playground demo contract", () => {
 		expect(trigger.props.accessibilityLabel).toBe("Billing");
 		expect(trigger.props.accessibilityState.expanded).toBe(true);
 		expect(screen.getAllByTestId("k-accordion-content", incl)).toHaveLength(1);
-		await fireEvent.press(screen.getAllByTestId("k-accordion-trigger", incl)[1]);
+		await fireEvent.press(
+			screen.getAllByTestId("k-accordion-trigger", incl)[1],
+		);
 		expect(onValueChange).toHaveBeenCalledWith("account");
 	});
 
@@ -51,12 +61,20 @@ describe("Accordion ↔ playground demo contract", () => {
 				onValueChange={onValueChange}
 			>
 				<Accordion.Item value="shipping">
-					<Accordion.Trigger accessibilityLabel="Shipping">Shipping</Accordion.Trigger>
-					<Accordion.Content>free over $50, arrives in 3-5 days</Accordion.Content>
+					<Accordion.Trigger accessibilityLabel="Shipping">
+						Shipping
+					</Accordion.Trigger>
+					<Accordion.Content>
+						free over $50, arrives in 3-5 days
+					</Accordion.Content>
 				</Accordion.Item>
 				<Accordion.Item value="returns">
-					<Accordion.Trigger accessibilityLabel="Returns">Returns</Accordion.Trigger>
-					<Accordion.Content>30-day window, no questions asked</Accordion.Content>
+					<Accordion.Trigger accessibilityLabel="Returns">
+						Returns
+					</Accordion.Trigger>
+					<Accordion.Content>
+						30-day window, no questions asked
+					</Accordion.Content>
 				</Accordion.Item>
 			</Accordion>,
 		);
@@ -64,17 +82,26 @@ describe("Accordion ↔ playground demo contract", () => {
 		expect(Number(rows[0].borderWidth)).toBe(1);
 		expect(Number(rows[0].marginBottom)).toBe(8);
 		expect(rows[1].marginBottom ?? 0).toBe(0);
-		await fireEvent.press(screen.getAllByTestId("k-accordion-trigger", incl)[1]);
+		await fireEvent.press(
+			screen.getAllByTestId("k-accordion-trigger", incl)[1],
+		);
 		expect(onValueChange).toHaveBeenCalledWith(["shipping", "returns"]);
 	});
 
 	it("filled block: locked item never fires", async () => {
 		const onValueChange = jest.fn();
 		const screen = await render(
-			<Accordion type="single" variant="filled" defaultValue="faq" onValueChange={onValueChange}>
+			<Accordion
+				type="single"
+				variant="filled"
+				defaultValue="faq"
+				onValueChange={onValueChange}
+			>
 				<Accordion.Item value="faq">
 					<Accordion.Trigger accessibilityLabel="FAQ">FAQ</Accordion.Trigger>
-					<Accordion.Content>answers to the questions support gets most</Accordion.Content>
+					<Accordion.Content>
+						answers to the questions support gets most
+					</Accordion.Content>
 				</Accordion.Item>
 				<Accordion.Item value="legacy" disabled>
 					<Accordion.Trigger accessibilityLabel="Legacy settings">
@@ -94,7 +121,12 @@ describe("Accordion ↔ playground demo contract", () => {
 	it("whole-group disabled block: every trigger gated", async () => {
 		const onValueChange = jest.fn();
 		const screen = await render(
-			<Accordion type="single" defaultValue="a" disabled onValueChange={onValueChange}>
+			<Accordion
+				type="single"
+				defaultValue="a"
+				disabled
+				onValueChange={onValueChange}
+			>
 				<Accordion.Item value="a">
 					<Accordion.Trigger accessibilityLabel="A">A</Accordion.Trigger>
 				</Accordion.Item>
@@ -103,7 +135,9 @@ describe("Accordion ↔ playground demo contract", () => {
 				</Accordion.Item>
 			</Accordion>,
 		);
-		await fireEvent.press(screen.getAllByTestId("k-accordion-trigger", incl)[1]);
+		await fireEvent.press(
+			screen.getAllByTestId("k-accordion-trigger", incl)[1],
+		);
 		expect(onValueChange).not.toHaveBeenCalled();
 		expect(
 			screen

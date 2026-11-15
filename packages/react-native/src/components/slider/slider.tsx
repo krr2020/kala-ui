@@ -50,8 +50,7 @@ export function Slider({
 	const values = controlled ? (value as number[]) : internal;
 	// gesture-space track width; rendering never reads it (percentage geometry)
 	const trackWidthRef = useRef(0);
-	// active thumb index kept in a ref — a re-render between grant and move
-	// must not reset it to 0 (multi-thumb drags used to snap to thumb 0)
+	// active thumb index kept in a ref — a re-render between grant and move must not reset it to 0 (multi-thumb drags used to snap to thumb 0)
 	const activeIndexRef = useRef(0);
 
 	const span = max - min;

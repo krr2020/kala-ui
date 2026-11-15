@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import type { LucideIcon } from "lucide-react";
+import type { IconComponent } from "../icons";
 import type * as React from "react";
 import type { SlotStyles } from "../../lib/slot-styles";
 import type { Button } from "../button";
@@ -9,8 +9,8 @@ import type { emptyStateVariants } from "./empty-state";
 export interface EmptyStateProps
 	extends Omit<React.ComponentProps<"div">, "color" | "title">,
 		VariantProps<typeof emptyStateVariants> {
-	/** Icon component, ReactNode, or emoji/text glyph shown in the badge */
-	icon?: LucideIcon | string | React.ReactNode;
+	/** Icon component, ReactNode, or emoji/text glyph shown in the badge — any `{className, size}` icon component; defaults to kala's built-in inbox */
+	icon?: IconComponent | string | React.ReactNode;
 	/** "tile" (default) frames the icon in the muted circle; "plain" renders it bare — no size box, no background */
 	iconVariant?: "tile" | "plain";
 	/** Primary heading */
@@ -18,11 +18,13 @@ export interface EmptyStateProps
 	/** Supporting copy under the title */
 	description?: React.ReactNode;
 	/** Optional call-to-action rendered under the description — a node (rendered as-is) or the library Button props */
-	action?: React.ReactNode | {
-		label: string;
-		onClick: () => void;
-		variant?: React.ComponentProps<typeof Button>["variant"];
-	};
+	action?:
+		| React.ReactNode
+		| {
+				label: string;
+				onClick: () => void;
+				variant?: React.ComponentProps<typeof Button>["variant"];
+		  };
 	/** Renders the skeleton arm instead of content */
 	isLoading?: boolean;
 	/** Config for the built-in skeleton (ignored when `skeleton` is set) */

@@ -1,4 +1,5 @@
 import type { StyleProp, ViewStyle } from "react-native";
+import type { IconComponent } from "../icon";
 
 export interface MultiSelectOption {
 	value: string;
@@ -34,6 +35,12 @@ export interface MultiSelectProps {
 	/** select-all / clear-all affordances; default true */
 	showActions?: boolean;
 	isLoading?: boolean;
+	/** icon-library component for the trigger chevron — kala ChevronDown by default */
+	chevronIcon?: IconComponent;
+	/** icon-library component for selected markers — kala Check by default */
+	checkIcon?: IconComponent;
+	/** icon-library component for the chip-remove affordance — kala X by default */
+	removeIcon?: IconComponent;
 	accessibilityLabel?: string;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;

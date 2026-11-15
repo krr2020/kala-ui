@@ -17,7 +17,7 @@ import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { applySlot } from "../slot-styles";
-import { TOGGLE_FONT, toggleSurface, StateGlyph } from "../toggle/toggle";
+import { StateGlyph, TOGGLE_FONT, toggleSurface } from "../toggle/toggle";
 import { hitSlopFor } from "../toggle/toggle.styles";
 import type { ToggleSize, ToggleVariant } from "../toggle/toggle.types";
 import {
@@ -82,7 +82,9 @@ export function ToggleGroup({
 
 	const indexed = Children.map(children, (child, index) =>
 		isValidElement(child) ? (
-			<ItemFirstContext.Provider value={index === 0}>{child}</ItemFirstContext.Provider>
+			<ItemFirstContext.Provider value={index === 0}>
+				{child}
+			</ItemFirstContext.Provider>
 		) : (
 			child
 		),

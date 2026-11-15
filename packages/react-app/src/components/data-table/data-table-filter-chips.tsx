@@ -9,7 +9,7 @@ import { Badge } from "@kala-ui/react/badge";
 import { Button } from "@kala-ui/react/button";
 import { Flex } from "@kala-ui/react/flex";
 import { Text } from "@kala-ui/react/text";
-import { X } from "lucide-react";
+import { X } from "@kala-ui/react/icons";
 import type { FilterableColumn, FilterConfig } from "./data-table.types";
 
 interface DataTableFilterChipsProps<TData> {

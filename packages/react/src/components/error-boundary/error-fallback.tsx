@@ -1,7 +1,7 @@
 "use client";
 
 import { cva } from "class-variance-authority";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "../icons";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
 import type { ErrorFallbackProps } from "./error-boundary.types";
@@ -38,6 +38,7 @@ export const errorFallbackVariants = cva(
 export function ErrorFallback({
 	error,
 	reset,
+	icon: ErrorIcon = AlertTriangle,
 	title = "Something went wrong",
 	description = "An unexpected error occurred. Please try again.",
 	variant,
@@ -52,7 +53,7 @@ export function ErrorFallback({
 			role="alert"
 		>
 			<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
-				<AlertTriangle className="h-8 w-8 text-destructive" />
+				<ErrorIcon className="h-8 w-8 text-destructive" />
 			</div>
 			<h2 className="mb-2 text-2xl font-semibold text-foreground">{title}</h2>
 			<p className="mb-6 max-w-md text-muted-foreground">{description}</p>

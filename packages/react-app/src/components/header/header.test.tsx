@@ -73,7 +73,8 @@ describe("Header", () => {
 		const button = screen.getByLabelText("Toggle mobile menu");
 		const svg = button.querySelector("svg");
 		expect(svg).toBeInTheDocument();
-		expect(svg).toHaveClass("lucide-x");
+		// kala's built-in ✕ glyph (library-agnostic: assert the drawn path, not a vendor class)
+		expect(svg?.querySelector("path")?.getAttribute("d")).toBe("M18 6 6 18");
 	});
 
 	it("shows menu icon when mobile menu is closed", () => {
@@ -87,7 +88,8 @@ describe("Header", () => {
 		const button = screen.getByLabelText("Toggle mobile menu");
 		const svg = button.querySelector("svg");
 		expect(svg).toBeInTheDocument();
-		expect(svg).toHaveClass("lucide-menu");
+		// kala's built-in menu glyph (library-agnostic: assert the drawn path, not a vendor class)
+		expect(svg?.querySelector("path")?.getAttribute("d")).toBe("M4 5h16");
 	});
 
 	it("applies custom className", () => {

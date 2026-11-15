@@ -46,10 +46,7 @@ import { Textarea } from "../textarea";
 import { TimePicker } from "../time-picker";
 import { Toast } from "../toast";
 
-// TLB v14 queries are a11y-aware: deliberately-hidden elements (Icon without
-// a label) and siblings of an accessibilityViewIsModal container (the Sheet
-// overlay) are excluded by default — opt back in where the contract needs
-// the raw tree.
+// TLB v14 queries are a11y-aware: deliberately-hidden elements (Icon without a label) and siblings of an accessibilityViewIsModal container (the Sheet overlay) are excluded by default — opt back in where the contract needs the raw tree.
 const inclHidden = { includeHiddenElements: true } as const;
 
 describe("a11y contract", () => {
@@ -201,8 +198,7 @@ describe("a11y contract", () => {
 	});
 
 	describe("TextInput", () => {
-		// RN's AccessibilityRole vocab has no "textbox" (the native control
-		// announces itself); the assertable contract is label wiring + state.
+		// RN's AccessibilityRole vocab has no "textbox" (the native control announces itself); the assertable contract is label wiring + state.
 		it("passes the accessibility label through", async () => {
 			const screen = await render(
 				<TextInput accessibilityLabel="Email address" />,

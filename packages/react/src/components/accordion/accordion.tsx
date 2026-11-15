@@ -2,7 +2,7 @@
 
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { cva, type VariantProps } from "class-variance-authority";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown } from "../icons";
 import * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
@@ -69,6 +69,7 @@ function AccordionTrigger({
 	className,
 	style,
 	slotStyles: slotStylesRaw,
+	chevronIcon,
 	children,
 	...props
 }: AccordionTriggerProps) {
@@ -79,6 +80,7 @@ function AccordionTrigger({
 		"pointer-events-none size-4 shrink-0 transition-all duration-200 opacity-80",
 		slotStyles?.chevron,
 	);
+	const Chevron = chevronIcon ?? ChevronDown;
 	return (
 		<AccordionPrimitive.Header
 			data-kala-component="accordion-trigger"
@@ -100,7 +102,7 @@ function AccordionTrigger({
 				{...props}
 			>
 				{children}
-				<ChevronDown className={chevron.className} style={chevron.style} />
+				<Chevron className={chevron.className} style={chevron.style} />
 			</AccordionPrimitive.Trigger>
 		</AccordionPrimitive.Header>
 	);

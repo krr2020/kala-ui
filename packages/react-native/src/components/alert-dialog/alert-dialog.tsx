@@ -46,8 +46,7 @@ export function AlertDialog({
 			accessibilityLabel={accessibilityLabel}
 			slotStyles={slotStyles}
 			testID={testID}
-			// one a11y element for the whole alert (same idiom as Alert/Toast);
-			// Dialog's card already sets accessibilityViewIsModal
+			// one a11y element for the whole alert (same idiom as Alert/Toast); Dialog's card already sets accessibilityViewIsModal
 			accessibilityRole="alert"
 		>
 			<AlertDialogContext.Provider value={{ close }}>
@@ -102,9 +101,11 @@ function AlertDialogCancel({
 }
 
 const prefixed =
-	<T extends { testID?: string }>(Part: (props: T) => ReactElement, part: string) =>
-	(props: T) =>
-		<Part {...props} testID={`k-alert-dialog-${part}`} />;
+	<T extends { testID?: string }>(
+		Part: (props: T) => ReactElement,
+		part: string,
+	) =>
+	(props: T) => <Part {...props} testID={`k-alert-dialog-${part}`} />;
 
 AlertDialog.Header = prefixed(DialogHeader, "header");
 AlertDialog.Footer = prefixed(DialogFooter, "footer");

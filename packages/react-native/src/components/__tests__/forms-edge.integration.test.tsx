@@ -16,8 +16,7 @@ const DEMOS = join(
 	"../../../../../apps/native-playground/src/demos/components",
 );
 
-const read = (name: string): string =>
-	readFileSync(join(DEMOS, name), "utf8");
+const read = (name: string): string => readFileSync(join(DEMOS, name), "utf8");
 
 describe("Forms demos edge-case census", () => {
 	it("text-input and textarea pin long-text arms", () => {
@@ -104,19 +103,13 @@ describe("Forms demos edge-case census", () => {
 		const atMin = await render(
 			<NumberInput defaultValue={0} min={0} max={6} />,
 		);
-		await fireEvent.press(
-			atMin.getByTestId("k-number-input-decrement"),
-		);
-		await fireEvent.press(
-			atMin.getByTestId("k-number-input-decrement"),
-		);
+		await fireEvent.press(atMin.getByTestId("k-number-input-decrement"));
+		await fireEvent.press(atMin.getByTestId("k-number-input-decrement"));
 		const minInput = atMin.getByTestId("k-number-input-input");
 		expect(String(minInput.props.value)).toBe("0");
 
 		// from 5: two increments stop at max 6
-		const mid = await render(
-			<NumberInput defaultValue={5} min={0} max={6} />,
-		);
+		const mid = await render(<NumberInput defaultValue={5} min={0} max={6} />);
 		await fireEvent.press(mid.getByTestId("k-number-input-increment"));
 		await fireEvent.press(mid.getByTestId("k-number-input-increment"));
 		const maxInput = mid.getByTestId("k-number-input-input");

@@ -1,4 +1,5 @@
 import type * as React from "react";
+import type { IconComponent } from "../icons";
 import type { SlotStyles } from "../../lib/slot-styles";
 
 export interface NumberInputProps
@@ -26,6 +27,10 @@ export interface NumberInputProps
 	hasSuccess?: boolean;
 	/** Show loading skeleton */
 	isLoading?: boolean;
+	/** Decrement-button glyph — any `{className, size}` icon component; defaults to kala's built-in minus. */
+	decrementIcon?: IconComponent;
+	/** Increment-button glyph — any `{className, size}` icon component; defaults to kala's built-in plus. */
+	incrementIcon?: IconComponent;
 	/** Per-part overrides: `root` wins over `className`/`style` in every arm; `increment`/`decrement` target the stepper buttons, `divider` their inner borders. */
 	slotStyles?: SlotStyles;
 }

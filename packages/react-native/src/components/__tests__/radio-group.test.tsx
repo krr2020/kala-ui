@@ -19,9 +19,7 @@ function flatStyle(node: {
 }
 
 function dotStyle(node: { children?: unknown[] }): Record<string, unknown> {
-	const dot = node.children?.[0] as
-		| { props: { style?: unknown } }
-		| undefined;
+	const dot = node.children?.[0] as { props: { style?: unknown } } | undefined;
 	return flatStyle(dot ?? { props: {} });
 }
 
@@ -56,22 +54,34 @@ describe("RadioGroup", () => {
 		expect(circle.borderWidth).toBe(2);
 		expect(circle.backgroundColor).toBe("transparent");
 		expect(circle.borderColor).toBe(themes.light.border);
-		expect(screen.getByTestId("k-radio-item-b-circle").children?.length ?? 0).toBe(0);
+		expect(
+			screen.getByTestId("k-radio-item-b-circle").children?.length ?? 0,
+		).toBe(0);
 	});
 
 	it("hasError: destructive stroke unchecked; destructive dot over primary fill when checked", async () => {
 		const { themes } = require("../../themes");
 		const idle = await render(
 			<RadioGroup value="a">
-				<RadioGroup.Item value="b" label="Beta" testID="k-radio-item-b" hasError />
+				<RadioGroup.Item
+					value="b"
+					label="Beta"
+					testID="k-radio-item-b"
+					hasError
+				/>
 			</RadioGroup>,
 		);
-		expect(flatStyle(idle.getByTestId("k-radio-item-b-circle")).borderColor).toBe(
-			themes.light.destructive,
-		);
+		expect(
+			flatStyle(idle.getByTestId("k-radio-item-b-circle")).borderColor,
+		).toBe(themes.light.destructive);
 		const on = await render(
 			<RadioGroup value="b">
-				<RadioGroup.Item value="b" label="Beta" testID="k-radio-item-b" hasError />
+				<RadioGroup.Item
+					value="b"
+					label="Beta"
+					testID="k-radio-item-b"
+					hasError
+				/>
 			</RadioGroup>,
 		);
 		const circle = flatStyle(on.getByTestId("k-radio-item-b-circle"));
@@ -152,7 +162,9 @@ describe("RadioGroup", () => {
 		expect(
 			screen.getByTestId("k-radio-item-b-circle").children?.length ?? 0,
 		).toBeGreaterThan(0);
-		expect(screen.getByText("A very long inline label that must wrap")).toBeTruthy();
+		expect(
+			screen.getByText("A very long inline label that must wrap"),
+		).toBeTruthy();
 		const shrink = flatStyle(screen.getByTestId("k-radio-item-b"));
 		expect(shrink.flexShrink).toBe(1);
 		expect(shrink.flexGrow).toBeUndefined();
@@ -246,11 +258,7 @@ describe("RadioGroup", () => {
 	it("empty-string value is selectable and matches an item", async () => {
 		const onValueChange = jest.fn();
 		const screen: Screen = await render(
-			<RadioGroup
-				value=""
-				onValueChange={onValueChange}
-				testID="k-group"
-			>
+			<RadioGroup value="" onValueChange={onValueChange} testID="k-group">
 				<RadioGroup.Item value="" label="Blank" testID="k-radio-item-a" />
 				<RadioGroup.Item value="b" label="Beta" testID="k-radio-item-b" />
 			</RadioGroup>,
@@ -259,8 +267,7 @@ describe("RadioGroup", () => {
 			screen.getByTestId("k-radio-item-a-circle").children?.length ?? 0,
 		).toBeGreaterThan(0);
 		expect(
-			screen.getByTestId("k-radio-item-a").props.accessibilityState
-				?.checked,
+			screen.getByTestId("k-radio-item-a").props.accessibilityState?.checked,
 		).toBe(true);
 
 		// the empty-value item is a live press target too: press it and it owns the group
@@ -299,7 +306,9 @@ describe("RadioGroup", () => {
 		expect(item.flexShrink).toBe(1);
 		const label = screen.getByText(/Internationalization\w+/);
 		expect(flatStyle(label).flexShrink).toBe(1);
-		expect(flatStyle(screen.getByText(/Pneumonoultramicroscopics\w+/)).flexShrink).toBe(1);
+		expect(
+			flatStyle(screen.getByText(/Pneumonoultramicroscopics\w+/)).flexShrink,
+		).toBe(1);
 		expect(screen.getByText(/Internationalization\w+/)).toBeTruthy();
 		expect(screen.getByText(/Pneumonoultramicroscopics\w+/)).toBeTruthy();
 		expect(

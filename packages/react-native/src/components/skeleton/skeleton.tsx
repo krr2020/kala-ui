@@ -58,9 +58,7 @@ export function Skeleton({
 			accessible={accessibilityLabel !== undefined}
 			accessibilityElementsHidden={accessibilityLabel === undefined}
 			importantForAccessibility={
-				accessibilityLabel === undefined
-					? "no-hide-descendants"
-					: "auto"
+				accessibilityLabel === undefined ? "no-hide-descendants" : "auto"
 			}
 			style={[
 				{

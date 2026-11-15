@@ -1,6 +1,7 @@
 import { cn } from "@kala-ui/react/lib/utils";
 import { useUncontrolled } from "@kala-ui/react-hooks";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight } from "@kala-ui/react/icons";
+import type { IconComponent } from "@kala-ui/react/icons";
 import type * as React from "react";
 import type { NavLinkProps } from "./nav-link.types";
 
@@ -57,6 +58,7 @@ function NavLinkContent({
 	children,
 	disableRightSectionRotation,
 	isOpened,
+	Chevron,
 }: {
 	label: React.ReactNode;
 	description?: React.ReactNode;
@@ -65,6 +67,7 @@ function NavLinkContent({
 	children?: React.ReactNode;
 	disableRightSectionRotation: boolean;
 	isOpened: boolean;
+	Chevron: IconComponent;
 }) {
 	return (
 		<>
@@ -86,7 +89,7 @@ function NavLinkContent({
 						children && !disableRightSectionRotation && isOpened && "rotate-90",
 					)}
 				>
-					{rightSection || (children && <ChevronRight className="h-4 w-4" />)}
+					{rightSection || (children && <Chevron className="h-4 w-4" />)}
 				</span>
 			)}
 		</>
@@ -111,6 +114,7 @@ export function NavLink({
 	description,
 	icon,
 	rightSection,
+	chevronIcon: Chevron = ChevronRight,
 	active,
 	href,
 	defaultOpen = false,
@@ -139,6 +143,7 @@ export function NavLink({
 			children={children}
 			disableRightSectionRotation={disableRightSectionRotation}
 			isOpened={isOpened}
+			Chevron={Chevron}
 		/>
 	);
 

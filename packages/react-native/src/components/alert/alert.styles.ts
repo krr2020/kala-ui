@@ -2,14 +2,10 @@
  * Non-component wiring for Alert: the per-color status icons and the
  * variant × color token mapping.
  */
-import {
-	AlertCircle,
-	AlertTriangle,
-	CheckCircle2,
-	Info,
-} from "lucide-react-native";
+
 import type { TextStyle, ViewStyle } from "react-native";
 import type { KalaTheme, ThemeToken } from "../../types";
+import { AlertCircle, AlertTriangle, CheckCircle2, Info } from "../icon/glyphs";
 import type { AlertColor, AlertVariant } from "./alert.types";
 
 export const ICONS: Record<AlertColor, typeof Info> = {

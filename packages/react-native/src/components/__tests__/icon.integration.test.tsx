@@ -16,8 +16,7 @@ import type { IconComponent, IconSize } from "../icon";
 import { Icon } from "../icon";
 import { ICON_SIZE_PX, iconColor } from "../icon/icon.styles";
 
-// structural: lucide satisfies the generic {size,color} contract without
-// a cast — ComponentType contravariance accepts the richer LucideProps
+// structural: lucide satisfies the generic {size,color} contract without a cast — ComponentType contravariance accepts the richer LucideProps
 const lucideAsGeneric: IconComponent = Sun;
 
 // a non-lucide icon-library component — the contract is just {size,color}

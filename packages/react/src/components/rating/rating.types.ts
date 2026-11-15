@@ -1,4 +1,5 @@
 import type * as React from "react";
+import type { IconComponent } from "../icons";
 import type { SlotStyles } from "../../lib/slot-styles";
 
 export interface RatingProps extends React.ComponentProps<"fieldset"> {
@@ -24,4 +25,6 @@ export interface RatingProps extends React.ComponentProps<"fieldset"> {
 	"aria-label"?: string;
 	/** Per-part style overrides (root wins over className/style) */
 	slotStyles?: SlotStyles;
+	/** Star glyph — any `{className, size}` icon component; defaults to kala's built-in star. */
+	starIcon?: IconComponent;
 }

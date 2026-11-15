@@ -17,7 +17,13 @@ const flat = (node: { props: { style?: unknown } }) =>
 describe("SegmentedControl ↔ playground demo contract", () => {
 	it("size rows: xs..xl heights grow monotonically and stay unclamped", async () => {
 		const heights: number[] = [];
-		for (const size of ["xs", "sm", "md", "lg", "xl"] as SegmentedControlSize[]) {
+		for (const size of [
+			"xs",
+			"sm",
+			"md",
+			"lg",
+			"xl",
+		] as SegmentedControlSize[]) {
 			const screen = await render(
 				<SegmentedControl
 					data={["day", "week", "month"]}

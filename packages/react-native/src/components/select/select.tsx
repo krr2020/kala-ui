@@ -1,10 +1,10 @@
-import { ChevronDown } from "lucide-react-native";
+import { useUncontrolled } from "@kala-ui/react-hooks/portable";
 import type { ComponentRef, ReactElement, ReactNode } from "react";
 import { useRef, useState } from "react";
 import { Pressable, Text as RNText, ScrollView, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { useUncontrolled } from "@kala-ui/react-hooks/portable";
 import { Icon } from "../icon";
+import { ChevronDown } from "../icon/glyphs";
 import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
 import { Sheet } from "../sheet";
 import { Skeleton } from "../skeleton";
@@ -38,6 +38,7 @@ export function Select({
 	hasError = false,
 	hasSuccess = false,
 	isLoading = false,
+	chevronIcon: ChevronIcon = ChevronDown,
 	accessibilityLabel,
 	style,
 	slotStyles,
@@ -62,8 +63,7 @@ export function Select({
 	const announced =
 		accessibilityLabel ?? label ?? (selected ? selected.label : placeholder);
 
-	// ungrouped options first, then each group in first-seen order —
-	// the same ordering MultiSelect uses so the two pickers agree
+	// ungrouped options first, then each group in first-seen order — the same ordering MultiSelect uses so the two pickers agree
 	const renderRow = (option: SelectOption, key?: string): ReactNode => {
 		const isSelected = option.value === current;
 		return (
@@ -166,7 +166,7 @@ export function Select({
 					{selected ? selected.label : (current ?? placeholder)}
 				</RNText>
 				<Icon
-					icon={ChevronDown}
+					icon={ChevronIcon}
 					size="sm"
 					color="mutedForeground"
 					testID="k-select-chevron"

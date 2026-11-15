@@ -2,8 +2,7 @@ import type { TextStyle, ViewStyle } from "react-native";
 import type { KalaTheme } from "../../types";
 
 export const CIRCLE = 22;
-// active dot is the standard half-circle mark: 10dp in the 22dp circle,
-// matching the web md indicator ratio (8/16)
+// active dot is the standard half-circle mark: 10dp in the 22dp circle, matching the web md indicator ratio (8/16)
 export const DOT = 10;
 export const STROKE = 2;
 // standard stacked-list pitch: 44dp rows + 4 gap
@@ -11,7 +10,9 @@ export const GROUP_GAP = 4;
 // inline row (web skeleton orientation=horizontal, gap-4)
 export const INLINE_GAP = 16;
 
-export function root(orientation: "vertical" | "horizontal" = "vertical"): ViewStyle {
+export function root(
+	orientation: "vertical" | "horizontal" = "vertical",
+): ViewStyle {
 	return orientation === "horizontal"
 		? {
 				flexDirection: "row",
@@ -30,8 +31,7 @@ export function item(isDisabled: boolean): ViewStyle {
 		flexDirection: "row",
 		alignItems: "center",
 		gap: 10,
-		// in the inline row a long-label item shrinks (body wraps) instead
-		// of clipping or pushing siblings out
+		// in the inline row a long-label item shrinks (body wraps) instead of clipping or pushing siblings out
 		flexShrink: 1,
 		opacity: isDisabled ? 0.5 : 1,
 	};
@@ -48,8 +48,7 @@ export function circle(
 		borderRadius: 999,
 		alignItems: "center",
 		justifyContent: "center",
-		// resting circle is border-defined like the Checkbox box: a card
-		// fill disappears on card-colored surfaces; the 2dp stroke matches
+		// resting circle is border-defined like the Checkbox box: a card fill disappears on card-colored surfaces; the 2dp stroke matches
 		backgroundColor: checked ? theme.primary : "transparent",
 		borderWidth: STROKE,
 		borderColor: checked
@@ -65,8 +64,7 @@ export function dot(theme: KalaTheme, hasError = false): ViewStyle {
 		width: DOT,
 		height: DOT,
 		borderRadius: 999,
-		// checked fill stays primary on error (Checkbox precedent); the dot
-		// itself flips destructive to flag the invalid selection
+		// checked fill stays primary on error (Checkbox precedent); the dot itself flips destructive to flag the invalid selection
 		backgroundColor: hasError ? theme.destructive : theme.primaryForeground,
 	};
 }

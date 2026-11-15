@@ -9,7 +9,7 @@ import {
 	useScrollLock,
 	useWindowEvent,
 } from "@kala-ui/react-hooks";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown } from "@kala-ui/react/icons";
 import type * as React from "react";
 import { type ReactNode, useEffect, useId, useState } from "react";
 import { isActivePath } from "../../lib/active-path";

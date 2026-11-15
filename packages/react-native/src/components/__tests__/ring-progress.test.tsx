@@ -79,13 +79,11 @@ describe("RingProgress", () => {
 		);
 		const circles = circlesOf(multi);
 		expect(circles).toHaveLength(3);
-		// every arc carries a resolved numeric stroke; the colorless section
-		// inherits the shared tone instead of rendering null
+		// every arc carries a resolved numeric stroke; the colorless section inherits the shared tone instead of rendering null
 		for (const circle of circles) {
 			expect(circle.stroke).not.toBeNull();
 		}
-		// dashoffset shrinks as a segment's own value grows: the 30% arc
-		// carries a smaller offset than the 20% arc
+		// dashoffset shrinks as a segment's own value grows: the 30% arc carries a smaller offset than the 20% arc
 		const first = circles[1].strokeDashoffset as number;
 		const second = circles[2].strokeDashoffset as number;
 		expect(Number(second)).toBeLessThan(Number(first));
@@ -95,8 +93,7 @@ describe("RingProgress", () => {
 		const screen: Screen = await render(<RingProgress value={0} />);
 		const arc = circlesOf(screen).find((c) => c.strokeDasharray !== undefined);
 		expect(arc).toBeTruthy();
-		// RNSvg serializes dasharray as [string, string] — a zero arc hides
-		// exactly one full circumference behind the offset
+		// RNSvg serializes dasharray as [string, string] — a zero arc hides exactly one full circumference behind the offset
 		const dash = (arc?.strokeDasharray ?? []) as string[];
 		const offset = arc?.strokeDashoffset ?? Number.NaN;
 		expect(Number(dash[0])).toBe(Number(offset));
@@ -114,15 +111,13 @@ describe("RingProgress", () => {
 	});
 
 	it("default empty track resolves to the input token at full opacity", async () => {
-		// muted@0.2 vanished on the light page — the off-track token is the
-		// Slider/Switch contrast precedent, applied without an opacity fade
+		// muted@0.2 vanished on the light page — the off-track token is the Slider/Switch contrast precedent, applied without an opacity fade
 		const screen: Screen = await render(<RingProgress value={40} />);
 		const track = circlesOf(screen)[0];
 		const { themes } = require("../../themes");
 		const inputPacked = (
-			circlesOf(
-				await render(<RingProgress value={0} emptyColor="input" />),
-			)[0].stroke as { payload: number }
+			circlesOf(await render(<RingProgress value={0} emptyColor="input" />))[0]
+				.stroke as { payload: number }
 		).payload;
 		expect((track.stroke as { payload: number }).payload).toBe(inputPacked);
 		expect(track.opacity).toBeUndefined();

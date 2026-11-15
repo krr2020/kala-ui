@@ -94,9 +94,9 @@ describe("Banner close control", () => {
 				m
 			</Banner>,
 		);
-		expect(
-			screen.getByTestId("k-banner-close").props.accessibilityLabel,
-		).toBe("Cerrar aviso");
+		expect(screen.getByTestId("k-banner-close").props.accessibilityLabel).toBe(
+			"Cerrar aviso",
+		);
 	});
 
 	it("pressing close fires onClose exactly once", async () => {
@@ -117,8 +117,7 @@ describe("Banner close control", () => {
 				m
 			</Banner>,
 		);
-		// lucide's jest mock drops the color prop, so the fg pairing is
-		// pinned by the per-arm text-color test; here: the icon subtree exists
+		// lucide's jest mock drops the color prop, so the fg pairing is pinned by the per-arm text-color test; here: the icon subtree exists
 		expect(screen.getByTestId("k-banner-close").children.length).toBe(1);
 	});
 });
@@ -142,7 +141,9 @@ describe("Banner announcements", () => {
 describe("Banner loading state", () => {
 	it("isLoading renders the skeleton row inside the toned surface", async () => {
 		const screen = await render(<Banner isLoading>m</Banner>);
-		expect(screen.getAllByTestId("k-skeleton", inclHidden).length).toBeGreaterThan(0);
+		expect(
+			screen.getAllByTestId("k-skeleton", inclHidden).length,
+		).toBeGreaterThan(0);
 		// tone surface survives the loading swap
 		expect(flatStyle(screen.getByTestId("k-banner")).backgroundColor).toBe(
 			theme().info,

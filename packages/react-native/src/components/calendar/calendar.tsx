@@ -1,4 +1,3 @@
-import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useMemo, useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
@@ -12,6 +11,7 @@ import {
 	monthIsAfter,
 	monthIsBefore,
 } from "../../lib/date.utils";
+import { ChevronLeft, ChevronRight } from "../icon/glyphs";
 import { applySlot } from "../slot-styles";
 import type {
 	CalendarProps,
@@ -64,6 +64,8 @@ export function Calendar({
 	max,
 	disabledDates,
 	isLoading = false,
+	chevronLeftIcon: ChevronLeftIcon = ChevronLeft,
+	chevronRightIcon: ChevronRightIcon = ChevronRight,
 	skeletonConfig,
 	accessibilityLabel = "Calendar",
 	style,
@@ -150,10 +152,8 @@ export function Calendar({
 			(max !== undefined && first > max && !isSameDay(first, max))
 		);
 	};
-	const yearPrevDisabled =
-		min !== undefined && pickerYear <= min.getFullYear();
-	const yearNextDisabled =
-		max !== undefined && pickerYear >= max.getFullYear();
+	const yearPrevDisabled = min !== undefined && pickerYear <= min.getFullYear();
+	const yearNextDisabled = max !== undefined && pickerYear >= max.getFullYear();
 
 	const dayState = (d: Date, inMonth: boolean) => {
 		let selected = false;
@@ -181,21 +181,20 @@ export function Calendar({
 			}
 		}
 		const today = isSameDay(d, new Date());
-		// out-of-month leading/trailing cells dim and are not selectable —
-		// selecting a neighbor month's day from this grid is a misclick
+		// out-of-month leading/trailing cells dim and are not selectable — selecting a neighbor month's day from this grid is a misclick
 		const disabled = !inMonth || isDayDisabled(d);
 		return { selected, middle, today, disabled, inMonth };
 	};
 
 	const dayStyle = (
-	state: ReturnType<typeof dayState>,
-): StyleProp<ViewStyle> => [
-	{
-		height: CELL_SIZE,
-		borderRadius: 999,
-		alignItems: "center",
-		justifyContent: "center",
-	},
+		state: ReturnType<typeof dayState>,
+	): StyleProp<ViewStyle> => [
+		{
+			height: CELL_SIZE,
+			borderRadius: 999,
+			alignItems: "center",
+			justifyContent: "center",
+		},
 		state.selected && {
 			backgroundColor: theme.primary,
 			borderWidth: 0,
@@ -230,46 +229,44 @@ export function Calendar({
 				}}
 			>
 				{pickerOpen ? (
+					<Pressable
+						testID="k-calendar-year-prev"
+						accessibilityRole="button"
+						accessibilityLabel="Previous year"
+						accessibilityState={{ disabled: yearPrevDisabled }}
+						onPress={() => !yearPrevDisabled && setPickerYear(pickerYear - 1)}
+						hitSlop={6}
+						style={({ pressed }) => ({
+							width: CELL_SIZE,
+							height: CELL_SIZE,
+							alignItems: "center",
+							justifyContent: "center",
+							opacity: yearPrevDisabled ? 0.35 : pressed ? 0.6 : 1,
+						})}
+					>
+						<ChevronLeftIcon size={18} color={theme.foreground} />
+					</Pressable>
+				) : (
+					<Pressable
+						testID="k-calendar-prev"
+						accessibilityRole="button"
+						accessibilityLabel="Previous month"
+						accessibilityState={{ disabled: prevDisabled }}
+						onPress={() => !prevDisabled && setView(addMonths(view, -1))}
+						hitSlop={6}
+						style={({ pressed }) => ({
+							width: CELL_SIZE,
+							height: CELL_SIZE,
+							alignItems: "center",
+							justifyContent: "center",
+							opacity: prevDisabled ? 0.35 : pressed ? 0.6 : 1,
+						})}
+					>
+						<ChevronLeftIcon size={18} color={theme.foreground} />
+					</Pressable>
+				)}
 				<Pressable
-					testID="k-calendar-year-prev"
-					accessibilityRole="button"
-					accessibilityLabel="Previous year"
-					accessibilityState={{ disabled: yearPrevDisabled }}
-					onPress={() =>
-						!yearPrevDisabled && setPickerYear(pickerYear - 1)
-					}
-					hitSlop={6}
-					style={({ pressed }) => ({
-						width: CELL_SIZE,
-						height: CELL_SIZE,
-						alignItems: "center",
-						justifyContent: "center",
-						opacity: yearPrevDisabled ? 0.35 : pressed ? 0.6 : 1,
-					})}
-				>
-					<ChevronLeft size={18} color={theme.foreground} />
-				</Pressable>
-			) : (
-				<Pressable
-					testID="k-calendar-prev"
-					accessibilityRole="button"
-					accessibilityLabel="Previous month"
-					accessibilityState={{ disabled: prevDisabled }}
-					onPress={() => !prevDisabled && setView(addMonths(view, -1))}
-					hitSlop={6}
-					style={({ pressed }) => ({
-						width: CELL_SIZE,
-						height: CELL_SIZE,
-						alignItems: "center",
-						justifyContent: "center",
-						opacity: prevDisabled ? 0.35 : pressed ? 0.6 : 1,
-					})}
-				>
-					<ChevronLeft size={18} color={theme.foreground} />
-				</Pressable>
-			)}
-			<Pressable
-				testID="k-calendar-month-label"
+					testID="k-calendar-month-label"
 					accessibilityRole="button"
 					accessibilityLabel={formatMonthYear(view)}
 					accessibilityState={{ expanded: pickerOpen }}
@@ -291,52 +288,46 @@ export function Calendar({
 						{formatMonthYear(view)}
 					</RNText>
 				</Pressable>
-			{pickerOpen ? (
-				<Pressable
-					testID="k-calendar-year-next"
-					accessibilityRole="button"
-					accessibilityLabel="Next year"
-					accessibilityState={{ disabled: yearNextDisabled }}
-					onPress={() =>
-						!yearNextDisabled && setPickerYear(pickerYear + 1)
-					}
-					hitSlop={6}
-					style={({ pressed }) => ({
-						width: CELL_SIZE,
-						height: CELL_SIZE,
-						alignItems: "center",
-						justifyContent: "center",
-						opacity: yearNextDisabled ? 0.35 : pressed ? 0.6 : 1,
-					})}
-				>
-					<ChevronRight size={18} color={theme.foreground} />
-				</Pressable>
-			) : (
-				<Pressable
-					testID="k-calendar-next"
-					accessibilityRole="button"
-					accessibilityLabel="Next month"
-					accessibilityState={{ disabled: nextDisabled }}
-					onPress={() => !nextDisabled && setView(addMonths(view, 1))}
-					hitSlop={6}
-					style={({ pressed }) => ({
-						width: CELL_SIZE,
-						height: CELL_SIZE,
-						alignItems: "center",
-						justifyContent: "center",
-						opacity: nextDisabled ? 0.35 : pressed ? 0.6 : 1,
-					})}
-				>
-					<ChevronRight size={18} color={theme.foreground} />
-				</Pressable>
-			)}
+				{pickerOpen ? (
+					<Pressable
+						testID="k-calendar-year-next"
+						accessibilityRole="button"
+						accessibilityLabel="Next year"
+						accessibilityState={{ disabled: yearNextDisabled }}
+						onPress={() => !yearNextDisabled && setPickerYear(pickerYear + 1)}
+						hitSlop={6}
+						style={({ pressed }) => ({
+							width: CELL_SIZE,
+							height: CELL_SIZE,
+							alignItems: "center",
+							justifyContent: "center",
+							opacity: yearNextDisabled ? 0.35 : pressed ? 0.6 : 1,
+						})}
+					>
+						<ChevronRightIcon size={18} color={theme.foreground} />
+					</Pressable>
+				) : (
+					<Pressable
+						testID="k-calendar-next"
+						accessibilityRole="button"
+						accessibilityLabel="Next month"
+						accessibilityState={{ disabled: nextDisabled }}
+						onPress={() => !nextDisabled && setView(addMonths(view, 1))}
+						hitSlop={6}
+						style={({ pressed }) => ({
+							width: CELL_SIZE,
+							height: CELL_SIZE,
+							alignItems: "center",
+							justifyContent: "center",
+							opacity: nextDisabled ? 0.35 : pressed ? 0.6 : 1,
+						})}
+					>
+						<ChevronRightIcon size={18} color={theme.foreground} />
+					</Pressable>
+				)}
 			</View>
 			{pickerOpen ? (
-			<View
-				testID="k-calendar-month-picker"
-				style={{ gap: 8 }}
-			>
-
+				<View testID="k-calendar-month-picker" style={{ gap: 8 }}>
 					<RNText
 						testID="k-calendar-year-label"
 						style={{
@@ -348,134 +339,133 @@ export function Calendar({
 					>
 						{pickerYear}
 					</RNText>
-			<View
-				testID="k-calendar-months"
-				style={{ gap: GRID_GAP }}
-			>
-				{chunk(
-					MONTHS.map((name, m) => ({ name, m })),
-					3,
-				).map((row) => (
+					<View testID="k-calendar-months" style={{ gap: GRID_GAP }}>
+						{chunk(
+							MONTHS.map((name, m) => ({ name, m })),
+							3,
+						).map((row) => (
+							<View
+								key={row[0].name}
+								testID="k-calendar-month-row"
+								style={{ flexDirection: "row", gap: GRID_GAP }}
+							>
+								{row.map(({ name, m }) => {
+									const selected =
+										m === view.getMonth() && pickerYear === view.getFullYear();
+									const disabled = monthDisabled(m);
+									return (
+										<Pressable
+											key={name}
+											testID={`k-calendar-month-option-${m}`}
+											accessibilityRole="button"
+											accessibilityLabel={name}
+											accessibilityState={{ disabled, selected }}
+											disabled={disabled}
+											onPress={() => {
+												setView(new Date(pickerYear, m, 1));
+												setPickerOpen(false);
+											}}
+											style={({ pressed }) => ({
+												flexGrow: 1,
+												flexBasis: 0,
+												height: CELL_SIZE,
+												borderRadius: 999,
+												alignItems: "center",
+												justifyContent: "center",
+												backgroundColor: selected ? theme.primary : undefined,
+												opacity: disabled ? 0.35 : pressed ? 0.6 : 1,
+											})}
+										>
+											<RNText
+												style={{
+													color: selected
+														? theme.primaryForeground
+														: theme.foreground,
+													fontSize: 13,
+													fontWeight: selected ? "600" : "400",
+												}}
+											>
+												{name.slice(0, 3)}
+											</RNText>
+										</Pressable>
+									);
+								})}
+							</View>
+						))}
+					</View>
+				</View>
+			) : (
+				<>
 					<View
-						key={row[0].name}
-						testID="k-calendar-month-row"
+						testID="k-calendar-weekdays"
 						style={{ flexDirection: "row", gap: GRID_GAP }}
 					>
-						{row.map(({ name, m }) => {
-						const selected =
-							m === view.getMonth() && pickerYear === view.getFullYear();
-						const disabled = monthDisabled(m);
-						return (
-							<Pressable
-								key={name}
-								testID={`k-calendar-month-option-${m}`}
-								accessibilityRole="button"
-								accessibilityLabel={name}
-								accessibilityState={{ disabled, selected }}
-								disabled={disabled}
-								onPress={() => {
-									setView(new Date(pickerYear, m, 1));
-									setPickerOpen(false);
-								}}
-								style={({ pressed }) => ({
+						{WEEKDAYS.map((day) => (
+							<RNText
+								key={day}
+								testID="k-calendar-weekday"
+								style={{
+									color: theme.mutedForeground,
+									fontSize: 12,
+									fontWeight: "600",
 									flexGrow: 1,
 									flexBasis: 0,
-									height: CELL_SIZE,
-								borderRadius: 999,
-								alignItems: "center",
-								justifyContent: "center",
-								backgroundColor: selected ? theme.primary : undefined,
-								opacity: disabled ? 0.35 : pressed ? 0.6 : 1,
-							})}
-							>
-							<RNText
-									style={{
-										color: selected
-											? theme.primaryForeground
-											: theme.foreground,
-										fontSize: 13,
-									fontWeight: selected ? "600" : "400",
+									textAlign: "center",
 								}}
 							>
-								{name.slice(0, 3)}
+								{day[0]}
 							</RNText>
-								</Pressable>
-								);
-							})}
-						</View>
-					))}
-				</View>
-			</View>
-		) : (
-			<>
-			<View testID="k-calendar-weekdays" style={{ flexDirection: "row", gap: GRID_GAP }}>
-			{WEEKDAYS.map((day) => (
-				<RNText
-					key={day}
-					testID="k-calendar-weekday"
-					style={{
-						color: theme.mutedForeground,
-						fontSize: 12,
-						fontWeight: "600",
-						flexGrow: 1,
-						flexBasis: 0,
-						textAlign: "center",
-					}}
-				>
-					{day[0]}
-				</RNText>
-			))}
-			</View>
-				<View testID="k-calendar-grid" style={{ gap: GRID_GAP }}>
-				{chunk(cells, 7).map((week) => (
-					<View
-						// weeks are fixed 7-day windows; the first cell's ISO day
-						// identifies the row stably across month navigation
-						key={iso(week[0].date)}
-						testID="k-calendar-week"
-						style={{ flexDirection: "row", gap: GRID_GAP }}
-					>
-						{week.map(({ date, inMonth }) => {
-						const state = dayState(date, inMonth);
-						return (
-							<View
-								key={iso(date)}
-								testID={`k-calendar-cell-${iso(date)}`}
-								style={{ flexGrow: 1, flexBasis: 0 }}
-							>
-							<Pressable
-									testID={`k-calendar-day-${iso(date)}`}
-									accessibilityRole="button"
-									accessibilityLabel={`${date.getDate()} ${formatMonthYear(date)}`}
-									accessibilityState={{
-										disabled: state.disabled,
-										selected: state.selected,
-									}}
-									disabled={state.disabled}
-									onPress={() => inMonth && handleDayPress(date)}
-									style={applySlot(
-								[dayStyle(state), { width: "100%" }],
-								slotStyles?.day,
-							)}
-								>
-								<RNText
-										style={{
-											color: labelColor(state),
-											fontSize: 14,
-											fontWeight: state.selected ? "600" : "400",
-										}}
-									>
-										{date.getDate()}
-									</RNText>
-								</Pressable>
-							</View>
-							);
-						})}
+						))}
 					</View>
-				))}
-				</View>
-			</>
-		)}
+					<View testID="k-calendar-grid" style={{ gap: GRID_GAP }}>
+						{chunk(cells, 7).map((week) => (
+							<View
+								// weeks are fixed 7-day windows; the first cell's ISO day identifies the row stably across month navigation
+								key={iso(week[0].date)}
+								testID="k-calendar-week"
+								style={{ flexDirection: "row", gap: GRID_GAP }}
+							>
+								{week.map(({ date, inMonth }) => {
+									const state = dayState(date, inMonth);
+									return (
+										<View
+											key={iso(date)}
+											testID={`k-calendar-cell-${iso(date)}`}
+											style={{ flexGrow: 1, flexBasis: 0 }}
+										>
+											<Pressable
+												testID={`k-calendar-day-${iso(date)}`}
+												accessibilityRole="button"
+												accessibilityLabel={`${date.getDate()} ${formatMonthYear(date)}`}
+												accessibilityState={{
+													disabled: state.disabled,
+													selected: state.selected,
+												}}
+												disabled={state.disabled}
+												onPress={() => inMonth && handleDayPress(date)}
+												style={applySlot(
+													[dayStyle(state), { width: "100%" }],
+													slotStyles?.day,
+												)}
+											>
+												<RNText
+													style={{
+														color: labelColor(state),
+														fontSize: 14,
+														fontWeight: state.selected ? "600" : "400",
+													}}
+												>
+													{date.getDate()}
+												</RNText>
+											</Pressable>
+										</View>
+									);
+								})}
+							</View>
+						))}
+					</View>
+				</>
+			)}
 		</View>
 	);
 }

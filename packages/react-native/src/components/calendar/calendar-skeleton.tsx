@@ -4,8 +4,7 @@ import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
 import type { CalendarSkeletonProps } from "./calendar.types";
 
-// Slot identities for the placeholder grid: the skeleton is static, so
-// stable per-slot ids (not array indices) key the placeholder cells.
+// Slot identities for the placeholder grid: the skeleton is static, so stable per-slot ids (not array indices) key the placeholder cells.
 const WEEKDAY_SLOTS = [
 	"sun",
 	"mon",

@@ -1,7 +1,7 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
 import { nativeSelectStyles } from "../../config/native-select";
+import { ChevronDown } from "../icons";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { useSlotStyles } from "../kala-provider";
@@ -19,6 +19,7 @@ function NativeSelect({
 	size = "md",
 	hasError,
 	hasSuccess,
+	chevronIcon: Chevron = ChevronDown,
 	children,
 	disabled,
 	...props
@@ -53,7 +54,7 @@ function NativeSelect({
 				{children}
 			</select>
 			<div className={icon.className} style={icon.style}>
-				<ChevronDown className={iconGlyph.className} aria-hidden="true" />
+				<Chevron className={iconGlyph.className} aria-hidden="true" />
 			</div>
 		</div>
 	);

@@ -1,7 +1,8 @@
 "use client";
 
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
-import { Check, ChevronRight, Circle } from "lucide-react";
+import { Check, ChevronRight, Circle } from "../icons";
+import type { IconComponent } from "../icons";
 import type * as React from "react";
 import { dropdownMenuStyles } from "../../config/dropdown-menu";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
@@ -114,9 +115,13 @@ function ContextMenuItem({
 
 function ContextMenuCheckboxItem({
 	className,
+	checkIcon: CheckIcon = Check,
 	children,
 	...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem>) {
+}: React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem> & {
+	/** Check glyph — any `{className, size}` icon component; defaults to kala's built-in check. */
+	checkIcon?: IconComponent;
+}) {
 	return (
 		<ContextMenuPrimitive.CheckboxItem
 			data-kala-component="context-menu-checkbox-item"
@@ -126,7 +131,7 @@ function ContextMenuCheckboxItem({
 		>
 			<span className="pointer-events-none absolute left-2 flex size-4 items-center justify-center">
 				<ContextMenuPrimitive.ItemIndicator>
-					<Check className="size-4 text-primary" />
+					<CheckIcon className="size-4 text-primary" />
 				</ContextMenuPrimitive.ItemIndicator>
 			</span>
 			{children}
@@ -148,9 +153,13 @@ function ContextMenuRadioGroup({
 
 function ContextMenuRadioItem({
 	className,
+	radioIcon: RadioIcon = Circle,
 	children,
 	...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.RadioItem>) {
+}: React.ComponentProps<typeof ContextMenuPrimitive.RadioItem> & {
+	/** Radio dot glyph — any `{className, size}` icon component; defaults to kala's built-in circle. */
+	radioIcon?: IconComponent;
+}) {
 	return (
 		<ContextMenuPrimitive.RadioItem
 			data-kala-component="context-menu-radio-item"
@@ -160,7 +169,7 @@ function ContextMenuRadioItem({
 		>
 			<span className="pointer-events-none absolute left-2 flex size-4 items-center justify-center">
 				<ContextMenuPrimitive.ItemIndicator>
-					<Circle className="size-2 fill-primary text-primary" />
+					<RadioIcon className="size-2 fill-primary text-primary" />
 				</ContextMenuPrimitive.ItemIndicator>
 			</span>
 			{children}
@@ -233,10 +242,13 @@ function ContextMenuSub({
 function ContextMenuSubTrigger({
 	className,
 	inset,
+	submenuIcon: SubmenuIcon = ChevronRight,
 	children,
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.SubTrigger> & {
 	inset?: boolean;
+	/** Submenu chevron — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	submenuIcon?: IconComponent;
 }) {
 	return (
 		<ContextMenuPrimitive.SubTrigger
@@ -255,7 +267,7 @@ function ContextMenuSubTrigger({
 			{...props}
 		>
 			{children}
-			<ChevronRight className="ml-auto size-4" />
+			<SubmenuIcon className="ml-auto size-4" />
 		</ContextMenuPrimitive.SubTrigger>
 	);
 }

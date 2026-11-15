@@ -18,7 +18,8 @@ export const multiSelectStyles = {
 	chipRemoveIcon: "size-3",
 	overflowChip:
 		"inline-flex items-center rounded bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground",
-	controls: "pointer-events-none relative z-10 flex items-center gap-1 py-1.5 pr-3",
+	controls:
+		"pointer-events-none relative z-10 flex items-center gap-1 py-1.5 pr-3",
 	clearAll:
 		"kala-touch pointer-events-auto mr-1 rounded-sm opacity-50 hover:opacity-100",
 	clearAllIcon: "size-4",

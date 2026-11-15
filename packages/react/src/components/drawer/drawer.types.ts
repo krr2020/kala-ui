@@ -1,6 +1,7 @@
 import type * as React from "react";
 import type { Drawer as DrawerPrimitive } from "vaul";
 import type { SlotStyles } from "../../lib/slot-styles";
+import type { IconComponent } from "../icons";
 
 export type DrawerSize = "sm" | "md" | "lg" | "xl" | "full";
 export type DrawerHeaderAlign = "left" | "center" | "right";
@@ -28,6 +29,8 @@ export interface DrawerHeaderProps
 	showCloseButton?: boolean;
 	/** Accessible name for the close icon button. */
 	closeLabel?: string;
+	/** Close-button glyph — any `{className, size}` icon component; defaults to kala's built-in ✕. */
+	closeIcon?: IconComponent;
 	/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
 	slotStyles?: SlotStyles;
 }

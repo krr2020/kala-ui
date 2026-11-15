@@ -2,7 +2,8 @@
 
 import { useDisclosure, useUncontrolled } from "@kala-ui/react-hooks";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
-import { Check, ChevronsUpDown, X } from "lucide-react";
+import { Check, ChevronsUpDown, X } from "../icons";
+import type { IconComponent } from "../icons";
 import * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
@@ -38,6 +39,9 @@ function Combobox({
 	selectedLabel,
 	renderOption,
 	separateOptions = false,
+	toggleIcon: ToggleIcon = ChevronsUpDown,
+	clearIcon: ClearIcon = X,
+	checkIcon: CheckIcon = Check,
 	"aria-label": ariaLabel,
 	style,
 	slotStyles: slotStylesRaw,
@@ -109,7 +113,7 @@ function Combobox({
 						>
 							{internalValue ? displayLabel : placeholder}
 						</Text>
-						<ChevronsUpDown
+						<ToggleIcon
 							className="size-4 opacity-50 shrink-0"
 							aria-hidden="true"
 						/>
@@ -126,7 +130,7 @@ function Combobox({
 						}}
 						className="kala-touch absolute inset-y-0 right-8 my-auto flex h-6 w-6 items-center justify-center rounded-sm opacity-50 hover:opacity-100 hover:bg-accent cursor-pointer outline-none focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring"
 					>
-						<X className="size-3" aria-hidden="true" />
+						<ClearIcon className="size-3" aria-hidden="true" />
 					</button>
 				)}
 			</div>
@@ -189,7 +193,7 @@ function Combobox({
 												renderOption(option, internalValue === option.value)
 											) : (
 												<>
-													<Check
+													<CheckIcon
 														className={cn(
 															"mr-2 size-4",
 															internalValue === option.value

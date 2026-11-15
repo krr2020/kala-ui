@@ -640,14 +640,18 @@ describe("TreeView consumer keyboard contract", () => {
 		const src = focusItem("src");
 		press(src, "ArrowRight");
 		expect(src).toHaveAttribute("aria-expanded", "true");
-	press(src, "ArrowLeft");
+		press(src, "ArrowLeft");
 		expect(src).toHaveAttribute("aria-expanded", "false");
 		expect(screen.getAllByRole("treeitem")).toHaveLength(2);
 	});
 
 	it("Home and End jump to the first and last visible node", () => {
 		render(
-			<TreeView data={consumerData} aria-label="Files" defaultExpanded={["src"]} />,
+			<TreeView
+				data={consumerData}
+				aria-label="Files"
+				defaultExpanded={["src"]}
+			/>,
 		);
 		expect(screen.getAllByRole("treeitem")).toHaveLength(4);
 		const readme = focusItem("README.md");

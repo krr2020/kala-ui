@@ -1,6 +1,6 @@
 import { fireEvent, render } from "@testing-library/react-native";
-import { Switch } from "../switch";
 import { themes } from "../../themes";
+import { Switch } from "../switch";
 
 type Screen = Awaited<ReturnType<typeof render>>;
 
@@ -98,9 +98,7 @@ describe("Switch", () => {
 		expect(on.queryByTestId("k-switch-stroke")).toBeNull();
 		expect(onTrack.width).toBe(40);
 		expect(onTrack.height).toBe(24);
-		// knob visibility invariant: the knob rides the track fill — its
-		// tokens must differ from the pill colors in every theme. Dark pins
-		// guard the exact non-white knob pair the design promises.
+		// knob visibility invariant: the knob rides the track fill — its tokens must differ from the pill colors in every theme. Dark pins guard the exact non-white knob pair the design promises.
 		expect(themes.dark.primaryForeground).toBe("#0f172a");
 		expect(themes.dark.mutedForeground).toBe("#94a3b8");
 		for (const theme of Object.values(themes)) {
@@ -110,9 +108,7 @@ describe("Switch", () => {
 	});
 
 	it("disabled keeps the same white knob under the row's opacity; thumb travel unchanged", async () => {
-		const screen: Screen = await render(
-			<Switch label="Sync" disabled value />,
-		);
+		const screen: Screen = await render(<Switch label="Sync" disabled value />);
 		const root = flatStyle(screen.getByTestId("k-switch"));
 		expect(root.opacity).toBe(0.5);
 		const thumb = flatStyle(screen.getByTestId("k-switch-thumb"));
@@ -127,9 +123,7 @@ describe("Switch", () => {
 
 	it("long label wraps while the track keeps its size inside the 44dp row", async () => {
 		const screen: Screen = await render(
-			<Switch
-				label="Enable automatic seat reconciliation across every workspace"
-			/>,
+			<Switch label="Enable automatic seat reconciliation across every workspace" />,
 		);
 		const row = flatStyle(screen.getByTestId("k-switch"));
 		const track = flatStyle(screen.getByTestId("k-switch-track"));

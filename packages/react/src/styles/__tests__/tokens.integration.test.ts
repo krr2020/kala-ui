@@ -16,10 +16,7 @@ describe("web↔native token seam (item 13)", () => {
 		"utf8",
 	);
 	const definitions = readFileSync(
-		resolve(
-			__dirname,
-			"../../../../react-native/src/themes/definitions.ts",
-		),
+		resolve(__dirname, "../../../../react-native/src/themes/definitions.ts"),
 		"utf8",
 	);
 
@@ -29,10 +26,7 @@ describe("web↔native token seam (item 13)", () => {
 	});
 
 	it("native definitions match the tokens.css theme blocks", () => {
-		const tokensCss = stylesDir("tokens.css").replace(
-			/\/\*[\s\S]*?\*\//g,
-			"",
-		);
+		const tokensCss = stylesDir("tokens.css").replace(/\/\*[\s\S]*?\*\//g, "");
 		const blocks = new Map<string, Map<string, string>>();
 		for (const match of tokensCss.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
 			const selector = match[1].replace(/@layer[^{]*$/, "").trim();
@@ -84,16 +78,13 @@ describe("web↔native token seam (item 13)", () => {
 		}
 
 		const tokenToKey = (token: string) =>
-				token
-						.replace(/^--/, "")
-						.replace(/-([a-z])/g, (_m, c: string) => c.toUpperCase());
+			token
+				.replace(/^--/, "")
+				.replace(/-([a-z])/g, (_m, c: string) => c.toUpperCase());
 
 		const WEB_ONLY = /^--(?:background-alpha|online|offline)$/;
 
-		function resolveVars(
-			decls: Map<string, string>,
-			raw: string,
-		): string {
+		function resolveVars(decls: Map<string, string>, raw: string): string {
 			let value = raw;
 			let guard = 0;
 			while (value.includes("var(") && guard < 10) {
@@ -122,9 +113,7 @@ describe("web↔native token seam (item 13)", () => {
 				const native = resolved.startsWith("hsl(")
 					? hslToHex(resolved)
 					: resolved.replace(/px$/, "");
-				const nativeLiteral = /^[\d.]+$/.test(native)
-					? native
-					: `"${native}"`;
+				const nativeLiteral = /^[\d.]+$/.test(native) ? native : `"${native}"`;
 				expect(
 					constMatch[1].includes(`${key}: ${nativeLiteral}`),
 					`${constName}.${key}`,
@@ -139,8 +128,6 @@ describe("web↔native token seam (item 13)", () => {
 			"utf8",
 		);
 		expect(themingMd).toContain("@kala-ui/react/styles/tokens");
-		expect(themingMd).not.toMatch(
-			/[Cc]opy[^.]*the default `:root`/,
-		);
+		expect(themingMd).not.toMatch(/[Cc]opy[^.]*the default `:root`/);
 	});
 });

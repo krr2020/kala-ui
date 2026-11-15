@@ -7,18 +7,15 @@ export type IconSize = "xs" | "sm" | "md" | "lg" | "xl";
 /** Theme token key (`'primary'`) or any raw color string. */
 export type IconColor = keyof KalaTheme | (string & {});
 
-/**
- * Any icon-library component taking `size` (px) and `color` — lucide
- * (the demos' choice) satisfies this structurally, as do expo/vector-icons,
- * phosphor, tabler, etc. kala's own default glyphs stay lucide.
- */
+/** Any icon-library component taking `size` (px) and `color` — lucide, expo/vector-icons, phosphor, tabler all satisfy this; kala's built-in glyphs (`./glyphs`) are the components' defaults. */
 export type IconComponent = ComponentType<{
 	size?: number;
 	color?: string;
+	testID?: string;
 }>;
 
 export interface IconProps {
-	/** icon-library component, e.g. `Sun` from lucide-react-native */
+	/** icon-library component — kala glyph or any library's component */
 	icon: IconComponent;
 	size?: IconSize;
 	/** theme token key (`'primary'`) or any raw color string */

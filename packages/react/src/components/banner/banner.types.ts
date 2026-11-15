@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import type { LucideIcon } from "lucide-react";
+import type { IconComponent } from "../icons";
 import type * as React from "react";
 import type { SlotStyles } from "../../lib/slot-styles";
 import type { BannerSkeletonConfig } from "../skeleton/skeleton.types";
@@ -9,8 +9,10 @@ export interface BannerProps
 	extends Omit<React.ComponentProps<"div">, "color">,
 		VariantProps<typeof bannerClasses> {
 	onClose?: () => void;
-	/** Leading status glyph, rendered aria-hidden before the content */
-	icon?: LucideIcon;
+	/** Leading status glyph, rendered aria-hidden before the content — any `{className, size}` icon component */
+	icon?: IconComponent;
+	/** Close-button glyph — any `{className, size}` icon component; defaults to kala's built-in ✕. */
+	closeIcon?: IconComponent;
 	/** Accessible name for the close button; defaults to "Close banner". */
 	dismissLabel?: string;
 	/** `status` announces politely; use `alert` for urgent messages. */

@@ -9,7 +9,11 @@ import { Box } from "@kala-ui/react/box";
 import { Button } from "@kala-ui/react/button";
 import { Flex } from "@kala-ui/react/flex";
 import { DOTS, usePagination } from "@kala-ui/react-hooks";
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
+import {
+	ChevronLeft,
+	ChevronRight,
+	MoreHorizontal,
+} from "@kala-ui/react/icons";
 
 interface PaginationNavProps {
 	currentPage: number;

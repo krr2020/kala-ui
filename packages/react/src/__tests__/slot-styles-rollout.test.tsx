@@ -161,6 +161,7 @@ const EXCLUDED: Record<string, string> = {
 		"context provider (useSlotStyles defaults), renders no styled element",
 	"error-boundary":
 		"class wrapper; healthy path renders children verbatim, slotStyles reaches the default fallback only",
+	icons: "built-in glyph set — svg primitives, not a styled component family",
 };
 
 type OverrideProps = {

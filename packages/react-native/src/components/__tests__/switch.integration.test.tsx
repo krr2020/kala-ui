@@ -12,8 +12,7 @@ const DEMOS = join(
 	"../../../../../apps/native-playground/src/demos/components",
 );
 
-const read = (): string =>
-	readFileSync(join(DEMOS, "switch-demo.tsx"), "utf8");
+const read = (): string => readFileSync(join(DEMOS, "switch-demo.tsx"), "utf8");
 
 describe("SwitchDemo census", () => {
 	it("pins a long field copy arm", () => {

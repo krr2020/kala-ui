@@ -15,7 +15,6 @@ export function chip(theme: KalaTheme): ViewStyle {
 }
 
 export function chipText(theme: KalaTheme): TextStyle {
-	// chips sit on the secondary fill — its foreground pair keeps the text
-	// legible in dark themes where theme.foreground is near-white on slate
+	// chips sit on the secondary fill — its foreground pair keeps the text legible in dark themes where theme.foreground is near-white on slate
 	return { fontSize: 12, color: theme.secondaryForeground };
 }

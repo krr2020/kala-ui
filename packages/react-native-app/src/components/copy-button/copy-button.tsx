@@ -7,7 +7,7 @@
  */
 
 import { Button } from "@kala-ui/react-native";
-import { Check, Copy } from "lucide-react-native";
+import { Check, Copy } from "@kala-ui/react-native/icons";
 import { useCallback, useRef, useState } from "react";
 import { useUnistyles } from "react-native-unistyles";
 import { ICON_SIZE, iconColor } from "./copy-button.styles";

@@ -224,9 +224,7 @@ describe("Banner", () => {
 		expect(leading).toHaveClass("h-4", "w-4", "shrink-0");
 		expect(banner.firstElementChild).toBe(leading);
 		expect(
-			screen
-				.getByRole("button", { name: "Close banner" })
-				.querySelector("svg"),
+			screen.getByRole("button", { name: "Close banner" }).querySelector("svg"),
 		).not.toBeNull();
 	});
 

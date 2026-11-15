@@ -38,7 +38,11 @@ function Toggle({
 	size,
 	...props
 }: ToggleProps) {
-	const slotStyles = useSlotStyles("toggle", slotStylesRaw, variant ?? undefined);
+	const slotStyles = useSlotStyles(
+		"toggle",
+		slotStylesRaw,
+		variant ?? undefined,
+	);
 	const root = applySlot(
 		cn(toggleVariants({ variant, size, className })),
 		slotStyles?.root,

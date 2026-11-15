@@ -135,15 +135,22 @@ while JS is busy.
 
 ## Icons
 
-**Decision: `lucide-react-native` + `react-native-svg` (peer dep).**
+**Decision: library-agnostic `IconComponent` contract + kala's built-in glyphs.**
 
-The web packages already standardize on `lucide-react` (used in 59
-component files) plus `simple-icons` for brand marks — native gets
-pixel-identical icons and a shared visual language for free.
+Every component glyph slot takes an `IconComponent` — any component
+renderable with `{ size: number, color: string, testID?: string }` — so
+lucide, expo/vector-icons, phosphor, tabler, etc. all plug in. lucide is
+NOT a dependency or peer of either native package; it survives only as a
+devDependency for tests and playground demos.
 
-The library exposes its own `<Icon>` wrapper taking token-based
-`size="sm"` and `color="color.foreground"`, not raw numbers. Apps never
-import lucide directly, so a future icon-set swap is a one-file change.
+Kala ships a small dependency-free default glyph set (24×24 stroke
+geometry aligned with the web package's `@kala-ui/react/icons`), built on
+`react-native-svg` (already a peer dep) and exported from the
+`@kala-ui/react-native/icons` subpath. Components use these as defaults;
+apps override any slot by passing their own icon component.
+
+The library also exposes its `<Icon>` wrapper taking token-based
+`size="sm"` and `color="color.foreground"`, not raw numbers.
 `simple-icons` ports the same way for brand marks (banks, Google,
 Apple, …).
 

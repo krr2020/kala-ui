@@ -8,8 +8,7 @@ import { motion, tokens } from "../../tokens";
  * header surface styles.
  */
 
-// translateY held before onLayout delivers the snap height — guarantees
-// the content starts fully below the viewport instead of flashing at rest
+// translateY held before onLayout delivers the snap height — guarantees the content starts fully below the viewport instead of flashing at rest
 export const OFFSCREEN_Y = 10000;
 
 /** Drag offset and keyboard lift add to the entry/exit offset so
@@ -65,10 +64,7 @@ export function keyboardShrink({
 	sheetHeight,
 }: KeyboardAdjust): number {
 	if (kbHeight <= 0) return 0;
-	return Math.max(
-		0,
-		sheetHeight - (windowHeight - topInset - kbHeight),
-	);
+	return Math.max(0, sheetHeight - (windowHeight - topInset - kbHeight));
 }
 
 /** Overlay backdrop color composed from the theme's overlay + overlayAlpha
@@ -84,8 +80,8 @@ export function sheetOverlay(theme: {
 		hex.length === 3
 			? hex
 					.split("")
-				.map((c) => c + c)
-				.join("")
+					.map((c) => c + c)
+					.join("")
 			: hex;
 	const n = Number.parseInt(full, 16);
 	const alpha = Math.min(1, Math.max(0, theme.overlayAlpha));
@@ -98,12 +94,10 @@ export function sheetHeader(theme: { separator: string }): ViewStyle {
 		alignItems: "center",
 		justifyContent: "space-between",
 		gap: tokens.space.gutter,
-		// breathing room around the title row, above and below — kept tight;
-		// the grabber tier above already supplies the sheet's inner rhythm
+		// breathing room around the title row, above and below — kept tight; the grabber tier above already supplies the sheet's inner rhythm
 		paddingTop: 2,
 		paddingBottom: 8,
-		// negative margin cancels the content gutter so the hairline spans
-		// the sheet edge to edge; inner padding restores the text rail
+		// negative margin cancels the content gutter so the hairline spans the sheet edge to edge; inner padding restores the text rail
 		marginHorizontal: -tokens.space.gutter,
 		paddingHorizontal: tokens.space.gutter,
 		borderBottomWidth: 1,
@@ -120,8 +114,7 @@ export function sheetTitle(theme: { foreground: string }): {
 }
 
 export function sheetCloseHit(): ViewStyle {
-	// 44px hit target per the touch-target floor; never yields space to a
-	// long wrapping title
+	// 44px hit target per the touch-target floor; never yields space to a long wrapping title
 	return {
 		width: 44,
 		height: 44,

@@ -1,8 +1,9 @@
 import { usePagination } from "@kala-ui/react-hooks";
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
+import { ChevronLeft, ChevronRight, MoreHorizontal } from "../icons";
 import * as React from "react";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import type { IconComponent } from "../icons";
 import { Box } from "../box";
 import { Flex } from "../flex";
 import { useSlotStyles } from "../kala-provider";
@@ -256,6 +257,7 @@ function PaginationPrevious({
 	className,
 	slotStyles: slotStylesRaw,
 	showLabel = true,
+	previousIcon: PreviousIcon = ChevronLeft,
 	children,
 	onClick,
 	...props
@@ -279,7 +281,7 @@ function PaginationPrevious({
 			disabled={pagination?.active === 1}
 			{...props}
 		>
-			<ChevronLeft className="h-4 w-4" />
+			<PreviousIcon className="h-4 w-4" />
 			{showLabel && <Text as="span">{children || "Previous"}</Text>}
 		</PaginationLink>
 	);
@@ -293,6 +295,7 @@ function PaginationNext({
 	className,
 	slotStyles: slotStylesRaw,
 	showLabel = true,
+	nextIcon: NextIcon = ChevronRight,
 	children,
 	onClick,
 	...props
@@ -317,7 +320,7 @@ function PaginationNext({
 			{...props}
 		>
 			{showLabel && <Text as="span">{children || "Next"}</Text>}
-			<ChevronRight className="h-4 w-4" />
+			<NextIcon className="h-4 w-4" />
 		</PaginationLink>
 	);
 }
@@ -328,8 +331,12 @@ function PaginationNext({
 
 function PaginationEllipsis({
 	className,
+	ellipsisIcon: EllipsisIcon = MoreHorizontal,
 	...props
-}: React.ComponentProps<"span">) {
+}: React.ComponentProps<"span"> & {
+	/** Ellipsis glyph — any `{className, size}` icon component; defaults to kala's built-in ellipsis. */
+	ellipsisIcon?: IconComponent;
+}) {
 	return (
 		<Flex
 			data-kala-component="pagination-ellipsis"
@@ -340,7 +347,7 @@ function PaginationEllipsis({
 			className={cn("h-9 w-9", className)}
 			{...props}
 		>
-			<MoreHorizontal className="size-4" />
+			<EllipsisIcon className="size-4" />
 			<Text className="sr-only">More pages</Text>
 		</Flex>
 	);

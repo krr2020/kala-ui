@@ -2,7 +2,7 @@
 
 import { useClickOutside } from "@kala-ui/react-hooks";
 import { cn } from "@kala-ui/react/lib/utils";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown } from "@kala-ui/react/icons";
 import * as React from "react";
 import { isActivePath } from "../../lib/active-path";
 import type { NavigationProps } from "./navigation.types";
@@ -140,7 +140,7 @@ export function Navigation({
 				))}
 			</nav>
 
-				{/* Mobile Dropdown Navigation */}
+			{/* Mobile Dropdown Navigation */}
 			<div
 				data-kala-component="navigation"
 				className="md:hidden"
@@ -161,7 +161,7 @@ export function Navigation({
 						)}
 					/>
 				</button>
-					{isMobileOpen && (
+				{isMobileOpen && (
 					<nav
 						className="mt-2 flex flex-col gap-2 bg-popover border rounded-md p-3 text-popover-foreground kala-surface-popover"
 						aria-label="Mobile navigation"

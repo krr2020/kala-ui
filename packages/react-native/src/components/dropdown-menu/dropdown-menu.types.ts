@@ -1,4 +1,5 @@
 import type { StyleProp, ViewStyle } from "react-native";
+import type { IconComponent } from "../icon";
 import type { SheetSnap } from "../sheet";
 
 export interface DropdownMenuActionItem {
@@ -56,6 +57,8 @@ export interface DropdownMenuProps {
 	snap?: SheetSnap;
 	/** false blocks overlay-press dismissal */
 	dismissable?: boolean;
+	/** icon-library component for the checked/radio marker — kala Check by default */
+	checkIcon?: IconComponent;
 	/** Root layout/positioning; sits below `slotStyles.root`. */
 	style?: StyleProp<ViewStyle>;
 	/** slotStyles: root wins over the library surface and `style`. */

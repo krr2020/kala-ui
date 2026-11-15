@@ -2,7 +2,7 @@
 
 import { useUncontrolled } from "@kala-ui/react-hooks";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { Calendar as CalendarGlyph } from "../icons";
 import * as React from "react";
 import type { DateRange } from "react-day-picker";
 import { datePickerStyles } from "../../config/date-picker";
@@ -29,6 +29,7 @@ export function DatePicker({
 	buttonClassName,
 	formatStr = "PPP",
 	isLoading = false,
+	calendarIcon: CalendarIcon = CalendarGlyph,
 	slotStyles: slotStylesRaw,
 	...props
 }: DatePickerProps) {
@@ -107,6 +108,7 @@ export function DateRangePicker({
 	buttonClassName,
 	formatStr = "LLL dd, y",
 	isLoading = false,
+	calendarIcon: CalendarIcon = CalendarGlyph,
 	slotStyles: slotStylesRaw,
 	...props
 }: DateRangePickerProps) {

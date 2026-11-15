@@ -1,4 +1,5 @@
 import type * as React from "react";
+import type { IconComponent } from "../icons";
 
 export interface PaginationProps
 	extends Omit<React.ComponentProps<"nav">, "onChange"> {
@@ -89,6 +90,8 @@ export interface PaginationPreviousProps
 	 * @default true
 	 */
 	showLabel?: boolean;
+	/** Previous-page glyph — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	previousIcon?: IconComponent;
 }
 
 export interface PaginationNextProps
@@ -98,6 +101,8 @@ export interface PaginationNextProps
 	 * @default true
 	 */
 	showLabel?: boolean;
+	/** Next-page glyph — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	nextIcon?: IconComponent;
 }
 
 export interface PageItem {

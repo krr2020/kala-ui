@@ -11,7 +11,7 @@ import {
 	Smartphone,
 	Tablet,
 	Wifi,
-} from "lucide-react";
+} from "@kala-ui/react/icons";
 import { sessionCardStyles } from "../../config/session-card";
 import type { SessionCardProps } from "./session-card.types";
 import { SessionCardSkeleton } from "./session-card-skeleton";

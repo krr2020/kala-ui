@@ -1,7 +1,7 @@
 "use client";
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
+import { X } from "../icons";
 import { createContext, useContext } from "react";
 import type * as React from "react";
 import { dialogStyles } from "../../config/dialog";
@@ -92,6 +92,7 @@ function DialogContent({
 	showCloseButton = true,
 	size = "md",
 	closeLabel = "Close",
+	closeIcon: CloseIconProp,
 	...props
 }: DialogContentProps) {
 	const slotStyles = useSlotStyles("dialog", slotStylesRaw);
@@ -104,6 +105,7 @@ function DialogContent({
 		slotStyles?.close,
 	);
 	const closeIcon = applySlot(dialogStyles.closeIcon, slotStyles?.closeIcon);
+	const CloseIcon = CloseIconProp ?? X;
 
 	return (
 		<DialogPortal>
@@ -124,7 +126,7 @@ function DialogContent({
 						className={close.className}
 						style={close.style}
 					>
-						<X
+						<CloseIcon
 							className={closeIcon.className}
 							style={closeIcon.style}
 							aria-hidden="true"

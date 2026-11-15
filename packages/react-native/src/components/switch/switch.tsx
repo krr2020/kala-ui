@@ -51,10 +51,7 @@ export function Switch({
 				style={[track(theme, value), slotStyles?.track]}
 			>
 				{value ? null : (
-					<View
-						testID="k-switch-stroke"
-						style={trackStroke(theme)}
-					/>
+					<View testID="k-switch-stroke" style={trackStroke(theme)} />
 				)}
 				<View
 					testID="k-switch-thumb"

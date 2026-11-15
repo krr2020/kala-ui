@@ -1,11 +1,16 @@
-import { Minus, Plus } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useState } from "react";
-import { Platform, Pressable, TextInput as RNTextInput, View } from "react-native";
+import {
+	Platform,
+	Pressable,
+	TextInput as RNTextInput,
+	View,
+} from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { tokens } from "../../tokens";
 import { sanitizeNumberText } from "../../lib/number-input.utils";
+import { tokens } from "../../tokens";
 import { Icon } from "../icon";
+import { Minus, Plus } from "../icon/glyphs";
 import { applySlot } from "../slot-styles";
 import * as numberStyle from "./number-input.styles";
 import type { NumberInputProps } from "./number-input.types";
@@ -33,6 +38,8 @@ export function NumberInput({
 	accessibilityLabel,
 	incrementLabel = "Increase",
 	decrementLabel = "Decrease",
+	incrementIcon: IncrementIcon = Plus,
+	decrementIcon: DecrementIcon = Minus,
 	style,
 	slotStyles,
 	testID = "k-number-input",
@@ -77,18 +84,11 @@ export function NumberInput({
 		emit(clamp(base + direction * step));
 	};
 
-	// numeric keyboard by platform: Android's numeric pad is the only
-	// reliably-supported digit layout (decimal/decimal-pad fall back to
-	// QWERTY on many OEM keyboards); iOS numbers-and-punctuation adds the
-	// minus key neither number-pad style has.
+	// numeric keyboard by platform: Android's numeric pad is the only reliably-supported digit layout (decimal/decimal-pad fall back to QWERTY on many OEM keyboards); iOS numbers-and-punctuation adds the minus key neither number-pad style has.
 	const defaultKeyboard =
 		Platform.OS === "ios" ? "numbers-and-punctuation" : "numeric";
 
-	const stepperButton = (
-		label: string,
-		icon: typeof Minus,
-		id: string,
-	) => (
+	const stepperButton = (label: string, icon: typeof Minus, id: string) => (
 		<Pressable
 			testID={`${testID}-${id}`}
 			accessibilityRole="button"
@@ -113,7 +113,7 @@ export function NumberInput({
 				applySlot(applySlot({}, style), slotStyles?.root),
 			]}
 		>
-			{stepperButton(decrementLabel, Minus, "decrement")}
+			{stepperButton(decrementLabel, DecrementIcon, "decrement")}
 			<View testID={`${testID}-divider`} style={numberStyle.divider(theme)} />
 			<RNTextInput
 				testID={`${testID}-input`}
@@ -144,7 +144,7 @@ export function NumberInput({
 				]}
 			/>
 			<View testID={`${testID}-divider`} style={numberStyle.divider(theme)} />
-			{stepperButton(incrementLabel, Plus, "increment")}
+			{stepperButton(incrementLabel, IncrementIcon, "increment")}
 		</View>
 	);
 }

@@ -219,7 +219,7 @@ export const LoadingSkeleton: Story = {
 		docs: {
 			description: {
 				story:
-				"Loading skeleton placeholders for buttons while content is loading.",
+					"Loading skeleton placeholders for buttons while content is loading.",
 			},
 		},
 	},
@@ -245,7 +245,7 @@ export const AsChildLinks: Story = {
 		docs: {
 			description: {
 				story:
-				"Compose any navigation element with button styling via asChild — wrap your router's Link (Next.js, react-router) the same way. Keeps native link semantics (middle-click, cmd-click, crawlers) while variants and tokens stay owned by kala-ui; no custom button classes needed at call sites.",
+					"Compose any navigation element with button styling via asChild — wrap your router's Link (Next.js, react-router) the same way. Keeps native link semantics (middle-click, cmd-click, crawlers) while variants and tokens stay owned by kala-ui; no custom button classes needed at call sites.",
 			},
 		},
 	},

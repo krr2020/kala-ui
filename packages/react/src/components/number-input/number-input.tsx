@@ -1,6 +1,6 @@
 "use client";
 
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus } from "../icons";
 import * as React from "react";
 import { numberInputStyles } from "../../config/number-input";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
@@ -30,6 +30,8 @@ function NumberInput({
 	hasError = false,
 	hasSuccess = false,
 	isLoading = false,
+	decrementIcon: DecrementIcon = Minus,
+	incrementIcon: IncrementIcon = Plus,
 	onKeyDown,
 	onBlur,
 	ref,
@@ -210,7 +212,7 @@ function NumberInput({
 				className={decrementSlot.className}
 				style={decrementSlot.style}
 			>
-				<Minus
+				<DecrementIcon
 					aria-hidden="true"
 					className={cn("stroke-2", size === "sm" ? "h-3 w-3" : "h-4 w-4")}
 				/>
@@ -241,7 +243,7 @@ function NumberInput({
 				className={incrementSlot.className}
 				style={incrementSlot.style}
 			>
-				<Plus
+				<IncrementIcon
 					aria-hidden="true"
 					className={cn("stroke-2", size === "sm" ? "h-3 w-3" : "h-4 w-4")}
 				/>

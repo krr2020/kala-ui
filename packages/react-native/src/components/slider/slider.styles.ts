@@ -8,8 +8,7 @@ export const THUMB_R = THUMB_PX / 2;
 export const THUMB_HIT_SLOP = 12;
 
 export function root(): ViewStyle {
-	// disabled is carried by part tokens (range/thumb), not a root fade:
-	// a fade makes the thumb read as translucent instead of locked
+	// disabled is carried by part tokens (range/thumb), not a root fade: a fade makes the thumb read as translucent instead of locked
 	return {};
 }
 
@@ -17,8 +16,7 @@ export function track(theme: KalaTheme): ViewStyle {
 	return {
 		height: TRACK_H,
 		borderRadius: TRACK_H / 2,
-		// input, not muted: on the light page muted is nearly
-		// invisible — input is the Switch off-track contrast token
+		// input, not muted: on the light page muted is nearly invisible — input is the Switch off-track contrast token
 		backgroundColor: theme.input,
 		justifyContent: "center",
 	};

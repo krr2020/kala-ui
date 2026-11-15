@@ -7,8 +7,7 @@
 import { render } from "@testing-library/react-native";
 import { Indicator } from "../indicator";
 
-// require (not import): keeps this file off the native-module preflight,
-// matching the require-based StyleSheet/Animated access in the other suites
+// require (not import): keeps this file off the native-module preflight, matching the require-based StyleSheet/Animated access in the other suites
 const { Text: RNText } = require("react-native");
 
 const incl = { includeHiddenElements: true } as const;
@@ -65,9 +64,7 @@ describe("Indicator", () => {
 				</Indicator>,
 			);
 			const s = flatStyle(badge(screen));
-			seen.add(
-				JSON.stringify([s.top, s.left, s.bottom, s.right].map(String)),
-			);
+			seen.add(JSON.stringify([s.top, s.left, s.bottom, s.right].map(String)));
 		}
 		expect(seen.size).toBe(origins.length);
 	});
@@ -369,11 +366,7 @@ describe("Indicator", () => {
 	});
 });
 
-// Animation-lifecycle suite stays LAST: its Animated.loop patch drives a
-// real mock loop to completion inside act, and jest-expo's Animated mock
-// leaves later loop-patching mounts in this file without a live effect —
-// every tree-querying test must run before it, and the flip-off/unmount
-// assertions live here together.
+// Animation-lifecycle suite stays LAST: its Animated.loop patch drives a real mock loop to completion inside act, and jest-expo's Animated mock leaves later loop-patching mounts in this file without a live effect — every tree-querying test must run before it, and the flip-off/unmount assertions live here together.
 it("processing pulse loop lifecycle: stops on flip-off and unmount", async () => {
 	const { act } = require("react");
 	const AnimatedRN = require("react-native").Animated;
@@ -396,8 +389,7 @@ it("processing pulse loop lifecycle: stops on flip-off and unmount", async () =>
 			</Indicator>,
 		);
 		expect(stops.length).toBe(1);
-		// flipping processing off: effect cleanup stops the loop and
-		// resets the pulse value, so a later processing mount starts fresh
+		// flipping processing off: effect cleanup stops the loop and resets the pulse value, so a later processing mount starts fresh
 		await screen.rerender(
 			<Indicator dot size={10}>
 				<RNText>t</RNText>

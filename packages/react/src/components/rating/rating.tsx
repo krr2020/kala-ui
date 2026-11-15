@@ -1,7 +1,8 @@
 "use client";
 
 import { useUncontrolled } from "@kala-ui/react-hooks";
-import { Star } from "lucide-react";
+import { Star as StarGlyph } from "../icons";
+import type { IconComponent } from "../icons";
 import * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
@@ -17,9 +18,11 @@ const sizeMap = {
 function RatingStar({
 	fill,
 	size,
+	Star,
 }: {
 	fill: "full" | "half" | "empty";
 	size: keyof typeof sizeMap;
+	Star: IconComponent;
 }) {
 	return (
 		<span data-kala-component="rating-star" className="relative inline-flex">
@@ -55,6 +58,7 @@ function Rating({
 	className,
 	style,
 	slotStyles: slotStylesRaw,
+	starIcon: Star = StarGlyph,
 	"aria-label": ariaLabel = "Rating",
 	ref,
 	...props
@@ -154,7 +158,12 @@ function Rating({
 				{...props}
 			>
 				{Array.from({ length: count }, (_, i) => (
-					<RatingStar key={i + 1} fill={getStarFill(i + 1)} size={size} />
+					<RatingStar
+						key={i + 1}
+						fill={getStarFill(i + 1)}
+						size={size}
+						Star={Star}
+					/>
 				))}
 			</fieldset>
 		);
@@ -192,7 +201,7 @@ function Rating({
 							disabled && "cursor-default",
 						)}
 					>
-						<RatingStar fill={fill} size={size} />
+						<RatingStar fill={fill} size={size} Star={Star} />
 					</button>
 				);
 			})}

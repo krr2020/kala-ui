@@ -8,17 +8,18 @@
 import type { ReactElement, ReactNode } from "react";
 import { useState } from "react";
 import type { ViewStyle } from "react-native";
-import { Check, Lock } from "lucide-react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import type { IconComponent } from "../icon";
+import { Check, Lock } from "../icon/glyphs";
 import { applySlot } from "../slot-styles";
 import {
 	baseSurface,
 	hitSlopFor,
 	PAD_X,
-	text as textStyle,
 	TOGGLE_FONT,
 	TOGGLE_HEIGHT,
+	text as textStyle,
 } from "./toggle.styles";
 import type { ToggleProps, ToggleSize, ToggleVariant } from "./toggle.types";
 
@@ -84,13 +85,17 @@ function ToggleContent({
 export function StateGlyph({
 	active,
 	fg,
+	checkIcon: CheckIcon = Check,
+	lockIcon: LockIcon = Lock,
 	testID = "k-toggle-glyph",
 }: {
 	active: boolean;
 	fg: string;
+	checkIcon?: IconComponent;
+	lockIcon?: IconComponent;
 	testID?: string;
 }): ReactElement {
-	const Icon = active ? Check : Lock;
+	const Icon = active ? CheckIcon : LockIcon;
 	return (
 		<View testID={`${testID}-${active ? "check" : "lock"}`}>
 			<Icon size={14} color={fg} />
@@ -106,6 +111,8 @@ export function Toggle({
 	variant = "default",
 	size = "md",
 	disabled = false,
+	checkIcon,
+	lockIcon,
 	accessibilityLabel,
 	style,
 	slotStyles,
@@ -142,7 +149,13 @@ export function Toggle({
 				{children}
 			</ToggleContent>
 			{disabled ? (
-				<StateGlyph active={active} fg={look.fg} testID="k-toggle-glyph" />
+				<StateGlyph
+					active={active}
+					fg={look.fg}
+					checkIcon={checkIcon}
+					lockIcon={lockIcon}
+					testID="k-toggle-glyph"
+				/>
 			) : null}
 		</Pressable>
 	);

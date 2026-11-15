@@ -1,7 +1,8 @@
 "use client";
 
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import { Check, ChevronRight, Circle } from "lucide-react";
+import { Check, ChevronRight, Circle } from "../icons";
+import type { IconComponent } from "../icons";
 import type * as React from "react";
 import { dropdownMenuStyles } from "../../config/dropdown-menu";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
@@ -113,9 +114,13 @@ function DropdownMenuItem({
 
 function DropdownMenuCheckboxItem({
 	className,
+	checkIcon: CheckIcon = Check,
 	children,
 	...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem> & {
+	/** Check glyph — any `{className, size}` icon component; defaults to kala's built-in check. */
+	checkIcon?: IconComponent;
+}) {
 	return (
 		<DropdownMenuPrimitive.CheckboxItem
 			data-kala-component="dropdown-menu-checkbox-item"
@@ -125,7 +130,7 @@ function DropdownMenuCheckboxItem({
 		>
 			<span className="pointer-events-none absolute left-2 flex size-4 items-center justify-center">
 				<DropdownMenuPrimitive.ItemIndicator>
-					<Check className="size-4 text-primary" />
+					<CheckIcon className="size-4 text-primary" />
 				</DropdownMenuPrimitive.ItemIndicator>
 			</span>
 			{children}
@@ -147,9 +152,13 @@ function DropdownMenuRadioGroup({
 
 function DropdownMenuRadioItem({
 	className,
+	radioIcon: RadioIcon = Circle,
 	children,
 	...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.RadioItem>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.RadioItem> & {
+	/** Radio dot glyph — any `{className, size}` icon component; defaults to kala's built-in circle. */
+	radioIcon?: IconComponent;
+}) {
 	return (
 		<DropdownMenuPrimitive.RadioItem
 			data-kala-component="dropdown-menu-radio-item"
@@ -159,7 +168,7 @@ function DropdownMenuRadioItem({
 		>
 			<span className="pointer-events-none absolute left-2 flex size-4 items-center justify-center">
 				<DropdownMenuPrimitive.ItemIndicator>
-					<Circle className="size-2 fill-primary text-primary" />
+					<RadioIcon className="size-2 fill-primary text-primary" />
 				</DropdownMenuPrimitive.ItemIndicator>
 			</span>
 			{children}
@@ -232,10 +241,13 @@ function DropdownMenuSub({
 function DropdownMenuSubTrigger({
 	className,
 	inset,
+	submenuIcon: SubmenuIcon = ChevronRight,
 	children,
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & {
 	inset?: boolean;
+	/** Submenu chevron — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	submenuIcon?: IconComponent;
 }) {
 	return (
 		<DropdownMenuPrimitive.SubTrigger
@@ -254,7 +266,7 @@ function DropdownMenuSubTrigger({
 			{...props}
 		>
 			{children}
-			<ChevronRight className="ml-auto size-4" />
+			<SubmenuIcon className="ml-auto size-4" />
 		</DropdownMenuPrimitive.SubTrigger>
 	);
 }

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
+import type { IconComponent } from "../icon";
 
 /** Range selection shape shared by Calendar range mode and DateRangePicker. */
 export interface DateRangeValue {
@@ -42,6 +43,10 @@ export interface CalendarProps {
 	max?: Date;
 	/** Extra per-day disable rule, merged with min/max. */
 	disabledDates?: (date: Date) => boolean;
+	/** icon-library component for the previous-month/year chevron — kala ChevronLeft by default */
+	chevronLeftIcon?: IconComponent;
+	/** icon-library component for the next-month/year chevron — kala ChevronRight by default */
+	chevronRightIcon?: IconComponent;
 	/** Swaps the grid for a skeleton surface keeping the marker. */
 	isLoading?: boolean;
 	skeletonConfig?: CalendarSkeletonConfig;

@@ -2,7 +2,7 @@
 
 import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
-import { X } from "lucide-react";
+import { X } from "../icons";
 import { tagStyles } from "../../config/tag";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
@@ -26,6 +26,7 @@ function Tag({
 	asChild = false,
 	onRemove,
 	dismissLabel = "Remove",
+	removeIcon: RemoveIcon = X,
 	icon,
 	children,
 	...props
@@ -64,7 +65,7 @@ function Tag({
 					className={remove.className}
 					style={remove.style}
 				>
-					<X aria-hidden="true" />
+					<RemoveIcon aria-hidden="true" />
 				</button>
 			)}
 		</Comp>

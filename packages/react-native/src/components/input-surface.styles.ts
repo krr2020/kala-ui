@@ -30,9 +30,7 @@ export function surfaceBorder(
 	return theme.border;
 }
 
-// The input token is the muted disabled fill; resting fields sit on card
-// so the idle state never reads as disabled (web parity: bg-card /
-// disabled:bg-input).
+// The input token is the muted disabled fill; resting fields sit on card so the idle state never reads as disabled (web parity: bg-card / disabled:bg-input).
 export function surfaceFill(
 	theme: KalaTheme,
 	{ disabled = false }: InputSurfaceOptions = {},
@@ -40,7 +38,10 @@ export function surfaceFill(
 	return disabled ? theme.input : theme.card;
 }
 
-export function trigger(theme: KalaTheme, options: InputSurfaceOptions = {}): ViewStyle {
+export function trigger(
+	theme: KalaTheme,
+	options: InputSurfaceOptions = {},
+): ViewStyle {
 	const { size = "md", disabled = false } = options;
 	return {
 		minHeight: SURFACE_HEIGHTS[size],

@@ -1,5 +1,4 @@
-// ambient: registers KalaTheme with react-native-unistyles for every
-// consumer of the package (side-effect type-only import)
+// ambient: registers KalaTheme with react-native-unistyles for every consumer of the package (side-effect type-only import)
 import "./types/unistyles";
 
 export type {
@@ -137,6 +136,7 @@ export type {
 export { Heading } from "./components/heading";
 export type { IconComponent, IconProps } from "./components/icon";
 export { Icon } from "./components/icon";
+// Built-in glyphs ship via the `@kala-ui/react-native/icons` subpath — several names (Calendar, Check…) collide with component exports here.
 export type {
 	IndicatorAnchorOrigin,
 	IndicatorColor,

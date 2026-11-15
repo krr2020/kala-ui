@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react-native";
-import { Slider } from "../slider";
 import { themes } from "../../themes";
+import { Slider } from "../slider";
 import { THUMB_R } from "../slider/slider.styles";
 
 const inclHidden = { includeHiddenElements: true } as const;

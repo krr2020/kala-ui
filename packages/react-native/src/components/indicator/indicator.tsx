@@ -39,15 +39,12 @@ export function Indicator({
 
 	const resolvedSize = size ?? (dot ? 10 : 16);
 	const isDot = dot || badgeContent === undefined;
-	// MUI model: no badgeContent means no badge — unless dot opts in;
-	// numeric zero hides unless showZero (Ant model)
+	// MUI model: no badgeContent means no badge — unless dot opts in; numeric zero hides unless showZero (Ant model)
 	const hideBadge =
 		invisible ||
 		(!dot &&
 			(badgeContent === undefined ||
-				(typeof badgeContent === "number" &&
-					badgeContent === 0 &&
-					!showZero)));
+				(typeof badgeContent === "number" && badgeContent === 0 && !showZero)));
 
 	useEffect(() => {
 		// no badge, no pulse — a looping animation with no surface leaks
@@ -101,18 +98,13 @@ export function Indicator({
 								zIndex: 50,
 								overflow: "hidden",
 							},
-							isDot
-								? { width: resolvedSize }
-								: { minWidth: resolvedSize },
+							isDot ? { width: resolvedSize } : { minWidth: resolvedSize },
 							!isDot ? { paddingHorizontal: resolvedSize / 3 } : null,
 							withBorder
 								? { borderWidth: 2, borderColor: theme.background }
 								: { borderWidth: 0 },
 							anchorStyle(anchorOrigin, overlap, offset, resolvedSize),
-							// legacy style targets the badge at web parity (web
-							// spreads it onto the badge node, not the wrapper); the
-							// pulse rides after it so the animation beats user
-							// opacity like CSS
+							// legacy style targets the badge at web parity (web spreads it onto the badge node, not the wrapper); the pulse rides after it so the animation beats user opacity like CSS
 							style,
 							processing ? { opacity: pulse } : null,
 						],

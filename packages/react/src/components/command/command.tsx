@@ -1,7 +1,7 @@
 "use client";
 
 import { Command as CommandPrimitive } from "cmdk";
-import { Search } from "lucide-react";
+import { Search, type IconComponent } from "../icons";
 import type * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
@@ -51,15 +51,19 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
 function CommandInput({
 	ref,
 	className,
+	searchIcon: SearchIcon = Search,
 	...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
+}: React.ComponentProps<typeof CommandPrimitive.Input> & {
+	/** Search glyph — any `{className, size}` icon component; defaults to kala's built-in magnifier. */
+	searchIcon?: IconComponent;
+}) {
 	return (
 		<div
 			data-kala-component="command-input"
 			className="flex items-center border-b border-separator px-3"
 			cmdk-input-wrapper=""
 		>
-			<Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+			<SearchIcon className="mr-2 h-4 w-4 shrink-0 opacity-50" />
 			<CommandPrimitive.Input
 				ref={ref}
 				className={cn(

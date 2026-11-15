@@ -1,11 +1,16 @@
 "use client";
 
-import { CloudUpload, File as FileIcon, X } from "lucide-react";
 import * as React from "react";
 import { fileUploadStyles } from "../../config/file-upload";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
+import {
+	CloudUpload,
+	File as FileGlyph,
+	type IconComponent,
+	X,
+} from "../icons";
 import { useSlotStyles } from "../kala-provider";
 import type { FileUploadProps } from "./file-upload.types";
 
@@ -20,6 +25,9 @@ export function FileUpload({
 	onError,
 	className,
 	style,
+	fileIcon: FileIcon = FileGlyph,
+	uploadIcon: UploadIcon = CloudUpload,
+	removeIcon: RemoveIcon = X,
 	slotStyles: slotStylesRaw,
 	...props
 }: FileUploadProps) {
@@ -164,7 +172,7 @@ export function FileUpload({
 							onClick={() => onValueChange(null)}
 							aria-label="Clear selected file"
 						>
-							<X className="w-4 h-4" />
+							<RemoveIcon className="w-4 h-4" />
 						</Button>
 					)}
 				</div>
@@ -189,7 +197,7 @@ export function FileUpload({
 					)}
 				>
 					<div className={iconCircle.className} style={iconCircle.style}>
-						<CloudUpload className="w-6 h-6 text-muted-foreground" />
+						<UploadIcon className="w-6 h-6 text-muted-foreground" />
 					</div>
 					<p className="mb-1 text-sm font-medium text-foreground">
 						<span className="text-primary">Click to upload</span> or drag and

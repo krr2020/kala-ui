@@ -10,7 +10,7 @@
  * create separate composed components.
  */
 
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "../icons";
 import * as React from "react";
 import { inputStyles } from "../../config/input";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";

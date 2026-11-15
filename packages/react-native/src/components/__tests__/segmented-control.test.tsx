@@ -7,9 +7,7 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { StyleSheet } from "react-native";
 import { SegmentedControl } from "../segmented-control";
-import type {
-	SegmentedControlSize,
-} from "../segmented-control/segmented-control.types";
+import type { SegmentedControlSize } from "../segmented-control/segmented-control.types";
 
 const DATA = ["a", "b", "c"];
 
@@ -133,26 +131,20 @@ describe("SegmentedControl", () => {
 	});
 
 	it("radius: track/segment use the token; indicator insets by track padding", async () => {
-		const screen = await render(
-			<SegmentedControl data={DATA} radius="md" />,
-		);
+		const screen = await render(<SegmentedControl data={DATA} radius="md" />);
 		expect(flat(screen.getByTestId("k-segmented")).borderRadius).toBe(8);
 		expect(flat(screen.getAllByTestId("k-segment")[0]).borderRadius).toBe(8);
-		expect(
-			flat(screen.getByTestId("k-segment-indicator")).borderRadius,
-		).toBe(4);
-		const pill = await render(
-			<SegmentedControl data={DATA} radius="full" />,
+		expect(flat(screen.getByTestId("k-segment-indicator")).borderRadius).toBe(
+			4,
 		);
+		const pill = await render(<SegmentedControl data={DATA} radius="full" />);
 		expect(flat(pill.getByTestId("k-segment-indicator")).borderRadius).toBe(
 			999,
 		);
 	});
 
 	it("fullWidth: segments flex 1; otherwise flex is unset", async () => {
-		const wide = await render(
-			<SegmentedControl data={DATA} fullWidth />,
-		);
+		const wide = await render(<SegmentedControl data={DATA} fullWidth />);
 		expect(flat(wide.getAllByTestId("k-segment")[0]).flex).toBe(1);
 		const snug = await render(<SegmentedControl data={DATA} />);
 		expect(flat(snug.getAllByTestId("k-segment")[0]).flex).toBeUndefined();

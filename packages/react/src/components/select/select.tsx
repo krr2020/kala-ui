@@ -1,7 +1,7 @@
 "use client";
 
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import { Check, ChevronDown, ChevronUp } from "../icons";
 import { useEffect, useRef } from "react";
 import type * as React from "react";
 import {
@@ -16,6 +16,7 @@ import {
 } from "../../config/select";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import type { IconComponent } from "../icons";
 import { useSlotStyles } from "../kala-provider";
 import { Skeleton } from "../skeleton";
 import type {
@@ -67,6 +68,7 @@ function SelectTrigger({
 	slotStyles: slotStylesRaw,
 	size = "md",
 	isLoading = false,
+	chevronIcon: Chevron = ChevronDown,
 	children,
 	...props
 }: SelectTriggerProps) {
@@ -155,7 +157,7 @@ function SelectTrigger({
 		>
 			{children}
 			<SelectPrimitive.Icon asChild>
-				<ChevronDown
+				<Chevron
 					className={chevron.className}
 					style={chevron.style}
 					aria-hidden="true"
@@ -167,8 +169,12 @@ function SelectTrigger({
 function SelectScrollUpButton({
 	ref,
 	className,
+	scrollUpIcon: ScrollUpIcon = ChevronUp,
 	...props
-}: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
+}: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton> & {
+	/** Scroll-up glyph — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	scrollUpIcon?: IconComponent;
+}) {
 	return (
 		<SelectPrimitive.ScrollUpButton
 			data-kala-component="select-scroll-up-button"
@@ -177,15 +183,19 @@ function SelectScrollUpButton({
 			className={cn(selectScrollButtonStyles.base, className)}
 			{...props}
 		>
-			<ChevronUp className="size-4" aria-hidden="true" />
+			<ScrollUpIcon className="size-4" aria-hidden="true" />
 		</SelectPrimitive.ScrollUpButton>
 	);
 }
 function SelectScrollDownButton({
 	ref,
 	className,
+	scrollDownIcon: ScrollDownIcon = ChevronDown,
 	...props
-}: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
+}: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton> & {
+	/** Scroll-down glyph — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	scrollDownIcon?: IconComponent;
+}) {
 	return (
 		<SelectPrimitive.ScrollDownButton
 			data-kala-component="select-scroll-down-button"
@@ -194,7 +204,7 @@ function SelectScrollDownButton({
 			className={cn(selectScrollButtonStyles.base, className)}
 			{...props}
 		>
-			<ChevronDown className="size-4" aria-hidden="true" />
+			<ScrollDownIcon className="size-4" aria-hidden="true" />
 		</SelectPrimitive.ScrollDownButton>
 	);
 }
@@ -269,6 +279,7 @@ function SelectItem({
 	className,
 	style,
 	slotStyles: slotStylesRaw,
+	checkIcon: CheckIcon = Check,
 	children,
 	...props
 }: SelectItemProps) {
@@ -292,7 +303,7 @@ function SelectItem({
 		>
 			<span className="absolute right-2 flex size-3.5 items-center justify-center">
 				<SelectPrimitive.ItemIndicator>
-					<Check
+					<CheckIcon
 						className={itemIndicator.className}
 						style={itemIndicator.style}
 						aria-hidden="true"

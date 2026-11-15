@@ -7,13 +7,19 @@
  * closed panels never reach the a11y tree.
  */
 
-import { ChevronDown } from "lucide-react-native";
 import type { ReactElement, ReactNode } from "react";
-import { Children, createContext, isValidElement, useContext, useState } from "react";
+import {
+	Children,
+	createContext,
+	isValidElement,
+	useContext,
+	useState,
+} from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Icon } from "../icon";
+import { ChevronDown } from "../icon/glyphs";
 import { applySlot } from "../slot-styles";
 import {
 	contentSurface,
@@ -66,8 +72,7 @@ function Root(props: AccordionProps): ReactElement {
 		slotStyles,
 		testID = "k-accordion",
 	} = props;
-	// the public type discriminates the payload by `type`; internally one
-	// call site widens the callback arg so both arms share it
+	// the public type discriminates the payload by `type`; internally one call site widens the callback arg so both arms share it
 	const notify = onValueChange as
 		| ((value: string | string[]) => void)
 		| undefined;
@@ -91,8 +96,7 @@ function Root(props: AccordionProps): ReactElement {
 		notify?.(type === "single" ? (next[0] ?? "") : next);
 	};
 
-	// slot derivation: last = no later valid element follows; recomputed
-	// every render so dynamic lists never keep stale dividers/margins
+	// slot derivation: last = no later valid element follows; recomputed every render so dynamic lists never keep stale dividers/margins
 	const total = Children.toArray(children).filter(isValidElement).length;
 	let seen = 0;
 	const indexed = Children.map(children, (child) => {
@@ -176,6 +180,7 @@ function TriggerLabel({
 function Trigger({
 	children,
 	accessibilityLabel,
+	chevronIcon: ChevronIcon = ChevronDown,
 	style,
 	slotStyles,
 	testID = "k-accordion-trigger",
@@ -226,7 +231,7 @@ function Trigger({
 				testID="k-accordion-chevron"
 				style={{ transform: [{ rotate: open ? "180deg" : "0deg" }] }}
 			>
-				<Icon icon={ChevronDown} size="sm" />
+				<Icon icon={ChevronIcon} size="sm" />
 			</View>
 		</Pressable>
 	);

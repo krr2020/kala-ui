@@ -8,7 +8,6 @@
  * clamp to a centered panel, `full` opts out of the clamp.
  */
 
-import { X } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useRef, useState } from "react";
 import {
@@ -21,6 +20,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useUnistyles } from "react-native-unistyles";
 import { useOverlayFocus } from "../../lib/use-overlay-focus.utils";
+import { X } from "../icon/glyphs";
 import { applySlot } from "../slot-styles";
 import {
 	cardStyle,
@@ -43,6 +43,7 @@ export function Dialog({
 	dismissable = true,
 	showCloseButton = true,
 	closeLabel = "Close dialog",
+	closeIcon: CloseIcon = X,
 	size = "md",
 	accessibilityLabel,
 	accessibilityRole,
@@ -62,8 +63,7 @@ export function Dialog({
 
 	const close = () => onOpenChangeRef.current(false);
 	const cardRef = useRef<View | null>(null);
-	// RN Modal tears its content down the moment visible flips false, so
-	// the exited edge is simply !open here
+	// RN Modal tears its content down the moment visible flips false, so the exited edge is simply !open here
 	useOverlayFocus(cardRef, open, !open, triggerRef);
 
 	const responders = dismissable
@@ -127,10 +127,7 @@ export function Dialog({
 					left: 0,
 					alignItems: "center",
 					justifyContent: "center",
-					// statusBarTranslucent draws under the bar — pad the wrapper
-					// to the safe-area top inset and clear the gesture nav bar at
-					// the bottom; tiered cards keep their 16 rail, full bleeds
-					// horizontally but still clears both bars
+					// statusBarTranslucent draws under the bar — pad the wrapper to the safe-area top inset and clear the gesture nav bar at the bottom; tiered cards keep their 16 rail, full bleeds horizontally but still clears both bars
 					padding: isFull ? 0 : 16,
 					paddingTop:
 						(isFull ? 0 : 16) + safeTopPadding(insets.top || undefined),
@@ -140,8 +137,7 @@ export function Dialog({
 				<View
 					testID={testID}
 					ref={cardRef}
-					// always one a11y container for the card — the screen reader
-					// lands here on open instead of re-scanning loose children
+					// always one a11y container for the card — the screen reader lands here on open instead of re-scanning loose children
 					accessible
 					accessibilityViewIsModal
 					accessibilityLabel={accessibilityLabel ?? "Dialog"}
@@ -159,7 +155,7 @@ export function Dialog({
 							onPress={close}
 							style={applySlot(closeStyle(), slotStyles?.close)}
 						>
-							<X size={20} color={theme.foreground} />
+							<CloseIcon size={20} color={theme.foreground} />
 						</Pressable>
 					) : null}
 				</View>

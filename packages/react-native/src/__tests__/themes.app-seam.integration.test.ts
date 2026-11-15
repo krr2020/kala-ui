@@ -1,7 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
-// Package-name import (not a relative path) — exercises the library's
-// package.json exports map exactly the way the playground app consumes it.
+// Package-name import (not a relative path) — exercises the library's package.json exports map exactly the way the playground app consumes it.
 import { themes } from "@kala-ui/react-native/themes";
 import { describe, expect, it } from "vitest";
 
@@ -59,8 +58,7 @@ describe("library → app registration seam", () => {
 	});
 
 	it("playground pins react AND react-dom inline at the SDK-57 version (never catalog:)", () => {
-		// The catalog carries react 19.3.0 for web; Expo SDK 57 tests 19.2.3.
-		// A split react/react-dom pair inside one app breaks the bundle.
+		// The catalog carries react 19.3.0 for web; Expo SDK 57 tests 19.2.3. A split react/react-dom pair inside one app breaks the bundle.
 		expect(playgroundPkg.dependencies.react).toBe("19.2.3");
 		expect(playgroundPkg.dependencies["react-dom"]).toBe("19.2.3");
 	});
@@ -94,8 +92,7 @@ describe("library → app registration seam", () => {
 	});
 
 	it("app components section consumes the library's component exports", () => {
-		// The playground is the living-docs consumer: if it stops importing the
-		// components through the root entry, the exports map regressed.
+		// The playground is the living-docs consumer: if it stops importing the components through the root entry, the exports map regressed.
 		const demosDir = resolve(PLAYGROUND_DIR, "src/demos");
 		const demosSource = readdirSync(demosDir, { recursive: true })
 			.map(String)

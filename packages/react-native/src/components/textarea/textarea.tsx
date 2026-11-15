@@ -4,10 +4,10 @@
  * hint (no auto-grow — growth is the consumer's layout concern).
  */
 import type { ReactElement } from "react";
+import { useState } from "react";
 import type { StyleProp, TextStyle } from "react-native";
 import { TextInput as RNTextInput, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { useState } from "react";
 import { Skeleton } from "../skeleton";
 import { applySlot } from "../slot-styles";
 import * as textareaStyle from "./textarea.styles";

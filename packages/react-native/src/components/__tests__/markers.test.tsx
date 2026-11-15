@@ -7,8 +7,8 @@
 import { act, fireEvent, render } from "@testing-library/react-native";
 import { Sun } from "lucide-react-native";
 import { View } from "react-native";
-import { motion, tokens } from "../../tokens";
 import { themes } from "../../themes";
+import { motion, tokens } from "../../tokens";
 import { Accordion } from "../accordion";
 import { Alert } from "../alert";
 import { AlertDialog } from "../alert-dialog";
@@ -74,11 +74,7 @@ const pkg = require("../../../package.json");
 const { readFileSync } = require("node:fs");
 const { resolve } = require("node:path");
 
-// TLB v14 queries are a11y-aware: deliberately-hidden elements (Icon without
-// a label) and siblings of an accessibilityViewIsModal container (the Sheet
-// overlay) are excluded by default — opt back in where the contract needs
-// the raw tree. Manual unmount() poisons TLB's registry for later renders
-// in the same file, so loops rerender one tree instead.
+// TLB v14 queries are a11y-aware: deliberately-hidden elements (Icon without a label) and siblings of an accessibilityViewIsModal container (the Sheet overlay) are excluded by default — opt back in where the contract needs the raw tree. Manual unmount() poisons TLB's registry for later renders in the same file, so loops rerender one tree instead.
 const inclHidden = { includeHiddenElements: true } as const;
 
 const flatStyle = (node: {
@@ -87,9 +83,7 @@ const flatStyle = (node: {
 	require("react-native").StyleSheet.flatten(node.props.style) ?? {};
 
 describe("unistyles harness contract", () => {
-	// Guards the jest.config moduleNameMapper: if resolution of the mock
-	// breaks again, this fails (or the suite fails to load) before any
-	// component contract produces a confusing 'Cannot find module'.
+	// Guards the jest.config moduleNameMapper: if resolution of the mock breaks again, this fails (or the suite fails to load) before any component contract produces a confusing 'Cannot find module'.
 	it("mock provides the API surface components import", () => {
 		const unistyles = require("react-native-unistyles");
 		expect(typeof unistyles.useUnistyles).toBe("function");
@@ -100,8 +94,7 @@ describe("unistyles harness contract", () => {
 });
 
 describe("component barrels", () => {
-	// Barrels re-export both the component and its named prop types; the
-	// typed fixtures below fail to compile if either drops off the barrel.
+	// Barrels re-export both the component and its named prop types; the typed fixtures below fail to compile if either drops off the barrel.
 	const buttonProps: import("../button").ButtonProps = { children: "x" };
 	const iconProps: import("../icon").IconProps = {
 		icon: Sun,
@@ -241,8 +234,7 @@ describe("component markers", () => {
 				);
 				const s = flatStyle(screen.getByTestId("k-button-root"));
 				const h = Number(s.minHeight);
-				// font-scale safe: minHeight grows with a11y font scales, a fixed
-				// height would clip — assert only minHeight is set for text sizes
+				// font-scale safe: minHeight grows with a11y font scales, a fixed height would clip — assert only minHeight is set for text sizes
 				if (size !== "icon") {
 					expect(s.height).toBeUndefined();
 					expect(h).toBe(expectedHeight[size]);
@@ -284,8 +276,7 @@ describe("component markers", () => {
 			expect(demo).toMatch(/variant=\{variant\}/);
 			expect(demo).toMatch(/color=\{color\}/);
 			expect(demo).toMatch(/size=\{size\}/);
-			// …while the visible labels are humanized title case and the
-			// variant list carries only the mobile-first set (no 'link').
+			// …while the visible labels are humanized title case and the variant list carries only the mobile-first set (no 'link').
 			expect(demo).toMatch(/\{humanizeLabel\(variant\)\}/);
 			expect(demo).toMatch(/\{humanizeLabel\(color\)\}/);
 			expect(demo).toMatch(/\{humanizeLabel\(size\)\}/);
@@ -305,8 +296,7 @@ describe("component markers", () => {
 			expect(demo).not.toMatch(/label="[a-z]/);
 			expect(demo).not.toMatch(/>[a-z][a-z ]+<\//);
 			expect(demo).toMatch(/Pressed \{count\} Times/);
-			// bottom inset: themed background under the nav bar + breathing
-			// room above it when scrolled to the end
+			// bottom inset: themed background under the nav bar + breathing room above it when scrolled to the end
 			const shell = readFileSync(
 				resolve(
 					__dirname,
@@ -343,8 +333,7 @@ describe("component markers", () => {
 			const screen = await render(<Icon icon={Sun} size="xs" />);
 			for (const size of sizes) {
 				await screen.rerender(<Icon icon={Sun} size={size} />);
-				// toJSON is the stable surface here: lucide maps `size` onto
-				// the rendered svg element as numeric width/height props
+				// toJSON is the stable surface here: lucide maps `size` onto the rendered svg element as numeric width/height props
 				const tree = screen.toJSON();
 				const svg = (
 					Array.isArray(tree?.children) ? tree.children[0] : undefined
@@ -608,9 +597,7 @@ describe("component markers", () => {
 	});
 
 	describe("Badge, Avatar, Checkbox, Switch", () => {
-		// (bg, wrapped-text fg, border) — the fg lives on the child text, so
-		// read it there or every solid/subtle arm collapses to a 2-tuple and
-		// same-bg arms (muted solid borrows accent = muted bg) collide
+		// (bg, wrapped-text fg, border) — the fg lives on the child text, so read it there or every solid/subtle arm collapses to a 2-tuple and same-bg arms (muted solid borrows accent = muted bg) collide
 		const badgeSig = (node: {
 			props?: { style?: unknown };
 			children?: unknown[];
@@ -767,9 +754,7 @@ describe("component markers", () => {
 				.spyOn(unistyles, "useUnistyles")
 				.mockReturnValue({ theme: themes.dark });
 			try {
-				// a silently-bound import would leave the light theme active and
-				// fail below — light.success != dark.success, so this arm can never
-				// pass against the wrong theme
+				// a silently-bound import would leave the light theme active and fail below — light.success != dark.success, so this arm can never pass against the wrong theme
 				const screen = await render(<Avatar name="A" status="online" />);
 				const dot = flatStyle(screen.getByTestId("k-avatar-status"));
 				expect(String(dot.backgroundColor)).toBe(themes.dark.success);
@@ -789,8 +774,7 @@ describe("component markers", () => {
 				await screen.rerender(
 					<Avatar name="A" shape={shape} status="online" />,
 				);
-				// the rounded clip lives on the media layer, never the root —
-				// a root-level clip shears off the corner status dot
+				// the rounded clip lives on the media layer, never the root — a root-level clip shears off the corner status dot
 				const root = flatStyle(screen.getByTestId("k-avatar"));
 				expect(root.overflow).not.toBe("hidden");
 				const dot = flatStyle(screen.getByTestId("k-avatar-status"));
@@ -983,9 +967,7 @@ describe("component markers", () => {
 		});
 	});
 
-	// Label/Separator/Spinner/Progress sits LAST in file order on purpose:
-	// its spinner test manually unmounts, which poisons TLB's registry for
-	// later renders in the same file.
+	// Label/Separator/Spinner/Progress sits LAST in file order on purpose: its spinner test manually unmounts, which poisons TLB's registry for later renders in the same file.
 	describe("Tabs, SegmentedControl, Tag", () => {
 		const TAB_ITEMS = [
 			{ value: "one", label: "One" },
@@ -1043,9 +1025,9 @@ describe("component markers", () => {
 			expect(tabs[0].props.accessibilityState?.selected).toBe(false);
 			expect(tabs[1].props.accessibilityState?.selected).toBe(true);
 			// line variant: selection reads as the primary underline, not a fill
-			expect(
-				screen.getAllByTestId("k-tab-indicator", inclHidden).length,
-			).toBe(1);
+			expect(screen.getAllByTestId("k-tab-indicator", inclHidden).length).toBe(
+				1,
+			);
 		});
 
 		it("Tabs controlled lock: value beats defaultValue and presses never override it", async () => {
@@ -1102,25 +1084,25 @@ describe("component markers", () => {
 			const s = flatStyle(indicators[0]);
 			expect(Number(s.borderBottomWidth)).toBe(2);
 			expect(s.borderBottomColor).toBe(themes.light.primary);
-			});
+		});
 
-	it("Tabs pill variant: rounded track, primary-filled selected trigger", async () => {
-		const screen = await render(
-			<Tabs variant="pill" defaultValue="one" items={TAB_ITEMS}>
-				one body
-			</Tabs>,
-		);
-		expect(
-			screen.queryAllByTestId("k-tab-indicator", inclHidden).length,
-		).toBe(0);
-		const track = flatStyle(screen.getByTestId("k-tab-list"));
-		expect(Number(track.borderRadius)).toBe(999);
-		expect(Number(track.padding)).toBe(4);
-		expect(track.backgroundColor).toBe(themes.light.muted);
-		const [one, two] = screen.getAllByTestId("k-tab");
-		expect(flatStyle(one).backgroundColor).toBe(themes.light.primary);
-		expect(Number(flatStyle(one).borderRadius)).toBe(999);
-		expect(flatStyle(two).backgroundColor).toBeUndefined();
+		it("Tabs pill variant: rounded track, primary-filled selected trigger", async () => {
+			const screen = await render(
+				<Tabs variant="pill" defaultValue="one" items={TAB_ITEMS}>
+					one body
+				</Tabs>,
+			);
+			expect(
+				screen.queryAllByTestId("k-tab-indicator", inclHidden).length,
+			).toBe(0);
+			const track = flatStyle(screen.getByTestId("k-tab-list"));
+			expect(Number(track.borderRadius)).toBe(999);
+			expect(Number(track.padding)).toBe(4);
+			expect(track.backgroundColor).toBe(themes.light.muted);
+			const [one, two] = screen.getAllByTestId("k-tab");
+			expect(flatStyle(one).backgroundColor).toBe(themes.light.primary);
+			expect(Number(flatStyle(one).borderRadius)).toBe(999);
+			expect(flatStyle(two).backgroundColor).toBeUndefined();
 		});
 
 		it("Tabs divider stays a border rail while SegmentedControl keeps its muted fill", async () => {
@@ -1151,14 +1133,19 @@ describe("component markers", () => {
 			expect(track.borderLeftColor).toBe(themes.light.border);
 			const [one] = screen.getAllByTestId("k-tab");
 			expect(flatStyle(one).backgroundColor).toBe(themes.light.muted);
-			const s = flatStyle(screen.getAllByTestId("k-tab-indicator", inclHidden)[0]);
+			const s = flatStyle(
+				screen.getAllByTestId("k-tab-indicator", inclHidden)[0],
+			);
 			expect(Number(s.borderLeftWidth)).toBe(2);
 			expect(s.borderLeftColor).toBe(themes.light.primary);
 			expect(s.borderBottomWidth).toBeUndefined();
-			});
+		});
 
 		it("Tabs disabled styling: idle disabled dims; a locked selection keeps its indicator", async () => {
-			const items = [...TAB_ITEMS, { value: "x", label: "Off", disabled: true }];
+			const items = [
+				...TAB_ITEMS,
+				{ value: "x", label: "Off", disabled: true },
+			];
 			const screen = await render(
 				<Tabs value="one" items={items}>
 					one body
@@ -1168,117 +1155,116 @@ describe("component markers", () => {
 			expect(Number(flatStyle(off).opacity)).toBe(0.5);
 			expect(flatStyle(one).opacity).toBeUndefined();
 			expect(flatStyle(two).opacity).toBeUndefined();
-			expect(
-				screen.getAllByTestId("k-tab-indicator", inclHidden).length,
-			).toBe(1);
+			expect(screen.getAllByTestId("k-tab-indicator", inclHidden).length).toBe(
+				1,
+			);
 
 			const locked = await render(
 				<Tabs value="x" items={items}>
 					x body
 				</Tabs>,
 			);
-			// selected-but-disabled: the panel pairing is the caller's state, the
-			// indicator still marks which panel is showing
-			expect(
-				locked.getAllByTestId("k-tab-indicator", inclHidden).length,
-			).toBe(1);
+			// selected-but-disabled: the panel pairing is the caller's state, the indicator still marks which panel is showing
+			expect(locked.getAllByTestId("k-tab-indicator", inclHidden).length).toBe(
+				1,
+			);
 		});
 
 		it("Tabs unknown variant falls back to the pure line output — no hybrid", async () => {
 			const screen = await render(
-				<Tabs
-					variant={"nope" as "line"}
-					defaultValue="one"
-					items={TAB_ITEMS}
-				>
+				<Tabs variant={"nope" as "line"} defaultValue="one" items={TAB_ITEMS}>
 					one body
 				</Tabs>,
 			);
 			const [one] = screen.getAllByTestId("k-tab");
 			expect(flatStyle(one).backgroundColor).toBe(themes.light.muted);
+			expect(screen.getAllByTestId("k-tab-indicator", inclHidden).length).toBe(
+				1,
+			);
+		});
+
+		it("Tabs badges and indicator dots render through Badge and Indicator", async () => {
+			const items = [
+				{ value: "one", label: "One", badge: 3, indicator: true },
+				{ value: "x", label: "Off", disabled: true, indicator: true },
+			];
+			const screen = await render(
+				<Tabs value="one" items={items}>
+					one body
+				</Tabs>,
+			);
+			const badge = screen.getByTestId("k-tab-badge");
+			expect(screen.getByText("3")).toBeTruthy();
+			// subtle + muted Badge look on a plain tab surface
+			const bs = flatStyle(badge);
+			expect(bs.backgroundColor).toBe(themes.light.muted);
 			expect(
-				screen.getAllByTestId("k-tab-indicator", inclHidden).length,
-			).toBe(1);
-			});
+				Number(flatStyle(screen.getAllByTestId("k-tab")[0]).minHeight),
+			).toBe(44);
+			// badge count rides the tab's a11y name
+			expect(screen.getByRole("tab", { name: "One 3" })).toBeTruthy();
+			// the chip sits right of the label, vertically centered — the alignSelf override is what neutralizes Badge's flex-start default
+			expect(bs.alignSelf).toBe("center");
+			expect(Number(bs.maxWidth)).toBe(72);
 
-			it("Tabs badges and indicator dots render through Badge and Indicator", async () => {
-				const items = [
-					{ value: "one", label: "One", badge: 3, indicator: true },
-					{ value: "x", label: "Off", disabled: true, indicator: true },
-				];
-				const screen = await render(
-					<Tabs value="one" items={items}>
-						one body
-					</Tabs>,
-				);
-				const badge = screen.getByTestId("k-tab-badge");
-				expect(screen.getByText("3")).toBeTruthy();
-				// subtle + muted Badge look on a plain tab surface
-				const bs = flatStyle(badge);
-				expect(bs.backgroundColor).toBe(themes.light.muted);
-				expect(
-					Number(flatStyle(screen.getAllByTestId("k-tab")[0]).minHeight),
-				).toBe(44);
-				// badge count rides the tab's a11y name
-				expect(screen.getByRole("tab", { name: "One 3" })).toBeTruthy();
-				// the chip sits right of the label, vertically centered — the
-				// alignSelf override is what neutralizes Badge's flex-start default
-				expect(bs.alignSelf).toBe("center");
-				expect(Number(bs.maxWidth)).toBe(72);
-
-				// the dot is an absolute overlay pinned to the tab's top-right
-				// corner — a flex wrapper would zero the row's intrinsic width
-				const wrap = flatStyle(screen.getAllByTestId("k-indicator", inclHidden)[0]);
-				expect(wrap.position).toBe("absolute");
-				expect(Number(wrap.top)).toBe(6);
-				expect(Number(wrap.right)).toBe(6);
-				expect(Number(wrap.width)).toBe(0);
-				expect(Number(wrap.height)).toBe(0);
-				// the content row carries no flex key
-				const row = flatStyle(screen.getAllByTestId("k-tab-row", inclHidden)[0]);
-				expect(row.flex).toBeUndefined();
-				// overlay must not swallow presses
-				const onValueChange = jest.fn();
-				const pressScreen = await render(
-					<Tabs
-						items={[
-							{ value: "a", label: "A", indicator: true },
-							{ value: "b", label: "B" },
-						]}
-						onValueChange={onValueChange}
+			// the dot is an absolute overlay pinned to the tab's top-right corner — a flex wrapper would zero the row's intrinsic width
+			const wrap = flatStyle(
+				screen.getAllByTestId("k-indicator", inclHidden)[0],
+			);
+			expect(wrap.position).toBe("absolute");
+			expect(Number(wrap.top)).toBe(6);
+			expect(Number(wrap.right)).toBe(6);
+			expect(Number(wrap.width)).toBe(0);
+			expect(Number(wrap.height)).toBe(0);
+			// the content row carries no flex key
+			const row = flatStyle(screen.getAllByTestId("k-tab-row", inclHidden)[0]);
+			expect(row.flex).toBeUndefined();
+			// overlay must not swallow presses
+			const onValueChange = jest.fn();
+			const pressScreen = await render(
+				<Tabs
+					items={[
+						{ value: "a", label: "A", indicator: true },
+						{ value: "b", label: "B" },
+					]}
+					onValueChange={onValueChange}
 				>
-						x
-					</Tabs>,
-				);
-				await fireEvent.press(pressScreen.getAllByTestId("k-tab")[0]);
-				expect(onValueChange).toHaveBeenCalledWith("a");
+					x
+				</Tabs>,
+			);
+			await fireEvent.press(pressScreen.getAllByTestId("k-tab")[0]);
+			expect(onValueChange).toHaveBeenCalledWith("a");
 
-				// Indicator owns the dot: its k-indicator-dot marker + theme color
-				const dots = screen.getAllByTestId("k-indicator-dot", inclHidden);
-				expect(dots.length).toBe(2);
-				expect(flatStyle(dots[0]).backgroundColor).toBe(themes.light.primary);
+			// Indicator owns the dot: its k-indicator-dot marker + theme color
+			const dots = screen.getAllByTestId("k-indicator-dot", inclHidden);
+			expect(dots.length).toBe(2);
+			expect(flatStyle(dots[0]).backgroundColor).toBe(themes.light.primary);
 
-				const pillScreen = await render(
-					<Tabs variant="pill" value="one" items={items}>
-						one body
-					</Tabs>,
-				);
-				// solid + secondary Badge look + secondary dot read on the primary fill
-				const pillBadge = flatStyle(pillScreen.getByTestId("k-tab-badge"));
-				expect(pillBadge.backgroundColor).toBe(themes.light.secondary);
-				expect(pillBadge.alignSelf).toBe("center");
-				expect(
-					flatStyle(pillScreen.getAllByTestId("k-indicator-dot", inclHidden)[0])
-						.backgroundColor,
-				).toBe(themes.light.secondary);
-			});
+			const pillScreen = await render(
+				<Tabs variant="pill" value="one" items={items}>
+					one body
+				</Tabs>,
+			);
+			// solid + secondary Badge look + secondary dot read on the primary fill
+			const pillBadge = flatStyle(pillScreen.getByTestId("k-tab-badge"));
+			expect(pillBadge.backgroundColor).toBe(themes.light.secondary);
+			expect(pillBadge.alignSelf).toBe("center");
+			expect(
+				flatStyle(pillScreen.getAllByTestId("k-indicator-dot", inclHidden)[0])
+					.backgroundColor,
+			).toBe(themes.light.secondary);
+		});
 
 		it("Tabs long badge ellipsizes without breaking the 44dp floor", async () => {
 			const screen = await render(
 				<Tabs
 					value="one"
 					items={[
-						{ value: "one", label: "One", badge: "999+ unread messages waiting" },
+						{
+							value: "one",
+							label: "One",
+							badge: "999+ unread messages waiting",
+						},
 					]}
 				>
 					one body
@@ -1290,151 +1276,153 @@ describe("component markers", () => {
 				props: { numberOfLines?: number };
 			};
 			expect(badgeText.props.numberOfLines).toBe(1);
-				expect(
-					Number(flatStyle(screen.getAllByTestId("k-tab")[0]).minHeight),
-				).toBeGreaterThanOrEqual(44);
+			expect(
+				Number(flatStyle(screen.getAllByTestId("k-tab")[0]).minHeight),
+			).toBeGreaterThanOrEqual(44);
 
-				// numberOfLines is textual-only: a non-text Badge child passes through
-				// untouched (the prop is never injected into arbitrary ReactNodes)
-				const plain = await render(
-					<Badge numberOfLines={1} testID="k-badge-nl">
-						<View testID="k-badge-nl-child" />
-					</Badge>,
-				);
-				const plainChild = plain.getByTestId("k-badge-nl").children[0] as {
-					props: { numberOfLines?: number };
-				};
-				expect(plainChild.props.numberOfLines).toBeUndefined();
-			});
+			// numberOfLines is textual-only: a non-text Badge child passes through untouched (the prop is never injected into arbitrary ReactNodes)
+			const plain = await render(
+				<Badge numberOfLines={1} testID="k-badge-nl">
+					<View testID="k-badge-nl-child" />
+				</Badge>,
+			);
+			const plainChild = plain.getByTestId("k-badge-nl").children[0] as {
+				props: { numberOfLines?: number };
+			};
+			expect(plainChild.props.numberOfLines).toBeUndefined();
+		});
 
-			it("Tabs icons render through Icon with selection-aware colors", async () => {
-				const items = [
-					{ value: "one", label: "One", icon: Sun },
-					{ value: "two", label: "Two", icon: Sun },
-				];
-				const screen = await render(
-					<Tabs value="one" items={items}>
-						one body
-					</Tabs>,
-				);
-				const icons = screen.getAllByTestId("k-icon", inclHidden);
-				expect(icons.length).toBe(2);
-				// lucide carries the tint on its svg stroke — collect strokes from
-				// the JSON tree (component instances don't survive toJSON)
-				const svgColors: string[] = [];
-				const walk = (node: unknown): void => {
-					if (Array.isArray(node)) {
-						node.forEach(walk);
-						return;
+		it("Tabs icons render through Icon with selection-aware colors", async () => {
+			const items = [
+				{ value: "one", label: "One", icon: Sun },
+				{ value: "two", label: "Two", icon: Sun },
+			];
+			const screen = await render(
+				<Tabs value="one" items={items}>
+					one body
+				</Tabs>,
+			);
+			const icons = screen.getAllByTestId("k-icon", inclHidden);
+			expect(icons.length).toBe(2);
+			// lucide carries the tint on its svg stroke — collect strokes from the JSON tree (component instances don't survive toJSON)
+			const svgColors: string[] = [];
+			const walk = (node: unknown): void => {
+				if (Array.isArray(node)) {
+					node.forEach(walk);
+					return;
+				}
+				if (node && typeof node === "object") {
+					const props = (node as { props?: Record<string, unknown> }).props;
+					if (
+						props &&
+						typeof props.stroke === "string" &&
+						props.stroke.startsWith("#")
+					) {
+						svgColors.push(props.stroke);
 					}
-					if (node && typeof node === "object") {
-						const props = (node as { props?: Record<string, unknown> }).props;
-						if (
-							props &&
-							typeof props.stroke === "string" &&
-							props.stroke.startsWith("#")
-						) {
-							svgColors.push(props.stroke);
-						}
-						const children = (node as { children?: unknown[] }).children;
-						if (children) walk(children);
+					const children = (node as { children?: unknown[] }).children;
+					if (children) walk(children);
+				}
+			};
+			walk(screen.toJSON());
+			expect(svgColors[0]).toBe(themes.light.foreground);
+			expect(svgColors[1]).toBe(themes.light.mutedForeground);
+
+			const pillScreen = await render(
+				<Tabs variant="pill" value="one" items={items}>
+					one body
+				</Tabs>,
+			);
+			const pillColors: string[] = [];
+			const walkPill = (node: unknown): void => {
+				if (Array.isArray(node)) {
+					node.forEach(walkPill);
+					return;
+				}
+				if (node && typeof node === "object") {
+					const props = (node as { props?: Record<string, unknown> }).props;
+					if (
+						props &&
+						typeof props.stroke === "string" &&
+						props.stroke.startsWith("#")
+					) {
+						pillColors.push(props.stroke);
 					}
-				};
-				walk(screen.toJSON());
-				expect(svgColors[0]).toBe(themes.light.foreground);
-				expect(svgColors[1]).toBe(themes.light.mutedForeground);
+					const children = (node as { children?: unknown[] }).children;
+					if (children) walkPill(children);
+				}
+			};
+			walkPill(pillScreen.toJSON());
+			expect(pillColors[0]).toBe(themes.light.primaryForeground);
 
-				const pillScreen = await render(
-					<Tabs variant="pill" value="one" items={items}>
-						one body
-					</Tabs>,
-				);
-				const pillColors: string[] = [];
-				const walkPill = (node: unknown): void => {
-					if (Array.isArray(node)) {
-						node.forEach(walkPill);
-						return;
-					}
-					if (node && typeof node === "object") {
-						const props = (node as { props?: Record<string, unknown> }).props;
-						if (
-							props &&
-							typeof props.stroke === "string" &&
-							props.stroke.startsWith("#")
-						) {
-							pillColors.push(props.stroke);
-						}
-						const children = (node as { children?: unknown[] }).children;
-						if (children) walkPill(children);
-					}
-				};
-				walkPill(pillScreen.toJSON());
-				expect(pillColors[0]).toBe(themes.light.primaryForeground);
+			// asymmetric arms: icon+label+badge keeps the chip centered and the wrapper still fills the tab when the row carries an icon
+			const mixed = await render(
+				<Tabs
+					value="one"
+					items={[
+						{
+							value: "one",
+							label: "One",
+							icon: Sun,
+							badge: 7,
+							indicator: true,
+						},
+					]}
+				>
+					one body
+				</Tabs>,
+			);
+			const mixedBadge = flatStyle(mixed.getByTestId("k-tab-badge"));
+			expect(mixedBadge.alignSelf).toBe("center");
+			expect(Number(mixedBadge.maxWidth)).toBe(72);
+			const mixedWrap = flatStyle(
+				mixed.getAllByTestId("k-indicator", inclHidden)[0],
+			);
+			expect(mixedWrap.position).toBe("absolute");
+			expect(Number(mixedWrap.top)).toBe(6);
+			expect(Number(mixedWrap.right)).toBe(6);
+		});
 
-				// asymmetric arms: icon+label+badge keeps the chip centered and the
-				// wrapper still fills the tab when the row carries an icon
-				const mixed = await render(
-					<Tabs
-						value="one"
-						items={[
-							{ value: "one", label: "One", icon: Sun, badge: 7, indicator: true },
-						]}
-					>
-						one body
-					</Tabs>,
-				);
-				const mixedBadge = flatStyle(mixed.getByTestId("k-tab-badge"));
-				expect(mixedBadge.alignSelf).toBe("center");
-				expect(Number(mixedBadge.maxWidth)).toBe(72);
-				const mixedWrap = flatStyle(mixed.getAllByTestId("k-indicator", inclHidden)[0]);
-				expect(mixedWrap.position).toBe("absolute");
-				expect(Number(mixedWrap.top)).toBe(6);
-				expect(Number(mixedWrap.right)).toBe(6);
-			});
+		it("Tabs long labels wrap at most two lines and keep the 44dp floor", async () => {
+			const LONG = "Territory management for the western region sales pod";
+			const screen = await render(
+				<Tabs
+					items={[
+						{ value: "one", label: LONG },
+						{ value: "two", label: "Two" },
+					]}
+				>
+					one body
+				</Tabs>,
+			);
+			const label = screen.getByText(LONG) as unknown as {
+				props: { numberOfLines?: number; ellipsizeMode?: string };
+			};
+			expect(label.props.numberOfLines).toBe(2);
+			expect(label.props.ellipsizeMode).toBe("tail");
+			expect(
+				Number(flatStyle(screen.getAllByTestId("k-tab")[0]).minHeight),
+			).toBe(44);
 
-			it("Tabs long labels wrap at most two lines and keep the 44dp floor", async () => {
-				const LONG = "Territory management for the western region sales pod";
-				const screen = await render(
-					<Tabs
-						items={[
-							{ value: "one", label: LONG },
-							{ value: "two", label: "Two" },
-						]}
-					>
-						one body
-					</Tabs>,
-				);
-				const label = screen.getByText(LONG) as unknown as {
-					props: { numberOfLines?: number; ellipsizeMode?: string };
-				};
-				expect(label.props.numberOfLines).toBe(2);
-				expect(label.props.ellipsizeMode).toBe("tail");
-				expect(
-					Number(flatStyle(screen.getAllByTestId("k-tab")[0]).minHeight),
-				).toBe(44);
-
-				// dot-vs-label geometry on a dot-carrying 2-line tab: the overlay
-				// spans top 6..14 (6 + 8dp dot); the row centers its content, so
-				// glyphs live at/below the row's vertical center — half the 44dp
-				// floor (22) — keeping the dot clear of the second text line
-				const dotScreen = await render(
-					<Tabs
-						items={[
-							{ value: "one", label: LONG, indicator: true },
-							{ value: "two", label: "Two" },
-						]}
-					>
-						one body
-					</Tabs>,
-				);
-				const overlay = flatStyle(
-					dotScreen.getAllByTestId("k-indicator", inclHidden)[0],
-				);
-				expect(Number(overlay.top)).toBe(6);
-				expect(Number(overlay.width)).toBe(0);
-				expect(Number(overlay.height)).toBe(0);
-				expect(Number(overlay.top) + 8).toBeLessThan(44 / 2);
-				});
+			// dot-vs-label geometry on a dot-carrying 2-line tab: the overlay spans top 6..14 (6 + 8dp dot); the row centers its content, so glyphs live at/below the row's vertical center — half the 44dp floor (22) — keeping the dot clear of the second text line
+			const dotScreen = await render(
+				<Tabs
+					items={[
+						{ value: "one", label: LONG, indicator: true },
+						{ value: "two", label: "Two" },
+					]}
+				>
+					one body
+				</Tabs>,
+			);
+			const overlay = flatStyle(
+				dotScreen.getAllByTestId("k-indicator", inclHidden)[0],
+			);
+			expect(Number(overlay.top)).toBe(6);
+			expect(Number(overlay.width)).toBe(0);
+			expect(Number(overlay.height)).toBe(0);
+			expect(Number(overlay.top) + 8).toBeLessThan(44 / 2);
+		});
 
 		it("Tabs slotStyles.tab wins in both variants (slot-last precedence)", async () => {
 			const lineScreen = await render(
@@ -1447,7 +1435,9 @@ describe("component markers", () => {
 				</Tabs>,
 			);
 			expect(
-				Number(flatStyle(lineScreen.getAllByTestId("k-tab")[0]).paddingHorizontal),
+				Number(
+					flatStyle(lineScreen.getAllByTestId("k-tab")[0]).paddingHorizontal,
+				),
 			).toBe(99);
 
 			const pillScreen = await render(
@@ -1476,8 +1466,7 @@ describe("component markers", () => {
 			);
 			let segs = screen.getAllByTestId("k-segment");
 			expect(segs[0].props.accessibilityState?.checked).toBe(true);
-			// 44dp floor = visual height + vertical-only hitSlop (never
-			// sideways, so adjacent segments cannot steal each other's taps)
+			// 44dp floor = visual height + vertical-only hitSlop (never sideways, so adjacent segments cannot steal each other's taps)
 			const hit = segs[0].props.hitSlop as
 				| { top?: number; bottom?: number }
 				| undefined;
@@ -1542,7 +1531,7 @@ describe("component markers", () => {
 			expect(disabled.props.accessibilityState?.disabled).toBe(true);
 		});
 
-	it("every Tag variant×color arm produces a distinct style triple", async () => {
+		it("every Tag variant×color arm produces a distinct style triple", async () => {
 			const variants = ["solid", "outline", "subtle"] as const;
 			const colors = [
 				"primary",
@@ -1660,7 +1649,9 @@ describe("component markers", () => {
 			);
 			expect(String(rect.backgroundColor).startsWith("#")).toBe(true);
 			// animation off still renders the block, just without the loop
-			expect(flatStyle(screen.getByTestId("k-skeleton", inclHidden)).opacity).toBe(1);
+			expect(
+				flatStyle(screen.getByTestId("k-skeleton", inclHidden)).opacity,
+			).toBe(1);
 		});
 
 		it("Skeleton pulse loop starts once per mount and stops when disabled", async () => {
@@ -2013,9 +2004,7 @@ describe("component markers", () => {
 	});
 
 	describe("Slider", () => {
-		// the responder polyfill under TLB leaves a grant lock that poisons
-		// every later render in this file, so tests drive the handlers via
-		// props directly (wiring is asserted once below)
+		// the responder polyfill under TLB leaves a grant lock that poisons every later render in this file, so tests drive the handlers via props directly (wiring is asserted once below)
 		type Screen = Awaited<ReturnType<typeof render>>;
 		type Track = ReturnType<Screen["getAllByTestId"]>[number];
 
@@ -2213,9 +2202,7 @@ describe("component markers", () => {
 			expect(root.opacity).toBeUndefined();
 			const range = flatStyle(screen.getByTestId("k-slider-range", inclHidden));
 			expect(range.backgroundColor).toBe(themes.light.mutedForeground);
-			const thumb = flatStyle(
-				screen.getByTestId("k-slider-thumb", inclHidden),
-			);
+			const thumb = flatStyle(screen.getByTestId("k-slider-thumb", inclHidden));
 			expect(thumb.borderColor).toBe(themes.light.mutedForeground);
 		});
 
@@ -2231,8 +2218,7 @@ describe("component markers", () => {
 	describe("Dialog, AlertDialog", () => {
 		type Screen = Awaited<ReturnType<typeof render>>;
 
-		// hardware back: RN Modal forwards onRequestClose onto its host view,
-		// which no TLB query reaches — walk the serialized tree for it
+		// hardware back: RN Modal forwards onRequestClose onto its host view, which no TLB query reaches — walk the serialized tree for it
 		type JsonNode = {
 			props?: Record<string, unknown>;
 			children?: (JsonNode | string)[];
@@ -2301,9 +2287,7 @@ describe("component markers", () => {
 			expect(screen.queryByTestId("k-dialog", inclHidden)).toBeNull();
 		});
 
-		// fireEvent's responder polyfill leaves the same grant lock the
-		// Slider block hit — press through the host's onClick instead
-		// (Pressable consumes onPress; the wired click survives on the host)
+		// fireEvent's responder polyfill leaves the same grant lock the Slider block hit — press through the host's onClick instead (Pressable consumes onPress; the wired click survives on the host)
 		const tap = async (el: { props: { onClick?: (e: unknown) => void } }) => {
 			await act(async () => {
 				el.props.onClick?.({ nativeEvent: {} });
@@ -2768,30 +2752,30 @@ describe("component markers", () => {
 			expect(screen.getByTestId("k-avatar-group-overflow")).toBeTruthy();
 		});
 
-	it("RingProgress renders root and label markers", async () => {
-		const screen = await render(<RingProgress value={40} label="40%" />);
-		expect(screen.getByTestId("k-ring-progress")).toBeTruthy();
-		expect(screen.getByTestId("k-ring-progress-label")).toBeTruthy();
-	});
-});
-
-describe("InputOtp", () => {
-	it("InputOtp renders root, slot, field and separator markers", async () => {
-		const screen = await render(
-			<InputOtp maxLength={4}>
-				<InputOtpSlot index={0} />
-				<InputOtpSeparator />
-				<InputOtpSlot index={1} />
-				<InputOtpSlot index={2} />
-				<InputOtpSlot index={3} />
-			</InputOtp>,
-		);
-		expect(screen.getByTestId("k-input-otp")).toBeTruthy();
-		expect(screen.getAllByTestId("k-input-otp-slot")).toHaveLength(4);
-		expect(screen.getByTestId("k-input-otp-separator")).toBeTruthy();
-		expect(screen.getByTestId("k-input-otp-field")).toBeTruthy();
+		it("RingProgress renders root and label markers", async () => {
+			const screen = await render(<RingProgress value={40} label="40%" />);
+			expect(screen.getByTestId("k-ring-progress")).toBeTruthy();
+			expect(screen.getByTestId("k-ring-progress-label")).toBeTruthy();
 		});
-});
+	});
+
+	describe("InputOtp", () => {
+		it("InputOtp renders root, slot, field and separator markers", async () => {
+			const screen = await render(
+				<InputOtp maxLength={4}>
+					<InputOtpSlot index={0} />
+					<InputOtpSeparator />
+					<InputOtpSlot index={1} />
+					<InputOtpSlot index={2} />
+					<InputOtpSlot index={3} />
+				</InputOtp>,
+			);
+			expect(screen.getByTestId("k-input-otp")).toBeTruthy();
+			expect(screen.getAllByTestId("k-input-otp-slot")).toHaveLength(4);
+			expect(screen.getByTestId("k-input-otp-separator")).toBeTruthy();
+			expect(screen.getByTestId("k-input-otp-field")).toBeTruthy();
+		});
+	});
 
 	describe("DropdownMenu, ContextMenu", () => {
 		it("DropdownMenu exposes trigger and sheet row markers", async () => {
@@ -2841,7 +2825,7 @@ describe("InputOtp", () => {
 		});
 	});
 
-describe("MultiSelect, Combobox", () => {
+	describe("MultiSelect, Combobox", () => {
 		it("MultiSelect exposes trigger, chips and sheet row markers", async () => {
 			const screen = await render(
 				<MultiSelect
@@ -2927,8 +2911,7 @@ describe("MultiSelect, Combobox", () => {
 			expect(screen.getAllByText(" *").length).toBe(1);
 			const star = screen.getByText(" *");
 			const { themes } = require("../../themes");
-			// the marker is the destructive theme color, distinct from the
-			// label's own foreground color
+			// the marker is the destructive theme color, distinct from the label's own foreground color
 			expect(flatStyle(star).color).toBe(themes.light.destructive);
 			expect(flatStyle(star).color).not.toBe(themes.light.foreground);
 			await screen.rerender(<Label>notes</Label>);
@@ -3088,16 +3071,13 @@ describe("MultiSelect, Combobox", () => {
 			});
 		});
 
-		// last on purpose: manual unmount() poisons TLB's registry for later
-		// renders in the same file (see header note)
+		// last on purpose: manual unmount() poisons TLB's registry for later renders in the same file (see header note)
 		it("Spinner loop starts once per mount and stops on unmount", async () => {
 			const { act } = require("react");
 			const AnimatedRN = require("react-native").Animated;
 			const origLoop = AnimatedRN.loop;
 			const stops: Array<ReturnType<typeof jest.fn>> = [];
-			// wrap in a proxy animation instead of reassigning loop.stop — the
-			// composite animation instance resists property writes under the
-			// RN 0.86 jest shim
+			// wrap in a proxy animation instead of reassigning loop.stop — the composite animation instance resists property writes under the RN 0.86 jest shim
 			AnimatedRN.loop = ((...args: unknown[]) => {
 				const loop = origLoop(...(args as []));
 				const stop = jest.fn(((...a: unknown[]) =>

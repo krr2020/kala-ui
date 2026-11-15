@@ -14,7 +14,7 @@ const CORNERS: Record<
 	"top-left": { top: true, left: true },
 	"top-right": { top: true },
 	"bottom-left": { left: true },
-	"bottom-right": {}
+	"bottom-right": {},
 };
 
 /**
@@ -35,8 +35,7 @@ export function anchorStyle(
 ) {
 	const half = size / 2;
 	const inset = overlap === "circular" ? half + 2 : 0;
-	const corner =
-		CORNERS[`${anchorOrigin.vertical}-${anchorOrigin.horizontal}`];
+	const corner = CORNERS[`${anchorOrigin.vertical}-${anchorOrigin.horizontal}`];
 	const [dx, dy] = offset;
 	const style: Record<string, number> = {};
 	if (corner.top) style.top = -half + inset + dy;

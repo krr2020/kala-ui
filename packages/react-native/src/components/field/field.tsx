@@ -33,29 +33,24 @@ export function Field({
 	const errorText = uniqueErrors.join(", ");
 	const invalid = hasError || uniqueErrors.length > 0;
 
-	// Children.toArray flattens single-element arrays ({[<Input/>]}) that
-	// Children.count + isValidElement miss.
+	// Children.toArray flattens single-element arrays ({[<Input/>]}) that Children.count + isValidElement miss.
 	const [first, ...rest] = Children.toArray(children);
 	const onlyChild =
 		rest.length === 0 && isValidElement(first)
 			? (first as ReactElement<Record<string, unknown>>)
 			: null;
-		const control =
-			onlyChild === null
-				? children
-				: cloneElement(onlyChild, {
-						// the control's own label always wins; otherwise merge the
-						// field's copy (real error text — never a synthetic word)
-						accessibilityLabel:
-							(onlyChild.props.accessibilityLabel as string | undefined) ??
-							[label, description, errorText || null]
-								.filter(Boolean)
-								.join(", "),
-						// invalid state tints the control when it understands hasError;
-						// an explicit control-side value is never overridden
-						hasError:
-							(onlyChild.props.hasError as boolean | undefined) ?? invalid,
-					});
+	const control =
+		onlyChild === null
+			? children
+			: cloneElement(onlyChild, {
+					// the control's own label always wins; otherwise merge the field's copy (real error text — never a synthetic word)
+					accessibilityLabel:
+						(onlyChild.props.accessibilityLabel as string | undefined) ??
+						[label, description, errorText || null].filter(Boolean).join(", "),
+					// invalid state tints the control when it understands hasError; an explicit control-side value is never overridden
+					hasError:
+						(onlyChild.props.hasError as boolean | undefined) ?? invalid,
+				});
 
 	return (
 		<View
@@ -65,10 +60,7 @@ export function Field({
 			{label ? (
 				<RNText
 					testID="k-field-label"
-					style={[
-						fieldStyle.label(theme),
-						applySlot({}, slotStyles?.label),
-					]}
+					style={[fieldStyle.label(theme), applySlot({}, slotStyles?.label)]}
 				>
 					{label}
 					{required ? (

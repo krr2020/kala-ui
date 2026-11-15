@@ -54,7 +54,11 @@ export function triggerSurface(variant: AccordionVariant): ViewStyle {
 }
 
 /** Open tint per variant: none / accent / primary (web accordion arms). */
-export function openTint(variant: AccordionVariant, accent: string, primary: string): ViewStyle {
+export function openTint(
+	variant: AccordionVariant,
+	accent: string,
+	primary: string,
+): ViewStyle {
 	if (variant === "bordered") return { backgroundColor: accent };
 	if (variant === "filled") return { backgroundColor: primary };
 	return {};

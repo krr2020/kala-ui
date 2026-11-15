@@ -22,10 +22,7 @@ export function ComboboxSkeleton({
 }): ReactElement {
 	const { theme } = useUnistyles();
 	return (
-		<View
-			testID={testID}
-			style={applySlot(skeletonSurface(theme), style)}
-		>
+		<View testID={testID} style={applySlot(skeletonSurface(theme), style)}>
 			<Skeleton style={skeletonBone} />
 			<RNText style={skeletonChevron(theme)}>▾</RNText>
 		</View>

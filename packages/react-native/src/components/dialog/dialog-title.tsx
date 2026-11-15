@@ -18,10 +18,7 @@ export function DialogTitle({
 			testID={testID}
 			accessibilityRole="header"
 			style={applySlot(
-				[
-					{ color: theme.foreground, fontSize: 18, fontWeight: "600" },
-					style,
-				],
+				[{ color: theme.foreground, fontSize: 18, fontWeight: "600" }, style],
 				slotStyles?.root,
 			)}
 		>

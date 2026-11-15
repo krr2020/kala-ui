@@ -1,4 +1,5 @@
 import type * as React from "react";
+import type { IconComponent } from "@kala-ui/react/icons";
 
 export interface NavLinkProps
 	extends Omit<React.ComponentProps<"button">, "onChange" | "ref"> {
@@ -6,6 +7,8 @@ export interface NavLinkProps
 	description?: React.ReactNode;
 	icon?: React.ReactNode;
 	rightSection?: React.ReactNode;
+	/** Collapse chevron — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	chevronIcon?: IconComponent;
 	active?: boolean;
 	/**
 	 * Renders the NavLink as a real anchor (<a href>) instead of a button.

@@ -63,11 +63,8 @@ describe("banner demo ↔ library seam", () => {
 	});
 
 	it("keeps every visible string sentence case", () => {
-		// banner children live as raw JSX text; ban lowercase enum leaks
-		// by asserting every explicit banner child starts uppercase
-		const arms =
-			demo.match(/<Banner[^>]*>\s*[A-Z][^<\n]*/g) ??
-			[];
+		// banner children live as raw JSX text; ban lowercase enum leaks by asserting every explicit banner child starts uppercase
+		const arms = demo.match(/<Banner[^>]*>\s*[A-Z][^<\n]*/g) ?? [];
 		expect(arms.length).toBeGreaterThan(0);
 		for (const arm of arms) {
 			const text = arm.replace(/^<Banner[^>]*>\s*/, "");

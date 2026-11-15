@@ -6,12 +6,12 @@
  * dot is the standard half-circle mark inside the primary fill.
  */
 
+import { useUncontrolled } from "@kala-ui/react-hooks/portable";
 import type { ReactElement } from "react";
 import { createContext, useContext } from "react";
-import { Pressable, Text as RNText, View } from "react-native";
 import type { StyleProp, ViewStyle } from "react-native";
+import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
-import { useUncontrolled } from "@kala-ui/react-hooks/portable";
 import { applySlot } from "../slot-styles";
 import {
 	body as bodyStyle,
@@ -22,10 +22,7 @@ import {
 	label as labelStyle,
 	root as rootStyle,
 } from "./radio-group.styles";
-import type {
-	RadioGroupItemProps,
-	RadioGroupProps,
-} from "./radio-group.types";
+import type { RadioGroupItemProps, RadioGroupProps } from "./radio-group.types";
 
 interface RadioGroupState {
 	value?: string;
@@ -110,8 +107,7 @@ function RadioGroupItem({
 			}}
 			accessibilityRole="radio"
 			accessibilityLabel={
-				accessibilityLabel ??
-				[label, description].filter(Boolean).join(", ")
+				accessibilityLabel ?? [label, description].filter(Boolean).join(", ")
 			}
 			accessibilityState={{ checked, disabled: isDisabled || undefined }}
 			style={applySlot(
@@ -124,10 +120,7 @@ function RadioGroupItem({
 				style={circleStyle(theme, checked, hasError)}
 			>
 				{checked ? (
-					<View
-						testID={`${testID}-dot`}
-						style={dotStyle(theme, hasError)}
-					/>
+					<View testID={`${testID}-dot`} style={dotStyle(theme, hasError)} />
 				) : null}
 			</View>
 			{label !== undefined || description !== undefined ? (

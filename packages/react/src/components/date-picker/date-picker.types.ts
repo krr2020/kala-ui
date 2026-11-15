@@ -1,5 +1,6 @@
 import type * as React from "react";
 import type { DateRange } from "react-day-picker";
+import type { IconComponent } from "../icons";
 import type { SlotStyles } from "../../lib/slot-styles";
 import type { Calendar } from "../calendar";
 
@@ -16,6 +17,8 @@ export interface DatePickerProps
 	onValueChange?: (date: Date | undefined) => void;
 	/** Trigger placeholder text */
 	placeholder?: string;
+	/** Trigger glyph — any `{className, size}` icon component; defaults to kala's built-in calendar. */
+	calendarIcon?: IconComponent;
 	/** Dates that cannot be selected */
 	disabled?: React.ComponentProps<typeof Calendar>["disabled"];
 	/** Disables the trigger button only */
@@ -52,6 +55,8 @@ export interface DateRangePickerProps
 	onValueChange?: (range: DateRange | undefined) => void;
 	/** Trigger placeholder text */
 	placeholder?: string;
+	/** Trigger glyph — any `{className, size}` icon component; defaults to kala's built-in calendar. */
+	calendarIcon?: IconComponent;
 	/** Dates that cannot be selected */
 	disabled?: React.ComponentProps<typeof Calendar>["disabled"];
 	/** Disables the trigger button only */

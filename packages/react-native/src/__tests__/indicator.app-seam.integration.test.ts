@@ -45,14 +45,11 @@ describe("indicator app seam", () => {
 	const tabs = readFileSync(TABS_PATH, "utf8");
 
 	it("routes the tab-dot overlay through the Indicator root slot", () => {
-		// style lands on the badge, not the wrapper — an absolute overlay
-		// must ride slotStyles.root or it never reaches the layout
+		// style lands on the badge, not the wrapper — an absolute overlay must ride slotStyles.root or it never reaches the layout
 		expect(tabs).toContain("slotStyles={{ root: overlayStyle }}");
 		const overlay = section(tabs, "const overlayStyle: ViewStyle = {", "};");
 		expect(overlay).toContain('position: "absolute"');
-		// exactly one declaration + one consumer: a second routing (or a
-		// stray style={overlayStyle}) fails the count instead of silently
-		// double-merging the overlay
+		// exactly one declaration + one consumer: a second routing (or a stray style={overlayStyle}) fails the count instead of silently double-merging the overlay
 		expect(tabs.match(/overlayStyle/g)?.length).toBe(2);
 		// the tab dot is a contentless dot hidden per-item, never disabled
 		expect(tabs).toMatch(/<Indicator[\s\S]*?\bdot\b[\s\S]*?\binvisible=/);
@@ -68,8 +65,7 @@ describe("indicator app seam", () => {
 		for (const block of indicatorBlocks(avatar)) {
 			expect(block).not.toContain("<KText");
 		}
-		// presence dots: circular overlap, bottom-right, ringed — no
-		// hand-tuned offsets; the component owns the inset math
+		// presence dots: circular overlap, bottom-right, ringed — no hand-tuned offsets; the component owns the inset math
 		const presence = indicatorBlocks(avatar).filter(
 			(block) =>
 				!block.includes("badgeContent") && !block.includes("invisible"),
@@ -106,8 +102,7 @@ describe("indicator app seam", () => {
 			expect(block).toMatch(/<Icon[\s>]/);
 			expect(block).not.toContain("<KText");
 		}
-		// 120 caps to "99+" through the default max; 0 hides without
-		// showZero — a cleared inbox renders no badge at all
+		// 120 caps to "99+" through the default max; 0 hides without showZero — a cleared inbox renders no badge at all
 		expect(icons).toContain("badgeContent={120}");
 		expect(icons).toContain("badgeContent={0}");
 		const zeroArm = indicatorBlocks(icons).find((block) =>
@@ -124,8 +119,7 @@ describe("indicator app seam", () => {
 			'DemoBlock label="Anchor Corners"',
 			"</DemoBlock>",
 		);
-		// the .map() renders one anchor per CORNERS entry from a single
-		// source occurrence — parse the source literal, not instances
+		// the .map() renders one anchor per CORNERS entry from a single source occurrence — parse the source literal, not instances
 		expect(corners).toContain("CORNERS.map");
 		expect(
 			demo.match(/"(top|bottom)-(left|right)"/g)?.length,

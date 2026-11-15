@@ -4,7 +4,7 @@
  * trigger shows chips with a +N overflow badge. Select-all commits the
  * enabled values only and collapses to [] when complete.
  */
-import { Check, ChevronDown, X } from "lucide-react-native";
+
 import type { ComponentRef, ReactElement, ReactNode } from "react";
 import { useRef, useState } from "react";
 import {
@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Icon } from "../icon";
+import { Check, ChevronDown, X } from "../icon/glyphs";
 import { SURFACE_HEIGHTS, trigger } from "../input-surface.styles";
 import {
 	emptyLabel,
@@ -47,6 +48,9 @@ export function MultiSelect({
 	size = "md",
 	grouped = false,
 	showActions = true,
+	chevronIcon: ChevronIcon = ChevronDown,
+	checkIcon: CheckIcon = Check,
+	removeIcon: RemoveIcon = X,
 	isLoading = false,
 	accessibilityLabel,
 	style,
@@ -73,9 +77,7 @@ export function MultiSelect({
 		setSearch("");
 	};
 
-	// chips render from the SELECTION, not the option list — orphan values
-	// (controlled value not yet in options, async load in flight) keep
-	// their raw value instead of vanishing
+	// chips render from the SELECTION, not the option list — orphan values (controlled value not yet in options, async load in flight) keep their raw value instead of vanishing
 	const selectedOptions = selected.map(
 		(v) => options.find((o) => o.value === v) ?? { value: v, label: v },
 	);
@@ -150,7 +152,7 @@ export function MultiSelect({
 							justifyContent: "center",
 						}}
 					>
-						<Check size={12} color={theme.primaryForeground} />
+						<CheckIcon size={12} color={theme.primaryForeground} />
 					</View>
 				) : (
 					<View
@@ -248,8 +250,7 @@ export function MultiSelect({
 						flexWrap: "wrap",
 						alignItems: "center",
 						gap: 4,
-						// breathing room so wrapped chip rows render fully inside
-						// the trigger instead of clipping against its edge
+						// breathing room so wrapped chip rows render fully inside the trigger instead of clipping against its edge
 						paddingVertical: 6,
 					}}
 				>
@@ -278,7 +279,7 @@ export function MultiSelect({
 											hitSlop={4}
 											style={{ padding: 2 }}
 										>
-											<X size={12} color={theme.secondaryForeground} />
+											<RemoveIcon size={12} color={theme.secondaryForeground} />
 										</Pressable>
 									) : null}
 								</View>
@@ -298,7 +299,7 @@ export function MultiSelect({
 					)}
 				</View>
 				<Icon
-					icon={ChevronDown}
+					icon={ChevronIcon}
 					size="sm"
 					color="mutedForeground"
 					testID="k-multi-select-chevron"
@@ -324,8 +325,7 @@ export function MultiSelect({
 							style={searchField(theme)}
 						/>
 						{showActions ? (
-							// one row: Select all on the left, Clear all on the
-							// right — stacked full-width rows wasted vertical space
+							// one row: Select all on the left, Clear all on the right — stacked full-width rows wasted vertical space
 							<View
 								testID="k-multi-select-actions"
 								style={{
@@ -366,7 +366,7 @@ export function MultiSelect({
 											}}
 										>
 											{isAllSelected ? (
-												<Check size={12} color={theme.primaryForeground} />
+												<CheckIcon size={12} color={theme.primaryForeground} />
 											) : null}
 										</View>
 										<RNText style={{ fontSize: 14, color: theme.foreground }}>

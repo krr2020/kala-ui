@@ -4,7 +4,7 @@
  * switches to async mode (rows come from the caller, empty search shows
  * none). Committing closes the sheet.
  */
-import { ChevronDown, X } from "lucide-react-native";
+
 import type { ComponentRef, ReactElement } from "react";
 import { useRef, useState } from "react";
 import {
@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { Icon } from "../icon";
+import { ChevronDown, X } from "../icon/glyphs";
 import { trigger } from "../input-surface.styles";
 import {
 	optionLabel,
@@ -25,8 +26,6 @@ import {
 } from "../select/select.styles";
 import { Sheet } from "../sheet";
 import { applySlot } from "../slot-styles";
-import type { ComboboxProps } from "./combobox.types";
-import { ComboboxSkeleton } from "./combobox-skeleton";
 import {
 	clearStyle,
 	emptyTextStyle,
@@ -34,6 +33,8 @@ import {
 	skeletonStyle,
 	valueTextStyle,
 } from "./combobox.styles";
+import type { ComboboxProps } from "./combobox.types";
+import { ComboboxSkeleton } from "./combobox-skeleton";
 
 export function Combobox({
 	options,
@@ -50,6 +51,8 @@ export function Combobox({
 	clearable = false,
 	onSearchChange,
 	selectedLabel,
+	chevronIcon: ChevronIcon = ChevronDown,
+	clearIcon: ClearIcon = X,
 	isLoading = false,
 	accessibilityLabel,
 	style,
@@ -67,8 +70,7 @@ export function Combobox({
 	const isAsync = onSearchChange !== undefined;
 
 	const selectedOption = options.find((o) => o.value === current);
-	// an orphan value (not in options) renders its raw value, never a
-	// blank trigger — the parent may be mid async load
+	// an orphan value (not in options) renders its raw value, never a blank trigger — the parent may be mid async load
 	const displayLabel =
 		selectedOption?.label ??
 		(current ? (selectedLabel ?? current) : placeholder);
@@ -128,7 +130,7 @@ export function Combobox({
 					{displayLabel}
 				</RNText>
 				<Icon
-					icon={ChevronDown}
+					icon={ChevronIcon}
 					size="sm"
 					color="mutedForeground"
 					testID="k-combobox-chevron"
@@ -143,7 +145,7 @@ export function Combobox({
 					hitSlop={8}
 					style={clearStyle(size)}
 				>
-					<X size={16} color={theme.mutedForeground} />
+					<ClearIcon size={16} color={theme.mutedForeground} />
 				</Pressable>
 			) : null}
 			<Sheet
@@ -170,10 +172,7 @@ export function Combobox({
 						/>
 					</View>
 					{!isAsync && query.length > 0 && visible.length === 0 ? (
-						<RNText
-							testID="k-combobox-empty"
-							style={emptyTextStyle(theme)}
-						>
+						<RNText testID="k-combobox-empty" style={emptyTextStyle(theme)}>
 							{emptyText}
 						</RNText>
 					) : (

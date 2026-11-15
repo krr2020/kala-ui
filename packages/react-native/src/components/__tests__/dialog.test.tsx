@@ -104,9 +104,7 @@ describe("dialog gesture + keyboard hardening", () => {
 		expect(flatStyle(overlay).backgroundColor).toBe(
 			`${themes.light.foreground}80`,
 		);
-		// dark mode re-derives the ink from its own foreground token —
-		// scrimStyle reads theme.foreground at render, so a different dark
-		// foreground proves the veil retints instead of staying black
+		// dark mode re-derives the ink from its own foreground token — scrimStyle reads theme.foreground at render, so a different dark foreground proves the veil retints instead of staying black
 		expect(themes.dark.foreground).not.toBe(themes.light.foreground);
 		expect(`${themes.dark.foreground}80`).not.toBe(
 			`${themes.light.foreground}80`,
@@ -128,8 +126,7 @@ describe("dialog gesture + keyboard hardening", () => {
 				</Dialog>,
 			);
 			const s = flatStyle(screen.getByTestId("k-dialog", incl));
-			// per-tier percentage of the padded wrapper: distinct on any phone
-			// screen, with the px cap binding on tablets
+			// per-tier percentage of the padded wrapper: distinct on any phone screen, with the px cap binding on tablets
 			expect(String(s.width)).toBe(width);
 			expect(s.maxWidth).toBe(maxWidth);
 			expect(s.borderRadius).toBe(size === "full" ? 0 : tokens.radius.card);
@@ -141,8 +138,7 @@ describe("dialog gesture + keyboard hardening", () => {
 					screen.getByTestId("k-dialog-keyboard-view", incl),
 				);
 				expect(Number(wrap.padding)).toBe(0);
-				// uncapped full still leans on the keyboard wrapper so the
-				// footer stays reachable with the keyboard open
+				// uncapped full still leans on the keyboard wrapper so the footer stays reachable with the keyboard open
 				const kav = screen.getByTestId("k-dialog-keyboard-view", incl);
 				expect(["padding", undefined]).toContain(kav.props.behavior);
 			}
@@ -164,17 +160,14 @@ describe("dialog gesture + keyboard hardening", () => {
 				<Dialog.Body>body</Dialog.Body>
 			</Dialog>,
 		);
-		// the mock host platform decides the runtime value (padding on iOS,
-		// undefined on Android where adjustResize drives) — the source pin
-		// below maps the platform split exactly
+		// the mock host platform decides the runtime value (padding on iOS, undefined on Android where adjustResize drives) — the source pin below maps the platform split exactly
 		const kav = screen.getByTestId("k-dialog-keyboard-view", incl);
 		expect(["padding", undefined]).toContain(kav.props.behavior);
 		const source = readFileSync(`${__dirname}/../dialog/dialog.tsx`, "utf8");
 		expect(source).toMatch(
 			/behavior=\{Platform\.OS === "ios" \? "padding" : undefined\}/,
 		);
-		// the body yields to siblings (flexShrink) so the ScrollView scrolls
-		// instead of being clipped by the card's maxHeight
+		// the body yields to siblings (flexShrink) so the ScrollView scrolls instead of being clipped by the card's maxHeight
 		const body = flatStyle(screen.getByTestId("k-dialog-body", incl));
 		expect(Number(body.flexShrink)).toBe(1);
 	});
@@ -218,11 +211,12 @@ describe("dialog gesture + keyboard hardening", () => {
 	it("insets drive the wrapper: top inset pads the top, bottom inset pads below, no StatusBar hack", async () => {
 		const source = readFileSync(`${__dirname}/../dialog/dialog.tsx`, "utf8");
 		expect(source).not.toContain("StatusBar.currentHeight");
-		// jest-expo runs as ios where KeyboardAvoidingView behavior="padding"
-		// appends its own paddingBottom — pin android so the wrapper padding
-		// is the flattened truth
+		// jest-expo runs as ios where KeyboardAvoidingView behavior="padding" appends its own paddingBottom — pin android so the wrapper padding is the flattened truth
 		const original = Platform.OS;
-		Object.defineProperty(Platform, "OS", { value: "android", configurable: true });
+		Object.defineProperty(Platform, "OS", {
+			value: "android",
+			configurable: true,
+		});
 		setInsets(132, 48);
 		try {
 			const screen = await render(
@@ -267,7 +261,10 @@ describe("dialog gesture + keyboard hardening", () => {
 
 	it("full-size dialog bleeds horizontally but clears both bars via insets", async () => {
 		const original = Platform.OS;
-		Object.defineProperty(Platform, "OS", { value: "android", configurable: true });
+		Object.defineProperty(Platform, "OS", {
+			value: "android",
+			configurable: true,
+		});
 		setInsets(132, 48);
 		try {
 			const screen = await render(
@@ -493,8 +490,7 @@ describe("dialog gesture + keyboard hardening", () => {
 		expect(alertCard.props.onResponderGrant).toBeUndefined();
 		expect(alertCard.props.onResponderRelease).toBeUndefined();
 
-		// opt-in dismissable AlertDialog wires the full protocol AND the
-		// drag behavior end to end, symmetric with Dialog
+		// opt-in dismissable AlertDialog wires the full protocol AND the drag behavior end to end, symmetric with Dialog
 		const a2 = await render(
 			<AlertDialog open onOpenChange={() => undefined} dismissable>
 				<AlertDialog.Body>body</AlertDialog.Body>
@@ -525,15 +521,11 @@ describe("dialog gesture + keyboard hardening", () => {
 				<Dialog.Body>body</Dialog.Body>
 			</Dialog>,
 		);
-		// RN's ScrollView installs its own responder system (scroll drag takes
-		// the gesture); the card's drag handlers must not be reachable from a
-		// body touch — verified by driving the CARD handlers directly and
-		// confirming the body node exposes none of the drag protocol
+		// RN's ScrollView installs its own responder system (scroll drag takes the gesture); the card's drag handlers must not be reachable from a body touch — verified by driving the CARD handlers directly and confirming the body node exposes none of the drag protocol
 		const body = screen.getByTestId("k-dialog-body", incl);
 		expect(body.props.onResponderGrant).toBeUndefined();
 		expect(body.props.onResponderRelease).toBeUndefined();
-		// and the card protocol still behaves when driven: release below
-		// threshold from a body-context touch never closes
+		// and the card protocol still behaves when driven: release below threshold from a body-context touch never closes
 		const card = screen.getByTestId("k-dialog", incl);
 		await grant(card);
 		await release(card, 40);
@@ -586,9 +578,7 @@ describe("dialog gesture + keyboard hardening", () => {
 			</Dialog>,
 		);
 		const kav = screen.getByTestId("k-dialog-keyboard-view", incl);
-		// KAV consumes behavior/keyboardVerticalOffset; its visible effect is
-		// the injected padding frame (paddingBottom present, 0 while the
-		// keyboard is closed on the ios default platform)
+		// KAV consumes behavior/keyboardVerticalOffset; its visible effect is the injected padding frame (paddingBottom present, 0 while the keyboard is closed on the ios default platform)
 		const kavStyle = flatStyle(kav);
 		expect(Object.hasOwn(kavStyle, "paddingBottom")).toBe(true);
 		expect(Number(kavStyle.paddingBottom)).toBe(0);
@@ -620,8 +610,7 @@ describe("dialog gesture + keyboard hardening", () => {
 		const btn = screen.getByTestId("k-button-root", incl);
 		// Pressable consumes onPress; the wired handler survives as onClick
 		expect(typeof btn.props.onClick).toBe("function");
-		// child handles its own touch — driving the child never reaches the
-		// card's responder release path
+		// child handles its own touch — driving the child never reaches the card's responder release path
 		await act(async () => {
 			(btn.props.onClick as (e: unknown) => void)?.({ nativeEvent: {} });
 		});

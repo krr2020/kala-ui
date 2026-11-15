@@ -28,9 +28,7 @@ function tsFiles(dir: string): string[] {
 	return files;
 }
 
-// Legacy prop shapes: the old `styles` prop and the interim `overrides`
-// spelling. Anchored per shape — `styles,` matches only a whole-line
-// destructure, so StyleSheet.create locals and prose never trip it.
+// Legacy prop shapes: the old `styles` prop and the interim `overrides` spelling. Anchored per shape — `styles,` matches only a whole-line destructure, so StyleSheet.create locals and prose never trip it.
 const LEGACY_SHAPES = [
 	/\boverrides=\{\{/g,
 	/\boverrides: \{/g,

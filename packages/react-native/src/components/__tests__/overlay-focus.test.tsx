@@ -18,9 +18,7 @@ import { Toast } from "../toast";
 
 const setFocusSpy = jest.spyOn(AccessibilityInfo, "setAccessibilityFocus");
 const announceSpy = jest.spyOn(AccessibilityInfo, "announceForAccessibility");
-// react-test-renderer host instances carry no native tags, so pin
-// findNodeHandle to a sentinel: the contract under test is WHICH node
-// was passed, not the tag arithmetic
+// react-test-renderer host instances carry no native tags, so pin findNodeHandle to a sentinel: the contract under test is WHICH node was passed, not the tag arithmetic
 jest
 	.spyOn(require("react-native"), "findNodeHandle")
 	.mockImplementation((node: unknown) =>
@@ -110,9 +108,7 @@ describe("Sheet focus management", () => {
 				</>,
 			);
 		});
-		// reanimated's mock completes timing callbacks synchronously, so the
-		// gate is pinned at the source level instead: restore keys on
-		// !mounted (exit done), never on open alone
+		// reanimated's mock completes timing callbacks synchronously, so the gate is pinned at the source level instead: restore keys on !mounted (exit done), never on open alone
 		const source = readFileSync(`${__dirname}/../sheet/sheet.tsx`, "utf8");
 		expect(source).toMatch(
 			/useOverlayFocus\(contentRef, open, !mounted, triggerRef\)/,
@@ -164,9 +160,7 @@ describe("Sheet focus management", () => {
 		await act(async () => {
 			await screen.rerender(sheet(true));
 		});
-		// the mock exit completes synchronously, so the sequence is
-		// deterministic: one restore for the finished close, one focus-in
-		// for the reopened sheet — never a crash or a missed focus
+		// the mock exit completes synchronously, so the sequence is deterministic: one restore for the finished close, one focus-in for the reopened sheet — never a crash or a missed focus
 		await settle();
 		expect(setFocusSpy).toHaveBeenCalledTimes(2);
 		expect(screen.getByTestId("k-sheet-content")).toBeTruthy();

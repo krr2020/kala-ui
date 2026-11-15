@@ -4,11 +4,13 @@
  * Sheet engine — same surface Select uses. Action rows commit and close;
  * checkbox/radio rows toggle in place (multi-select menus stay open).
  */
-import { Check } from "lucide-react-native";
+
 import type { ComponentRef, ReactElement } from "react";
 import { Fragment, useRef, useState } from "react";
 import { Pressable, Text as RNText, View } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
+import type { IconComponent } from "../icon";
+import { Check } from "../icon/glyphs";
 import { Sheet } from "../sheet";
 import { applySlot } from "../slot-styles";
 import type { MenuTheme } from "./dropdown-menu.styles";
@@ -35,6 +37,7 @@ function renderMenuItem(
 	prefix: string,
 	close: () => void,
 	itemStyles?: ReturnType<typeof applySlot>,
+	CheckIcon: IconComponent = Check,
 ): ReactElement {
 	if (item.type === "separator") {
 		return (
@@ -49,10 +52,7 @@ function renderMenuItem(
 	if (item.type === "label") {
 		return (
 			<View key={item.key} testID={`${prefix}-label`} style={rowBase}>
-				<RNText
-					numberOfLines={1}
-					style={labelTextStyle(theme)}
-				>
+				<RNText numberOfLines={1} style={labelTextStyle(theme)}>
 					{item.label}
 				</RNText>
 			</View>
@@ -91,7 +91,7 @@ function renderMenuItem(
 					{item.checked ? (
 						isCheckbox ? (
 							<View testID="k-menu-item-indicator">
-								<Check size={14} color={theme.primary} />
+								<CheckIcon size={14} color={theme.primary} />
 							</View>
 						) : (
 							<View
@@ -153,6 +153,7 @@ export function DropdownMenu({
 	triggerLabel = "More actions",
 	snap,
 	dismissable,
+	checkIcon = Check,
 	style,
 	slotStyles,
 	testID = "k-dropdown-menu",
@@ -180,10 +181,7 @@ export function DropdownMenu({
 					),
 				]}
 			>
-				<RNText
-					numberOfLines={1}
-					style={triggerLabelStyle(theme)}
-				>
+				<RNText numberOfLines={1} style={triggerLabelStyle(theme)}>
 					{triggerLabel}
 				</RNText>
 				<RNText style={chevronStyle(theme)}>▾</RNText>
@@ -208,7 +206,14 @@ export function DropdownMenu({
 						</RNText>
 					) : (
 						items.map((item) =>
-							renderMenuItem(item, theme, "k-dropdown-menu", close, itemStyles),
+							renderMenuItem(
+								item,
+								theme,
+								"k-dropdown-menu",
+								close,
+								itemStyles,
+								checkIcon,
+							),
 						)
 					)}
 				</View>

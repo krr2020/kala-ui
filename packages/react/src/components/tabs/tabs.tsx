@@ -97,7 +97,7 @@ function TabsList({
 			<TabsPrimitive.List
 				ref={ref}
 				data-slot="tabs-list"
-			data-variant={variant}
+				data-variant={variant}
 				className={root.className}
 				style={mergeStyle(style, root.style)}
 				{...props}

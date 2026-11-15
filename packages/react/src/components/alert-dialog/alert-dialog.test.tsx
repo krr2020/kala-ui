@@ -16,7 +16,6 @@ import {
 } from "./alert-dialog";
 
 describe("AlertDialog", () => {
-
 	it("should render trigger button", () => {
 		render(
 			<AlertDialog>
@@ -184,5 +183,4 @@ describe("useFrozenChildren", () => {
 		rerender(<FreezeProbe open text="Next" />);
 		expect(container.textContent).toBe("Next");
 	});
-
 });

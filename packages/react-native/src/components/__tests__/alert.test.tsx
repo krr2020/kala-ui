@@ -8,7 +8,9 @@ import { Alert } from "../alert";
 
 type Screen = Awaited<ReturnType<typeof render>>;
 
-function flatStyle(node: { props: { style?: unknown } }): Record<string, unknown> {
+function flatStyle(node: {
+	props: { style?: unknown };
+}): Record<string, unknown> {
 	const out: Record<string, unknown> = {};
 	const walk = (entry: unknown): void => {
 		if (Array.isArray(entry)) {
@@ -86,19 +88,23 @@ describe("Alert dismiss control", () => {
 				msg
 			</Alert>,
 		);
-		expect(
-			screen.getByTestId("k-alert-dismiss").props.accessibilityLabel,
-		).toBe("Dismiss alert");
+		expect(screen.getByTestId("k-alert-dismiss").props.accessibilityLabel).toBe(
+			"Dismiss alert",
+		);
 	});
 
 	it("dismissLabel overrides the announced label", async () => {
 		const screen: Screen = await render(
-			<Alert dismissable onDismiss={() => undefined} dismissLabel="Cerrar aviso">
+			<Alert
+				dismissable
+				onDismiss={() => undefined}
+				dismissLabel="Cerrar aviso"
+			>
 				msg
 			</Alert>,
 		);
-		expect(
-			screen.getByTestId("k-alert-dismiss").props.accessibilityLabel,
-		).toBe("Cerrar aviso");
+		expect(screen.getByTestId("k-alert-dismiss").props.accessibilityLabel).toBe(
+			"Cerrar aviso",
+		);
 	});
 });

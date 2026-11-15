@@ -7,8 +7,7 @@ export const row: ViewStyle = {
 	gap: 8,
 };
 
-// zero-size off-stage field: keeps keyboard focus ownership without
-// participating in layout
+// zero-size off-stage field: keeps keyboard focus ownership without participating in layout
 export const field: TextStyle = {
 	width: 1,
 	height: 1,
@@ -31,7 +30,10 @@ export const slot: ViewStyle = {
  */
 export function slotSurface(
 	theme: KalaTheme,
-	{ active = false, disabled = false }: { active?: boolean; disabled?: boolean },
+	{
+		active = false,
+		disabled = false,
+	}: { active?: boolean; disabled?: boolean },
 ): Pick<ViewStyle, "backgroundColor" | "borderColor" | "opacity"> {
 	return {
 		backgroundColor: disabled ? theme.input : theme.card,

@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, type IconComponent } from "../icons";
 import type { CSSProperties, ReactNode } from "react";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
@@ -14,6 +14,8 @@ export interface BreadcrumbsProps {
 	className?: string;
 	style?: CSSProperties;
 	separator?: ReactNode;
+	/** Default-variant separator glyph — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	separatorIcon?: IconComponent;
 	variant?: "default" | "style1" | "style2" | "style3";
 	slotStyles?: SlotStyles;
 }
@@ -23,6 +25,7 @@ export function Breadcrumbs({
 	className,
 	style,
 	separator,
+	separatorIcon,
 	variant = "default",
 	slotStyles: slotStylesRaw,
 }: BreadcrumbsProps) {
@@ -33,13 +36,14 @@ export function Breadcrumbs({
 	const getDefaultSeparator = () => {
 		if (separator) return separator;
 
+		const SeparatorGlyph = separatorIcon ?? ChevronRight;
 		switch (variant) {
 			case "style2":
 				return <span className="text-muted-foreground">&gt;</span>;
 			case "style3":
 				return <span className="text-muted-foreground">•</span>;
 			default:
-				return <ChevronRight className="size-4 text-muted-foreground" />;
+				return <SeparatorGlyph className="size-4 text-muted-foreground" />;
 		}
 	};
 

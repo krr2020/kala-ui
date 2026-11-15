@@ -1,6 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import type { SlotStyles } from "../../lib/slot-styles";
+import type { IconComponent } from "../icons";
 import type { stepsVariants } from "./steps";
 
 export interface StepItem {
@@ -23,5 +24,7 @@ export interface StepsProps
 	 * @default true
 	 */
 	showLine?: boolean;
+	/** Completed-step glyph — any `{className, size}` icon component; defaults to kala's built-in check. */
+	checkIcon?: IconComponent;
 	slotStyles?: SlotStyles;
 }

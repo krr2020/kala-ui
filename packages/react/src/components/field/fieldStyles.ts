@@ -4,7 +4,7 @@
  */
 export const fieldStyles = {
 	root: "min-w-0",
-	label: "text-sm font-semibold text-foreground",
+	label: "text-sm font-medium text-foreground",
 	hint: "text-xs font-normal leading-normal text-muted-foreground",
 	error: "text-xs font-medium text-destructive",
 };

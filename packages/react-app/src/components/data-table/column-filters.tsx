@@ -14,7 +14,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@kala-ui/react/select";
-import { X } from "lucide-react";
+import { X } from "@kala-ui/react/icons";
 import type { FilterableColumn, FilterConfig } from "./data-table.types";
 
 interface ColumnFiltersProps<TData> {

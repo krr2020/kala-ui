@@ -1,7 +1,7 @@
 "use client";
 
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import { Check, Minus } from "lucide-react";
+import { Check, Minus } from "../icons";
 import { checkboxIndicatorStyles, checkboxStyles } from "../../config/checkbox";
 import { applySlot, mergeStyle, type SlotStyles } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
@@ -14,6 +14,8 @@ function Checkbox({
 	style,
 	slotStyles: slotStylesRaw,
 	isLoading = false,
+	checkIcon: CheckIcon = Check,
+	minusIcon: MinusIcon = Minus,
 	ref,
 	...props
 }: CheckboxProps & { slotStyles?: SlotStyles }) {
@@ -49,9 +51,9 @@ function Checkbox({
 				style={indicator.style}
 			>
 				{props.checked === "indeterminate" ? (
-					<Minus className="size-3.5 stroke-3" />
+					<MinusIcon className="size-3.5 stroke-3" />
 				) : (
-					<Check className="size-3.5 stroke-3" />
+					<CheckIcon className="size-3.5 stroke-3" />
 				)}
 			</CheckboxPrimitive.Indicator>
 		</CheckboxPrimitive.Root>

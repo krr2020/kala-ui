@@ -61,23 +61,17 @@ export function SessionCardSkeleton({
 							className={sessionCardSkeletonStyles.deviceIcon}
 						/>
 						<div className={sessionCardSkeletonStyles.titleBlock}>
-							<Skeleton
-								className={sessionCardSkeletonStyles.titleSkeleton}
-							/>
+							<Skeleton className={sessionCardSkeletonStyles.titleSkeleton} />
 							<Skeleton
 								className={sessionCardSkeletonStyles.subtitleSkeleton}
 							/>
 						</div>
 					</div>
 					{showBadge ? (
-						<Skeleton
-							className={sessionCardSkeletonStyles.badgeSkeleton}
-						/>
+						<Skeleton className={sessionCardSkeletonStyles.badgeSkeleton} />
 					) : (
 						showRevokeButton && (
-							<Skeleton
-								className={sessionCardSkeletonStyles.revokeSkeleton}
-							/>
+							<Skeleton className={sessionCardSkeletonStyles.revokeSkeleton} />
 						)
 					)}
 				</div>

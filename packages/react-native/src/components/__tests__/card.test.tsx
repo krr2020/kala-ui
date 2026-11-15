@@ -161,8 +161,7 @@ describe("Card media clipping", () => {
 		const clips = screen.getAllByTestId("k-card-clip");
 		expect(clips.length).toBe(1);
 		const clip = clips[0];
-		// Only the image lives inside the clip wrapper; header/footer stay
-		// siblings so the elevation shadow region is never overflow-clipped.
+		// Only the image lives inside the clip wrapper; header/footer stay siblings so the elevation shadow region is never overflow-clipped.
 		expect(clip.children.length).toBe(1);
 		expect(
 			(clip.children[0] as { props: { testID?: string } }).props.testID,
@@ -193,8 +192,7 @@ describe("Card media clipping", () => {
 		).toBe("k-card-overlay");
 		const overlay = flatStyle(screen.getByTestId("k-card-overlay"));
 		expect(overlay.position).toBe("absolute");
-		// elevated + media + overlay: the root never hides overflow (shadow
-		// survives) while the single clip wrapper owns the corner radius.
+		// elevated + media + overlay: the root never hides overflow (shadow survives) while the single clip wrapper owns the corner radius.
 		const root = flatStyle(screen.getByTestId("k-card"));
 		expect(root.overflow).not.toBe("hidden");
 		expect(Number(root.elevation)).toBeGreaterThan(0);
@@ -211,9 +209,7 @@ describe("Card media clipping", () => {
 				<CardImageOverlay>o</CardImageOverlay>
 			</Card>,
 		);
-		// image run is clipped; header renders between; the overlay-only
-		// run is NOT wrapped — a zero-height clip would render nothing, so
-		// its absolute inset resolves against the card root instead.
+		// image run is clipped; header renders between; the overlay-only run is NOT wrapped — a zero-height clip would render nothing, so its absolute inset resolves against the card root instead.
 		const clips = screen.getAllByTestId("k-card-clip");
 		expect(clips.length).toBe(1);
 		expect(
@@ -642,9 +638,7 @@ describe("Card token discipline", () => {
 		for (const file of readdirSync(dir)) {
 			if (!file.endsWith(".tsx") && !file.endsWith(".ts")) continue;
 			const src = readFileSync(join(dir, file), "utf8");
-			expect(`${file}: ${src}`).not.toMatch(
-				/["']#000000["']/i,
-			);
+			expect(`${file}: ${src}`).not.toMatch(/["']#000000["']/i);
 		}
 	});
 });

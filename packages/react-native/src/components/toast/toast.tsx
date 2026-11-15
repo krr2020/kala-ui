@@ -64,16 +64,14 @@ export function Toast({
 }: ToastProps): ReactElement | null {
 	const { theme } = useUnistyles();
 	const insets = useSafeAreaInsets();
-	// a bottom toast must clear the keyboard too, whichever is the taller
-	// surface; 0 means no keyboard visible
+	// a bottom toast must clear the keyboard too, whichever is the taller surface; 0 means no keyboard visible
 	const [kbHeight, setKbHeight] = useState(0);
 	useEffect(() => {
 		const show = Keyboard.addListener("keyboardDidShow", (e) => {
 			setKbHeight(e.endCoordinates.height);
 		});
 		const hide = Keyboard.addListener("keyboardDidHide", () => setKbHeight(0));
-		// a toast can mount while a field's keyboard is already open; with
-		// no keyboard reported the nav-bar inset is the bottom surface
+		// a toast can mount while a field's keyboard is already open; with no keyboard reported the nav-bar inset is the bottom surface
 		const openKb = Keyboard.metrics();
 		if (openKb) setKbHeight(openKb.height);
 		return () => {
@@ -81,8 +79,7 @@ export function Toast({
 			hide.remove();
 		};
 	}, []);
-	// timer effect stays keyed on [open, duration] only — a new inline
-	// callback each render must not restart the countdown
+	// timer effect stays keyed on [open, duration] only — a new inline callback each render must not restart the countdown
 	const onOpenChangeRef = useRef(onOpenChange);
 	onOpenChangeRef.current = onOpenChange;
 
@@ -92,8 +89,7 @@ export function Toast({
 		return () => clearTimeout(timer);
 	}, [open, duration]);
 
-	// role=alert only retints the node for screen readers already focused
-	// nearby; an explicit announcement is what actually interrupts
+	// role=alert only retints the node for screen readers already focused nearby; an explicit announcement is what actually interrupts
 	useEffect(() => {
 		if (!open) return;
 		const text =

@@ -1,7 +1,8 @@
 "use client";
 
 import * as MenubarPrimitive from "@radix-ui/react-menubar";
-import { Check, ChevronRight, Circle } from "lucide-react";
+import { Check, ChevronRight, Circle } from "../icons";
+import type { IconComponent } from "../icons";
 import type * as React from "react";
 
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
@@ -69,10 +70,13 @@ function MenubarTrigger({
 function MenubarSubTrigger({
 	className,
 	inset,
+	submenuIcon: SubmenuIcon = ChevronRight,
 	children,
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.SubTrigger> & {
 	inset?: boolean;
+	/** Submenu chevron — any `{className, size}` icon component; defaults to kala's built-in chevron. */
+	submenuIcon?: IconComponent;
 }) {
 	return (
 		<MenubarPrimitive.SubTrigger
@@ -92,7 +96,7 @@ function MenubarSubTrigger({
 			{...props}
 		>
 			{children}
-			<ChevronRight className="ml-auto size-4" />
+			<SubmenuIcon className="ml-auto size-4" />
 		</MenubarPrimitive.SubTrigger>
 	);
 }
@@ -184,9 +188,13 @@ function MenubarItem({
 
 function MenubarCheckboxItem({
 	className,
+	checkIcon: CheckIcon = Check,
 	children,
 	...props
-}: React.ComponentProps<typeof MenubarPrimitive.CheckboxItem>) {
+}: React.ComponentProps<typeof MenubarPrimitive.CheckboxItem> & {
+	/** Check glyph — any `{className, size}` icon component; defaults to kala's built-in check. */
+	checkIcon?: IconComponent;
+}) {
 	return (
 		<MenubarPrimitive.CheckboxItem
 			data-kala-component="menubar-checkbox-item"
@@ -202,7 +210,7 @@ function MenubarCheckboxItem({
 		>
 			<span className="pointer-events-none absolute left-2 flex size-4 items-center justify-center">
 				<MenubarPrimitive.ItemIndicator>
-					<Check className="size-4 text-primary" />
+					<CheckIcon className="size-4 text-primary" />
 				</MenubarPrimitive.ItemIndicator>
 			</span>
 			{children}
@@ -224,9 +232,13 @@ function MenubarRadioGroup({
 
 function MenubarRadioItem({
 	className,
+	radioIcon: RadioIcon = Circle,
 	children,
 	...props
-}: React.ComponentProps<typeof MenubarPrimitive.RadioItem>) {
+}: React.ComponentProps<typeof MenubarPrimitive.RadioItem> & {
+	/** Radio dot glyph — any `{className, size}` icon component; defaults to kala's built-in circle. */
+	radioIcon?: IconComponent;
+}) {
 	return (
 		<MenubarPrimitive.RadioItem
 			data-kala-component="menubar-radio-item"
@@ -242,7 +254,7 @@ function MenubarRadioItem({
 		>
 			<span className="pointer-events-none absolute left-2 flex size-4 items-center justify-center">
 				<MenubarPrimitive.ItemIndicator>
-					<Circle className="size-2 fill-primary text-primary" />
+					<RadioIcon className="size-2 fill-primary text-primary" />
 				</MenubarPrimitive.ItemIndicator>
 			</span>
 			{children}

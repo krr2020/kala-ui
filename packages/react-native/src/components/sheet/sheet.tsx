@@ -13,7 +13,6 @@
  * footer always rides above the keyboard.
  */
 
-import { X } from "lucide-react-native";
 import type { ReactElement } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { KeyboardEventName } from "react-native";
@@ -30,8 +29,7 @@ import {
 	Gesture,
 	GestureDetector,
 	GestureHandlerRootView,
-	// native-gesture press: survives the IME-hide window resize that
-	// cancels RN's JS-thread responder inside an Android Modal
+	// native-gesture press: survives the IME-hide window resize that cancels RN's JS-thread responder inside an Android Modal
 	Pressable,
 } from "react-native-gesture-handler";
 import Animated, {
@@ -46,6 +44,7 @@ import { useUnistyles } from "react-native-unistyles";
 import { useOverlayFocus } from "../../lib/use-overlay-focus.utils";
 import { motion, tokens } from "../../tokens";
 import { Icon } from "../icon";
+import { X } from "../icon/glyphs";
 import { applySlot } from "../slot-styles";
 import {
 	composeOffset,
@@ -106,6 +105,7 @@ export function Sheet({
 	title,
 	showClose = true,
 	closeLabel = "Close sheet",
+	closeIcon: CloseIcon = X,
 	dismissable = true,
 	scrollable = false,
 	avoidKeyboard = false,
@@ -117,22 +117,18 @@ export function Sheet({
 	const { theme } = useUnistyles();
 	const [mounted, setMounted] = useState(open);
 	const contentRef = useRef<View | null>(null);
-	// restore is gated on !mounted so focus returns only after the exit
-	// animation has fully torn the modal window down
+	// restore is gated on !mounted so focus returns only after the exit animation has fully torn the modal window down
 	useOverlayFocus(contentRef, open, !mounted, triggerRef);
 	const { height: windowHeight } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
 	// measured content height drives the status-bar-safe keyboard lift
 	const contentHeight = useRef(0);
-	// bottom padding mode: keyboard up swaps the nav-bar clearance for a
-	// small gap (the keyboard itself is the surface to clear then)
+	// bottom padding mode: keyboard up swaps the nav-bar clearance for a small gap (the keyboard itself is the surface to clear then)
 	const [kbUp, setKbUp] = useState(false);
-	// height the sheet sheds while the keyboard covers its lower reach —
-	// used when lifting alone can't clear the keyboard (tall/full sheets)
+	// height the sheet sheds while the keyboard covers its lower reach — used when lifting alone can't clear the keyboard (tall/full sheets)
 	const [kbShrink, setKbShrink] = useState(0);
 
-	// entry/exit offset: OFFSCREEN_Y until the content is measured, then
-	// the snap height (offscreen start) springing to 0, or back on exit
+	// entry/exit offset: OFFSCREEN_Y until the content is measured, then the snap height (offscreen start) springing to 0, or back on exit
 	const entry = useSharedValue(OFFSCREEN_Y);
 	const overlay = useSharedValue(0);
 	// user drag offset, composed with entry so both can act at once
@@ -145,11 +141,7 @@ export function Sheet({
 			? undefined
 			: snapPixelHeight(snap, windowHeight, insets.top);
 
-	// Keyboard avoidance on both platforms: lift the sheet by the visible
-	// keyboard height, clamped so the sheet top can never ride into the
-	// status bar; when the budget runs out (tall/full sheets) shrink the
-	// sheet instead so the pinned footer stays above the keyboard. iOS
-	// fires the Will pair; Android only has the Did pair.
+	// Keyboard avoidance on both platforms: lift the sheet by the visible keyboard height, clamped so the sheet top can never ride into the status bar; when the budget runs out (tall/full sheets) shrink the sheet instead so the pinned footer stays above the keyboard. iOS fires the Will pair; Android only has the Did pair.
 	useEffect(() => {
 		if (!avoidKeyboard) return;
 		let hideTimer: ReturnType<typeof setTimeout> | undefined;
@@ -158,11 +150,7 @@ export function Sheet({
 				? { show: "keyboardWillShow", hide: "keyboardWillHide" }
 				: { show: "keyboardDidShow", hide: "keyboardDidHide" };
 		const apply = (height: number): void => {
-			// RN's Android keyboard height stops at the app-visible window
-			// edge; with a translucent navigation bar the IME additionally
-			// covers the nav inset, so it must be cleared on top of the
-			// reported height or the footer rides under the real keyboard
-			// top. iOS already reports the full keyboard height.
+			// RN's Android keyboard height stops at the app-visible window edge; with a translucent navigation bar the IME additionally covers the nav inset, so it must be cleared on top of the reported height or the footer rides under the real keyboard top. iOS already reports the full keyboard height.
 			const effective =
 				height > 0 && Platform.OS === "android"
 					? height + insets.bottom
@@ -188,8 +176,7 @@ export function Sheet({
 			setKbUp(effective > 0);
 		};
 		const show = Keyboard.addListener(events.show, (e) => {
-			// a quick hide→show (next field focus) must not leave a stale reset
-			// pending behind the fresh keyboard geometry
+			// a quick hide→show (next field focus) must not leave a stale reset pending behind the fresh keyboard geometry
 			if (hideTimer !== undefined) {
 				clearTimeout(hideTimer);
 				hideTimer = undefined;
@@ -197,10 +184,7 @@ export function Sheet({
 			apply(e.endCoordinates.height);
 		});
 		const hide = Keyboard.addListener(events.hide, () => {
-			// Android reports DidHide as soon as the dismissing tap lands;
-			// resetting geometry that instant re-lays-out the card under the
-			// finger and cancels the in-flight press (footer Cancel/Save needs
-			// two taps). Hold the keyboard geometry through the tap, then reset.
+			// Android reports DidHide as soon as the dismissing tap lands; resetting geometry that instant re-lays-out the card under the finger and cancels the in-flight press (footer Cancel/Save needs two taps). Hold the keyboard geometry through the tap, then reset.
 			if (Platform.OS === "android") {
 				hideTimer = setTimeout(() => {
 					hideTimer = undefined;
@@ -251,8 +235,7 @@ export function Sheet({
 	);
 
 	const pan = Gesture.Pan()
-		// downward-only activation: an upward drag fails the pan and reaches
-		// the body ScrollView instead of being swallowed by the dismiss pan
+		// downward-only activation: an upward drag fails the pan and reaches the body ScrollView instead of being swallowed by the dismiss pan
 		.activeOffsetY(12)
 		.failOffsetY(-12)
 		.onUpdate((event) => {
@@ -335,10 +318,7 @@ export function Sheet({
 										left: 0,
 										right: 0,
 										bottom: 0,
-										// auto hugs content under maxHeight; fixed snaps get
-										// their pixel height, shrunk while a keyboard covers
-										// the lower reach so the footer stays above it; full
-										// snap stops below a translucent status bar
+										// auto hugs content under maxHeight; fixed snaps get their pixel height, shrunk while a keyboard covers the lower reach so the footer stays above it; full snap stops below a translucent status bar
 										...(snap === "auto"
 											? {
 													maxHeight:
@@ -358,14 +338,12 @@ export function Sheet({
 										borderTopWidth: 1,
 										borderColor: theme.border,
 										paddingTop: 6,
-										// nav-bar clearance with the keyboard hidden; a small gap
-										// once the keyboard replaces the nav bar as the bottom surface
+										// nav-bar clearance with the keyboard hidden; a small gap once the keyboard replaces the nav bar as the bottom surface
 										paddingBottom: kbUp
 											? KEYBOARD_BOTTOM_GAP
 											: tokens.space.cardPad + insets.bottom,
 										paddingHorizontal: tokens.space.gutter,
-										// tight tier rhythm: grabber reads as part of the header, not
-										// its own band
+										// tight tier rhythm: grabber reads as part of the header, not its own band
 										gap: 8,
 									},
 									slotStyles?.content,
@@ -409,7 +387,11 @@ export function Sheet({
 												testID="k-sheet-close-bubble"
 												style={sheetCloseBubble(theme)}
 											>
-												<Icon icon={X} size="sm" color="mutedForeground" />
+												<Icon
+													icon={CloseIcon}
+													size="sm"
+													color="mutedForeground"
+												/>
 											</View>
 										</Pressable>
 									) : null}
@@ -420,8 +402,7 @@ export function Sheet({
 									testID="k-sheet-scroll"
 									showsVerticalScrollIndicator={false}
 									contentContainerStyle={{ gap: 4, paddingBottom: 8 }}
-									// the first tap while the keyboard is up must reach in-body
-									// buttons rather than being eaten as a keyboard-dismiss
+									// the first tap while the keyboard is up must reach in-body buttons rather than being eaten as a keyboard-dismiss
 									keyboardShouldPersistTaps="handled"
 								>
 									{children}

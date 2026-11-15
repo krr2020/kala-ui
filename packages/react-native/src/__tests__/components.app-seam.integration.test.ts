@@ -154,37 +154,7 @@ describe("component app seam", () => {
 			demoHooks += (readFileSync(file, "utf8").match(/useState[(<]/g) ?? [])
 				.length;
 		}
-		// interactive demos: sheet/dialog/confirm/faq/advanced +
-		// toast/banner + agree/sync + range/tab/rating/volume +
-		// bold/align/formats + loading toggle + crash toggle +
-		// menu auto-sync/last-action + app chrome tab + route selection
-		// (group + component) + button press counter + card skeleton
-		// toggle + card press counter + 18 dedicated forms demos
-		// (text/textarea/number/select/combobox/multi-select/checkbox×2/
-		// radio/switch/toggle/slider×2/rating/field×2/otp/calendar/date/
-		// time) + forms overview (email/plan/tier/terms) + the three-screen
-		// shell stack (screen + source + group + component indexes) +
-		// dedicated alert demo (dismiss counter + re-show visibility) +
-		// dedicated banner demo (close counter + re-show visibility) +
-		// dedicated toast demo (basic/position/auto/manual/long arms) +
-		// dedicated progress demo (upload stepper) + dedicated
-		// ring-progress demo (sync stepper) + dedicated spinner demo
-		// (loading toggle) + dedicated skeleton demo (fetch toggle) +
-		// the per-component screens: loading-overlay + error-boundary
-		// (crash) + empty-state (skeleton) + password (live text) +
-		// tabs + steps + segmented + toggle-group (align/formats) +
-		// accordion + collapsible + dropdown (checkbox) + context
-		// (last action) + dialog (open/size/pinned + form/long/terms/
-		// role/notify arms) + alert-dialog + sheet + metric-card
-		// (skeleton) + bar-chart (skeleton) — feedback nav overlays
-		// overviews shrank to composed stories. The sheet's form/share/filter
-		// + long-form stress variations add ten more (open flags + field
-		// arrays + typed values). The navigation group rebuild swaps the old
-		// overview arms (tag/rating/volume/bold) for tab/range/align and adds
-		// the segmented density arm, dropdown sort+action counters and the
-		// context menu's second target — net +2. The sheet footer keyboard-fix
-		// unit then gave the sheet demo its pinned-footer + keyboard-awareness
-		// arms (open flag, footer press, keyboard toggles) — net +4 to 113.
+		// interactive demos: sheet/dialog/confirm/faq/advanced + toast/banner + agree/sync + range/tab/rating/volume + bold/align/formats + loading toggle + crash toggle + menu auto-sync/last-action + app chrome tab + route selection (group + component) + button press counter + card skeleton toggle + card press counter + 18 dedicated forms demos (text/textarea/number/select/combobox/multi-select/checkbox×2/ radio/switch/toggle/slider×2/rating/field×2/otp/calendar/date/ time) + forms overview (email/plan/tier/terms) + the three-screen shell stack (screen + source + group + component indexes) + dedicated alert demo (dismiss counter + re-show visibility) + dedicated banner demo (close counter + re-show visibility) + dedicated toast demo (basic/position/auto/manual/long arms) + dedicated progress demo (upload stepper) + dedicated ring-progress demo (sync stepper) + dedicated spinner demo (loading toggle) + dedicated skeleton demo (fetch toggle) + the per-component screens: loading-overlay + error-boundary (crash) + empty-state (skeleton) + password (live text) + tabs + steps + segmented + toggle-group (align/formats) + accordion + collapsible + dropdown (checkbox) + context (last action) + dialog (open/size/pinned + form/long/terms/ role/notify arms) + alert-dialog + sheet + metric-card (skeleton) + bar-chart (skeleton) — feedback nav overlays overviews shrank to composed stories. The sheet's form/share/filter + long-form stress variations add ten more (open flags + field arrays + typed values). The navigation group rebuild swaps the old overview arms (tag/rating/volume/bold) for tab/range/align and adds the segmented density arm, dropdown sort+action counters and the context menu's second target — net +2. The sheet footer keyboard-fix unit then gave the sheet demo its pinned-footer + keyboard-awareness arms (open flag, footer press, keyboard toggles) — net +4 to 113.
 		expect(demoHooks).toBe(113);
 	});
 
@@ -221,9 +191,7 @@ describe("component app seam", () => {
 			"utf8",
 		);
 		expect(shell).toMatch(/testID="k-group-root"/);
-		// every group open resets to the first component — a componentIndex
-		// carried over from a previously visited group would render an
-		// out-of-group preview under the new heading
+		// every group open resets to the first component — a componentIndex carried over from a previously visited group would render an out-of-group preview under the new heading
 		expect(shell).toMatch(
 			/setGroupIndex\(index\);[\s\S]*?setComponentIndex\(0\);/,
 		);
@@ -239,9 +207,7 @@ describe("component app seam", () => {
 		expect(shell).toMatch(/"back to home"/);
 		expect(shell).toMatch(/"k-back-groups"/);
 		expect(shell).toMatch(/"back to groups"/);
-		// navigation runs through ScreenStack: pushes/pops animate, and the
-		// component owns the Android hardware-back subscription (consumed
-		// above the root, falls through to the OS at the root)
+		// navigation runs through ScreenStack: pushes/pops animate, and the component owns the Android hardware-back subscription (consumed above the root, falls through to the OS at the root)
 		expect(shell).toMatch(/<ScreenStack/);
 		expect(shell).toMatch(/onRequestPop=\{goBack\}/);
 		expect(shell).toMatch(/screen === "group" \? "list" : "landing"/);
@@ -257,8 +223,7 @@ describe("component app seam", () => {
 			"utf8",
 		);
 		expect(shell).toMatch(/componentGroups/);
-		// dedicated demos wired; undedicated components fall back to the
-		// group overview (entry without render) until their demo lands.
+		// dedicated demos wired; undedicated components fall back to the group overview (entry without render) until their demo lands.
 		for (const [name, demo] of [
 			["button", "ButtonDemo"],
 			["text", "TextDemo"],
@@ -301,10 +266,7 @@ describe("component app seam", () => {
 			`${APP_PATH.replace("App.tsx", "route-shell.tsx")}`,
 			"utf8",
 		);
-		// source is required on every group: one declaration per title.
-		// Entry-level source overrides (composite widgets that live in the
-		// app package) sit next to `render:` — anchor the count on the group
-		// header shape (`overview:` follower) so they stay out of it.
+		// source is required on every group: one declaration per title. Entry-level source overrides (composite widgets that live in the app package) sit next to `render:` — anchor the count on the group header shape (`overview:` follower) so they stay out of it.
 		const groupSources =
 			registry.match(/source: "(?:library|app)",\s*\n\s*overview:/g) ?? [];
 		expect(groupSources).toHaveLength(
@@ -319,9 +281,7 @@ describe("component app seam", () => {
 		expect(
 			registry.match(/source: "app",\s*\n\s*overview:/g) ?? [],
 		).toHaveLength(4);
-		// landing segregates by package: two entry cards filter groups by
-		// their source — the app card carries the app tint, both captions
-		// reuse the uppercase section header style
+		// landing segregates by package: two entry cards filter groups by their source — the app card carries the app tint, both captions reuse the uppercase section header style
 		expect(stylesheet).toMatch(/sectionHeader:/);
 		expect(stylesheet).toMatch(/appChip:/);
 		expect(stylesheet).toMatch(/appChipText:/);
@@ -353,16 +313,10 @@ describe("component app seam", () => {
 		// compact themeRow style is defined and applied in the shell.
 		expect(stylesheet).toMatch(/themeRow:/);
 		expect(shell).toMatch(/demoStyles\.themeRow/);
-		// header text formatting: humanized component label; the redundant
-		// branding line was removed from the shell — the section title alone
-		// heads each preview.
+		// header text formatting: humanized component label; the redundant branding line was removed from the shell — the section title alone heads each preview.
 		expect(shell).toMatch(/\{group\.title\} · \{component\.label\}/);
 		expect(shell).not.toMatch(/Kala UI · Native/);
-		// the back button and the switcher strip are the ONLY pinned tiers:
-		// on the group screen both stay before the content ScrollView, while
-		// the component chip row leads the scrolling content. The landing/
-		// list screens render before the group screen and never carry the
-		// pinned tiers.
+		// the back button and the switcher strip are the ONLY pinned tiers: on the group screen both stay before the content ScrollView, while the component chip row leads the scrolling content. The landing/ list screens render before the group screen and never carry the pinned tiers.
 		const themeRowStart = shell.indexOf("demoStyles.themeRow");
 		expect(themeRowStart).toBeGreaterThan(-1);
 		expect(
@@ -390,17 +344,13 @@ describe("component app seam", () => {
 			groupScreen.indexOf("{preview()}"),
 			"preview renders after chipRows",
 		).toBeGreaterThan(groupScreen.indexOf("demoStyles.chipRows"));
-		// the strip is one non-wrapping scroll row (horizontal ScrollView)
-		// and its chips carry humanized title-case labels like the other rows.
+		// the strip is one non-wrapping scroll row (horizontal ScrollView) and its chips carry humanized title-case labels like the other rows.
 		const stripEnd = groupScreen.indexOf("demoStyles.chipRows");
 		const themeRowBlock = groupScreen.slice(0, stripEnd);
 		expect(themeRowBlock).toMatch(/horizontal/);
 		expect(themeRowBlock).not.toMatch(/flexWrap/);
 		expect(themeRowBlock).toMatch(/\{humanizeLabel\(name\)\}/);
-		// breathing room: the pinned back tier above the theme strip and the
-		// themeRow's own bottom pad keep the header on one rhythm, and a
-		// standalone themed hairline separates it from the chip rows
-		// (themeRow → rowDivider → chipRows in source AND render order).
+		// breathing room: the pinned back tier above the theme strip and the themeRow's own bottom pad keep the header on one rhythm, and a standalone themed hairline separates it from the chip rows (themeRow → rowDivider → chipRows in source AND render order).
 		const themeRowStyle = stylesheet.slice(
 			stylesheet.indexOf("themeRow:"),
 			stylesheet.indexOf("rowDivider:"),
@@ -428,21 +378,14 @@ describe("component app seam", () => {
 			return stylesheet.slice(start, end);
 		};
 		const chipRows = block("chipRows");
-		// the chips lead the scroll content flush under the pinned header —
-		// no vertical padding and no attached hairline; the space above and
-		// below the tier comes from previewContent's single gap so the tier
-		// stays symmetric
+		// the chips lead the scroll content flush under the pinned header — no vertical padding and no attached hairline; the space above and below the tier comes from previewContent's single gap so the tier stays symmetric
 		expect(chipRows).not.toMatch(/paddingTop/);
 		expect(chipRows).not.toMatch(/paddingBottom/);
 		expect(chipRows).not.toMatch(/borderBottomWidth/);
-		// full-width break-out of the screen's 16px gutter so the horizontal
-		// chip rows span the screen (their own chipRowContent re-insets 16).
+		// full-width break-out of the screen's 16px gutter so the horizontal chip rows span the screen (their own chipRowContent re-insets 16).
 		expect(chipRows).not.toMatch(/backgroundColor/);
 		expect(chipRows).toMatch(/marginHorizontal: -16/);
-		// vertical rhythm: theme strip bottom pad + 1px divider + the
-		// previewContent gap above the chips lands in a comfortable 16–40dp
-		// band, and the SAME gap repeats below the chip tier — one gap key
-		// owns both sides so the tier reads symmetric.
+		// vertical rhythm: theme strip bottom pad + 1px divider + the previewContent gap above the chips lands in a comfortable 16–40dp band, and the SAME gap repeats below the chip tier — one gap key owns both sides so the tier reads symmetric.
 		const themeRow = block("themeRow");
 		const previewContent = block("previewContent");
 		const pad = (src: string, key: string): number =>
@@ -451,9 +394,7 @@ describe("component app seam", () => {
 		expect(gap).toBeGreaterThanOrEqual(16);
 		expect(gap).toBeLessThanOrEqual(40);
 		expect(pad(previewContent, "gap")).toBeGreaterThanOrEqual(8);
-		// uniform rhythm across ALL three rows: the group↔component seam
-		// (chipRows gap on both sides of the inner divider) must equal the
-		// theme↔group seam.
+		// uniform rhythm across ALL three rows: the group↔component seam (chipRows gap on both sides of the inner divider) must equal the theme↔group seam.
 		const innerSeam = 2 * pad(chipRows, "gap") + 1;
 		expect(innerSeam).toBe(21);
 		// theme chips wear the same pill as group/filter chips — no tag look.
@@ -469,8 +410,7 @@ describe("component app seam", () => {
 			themeChipStart,
 		);
 		const themePressable = shell.slice(themeChipStart, themeChipEnd);
-		// pill first, then the active override last so a selected chip keeps
-		// the pill shape and only swaps colors — never reverts to the tag look.
+		// pill first, then the active override last so a selected chip keeps the pill shape and only swaps colors — never reverts to the tag look.
 		const chipAt = themePressable.indexOf("demoStyles.chip,");
 		const pillAt = themePressable.indexOf("demoStyles.filterChip,");
 		const activeAt = themePressable.indexOf("demoStyles.chipActive");
@@ -479,8 +419,7 @@ describe("component app seam", () => {
 		expect(activeAt).toBeGreaterThan(pillAt);
 		const chipActive = block("chipActive");
 		expect(chipActive).not.toMatch(/borderRadius/);
-		// group chips and filter chips are the same shape: identical style
-		// bodies modulo the key name; tier signal lives in text weight only.
+		// group chips and filter chips are the same shape: identical style bodies modulo the key name; tier signal lives in text weight only.
 		const groupChip = block("groupChip");
 		const filterChip = block("filterChip");
 		expect(groupChip).not.toMatch(/borderColor: theme\.foreground/);
@@ -506,18 +445,14 @@ describe("component app seam", () => {
 			const end = stylesheet.indexOf("\t},", start);
 			return stylesheet.slice(start, end);
 		};
-		// the shared chip-row container never wraps — a wrapped row breaks the
-		// scrolling contract, so overflow must scroll instead.
+		// the shared chip-row container never wraps — a wrapped row breaks the scrolling contract, so overflow must scroll instead.
 		expect(block("picker")).not.toMatch(/flexWrap/);
-		// the theme strip is one non-wrapping line: label + scroll view inline,
-		// and the scroll frame flexes to the remaining width so overflow scrolls
-		// instead of clipping or pushing the row to two lines.
+		// the theme strip is one non-wrapping line: label + scroll view inline, and the scroll frame flexes to the remaining width so overflow scrolls instead of clipping or pushing the row to two lines.
 		expect(block("themeRow")).not.toMatch(/flexWrap/);
 		expect(block("routeBar")).toMatch(/flexGrow: 0/);
 		const pickerUsages = shell.match(/demoStyles\.picker/g) ?? [];
 		expect(pickerUsages).toHaveLength(2);
-		// every picker-backed ScrollView opens horizontal with the indicator
-		// hidden — the opening-tag head of each chunk carries both props
+		// every picker-backed ScrollView opens horizontal with the indicator hidden — the opening-tag head of each chunk carries both props
 		const rowChunks = shell
 			.split("<ScrollView")
 			.slice(1)
@@ -528,8 +463,7 @@ describe("component app seam", () => {
 			expect(head).toMatch(/horizontal/);
 			expect(head).toMatch(/showsHorizontalScrollIndicator=\{false\}/);
 		}
-		// the two route entry cards stack full-width on the landing screen —
-		// package segregation lives on the cards, not an inline row rule
+		// the two route entry cards stack full-width on the landing screen — package segregation lives on the cards, not an inline row rule
 		expect(block("landingCard")).not.toMatch(/flexDirection/);
 		expect(shell.indexOf("k-landing-library")).toBeLessThan(
 			shell.indexOf("k-landing-app"),
@@ -547,9 +481,7 @@ describe("component app seam", () => {
 			const end = stylesheet.indexOf("\t},", start);
 			return stylesheet.slice(start, end);
 		};
-		// padding on the ScrollView frame clips the viewport without adding
-		// scrollable space — the breathing room must live in routeContent
-		// (applied as contentContainerStyle)
+		// padding on the ScrollView frame clips the viewport without adding scrollable space — the breathing room must live in routeContent (applied as contentContainerStyle)
 		expect(block("routeContent")).toMatch(/paddingBottom: 72/);
 		expect(block("screen")).not.toMatch(/paddingBottom/);
 	});
@@ -867,8 +799,7 @@ describe("component app seam", () => {
 		);
 		const colorsBlock = demo.split("const COLORS = [")[1]?.split("]")[0] ?? "";
 		const colors = [...colorsBlock.matchAll(/"([a-z]+)"/g)].map((m) => m[1]);
-		// every exported theme object gets its own `export const <name> = {`
-		// block — enumerate from source so a new theme cannot skip the guard
+		// every exported theme object gets its own `export const <name> = {` block — enumerate from source so a new theme cannot skip the guard
 		const themeNames = [...themesFile.matchAll(/export const (\w+) = \{/g)]
 			.map((m) => m[1])
 			.filter((name) => name !== "themes");

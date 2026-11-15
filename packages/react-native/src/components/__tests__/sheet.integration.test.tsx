@@ -10,9 +10,9 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fireEvent, render } from "@testing-library/react-native";
 import { View } from "react-native";
-import { Select } from "../select";
 import { Combobox } from "../combobox";
 import { MultiSelect } from "../multi-select";
+import { Select } from "../select";
 
 const inclHidden = { includeHiddenElements: true } as const;
 
@@ -160,9 +160,8 @@ describe("Select demo ↔ package Sheet seam", () => {
 
 	it("sheet demo exercises headers, close affordances and every snap (source census)", () => {
 		const source = readFileSync(SHEET_DEMO, "utf8");
-		// every sheet a user can dismiss carries a title → header + close icon;
-		// only the non-dismissable one relies on its own Done action
-		expect(source).toContain('dismissable={false}');
+		// every sheet a user can dismiss carries a title → header + close icon; only the non-dismissable one relies on its own Done action
+		expect(source).toContain("dismissable={false}");
 		const sheetCount = source.match(/<Sheet[\s>]/g)?.length ?? 0;
 		const titledCount = source.match(/title="/g)?.length ?? 0;
 		expect(sheetCount).toBeGreaterThan(3);
@@ -180,8 +179,7 @@ describe("Select demo ↔ package Sheet seam", () => {
 		expect(source).toContain('title="Create task"');
 		expect(source).toContain('accessibilityLabel="Discard form"');
 		expect(source).toContain('accessibilityLabel="Save task"');
-		// the form inputs sit at the END of the scrollable body so the demo
-		// actually exercises body-scroll under fixed header/footer tiers
+		// the form inputs sit at the END of the scrollable body so the demo actually exercises body-scroll under fixed header/footer tiers
 		const formTitle = source.indexOf('title="Create task"');
 		const lastInput = source.lastIndexOf("<TextInput");
 		expect(lastInput).toBeGreaterThan(formTitle);
@@ -192,24 +190,24 @@ describe("Select demo ↔ package Sheet seam", () => {
 		const source = readFileSync(SHEET_DEMO, "utf8");
 		expect(source).toContain('title="Event details"');
 		expect(source).toContain('accessibilityLabel="Save event"');
-		// full-snap stress sheet with a dense field list: the long form
-		// generates its 8 fields from one mapped TextInput (length: 8),
-		// on top of the search + create-task literals
+		// full-snap stress sheet with a dense field list: the long form generates its 8 fields from one mapped TextInput (length: 8), on top of the search + create-task literals
 		expect(source).toContain("length: 8");
 		expect(source.match(/<TextInput/g)?.length ?? 0).toBeGreaterThanOrEqual(4);
 		const longForm = source.indexOf('title="Event details"');
 		expect(longForm).toBeGreaterThan(-1);
-		expect(source.indexOf('avoidKeyboard', longForm)).toBeGreaterThan(longForm);
+		expect(source.indexOf("avoidKeyboard", longForm)).toBeGreaterThan(longForm);
 		expect(source).toContain('snap="full"');
 	});
 
 	it("keyboard-target sheets pin their primary action in the sheet footer (source census)", () => {
 		const source = readFileSync(SHEET_DEMO, "utf8");
-		// the auto-snap search sheet pairs avoidKeyboard with a pinned footer
-		// so Apply rides above the software keyboard with the input
+		// the auto-snap search sheet pairs avoidKeyboard with a pinned footer so Apply rides above the software keyboard with the input
 		const search = source.indexOf('title="Search"');
 		expect(search).toBeGreaterThan(-1);
-		const searchBlock = source.slice(search, source.indexOf("</Sheet>", search));
+		const searchBlock = source.slice(
+			search,
+			source.indexOf("</Sheet>", search),
+		);
 		expect(searchBlock).toContain("avoidKeyboard");
 		expect(searchBlock.indexOf("footer=")).toBeGreaterThan(-1);
 		expect(

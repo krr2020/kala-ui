@@ -1,13 +1,15 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRight } from "../icons";
 import * as React from "react";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
+import type { IconComponent } from "../icons";
 import { useSlotStyles } from "../kala-provider";
 import type { TreeItem, TreeViewProps } from "./tree-view.types";
 
 interface TreeViewContextValue {
+	chevron: IconComponent;
 	selected: Set<string>;
 	expanded: Set<string>;
 	activeId: string | null;
@@ -37,6 +39,7 @@ interface TreeNodeProps {
 
 const TreeNode = React.memo(function TreeNode({ item, level }: TreeNodeProps) {
 	const {
+		chevron: Chevron,
 		selected,
 		expanded,
 		activeId,
@@ -119,7 +122,7 @@ const TreeNode = React.memo(function TreeNode({ item, level }: TreeNodeProps) {
 				)}
 			>
 				{hasChildren ? (
-					<ChevronRight
+					<Chevron
 						aria-hidden="true"
 						className={cn(
 							"h-4 w-4 shrink-0 text-muted-foreground transition-transform",
@@ -153,6 +156,7 @@ const TreeNode = React.memo(function TreeNode({ item, level }: TreeNodeProps) {
 
 function TreeView({
 	data,
+	chevronIcon: chevron = ChevronRight,
 	selected: selectedProp,
 	defaultExpanded = [],
 	onSelect,
@@ -320,6 +324,7 @@ function TreeView({
 
 	const contextValue = React.useMemo<TreeViewContextValue>(
 		() => ({
+			chevron,
 			selected: currentSelected,
 			expanded: expandedIds,
 			activeId: effectiveActiveId,
@@ -332,6 +337,7 @@ function TreeView({
 			navigate,
 		}),
 		[
+			chevron,
 			currentSelected,
 			expandedIds,
 			effectiveActiveId,

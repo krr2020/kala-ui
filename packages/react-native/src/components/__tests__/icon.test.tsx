@@ -15,8 +15,7 @@ import { ICON_SIZE_PX } from "../icon/icon.styles";
 
 const inclHidden = { includeHiddenElements: true };
 
-// a non-lucide icon-library component — the prop contract is just
-// {size, color}; lucide is the demos' choice, not a consumer constraint
+// a non-lucide icon-library component — the prop contract is just {size, color}; lucide is the demos' choice, not a consumer constraint
 const CustomIcon = ({
 	size,
 	color,
@@ -27,8 +26,7 @@ const CustomIcon = ({
 	<RNText testID="k-custom-icon">{`${size ?? "?"}|${color ?? "?"}`}</RNText>
 );
 
-// toJSON is the stable surface for lucide props: `size` lands on the
-// rendered svg as numeric width, `color` as fill
+// toJSON is the stable surface for lucide props: `size` lands on the rendered svg as numeric width, `color` as fill
 type JsonNode = {
 	children?: unknown;
 	props?: Record<string, unknown>;
@@ -125,8 +123,7 @@ describe("Icon", () => {
 		const src = readFileSync(`${__dirname}/../icon/icon.tsx`, "utf8");
 		expect(src).not.toMatch(/\bas (?:keyof|typeof)\b/);
 		expect(src).not.toMatch(/String\(/);
-		// px tables live in icon.styles.ts — no standalone numeric
-		// literals in the component file
+		// px tables live in icon.styles.ts — no standalone numeric literals in the component file
 		expect(src).not.toMatch(/\b\d+,\n/);
 	});
 });
