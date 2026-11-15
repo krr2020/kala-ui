@@ -12,6 +12,7 @@
     "worktrees": true
   },
   "agent": {
+    "cacheRetention": "auto",
     "defaultMode": "build",
     "approvalPosture": "auto",
     "guardian": {
@@ -26,9 +27,9 @@
       "keepRecentTokens": 20000,
       "readEarlyEnabled": false
     },
-    "chatSpendLimitUsd": 0,
-    "chatMaxTurns": 0,
-    "chatMaxToolCalls": 0,
+    "chatSpendLimitUsd": 5,
+    "chatMaxTurns": 60,
+    "chatMaxToolCalls": 150,
     "sessions": {
       "retentionDays": 30
     },
@@ -43,6 +44,12 @@
       "fixFindings": false,
       "severityFloor": "high",
       "transcriptBudgetTokens": 40000
+    },
+    "titles": {
+      "llm": true
+    },
+    "completionReports": {
+      "narrative": false
     },
     "showReasoning": true,
     "showStepNarration": false,
@@ -194,6 +201,7 @@
     "test": true,
     "build": false,
     "overrides": {},
+    "reuse": {},
     "order": [
       "lint",
       "typecheck",
