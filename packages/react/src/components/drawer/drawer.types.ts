@@ -36,8 +36,6 @@ export interface DrawerHeaderProps
 }
 
 export interface DrawerFooterProps extends React.ComponentProps<"div"> {
-	/** Keep the footer pinned to the bottom edge while drawer content scrolls. Defaults to true. */
-	sticky?: boolean;
 	/** Per-part overrides: `root` wins over the legacy `className`/`style` props. */
 	slotStyles?: SlotStyles;
 }

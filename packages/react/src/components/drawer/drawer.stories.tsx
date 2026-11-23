@@ -8,6 +8,7 @@ import { Skeleton } from "../skeleton";
 import { Textarea } from "../textarea";
 import {
 	Drawer,
+	DrawerBody,
 	DrawerClose,
 	DrawerContent,
 	DrawerDescription,
@@ -41,26 +42,30 @@ export const FeatureShowcase: Story = {
 					</Button>
 				</DrawerTrigger>
 				<DrawerContent>
-					<div className="mx-auto w-full max-w-sm">
-						<DrawerHeader>
-							<DrawerTitle>Basic Drawer</DrawerTitle>
-							<DrawerDescription>
-								This is a basic drawer example.
-							</DrawerDescription>
-						</DrawerHeader>
-						<div className="p-6">
+					<DrawerHeader>
+						<DrawerTitle>Basic Drawer</DrawerTitle>
+						<DrawerDescription>
+							This is a basic drawer example.
+						</DrawerDescription>
+					</DrawerHeader>
+					<DrawerBody>
+						<div className="mx-auto w-full max-w-sm p-6">
 							<p className="text-sm text-muted-foreground">
-								This is the content area of the drawer. You can put any content
-								here.
+								This is the content area of the drawer. You can put any
+								content here.
 							</p>
 						</div>
-						<DrawerFooter>
-							<Button>Submit</Button>
+					</DrawerBody>
+					<DrawerFooter>
+						<div className="mx-auto flex w-full max-w-sm gap-2">
+							<Button className="flex-1">Submit</Button>
 							<DrawerClose asChild>
-								<Button variant="outline">Cancel</Button>
+								<Button variant="outline" className="flex-1">
+									Cancel
+								</Button>
 							</DrawerClose>
-						</DrawerFooter>
-					</div>
+						</div>
+					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>
 
@@ -72,14 +77,15 @@ export const FeatureShowcase: Story = {
 					</Button>
 				</DrawerTrigger>
 				<DrawerContent>
-					<div className="mx-auto w-full max-w-sm">
-						<DrawerHeader>
-							<DrawerTitle>Edit profile</DrawerTitle>
-							<DrawerDescription>
-								Make changes to your profile here. Click save when you're done.
-							</DrawerDescription>
-						</DrawerHeader>
-						<div className="space-y-4 p-6">
+					<DrawerHeader>
+						<DrawerTitle>Edit profile</DrawerTitle>
+						<DrawerDescription>
+							Make changes to your profile here. Click save when you're
+							done.
+						</DrawerDescription>
+					</DrawerHeader>
+					<DrawerBody>
+						<div className="mx-auto w-full max-w-sm space-y-4 p-6">
 							<div className="space-y-2">
 								<Label htmlFor="name">Name</Label>
 								<Input
@@ -106,13 +112,17 @@ export const FeatureShowcase: Story = {
 								/>
 							</div>
 						</div>
-						<DrawerFooter>
-							<Button>Save changes</Button>
+					</DrawerBody>
+					<DrawerFooter>
+						<div className="mx-auto flex w-full max-w-sm gap-2">
+							<Button className="flex-1">Save changes</Button>
 							<DrawerClose asChild>
-								<Button variant="outline">Cancel</Button>
+								<Button variant="outline" className="flex-1">
+									Cancel
+								</Button>
 							</DrawerClose>
-						</DrawerFooter>
-					</div>
+						</div>
+					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>
 
@@ -127,21 +137,25 @@ export const FeatureShowcase: Story = {
 					</Button>
 				</DrawerTrigger>
 				<DrawerContent>
-					<div className="mx-auto w-full max-w-sm">
-						<DrawerHeader>
-							<DrawerTitle>Are you absolutely sure?</DrawerTitle>
-							<DrawerDescription>
-								This action cannot be undone. This will permanently delete your
-								account and remove your data from our servers.
-							</DrawerDescription>
-						</DrawerHeader>
-						<DrawerFooter>
-							<Button color="destructive">Delete Account</Button>
+					<DrawerHeader>
+						<DrawerTitle>Are you absolutely sure?</DrawerTitle>
+						<DrawerDescription>
+							This action cannot be undone. This will permanently delete
+							your account and remove your data from our servers.
+						</DrawerDescription>
+					</DrawerHeader>
+					<DrawerFooter>
+						<div className="mx-auto flex w-full max-w-sm gap-2">
+							<Button color="destructive" className="flex-1">
+								Delete Account
+							</Button>
 							<DrawerClose asChild>
-								<Button variant="outline">Cancel</Button>
+								<Button variant="outline" className="flex-1">
+									Cancel
+								</Button>
 							</DrawerClose>
-						</DrawerFooter>
-					</div>
+						</div>
+					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>
 
@@ -153,14 +167,14 @@ export const FeatureShowcase: Story = {
 					</Button>
 				</DrawerTrigger>
 				<DrawerContent>
-					<div className="mx-auto w-full max-w-sm">
-						<DrawerHeader>
-							<DrawerTitle>Choose an action</DrawerTitle>
-							<DrawerDescription>
-								Select what you'd like to do with this item.
-							</DrawerDescription>
-						</DrawerHeader>
-						<div className="space-y-2 p-6">
+					<DrawerHeader>
+						<DrawerTitle>Choose an action</DrawerTitle>
+						<DrawerDescription>
+							Select what you'd like to do with this item.
+						</DrawerDescription>
+					</DrawerHeader>
+					<DrawerBody>
+						<div className="mx-auto w-full max-w-sm space-y-2 p-6">
 							<Button variant="outline" className="w-full justify-start">
 								Edit
 							</Button>
@@ -177,12 +191,16 @@ export const FeatureShowcase: Story = {
 								Delete
 							</Button>
 						</div>
-						<DrawerFooter>
+					</DrawerBody>
+					<DrawerFooter>
+						<div className="mx-auto w-full max-w-sm">
 							<DrawerClose asChild>
-								<Button variant="outline">Cancel</Button>
+								<Button variant="outline" className="w-full">
+									Cancel
+								</Button>
 							</DrawerClose>
-						</DrawerFooter>
-					</div>
+						</div>
+					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>
 		</div>
@@ -204,12 +222,12 @@ function GoalDrawer() {
 				</Button>
 			</DrawerTrigger>
 			<DrawerContent>
-				<div className="mx-auto w-full max-w-sm">
-					<DrawerHeader>
-						<DrawerTitle>Move Goal</DrawerTitle>
-						<DrawerDescription>Set your daily activity goal.</DrawerDescription>
-					</DrawerHeader>
-					<div className="p-6 pb-0">
+				<DrawerHeader>
+					<DrawerTitle>Move Goal</DrawerTitle>
+					<DrawerDescription>Set your daily activity goal.</DrawerDescription>
+				</DrawerHeader>
+				<DrawerBody>
+					<div className="mx-auto w-full max-w-sm p-6 pb-0">
 						<div className="flex items-center justify-center space-x-4">
 							<Button
 								variant="outline"
@@ -242,13 +260,17 @@ function GoalDrawer() {
 						</div>
 						<div className="mt-6 h-[80px] rounded-md bg-muted" />
 					</div>
-					<DrawerFooter>
-						<Button>Submit</Button>
+				</DrawerBody>
+				<DrawerFooter>
+					<div className="mx-auto flex w-full max-w-sm gap-2">
+						<Button className="flex-1">Submit</Button>
 						<DrawerClose asChild>
-							<Button variant="outline">Cancel</Button>
+							<Button variant="outline" className="flex-1">
+								Cancel
+							</Button>
 						</DrawerClose>
-					</DrawerFooter>
-				</div>
+					</div>
+				</DrawerFooter>
 			</DrawerContent>
 		</Drawer>
 	);
@@ -266,27 +288,31 @@ export const PositionExamples: Story = {
 						</Button>
 					</DrawerTrigger>
 					<DrawerContent>
-						<div className="mx-auto w-full max-w-sm h-full flex flex-col">
-							<DrawerHeader>
-								<DrawerTitle className="capitalize">
-									{direction} Drawer
-								</DrawerTitle>
-								<DrawerDescription>
-									This drawer slides from the {direction}.
-								</DrawerDescription>
-							</DrawerHeader>
-							<div className="p-6 flex-1">
+						<DrawerHeader>
+							<DrawerTitle className="capitalize">
+								{direction} Drawer
+							</DrawerTitle>
+							<DrawerDescription>
+								This drawer slides from the {direction}.
+							</DrawerDescription>
+						</DrawerHeader>
+						<DrawerBody>
+							<div className="mx-auto w-full max-w-sm p-6">
 								<p className="text-sm text-muted-foreground">
 									Content for the {direction} drawer.
 								</p>
 							</div>
-							<DrawerFooter>
-								<Button>Action</Button>
+						</DrawerBody>
+						<DrawerFooter>
+							<div className="mx-auto flex w-full max-w-sm gap-2">
+								<Button className="flex-1">Action</Button>
 								<DrawerClose asChild>
-									<Button variant="outline">Close</Button>
+									<Button variant="outline" className="flex-1">
+										Close
+									</Button>
 								</DrawerClose>
-							</DrawerFooter>
-						</div>
+							</div>
+						</DrawerFooter>
 					</DrawerContent>
 				</Drawer>
 			))}
@@ -308,16 +334,19 @@ export const StandardRightDrawer: Story = {
 						Choose which updates you want to receive.
 					</DrawerDescription>
 				</DrawerHeader>
-				<div className="space-y-4 px-6 py-5">
-					{Array.from({ length: 12 }, (_, index) => (
-						<div className="rounded-lg border p-4" key={index}>
-							<p className="font-medium">Update category {index + 1}</p>
-							<p className="mt-1 text-sm text-muted-foreground">
-								Receive an email when there is a new update in this category.
-							</p>
-						</div>
-					))}
-				</div>
+				<DrawerBody className="px-6 py-5">
+					<div className="space-y-4">
+						{Array.from({ length: 12 }, (_, index) => (
+							<div className="rounded-lg border p-4" key={index}>
+								<p className="font-medium">Update category {index + 1}</p>
+								<p className="mt-1 text-sm text-muted-foreground">
+									Receive an email when there is a new update in this
+									category.
+								</p>
+							</div>
+						))}
+					</div>
+				</DrawerBody>
 				<DrawerFooter className="flex-row justify-end">
 					<DrawerClose asChild>
 						<Button variant="outline">Cancel</Button>
@@ -334,7 +363,8 @@ export const LoadingSkeleton: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: "Loading skeleton placeholder for drawer trigger while loading.",
+				story:
+					"Loading skeleton placeholder for drawer trigger while loading.",
 			},
 		},
 	},

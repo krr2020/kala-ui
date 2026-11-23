@@ -137,7 +137,7 @@ function DrawerContent({
 						style={applySlot(drawerStyles.handle, slotStyles?.handle).style}
 					/>
 				)}
-				<DrawerBody>{children}</DrawerBody>
+				{children}
 			</DrawerPrimitive.Content>
 		</DrawerPortal>
 	);
@@ -233,12 +233,11 @@ function DrawerFooter({
 	className,
 	style,
 	slotStyles: slotStylesRaw,
-	sticky = true,
 	...props
 }: DrawerFooterProps) {
 	const slotStyles = useSlotStyles("drawer", slotStylesRaw);
 	const root = applySlot(
-		cn(drawerStyles.footer, sticky && drawerStyles.footerSticky, className),
+		cn(drawerStyles.footer, className),
 		slotStyles?.footer,
 	);
 	return (

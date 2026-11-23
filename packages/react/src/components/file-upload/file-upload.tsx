@@ -127,11 +127,12 @@ export function FileUpload({
 			{...props}
 		>
 			{/* Native file input lives outside the trigger so no interactive
-			    elements nest; the button opens it programmatically. */}
+			    elements nest; the button opens it programmatically. sr-only (not
+			    display:none) keeps it focusable-by-tooling and sized for automation. */}
 			<input
 				ref={inputRef}
 				type="file"
-				className="hidden"
+				className="sr-only"
 				accept={accept}
 				onChange={handleFileInput}
 				disabled={disabled}

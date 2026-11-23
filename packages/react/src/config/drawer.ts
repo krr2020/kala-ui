@@ -28,7 +28,7 @@ export const drawerStyles = {
 	},
 	handle: "mx-auto mt-4 h-1.5 w-12 rounded-full bg-muted",
 	header:
-		"sticky top-0 z-10 grid shrink-0 gap-1 border-b bg-background px-4 py-3",
+		"grid shrink-0 gap-1 border-b bg-background px-4 py-3",
 	body: "min-h-0 flex-1 overflow-y-auto overscroll-contain",
 	headerRow: "grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3",
 	headerContent: "grid min-w-0 gap-1",
@@ -42,7 +42,6 @@ export const drawerStyles = {
 	closeIcon: "size-4",
 	footer:
 		"mt-auto flex shrink-0 flex-col gap-2 border-t bg-background px-6 py-5",
-	footerSticky: "sticky bottom-0 z-10",
 	title: "text-lg font-semibold leading-none tracking-tight text-foreground",
 	description: "text-sm text-muted-foreground",
 } as const;

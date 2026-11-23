@@ -78,6 +78,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 	Drawer,
+	DrawerBody,
 	DrawerClose,
 	DrawerContent,
 	DrawerDescription,
@@ -355,7 +356,10 @@ export default function Home() {
 					<Burger />
 					<SegmentedControl data={["Day", "Week", "Month"]} />
 					<SocialLoginButton provider="google" />
-					<SocialLoginButtons providers={["google", "github"]} onProviderClick={() => {}} />
+					<SocialLoginButtons
+						providers={["google", "github"]}
+						onProviderClick={() => {}}
+					/>
 				</Section>
 
 				<Section title="Forms">
@@ -561,9 +565,7 @@ export default function Home() {
 						<DialogContent>
 							<DialogHeader>
 								<DialogTitle>Dialog title</DialogTitle>
-								<DialogDescription>
-									Dialog description
-								</DialogDescription>
+								<DialogDescription>Dialog description</DialogDescription>
 							</DialogHeader>
 							<DialogBody>Dialog body</DialogBody>
 							<DialogFooter>
@@ -599,6 +601,12 @@ export default function Home() {
 								<DrawerTitle>Drawer title</DrawerTitle>
 								<DrawerDescription>Drawer description</DrawerDescription>
 							</DrawerHeader>
+							<DrawerBody>
+								<p className="text-sm text-muted-foreground">
+									Drawer body content scrolls here while the header and footer
+									stay fixed.
+								</p>
+							</DrawerBody>
 							<DrawerFooter>
 								<DrawerClose asChild>
 									<Button>Close</Button>
@@ -682,7 +690,9 @@ export default function Home() {
 					/>
 					<NavigationSkeleton />
 					<Sidebar
-						navSections={[{ title: "Main", links: [{ label: "Home", href: "/" }] }]}
+						navSections={[
+							{ title: "Main", links: [{ label: "Home", href: "/" }] },
+						]}
 						pathname="/"
 					/>
 					<Header navLinks={[{ label: "Home", href: "/" }]} />

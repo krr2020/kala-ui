@@ -437,11 +437,34 @@ describe("DrawerContent", () => {
 		const body = container.querySelector('[data-slot="drawer-body"]');
 		const header = container.querySelector('[data-slot="drawer-header"]');
 		const footer = container.querySelector('[data-slot="drawer-footer"]');
+		expect(container.querySelectorAll('[data-slot="drawer-body"]')).toHaveLength(
+			1,
+		);
+		expect(header?.parentElement).toBe(content);
+		expect(body?.parentElement).toBe(content);
+		expect(footer?.parentElement).toBe(content);
 		expect(content.className).toContain("overflow-hidden");
 		expect(body?.className).toContain("overflow-y-auto");
 		expect(body?.className).toContain("flex-1");
 		expect(header?.className).toContain("shrink-0");
 		expect(footer?.className).toContain("shrink-0");
+	});
+
+	it("renders children directly without an implicit body wrapper", () => {
+		const { container } = render(
+			<Drawer>
+				<DrawerContent>
+					<div data-testid="custom-pane">plain content</div>
+				</DrawerContent>
+			</Drawer>,
+		);
+		expect(screen.getByTestId("custom-pane")).toBeInTheDocument();
+		expect(screen.getByTestId("custom-pane").parentElement).toBe(
+			screen.getByTestId("drawer-content"),
+		);
+		expect(
+			container.querySelector('[data-slot="drawer-body"]'),
+		).toBeNull();
 	});
 
 	it("applies md height class for bottom direction without size prop", () => {

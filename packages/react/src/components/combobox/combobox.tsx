@@ -5,6 +5,7 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { Check, ChevronsUpDown, X } from "../icons";
 import type { IconComponent } from "../icons";
 import * as React from "react";
+import { popoverStyles } from "../../config/popover";
 import { applySlot, mergeStyle } from "../../lib/slot-styles";
 import { cn } from "../../lib/utils";
 import { Button } from "../button";
@@ -136,7 +137,7 @@ function Combobox({
 			</div>
 			<PopoverPrimitive.Portal>
 				<PopoverPrimitive.Content
-					className="p-0 z-30"
+					className={cn(popoverStyles.base, "p-0")}
 					align="start"
 					sideOffset={4}
 					style={
